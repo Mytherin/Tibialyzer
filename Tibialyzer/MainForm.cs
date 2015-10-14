@@ -867,7 +867,7 @@ namespace Tibialyzer
                 }
                 else if (comp.StartsWith("delete@"))
                 {
-                    CompileSourceAndExecute("delete_logmessage('" + c.Split('@')[1].Trim() + "')", pyScope);
+                    CompileSourceAndExecute("delete_logmessage('" + c.Split('@')[1].Trim().Replace("'", "\\'") + "')", pyScope);
                 }
                 else if (comp.StartsWith("skin@"))
                 {
@@ -875,7 +875,7 @@ namespace Tibialyzer
                     Creature cr = GetCreature(parameter, pyScope, true);
                     if (cr == null) continue;
                     if (cr.skin == null) continue;
-                    CompileSourceAndExecute("insert_skin('" + cr.skin.drop_item.name + "')", pyScope);
+                    CompileSourceAndExecute("insert_skin('" + cr.skin.drop_item.name.Replace("'", "\\'") + "')", pyScope);
                 }
                 else if (comp.StartsWith("damage@"))
                 {
@@ -902,7 +902,7 @@ namespace Tibialyzer
                 {
                     string[] splits = c.Split('@');
                     string screenshot_path = "";
-                    string parameter = splits[1].Trim().ToLower();
+                    string parameter = splits[1].Trim().ToLower().Replace("'", "\\'");
                     if (parameter == "screenshot" && splits.Length > 2)
                     {
                         parameter = "";
@@ -1026,25 +1026,25 @@ namespace Tibialyzer
                 {
                     CompileSourceAndExecute("c.execute('UPDATE Items SET discard=0 WHERE LOWER(name)=?', ['" + c.Split('@')[1].Trim().ToLower().Replace("'", "\\'") + "'])", pyScope);
                     CompileSourceAndExecute("conn.commit()", pyScope);
-                    CompileSourceAndExecute("invalidate_item('" + c.Split('@')[1].Trim().ToLower() + "')", pyScope);
+                    CompileSourceAndExecute("invalidate_item('" + c.Split('@')[1].Trim().ToLower().Replace("'", "\\'") + "')", pyScope);
                 }
                 else if (comp.StartsWith("nopickup@"))
                 {
                     CompileSourceAndExecute("c.execute('UPDATE Items SET discard=1 WHERE LOWER(name)=?', ['" + c.Split('@')[1].Trim().ToLower().Replace("'", "\\'") + "'])", pyScope);
                     CompileSourceAndExecute("conn.commit()", pyScope);
-                    CompileSourceAndExecute("invalidate_item('" + c.Split('@')[1].Trim().ToLower() + "')", pyScope);
+                    CompileSourceAndExecute("invalidate_item('" + c.Split('@')[1].Trim().ToLower().Replace("'", "\\'") + "')", pyScope);
                 }
                 else if (comp.StartsWith("convert@"))
                 {
                     CompileSourceAndExecute("c.execute('UPDATE Items SET convert_to_gold=1 WHERE LOWER(name)=?', ['" + c.Split('@')[1].Trim().ToLower().Replace("'", "\\'") + "'])", pyScope);
                     CompileSourceAndExecute("conn.commit()", pyScope);
-                    CompileSourceAndExecute("invalidate_item('" + c.Split('@')[1].Trim().ToLower() + "')", pyScope);
+                    CompileSourceAndExecute("invalidate_item('" + c.Split('@')[1].Trim().ToLower().Replace("'", "\\'") + "')", pyScope);
                 }
                 else if (comp.StartsWith("noconvert@"))
                 {
                     CompileSourceAndExecute("c.execute('UPDATE Items SET convert_to_gold=0 WHERE LOWER(name)=?', ['" + c.Split('@')[1].Trim().ToLower().Replace("'", "\\'") + "'])", pyScope);
                     CompileSourceAndExecute("conn.commit()", pyScope);
-                    CompileSourceAndExecute("invalidate_item('" + c.Split('@')[1].Trim().ToLower() + "')", pyScope);
+                    CompileSourceAndExecute("invalidate_item('" + c.Split('@')[1].Trim().ToLower().Replace("'", "\\'") + "')", pyScope);
                 }
                 else if (comp.StartsWith("setval@"))
                 {
@@ -1071,7 +1071,7 @@ namespace Tibialyzer
                                 found_extension = true;
                                 try
                                 {
-                                    CompileSourceAndExecute("_parameter = '" + c.Split('@')[1].Trim() + "'", pyScope);
+                                    CompileSourceAndExecute("_parameter = '" + c.Split('@')[1].Trim().Replace("'", "\\'") + "'", pyScope);
                                     ExecuteFile(@"Extensions\" + extension + ".py", pyScope);
                                 }
                                 catch(Exception e) 
