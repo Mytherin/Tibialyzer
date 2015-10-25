@@ -8,7 +8,7 @@ using System.Drawing;
 
 namespace Tibialyzer
 {
-    class TransparentPictureBox : PictureBox
+    public class TransparentPictureBox : PictureBox
     {
         protected override void OnPaintBackground(PaintEventArgs e)
         {

@@ -18,6 +18,7 @@ namespace Tibialyzer
     {
         System.Timers.Timer closeTimer = null;
         static Bitmap background_image = null;
+        protected TransparentPictureBox back_button;
 
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
@@ -44,6 +45,27 @@ namespace Tibialyzer
                 if (c is TextBox || c is CheckBox || c is System.Windows.Forms.DataVisualization.Charting.Chart) continue;
                 c.Click += c_Click;
             }
+        }
+
+        protected void NotificationFinalize()
+        {
+            if (MainForm.mainForm.HasBack())
+            {
+                back_button = new TransparentPictureBox();
+                back_button.Location = new Point(5, 5);
+                back_button.Image = MainForm.back_image;
+                back_button.Size = new Size(63, 22);
+                back_button.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+                back_button.Click += back_button_Click;
+                this.Controls.Add(back_button);
+                this.back_button.BringToFront();
+            }
+            this.ReturnFocusToTibia();
+        }
+
+        void back_button_Click(object sender, EventArgs e)
+        {
+            MainForm.mainForm.Back();
             this.ReturnFocusToTibia();
         }
 

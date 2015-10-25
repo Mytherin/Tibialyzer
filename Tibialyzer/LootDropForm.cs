@@ -205,6 +205,7 @@ namespace Tibialyzer
             this.Size = new Size(max_x + item_spacing * 2, base_y + y + item_spacing + 10);
             if (screenshot_path != "")
                 SaveScreenshot();
+            else base.NotificationFinalize();
         }
 
         private bool clicked = false;

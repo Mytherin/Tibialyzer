@@ -221,6 +221,7 @@ namespace Tibialyzer
                 offset++;
             }
             this.Size = new Size(this.Size.Width, this.nameLabel.Location.Y + this.nameLabel.Size.Height + offset * size + base_offset);
+            base.NotificationFinalize();
             this.ResumeLayout(false);
         }
 

@@ -144,6 +144,7 @@ namespace Tibialyzer
             this.mapDownLevel.Image = MainForm.mapdown_image;
             this.mapDownLevel.Click -= c_Click;
             this.mapDownLevel.Click += mapDownLevel_Click;
+            base.NotificationFinalize();
             this.ResumeLayout(false);
         }
 

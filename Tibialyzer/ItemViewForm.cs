@@ -263,6 +263,7 @@ namespace Tibialyzer
                         control.Click += openItemBox;
             }
             this.Size = new Size(this.Size.Width, this.Size.Height + y);
+            base.NotificationFinalize();
         }
 
         private string command_start = "npc@";

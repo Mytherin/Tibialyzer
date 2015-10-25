@@ -58,6 +58,7 @@ namespace Tibialyzer
                         if (control is TransparentPictureBox)
                             control.Click += openItemBox;
             this.NotificationInitialize();
+            this.NotificationFinalize();
             this.ResumeLayout(false);
         }
 

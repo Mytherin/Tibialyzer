@@ -29,6 +29,7 @@ namespace Tibialyzer
         public static Image[] image_numbers = new Image[10];
         private Form tooltipForm = null;
         private static Image tibia_image = null;
+        public static Image back_image = null;
         public static Image item_background = null;
         public static Image cross_image = null;
         public static Image star_image = null;
@@ -53,11 +54,14 @@ namespace Tibialyzer
         public List<string> notification_items = new List<string>();
         private static List<string> extensions = new List<string>();
 
+        private Stack<string> command_stack = new Stack<string>();
+
         public MainForm()
         {
             mainForm = this;
             InitializeComponent();
             InitializePython();
+            back_image = Image.FromFile(@"Images\back.png");
             cross_image = Image.FromFile(@"Images\cross.png");
             star_image = Image.FromFile(@"Images\star.png");
             tibia_image = Image.FromFile(@"Images\tibia.png");
@@ -664,10 +668,11 @@ namespace Tibialyzer
         }
 
         long last_notification = -1000;
-        private void ShowNotification(NotificationForm f, bool screenshot = false)
+        private void ShowNotification(NotificationForm f, string command, bool screenshot = false)
         {
             long current_time = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
             if (current_time - last_notification < 1000) return;
+            command_stack.Push(command);
             if (tooltipForm != null) {
                 tooltipForm.Close();
             }
@@ -697,7 +702,20 @@ namespace Tibialyzer
             else tooltipForm = f;
         }
 
-        private void ShowCreatureDrops(Creature c)
+        public void Back()
+        {
+            if (command_stack.Count <= 1) return;
+            command_stack.Pop(); // remove the current command
+            string command = command_stack.Pop();
+            priority_command = command;
+        }
+
+        public bool HasBack()
+        {
+            return command_stack.Count > 1;
+        }
+
+        private void ShowCreatureDrops(Creature c, string comm)
         {
             if (c == null) return;
             CreatureDropsForm f = new CreatureDropsForm();
@@ -705,11 +723,11 @@ namespace Tibialyzer
 
             this.Invoke((MethodInvoker)delegate
             {
-                ShowNotification(f);
+                ShowNotification(f, comm);
             });
         }
 
-        private void ShowCreatureStats(Creature c)
+        private void ShowCreatureStats(Creature c, string comm)
         {
             if (c == null) return;
             CreatureStatsForm f = new CreatureStatsForm();
@@ -717,11 +735,11 @@ namespace Tibialyzer
             
             this.Invoke((MethodInvoker)delegate
             {
-                ShowNotification(f);
+                ShowNotification(f, comm);
             });
         }
 
-        private void ShowCreatureList(List<Creature> c)
+        private void ShowCreatureList(List<Creature> c, string comm)
         {
             if (c == null) return;
             CreatureList f = new CreatureList();
@@ -729,11 +747,11 @@ namespace Tibialyzer
 
             this.Invoke((MethodInvoker)delegate
             {
-                ShowNotification(f);
+                ShowNotification(f, comm);
             });
         }
 
-        private void ShowItemView(Item i, List<NPC> BuyNPCs, List<NPC> SellNPCs, List<Creature> creatures)
+        private void ShowItemView(Item i, List<NPC> BuyNPCs, List<NPC> SellNPCs, List<Creature> creatures, string comm)
         {
             if (i == null) return;
             ItemViewForm f = new ItemViewForm();
@@ -744,11 +762,11 @@ namespace Tibialyzer
 
             this.Invoke((MethodInvoker)delegate
             {
-                ShowNotification(f);
+                ShowNotification(f, comm);
             });
         }
 
-        private void ShowNPCForm(NPC c)
+        private void ShowNPCForm(NPC c, string comm)
         {
             if (c == null) return;
             NPCForm f = new NPCForm();
@@ -756,22 +774,22 @@ namespace Tibialyzer
 
             this.Invoke((MethodInvoker)delegate
             {
-                ShowNotification(f);
+                ShowNotification(f, comm);
             });
         }
 
-        private void ShowDamageMeter(Dictionary<string, int> dps, string filter = "", string screenshot_path = "")
+        private void ShowDamageMeter(Dictionary<string, int> dps, string comm, string filter = "", string screenshot_path = "")
         {
             DamageMeter f = new DamageMeter(screenshot_path);
             f.dps = dps;
             f.filter = filter;
             this.Invoke((MethodInvoker)delegate
             {
-                ShowNotification(f, screenshot_path != "");
+                ShowNotification(f, comm, screenshot_path != "");
             });
         }
 
-        private void ShowLootDrops(List<Creature> creatures, List<Item> items, string screenshot_path)
+        private void ShowLootDrops(List<Creature> creatures, List<Item> items, string comm, string screenshot_path)
         {
             LootDropForm ldf = new LootDropForm(screenshot_path);
             ldf.creatures = creatures;
@@ -779,11 +797,11 @@ namespace Tibialyzer
 
             this.Invoke((MethodInvoker)delegate
             {
-                ShowNotification(ldf, screenshot_path != "");
+                ShowNotification(ldf, comm, screenshot_path != "");
             });
         }
 
-        private void ShowHuntList(List<HuntingPlace> h, string header)
+        private void ShowHuntList(List<HuntingPlace> h, string header, string comm)
         {
             if (h != null) h = h.OrderBy(o => o.level).ToList();
             HuntListForm f = new HuntListForm();
@@ -792,22 +810,22 @@ namespace Tibialyzer
 
             this.Invoke((MethodInvoker)delegate
             {
-                ShowNotification(f);
+                ShowNotification(f, comm);
             });
         }
 
-        private void ShowHuntingPlace(HuntingPlace h)
+        private void ShowHuntingPlace(HuntingPlace h, string comm)
         {
             HuntingPlaceForm f = new HuntingPlaceForm();
             f.hunting_place = h;
 
             this.Invoke((MethodInvoker)delegate
             {
-                ShowNotification(f);
+                ShowNotification(f, comm);
             });
         }
 
-        public void ShowItemNotification(string name, ScriptScope pyScope)
+        public void ShowItemNotification(string name, ScriptScope pyScope, string comm)
         {
             Item i = GetItem(name, pyScope);
             if (i == null) return;
@@ -839,7 +857,7 @@ namespace Tibialyzer
                     buy_npcs.Add(npc);
                 }
             }
-            ShowItemView(i, buy_npcs, sell_npcs, null);
+            ShowItemView(i, buy_npcs, sell_npcs, null, comm);
         }
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -902,17 +920,17 @@ namespace Tibialyzer
                                 creatures.Add(cr);
                         }
 
-                        ShowCreatureList(creatures);
+                        ShowCreatureList(creatures, c);
                     }
                     else
                     {
                         Creature cr = GetCreature(parameter, pyScope, true);
-                        ShowCreatureDrops(cr);
+                        ShowCreatureDrops(cr, c);
                     }
                 }
                 else if (comp.StartsWith("stats@")) {
                     Creature cr = GetCreature(c.Split('@')[1].Trim().ToLower(), pyScope);
-                    ShowCreatureStats(cr);
+                    ShowCreatureStats(cr, c);
                 }
                 else if (comp.StartsWith("delete@"))
                 {
@@ -976,7 +994,7 @@ namespace Tibialyzer
                         i.drops = int.Parse((obj as IronPython.Runtime.List)[1].ToString());
                         items.Add(i);
                     }
-                    ShowLootDrops(creatures, items, screenshot_path);
+                    ShowLootDrops(creatures, items, c, screenshot_path);
                 }
                 else if (comp.StartsWith("reset@"))
                 {
@@ -997,11 +1015,11 @@ namespace Tibialyzer
                         if (cr != null) creatures.Add(cr);
                     }
 
-                    ShowItemView(i, null, null, creatures);
+                    ShowItemView(i, null, null, creatures, c);
                 }
                 else if (comp.StartsWith("item@"))
                 {
-                    ShowItemNotification(c.Split('@')[1].Trim().ToLower(), pyScope);
+                    ShowItemNotification(c.Split('@')[1].Trim().ToLower(), pyScope, c);
                 }
                 else if (comp.StartsWith("hunt@"))
                 {
@@ -1018,13 +1036,13 @@ namespace Tibialyzer
                             h = HuntingPlaceFromList(obj as IronPython.Runtime.List);
                             if (h != null) hunting_places.Add(h);
                         }
-                        ShowHuntList(hunting_places, "Hunts in " + parameter);
+                        ShowHuntList(hunting_places, "Hunts in " + parameter, c);
                         continue;
                     }
                     h = GetHuntingPlace(parameter, pyScope);
                     if (h != null)
                     {
-                        ShowHuntingPlace(h);
+                        ShowHuntingPlace(h, c);
                         continue;
                     }
                     Creature cr = GetCreature(c.Split('@')[1].Trim().ToLower(), pyScope);
@@ -1041,7 +1059,7 @@ namespace Tibialyzer
                             if (h != null) hunting_places.Add(h);
                         }
                         cr.Dispose();
-                        ShowHuntList(hunting_places, "Hunting Places of " + cr.name);
+                        ShowHuntList(hunting_places, "Hunting Places of " + cr.name, c);
                         continue;
                     }
                     int minlevel = -1, maxlevel = -1;
@@ -1068,14 +1086,14 @@ namespace Tibialyzer
                             h = HuntingPlaceFromList(obj as IronPython.Runtime.List);
                             if (h != null) hunting_places.Add(h);
                         }
-                        ShowHuntList(hunting_places, "Hunts between levels " + minlevel.ToString() + "-" + maxlevel.ToString());
+                        ShowHuntList(hunting_places, "Hunts between levels " + minlevel.ToString() + "-" + maxlevel.ToString(), c);
                         continue;
                     }
                 }
                 else if (comp.StartsWith("npc@"))
                 {
                     NPC npc = GetNPC(c.Split('@')[1].Trim().ToLower(), pyScope);
-                    ShowNPCForm(npc);
+                    ShowNPCForm(npc, c);
                 }
                 else if (comp.StartsWith("run@"))
                 {
@@ -1196,7 +1214,7 @@ namespace Tibialyzer
                                 {
                                     string name = (result[0] as IronPython.Runtime.PythonTuple)[0].ToString();
                                     NPC npc = GetNPC(name.ToLower(), pyScope);
-                                    ShowNPCForm(npc);
+                                    ShowNPCForm(npc, c);
                                     break;
                                 }
                             }

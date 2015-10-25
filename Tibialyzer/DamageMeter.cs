@@ -162,9 +162,11 @@ namespace Tibialyzer
                 this.damageChart.Series[0].Points.Add(point);
                 i++;
             }
+            
             this.ResumeLayout(false);
             if (screenshot_path != "")
                 SaveScreenshot();
+            else base.NotificationFinalize();
         }
 
     }

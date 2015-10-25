@@ -136,6 +136,7 @@ namespace Tibialyzer
             this.nameLabel.Font = f;
             this.nameLabel.Left = this.mainImage.Left + (mainImage.Width - this.nameLabel.Size.Width) / 2;
             base.NotificationInitialize();
+            base.NotificationFinalize();
         }
 
     }

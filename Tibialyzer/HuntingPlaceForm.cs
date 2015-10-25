@@ -60,7 +60,7 @@ namespace Tibialyzer
             this.requirementLabel.BackColor = System.Drawing.Color.Transparent;
             this.requirementLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.requirementLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.requirementLabel.Location = new System.Drawing.Point(37, 111);
+            this.requirementLabel.Location = new System.Drawing.Point(37, 121);
             this.requirementLabel.Name = "requirementLabel";
             this.requirementLabel.Size = new System.Drawing.Size(104, 16);
             this.requirementLabel.TabIndex = 13;
@@ -72,7 +72,7 @@ namespace Tibialyzer
             this.cityLabel.BackColor = System.Drawing.Color.Transparent;
             this.cityLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cityLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.cityLabel.Location = new System.Drawing.Point(7, 48);
+            this.cityLabel.Location = new System.Drawing.Point(7, 58);
             this.cityLabel.Name = "cityLabel";
             this.cityLabel.Size = new System.Drawing.Size(34, 16);
             this.cityLabel.TabIndex = 12;
@@ -84,7 +84,7 @@ namespace Tibialyzer
             this.levelLabel.BackColor = System.Drawing.Color.Transparent;
             this.levelLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.levelLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.levelLabel.Location = new System.Drawing.Point(111, 48);
+            this.levelLabel.Location = new System.Drawing.Point(111, 58);
             this.levelLabel.Name = "levelLabel";
             this.levelLabel.Size = new System.Drawing.Size(54, 16);
             this.levelLabel.TabIndex = 11;
@@ -93,7 +93,7 @@ namespace Tibialyzer
             // 
             // lootStarBox
             // 
-            this.lootStarBox.Location = new System.Drawing.Point(100, 86);
+            this.lootStarBox.Location = new System.Drawing.Point(100, 96);
             this.lootStarBox.Name = "lootStarBox";
             this.lootStarBox.Size = new System.Drawing.Size(61, 20);
             this.lootStarBox.TabIndex = 10;
@@ -101,7 +101,7 @@ namespace Tibialyzer
             // 
             // experienceStarBox
             // 
-            this.experienceStarBox.Location = new System.Drawing.Point(8, 86);
+            this.experienceStarBox.Location = new System.Drawing.Point(8, 96);
             this.experienceStarBox.Name = "experienceStarBox";
             this.experienceStarBox.Size = new System.Drawing.Size(61, 20);
             this.experienceStarBox.TabIndex = 9;
@@ -113,7 +113,7 @@ namespace Tibialyzer
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.label1.Location = new System.Drawing.Point(111, 69);
+            this.label1.Location = new System.Drawing.Point(111, 79);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(38, 16);
             this.label1.TabIndex = 8;
@@ -125,7 +125,7 @@ namespace Tibialyzer
             this.experienceLabel.BackColor = System.Drawing.Color.Transparent;
             this.experienceLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.experienceLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.experienceLabel.Location = new System.Drawing.Point(23, 67);
+            this.experienceLabel.Location = new System.Drawing.Point(23, 77);
             this.experienceLabel.Name = "experienceLabel";
             this.experienceLabel.Size = new System.Drawing.Size(34, 16);
             this.experienceLabel.TabIndex = 7;
@@ -162,7 +162,7 @@ namespace Tibialyzer
             // 
             this.huntingPlaceName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.huntingPlaceName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.huntingPlaceName.Location = new System.Drawing.Point(6, 14);
+            this.huntingPlaceName.Location = new System.Drawing.Point(6, 24);
             this.huntingPlaceName.Name = "huntingPlaceName";
             this.huntingPlaceName.Size = new System.Drawing.Size(158, 34);
             this.huntingPlaceName.TabIndex = 3;
@@ -363,6 +363,7 @@ namespace Tibialyzer
             this.mapDownLevel.Image = MainForm.mapdown_image;
             this.mapDownLevel.Click -= c_Click;
             this.mapDownLevel.Click += mapDownLevel_Click;
+            base.NotificationFinalize();
             this.ResumeLayout(false);
         }
 
