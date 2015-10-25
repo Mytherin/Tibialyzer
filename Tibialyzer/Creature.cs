@@ -41,6 +41,34 @@ namespace Tibialyzer
         }
     }
 
+    public class Directions
+    {
+        public int huntingplaceid;
+        public float x;
+        public float y;
+        public int z;
+        public int ordering;
+        public string name;
+        public string notes;
+    }
+
+    public class Requirements
+    {
+        public int huntingplaceid;
+        public int questid;
+        public string notes;
+    }
+
+    public class Quest
+    {
+        public int id;
+        public string name;
+        public int minlevel;
+        public bool premium;
+        public string city;
+        public string url;
+    }
+
     public class HuntingPlace : TibiaObject, IDisposable
     {
         public int id;
@@ -52,6 +80,8 @@ namespace Tibialyzer
         public Image image;
         public List<Creature> creatures;
         public List<Coordinate> coordinates;
+        public List<Directions> directions;
+        public List<Requirements> requirements;
 
         public override string GetName() { return name; }
         public override Image GetImage() { return image; }
@@ -60,6 +90,8 @@ namespace Tibialyzer
         {
             this.creatures = new List<Creature>();
             this.coordinates = new List<Coordinate>();
+            this.directions = new List<Directions>();
+            this.requirements = new List<Requirements>();
             this.image = null;
         }
 

@@ -49,6 +49,7 @@ namespace Tibialyzer
         public bool copy_advances = true;
         public bool debug_mode = false;
         public int notification_value = 2000;
+        static List<string> cities = new List<string>() { "ab'dendriel", "carlin", "kazordoon", "venore", "thais", "ankrahmun", "farmine", "gray beach", "liberty bay", "port hope", "rathleton", "roshamuul", "yalahar", "svargrond", "edron", "darashia", "rookgaard", "dawnport", "gray beach" };
         public List<string> notification_items = new List<string>();
         private static List<string> extensions = new List<string>();
 
@@ -83,7 +84,7 @@ namespace Tibialyzer
             }
             NotificationForm.Initialize();
             CreatureStatsForm.InitializeCreatureStats();
-            CreatureHuntForm.Initialize();
+            HuntListForm.Initialize();
             BackgroundWorker bw = new BackgroundWorker();
             bw.DoWork += bw_DoWork;
             bw.RunWorkerAsync();
@@ -97,6 +98,11 @@ namespace Tibialyzer
             {
                 ReadMem(pyScope);
             }
+        }
+
+        public static string ToTitle(string str)
+        {
+            return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(str);
         }
 
         public static void ExecuteFile(string filename, ScriptScope pyScope)
@@ -506,7 +512,7 @@ namespace Tibialyzer
 
         private HuntingPlace GetHuntingPlace(int id, ScriptScope pyScope)
         {
-            CompileSourceAndExecute("c.execute('SELECT id, name, level, exprating, lootrating, image FROM HuntingPlaces WHERE id=?', [" + id + "])", pyScope);
+            CompileSourceAndExecute("c.execute('SELECT id, name, level, exprating, lootrating, image, city FROM HuntingPlaces WHERE id=?', [" + id + "])", pyScope);
             CompileSourceAndExecute("res = [list(x) for x in c.fetchall()]", pyScope);
             CompileSourceAndExecute("result = res[0] if len(res) > 0 else None", pyScope);
             IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
@@ -525,11 +531,28 @@ namespace Tibialyzer
             CompileSourceAndExecute("c.execute('SELECT id, name, health, experience, maxdamage, summon, illusionable, pushable, pushes, physical, holy, death, fire, energy, ice, earth, drown, lifedrain, paralysable, senseinvis, image FROM HuntingPlaceCreatures INNER JOIN Creatures ON HuntingPlaceCreatures.creatureid=Creatures.id WHERE HuntingPlaceCreatures.huntingplaceid=?', [" + id + "])", pyScope);
             CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
             result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-
             foreach (object obj in result)
             {
                 Creature c = CreatureFromList(obj as IronPython.Runtime.List);
                 if (c != null) h.creatures.Add(c);
+            }
+
+            CompileSourceAndExecute("c.execute('SELECT huntingplaceid, x, y, z, ordering, name, notes FROM HuntingPlaceDirections WHERE huntingplaceid=? ORDER BY ordering', [" + id + "])", pyScope);
+            CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
+            result = pyScope.GetVariable("result") as IronPython.Runtime.List;
+            foreach (object obj in result)
+            {
+                Directions c = DirectionsFromList(obj as IronPython.Runtime.List);
+                if (c != null) h.directions.Add(c);
+            }
+
+            CompileSourceAndExecute("c.execute('SELECT huntingplaceid, questid, notes FROM HuntingPlaceRequirements WHERE huntingplaceid=?', [" + id + "])", pyScope);
+            CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
+            result = pyScope.GetVariable("result") as IronPython.Runtime.List;
+            foreach (object obj in result)
+            {
+                Requirements c = RequirementsFromList(obj as IronPython.Runtime.List);
+                if (c != null) h.requirements.Add(c);
             }
             return h;
         }
@@ -544,6 +567,30 @@ namespace Tibialyzer
             return c;
         }
 
+        private Directions DirectionsFromList(IronPython.Runtime.List itemList)
+        {
+            if (itemList == null) return null;
+            Directions c = new Directions();
+            c.huntingplaceid = GetInteger(itemList, 0);
+            c.x = GetFloat(itemList, 1);
+            c.y = GetFloat(itemList, 2);
+            c.z = GetInteger(itemList, 3);
+            c.ordering = GetInteger(itemList, 4);
+            c.name = itemList[5] != null ? itemList[5].ToString() : "Unknown";
+            c.notes = itemList[6] != null ? itemList[6].ToString() : "Unknown";
+            return c;
+        }
+
+        private Requirements RequirementsFromList(IronPython.Runtime.List itemList)
+        {
+            if (itemList == null) return null;
+            Requirements c = new Requirements();
+            c.huntingplaceid = GetInteger(itemList, 0);
+            c.questid = GetInteger(itemList, 1);
+            c.notes = itemList[2] != null ? itemList[2].ToString() : "Unknown";
+            return c;
+        }
+
         private HuntingPlace HuntingPlaceFromList(IronPython.Runtime.List itemList)
         {
             if (itemList == null) return null;
@@ -554,6 +601,7 @@ namespace Tibialyzer
             h.exp_quality = GetInteger(itemList, 3);
             h.loot_quality = GetInteger(itemList, 4);
             h.image = GetImage(itemList, 5);
+            h.city = itemList[6] != null ? itemList[6].ToString() : "Unknown";
             return h;
         }
 
@@ -735,11 +783,12 @@ namespace Tibialyzer
             });
         }
 
-        private void ShowCreatureHunts(Creature cr, List<HuntingPlace> h)
+        private void ShowHuntList(List<HuntingPlace> h, string header)
         {
-            CreatureHuntForm f = new CreatureHuntForm();
+            if (h != null) h = h.OrderBy(o => o.level).ToList();
+            HuntListForm f = new HuntListForm();
             f.hunting_places = h;
-            f.creature = cr;
+            f.header = header;
 
             this.Invoke((MethodInvoker)delegate
             {
@@ -956,24 +1005,72 @@ namespace Tibialyzer
                 }
                 else if (comp.StartsWith("hunt@"))
                 {
-                    Creature cr = GetCreature(c.Split('@')[1].Trim().ToLower(), pyScope);
-                    if (cr == null) continue;
-                    CompileSourceAndExecute("c.execute('SELECT HuntingPlaces.id FROM HuntingPlaceCreatures INNER JOIN HuntingPlaces ON HuntingPlaces.id=HuntingPlaceCreatures.huntingplaceid WHERE creatureid=?', [" + cr.id + "])", pyScope);
-                    CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
-                    List<HuntingPlace> hunting_places = new List<HuntingPlace>();
-                    IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-                    foreach(object obj in result)
+                    string parameter = c.Split('@')[1].Trim().ToLower();
+                    HuntingPlace h = null;
+                    if (cities.Contains(parameter))
                     {
-                        int id = GetInteger(obj as IronPython.Runtime.List, 0);
-                        HuntingPlace h = GetHuntingPlace(id, pyScope);
-                        if (h != null) hunting_places.Add(h);
+                        List<HuntingPlace> hunting_places = new List<HuntingPlace>();
+                        CompileSourceAndExecute("c.execute('SELECT id, name, level, exprating, lootrating, image, city FROM HuntingPlaces WHERE LOWER(city)=?', ['" + parameter.Replace("'", "\\'") + "'])", pyScope);
+                        CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
+                        IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
+                        foreach (object obj in result)
+                        {
+                            h = HuntingPlaceFromList(obj as IronPython.Runtime.List);
+                            if (h != null) hunting_places.Add(h);
+                        }
+                        ShowHuntList(hunting_places, "Hunts in " + parameter);
+                        continue;
                     }
-                    ShowCreatureHunts(cr, hunting_places);
-                }
-                else if (comp.StartsWith("huntingplace@"))
-                {
-                    HuntingPlace h = GetHuntingPlace(c.Split('@')[1].Trim().ToLower(), pyScope);
-                    if (h != null) ShowHuntingPlace(h);
+                    h = GetHuntingPlace(parameter, pyScope);
+                    if (h != null)
+                    {
+                        ShowHuntingPlace(h);
+                        continue;
+                    }
+                    Creature cr = GetCreature(c.Split('@')[1].Trim().ToLower(), pyScope);
+                    if (cr != null)
+                    {
+                        CompileSourceAndExecute("c.execute('SELECT HuntingPlaces.id FROM HuntingPlaceCreatures INNER JOIN HuntingPlaces ON HuntingPlaces.id=HuntingPlaceCreatures.huntingplaceid WHERE creatureid=?', [" + cr.id + "])", pyScope);
+                        CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
+                        List<HuntingPlace> hunting_places = new List<HuntingPlace>();
+                        IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
+                        foreach(object obj in result)
+                        {
+                            int id = GetInteger(obj as IronPython.Runtime.List, 0);
+                            h = GetHuntingPlace(id, pyScope);
+                            if (h != null) hunting_places.Add(h);
+                        }
+                        cr.Dispose();
+                        ShowHuntList(hunting_places, "Hunting Places of " + cr.name);
+                        continue;
+                    }
+                    int minlevel = -1, maxlevel = -1;
+                    int level;
+                    if (int.TryParse(parameter, out level))
+                    {
+                        minlevel = (int)(level * 0.8);
+                        maxlevel = (int)(level * 1.2);
+                    }
+                    else if (parameter.Contains('-'))
+                    {
+                        string[] split = parameter.Split('-');
+                        int.TryParse(split[0].Trim(), out minlevel);
+                        int.TryParse(split[1].Trim(), out maxlevel);
+                    }
+                    if (minlevel >= 0 && maxlevel >= 0)
+                    {
+                        List<HuntingPlace> hunting_places = new List<HuntingPlace>();
+                        CompileSourceAndExecute("c.execute('SELECT id, name, level, exprating, lootrating, image, city FROM HuntingPlaces WHERE level>=? AND level <=?', [" + minlevel.ToString() + ", " + maxlevel.ToString() + "])", pyScope);
+                        CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
+                        IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
+                        foreach (object obj in result)
+                        {
+                            h = HuntingPlaceFromList(obj as IronPython.Runtime.List);
+                            if (h != null) hunting_places.Add(h);
+                        }
+                        ShowHuntList(hunting_places, "Hunts between levels " + minlevel.ToString() + "-" + maxlevel.ToString());
+                        continue;
+                    }
                 }
                 else if (comp.StartsWith("npc@"))
                 {
@@ -1083,7 +1180,6 @@ namespace Tibialyzer
                         }
                         if (found_extension) continue;
                     }
-                    List<string> cities = new List<string>() { "ab'dendriel", "carlin", "kazordoon", "venore", "thais", "ankrahmun", "farmine", "gray beach", "liberty bay", "port hope", "rathleton", "roshamuul", "yalahar", "svargrond", "edron", "darashia", "rookgaard", "dawnport", "gray beach" };
                     bool found = false;
                     foreach (string city in cities)
                     {
@@ -1148,15 +1244,15 @@ namespace Tibialyzer
             }
         }
 
-        public static int DisplayCreatureList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, int max_x, int spacing, bool transparent, Func<TibiaObject, string> tooltip_function = null)
+        public static int DisplayCreatureList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, int max_x, int spacing, bool transparent, Func<TibiaObject, string> tooltip_function = null, float magnification = 1.0f)
         {
             int x = 0, y = 0;
             int width = 0, height = 0;
             foreach (TibiaObject cr in l)
             {
                 Image image = cr.GetImage();
-                if (image.Width > width) width = image.Width;
-                if (image.Height > height) height = image.Height;
+                if (image.Width * magnification > width) width = (int)(image.Width * magnification);
+                if (image.Height * magnification > height) height = (int)(image.Height * magnification);
             }
 
             // add a tooltip that displays the creature names
@@ -1170,7 +1266,7 @@ namespace Tibialyzer
             {
                 Image image = cr.GetImage();
                 string name = cr.GetName();
-                if (max_x < (x + base_x + image.Width + spacing))
+                if (max_x < (x + base_x + (int)(image.Width * magnification) + spacing))
                 {
                     x = 0;
                     y = y + spacing + height;
@@ -1179,11 +1275,22 @@ namespace Tibialyzer
                 if (transparent) image_box = new TransparentPictureBox();
                 else image_box = new PictureBox();
                 image_box.Image = image;
-                image_box.Size = new Size(image.Width, height);
+                image_box.Size = new Size((int)(image.Width * magnification), height);
                 image_box.Location = new Point(base_x + x, base_y + y);
                 image_box.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
                 image_box.Name = name;
                 controls.Add(image_box);
+                if (magnification != 1.0f)
+                {
+                    Bitmap bitmap = new Bitmap((int)(image.Width * magnification), (int)(image.Height * magnification));
+                    Graphics gr = Graphics.FromImage(bitmap);
+                    gr.DrawImage(image, new Rectangle(0, 0, bitmap.Width, bitmap.Height), new Rectangle(0, 0, image.Width, image.Height), GraphicsUnit.Pixel);
+                    image_box.Image = bitmap;
+                }
+                else
+                {
+                    image_box.Image = image;
+                }
                 if (tooltip_function == null)
                 {
                     value_tooltip.SetToolTip(image_box, System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(name));
@@ -1193,7 +1300,7 @@ namespace Tibialyzer
                     value_tooltip.SetToolTip(image_box, tooltip_function(cr));
                 }
 
-                x = x + image.Width + spacing;
+                x = x + (int)(image.Width * magnification) + spacing;
             }
             x = 0;
             y = y + height;

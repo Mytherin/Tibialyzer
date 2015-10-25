@@ -103,7 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Creature.cs" />
-    <Compile Include="CreatureHuntForm.cs">
+    <Compile Include="HuntListForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="CreatureList.cs">
@@ -162,8 +162,8 @@
     <Compile Include="TransparentPictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <EmbeddedResource Include="CreatureHuntForm.resx">
-      <DependentUpon>CreatureHuntForm.cs</DependentUpon>
+    <EmbeddedResource Include="HuntListForm.resx">
+      <DependentUpon>HuntListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CreatureList.resx">
       <DependentUpon>CreatureList.cs</DependentUpon>

@@ -193,7 +193,7 @@ namespace Tibialyzer
             this.NotificationInitialize();
             CultureInfo c = System.Threading.Thread.CurrentThread.CurrentCulture;
 
-            this.itemName.Text = c.TextInfo.ToTitleCase(item.name); ;
+            this.itemName.Text = c.TextInfo.ToTitleCase(item.name);
             this.itemCategory.Text = item.category;
             this.itemName.Location = new Point(this.itemPictureBox.Location.X + this.itemPictureBox.Width / 2 - this.itemName.Size.Width / 2, this.itemPictureBox.Location.Y + this.itemPictureBox.Height + 5);
             this.itemCategory.Location = new Point(this.itemPictureBox.Location.X + this.itemPictureBox.Width / 2 - this.itemCategory.Size.Width / 2, this.itemPictureBox.Location.Y - this.itemCategory.Height - 5);
