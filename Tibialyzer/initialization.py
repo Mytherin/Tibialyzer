@@ -101,7 +101,10 @@ def item_preprocess(item):
     if count > 1: 
         if item in plural_maps: 
             item = plural_maps[item]
-        else: print "Warning %s not in plural map" % item
+        elif item[-1] == 's':
+            item = item[:-1]
+        else:  
+            print "Warning %s not in plural map and item did not end with s" % item
     return (item, count)
 
 def reset_loot():
