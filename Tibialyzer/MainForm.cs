@@ -30,6 +30,8 @@ namespace Tibialyzer
         private Form tooltipForm = null;
         private static Image tibia_image = null;
         public static Image back_image = null;
+        public static Image prevpage_image = null;
+        public static Image nextpage_image = null;
         public static Image item_background = null;
         public static Image cross_image = null;
         public static Image star_image = null;
@@ -62,6 +64,8 @@ namespace Tibialyzer
             InitializeComponent();
             InitializePython();
             back_image = Image.FromFile(@"Images\back.png");
+            prevpage_image = Image.FromFile(@"Images\prevpage.png");
+            nextpage_image = Image.FromFile(@"Images\nextpage.png");
             cross_image = Image.FromFile(@"Images\cross.png");
             star_image = Image.FromFile(@"Images\star.png");
             tibia_image = Image.FromFile(@"Images\tibia.png");
