@@ -322,6 +322,7 @@
     <Content Include="initialization.py">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="IronPython\IronPython License.txt" />
     <Content Include="IronPython\IronPython.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
