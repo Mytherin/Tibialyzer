@@ -996,8 +996,9 @@ namespace Tibialyzer {
                     }
                 } else if (comp.StartsWith("recent@") || comp.StartsWith("url@")) {
                     bool url = comp.StartsWith("url@");
+                    string type = (url ? "urls" : "commands");
                     // Show all recent commands, we show either the last 15 commands, or all commands in the last 5 minutes
-                    CompileSourceAndExecute("recent_commands = get_recent_commands(type='" + (url ? "urls" : "commands") + "')", pyScope);
+                    CompileSourceAndExecute("recent_commands = get_recent_commands(type='" + type + "')", pyScope);
 
                     List<Command> command_list = new List<Command>();
                     IronPython.Runtime.List result = pyScope.GetVariable("recent_commands") as IronPython.Runtime.List;
@@ -1006,6 +1007,24 @@ namespace Tibialyzer {
                         comm.player = (obj as IronPython.Runtime.List)[0].ToString();
                         comm.command = (obj as IronPython.Runtime.List)[1].ToString();
                         command_list.Add(comm);
+                    }
+                    string parameter = c.Split('@')[1].Trim().ToLower();
+                    int number;
+                    if (int.TryParse(parameter, out number)) {
+                        if (number > 0 && number <= command_list.Count) {
+                            ListNotification.OpenCommand(command_list[number - 1].command, type);;
+                            continue;
+                        }
+                    } else {
+                        bool found = false;
+                        foreach (Command comm in command_list) {
+                            if (comm.player.ToLower() == parameter) {
+                                ListNotification.OpenCommand(command_list[number].command, type);
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (found) continue;
                     }
                     ShowListNotification(command_list, url ? "urls" : "commands", c);
                 } else if (comp.StartsWith("pickup@")) {

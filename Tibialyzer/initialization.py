@@ -30,20 +30,23 @@ def search_chunk(chunk, item_drops,exp,damage_dealt,commands,urls):
         min = int(log_message[3:5])
         if get_stamp(hour, min) not in latest:
            continue
-        if ':' in log_message[6:]:
+        print log_message
+        if ': ' in log_message[6:]:
             if len(log_message) > 14 and log_message[5:14] == ' Loot of ':
                 if log_message in seen_logs: continue
                 seen_logs = seen_logs.union(log_message)
                 if t not in item_drops: item_drops[t] = list()
                 list.append(item_drops[t], log_message)
             else:
-                msg_split = log_message[6:].split(':', 1)
+                msg_split = log_message[6:].split(': ', 1)
+                print msg_split
                 command = msg_split[1]
                 split_again = msg_split[0].split(' ')
                 player = ""
                 for sss in split_again: 
                     if '[' in sss: break
                     player = (player + " " if player != "" else "") + sss
+                if player == 'http' or player == 'https': continue
                 if '@' in command:
                     if t not in commands: commands[t] = list()
                     list.append(commands[t], [player, command])
