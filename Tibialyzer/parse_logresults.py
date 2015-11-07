@@ -39,6 +39,19 @@ for t in commands:
                 del total_commands[t][total_commands[t].index(command)]
         total_commands[t] = commands_list + unseen_commands
 
+for t in urls:
+    if t not in total_urls: total_urls[t] = list()
+    if len(urls[t]) > len(total_urls[t]):
+        unseen_urls = list()
+        url_list = total_urls[t][:]
+        for url in urls[t]:
+            if url not in total_urls[t]:
+                unseen_urls.append(url);
+            else: 
+                del total_urls[t][total_urls[t].index(url)]
+        total_urls[t] = url_list + unseen_urls
+
+
 
 new_items = list()
 for t in item_drops:

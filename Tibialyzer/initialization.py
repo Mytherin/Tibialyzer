@@ -12,6 +12,7 @@ total_item_drops = dict()
 total_experience_results = dict()
 total_damage_results = dict()
 total_commands = dict()
+total_urls = dict()
 new_items = list()
 new_commands = list()
 new_advances = list()
@@ -19,7 +20,7 @@ level_advances = list()
 seen_logs = set()
 
 start_location = 0
-def search_chunk(chunk, item_drops,exp,damage_dealt,commands):
+def search_chunk(chunk, item_drops,exp,damage_dealt,commands,urls):
     global seen_logs
     latest = [x.split(':') for x in get_latest_timestamps(5, ignore_stamp)]
     latest = [int(x[0]) * 60 + int(x[1]) for x in latest]
@@ -38,14 +39,17 @@ def search_chunk(chunk, item_drops,exp,damage_dealt,commands):
             else:
                 msg_split = log_message[6:].split(':', 1)
                 command = msg_split[1]
-                if '@' not in command: continue
                 split_again = msg_split[0].split(' ')
                 player = ""
                 for sss in split_again: 
                     if '[' in sss: break
                     player = (player + " " if player != "" else "") + sss
-                if t not in commands: commands[t] = list()
-                list.append(commands[t], [player, command])
+                if '@' in command:
+                    if t not in commands: commands[t] = list()
+                    list.append(commands[t], [player, command])
+                elif 'www' in command or 'http' in command or '.com' in command or '.net' in command or '.tv' in command:
+                    if t not in urls: urls[t] = list()
+                    list.append(urls[t], [player, command])
         elif len(log_message) > 17 and log_message[5:17] == ' You gained ':
             try:
                 e = int(log_message[17:].split(' ')[0])
@@ -405,17 +409,19 @@ def set_convert_ratio(ratio, stackable):
         else: c.execute('UPDATE Items SET convert_to_gold=0 WHERE id=?', [id])
     conn.commit();
 
-def get_recent_commands():
+def get_recent_commands(type="commands",max_entries=15):
+    if type == "commands": _array = total_commands
+    else: _array = total_urls
     stamp = get_latest_timestamps(5)
     recent_commands = []
     for s in stamp:
         list = []
-        if s not in total_commands: continue
-        list = total_commands[s][:]
+        if s not in _array: continue
+        list = _array[s][:]
         list.reverse();
         for entry in list:
             if 'recent' in entry[1]: continue
-            if len(recent_commands) >= 15: return recent_commands
+            if len(recent_commands) >= max_entries: return recent_commands
             recent_commands.append(entry)
     return recent_commands
 

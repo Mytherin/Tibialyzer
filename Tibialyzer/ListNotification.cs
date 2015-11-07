@@ -20,6 +20,7 @@ namespace Tibialyzer {
         private Label nameLabel;
         private Label commandLabel;
 
+        public string type;
         private List<Command> commands;
 
         public ListNotification(List<Command> commands) {
@@ -114,9 +115,17 @@ namespace Tibialyzer {
             this.ResumeForm();
         }
 
+        public static void OpenCommand(string command, string type) {
+            if (type == "commands") {
+                MainForm.mainForm.priority_command = command;
+            } else if (type == "urls") {
+                MainForm.OpenUrl(command);
+            }
+        }
+
         void panel_Click(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
-            MainForm.mainForm.priority_command = (sender as Control).Name;
+            OpenCommand((sender as Control).Name, type);
         }
     }
 }

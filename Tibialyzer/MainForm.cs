@@ -242,7 +242,8 @@ namespace Tibialyzer {
                             "exp = dict()\n" +
                             "damage_dealt = dict()\n" +
                             "commands = dict()\n" +
-                            "seen_logs = set()\n", pyScope);
+                            "seen_logs = set()\n" + 
+                            "urls = dict()", pyScope);
 
             SYSTEM_INFO sys_info = new SYSTEM_INFO();
             GetSystemInfo(out sys_info);
@@ -277,7 +278,7 @@ namespace Tibialyzer {
                     List<string> strings = FindTimestamps(buffer);
                     if (strings.Count > 0) {
                         pyScope.SetVariable("chunk", strings);
-                        CompileSourceAndExecute("search_chunk(chunk, item_drops, exp, damage_dealt, commands)", pyScope);
+                        CompileSourceAndExecute("search_chunk(chunk, item_drops, exp, damage_dealt, commands, urls)", pyScope);
                     }
                 }
 
@@ -771,14 +772,14 @@ namespace Tibialyzer {
             ShowItemView(i, buy_npcs, sell_npcs, null, comm);
         }
 
-        private void ShowListNotification(List<Command> commands, string comm) {
+        private void ShowListNotification(List<Command> commands, string type, string comm) {
             ListNotification f = new ListNotification(commands);
+            f.type = type;
 
             this.Invoke((MethodInvoker)delegate {
                 ShowNotification(f, comm);
             });
         }
-
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e) {
             notifyIcon1.Visible = false;
@@ -993,9 +994,10 @@ namespace Tibialyzer {
                     if (double.TryParse(split[1], out val)) {
                         CompileSourceAndExecute("set_convert_ratio(" + val.ToString() + ", " + stackable.ToString() + ")", pyScope);
                     }
-                } else if (comp.StartsWith("recent@")) {
+                } else if (comp.StartsWith("recent@") || comp.StartsWith("url@")) {
+                    bool url = comp.StartsWith("url@");
                     // Show all recent commands, we show either the last 15 commands, or all commands in the last 5 minutes
-                    CompileSourceAndExecute("recent_commands = get_recent_commands()", pyScope);
+                    CompileSourceAndExecute("recent_commands = get_recent_commands(type='" + (url ? "urls" : "commands") + "')", pyScope);
 
                     List<Command> command_list = new List<Command>();
                     IronPython.Runtime.List result = pyScope.GetVariable("recent_commands") as IronPython.Runtime.List;
@@ -1005,8 +1007,7 @@ namespace Tibialyzer {
                         comm.command = (obj as IronPython.Runtime.List)[1].ToString();
                         command_list.Add(comm);
                     }
-
-                    ShowListNotification(command_list, c);
+                    ShowListNotification(command_list, url ? "urls" : "commands", c);
                 } else if (comp.StartsWith("pickup@")) {
                     CompileSourceAndExecute("c.execute('UPDATE Items SET discard=0 WHERE LOWER(name)=?', ['" + c.Split('@')[1].Trim().ToLower().Replace("'", "\\'") + "'])", pyScope);
                     CompileSourceAndExecute("conn.commit()", pyScope);
@@ -1306,6 +1307,21 @@ namespace Tibialyzer {
             if (double.TryParse(unstackableConvertTextBox.Text, out val)) {
                 priority_command = "setconvertgoldratio@0-" + unstackableConvertTextBox.Text;
             }
+        }
+
+        public static void OpenUrl(string str) {
+            str = str.Trim().Replace(" ", "%20");
+            if (!str.StartsWith("http://") && !str.StartsWith("https://")) {
+                str = "http://" + str;
+            }
+            System.Diagnostics.ProcessStartInfo procStartInfo = new System.Diagnostics.ProcessStartInfo("cmd.exe", "/C start " + str + "");
+
+            procStartInfo.UseShellExecute = true;
+
+            // Do not create the black window.
+            procStartInfo.CreateNoWindow = true;
+            procStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            System.Diagnostics.Process.Start(procStartInfo);
         }
     }
 }
