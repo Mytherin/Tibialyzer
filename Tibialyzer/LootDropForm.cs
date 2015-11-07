@@ -169,6 +169,7 @@ namespace Tibialyzer
                     count.AutoSize = true;
                     count.TextAlign = ContentAlignment.MiddleCenter;
                     count.ForeColor = Color.FromArgb(191, 191, 191);
+                    count.BackColor = Color.Transparent;
 
                     int measured_size = (int)count.CreateGraphics().MeasureString(count.Text, count.Font).Width;
                     int width = Math.Max(measured_size, creature.image.Width);
@@ -181,6 +182,7 @@ namespace Tibialyzer
                     picture_box.Image = creature.image;
                     picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
                     picture_box.Click += openCreatureDrops;
+                    picture_box.BackColor = Color.Transparent;
                                         
                     if (width > creature.image.Width)
                     {

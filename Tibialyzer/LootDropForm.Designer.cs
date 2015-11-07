@@ -44,6 +44,7 @@
             // totalValueLabel
             // 
             this.totalValueLabel.AutoSize = true;
+            this.totalValueLabel.BackColor = System.Drawing.Color.Transparent;
             this.totalValueLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.totalValueLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.totalValueLabel.Location = new System.Drawing.Point(134, 9);

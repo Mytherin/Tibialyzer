@@ -1010,12 +1010,14 @@ namespace Tibialyzer {
                     }
                     string parameter = c.Split('@')[1].Trim().ToLower();
                     int number;
+                    //recent@<number> opens the last <number> command, so recent@1 opens the last command
                     if (int.TryParse(parameter, out number)) {
                         if (number > 0 && number <= command_list.Count) {
                             ListNotification.OpenCommand(command_list[number - 1].command, type);;
                             continue;
                         }
                     } else {
+                        //recent@<player> opens the last 
                         bool found = false;
                         foreach (Command comm in command_list) {
                             if (comm.player.ToLower() == parameter) {

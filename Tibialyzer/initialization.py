@@ -30,7 +30,6 @@ def search_chunk(chunk, item_drops,exp,damage_dealt,commands,urls):
         min = int(log_message[3:5])
         if get_stamp(hour, min) not in latest:
            continue
-        print log_message
         if ': ' in log_message[6:]:
             if len(log_message) > 14 and log_message[5:14] == ' Loot of ':
                 if log_message in seen_logs: continue
@@ -39,7 +38,6 @@ def search_chunk(chunk, item_drops,exp,damage_dealt,commands,urls):
                 list.append(item_drops[t], log_message)
             else:
                 msg_split = log_message[6:].split(': ', 1)
-                print msg_split
                 command = msg_split[1]
                 split_again = msg_split[0].split(' ')
                 player = ""
