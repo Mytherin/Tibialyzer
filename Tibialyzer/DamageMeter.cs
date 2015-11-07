@@ -147,6 +147,18 @@ namespace Tibialyzer {
                 this.damageChart.Series[0].Points.Add(point);
                 i++;
             }
+            Bitmap bitmap = new Bitmap(this.damageChart.Width, this.damageChart.Height);
+            this.damageChart.DrawToBitmap(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height));
+
+            PictureBox box = new PictureBox();
+            box.Location = new Point(damageChart.Location.X, damageChart.Location.Y);
+            box.Size = new Size(damageChart.Width, damageChart.Height);
+            box.Image = bitmap;
+            box.BackColor = Color.Transparent;
+            this.Controls.Remove(damageChart);
+            this.Controls.Add(box);
+            damageChart.Dispose();
+            RegisterForClose(box);
             if (screenshot_path == "")
                 base.NotificationFinalize();
             this.ResumeForm();

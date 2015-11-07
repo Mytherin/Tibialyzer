@@ -135,14 +135,12 @@ namespace Tibialyzer {
                 closeTimer.Close();
                 close();
             } else {
-                try {
+                if (this.IsHandleCreated && !this.IsDisposed) {
                     this.Invoke((MethodInvoker)delegate {
                         this.Opacity -= 0.03;
                     });
                     closeTimer.Interval = 20;
                     closeTimer.Start();
-                } catch {
-
                 }
 
             }
