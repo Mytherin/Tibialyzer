@@ -41,7 +41,6 @@
             this.exportLogButton = new System.Windows.Forms.Button();
             this.nameTextBox = new System.Windows.Forms.RichTextBox();
             this.namesLabel = new System.Windows.Forms.Label();
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.creatureTab = new System.Windows.Forms.TabPage();
             this.creaturePanel = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
@@ -51,6 +50,18 @@
             this.label2 = new System.Windows.Forms.Label();
             this.itemSearchBox = new System.Windows.Forms.TextBox();
             this.settingsTab = new System.Windows.Forms.TabPage();
+            this.label50 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.unstackableConvertApply = new System.Windows.Forms.Button();
+            this.unstackableConvertTextBox = new System.Windows.Forms.TextBox();
+            this.label54 = new System.Windows.Forms.Label();
+            this.stackableConvertApply = new System.Windows.Forms.Button();
+            this.stackableConvertTextBox = new System.Windows.Forms.TextBox();
+            this.label53 = new System.Windows.Forms.Label();
+            this.applyRatioButton = new System.Windows.Forms.Button();
+            this.goldRatioTextBox = new System.Windows.Forms.TextBox();
+            this.label52 = new System.Windows.Forms.Label();
+            this.label51 = new System.Windows.Forms.Label();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.enableRichNotificationsCheckbox = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -113,28 +124,16 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.explainLabel = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.label50 = new System.Windows.Forms.Label();
-            this.label51 = new System.Windows.Forms.Label();
-            this.label52 = new System.Windows.Forms.Label();
-            this.goldRatioTextBox = new System.Windows.Forms.TextBox();
-            this.applyRatioButton = new System.Windows.Forms.Button();
-            this.label53 = new System.Windows.Forms.Label();
-            this.stackableConvertApply = new System.Windows.Forms.Button();
-            this.stackableConvertTextBox = new System.Windows.Forms.TextBox();
-            this.unstackableConvertApply = new System.Windows.Forms.Button();
-            this.unstackableConvertTextBox = new System.Windows.Forms.TextBox();
-            this.label54 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             this.creatureTab.SuspendLayout();
             this.itemTab.SuspendLayout();
             this.settingsTab.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.richNotificationsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.commandListTab.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // notifyIcon1
@@ -169,7 +168,6 @@
             this.mainTab.Controls.Add(this.exportLogButton);
             this.mainTab.Controls.Add(this.nameTextBox);
             this.mainTab.Controls.Add(this.namesLabel);
-            this.mainTab.Controls.Add(this.webBrowser1);
             this.mainTab.Location = new System.Drawing.Point(4, 22);
             this.mainTab.Name = "mainTab";
             this.mainTab.Padding = new System.Windows.Forms.Padding(3);
@@ -177,7 +175,6 @@
             this.mainTab.TabIndex = 0;
             this.mainTab.Text = "Main";
             this.mainTab.UseVisualStyleBackColor = true;
-            this.mainTab.Click += new System.EventHandler(this.mainTab_Click);
             this.mainTab.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
             // 
             // label49
@@ -260,15 +257,6 @@
             this.namesLabel.TabIndex = 1;
             this.namesLabel.Text = "Character Names To Accept Commands From";
             // 
-            // webBrowser1
-            // 
-            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser1.Location = new System.Drawing.Point(3, 3);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(636, 493);
-            this.webBrowser1.TabIndex = 0;
-            // 
             // creatureTab
             // 
             this.creatureTab.Controls.Add(this.creaturePanel);
@@ -291,6 +279,7 @@
             this.creaturePanel.Name = "creaturePanel";
             this.creaturePanel.Size = new System.Drawing.Size(636, 458);
             this.creaturePanel.TabIndex = 2;
+            this.creaturePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
             // 
             // label1
             // 
@@ -330,6 +319,7 @@
             this.itemPanel.Name = "itemPanel";
             this.itemPanel.Size = new System.Drawing.Size(642, 461);
             this.itemPanel.TabIndex = 5;
+            this.itemPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
             // 
             // label2
             // 
@@ -366,6 +356,122 @@
             this.settingsTab.Text = "Settings";
             this.settingsTab.UseVisualStyleBackColor = true;
             this.settingsTab.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
+            // 
+            // label50
+            // 
+            this.label50.AutoSize = true;
+            this.label50.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label50.Location = new System.Drawing.Point(20, 241);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(89, 15);
+            this.label50.TabIndex = 10;
+            this.label50.Text = "Modify Database";
+            // 
+            // panel2
+            // 
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel2.Controls.Add(this.unstackableConvertApply);
+            this.panel2.Controls.Add(this.unstackableConvertTextBox);
+            this.panel2.Controls.Add(this.label54);
+            this.panel2.Controls.Add(this.stackableConvertApply);
+            this.panel2.Controls.Add(this.stackableConvertTextBox);
+            this.panel2.Controls.Add(this.label53);
+            this.panel2.Controls.Add(this.applyRatioButton);
+            this.panel2.Controls.Add(this.goldRatioTextBox);
+            this.panel2.Controls.Add(this.label52);
+            this.panel2.Controls.Add(this.label51);
+            this.panel2.Location = new System.Drawing.Point(20, 249);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(319, 239);
+            this.panel2.TabIndex = 9;
+            // 
+            // unstackableConvertApply
+            // 
+            this.unstackableConvertApply.Location = new System.Drawing.Point(263, 110);
+            this.unstackableConvertApply.Name = "unstackableConvertApply";
+            this.unstackableConvertApply.Size = new System.Drawing.Size(49, 23);
+            this.unstackableConvertApply.TabIndex = 9;
+            this.unstackableConvertApply.Text = "Apply";
+            this.unstackableConvertApply.UseVisualStyleBackColor = true;
+            this.unstackableConvertApply.Click += new System.EventHandler(this.unstackableConvertApply_Click);
+            // 
+            // unstackableConvertTextBox
+            // 
+            this.unstackableConvertTextBox.Location = new System.Drawing.Point(171, 110);
+            this.unstackableConvertTextBox.Name = "unstackableConvertTextBox";
+            this.unstackableConvertTextBox.Size = new System.Drawing.Size(86, 20);
+            this.unstackableConvertTextBox.TabIndex = 8;
+            // 
+            // label54
+            // 
+            this.label54.AutoSize = true;
+            this.label54.Location = new System.Drawing.Point(178, 94);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(141, 13);
+            this.label54.TabIndex = 7;
+            this.label54.Text = "Convert unstackable items...";
+            // 
+            // stackableConvertApply
+            // 
+            this.stackableConvertApply.Location = new System.Drawing.Point(263, 67);
+            this.stackableConvertApply.Name = "stackableConvertApply";
+            this.stackableConvertApply.Size = new System.Drawing.Size(49, 23);
+            this.stackableConvertApply.TabIndex = 6;
+            this.stackableConvertApply.Text = "Apply";
+            this.stackableConvertApply.UseVisualStyleBackColor = true;
+            this.stackableConvertApply.Click += new System.EventHandler(this.stackableConvertApply_Click);
+            // 
+            // stackableConvertTextBox
+            // 
+            this.stackableConvertTextBox.Location = new System.Drawing.Point(171, 67);
+            this.stackableConvertTextBox.Name = "stackableConvertTextBox";
+            this.stackableConvertTextBox.Size = new System.Drawing.Size(86, 20);
+            this.stackableConvertTextBox.TabIndex = 5;
+            // 
+            // label53
+            // 
+            this.label53.AutoSize = true;
+            this.label53.Location = new System.Drawing.Point(188, 51);
+            this.label53.Name = "label53";
+            this.label53.Size = new System.Drawing.Size(129, 13);
+            this.label53.TabIndex = 4;
+            this.label53.Text = "Convert stackable items...";
+            // 
+            // applyRatioButton
+            // 
+            this.applyRatioButton.Location = new System.Drawing.Point(267, 25);
+            this.applyRatioButton.Name = "applyRatioButton";
+            this.applyRatioButton.Size = new System.Drawing.Size(49, 23);
+            this.applyRatioButton.TabIndex = 3;
+            this.applyRatioButton.Text = "Apply";
+            this.applyRatioButton.UseVisualStyleBackColor = true;
+            this.applyRatioButton.Click += new System.EventHandler(this.applyRatioButton_Click);
+            // 
+            // goldRatioTextBox
+            // 
+            this.goldRatioTextBox.Location = new System.Drawing.Point(175, 25);
+            this.goldRatioTextBox.Name = "goldRatioTextBox";
+            this.goldRatioTextBox.Size = new System.Drawing.Size(86, 20);
+            this.goldRatioTextBox.TabIndex = 2;
+            // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(104, 9);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(208, 13);
+            this.label52.TabIndex = 1;
+            this.label52.Text = "Discard items with a gold ratio lower than...";
+            // 
+            // label51
+            // 
+            this.label51.AutoSize = true;
+            this.label51.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label51.Location = new System.Drawing.Point(3, 95);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(154, 140);
+            this.label51.TabIndex = 0;
+            this.label51.Text = resources.GetString("label51.Text");
             // 
             // checkBox3
             // 
@@ -1027,122 +1133,6 @@
             this.explainLabel.TabIndex = 0;
             this.explainLabel.Text = "creature@<name>";
             // 
-            // panel2
-            // 
-            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel2.Controls.Add(this.unstackableConvertApply);
-            this.panel2.Controls.Add(this.unstackableConvertTextBox);
-            this.panel2.Controls.Add(this.label54);
-            this.panel2.Controls.Add(this.stackableConvertApply);
-            this.panel2.Controls.Add(this.stackableConvertTextBox);
-            this.panel2.Controls.Add(this.label53);
-            this.panel2.Controls.Add(this.applyRatioButton);
-            this.panel2.Controls.Add(this.goldRatioTextBox);
-            this.panel2.Controls.Add(this.label52);
-            this.panel2.Controls.Add(this.label51);
-            this.panel2.Location = new System.Drawing.Point(20, 249);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(319, 239);
-            this.panel2.TabIndex = 9;
-            // 
-            // label50
-            // 
-            this.label50.AutoSize = true;
-            this.label50.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label50.Location = new System.Drawing.Point(20, 241);
-            this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(89, 15);
-            this.label50.TabIndex = 10;
-            this.label50.Text = "Modify Database";
-            // 
-            // label51
-            // 
-            this.label51.AutoSize = true;
-            this.label51.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label51.Location = new System.Drawing.Point(3, 95);
-            this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(154, 140);
-            this.label51.TabIndex = 0;
-            this.label51.Text = resources.GetString("label51.Text");
-            // 
-            // label52
-            // 
-            this.label52.AutoSize = true;
-            this.label52.Location = new System.Drawing.Point(104, 9);
-            this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(208, 13);
-            this.label52.TabIndex = 1;
-            this.label52.Text = "Discard items with a gold ratio lower than...";
-            // 
-            // goldRatioTextBox
-            // 
-            this.goldRatioTextBox.Location = new System.Drawing.Point(175, 25);
-            this.goldRatioTextBox.Name = "goldRatioTextBox";
-            this.goldRatioTextBox.Size = new System.Drawing.Size(86, 20);
-            this.goldRatioTextBox.TabIndex = 2;
-            // 
-            // applyRatioButton
-            // 
-            this.applyRatioButton.Location = new System.Drawing.Point(267, 25);
-            this.applyRatioButton.Name = "applyRatioButton";
-            this.applyRatioButton.Size = new System.Drawing.Size(49, 23);
-            this.applyRatioButton.TabIndex = 3;
-            this.applyRatioButton.Text = "Apply";
-            this.applyRatioButton.UseVisualStyleBackColor = true;
-            this.applyRatioButton.Click += new System.EventHandler(this.applyRatioButton_Click);
-            // 
-            // label53
-            // 
-            this.label53.AutoSize = true;
-            this.label53.Location = new System.Drawing.Point(188, 51);
-            this.label53.Name = "label53";
-            this.label53.Size = new System.Drawing.Size(129, 13);
-            this.label53.TabIndex = 4;
-            this.label53.Text = "Convert stackable items...";
-            // 
-            // stackableConvertApply
-            // 
-            this.stackableConvertApply.Location = new System.Drawing.Point(263, 67);
-            this.stackableConvertApply.Name = "stackableConvertApply";
-            this.stackableConvertApply.Size = new System.Drawing.Size(49, 23);
-            this.stackableConvertApply.TabIndex = 6;
-            this.stackableConvertApply.Text = "Apply";
-            this.stackableConvertApply.UseVisualStyleBackColor = true;
-            this.stackableConvertApply.Click += new System.EventHandler(this.stackableConvertApply_Click);
-            // 
-            // stackableConvertTextBox
-            // 
-            this.stackableConvertTextBox.Location = new System.Drawing.Point(171, 67);
-            this.stackableConvertTextBox.Name = "stackableConvertTextBox";
-            this.stackableConvertTextBox.Size = new System.Drawing.Size(86, 20);
-            this.stackableConvertTextBox.TabIndex = 5;
-            // 
-            // unstackableConvertApply
-            // 
-            this.unstackableConvertApply.Location = new System.Drawing.Point(263, 110);
-            this.unstackableConvertApply.Name = "unstackableConvertApply";
-            this.unstackableConvertApply.Size = new System.Drawing.Size(49, 23);
-            this.unstackableConvertApply.TabIndex = 9;
-            this.unstackableConvertApply.Text = "Apply";
-            this.unstackableConvertApply.UseVisualStyleBackColor = true;
-            this.unstackableConvertApply.Click += new System.EventHandler(this.unstackableConvertApply_Click);
-            // 
-            // unstackableConvertTextBox
-            // 
-            this.unstackableConvertTextBox.Location = new System.Drawing.Point(171, 110);
-            this.unstackableConvertTextBox.Name = "unstackableConvertTextBox";
-            this.unstackableConvertTextBox.Size = new System.Drawing.Size(86, 20);
-            this.unstackableConvertTextBox.TabIndex = 8;
-            // 
-            // label54
-            // 
-            this.label54.AutoSize = true;
-            this.label54.Location = new System.Drawing.Point(178, 94);
-            this.label54.Name = "label54";
-            this.label54.Size = new System.Drawing.Size(141, 13);
-            this.label54.TabIndex = 7;
-            this.label54.Text = "Convert unstackable items...";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1163,6 +1153,8 @@
             this.itemTab.PerformLayout();
             this.settingsTab.ResumeLayout(false);
             this.settingsTab.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.richNotificationsPanel.ResumeLayout(false);
@@ -1170,8 +1162,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.commandListTab.ResumeLayout(false);
             this.commandListTab.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1187,7 +1177,6 @@
         private System.Windows.Forms.Panel creaturePanel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox creatureSearch;
-        private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.Panel itemPanel;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox itemSearchBox;

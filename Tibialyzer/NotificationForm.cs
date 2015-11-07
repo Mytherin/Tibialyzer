@@ -145,7 +145,7 @@ namespace Tibialyzer
             }
         }
 
-        public void Resize()
+        public new void Resize()
         {
             Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 40, 40));
         }

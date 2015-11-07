@@ -94,9 +94,24 @@ namespace Tibialyzer
             CreatureStatsForm.InitializeCreatureStats();
             HuntListForm.Initialize();
             BackgroundWorker bw = new BackgroundWorker();
+            makeDraggable(this.Controls);
             bw.DoWork += bw_DoWork;
             bw.RunWorkerAsync();
 
+        }
+
+        void makeDraggable(Control.ControlCollection controls)
+        {
+            foreach (Control c in controls)
+            {
+                if (c is Label || c is Panel) {
+                    c.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
+                }
+                if (c is Panel || c is TabPage || c is TabControl)
+                {
+                    makeDraggable(c.Controls);
+                }
+            }
         }
 
         void bw_DoWork(object sender, DoWorkEventArgs e)
@@ -1246,7 +1261,6 @@ namespace Tibialyzer
                     }
                 }
             }
-            int a = 5;
         }
 
         public const int WM_NCLBUTTONDOWN = 0xA1;
@@ -1485,11 +1499,6 @@ namespace Tibialyzer
             {
                 priority_command = "damage@screenshot@" + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/");
             }
-        }
-
-        private void mainTab_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void applyRatioButton_Click(object sender, EventArgs e)
