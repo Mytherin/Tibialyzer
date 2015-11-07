@@ -7,20 +7,16 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
 
-namespace Tibialyzer
-{
-    class CreatureList : NotificationForm
-    {
+namespace Tibialyzer {
+    class CreatureList : NotificationForm {
         public List<Creature> creatures;
 
-        public CreatureList()
-        {
+        public CreatureList() {
             creatures = null;
             InitializeComponent();
         }
 
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
             this.SuspendLayout();
             // 
             // CreatureList
@@ -33,13 +29,10 @@ namespace Tibialyzer
 
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
+        protected override void Dispose(bool disposing) {
+            if (disposing) {
                 base.Cleanup();
-                if (creatures != null)
-                {
+                if (creatures != null) {
                     foreach (Creature creature in creatures)
                         creature.Dispose();
                 }
@@ -47,24 +40,22 @@ namespace Tibialyzer
             base.Dispose(disposing);
         }
 
-        private void CreatureList_Load(object sender, EventArgs e)
-        {
+        private void CreatureList_Load(object sender, EventArgs e) {
             this.SuspendForm();
             int y = MainForm.DisplayCreatureList(this.Controls, (creatures as IEnumerable<TibiaObject>).ToList(), 10, 10, 344, 4, true);
 
             this.Size = new Size(this.Size.Width, this.Size.Height + y);
-            
-             foreach (Control control in this.Controls)
-                        if (control is TransparentPictureBox)
-                            control.Click += openItemBox;
+
+            foreach (Control control in this.Controls)
+                if (control is TransparentPictureBox)
+                    control.Click += openItemBox;
             this.NotificationInitialize();
             this.NotificationFinalize();
             this.ResumeForm();
         }
 
         private bool clicked = false;
-        void openItemBox(object sender, EventArgs e)
-        {
+        void openItemBox(object sender, EventArgs e) {
             if (clicked) return;
             clicked = true;
             this.ReturnFocusToTibia();

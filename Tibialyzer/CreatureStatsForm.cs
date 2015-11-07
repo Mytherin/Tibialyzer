@@ -10,12 +10,9 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Drawing.Drawing2D;
 
-namespace Tibialyzer
-{
-    public partial class CreatureStatsForm : NotificationForm
-    {
-        struct Resistance
-        {
+namespace Tibialyzer {
+    public partial class CreatureStatsForm : NotificationForm {
+        struct Resistance {
             public string name;
             public int resistance;
             public Resistance(string name, int resistance) {
@@ -28,8 +25,7 @@ namespace Tibialyzer
         private static Dictionary<string, Image> resistance_images = new Dictionary<string, Image>();
         private PictureBox[] resistance_controls = new PictureBox[7];
         public Creature creature;
-        public CreatureStatsForm()
-        {
+        public CreatureStatsForm() {
             InitializeComponent();
             // add colors for every resistance
 
@@ -42,8 +38,7 @@ namespace Tibialyzer
             resistance_controls[6] = resistanceLabel7;
         }
 
-        public static void InitializeCreatureStats()
-        {
+        public static void InitializeCreatureStats() {
             resistance_colors.Add("Ice", Color.DodgerBlue);
             resistance_colors.Add("Fire", Color.Firebrick);
             resistance_colors.Add("Holy", Color.DarkOrange);
@@ -52,13 +47,12 @@ namespace Tibialyzer
             resistance_colors.Add("Death", Color.FromArgb(32, 32, 32));
             resistance_colors.Add("Energy", Color.MidnightBlue);
             //and images
-            foreach(string str in resistance_colors.Keys) {
+            foreach (string str in resistance_colors.Keys) {
                 resistance_images.Add(str, System.Drawing.Image.FromFile(@"Images/" + str.ToLower() + ".png"));
             }
         }
 
-        private void AddResistances(List<Resistance> resistances)
-        {
+        private void AddResistances(List<Resistance> resistances) {
             List<Resistance> sorted_list = resistances.OrderByDescending(o => o.resistance).ToList();
             int i = 0;
             foreach (Resistance resistance in sorted_list) {
@@ -73,8 +67,7 @@ namespace Tibialyzer
 
                 Bitmap bitmap = new Bitmap(19 + resistance.resistance, 19);
                 Graphics gr = Graphics.FromImage(bitmap);
-                using (Brush brush = new SolidBrush(resistance_colors[resistance.name]))
-                {
+                using (Brush brush = new SolidBrush(resistance_colors[resistance.name])) {
                     gr.FillRectangle(brush, new Rectangle(19, 0, bitmap.Width - 19, bitmap.Height));
                 }
                 gr.DrawImage(resistance_images[resistance.name], new Point(2, 2));
@@ -86,8 +79,7 @@ namespace Tibialyzer
         }
 
 
-        private void CreatureStatsForm_Load(object sender, EventArgs e)
-        {
+        private void CreatureStatsForm_Load(object sender, EventArgs e) {
             this.SuspendForm();
             int horizontal, left, right;
             int health = creature.health;
@@ -125,12 +117,11 @@ namespace Tibialyzer
             }
             this.nameLabel.Text = this.creature.name;
             Font f = this.nameLabel.Font;
-            while (TextRenderer.MeasureText(this.creature.name, f).Width < this.mainImage.Size.Width && TextRenderer.MeasureText(this.creature.name, f).Height < 26)            {
+            while (TextRenderer.MeasureText(this.creature.name, f).Width < this.mainImage.Size.Width && TextRenderer.MeasureText(this.creature.name, f).Height < 26) {
                 f.Dispose();
                 f = new Font(f.FontFamily, f.Size + 1.0f);
             }
-            while (TextRenderer.MeasureText(this.creature.name, f).Width > this.mainImage.Size.Width && f.Size > 1)
-            {
+            while (TextRenderer.MeasureText(this.creature.name, f).Width > this.mainImage.Size.Width && f.Size > 1) {
                 f.Dispose();
                 f = new Font(f.FontFamily, f.Size - 1.0f);
             }

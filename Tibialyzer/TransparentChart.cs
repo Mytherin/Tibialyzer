@@ -7,21 +7,16 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Windows.Forms.DataVisualization.Charting;
 
-namespace Tibialyzer
-{
-    class TransparentChart : Chart
-    {
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
+namespace Tibialyzer {
+    class TransparentChart : Chart {
+        protected override void OnPaintBackground(PaintEventArgs e) {
             //base.OnPaintBackground(e);
             Graphics g = e.Graphics;
 
             Control p = Parent;
-            while (p != null)
-            {
+            while (p != null) {
                 // draw the background of the parent as background onto this 
-                if (p is NotificationForm)
-                {
+                if (p is NotificationForm) {
                     NotificationForm c = (NotificationForm)p;
                     Bitmap bmp = new Bitmap(c.Width, c.Height, g);
                     c.PaintBackground(Graphics.FromImage(bmp));
@@ -36,16 +31,13 @@ namespace Tibialyzer
             }
         }
 
-        protected override void OnClick(EventArgs e)
-        {
+        protected override void OnClick(EventArgs e) {
             base.OnClick(e);
 
             Control p = Parent;
-            while (p != null)
-            {
+            while (p != null) {
                 // draw the background of the parent as background onto this 
-                if (p is NotificationForm)
-                {
+                if (p is NotificationForm) {
                     NotificationForm c = (NotificationForm)p;
                     c.Controls.Remove(this);
                     break;

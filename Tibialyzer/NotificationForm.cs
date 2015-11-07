@@ -11,11 +11,9 @@ using System.Runtime.InteropServices;
 using System.Drawing.Drawing2D;
 using System.Diagnostics;
 
-namespace Tibialyzer
-{
+namespace Tibialyzer {
 
-    public class NotificationForm : Form
-    {
+    public class NotificationForm : Form {
         System.Timers.Timer closeTimer = null;
         static Bitmap background_image = null;
         protected TransparentPictureBox back_button;
@@ -36,49 +34,41 @@ namespace Tibialyzer
 
         private const int WM_SETREDRAW = 11;
 
-        public void SuspendDrawing()
-        {
+        public void SuspendDrawing() {
             SendMessage(this.Handle, WM_SETREDRAW, false, 0);
         }
 
-        public void ResumeDrawing()
-        {
+        public void ResumeDrawing() {
             SendMessage(this.Handle, WM_SETREDRAW, true, 0);
             this.Refresh();
         }
 
-        public void SuspendForm()
-        {
+        public void SuspendForm() {
             this.SuspendLayout();
             this.SuspendDrawing();
         }
 
-        public void ResumeForm()
-        {
+        public void ResumeForm() {
             this.ResumeLayout(false);
             this.ResumeDrawing();
         }
 
         Region fill_region = null;
-        protected void NotificationInitialize()
-        {
-            this.BackgroundImage = background_image; 
+        protected void NotificationInitialize() {
+            this.BackgroundImage = background_image;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             closeTimer = new System.Timers.Timer(1000 * MainForm.mainForm.notification_seconds);
             closeTimer.Elapsed += new System.Timers.ElapsedEventHandler(CloseNotification);
             closeTimer.Enabled = true;
 
-            foreach (Control c in this.Controls)
-            {
+            foreach (Control c in this.Controls) {
                 if (c is TextBox || c is CheckBox || c is System.Windows.Forms.DataVisualization.Charting.Chart) continue;
                 c.Click += c_Click;
             }
         }
 
-        protected void NotificationFinalize()
-        {
-            if (MainForm.mainForm.HasBack())
-            {
+        protected void NotificationFinalize() {
+            if (MainForm.mainForm.HasBack()) {
                 back_button = new TransparentPictureBox();
                 back_button.Location = new Point(5, 5);
                 back_button.Image = MainForm.back_image;
@@ -91,129 +81,101 @@ namespace Tibialyzer
             this.ReturnFocusToTibia();
         }
 
-        void back_button_Click(object sender, EventArgs e)
-        {
+        void back_button_Click(object sender, EventArgs e) {
             MainForm.mainForm.Back();
             this.ReturnFocusToTibia();
         }
 
-        public static void Initialize()
-        {
+        public static void Initialize() {
             background_image = new Bitmap(@"Images\background_image.png");
         }
 
-        protected void Cleanup()
-        {
+        protected void Cleanup() {
             if (closeTimer != null) closeTimer.Dispose();
         }
 
-        public void close()
-        {
-            try
-            {
-                this.Invoke((MethodInvoker)delegate
-                {
+        public void close() {
+            try {
+                this.Invoke((MethodInvoker)delegate {
                     this.Close();
                 });
-            }
-            catch
-            {
+            } catch {
 
             }
         }
 
-        protected void c_Click(object sender, EventArgs e)
-        {
+        protected void c_Click(object sender, EventArgs e) {
             close();
         }
 
-        protected override void OnClick(EventArgs e)
-        {
+        protected override void OnClick(EventArgs e) {
             base.OnClick(e);
             close();
         }
 
         [DllImport("user32.dll")]
         static extern bool SetForegroundWindow(IntPtr hWnd);
-        public void ReturnFocusToTibia()
-        {
+        public void ReturnFocusToTibia() {
             Process[] tibia_process = Process.GetProcessesByName("Tibia");
-            if (tibia_process.Length != 0)
-            {
+            if (tibia_process.Length != 0) {
                 SetForegroundWindow(tibia_process[0].MainWindowHandle);
                 tibia_process[0].Dispose();
             }
         }
 
-        public new void Resize()
-        {
+        public new void Resize() {
             Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 40, 40));
         }
 
-        protected void CloseForm(object sender, EventArgs e)
-        {
+        protected void CloseForm(object sender, EventArgs e) {
             close();
         }
 
-        protected override bool ShowWithoutActivation
-        {
+        protected override bool ShowWithoutActivation {
             get { return true; }
         }
 
-        protected void ResetTimer()
-        {
+        protected void ResetTimer() {
             this.closeTimer.Stop();
             this.closeTimer.Start();
         }
 
-        public void CloseNotification(object sender, EventArgs e)
-        {
-            if (this.Opacity <= 0)
-            {
+        public void CloseNotification(object sender, EventArgs e) {
+            if (this.Opacity <= 0) {
                 closeTimer.Close();
                 close();
-            }
-            else
-            {
-                try
-                {
-                    this.Invoke((MethodInvoker)delegate
-                    {
+            } else {
+                try {
+                    this.Invoke((MethodInvoker)delegate {
                         this.Opacity -= 0.03;
                     });
                     closeTimer.Interval = 20;
                     closeTimer.Start();
-                }
-                catch
-                {
+                } catch {
 
                 }
 
             }
         }
 
-        public void PaintBackground(Graphics e)
-        {
+        public void PaintBackground(Graphics e) {
             Rectangle r = new Rectangle((int)e.ClipBounds.Left, (int)e.ClipBounds.Top, (int)e.ClipBounds.Width, (int)e.ClipBounds.Height);
             OnPaintBackground(new PaintEventArgs(e, r));
         }
 
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
+        protected override void OnPaintBackground(PaintEventArgs e) {
             if (fill_region != null) e.Graphics.FillRegion(Brushes.Black, fill_region);
             base.OnPaintBackground(e);
-            using (Pen p = new Pen(Brushes.Black, 5))
-            {
+            using (Pen p = new Pen(Brushes.Black, 5)) {
                 e.Graphics.DrawRectangle(p, new Rectangle(0, 0, Width - 2, Height - 2));
                 e.Graphics.DrawLine(p, new Point(14, 0), new Point(0, 14));
-                e.Graphics.DrawLine(p, new Point(16, Height), new Point(0, Height-16));
-                e.Graphics.DrawLine(p, new Point(Width-14, 0), new Point(Width, 14));
-                e.Graphics.DrawLine(p, new Point(Width-16, Height), new Point(Width, Height-16));
+                e.Graphics.DrawLine(p, new Point(16, Height), new Point(0, Height - 16));
+                e.Graphics.DrawLine(p, new Point(Width - 14, 0), new Point(Width, 14));
+                e.Graphics.DrawLine(p, new Point(Width - 16, Height), new Point(Width, Height - 16));
             }
         }
 
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
             this.SuspendLayout();
             // 
             // NotificationForm
@@ -223,6 +185,6 @@ namespace Tibialyzer
             this.ResumeLayout(false);
 
         }
-        
+
     }
 }

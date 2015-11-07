@@ -5,44 +5,37 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 
-namespace Tibialyzer
-{
-    public abstract class TibiaObject
-    {
+namespace Tibialyzer {
+    public abstract class TibiaObject {
         public abstract string GetName();
         public abstract Image GetImage();
     }
 
-    public class Coordinate
-    {
+    public class Coordinate {
         public float x;
         public float y;
         public int z;
 
-        public Coordinate()
-        {
+        public Coordinate() {
             this.x = 0.5f;
             this.y = 0.5f;
             this.z = 7;
         }
 
-        public Coordinate(Coordinate coordinate)
-        {
+        public Coordinate(Coordinate coordinate) {
             this.x = coordinate.x;
             this.y = coordinate.y;
             this.z = coordinate.z;
         }
 
-        public Coordinate(float x, float y, int z)
-        {
+        public Coordinate(float x, float y, int z) {
             this.x = x;
             this.y = y;
             this.z = z;
         }
     }
 
-    public class Directions
-    {
+    public class Directions {
         public int huntingplaceid;
         public float x;
         public float y;
@@ -52,15 +45,13 @@ namespace Tibialyzer
         public string notes;
     }
 
-    public class Requirements
-    {
+    public class Requirements {
         public int huntingplaceid;
         public int questid;
         public string notes;
     }
 
-    public class Quest
-    {
+    public class Quest {
         public int id;
         public string name;
         public int minlevel;
@@ -69,8 +60,7 @@ namespace Tibialyzer
         public string url;
     }
 
-    public class HuntingPlace : TibiaObject, IDisposable
-    {
+    public class HuntingPlace : TibiaObject, IDisposable {
         public int id;
         public string name;
         public string city;
@@ -86,8 +76,7 @@ namespace Tibialyzer
         public override string GetName() { return name; }
         public override Image GetImage() { return image; }
 
-        public HuntingPlace()
-        {
+        public HuntingPlace() {
             this.creatures = new List<Creature>();
             this.coordinates = new List<Coordinate>();
             this.directions = new List<Directions>();
@@ -95,8 +84,7 @@ namespace Tibialyzer
             this.image = null;
         }
 
-        public void Dispose()
-        {
+        public void Dispose() {
             if (image != null) image.Dispose();
             if (creatures != null)
                 foreach (Creature creature in creatures)
@@ -104,8 +92,7 @@ namespace Tibialyzer
         }
     }
 
-    public class NPC : TibiaObject, IDisposable
-    {
+    public class NPC : TibiaObject, IDisposable {
         public int id;
         public string name;
         public string city;
@@ -113,24 +100,20 @@ namespace Tibialyzer
         public Image image;
         public int value;
 
-        public override string GetName() { return name;  }
-        public override Image GetImage() { return image;  }
+        public override string GetName() { return name; }
+        public override Image GetImage() { return image; }
 
-        public NPC()
-        {
+        public NPC() {
             pos = new Coordinate();
             image = null;
         }
 
-        public void Dispose()
-        {
+        public void Dispose() {
             if (image != null) image.Dispose();
         }
     }
 
-    public class Item : TibiaObject, IDisposable
-
-    {
+    public class Item : TibiaObject, IDisposable {
         public int id;
         public string name;
         public int vendor_value;
@@ -146,45 +129,38 @@ namespace Tibialyzer
 
         public override string GetName() { return name; }
         public override Image GetImage() { return image; }
-        
-        public void Dispose()
-        {
+
+        public void Dispose() {
             if (image != null) image.Dispose();
         }
     }
 
-    public class Map
-    {
+    public class Map {
         public Image image;
         public int z;
     }
 
-    public class Skin : IDisposable
-    {
+    public class Skin : IDisposable {
         public Item drop_item;
         public Item skin_item;
         public float percentage;
-        public Skin()
-        {
+        public Skin() {
             drop_item = null;
             skin_item = null;
         }
 
-        public void Dispose()
-        {
+        public void Dispose() {
             if (drop_item != null) drop_item.Dispose();
             if (skin_item != null) skin_item.Dispose();
         }
     }
 
-    public class ItemDrop
-    {
+    public class ItemDrop {
         public Item item;
         public float percentage;
     }
 
-    public class Creature : TibiaObject, IDisposable
-    {
+    public class Creature : TibiaObject, IDisposable {
         public string name;
         public int id;
         public int health;
@@ -210,23 +186,19 @@ namespace Tibialyzer
         public Skin skin;
         public int kills = 0;
 
-        public Creature()
-        {
+        public Creature() {
             name = "Unknown";
             image = null;
             skin = null;
             itemdrops = new List<ItemDrop>();
         }
 
-        public void Dispose()
-        {
+        public void Dispose() {
             if (image != null) image.Dispose();
-            if (skin != null)
-            {
+            if (skin != null) {
                 skin.Dispose();
             }
-            if (itemdrops != null)
-            {
+            if (itemdrops != null) {
                 foreach (ItemDrop drop in itemdrops)
                     if (drop.item != null)
                         drop.item.Dispose();

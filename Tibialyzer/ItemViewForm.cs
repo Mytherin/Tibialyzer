@@ -15,10 +15,8 @@ using System.Drawing.Drawing2D;
 using System.Diagnostics;
 
 
-namespace Tibialyzer
-{
-    class ItemViewForm : NotificationForm
-    {
+namespace Tibialyzer {
+    class ItemViewForm : NotificationForm {
         private TransparentLabel itemName;
         private TransparentLabel itemCategory;
         private TransparentLabel lookText;
@@ -34,15 +32,12 @@ namespace Tibialyzer
         public List<Creature> creatures = null;
         private string previous_value;
 
-        public ItemViewForm()
-        {
+        public ItemViewForm() {
             InitializeComponent();
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
+        protected override void Dispose(bool disposing) {
+            if (disposing) {
                 base.Cleanup();
                 if (BuyNPCs != null)
                     foreach (NPC npc in BuyNPCs)
@@ -57,8 +52,7 @@ namespace Tibialyzer
             base.Dispose(disposing);
         }
 
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
             this.itemPictureBox = new System.Windows.Forms.PictureBox();
             this.itemName = new Tibialyzer.TransparentLabel();
             this.itemCategory = new Tibialyzer.TransparentLabel();
@@ -176,20 +170,17 @@ namespace Tibialyzer
 
         }
 
-        private void DestroyForm()
-        {
+        private void DestroyForm() {
 
         }
 
         string prefix;
-        private string TooltipFunction(TibiaObject obj)
-        {
+        private string TooltipFunction(TibiaObject obj) {
             NPC npc = obj as NPC;
-            return String.Format("{0} {1} for {2} gold.", prefix, item.name, npc.value); 
+            return String.Format("{0} {1} for {2} gold.", prefix, item.name, npc.value);
         }
 
-        private void ItemViewForm_Load(object sender, EventArgs e)
-        {
+        private void ItemViewForm_Load(object sender, EventArgs e) {
             this.SuspendForm();
             this.NotificationInitialize();
             CultureInfo c = System.Threading.Thread.CurrentThread.CurrentCulture;
@@ -217,21 +208,18 @@ namespace Tibialyzer
             value_tooltip.ReshowDelay = 0;
             value_tooltip.ShowAlways = true;
             value_tooltip.UseFading = true;
-            
-            if (creatures == null)
-            {
+
+            if (creatures == null) {
                 BuyNPCs = BuyNPCs.OrderBy(o => o.value).ToList();
                 SellNPCs = SellNPCs.OrderByDescending(o => o.value).ToList();
                 List<List<NPC>> npc_lists = new List<List<NPC>>();
                 npc_lists.Add(BuyNPCs); npc_lists.Add(SellNPCs);
                 string[] header_string = { "Buy From:", "Sell To:" };
                 string[] info_string = { "Sells", "Buys" };
-                for (int i = 0; i < npc_lists.Count; i++)
-                {
+                for (int i = 0; i < npc_lists.Count; i++) {
                     prefix = info_string[i];
                     List<NPC> npc_list = npc_lists[i];
-                    if (npc_list != null && npc_list.Count > 0)
-                    {
+                    if (npc_list != null && npc_list.Count > 0) {
                         TransparentLabel header = new TransparentLabel();
                         header.ForeColor = MainForm.label_text_color;
                         header.Text = header_string[i];
@@ -244,12 +232,10 @@ namespace Tibialyzer
                     }
                 }
                 command_start = "npc@";
-                foreach(Control control in this.Controls)
+                foreach (Control control in this.Controls)
                     if (control is TransparentPictureBox)
                         control.Click += openItemBox;
-            }
-            else
-            {
+            } else {
                 TransparentLabel header = new TransparentLabel();
                 header.ForeColor = MainForm.label_text_color;
                 header.Text = "Dropped By";
@@ -270,8 +256,7 @@ namespace Tibialyzer
 
         private string command_start = "npc@";
         private bool clicked = false;
-        void openItemBox(object sender, EventArgs e)
-        {
+        void openItemBox(object sender, EventArgs e) {
             if (clicked) return;
             clicked = true;
             this.ReturnFocusToTibia();
@@ -281,8 +266,7 @@ namespace Tibialyzer
 
 
         private bool skip_event = false;
-        private void pickupBox_CheckedChanged(object sender, EventArgs e)
-        {
+        private void pickupBox_CheckedChanged(object sender, EventArgs e) {
             if (skip_event) return;
             bool is_checked = (sender as CheckBox).Checked;
             this.ReturnFocusToTibia();
@@ -290,8 +274,7 @@ namespace Tibialyzer
             else MainForm.mainForm.priority_command = "nopickup@" + item.name;
         }
 
-        private void convertBox_CheckedChanged(object sender, EventArgs e)
-        {
+        private void convertBox_CheckedChanged(object sender, EventArgs e) {
             if (skip_event) return;
             bool is_checked = (sender as CheckBox).Checked;
             this.ReturnFocusToTibia();
@@ -299,14 +282,12 @@ namespace Tibialyzer
             else MainForm.mainForm.priority_command = "noconvert@" + item.name;
         }
 
-        private void valueBox_TextChanged(object sender, EventArgs e)
-        {
+        private void valueBox_TextChanged(object sender, EventArgs e) {
             if (skip_event) return;
 
             string text = (sender as TextBox).Text;
             int new_value;
-            if (int.TryParse(text, out new_value))
-            {
+            if (int.TryParse(text, out new_value)) {
                 MainForm.mainForm.priority_command = "setval@" + item.name + "=" + new_value;
                 previous_value = (sender as TextBox).Text;
             }

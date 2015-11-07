@@ -12,6 +12,7 @@ total_item_drops = dict()
 total_experience_results = dict()
 total_damage_results = dict()
 total_commands = dict()
+all_commands = dict()
 new_items = list()
 new_commands = list()
 new_advances = list()
@@ -44,9 +45,8 @@ def search_chunk(chunk, item_drops,exp,damage_dealt,commands):
                 for sss in split_again: 
                     if '[' in sss: break
                     player = (player + " " if player != "" else "") + sss
-                if player in settings['Names']:
-                    if t not in commands: commands[t] = list()
-                    list.append(commands[t], command)
+                if t not in commands: commands[t] = list()
+                list.append(commands[t], [player, command])
         elif len(log_message) > 17 and log_message[5:17] == ' You gained ':
             try:
                 e = int(log_message[17:].split(' ')[0])

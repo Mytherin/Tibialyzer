@@ -6,23 +6,19 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace Tibialyzer
-{
-    class NPCForm : NotificationForm
-    {
+namespace Tibialyzer {
+    class NPCForm : NotificationForm {
         public NPC npc = null;
         private Bitmap map_image = null;
         private System.Windows.Forms.PictureBox mapUpLevel;
         private System.Windows.Forms.PictureBox mapDownLevel;
         private Coordinate map_coordinates;
 
-        public NPCForm()
-        {
+        public NPCForm() {
             InitializeComponent();
         }
 
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
             this.mapBox = new System.Windows.Forms.PictureBox();
             this.npcImage = new Tibialyzer.TransparentPictureBox();
             this.creatureName = new Tibialyzer.TransparentLabel();
@@ -105,15 +101,12 @@ namespace Tibialyzer
         private TransparentPictureBox npcImage;
         private TransparentLabel creatureName;
 
-        protected override bool ShowWithoutActivation
-        {
+        protected override bool ShowWithoutActivation {
             get { return true; }
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
+        protected override void Dispose(bool disposing) {
+            if (disposing) {
                 base.Cleanup();
                 if (npc != null) npc.Dispose();
                 if (map_image != null) map_image.Dispose();
@@ -121,8 +114,7 @@ namespace Tibialyzer
             base.Dispose(disposing);
         }
 
-        private void NPCForm_Load(object sender, EventArgs e)
-        {
+        private void NPCForm_Load(object sender, EventArgs e) {
             this.SuspendLayout();
             NotificationInitialize();
             if (npc == null) return;
@@ -149,8 +141,7 @@ namespace Tibialyzer
         }
 
         float current_zoom = 1.0f;
-        private void UpdateMap()
-        {
+        private void UpdateMap() {
             if (map_image != null) map_image.Dispose();
             map_image = new Bitmap(mapBox.Width, mapBox.Height);
             Graphics gr = Graphics.FromImage(map_image);
@@ -165,14 +156,12 @@ namespace Tibialyzer
 
             gr.DrawImage(big_map, new Rectangle(0, 0, mapBox.Width, mapBox.Height), sourceRectangle, GraphicsUnit.Pixel);
 
-            if (npc.pos.z == this.map_coordinates.z)
-            {
+            if (npc.pos.z == this.map_coordinates.z) {
                 point = new Point((int)(npc.pos.x * (7f / 8f) * big_map.Width), (int)(npc.pos.y * big_map.Height));
                 //int width = (int)(20 / this.current_zoom);
                 int width = 20;
                 Rectangle cross_rectangle = new Rectangle(point.X - width / 2, point.Y - width / 2, width, width);
-                if (sourceRectangle.IntersectsWith(cross_rectangle))
-                {
+                if (sourceRectangle.IntersectsWith(cross_rectangle)) {
                     int x = (int)(mapBox.Width * ((float)point.X - sourceRectangle.X) / sourceRectangle.Width);
                     int y = (int)(mapBox.Height * ((float)point.Y - sourceRectangle.Y) / sourceRectangle.Height);
                     gr.DrawImage(MainForm.cross_image, new Rectangle(x - width / 2, y - width / 2, width, width));
@@ -182,16 +171,14 @@ namespace Tibialyzer
             mapBox.Image = map_image;
         }
 
-        void mapUpLevel_Click(object sender, EventArgs e)
-        {
+        void mapUpLevel_Click(object sender, EventArgs e) {
             this.map_coordinates.z -= 1;
             if (this.map_coordinates.z < 0) this.map_coordinates.z = 0;
             UpdateMap();
             base.ResetTimer();
         }
 
-        void mapDownLevel_Click(object sender, EventArgs e)
-        {
+        void mapDownLevel_Click(object sender, EventArgs e) {
             this.map_coordinates.z += 1;
             if (this.map_coordinates.z >= MainForm.map_files.Count) this.map_coordinates.z = MainForm.map_files.Count - 1;
             UpdateMap();
@@ -202,12 +189,9 @@ namespace Tibialyzer
         bool drag_map = false;
         Point center_point;
         Point screen_center;
-        void mapBox_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left)
-            {
-                if (drag_map)
-                {
+        void mapBox_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e) {
+            if (e.Button == System.Windows.Forms.MouseButtons.Left) {
+                if (drag_map) {
                     drag_map = false;
                     System.Windows.Forms.Cursor.Show();
                     base.ResetTimer();
@@ -216,10 +200,8 @@ namespace Tibialyzer
             }
         }
 
-        void mapBox_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left)
-            {
+        void mapBox_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e) {
+            if (e.Button == System.Windows.Forms.MouseButtons.Left) {
                 mapBox.Focus();
                 screen_center = this.PointToScreen(new Point(
                     mapBox.Location.X + mapBox.Size.Width / 2,
@@ -230,16 +212,14 @@ namespace Tibialyzer
                 drag_map = true;
                 base.ResetTimer();
             }
-            
+
         }
 
         bool disable_move = false;
         float mouse_factor = 0.0005f;
-        void mapBox_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
+        void mapBox_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e) {
             if (disable_move) return;
-            if (drag_map)
-            {
+            if (drag_map) {
                 map_coordinates.x = Math.Max(Math.Min(map_coordinates.x + mouse_factor * (e.X - center_point.X), 1), 0);
                 map_coordinates.y = Math.Max(Math.Min(map_coordinates.y + mouse_factor * (e.Y - center_point.Y), 1), 0);
                 UpdateMap();
@@ -249,8 +229,7 @@ namespace Tibialyzer
             }
         }
 
-        void mapBox_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
+        void mapBox_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e) {
             current_zoom -= 0.0005f * e.Delta;
             current_zoom = Math.Min(Math.Max(current_zoom, 0.2f), 2.15f);
             UpdateMap();

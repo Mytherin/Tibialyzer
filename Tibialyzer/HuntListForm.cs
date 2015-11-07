@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace Tibialyzer
-{
-    class HuntListForm : NotificationForm
-    {
+namespace Tibialyzer {
+    class HuntListForm : NotificationForm {
         private TransparentLabel levelLabel;
         private TransparentLabel expLabel;
         private TransparentLabel lootLabel;
@@ -26,14 +24,12 @@ namespace Tibialyzer
         private int start_index = 0;
         private int max_hunts = 15;
         private List<Control> hunt_controls = new List<Control>();
-    
-        public HuntListForm()
-        {
+
+        public HuntListForm() {
             InitializeComponent();
         }
 
-        public new static void Initialize()
-        {
+        public new static void Initialize() {
             rating_colors = new Dictionary<int, Color>();
             rating_colors.Add(1, Color.DarkRed);
             rating_colors.Add(2, Color.Firebrick);
@@ -42,13 +38,10 @@ namespace Tibialyzer
             rating_colors.Add(5, Color.Gold);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
+        protected override void Dispose(bool disposing) {
+            if (disposing) {
                 base.Cleanup();
-                if (hunting_places != null)
-                {
+                if (hunting_places != null) {
                     foreach (HuntingPlace h in hunting_places)
                         h.Dispose();
                 }
@@ -56,8 +49,7 @@ namespace Tibialyzer
             base.Dispose(disposing);
         }
 
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
             this.nameLabel = new Tibialyzer.TransparentLabel();
             this.levelLabel = new Tibialyzer.TransparentLabel();
             this.expLabel = new Tibialyzer.TransparentLabel();
@@ -150,10 +142,8 @@ namespace Tibialyzer
 
         }
 
-        private int RefreshHuntingPlaces()
-        {
-            foreach(Control c in hunt_controls)
-            {
+        private int RefreshHuntingPlaces() {
+            foreach (Control c in hunt_controls) {
                 this.Controls.Remove(c);
                 c.Dispose();
             }
@@ -164,8 +154,7 @@ namespace Tibialyzer
             int size = 24;
             int current_index = -1;
 
-            foreach (HuntingPlace h in hunting_places)
-            {
+            foreach (HuntingPlace h in hunting_places) {
                 if (current_index++ < start_index) continue;
                 if (current_index > start_index + max_hunts) break;
                 TransparentPictureBox picture = new TransparentPictureBox();
@@ -216,8 +205,7 @@ namespace Tibialyzer
                 city.ForeColor = MainForm.label_text_color;
                 hcontrols.Add(city);
 
-                foreach (Control c in hcontrols)
-                {
+                foreach (Control c in hcontrols) {
                     c.Name = h.name.ToString();
                     c.Size = new Size(1, 1);
                     c.AutoSize = true;
@@ -231,10 +219,8 @@ namespace Tibialyzer
             }
             int total_yoffset = this.nameLabel.Location.Y + this.nameLabel.Size.Height + offset * size + base_offset;
             // if there are too many hunts to be displayed on one page, add 'prev' and 'next' buttons
-            if (hunting_places.Count > max_hunts)
-            {
-                if (start_index > 0)
-                {
+            if (hunting_places.Count > max_hunts) {
+                if (start_index > 0) {
                     TransparentPictureBox prevpage = new TransparentPictureBox();
                     prevpage.Location = new Point(10, total_yoffset);
                     prevpage.Size = new Size(97, 23);
@@ -244,8 +230,7 @@ namespace Tibialyzer
                     this.Controls.Add(prevpage);
                     hunt_controls.Add(prevpage);
                 }
-                if (start_index + max_hunts < hunting_places.Count)
-                {
+                if (start_index + max_hunts < hunting_places.Count) {
                     TransparentPictureBox nextpage = new TransparentPictureBox();
                     nextpage.Location = new Point(this.Size.Width - 108, total_yoffset);
                     nextpage.Size = new Size(98, 23);
@@ -261,13 +246,11 @@ namespace Tibialyzer
             return total_yoffset;
         }
 
-        private void CreatureHuntForm_Load(object sender, EventArgs e)
-        {
+        private void CreatureHuntForm_Load(object sender, EventArgs e) {
             this.SuspendForm();
             this.NotificationInitialize();
 
-            if (header != null)
-            {
+            if (header != null) {
                 headerLabel.Text = header;
             }
 
@@ -278,16 +261,14 @@ namespace Tibialyzer
             this.ResumeForm();
         }
 
-        void prevpage_Click(object sender, EventArgs e)
-        {
+        void prevpage_Click(object sender, EventArgs e) {
             start_index = Math.Max(start_index - max_hunts, 0);
             this.SuspendForm();
             RefreshHuntingPlaces();
             this.ResumeForm();
         }
 
-        void nextpage_Click(object sender, EventArgs e)
-        {
+        void nextpage_Click(object sender, EventArgs e) {
             start_index += max_hunts;
             this.SuspendForm();
             RefreshHuntingPlaces();
@@ -295,10 +276,9 @@ namespace Tibialyzer
         }
 
 
-        
+
         private bool clicked = false;
-        protected void openHuntingPlace(object sender, EventArgs e)
-        {
+        protected void openHuntingPlace(object sender, EventArgs e) {
             if (clicked) return;
             clicked = true;
             this.ReturnFocusToTibia();

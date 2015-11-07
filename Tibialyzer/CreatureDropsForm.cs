@@ -9,21 +9,17 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
-namespace Tibialyzer
-{
+namespace Tibialyzer {
 
-    public partial class CreatureDropsForm : NotificationForm
-    {
+    public partial class CreatureDropsForm : NotificationForm {
         public Creature creature;
         private List<Image> images = new List<Image>();
 
-        public CreatureDropsForm()
-        {
+        public CreatureDropsForm() {
             InitializeComponent();
         }
 
-        private void DisplayItem(ItemDrop drop, int base_x, int base_y, int x, int y, Size item_size, ToolTip droprate_tooltip, int dropbar_height, string prefix = "Drop rate of ")
-        {
+        private void DisplayItem(ItemDrop drop, int base_x, int base_y, int x, int y, Size item_size, ToolTip droprate_tooltip, int dropbar_height, string prefix = "Drop rate of ") {
 
             // the main picture of the item
             PictureBox picture_box = new PictureBox();
@@ -50,16 +46,11 @@ namespace Tibialyzer
             Image image = new Bitmap(dropbar_box.Width, dropbar_box.Height);
             Graphics gr = Graphics.FromImage(image);
             gr.FillRectangle(Brushes.DarkGray, new Rectangle(0, 0, item_size.Width, dropbar_height)); //dropbar base bar
-            if (drop.percentage < 1)
-            {
+            if (drop.percentage < 1) {
                 brush = Brushes.DarkRed; // <1% is red
-            }
-            else if (drop.percentage < 15)
-            {
+            } else if (drop.percentage < 15) {
                 brush = Brushes.Yellow; //<15% is yellow
-            }
-            else
-            {
+            } else {
                 brush = Brushes.ForestGreen; //everything else is green
             }
             gr.FillRectangle(brush, new Rectangle(0, 0, (int)(Math.Ceiling(item_size.Width * drop.percentage / 100) + 1), dropbar_height));
@@ -67,8 +58,7 @@ namespace Tibialyzer
             this.Controls.Add(dropbar_box);
         }
 
-        private void CombineItems()
-        {
+        private void CombineItems() {
             Size item_size = new Size(32, 32); //size of item image
             int dropbar_height = 6; //height of dropbar
             int item_spacing = 6; //spacing between items
@@ -87,19 +77,16 @@ namespace Tibialyzer
 
             int x = item_spacing, y = item_spacing;
             List<ItemDrop> sorted_items = creature.itemdrops.OrderByDescending(o => o.percentage).ToList();
-            foreach (ItemDrop drop in sorted_items)
-            {
+            foreach (ItemDrop drop in sorted_items) {
                 DisplayItem(drop, base_x, base_y, x, y, item_size, droprate_tooltip, dropbar_height);
                 x += item_size.Width + item_spacing;
-                if (x > (max_x - item_size.Width - item_spacing))
-                {
+                if (x > (max_x - item_size.Width - item_spacing)) {
                     x = item_spacing;
                     y += item_size.Height + item_spacing;
                 }
             }
 
-            if (creature.skin != null)
-            {
+            if (creature.skin != null) {
                 ItemDrop skinDrop = new ItemDrop();
                 PictureBox picture_box = new PictureBox();
                 picture_box.Location = new System.Drawing.Point(20, this.nameLabel.Location.Y + this.nameLabel.Size.Height + 10);
@@ -119,8 +106,7 @@ namespace Tibialyzer
                 if (y < this.nameLabel.Location.Y + this.nameLabel.Size.Height) y = this.nameLabel.Location.Y + this.nameLabel.Size.Height;
             }
 
-            if (this.Height < (y + item_size.Height * 2 + item_spacing))
-            { 
+            if (this.Height < (y + item_size.Height * 2 + item_spacing)) {
                 this.Height = y + item_size.Height * 2 + item_spacing;
                 this.Resize();
             }
@@ -128,16 +114,14 @@ namespace Tibialyzer
         }
 
         private bool clicked = false;
-        void openItemBox(object sender, EventArgs e)
-        {
+        void openItemBox(object sender, EventArgs e) {
             if (clicked) return;
             clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.priority_command = "item@" + (sender as Control).Name;
         }
 
-        private void CreatureDropsForm_Load(object sender, EventArgs e)
-        {
+        private void CreatureDropsForm_Load(object sender, EventArgs e) {
             this.SuspendForm();
             base.NotificationInitialize();
             // load image from the creature
@@ -152,13 +136,11 @@ namespace Tibialyzer
             CombineItems();
             this.nameLabel.Text = this.creature.name;
             Font f = this.nameLabel.Font;
-            while (TextRenderer.MeasureText(this.creature.name, f).Width < this.mainImage.Size.Width && TextRenderer.MeasureText(this.creature.name, f).Height < 26)
-            {
+            while (TextRenderer.MeasureText(this.creature.name, f).Width < this.mainImage.Size.Width && TextRenderer.MeasureText(this.creature.name, f).Height < 26) {
                 f.Dispose();
                 f = new Font(f.FontFamily, f.Size + 1.0f);
             }
-            while (TextRenderer.MeasureText(this.creature.name, f).Width > this.mainImage.Size.Width && f.Size > 1)
-            {
+            while (TextRenderer.MeasureText(this.creature.name, f).Width > this.mainImage.Size.Width && f.Size > 1) {
                 f.Dispose();
                 f = new Font(f.FontFamily, f.Size - 1.0f);
             }

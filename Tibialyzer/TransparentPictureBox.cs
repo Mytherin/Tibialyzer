@@ -6,21 +6,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace Tibialyzer
-{
-    public class TransparentPictureBox : PictureBox
-    {
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
+namespace Tibialyzer {
+    public class TransparentPictureBox : PictureBox {
+        protected override void OnPaintBackground(PaintEventArgs e) {
             //base.OnPaintBackground(e);
             Graphics g = e.Graphics;
 
             Control p = Parent;
-            while (p != null)
-            {
+            while (p != null) {
                 // draw the background of the parent as background onto this 
-                if (p is NotificationForm)
-                {
+                if (p is NotificationForm) {
                     NotificationForm c = (NotificationForm)p;
                     Bitmap bmp = new Bitmap(c.Width, c.Height, g);
                     c.PaintBackground(Graphics.FromImage(bmp));

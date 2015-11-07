@@ -28,7 +28,10 @@ for t in commands:
     if len(commands[t]) > len(total_commands[t]):
         for command in commands[t]:
             if command not in total_commands[t]:
-                list.append(new_commands, command)
+                player = command[0]
+                cmd = command[1]
+                if player in settings['Names']:
+                    list.append(new_commands, cmd)
             else: 
                 del total_commands[t][total_commands[t].index(command)]
         total_commands[t] = commands[t][:]

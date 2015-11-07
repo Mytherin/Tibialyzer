@@ -8,47 +8,39 @@ using System.Drawing;
 using System.Windows.Forms.DataVisualization;
 using System.Windows.Forms.DataVisualization.Charting;
 
-namespace Tibialyzer
-{
-    class DamageMeter : NotificationForm
-    {
+namespace Tibialyzer {
+    class DamageMeter : NotificationForm {
         private TransparentChart damageChart;
         public Dictionary<string, int> dps = new Dictionary<string, int>();
-        struct Player
-        {
+        struct Player {
             public string name;
             public int damage;
         };
         public string filter = "";
         private string screenshot_path;
-        public DamageMeter(string screenshot_path = "")
-        {
+        public DamageMeter(string screenshot_path = "") {
             this.screenshot_path = screenshot_path;
             if (screenshot_path != "") this.Visible = false;
             InitializeComponent();
             NotificationInitialize();
         }
 
-        private void SaveScreenshot()
-        {
+        private void SaveScreenshot() {
             Bitmap bitmap = new Bitmap(Size.Width, Size.Height);
             DrawToBitmap(bitmap, new Rectangle(0, 0, Size.Width, Size.Height));
             bitmap.Save(screenshot_path);
             bitmap.Dispose();
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
+        protected override void Dispose(bool disposing) {
+            if (disposing) {
                 base.Cleanup();
                 if (damageChart != null) damageChart.Dispose();
             }
             base.Dispose(disposing);
         }
 
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
@@ -103,27 +95,23 @@ namespace Tibialyzer
 
         }
 
-        void DamageMeter_FormClosing(object sender, FormClosingEventArgs e)
-        {
+        void DamageMeter_FormClosing(object sender, FormClosingEventArgs e) {
             this.damageChart.ChartAreas.Clear();
             this.damageChart.Legends.Clear();
             this.damageChart.Series.Clear();
             this.Controls.Remove(damageChart);
         }
 
-        private void DamageMeter_Load(object sender, EventArgs e)
-        {
+        private void DamageMeter_Load(object sender, EventArgs e) {
             this.SuspendForm();
             int maxdeeps = -1;
-            foreach (int deeps in dps.Values)
-            {
+            foreach (int deeps in dps.Values) {
                 if (deeps > maxdeeps) maxdeeps = deeps;
             }
 
             List<Player> players = new List<Player>();
 
-            foreach (KeyValuePair<string, int> kvp in dps)
-            {
+            foreach (KeyValuePair<string, int> kvp in dps) {
                 if (filter != "all" && filter != "creature" && char.IsLower(kvp.Key[0])) continue;
                 if (filter == "creature" && char.IsUpper(kvp.Key[0])) continue;
                 Player p = new Player();
@@ -132,8 +120,7 @@ namespace Tibialyzer
                 players.Add(p);
             }
             players.OrderByDescending(o => o.damage);
-            if (players.Count == 0)
-            {
+            if (players.Count == 0) {
                 players.Add(new Player() { damage = 40, name = "You" });
                 players.Add(new Player() { damage = 30, name = "Mytherin" });
                 players.Add(new Player() { damage = 35, name = "Martincc" });
@@ -142,15 +129,13 @@ namespace Tibialyzer
             }
 
             double total_damage = 0;
-            foreach(Player player in players)
-            {
+            foreach (Player player in players) {
                 total_damage = total_damage + player.damage;
             }
 
             int i = 0;
             this.damageChart.Series[0].Points.Clear();
-            foreach (Player p in players)
-            {
+            foreach (Player p in players) {
                 double percentage = p.damage / total_damage * 100;
                 DataPoint point = new DataPoint();
                 point.XValue = percentage;
