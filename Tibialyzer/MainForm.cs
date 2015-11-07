@@ -157,23 +157,29 @@ namespace Tibialyzer {
         public static List<string> FindTimestamps(byte[] array) {
             int index = 0;
             List<string> strings = new List<string>();
-            byte[] buffer_array = new byte[array.Length];
+            //byte[] buffer_array = new byte[array.Length];
+            int start = 0;
             for (int i = 0; i < array.Length; i++) {
-                buffer_array[index] = array[i];
-                if (index >= 5) {
+                if (index == 5) {
                     if (array[i] == 0) {
-                        string s = System.Text.Encoding.UTF8.GetString(buffer_array, 0, index);
-                        strings.Add(s);
-                        index = 0;      
-                    } else {
-                        index++;
+                        strings.Add(System.Text.Encoding.UTF8.GetString(array, start, (i - start)));
+                        index = 0;
                     }
-                } else if (index != 2) {
-                    if (array[i] > 47 && array[i] < 58) index++;
-                    else index = 0;
+                } else if (array[i] > 47 && array[i] < 59) {
+                    if (index == 2) {
+                        if (array[i] == 58) {
+                            start = i - 2;
+                            index++; 
+                        } else {
+                            index = 0;
+                        }
+                    } else if (array[i] < 58) {
+                        index++;
+                    } else {
+                        index = 0;
+                    }
                 } else {
-                    if (array[i] == 58) index++;
-                    else index = 0;
+                    index = 0;
                 }
             }
             return strings;
