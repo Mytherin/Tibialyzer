@@ -190,6 +190,7 @@ namespace Tibialyzer
 
         private void ItemViewForm_Load(object sender, EventArgs e)
         {
+            this.SuspendForm();
             this.NotificationInitialize();
             CultureInfo c = System.Threading.Thread.CurrentThread.CurrentCulture;
 
@@ -264,6 +265,7 @@ namespace Tibialyzer
             }
             this.Size = new Size(this.Size.Width, this.Size.Height + y);
             base.NotificationFinalize();
+            this.ResumeForm();
         }
 
         private string command_start = "npc@";

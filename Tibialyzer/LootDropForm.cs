@@ -66,6 +66,7 @@ namespace Tibialyzer
 
         private void LootDropForm_Load(object sender, EventArgs e)
         {
+            this.SuspendForm();
             int base_x = 20, base_y = 30;
             int x = 0, y = 0;
             int item_spacing = 4;
@@ -203,9 +204,11 @@ namespace Tibialyzer
             this.ResumeLayout(false);
             this.PerformLayout();
             this.Size = new Size(max_x + item_spacing * 2, base_y + y + item_spacing + 10);
+            if (screenshot_path == "")
+                base.NotificationFinalize();
+            this.ResumeForm();
             if (screenshot_path != "")
                 SaveScreenshot();
-            else base.NotificationFinalize();
         }
 
         private bool clicked = false;

@@ -49,7 +49,7 @@ namespace Tibialyzer
 
         private void CreatureList_Load(object sender, EventArgs e)
         {
-            this.SuspendLayout();
+            this.SuspendForm();
             int y = MainForm.DisplayCreatureList(this.Controls, (creatures as IEnumerable<TibiaObject>).ToList(), 10, 10, 344, 4, true);
 
             this.Size = new Size(this.Size.Width, this.Size.Height + y);
@@ -59,7 +59,7 @@ namespace Tibialyzer
                             control.Click += openItemBox;
             this.NotificationInitialize();
             this.NotificationFinalize();
-            this.ResumeLayout(false);
+            this.ResumeForm();
         }
 
         private bool clicked = false;

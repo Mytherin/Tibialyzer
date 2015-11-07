@@ -88,6 +88,7 @@ namespace Tibialyzer
 
         private void CreatureStatsForm_Load(object sender, EventArgs e)
         {
+            this.SuspendForm();
             int horizontal, left, right;
             int health = creature.health;
             int experience = creature.experience;
@@ -137,6 +138,7 @@ namespace Tibialyzer
             this.nameLabel.Left = this.mainImage.Left + (mainImage.Width - this.nameLabel.Size.Width) / 2;
             base.NotificationInitialize();
             base.NotificationFinalize();
+            this.ResumeForm();
         }
 
     }

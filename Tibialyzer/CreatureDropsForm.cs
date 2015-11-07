@@ -138,7 +138,7 @@ namespace Tibialyzer
 
         private void CreatureDropsForm_Load(object sender, EventArgs e)
         {
-            this.SuspendLayout();
+            this.SuspendForm();
             base.NotificationInitialize();
             // load image from the creature
             this.mainImage.Image = this.creature.image;
@@ -165,7 +165,7 @@ namespace Tibialyzer
             this.nameLabel.Font = f;
             this.nameLabel.Left = this.mainImage.Left + (mainImage.Width - this.nameLabel.Size.Width) / 2;
             this.NotificationFinalize();
-            this.ResumeLayout(false);
+            this.ResumeForm();
         }
 
 

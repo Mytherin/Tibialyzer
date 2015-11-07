@@ -226,7 +226,7 @@ namespace Tibialyzer
 
         private void HuntingPlaceForm_Load(object sender, EventArgs e)
         {
-            this.SuspendLayout();
+            this.SuspendForm();
             NotificationInitialize();
             if (hunting_place == null) return;
             this.cityLabel.Text = hunting_place.city;
@@ -364,7 +364,7 @@ namespace Tibialyzer
             this.mapDownLevel.Click -= c_Click;
             this.mapDownLevel.Click += mapDownLevel_Click;
             base.NotificationFinalize();
-            this.ResumeLayout(false);
+            this.ResumeForm();
         }
 
 

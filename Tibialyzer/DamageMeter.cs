@@ -113,7 +113,7 @@ namespace Tibialyzer
 
         private void DamageMeter_Load(object sender, EventArgs e)
         {
-            this.SuspendLayout();
+            this.SuspendForm();
             int maxdeeps = -1;
             foreach (int deeps in dps.Values)
             {
@@ -162,11 +162,11 @@ namespace Tibialyzer
                 this.damageChart.Series[0].Points.Add(point);
                 i++;
             }
-            
-            this.ResumeLayout(false);
+            if (screenshot_path == "")
+                base.NotificationFinalize();
+            this.ResumeForm();
             if (screenshot_path != "")
                 SaveScreenshot();
-            else base.NotificationFinalize();
         }
 
     }
