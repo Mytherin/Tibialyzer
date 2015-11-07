@@ -410,8 +410,9 @@ def get_recent_commands():
     recent_commands = []
     for s in stamp:
         list = []
-        if s in total_commands: 
-            list = total_commands[s]
+        if s not in total_commands: continue
+        list = total_commands[s][:]
+        list.reverse();
         for entry in list:
             if 'recent' in entry[1]: continue
             if len(recent_commands) >= 15: return recent_commands

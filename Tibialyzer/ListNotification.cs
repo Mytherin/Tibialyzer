@@ -108,7 +108,7 @@ namespace Tibialyzer {
 
                 total_yoffset += 25;
             }
-
+            total_yoffset += 10;
             this.Size = new Size(this.Size.Width, total_yoffset);
             base.NotificationFinalize();
             this.ResumeForm();

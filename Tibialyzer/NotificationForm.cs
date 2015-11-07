@@ -113,10 +113,6 @@ namespace Tibialyzer {
             }
         }
 
-        //public new void Resize() {
-        //    Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 40, 40));
-        //}
-
         protected void CloseForm(object sender, EventArgs e) {
             close();
         }

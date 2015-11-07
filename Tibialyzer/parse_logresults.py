@@ -26,15 +26,18 @@ new_commands = []
 for t in commands:
     if t not in total_commands: total_commands[t] = list()
     if len(commands[t]) > len(total_commands[t]):
+        unseen_commands = list()
+        commands_list = total_commands[t][:]
         for command in commands[t]:
             if command not in total_commands[t]:
+                unseen_commands.append(command);
                 player = command[0]
                 cmd = command[1]
                 if player in settings['Names']:
                     list.append(new_commands, cmd)
             else: 
                 del total_commands[t][total_commands[t].index(command)]
-        total_commands[t] = commands[t][:]
+        total_commands[t] = commands_list + unseen_commands
 
 
 new_items = list()
