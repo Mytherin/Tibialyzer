@@ -16,6 +16,8 @@ using System.Numerics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Net;
+using System.Text.RegularExpressions;
 
 namespace Tibialyzer {
     public partial class MainForm : Form {
@@ -1038,6 +1040,16 @@ namespace Tibialyzer {
                     if (double.TryParse(c.Split('@')[1].Trim(), out val)) {
                         CompileSourceAndExecute("set_gold_ratio(" + val.ToString() + ")", pyScope);
                     }
+                } else if (comp.StartsWith("wiki@")) { 
+                    string parameter = c.Split('@')[1].Trim();
+                    string response = "";
+                    using (WebClient client = new WebClient()) {
+                        response = client.DownloadString(String.Format("http://tibia.wikia.com/api/v1/Search/List?query={0}&limit=1&minArticleQuality=10&batch=1&namespaces=0", parameter));
+                    }
+                    Regex regex = new Regex("\"url\":\"([^\"]+)\"");
+                    Match m = regex.Match(response);
+                    var gr = m.Groups[1];
+                    OpenUrl(gr.Value.Replace("\\/", "/"));
                 } else if (comp.StartsWith("setconvertgoldratio@")) {
                     string parameter = c.Split('@')[1].Trim();
                     string[] split = parameter.Split('-');
