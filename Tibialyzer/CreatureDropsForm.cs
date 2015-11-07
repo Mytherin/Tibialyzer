@@ -36,7 +36,7 @@ namespace Tibialyzer {
             this.Controls.Add(picture_box);
 
             // the 'dropbar' that roughly displays the droprate of the item
-            TransparentPictureBox dropbar_box = new TransparentPictureBox();
+            PictureBox dropbar_box = new PictureBox();
             Brush brush;
             dropbar_box.Location = new System.Drawing.Point(base_x + x, base_y + y + item_size.Height);
             dropbar_box.Name = "dropbar_image";
@@ -108,7 +108,7 @@ namespace Tibialyzer {
 
             if (this.Height < (y + item_size.Height * 2 + item_spacing)) {
                 this.Height = y + item_size.Height * 2 + item_spacing;
-                this.Resize();
+                //this.Resize();
             }
             this.Refresh();
         }

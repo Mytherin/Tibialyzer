@@ -12,17 +12,17 @@ namespace Tibialyzer {
         public HuntingPlace hunting_place = null;
         private Coordinate target = null;
         private Coordinate map_coordinates;
-        private TransparentLabel huntingPlaceName;
-        private TransparentLabel creatureLabel;
+        private Label huntingPlaceName;
+        private Label creatureLabel;
         private System.Windows.Forms.PictureBox mapDownLevel;
         private System.Windows.Forms.PictureBox mapUpLevel;
-        private TransparentLabel experienceLabel;
-        private TransparentLabel label1;
-        private TransparentPictureBox experienceStarBox;
-        private TransparentPictureBox lootStarBox;
-        private TransparentLabel levelLabel;
-        private TransparentLabel cityLabel;
-        private TransparentLabel requirementLabel;
+        private Label experienceLabel;
+        private Label label1;
+        private System.Windows.Forms.PictureBox experienceStarBox;
+        private System.Windows.Forms.PictureBox lootStarBox;
+        private Label levelLabel;
+        private Label cityLabel;
+        private Label requirementLabel;
         private Bitmap map_image = null;
         private static Font requirement_font = new Font(FontFamily.GenericSansSerif, 7.5f, FontStyle.Bold);
 
@@ -31,17 +31,17 @@ namespace Tibialyzer {
         }
 
         private void InitializeComponent() {
-            this.requirementLabel = new Tibialyzer.TransparentLabel();
-            this.cityLabel = new Tibialyzer.TransparentLabel();
-            this.levelLabel = new Tibialyzer.TransparentLabel();
-            this.lootStarBox = new Tibialyzer.TransparentPictureBox();
-            this.experienceStarBox = new Tibialyzer.TransparentPictureBox();
-            this.label1 = new Tibialyzer.TransparentLabel();
-            this.experienceLabel = new Tibialyzer.TransparentLabel();
+            this.requirementLabel = new System.Windows.Forms.Label();
+            this.cityLabel = new System.Windows.Forms.Label();
+            this.levelLabel = new System.Windows.Forms.Label();
+            this.lootStarBox = new System.Windows.Forms.PictureBox();
+            this.experienceStarBox = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.experienceLabel = new System.Windows.Forms.Label();
             this.mapDownLevel = new System.Windows.Forms.PictureBox();
             this.mapUpLevel = new System.Windows.Forms.PictureBox();
-            this.creatureLabel = new Tibialyzer.TransparentLabel();
-            this.huntingPlaceName = new Tibialyzer.TransparentLabel();
+            this.creatureLabel = new System.Windows.Forms.Label();
+            this.huntingPlaceName = new System.Windows.Forms.Label();
             this.mapBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.lootStarBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.experienceStarBox)).BeginInit();
@@ -89,6 +89,7 @@ namespace Tibialyzer {
             // 
             // lootStarBox
             // 
+            this.lootStarBox.BackColor = System.Drawing.Color.Transparent;
             this.lootStarBox.Location = new System.Drawing.Point(100, 96);
             this.lootStarBox.Name = "lootStarBox";
             this.lootStarBox.Size = new System.Drawing.Size(61, 20);
@@ -97,6 +98,7 @@ namespace Tibialyzer {
             // 
             // experienceStarBox
             // 
+            this.experienceStarBox.BackColor = System.Drawing.Color.Transparent;
             this.experienceStarBox.Location = new System.Drawing.Point(8, 96);
             this.experienceStarBox.Name = "experienceStarBox";
             this.experienceStarBox.Size = new System.Drawing.Size(61, 20);
@@ -146,6 +148,7 @@ namespace Tibialyzer {
             // creatureLabel
             // 
             this.creatureLabel.AutoSize = true;
+            this.creatureLabel.BackColor = System.Drawing.Color.Transparent;
             this.creatureLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.creatureLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.creatureLabel.Location = new System.Drawing.Point(39, 211);
@@ -156,6 +159,7 @@ namespace Tibialyzer {
             // 
             // huntingPlaceName
             // 
+            this.huntingPlaceName.BackColor = System.Drawing.Color.Transparent;
             this.huntingPlaceName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.huntingPlaceName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.huntingPlaceName.Location = new System.Drawing.Point(6, 24);
@@ -235,8 +239,9 @@ namespace Tibialyzer {
             if (this.hunting_place.coordinates != null && this.hunting_place.coordinates.Count > 0) {
                 int count = 1;
                 foreach (Coordinate coordinate in this.hunting_place.coordinates) {
-                    TransparentLabel label = new TransparentLabel();
+                    Label label = new Label();
                     label.ForeColor = MainForm.label_text_color;
+                    label.BackColor = Color.Transparent;
                     label.Name = (count - 1).ToString();
                     label.Font = LootDropForm.loot_font;
                     label.Text = count.ToString();
@@ -251,8 +256,9 @@ namespace Tibialyzer {
                 int offset = (count - 1) * 25;
                 int dircount = 1;
                 foreach (Directions dir in this.hunting_place.directions) {
-                    TransparentLabel label = new TransparentLabel();
+                    Label label = new Label();
                     label.ForeColor = MainForm.label_text_color;
+                    label.BackColor = Color.Transparent;
                     label.Name = (dircount - 1).ToString();
                     label.Font = requirement_font;
                     label.Text = dir.name;
@@ -276,8 +282,9 @@ namespace Tibialyzer {
             if (hunting_place.requirements != null && hunting_place.requirements.Count > 0) {
                 int count = 0;
                 foreach (Requirements requirement in hunting_place.requirements) {
-                    TransparentLabel label = new TransparentLabel();
+                    Label label = new Label();
                     label.ForeColor = Color.Firebrick;
+                    label.BackColor = Color.Transparent;
                     label.Font = requirement_font;
                     label.Text = "- " + requirement.notes;
                     label.Location = new Point(3, requirementLabel.Location.Y + requirementLabel.Size.Height + count * 20 + 3);
@@ -294,7 +301,7 @@ namespace Tibialyzer {
             int base_y = this.creatureLabel.Location.Y + this.creatureLabel.Height + 5;
             int y = MainForm.DisplayCreatureList(this.Controls, (hunting_place.creatures as IEnumerable<TibiaObject>).ToList(), 10, base_y, this.Size.Width, 4, true, null, 0.8f);
             foreach (Control c in this.Controls) {
-                if (c is TransparentPictureBox) {
+                if (c is PictureBox) {
                     c.Click += openCreatureMenu;
                 }
             }

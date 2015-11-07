@@ -23,7 +23,7 @@ namespace Tibialyzer {
 
         private static Dictionary<string, Color> resistance_colors = new Dictionary<string, Color>();
         private static Dictionary<string, Image> resistance_images = new Dictionary<string, Image>();
-        private PictureBox[] resistance_controls = new PictureBox[7];
+        private System.Windows.Forms.PictureBox[] resistance_controls = new PictureBox[7];
         public Creature creature;
         public CreatureStatsForm() {
             InitializeComponent();

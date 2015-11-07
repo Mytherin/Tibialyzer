@@ -11,6 +11,11 @@ namespace Tibialyzer {
         public abstract Image GetImage();
     }
 
+    public class Command {
+        public string player;
+        public string command;
+    }
+
     public class Coordinate {
         public float x;
         public float y;

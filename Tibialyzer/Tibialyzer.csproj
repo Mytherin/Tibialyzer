@@ -115,6 +115,9 @@
     <Compile Include="ItemViewForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="ListNotification.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="LootDropForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -153,15 +156,6 @@
     <Compile Include="TransparentChart.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="TransparentCheckbox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="TransparentLabel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="TransparentPictureBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <EmbeddedResource Include="HuntListForm.resx">
       <DependentUpon>HuntListForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -176,6 +170,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ItemViewForm.resx">
       <DependentUpon>ItemViewForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListNotification.resx">
+      <DependentUpon>ListNotification.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LootDropForm.resx">
       <DependentUpon>LootDropForm.cs</DependentUpon>

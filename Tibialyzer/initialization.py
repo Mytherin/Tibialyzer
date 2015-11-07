@@ -12,7 +12,6 @@ total_item_drops = dict()
 total_experience_results = dict()
 total_damage_results = dict()
 total_commands = dict()
-all_commands = dict()
 new_items = list()
 new_commands = list()
 new_advances = list()
@@ -405,3 +404,17 @@ def set_convert_ratio(ratio, stackable):
         if goldratio < ratio: c.execute('UPDATE Items SET convert_to_gold=1 WHERE id=?', [id])
         else: c.execute('UPDATE Items SET convert_to_gold=0 WHERE id=?', [id])
     conn.commit();
+
+def get_recent_commands():
+    stamp = get_latest_timestamps(5)
+    recent_commands = []
+    for s in stamp:
+        list = []
+        if s in total_commands: 
+            list = total_commands[s]
+        for entry in list:
+            if 'recent' in entry[1]: continue
+            if len(recent_commands) >= 15: return recent_commands
+            recent_commands.append(entry)
+    return recent_commands
+

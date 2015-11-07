@@ -31,16 +31,16 @@
         private void InitializeComponent()
         {
             this.nameLabel = new System.Windows.Forms.Label();
-            this.resistanceLabel7 = new Tibialyzer.TransparentPictureBox();
-            this.resistanceLabel6 = new Tibialyzer.TransparentPictureBox();
-            this.resistanceLabel5 = new Tibialyzer.TransparentPictureBox();
-            this.resistanceLabel4 = new Tibialyzer.TransparentPictureBox();
-            this.resistanceLabel3 = new Tibialyzer.TransparentPictureBox();
-            this.resistanceLabel2 = new Tibialyzer.TransparentPictureBox();
-            this.resistanceLabel1 = new Tibialyzer.TransparentPictureBox();
+            this.resistanceLabel7 = new System.Windows.Forms.PictureBox();
+            this.resistanceLabel6 = new System.Windows.Forms.PictureBox();
+            this.resistanceLabel5 = new System.Windows.Forms.PictureBox();
+            this.resistanceLabel4 = new System.Windows.Forms.PictureBox();
+            this.resistanceLabel3 = new System.Windows.Forms.PictureBox();
+            this.resistanceLabel2 = new System.Windows.Forms.PictureBox();
+            this.resistanceLabel1 = new System.Windows.Forms.PictureBox();
             this.expLabel = new System.Windows.Forms.Label();
             this.healthLabel = new System.Windows.Forms.Label();
-            this.mainImage = new Tibialyzer.TransparentPictureBox();
+            this.mainImage = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.resistanceLabel7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.resistanceLabel6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.resistanceLabel5)).BeginInit();
@@ -191,16 +191,16 @@
 
         #endregion
 
-        private TransparentPictureBox mainImage;
+        private System.Windows.Forms.PictureBox mainImage;
         private System.Windows.Forms.Label healthLabel;
         private System.Windows.Forms.Label expLabel;
-        private TransparentPictureBox resistanceLabel1;
-        private TransparentPictureBox resistanceLabel2;
-        private TransparentPictureBox resistanceLabel3;
-        private TransparentPictureBox resistanceLabel4;
-        private TransparentPictureBox resistanceLabel5;
-        private TransparentPictureBox resistanceLabel6;
-        private TransparentPictureBox resistanceLabel7;
+        private System.Windows.Forms.PictureBox resistanceLabel1;
+        private System.Windows.Forms.PictureBox resistanceLabel2;
+        private System.Windows.Forms.PictureBox resistanceLabel3;
+        private System.Windows.Forms.PictureBox resistanceLabel4;
+        private System.Windows.Forms.PictureBox resistanceLabel5;
+        private System.Windows.Forms.PictureBox resistanceLabel6;
+        private System.Windows.Forms.PictureBox resistanceLabel7;
         private System.Windows.Forms.Label nameLabel;
     }
 }

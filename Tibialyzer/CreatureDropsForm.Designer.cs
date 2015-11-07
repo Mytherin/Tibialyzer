@@ -34,7 +34,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.mainImage = new Tibialyzer.TransparentPictureBox();
+            this.mainImage = new System.Windows.Forms.PictureBox();
             this.nameLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.mainImage)).BeginInit();
             this.SuspendLayout();
@@ -79,7 +79,7 @@
 
         #endregion
 
-        private TransparentPictureBox mainImage;
+        private System.Windows.Forms.PictureBox mainImage;
         private System.Windows.Forms.Label nameLabel;
 
     }

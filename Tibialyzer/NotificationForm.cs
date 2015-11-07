@@ -16,18 +16,7 @@ namespace Tibialyzer {
     public class NotificationForm : Form {
         System.Timers.Timer closeTimer = null;
         static Bitmap background_image = null;
-        protected TransparentPictureBox back_button;
-
-        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
-        private static extern IntPtr CreateRoundRectRgn
-        (
-            int nLeftRect, // x-coordinate of upper-left corner
-            int nTopRect, // y-coordinate of upper-left corner
-            int nRightRect, // x-coordinate of lower-right corner
-            int nBottomRect, // y-coordinate of lower-right corner
-            int nWidthEllipse, // height of ellipse
-            int nHeightEllipse // width of ellipse
-            );
+        protected PictureBox back_button;
 
         [DllImport("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, Int32 wMsg, bool wParam, Int32 lParam);
@@ -69,10 +58,11 @@ namespace Tibialyzer {
 
         protected void NotificationFinalize() {
             if (MainForm.mainForm.HasBack()) {
-                back_button = new TransparentPictureBox();
+                back_button = new PictureBox();
                 back_button.Location = new Point(5, 5);
                 back_button.Image = MainForm.back_image;
                 back_button.Size = new Size(63, 22);
+                back_button.BackColor = Color.Transparent;
                 back_button.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
                 back_button.Click += back_button_Click;
                 this.Controls.Add(back_button);
@@ -123,9 +113,9 @@ namespace Tibialyzer {
             }
         }
 
-        public new void Resize() {
-            Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 40, 40));
-        }
+        //public new void Resize() {
+        //    Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 40, 40));
+        //}
 
         protected void CloseForm(object sender, EventArgs e) {
             close();

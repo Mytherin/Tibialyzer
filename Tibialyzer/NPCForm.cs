@@ -20,8 +20,8 @@ namespace Tibialyzer {
 
         private void InitializeComponent() {
             this.mapBox = new System.Windows.Forms.PictureBox();
-            this.npcImage = new Tibialyzer.TransparentPictureBox();
-            this.creatureName = new Tibialyzer.TransparentLabel();
+            this.npcImage = new System.Windows.Forms.PictureBox();
+            this.creatureName = new System.Windows.Forms.Label();
             this.mapUpLevel = new System.Windows.Forms.PictureBox();
             this.mapDownLevel = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.mapBox)).BeginInit();
@@ -98,8 +98,8 @@ namespace Tibialyzer {
         }
 
         private System.Windows.Forms.PictureBox mapBox;
-        private TransparentPictureBox npcImage;
-        private TransparentLabel creatureName;
+        private System.Windows.Forms.PictureBox npcImage;
+        private System.Windows.Forms.Label creatureName;
 
         protected override bool ShowWithoutActivation {
             get { return true; }

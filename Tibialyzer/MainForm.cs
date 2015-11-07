@@ -138,7 +138,7 @@ namespace Tibialyzer {
                     if (array[i] == 0) {
                         string s = System.Text.Encoding.UTF8.GetString(buffer_array, 0, index);
                         strings.Add(s);
-                        index = 0;
+                        index = 0;      
                     } else {
                         index++;
                     }
@@ -771,6 +771,15 @@ namespace Tibialyzer {
             ShowItemView(i, buy_npcs, sell_npcs, null, comm);
         }
 
+        private void ShowListNotification(List<Command> commands, string comm) {
+            ListNotification f = new ListNotification(commands);
+
+            this.Invoke((MethodInvoker)delegate {
+                ShowNotification(f, comm);
+            });
+        }
+
+
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e) {
             notifyIcon1.Visible = false;
         }
@@ -984,6 +993,20 @@ namespace Tibialyzer {
                     if (double.TryParse(split[1], out val)) {
                         CompileSourceAndExecute("set_convert_ratio(" + val.ToString() + ", " + stackable.ToString() + ")", pyScope);
                     }
+                } else if (comp.StartsWith("recent@")) {
+                    // Show all recent commands, we show either the last 15 commands, or all commands in the last 5 minutes
+                    CompileSourceAndExecute("recent_commands = get_recent_commands()", pyScope);
+
+                    List<Command> command_list = new List<Command>();
+                    IronPython.Runtime.List result = pyScope.GetVariable("recent_commands") as IronPython.Runtime.List;
+                    foreach (object obj in result) {
+                        Command comm = new Command();
+                        comm.player = (obj as IronPython.Runtime.List)[0].ToString();
+                        comm.command = (obj as IronPython.Runtime.List)[1].ToString();
+                        command_list.Add(comm);
+                    }
+
+                    ShowListNotification(command_list, c);
                 } else if (comp.StartsWith("pickup@")) {
                     CompileSourceAndExecute("c.execute('UPDATE Items SET discard=0 WHERE LOWER(name)=?', ['" + c.Split('@')[1].Trim().ToLower().Replace("'", "\\'") + "'])", pyScope);
                     CompileSourceAndExecute("conn.commit()", pyScope);
@@ -1105,9 +1128,10 @@ namespace Tibialyzer {
                     y = y + spacing + height;
                 }
                 PictureBox image_box;
-                if (transparent) image_box = new TransparentPictureBox();
+                if (transparent) image_box = new PictureBox();
                 else image_box = new PictureBox();
                 image_box.Image = image;
+                image_box.BackColor = Color.Transparent;
                 image_box.Size = new Size((int)(image.Width * magnification), height);
                 image_box.Location = new Point(base_x + x, base_y + y);
                 image_box.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;

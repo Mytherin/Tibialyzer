@@ -47,7 +47,7 @@ namespace Tibialyzer {
             this.Size = new Size(this.Size.Width, this.Size.Height + y);
 
             foreach (Control control in this.Controls)
-                if (control is TransparentPictureBox)
+                if (control is PictureBox)
                     control.Click += openItemBox;
             this.NotificationInitialize();
             this.NotificationFinalize();

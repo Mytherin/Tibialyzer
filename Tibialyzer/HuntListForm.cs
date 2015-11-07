@@ -8,17 +8,17 @@ using System.Drawing;
 
 namespace Tibialyzer {
     class HuntListForm : NotificationForm {
-        private TransparentLabel levelLabel;
-        private TransparentLabel expLabel;
-        private TransparentLabel lootLabel;
-        private TransparentLabel cityLabel;
-        private TransparentLabel nameLabel;
+        private Label levelLabel;
+        private Label expLabel;
+        private Label lootLabel;
+        private Label cityLabel;
+        private Label nameLabel;
 
         public string header = null;
         public List<HuntingPlace> hunting_places;
 
         private static Font text_font = new Font(FontFamily.GenericSansSerif, 9, FontStyle.Bold);
-        private TransparentLabel headerLabel;
+        private Label headerLabel;
         private static Dictionary<int, Color> rating_colors;
 
         private int start_index = 0;
@@ -50,17 +50,18 @@ namespace Tibialyzer {
         }
 
         private void InitializeComponent() {
-            this.nameLabel = new Tibialyzer.TransparentLabel();
-            this.levelLabel = new Tibialyzer.TransparentLabel();
-            this.expLabel = new Tibialyzer.TransparentLabel();
-            this.lootLabel = new Tibialyzer.TransparentLabel();
-            this.cityLabel = new Tibialyzer.TransparentLabel();
-            this.headerLabel = new Tibialyzer.TransparentLabel();
+            this.nameLabel = new System.Windows.Forms.Label();
+            this.levelLabel = new System.Windows.Forms.Label();
+            this.expLabel = new System.Windows.Forms.Label();
+            this.lootLabel = new System.Windows.Forms.Label();
+            this.cityLabel = new System.Windows.Forms.Label();
+            this.headerLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // nameLabel
             // 
             this.nameLabel.AutoSize = true;
+            this.nameLabel.BackColor = System.Drawing.Color.Transparent;
             this.nameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.nameLabel.Location = new System.Drawing.Point(29, 30);
@@ -72,6 +73,7 @@ namespace Tibialyzer {
             // levelLabel
             // 
             this.levelLabel.AutoSize = true;
+            this.levelLabel.BackColor = System.Drawing.Color.Transparent;
             this.levelLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.levelLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.levelLabel.Location = new System.Drawing.Point(178, 30);
@@ -83,6 +85,7 @@ namespace Tibialyzer {
             // expLabel
             // 
             this.expLabel.AutoSize = true;
+            this.expLabel.BackColor = System.Drawing.Color.Transparent;
             this.expLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.expLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.expLabel.Location = new System.Drawing.Point(222, 30);
@@ -94,6 +97,7 @@ namespace Tibialyzer {
             // lootLabel
             // 
             this.lootLabel.AutoSize = true;
+            this.lootLabel.BackColor = System.Drawing.Color.Transparent;
             this.lootLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lootLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.lootLabel.Location = new System.Drawing.Point(256, 30);
@@ -105,6 +109,7 @@ namespace Tibialyzer {
             // cityLabel
             // 
             this.cityLabel.AutoSize = true;
+            this.cityLabel.BackColor = System.Drawing.Color.Transparent;
             this.cityLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cityLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.cityLabel.Location = new System.Drawing.Point(294, 30);
@@ -116,6 +121,7 @@ namespace Tibialyzer {
             // headerLabel
             // 
             this.headerLabel.AutoSize = true;
+            this.headerLabel.BackColor = System.Drawing.Color.Transparent;
             this.headerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.headerLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.headerLabel.Location = new System.Drawing.Point(87, 10);
@@ -157,17 +163,18 @@ namespace Tibialyzer {
             foreach (HuntingPlace h in hunting_places) {
                 if (current_index++ < start_index) continue;
                 if (current_index > start_index + max_hunts) break;
-                TransparentPictureBox picture = new TransparentPictureBox();
+                PictureBox picture = new PictureBox();
                 picture.Image = h.image;
                 picture.Size = new Size(size, size);
                 picture.SizeMode = PictureBoxSizeMode.StretchImage;
                 picture.Location = new Point(nameLabel.Location.X - size, this.nameLabel.Location.Y + size * offset + base_offset - 4);
                 picture.Click += openHuntingPlace;
                 picture.Name = h.name.ToString();
+                picture.BackColor = Color.Transparent;
                 this.Controls.Add(picture);
                 hunt_controls.Add(picture);
 
-                TransparentLabel name = new TransparentLabel();
+                Label name = new Label();
                 name.Text = h.name;
                 name.Location = new Point(nameLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
                 name.ForeColor = MainForm.label_text_color;
@@ -175,34 +182,39 @@ namespace Tibialyzer {
                 name.Font = text_font;
                 name.Click += openHuntingPlace;
                 name.Name = h.name.ToString();
+                name.BackColor = Color.Transparent;
                 this.Controls.Add(name);
                 hunt_controls.Add(name);
 
                 List<Control> hcontrols = new List<Control>();
-                TransparentLabel level = new TransparentLabel();
+                Label level = new Label();
                 level.Text = h.level == -127 ? "-" : h.level.ToString();
                 level.Location = new Point(levelLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
                 level.ForeColor = Color.SeaGreen;
+                level.BackColor = Color.Transparent;
                 hcontrols.Add(level);
 
-                TransparentLabel exp = new TransparentLabel();
-                exp.Text = h.exp_quality.ToString(); ;
+                Label exp = new Label();
+                exp.Text = h.exp_quality.ToString();
+                exp.BackColor = Color.Transparent;
                 exp.Location = new Point(expLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
                 if (rating_colors.ContainsKey(h.exp_quality))
                     exp.ForeColor = rating_colors[h.exp_quality];
                 hcontrols.Add(exp);
 
-                TransparentLabel loot = new TransparentLabel();
+                Label loot = new Label();
                 loot.Text = h.loot_quality.ToString();
+                loot.BackColor = Color.Transparent;
                 loot.Location = new Point(lootLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
                 if (rating_colors.ContainsKey(h.loot_quality))
                     loot.ForeColor = rating_colors[h.loot_quality];
                 hcontrols.Add(loot);
 
-                TransparentLabel city = new TransparentLabel();
+                Label city = new Label();
                 city.Text = h.city;
                 city.Location = new Point(cityLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
                 city.ForeColor = MainForm.label_text_color;
+                city.BackColor = Color.Transparent;
                 hcontrols.Add(city);
 
                 foreach (Control c in hcontrols) {
@@ -221,19 +233,21 @@ namespace Tibialyzer {
             // if there are too many hunts to be displayed on one page, add 'prev' and 'next' buttons
             if (hunting_places.Count > max_hunts) {
                 if (start_index > 0) {
-                    TransparentPictureBox prevpage = new TransparentPictureBox();
+                    PictureBox prevpage = new PictureBox();
                     prevpage.Location = new Point(10, total_yoffset);
                     prevpage.Size = new Size(97, 23);
                     prevpage.Image = MainForm.prevpage_image;
+                    prevpage.BackColor = Color.Transparent;
                     prevpage.SizeMode = PictureBoxSizeMode.StretchImage;
                     prevpage.Click += prevpage_Click;
                     this.Controls.Add(prevpage);
                     hunt_controls.Add(prevpage);
                 }
                 if (start_index + max_hunts < hunting_places.Count) {
-                    TransparentPictureBox nextpage = new TransparentPictureBox();
+                    PictureBox nextpage = new PictureBox();
                     nextpage.Location = new Point(this.Size.Width - 108, total_yoffset);
                     nextpage.Size = new Size(98, 23);
+                    nextpage.BackColor = Color.Transparent;
                     nextpage.Image = MainForm.nextpage_image;
                     nextpage.SizeMode = PictureBoxSizeMode.StretchImage;
                     nextpage.Click += nextpage_Click;

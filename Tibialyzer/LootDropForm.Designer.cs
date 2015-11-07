@@ -38,7 +38,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.totalValueLabel = new TransparentLabel();
+            this.totalValueLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // totalValueLabel

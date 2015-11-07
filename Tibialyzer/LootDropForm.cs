@@ -161,7 +161,7 @@ namespace Tibialyzer
                     int xoffset = (creature_size.Width - creature.image.Width) / 2;
                     int yoffset = (creature_size.Height - creature.image.Height) / 2;
                 
-                    TransparentLabel count = new TransparentLabel();
+                    Label count = new Label();
                     count.Text = creature.kills.ToString() + "x";
                     count.Font = loot_font;
                     count.Size = new Size(1, 10);
@@ -172,7 +172,7 @@ namespace Tibialyzer
 
                     int measured_size = (int)count.CreateGraphics().MeasureString(count.Text, count.Font).Width;
                     int width = Math.Max(measured_size, creature.image.Width);
-                    TransparentPictureBox picture_box = new TransparentPictureBox();
+                    PictureBox picture_box = new PictureBox();
                     picture_box.Location = new System.Drawing.Point(base_x + x + xoffset, base_y + y + yoffset + (creature_size.Height - creature.image.Height) / 2);
                     picture_box.Name = creature.name;
                     picture_box.Size = new System.Drawing.Size(creature.image.Width, creature.image.Height);
