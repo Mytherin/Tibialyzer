@@ -22,6 +22,10 @@ namespace Tibialyzer
         private static Font text_font = new Font(FontFamily.GenericSansSerif, 9, FontStyle.Bold);
         private TransparentLabel headerLabel;
         private static Dictionary<int, Color> rating_colors;
+
+        private int start_index = 0;
+        private int max_hunts = 15;
+        private List<Control> hunt_controls = new List<Control>();
     
         public HuntListForm()
         {
@@ -146,21 +150,24 @@ namespace Tibialyzer
 
         }
 
-        private void CreatureHuntForm_Load(object sender, EventArgs e)
+        private int RefreshHuntingPlaces()
         {
-            this.NotificationInitialize();
-
-            if (header != null)
+            foreach(Control c in hunt_controls)
             {
-                headerLabel.Text = header;
+                this.Controls.Remove(c);
+                c.Dispose();
             }
+            hunt_controls.Clear();
 
-            this.SuspendLayout();
             int offset = 0;
             int base_offset = 20;
             int size = 24;
-            foreach(HuntingPlace h in hunting_places)
+            int current_index = -1;
+
+            foreach (HuntingPlace h in hunting_places)
             {
+                if (current_index++ < start_index) continue;
+                if (current_index > start_index + max_hunts) break;
                 TransparentPictureBox picture = new TransparentPictureBox();
                 picture.Image = h.image;
                 picture.Size = new Size(size, size);
@@ -169,7 +176,7 @@ namespace Tibialyzer
                 picture.Click += openHuntingPlace;
                 picture.Name = h.name.ToString();
                 this.Controls.Add(picture);
-
+                hunt_controls.Add(picture);
 
                 TransparentLabel name = new TransparentLabel();
                 name.Text = h.name;
@@ -180,6 +187,7 @@ namespace Tibialyzer
                 name.Click += openHuntingPlace;
                 name.Name = h.name.ToString();
                 this.Controls.Add(name);
+                hunt_controls.Add(name);
 
                 List<Control> hcontrols = new List<Control>();
                 TransparentLabel level = new TransparentLabel();
@@ -214,16 +222,78 @@ namespace Tibialyzer
                     c.Size = new Size(1, 1);
                     c.AutoSize = true;
                     c.Font = text_font;
-                    c.Click += openHuntingPlace;   
+                    c.Click += openHuntingPlace;
                     this.Controls.Add(c);
+                    hunt_controls.Add(c);
                 }
 
                 offset++;
             }
-            this.Size = new Size(this.Size.Width, this.nameLabel.Location.Y + this.nameLabel.Size.Height + offset * size + base_offset);
-            base.NotificationFinalize();
-            this.ResumeLayout(false);
+            int total_yoffset = this.nameLabel.Location.Y + this.nameLabel.Size.Height + offset * size + base_offset;
+            // if there are too many hunts to be displayed on one page, add 'prev' and 'next' buttons
+            if (hunting_places.Count > max_hunts)
+            {
+                if (start_index > 0)
+                {
+                    TransparentPictureBox prevpage = new TransparentPictureBox();
+                    prevpage.Location = new Point(10, total_yoffset);
+                    prevpage.Size = new Size(97, 23);
+                    prevpage.Image = MainForm.prevpage_image;
+                    prevpage.SizeMode = PictureBoxSizeMode.StretchImage;
+                    prevpage.Click += prevpage_Click;
+                    this.Controls.Add(prevpage);
+                    hunt_controls.Add(prevpage);
+                }
+                if (start_index + max_hunts < hunting_places.Count)
+                {
+                    TransparentPictureBox nextpage = new TransparentPictureBox();
+                    nextpage.Location = new Point(this.Size.Width - 108, total_yoffset);
+                    nextpage.Size = new Size(98, 23);
+                    nextpage.Image = MainForm.nextpage_image;
+                    nextpage.SizeMode = PictureBoxSizeMode.StretchImage;
+                    nextpage.Click += nextpage_Click;
+                    this.Controls.Add(nextpage);
+                    hunt_controls.Add(nextpage);
+                }
+
+                total_yoffset += 23 + 10;
+            }
+            return total_yoffset;
         }
+
+        private void CreatureHuntForm_Load(object sender, EventArgs e)
+        {
+            this.SuspendForm();
+            this.NotificationInitialize();
+
+            if (header != null)
+            {
+                headerLabel.Text = header;
+            }
+
+            int total_yoffset = RefreshHuntingPlaces();
+
+            this.Size = new Size(this.Size.Width, total_yoffset);
+            base.NotificationFinalize();
+            this.ResumeForm();
+        }
+
+        void prevpage_Click(object sender, EventArgs e)
+        {
+            start_index = Math.Max(start_index - max_hunts, 0);
+            this.SuspendForm();
+            RefreshHuntingPlaces();
+            this.ResumeForm();
+        }
+
+        void nextpage_Click(object sender, EventArgs e)
+        {
+            start_index += max_hunts;
+            this.SuspendForm();
+            RefreshHuntingPlaces();
+            this.ResumeForm();
+        }
+
 
         
         private bool clicked = false;
