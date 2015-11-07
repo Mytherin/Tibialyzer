@@ -36,7 +36,7 @@ def search_chunk(chunk, item_drops,exp,damage_dealt,commands):
                 if t not in item_drops: item_drops[t] = list()
                 list.append(item_drops[t], log_message)
             else:
-                msg_split = log_message[6:].split(':')
+                msg_split = log_message[6:].split(':', 1)
                 command = msg_split[1]
                 if '@' not in command: continue
                 split_again = msg_split[0].split(' ')
