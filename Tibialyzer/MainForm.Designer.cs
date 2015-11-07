@@ -122,6 +122,7 @@
             this.closeButton = new System.Windows.Forms.Label();
             this.minimizeButton = new System.Windows.Forms.Label();
             this.minimizeIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.loadTimerImage = new System.Windows.Forms.PictureBox();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             this.creatureTab.SuspendLayout();
@@ -132,12 +133,14 @@
             this.richNotificationsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.commandListTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.loadTimerImage)).BeginInit();
             this.SuspendLayout();
             // 
             // notifyIcon1
             // 
             this.notifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.notifyIcon1.Text = "notifyIcon1";
+            this.notifyIcon1.Visible = true;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             // 
             // tabControl1
@@ -261,7 +264,7 @@
             this.creatureTab.Location = new System.Drawing.Point(4, 22);
             this.creatureTab.Name = "creatureTab";
             this.creatureTab.Padding = new System.Windows.Forms.Padding(3);
-            this.creatureTab.Size = new System.Drawing.Size(642, 499);
+            this.creatureTab.Size = new System.Drawing.Size(642, 497);
             this.creatureTab.TabIndex = 1;
             this.creatureTab.Text = "Creatures";
             this.creatureTab.UseVisualStyleBackColor = true;
@@ -271,7 +274,7 @@
             // 
             this.creaturePanel.AutoScroll = true;
             this.creaturePanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.creaturePanel.Location = new System.Drawing.Point(3, 38);
+            this.creaturePanel.Location = new System.Drawing.Point(3, 36);
             this.creaturePanel.Name = "creaturePanel";
             this.creaturePanel.Size = new System.Drawing.Size(636, 458);
             this.creaturePanel.TabIndex = 2;
@@ -301,7 +304,7 @@
             this.itemTab.Controls.Add(this.itemSearchBox);
             this.itemTab.Location = new System.Drawing.Point(4, 22);
             this.itemTab.Name = "itemTab";
-            this.itemTab.Size = new System.Drawing.Size(642, 499);
+            this.itemTab.Size = new System.Drawing.Size(642, 497);
             this.itemTab.TabIndex = 2;
             this.itemTab.Text = "Items";
             this.itemTab.UseVisualStyleBackColor = true;
@@ -311,7 +314,7 @@
             // 
             this.itemPanel.AutoScroll = true;
             this.itemPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.itemPanel.Location = new System.Drawing.Point(0, 38);
+            this.itemPanel.Location = new System.Drawing.Point(0, 36);
             this.itemPanel.Name = "itemPanel";
             this.itemPanel.Size = new System.Drawing.Size(642, 461);
             this.itemPanel.TabIndex = 5;
@@ -347,7 +350,7 @@
             this.settingsTab.Controls.Add(this.richNotificationsPanel);
             this.settingsTab.Location = new System.Drawing.Point(4, 22);
             this.settingsTab.Name = "settingsTab";
-            this.settingsTab.Size = new System.Drawing.Size(642, 499);
+            this.settingsTab.Size = new System.Drawing.Size(642, 497);
             this.settingsTab.TabIndex = 3;
             this.settingsTab.Text = "Settings";
             this.settingsTab.UseVisualStyleBackColor = true;
@@ -680,7 +683,7 @@
             this.commandListTab.Controls.Add(this.explainLabel);
             this.commandListTab.Location = new System.Drawing.Point(4, 22);
             this.commandListTab.Name = "commandListTab";
-            this.commandListTab.Size = new System.Drawing.Size(642, 499);
+            this.commandListTab.Size = new System.Drawing.Size(642, 497);
             this.commandListTab.TabIndex = 4;
             this.commandListTab.Text = "Command List";
             this.commandListTab.UseVisualStyleBackColor = true;
@@ -1168,12 +1171,24 @@
             this.minimizeIcon.Text = "Tibialyzer";
             this.minimizeIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.minimizeIcon_MouseDoubleClick);
             // 
+            // loadTimerImage
+            // 
+            this.loadTimerImage.BackColor = System.Drawing.Color.Transparent;
+            this.loadTimerImage.Enabled = false;
+            this.loadTimerImage.Location = new System.Drawing.Point(558, 1);
+            this.loadTimerImage.Name = "loadTimerImage";
+            this.loadTimerImage.Size = new System.Drawing.Size(20, 20);
+            this.loadTimerImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.loadTimerImage.TabIndex = 3;
+            this.loadTimerImage.TabStop = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.ClientSize = new System.Drawing.Size(650, 525);
+            this.Controls.Add(this.loadTimerImage);
             this.Controls.Add(this.minimizeButton);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.tabControl1);
@@ -1200,6 +1215,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.commandListTab.ResumeLayout(false);
             this.commandListTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.loadTimerImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1304,6 +1320,7 @@
         private System.Windows.Forms.Label closeButton;
         private System.Windows.Forms.Label minimizeButton;
         private System.Windows.Forms.NotifyIcon minimizeIcon;
+        private System.Windows.Forms.PictureBox loadTimerImage;
     }
 }
 

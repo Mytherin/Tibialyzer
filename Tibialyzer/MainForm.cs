@@ -95,6 +95,7 @@ namespace Tibialyzer {
             bw.DoWork += bw_DoWork;
             bw.RunWorkerAsync();
 
+            this.loadTimerImage.Image = new Bitmap(@"Images\load.gif");
         }
 
         void makeDraggable(Control.ControlCollection controls) {
@@ -109,12 +110,31 @@ namespace Tibialyzer {
             }
         }
 
+        System.Timers.Timer circleTimer = null;
         void bw_DoWork(object sender, DoWorkEventArgs e) {
             ScriptScope pyScope = CreateNewScope();
             while (keep_working) {
-                ReadMem(pyScope);
+                if (circleTimer == null) {
+                    circleTimer = new System.Timers.Timer(1000);
+                    circleTimer.Elapsed += circleTimer_Elapsed;
+                    circleTimer.Enabled = true;
+                }
+                if (ReadMem(pyScope)) {
+                    circleTimer.Dispose();
+                    circleTimer = null;
+                    this.BeginInvoke((MethodInvoker)delegate {
+                        this.loadTimerImage.Enabled = true;
+                    });
+                }
             }
         }
+
+        void circleTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
+            this.Invoke((MethodInvoker)delegate {
+                this.loadTimerImage.Enabled = false;
+            });
+        }
+
 
         public static string ToTitle(string str) {
             return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(str);
@@ -242,7 +262,7 @@ namespace Tibialyzer {
         [DllImport("kernel32.dll", SetLastError = true)]
         static extern int VirtualQueryEx(IntPtr hProcess, IntPtr lpAddress, out MEMORY_BASIC_INFORMATION lpBuffer, uint dwLength);
 
-        private void ReadMemory(ScriptScope pyScope) {
+        private bool ReadMemory(ScriptScope pyScope) {
             CompileSourceAndExecute(
                             "item_drops = dict()\n" +
                             "exp = dict()\n" +
@@ -263,13 +283,14 @@ namespace Tibialyzer {
             Process[] processes = Process.GetProcessesByName("Tibia");
             if (processes.Length == 0) {
                 Thread.Sleep(1000);
-                return;
+                return false;
             }
             Process process = processes[0];
             IntPtr processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
             MEMORY_BASIC_INFORMATION mem_basic_info = new MEMORY_BASIC_INFORMATION();
             int bytesRead = 0;  // number of bytes read with ReadProcessMemory
 
+            //DateTime x = DateTime.Now;
             while (proc_min_address_l < proc_max_address_l) {
                 // 28 = sizeof(MEMORY_BASIC_INFORMATION)
                 VirtualQueryEx(processHandle, proc_min_address, out mem_basic_info, 28);
@@ -280,11 +301,10 @@ namespace Tibialyzer {
 
                     // read everything in the buffer above
                     ReadProcessMemory((int)processHandle, mem_basic_info.BaseAddress, buffer, mem_basic_info.RegionSize, ref bytesRead);
-
                     List<string> strings = FindTimestamps(buffer);
                     if (strings.Count > 0) {
                         pyScope.SetVariable("chunk", strings);
-                        CompileSourceAndExecute("search_chunk(chunk, item_drops, exp, damage_dealt, commands, urls)", pyScope);
+                        CompileSourceAndExecute("useful = search_chunk(chunk, item_drops, exp, damage_dealt, commands, urls)", pyScope);
                     }
                 }
 
@@ -292,7 +312,9 @@ namespace Tibialyzer {
                 proc_min_address_l += mem_basic_info.RegionSize;
                 proc_min_address = new IntPtr(proc_min_address_l);
             }
+            //Console.WriteLine((DateTime.Now - x).TotalMilliseconds);
             process.Dispose();
+            return true;
         }
 
         public static int GetInteger(IronPython.Runtime.List list, int index) {
@@ -791,8 +813,8 @@ namespace Tibialyzer {
             notifyIcon1.Visible = false;
         }
 
-        private void ReadMem(ScriptScope pyScope) {
-            ReadMemory(pyScope);
+        private bool ReadMem(ScriptScope pyScope) {
+            if (!ReadMemory(pyScope)) return false;
             ExecuteFile("parse_logresults.py", pyScope);
             float exph = pyScope.GetVariable<float>("exph");
             IronPython.Runtime.PythonDictionary damage = pyScope.GetVariable("dps") as IronPython.Runtime.PythonDictionary;
@@ -866,7 +888,7 @@ namespace Tibialyzer {
                     foreach (KeyValuePair<object, object> kvp in damage) {
                         dps_dictionary.Add(kvp.Key.ToString(), (int)(float.Parse(kvp.Value.ToString())));
                     }
-                    ShowDamageMeter(dps_dictionary, parameter, screenshot_path);
+                    ShowDamageMeter(dps_dictionary, c, parameter, screenshot_path);
                 } else if (comp.StartsWith("exp@")) {
                     ShowSimpleNotification("Experience", "Currently gaining " + ((int)exph).ToString() + " experience an hour.", tibia_image);
                 } else if (comp.StartsWith("loot@") || comp.StartsWith("clipboard@")) {
@@ -1135,6 +1157,7 @@ namespace Tibialyzer {
                     }
                 }
             }
+            return true;
         }
 
         public const int WM_NCLBUTTONDOWN = 0xA1;

@@ -56,6 +56,10 @@ namespace Tibialyzer {
             }
         }
 
+        protected void RegisterForClose(Control c) {
+            c.Click += c_Click;
+        }
+
         protected void NotificationFinalize() {
             if (MainForm.mainForm.HasBack()) {
                 back_button = new PictureBox();

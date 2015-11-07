@@ -22,6 +22,7 @@ seen_logs = set()
 start_location = 0
 def search_chunk(chunk, item_drops,exp,damage_dealt,commands,urls):
     global seen_logs
+    useful = False
     latest = [x.split(':') for x in get_latest_timestamps(5, ignore_stamp)]
     latest = [int(x[0]) * 60 + int(x[1]) for x in latest]
     for log_message in chunk:
@@ -36,6 +37,7 @@ def search_chunk(chunk, item_drops,exp,damage_dealt,commands,urls):
                 seen_logs = seen_logs.union(log_message)
                 if t not in item_drops: item_drops[t] = list()
                 list.append(item_drops[t], log_message)
+                useful = True
             else:
                 msg_split = log_message[6:].split(': ', 1)
                 command = msg_split[1]
@@ -45,6 +47,7 @@ def search_chunk(chunk, item_drops,exp,damage_dealt,commands,urls):
                     if '[' in sss: break
                     player = (player + " " if player != "" else "") + sss
                 if player == 'http' or player == 'https': continue
+                useful = True
                 if '@' in command:
                     if t not in commands: commands[t] = list()
                     list.append(commands[t], [player, command])
@@ -56,12 +59,14 @@ def search_chunk(chunk, item_drops,exp,damage_dealt,commands,urls):
                 e = int(log_message[17:].split(' ')[0])
                 if t not in exp: exp[t] = e
                 else: exp[t] = exp[t] + e
+                useful = True
             except: pass
         else:
             split = log_message.split(' ')
             if 'hitpoints' in split:
                 try: d = int(split[split.index('hitpoints') - 1])
                 except: continue
+                useful = True
                 if log_message[-12:] == 'your attack.': player = 'You'
                 else: 
                     player = None
@@ -74,6 +79,8 @@ def search_chunk(chunk, item_drops,exp,damage_dealt,commands,urls):
                 if log_message[6:19] == 'You advanced ' and 'level' in log_message.lower() and log_message[-1] == '.' and log_message not in level_advances:
                     list.append(level_advances, log_message)
                     list.append(new_advances, log_message)
+                    useful = True
+    return useful
 
 
 
