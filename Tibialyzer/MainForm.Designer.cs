@@ -119,6 +119,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.explainLabel = new System.Windows.Forms.Label();
+            this.closeButton = new System.Windows.Forms.Label();
+            this.minimizeButton = new System.Windows.Forms.Label();
+            this.minimizeIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             this.creatureTab.SuspendLayout();
@@ -135,7 +138,6 @@
             // 
             this.notifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.notifyIcon1.Text = "notifyIcon1";
-            this.notifyIcon1.Visible = true;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             // 
             // tabControl1
@@ -145,13 +147,12 @@
             this.tabControl1.Controls.Add(this.itemTab);
             this.tabControl1.Controls.Add(this.settingsTab);
             this.tabControl1.Controls.Add(this.commandListTab);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tabControl1.Location = new System.Drawing.Point(0, 2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(650, 525);
+            this.tabControl1.Size = new System.Drawing.Size(650, 523);
             this.tabControl1.TabIndex = 0;
-            this.tabControl1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
             // 
             // mainTab
             // 
@@ -166,7 +167,7 @@
             this.mainTab.Location = new System.Drawing.Point(4, 22);
             this.mainTab.Name = "mainTab";
             this.mainTab.Padding = new System.Windows.Forms.Padding(3);
-            this.mainTab.Size = new System.Drawing.Size(642, 499);
+            this.mainTab.Size = new System.Drawing.Size(642, 497);
             this.mainTab.TabIndex = 0;
             this.mainTab.Text = "Main";
             this.mainTab.UseVisualStyleBackColor = true;
@@ -1128,14 +1129,56 @@
             this.explainLabel.TabIndex = 0;
             this.explainLabel.Text = "creature@<name>";
             // 
+            // closeButton
+            // 
+            this.closeButton.AutoSize = true;
+            this.closeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
+            this.closeButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.closeButton.Location = new System.Drawing.Point(616, 2);
+            this.closeButton.Name = "closeButton";
+            this.closeButton.Padding = new System.Windows.Forms.Padding(8, 1, 8, 1);
+            this.closeButton.Size = new System.Drawing.Size(32, 17);
+            this.closeButton.TabIndex = 1;
+            this.closeButton.Text = "X";
+            this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
+            this.closeButton.MouseEnter += new System.EventHandler(this.closeButton_MouseEnter);
+            this.closeButton.MouseLeave += new System.EventHandler(this.closeButton_MouseLeave);
+            // 
+            // minimizeButton
+            // 
+            this.minimizeButton.AutoSize = true;
+            this.minimizeButton.BackColor = System.Drawing.Color.Transparent;
+            this.minimizeButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.minimizeButton.Location = new System.Drawing.Point(584, 2);
+            this.minimizeButton.Name = "minimizeButton";
+            this.minimizeButton.Padding = new System.Windows.Forms.Padding(8, 1, 8, 1);
+            this.minimizeButton.Size = new System.Drawing.Size(28, 17);
+            this.minimizeButton.TabIndex = 2;
+            this.minimizeButton.Text = "-";
+            this.minimizeButton.Click += new System.EventHandler(this.minimizeButton_Click);
+            this.minimizeButton.MouseEnter += new System.EventHandler(this.minimizeButton_MouseEnter);
+            this.minimizeButton.MouseLeave += new System.EventHandler(this.minimizeButton_MouseLeave);
+            // 
+            // minimizeIcon
+            // 
+            this.minimizeIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.minimizeIcon.BalloonTipText = "Tibialyzer is now minimized.";
+            this.minimizeIcon.BalloonTipTitle = "Tibialyzer";
+            this.minimizeIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("minimizeIcon.Icon")));
+            this.minimizeIcon.Text = "Tibialyzer";
+            this.minimizeIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.minimizeIcon_MouseDoubleClick);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.ClientSize = new System.Drawing.Size(650, 525);
+            this.Controls.Add(this.minimizeButton);
+            this.Controls.Add(this.closeButton);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Form1";
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
@@ -1158,6 +1201,7 @@
             this.commandListTab.ResumeLayout(false);
             this.commandListTab.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -1257,6 +1301,9 @@
         private System.Windows.Forms.Button stackableConvertApply;
         private System.Windows.Forms.TextBox stackableConvertTextBox;
         private System.Windows.Forms.Label label53;
+        private System.Windows.Forms.Label closeButton;
+        private System.Windows.Forms.Label minimizeButton;
+        private System.Windows.Forms.NotifyIcon minimizeIcon;
     }
 }
 

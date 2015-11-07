@@ -45,6 +45,7 @@ namespace Tibialyzer {
         public string priority_command = null;
         public List<string> new_names = null;
         private bool prevent_settings_update = false;
+        private bool minimize_notification = true;
         public int notification_seconds = 20;
         public bool allow_extensions = true;
         public bool copy_advances = true;
@@ -72,6 +73,10 @@ namespace Tibialyzer {
             for (int i = 0; i < 10; i++) {
                 image_numbers[i] = System.Drawing.Image.FromFile(@"Images\" + i.ToString() + ".png");
             }
+            Label fff = new Label();
+            fff.Text = "X";
+            fff.Location = new Point(this.Size.Width - 32, 8);
+            this.Controls.Add(fff);
 
             if (Directory.Exists("Extensions")) {
                 string[] files = Directory.GetFiles("Extensions");
@@ -94,6 +99,7 @@ namespace Tibialyzer {
 
         void makeDraggable(Control.ControlCollection controls) {
             foreach (Control c in controls) {
+                if (c == this.closeButton || c == this.minimizeButton) continue;
                 if (c is Label || c is Panel) {
                     c.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
                 }
@@ -863,8 +869,9 @@ namespace Tibialyzer {
                     ShowDamageMeter(dps_dictionary, parameter, screenshot_path);
                 } else if (comp.StartsWith("exp@")) {
                     ShowSimpleNotification("Experience", "Currently gaining " + ((int)exph).ToString() + " experience an hour.", tibia_image);
-                } else if (comp.StartsWith("loot@")) {
+                } else if (comp.StartsWith("loot@") || comp.StartsWith("clipboard@")) {
                     string[] splits = c.Split('@');
+                    bool clipboard = comp.StartsWith("clipboard@");
                     string screenshot_path = "";
                     string parameter = splits[1].Trim().ToLower().Replace("'", "\\'");
                     if (parameter == "screenshot" && splits.Length > 2) {
@@ -888,7 +895,26 @@ namespace Tibialyzer {
                         i.drops = int.Parse((obj as IronPython.Runtime.List)[1].ToString());
                         items.Add(i);
                     }
-                    ShowLootDrops(creatures, items, c, screenshot_path);
+                    
+                    // Copy loot message to the clipboard
+                    // clipboard@<creature> copies the loot of a specific creature to the clipboard
+                    // clipboard@ copies all loot to the clipboard
+                    if (clipboard) {
+                        string loot_string;
+                        if (creatures.Count == 1) {
+                            loot_string = "Total Loot of " + creatures[0].kills + " " + creatures[0].name + (creatures[0].kills > 1 ? "s" : "") + ": ";
+                        } else {
+                            loot_string = "Total Loot of " + creatures.Sum(o => o.kills) + " Kills: ";
+                        }
+                        foreach (Item item in items) {
+                            loot_string += item.drops + " " + item.name + (item.drops > 1 ? "s" : "") + ", ";
+                        }
+                        loot_string = loot_string.Substring(0, loot_string.Length - 2) + ".";
+                        this.Invoke((MethodInvoker)delegate {
+                            Clipboard.SetText(loot_string);
+                        });
+                    }
+                    else ShowLootDrops(creatures, items, c, screenshot_path);
                 } else if (comp.StartsWith("reset@")) {
                     CompileSourceAndExecute("reset_loot()", pyScope);
                 } else if (comp.StartsWith("drop@")) {
@@ -1343,6 +1369,44 @@ namespace Tibialyzer {
             procStartInfo.CreateNoWindow = true;
             procStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             System.Diagnostics.Process.Start(procStartInfo);
+        }
+
+        private void closeButton_Click(object sender, EventArgs e) {
+            this.Close();
+        }
+
+        private void minimizeButton_Click(object sender, EventArgs e) {
+            this.Hide();
+            this.minimizeIcon.Visible = true;
+            if (minimize_notification) {
+                this.minimize_notification = false;
+                this.minimizeIcon.ShowBalloonTip(3000);
+            }
+        }
+
+        private static Color hoverColor = Color.FromArgb(200, 55, 55);
+        private static Color normalColor = Color.FromArgb(172, 24, 24);
+        private void closeButton_MouseEnter(object sender, EventArgs e) {
+            (sender as Control).BackColor = hoverColor;
+        }
+
+        private void closeButton_MouseLeave(object sender, EventArgs e) {
+            (sender as Control).BackColor = normalColor;
+        }
+
+        private static Color minimizeHoverColor = Color.FromArgb(191, 191, 191);
+        private static Color minimizeNormalColor = Color.Transparent;
+        private void minimizeButton_MouseEnter(object sender, EventArgs e) {
+            (sender as Control).BackColor = minimizeHoverColor;
+        }
+
+        private void minimizeButton_MouseLeave(object sender, EventArgs e) {
+            (sender as Control).BackColor = minimizeNormalColor;
+        }
+
+        private void minimizeIcon_MouseDoubleClick(object sender, MouseEventArgs e) {
+            this.minimizeIcon.Visible = false;
+            this.Show();
         }
     }
 }
