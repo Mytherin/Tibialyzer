@@ -37,6 +37,8 @@ namespace Tibialyzer {
         public static Image star_image = null;
         public static Image mapup_image = null;
         public static Image mapdown_image = null;
+        public static Image checkmark_yes = null;
+        public static Image checkmark_no = null;
         private bool keep_working = true;
         private static string database_file = @"Database\Database.db";
         private static string settings_file = @"Database\settings.txt";
@@ -71,6 +73,8 @@ namespace Tibialyzer {
             tibia_image = Image.FromFile(@"Images\tibia.png");
             mapup_image = Image.FromFile(@"Images\mapup.png");
             mapdown_image = Image.FromFile(@"Images\mapdown.png");
+            checkmark_no = Image.FromFile(@"Images\checkmark-no.png");
+            checkmark_yes = Image.FromFile(@"Images\checkmark-yes.png");
             item_background = System.Drawing.Image.FromFile(@"Images\item_background.png");
             for (int i = 0; i < 10; i++) {
                 image_numbers[i] = System.Drawing.Image.FromFile(@"Images\" + i.ToString() + ".png");
@@ -411,6 +415,7 @@ namespace Tibialyzer {
             c.paralysable = GetBoolean(list, 18);
             c.senseinvis = GetBoolean(list, 19);
             c.image = GetImage(list, 20);
+            c.abilities = list.Count > 21 && list[21] != null ? list[21].ToString() : "";
             if (c.image == null) return null;
             return c;
         }
@@ -606,8 +611,9 @@ namespace Tibialyzer {
             item.discard = GetBoolean(itemList, 8);
             item.convert_to_gold = GetBoolean(itemList, 9);
             item.look_text = itemList[10] != null ? itemList[10].ToString() : "Unknown";
-            if (itemList.Count > 11) {
-                item.current_npc_value = GetInteger(itemList, 11);
+            int value;
+            if (itemList.Count > 11 && itemList[11] != null && int.TryParse(itemList[11].ToString(), out value)) {
+                item.current_npc_value = value;
             }
             return item;
         }

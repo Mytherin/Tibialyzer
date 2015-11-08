@@ -63,7 +63,7 @@ namespace Tibialyzer {
             int dropbar_height = 6; //height of dropbar
             int item_spacing = 6; //spacing between items
             int base_x = 110;
-            int base_y = 11;
+            int base_y = this.mainImage.Location.Y;
             int max_x = 250;
             int max_y = base_y + 134;
 
@@ -78,18 +78,18 @@ namespace Tibialyzer {
             int x = item_spacing, y = item_spacing;
             List<ItemDrop> sorted_items = creature.itemdrops.OrderByDescending(o => o.percentage).ToList();
             foreach (ItemDrop drop in sorted_items) {
-                DisplayItem(drop, base_x, base_y, x, y, item_size, droprate_tooltip, dropbar_height);
-                x += item_size.Width + item_spacing;
                 if (x > (max_x - item_size.Width - item_spacing)) {
                     x = item_spacing;
                     y += item_size.Height + item_spacing;
                 }
+                DisplayItem(drop, base_x, base_y, x, y, item_size, droprate_tooltip, dropbar_height);
+                x += item_size.Width + item_spacing;
             }
 
             if (creature.skin != null) {
                 ItemDrop skinDrop = new ItemDrop();
                 PictureBox picture_box = new PictureBox();
-                picture_box.Location = new System.Drawing.Point(20, this.nameLabel.Location.Y + this.nameLabel.Size.Height + 10);
+                picture_box.Location = new System.Drawing.Point(20, this.statsButton.Location.Y + this.statsButton.Size.Height + 10);
                 picture_box.Name = creature.skin.skin_item.name;
                 picture_box.Size = new System.Drawing.Size(item_size.Width, item_size.Height);
                 picture_box.TabIndex = 1;
@@ -102,13 +102,12 @@ namespace Tibialyzer {
 
                 skinDrop.item = creature.skin.drop_item;
                 skinDrop.percentage = creature.skin.percentage;
-                DisplayItem(skinDrop, 20 + item_size.Width + item_spacing, this.nameLabel.Location.Y + this.nameLabel.Size.Height + 10, 0, 0, item_size, droprate_tooltip, dropbar_height, "Skin rate of ");
-                if (y < this.nameLabel.Location.Y + this.nameLabel.Size.Height) y = this.nameLabel.Location.Y + this.nameLabel.Size.Height;
+                DisplayItem(skinDrop, 20 + item_size.Width + item_spacing, this.statsButton.Location.Y + this.statsButton.Size.Height + 10, 0, 0, item_size, droprate_tooltip, dropbar_height, "Skin rate of ");
+                if (y < this.statsButton.Location.Y + this.statsButton.Size.Height) y = this.statsButton.Location.Y + this.statsButton.Size.Height;
             }
 
             if (this.Height < (y + item_size.Height * 2 + item_spacing)) {
                 this.Height = y + item_size.Height * 2 + item_spacing;
-                //this.Resize();
             }
             this.Refresh();
         }
@@ -126,6 +125,7 @@ namespace Tibialyzer {
             base.NotificationInitialize();
             // load image from the creature
             this.mainImage.Image = this.creature.image;
+            this.statsButton.Name = this.creature.name.ToLower();
             // set background of actual form to transparent
             this.BackColor = MainForm.background_color;
             this.Opacity = MainForm.opacity;
@@ -150,6 +150,11 @@ namespace Tibialyzer {
             this.ResumeForm();
         }
 
-
+        private void statsButton_Click(object sender, EventArgs e) {
+            if (clicked) return;
+            clicked = true;
+            this.ReturnFocusToTibia();
+            MainForm.mainForm.priority_command = "stats@" + (sender as Control).Name;
+        }
     }
 }

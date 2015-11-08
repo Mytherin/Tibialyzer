@@ -187,6 +187,7 @@ namespace Tibialyzer {
         public int res_lifedrain;
         public bool paralysable;
         public bool senseinvis;
+        public string abilities;
         public Image image;
         public List<ItemDrop> itemdrops;
         public Skin skin;

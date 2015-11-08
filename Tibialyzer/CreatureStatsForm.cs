@@ -54,17 +54,18 @@ namespace Tibialyzer {
 
         private void AddResistances(List<Resistance> resistances) {
             List<Resistance> sorted_list = resistances.OrderByDescending(o => o.resistance).ToList();
+            ToolTip resistance_tooltip = new ToolTip();
+            resistance_tooltip.AutoPopDelay = 60000;
+            resistance_tooltip.InitialDelay = 500;
+            resistance_tooltip.ReshowDelay = 500;
+            resistance_tooltip.ShowAlways = true;
+            resistance_tooltip.UseFading = true;
+            
             int i = 0;
             foreach (Resistance resistance in sorted_list) {
-                // add a tooltip that displays the actual resistance when you mouseover
-                ToolTip resistance_tooltip = new ToolTip();
-                resistance_tooltip.AutoPopDelay = 60000;
-                resistance_tooltip.InitialDelay = 500;
-                resistance_tooltip.ReshowDelay = 500;
-                resistance_tooltip.ShowAlways = true;
-                resistance_tooltip.UseFading = true;
                 resistance_tooltip.SetToolTip(resistance_controls[i], "Damage taken from " + resistance.name + ": " + resistance.resistance.ToString() + "%");
 
+                // add a tooltip that displays the actual resistance when you mouseover
                 Bitmap bitmap = new Bitmap(19 + resistance.resistance, 19);
                 Graphics gr = Graphics.FromImage(bitmap);
                 using (Brush brush = new SolidBrush(resistance_colors[resistance.name])) {
@@ -82,6 +83,7 @@ namespace Tibialyzer {
         private void CreatureStatsForm_Load(object sender, EventArgs e) {
             this.SuspendForm();
             int horizontal, left, right;
+            this.statsButton.Name = creature.name.ToLower();
             int health = creature.health;
             int experience = creature.experience;
             List<Resistance> resistances = new List<Resistance>();
@@ -96,13 +98,13 @@ namespace Tibialyzer {
             this.mainImage.Image = creature.image;
             // set health of creature
             this.healthLabel.Text = health.ToString() + " Health";
-            horizontal = 100 - healthLabel.Size.Width;
+            horizontal = 96 - healthLabel.Size.Width;
             left = horizontal / 2;
             right = horizontal - left;
             this.healthLabel.Padding = new Padding(left, 2, right, 2);
             // set exp of creature
             this.expLabel.Text = experience.ToString() + " Exp";
-            horizontal = 100 - expLabel.Size.Width;
+            horizontal = 96 - expLabel.Size.Width;
             left = horizontal / 2;
             right = horizontal - left;
             this.expLabel.Padding = new Padding(left, 2, right, 2);
@@ -125,6 +127,19 @@ namespace Tibialyzer {
                 f.Dispose();
                 f = new Font(f.FontFamily, f.Size - 1.0f);
             }
+
+            this.maxDamageLabel.Text = "Max Damage: " + this.creature.maxdamage.ToString();
+            this.abilitiesLabel.Text = RemoveTextInBrackets(this.creature.abilities.Replace(", ", "\n"));
+            this.abilitiesLabel.BorderStyle = BorderStyle.FixedSingle;
+
+            this.illusionableBox.Image = creature.illusionable ? MainForm.checkmark_yes : MainForm.checkmark_no;
+            this.summonableBox.Image = creature.summoncost > 0 ? MainForm.checkmark_yes : MainForm.checkmark_no;
+            this.invisibleBox.Image = !creature.senseinvis ? MainForm.checkmark_yes : MainForm.checkmark_no;
+            this.paralysableBox.Image = creature.paralysable ? MainForm.checkmark_yes : MainForm.checkmark_no;
+            this.pushableBox.Image = creature.pushable ? MainForm.checkmark_yes : MainForm.checkmark_no;
+            this.pushesBox.Image = creature.pushes ? MainForm.checkmark_yes : MainForm.checkmark_no;
+
+            this.Size = new Size(this.Size.Width, (int)Math.Max(this.abilitiesLabel.Location.Y + this.abilitiesLabel.Size.Height + 10, this.expLabel.Location.Y + this.expLabel.Height + 10));
             this.nameLabel.Font = f;
             this.nameLabel.Left = this.mainImage.Left + (mainImage.Width - this.nameLabel.Size.Width) / 2;
             base.NotificationInitialize();
@@ -132,5 +147,42 @@ namespace Tibialyzer {
             this.ResumeForm();
         }
 
+        public string RemoveTextInBrackets(string str) {
+            string ss = "";
+            int kk;
+            int j = 0;
+            bool bracket = false;
+            int items = 0;
+            for (int i = 0; i < str.Length; i++) {
+                if (bracket) {
+                    if (str[i] == '-' || int.TryParse(str[i].ToString(), out kk)) {
+                        ss = ss + str[i];
+                        items++;
+                    } else if (str[i] == ')') {
+                        if (items == 0) {
+                            ss = ss.Substring(0, ss.Length - 1);
+                        } else {
+                            ss = ss + str[i];
+                        }
+                        bracket = false;
+                    }
+                } else {
+                    ss = ss + str[i];
+                    if (str[i] == '(') {
+                        bracket = true;
+                        items = 0;
+                    }
+                }
+            }
+            return ss;
+        }
+
+        private bool clicked = false;
+        private void statsButton_Click(object sender, EventArgs e) {
+            if (clicked) return;
+            clicked = true;
+            this.ReturnFocusToTibia();
+            MainForm.mainForm.priority_command = "creature@" + (sender as Control).Name;
+        }
     }
 }
