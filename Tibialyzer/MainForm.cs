@@ -1050,6 +1050,9 @@ namespace Tibialyzer {
                     Match m = regex.Match(response);
                     var gr = m.Groups[1];
                     OpenUrl(gr.Value.Replace("\\/", "/"));
+                } else if (comp.StartsWith("char@")) {
+                    string parameter = c.Split('@')[1].Trim();
+                    OpenUrl("https://secure.tibia.com/community/?subtopic=characters&name=" + parameter);
                 } else if (comp.StartsWith("setconvertgoldratio@")) {
                     string parameter = c.Split('@')[1].Trim();
                     string[] split = parameter.Split('-');
@@ -1398,15 +1401,17 @@ namespace Tibialyzer {
         }
 
         public static void OpenUrl(string str) {
-            str = str.Trim().Replace(" ", "%20");
+            // Weird command prompt escape characters
+            str = str.Trim().Replace(" ", "%20").Replace("&", "^&").Replace("|", "^|").Replace("(","^(").Replace(")","^)");
+            // Always start with http:// or https://
             if (!str.StartsWith("http://") && !str.StartsWith("https://")) {
                 str = "http://" + str;
             }
-            System.Diagnostics.ProcessStartInfo procStartInfo = new System.Diagnostics.ProcessStartInfo("cmd.exe", "/C start " + str + "");
+            System.Diagnostics.ProcessStartInfo procStartInfo = new System.Diagnostics.ProcessStartInfo("cmd.exe", "/C start " + str);
 
             procStartInfo.UseShellExecute = true;
 
-            // Do not create the black window.
+            // Do not show the cmd window to the user.
             procStartInfo.CreateNoWindow = true;
             procStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             System.Diagnostics.Process.Start(procStartInfo);
