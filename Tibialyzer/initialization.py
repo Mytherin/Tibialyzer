@@ -175,7 +175,7 @@ def get_latest_timestamps(mins, stamp = None):
     minute = timestamp[2]
     entries = []
     for i in range(0, mins):
-        hr = str(hour)
+        hr = str(hour)  if hour >= 10 else '0%s' % hour
         min = str(minute) if minute >= 10 else '0%s' % minute
         list.append(entries, '%s:%s' % (hr, min))
         if get_stamp(hour, minute) == stamp: return entries
