@@ -900,22 +900,31 @@ namespace Tibialyzer {
                 string comp = c.Trim().ToLower();
                 if (comp.StartsWith("creature@")) {
                     string parameter = c.Split('@')[1].Trim().ToLower();
-                    if (parameter.Contains('%')) {
-                        List<Creature> creatures = new List<Creature>();
-                        CompileSourceAndExecute("c.execute('SELECT * FROM Creatures WHERE LOWER(name) LIKE ? LIMIT ?', ['" + parameter.Replace("'", "\\'") + "', " + max_creatures.ToString() + "])", pyScope);
-                        CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
-
-                        IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-                        foreach (object obj in result) {
-                            Creature cr = CreatureFromList(obj as IronPython.Runtime.List);
-                            if (cr != null)
-                                creatures.Add(cr);
-                        }
-
-                        ShowCreatureList((creatures as IEnumerable<TibiaObject>).ToList(), "Creature List", "creature@", c);
-                    } else {
+                    if (!parameter.Contains('%')) {
                         Creature cr = GetCreature(parameter, pyScope, true);
-                        ShowCreatureDrops(cr, c);
+                        if (cr != null) {
+                            ShowCreatureDrops(cr, c);
+                            continue;
+                        }
+                        parameter = "%" + parameter + "%";
+                    }
+                    List<Creature> creatures = new List<Creature>();
+                    CompileSourceAndExecute("c.execute('SELECT * FROM Creatures WHERE LOWER(name) LIKE ? LIMIT ?', ['" + parameter.Replace("'", "\\'") + "', " + max_creatures.ToString() + "])", pyScope);
+                    CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
+
+                    IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
+
+                    foreach (object obj in result) {
+                        Creature cr = CreatureFromList(obj as IronPython.Runtime.List);
+                        if (cr != null)
+                            creatures.Add(cr);
+                    }
+                    if (creatures.Count == 1) {
+                        Creature new_creature = GetCreature(creatures[0].name.ToLower(), pyScope, true);
+                        ShowCreatureDrops(new_creature, c);
+                        creatures[0].Dispose();
+                    } else {
+                        ShowCreatureList((creatures as IEnumerable<TibiaObject>).ToList(), "Creature List", "creature@", c);
                     }
                 } else if (comp.StartsWith("look@")) {
                     CompileSourceAndExecute("result = list(get_recent_looks())", pyScope);
