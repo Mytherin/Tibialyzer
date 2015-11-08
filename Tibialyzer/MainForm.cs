@@ -1110,9 +1110,11 @@ namespace Tibialyzer {
                     if (double.TryParse(split[1], out val)) {
                         CompileSourceAndExecute("set_convert_ratio(" + val.ToString() + ", " + stackable.ToString() + ")", pyScope);
                     }
-                } else if (comp.StartsWith("recent@") || comp.StartsWith("url@")) {
+                } else if (comp.StartsWith("recent@") || comp.StartsWith("url@") || comp.StartsWith("last@")) {
                     bool url = comp.StartsWith("url@");
                     string type = (url ? "urls" : "commands");
+                    string parameter = c.Split('@')[1].Trim().ToLower();
+                    if (comp.StartsWith("last@")) parameter = "1";
                     // Show all recent commands, we show either the last 15 commands, or all commands in the last 5 minutes
                     CompileSourceAndExecute("recent_commands = get_recent_commands(type='" + type + "')", pyScope);
 
@@ -1124,7 +1126,6 @@ namespace Tibialyzer {
                         comm.command = (obj as IronPython.Runtime.List)[1].ToString();
                         command_list.Add(comm);
                     }
-                    string parameter = c.Split('@')[1].Trim().ToLower();
                     int number;
                     //recent@<number> opens the last <number> command, so recent@1 opens the last command
                     if (int.TryParse(parameter, out number)) {

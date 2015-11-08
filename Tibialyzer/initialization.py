@@ -428,7 +428,7 @@ def get_recent_commands(type="commands",max_entries=15):
         list = _array[s][:]
         list.reverse();
         for entry in list:
-            if 'recent' in entry[1]: continue
+            if 'recent' in entry[1] or 'last' in entry[1]: continue
             if len(recent_commands) >= max_entries: return recent_commands
             recent_commands.append(entry)
     return recent_commands
