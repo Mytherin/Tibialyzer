@@ -19,7 +19,7 @@ namespace Tibialyzer {
 
         private static Font text_font = new Font(FontFamily.GenericSansSerif, 9, FontStyle.Bold);
         private Label headerLabel;
-        private static Dictionary<int, Color> rating_colors;
+        public static Dictionary<int, Color> rating_colors;
 
         private int start_index = 0;
         private int max_hunts = 15;
@@ -33,7 +33,7 @@ namespace Tibialyzer {
             rating_colors = new Dictionary<int, Color>();
             rating_colors.Add(1, Color.DarkRed);
             rating_colors.Add(2, Color.Firebrick);
-            rating_colors.Add(3, Color.LightBlue);
+            rating_colors.Add(3, Color.FromArgb(22, 125, 190));
             rating_colors.Add(4, Color.Green);
             rating_colors.Add(5, Color.Gold);
         }
@@ -194,21 +194,27 @@ namespace Tibialyzer {
                 level.BackColor = Color.Transparent;
                 hcontrols.Add(level);
 
-                Label exp = new Label();
-                exp.Text = h.exp_quality.ToString();
+                PictureBox exp = new PictureBox();
+                exp.Image = MainForm.star_image[h.exp_quality - 1];
                 exp.BackColor = Color.Transparent;
                 exp.Location = new Point(expLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
-                if (rating_colors.ContainsKey(h.exp_quality))
-                    exp.ForeColor = rating_colors[h.exp_quality];
-                hcontrols.Add(exp);
+                exp.Size = new Size(16, 16);
+                exp.SizeMode = PictureBoxSizeMode.StretchImage;
+                exp.Name = h.name.ToString();
+                exp.Click += openHuntingPlace;
+                this.Controls.Add(exp);
+                hunt_controls.Add(exp);
 
-                Label loot = new Label();
-                loot.Text = h.loot_quality.ToString();
+                PictureBox loot = new PictureBox();
+                loot.Image = MainForm.star_image[h.loot_quality - 1];
                 loot.BackColor = Color.Transparent;
                 loot.Location = new Point(lootLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
-                if (rating_colors.ContainsKey(h.loot_quality))
-                    loot.ForeColor = rating_colors[h.loot_quality];
-                hcontrols.Add(loot);
+                loot.Size = new Size(16, 16);
+                loot.SizeMode = PictureBoxSizeMode.StretchImage;
+                loot.Name = h.name.ToString();
+                loot.Click += openHuntingPlace;
+                this.Controls.Add(loot);
+                hunt_controls.Add(loot);
 
                 Label city = new Label();
                 city.Text = h.city;

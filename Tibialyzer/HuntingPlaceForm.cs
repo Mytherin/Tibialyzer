@@ -325,14 +325,14 @@ namespace Tibialyzer {
             Bitmap bitmap = new Bitmap(experienceStarBox.Size.Width, experienceStarBox.Size.Height);
             Graphics gr = Graphics.FromImage(bitmap);
             for (int i = 0; i < Math.Min(this.hunting_place.exp_quality, 5); i++) {
-                gr.DrawImage(MainForm.star_image, new Rectangle(i * experienceStarBox.Size.Width / 5, 0, experienceStarBox.Size.Width / 5, experienceStarBox.Size.Width / 5));
+                gr.DrawImage(MainForm.star_image[this.hunting_place.exp_quality - 1], new Rectangle(i * experienceStarBox.Size.Width / 5, 0, experienceStarBox.Size.Width / 5, experienceStarBox.Size.Width / 5));
             }
             experienceStarBox.Image = bitmap;
 
             bitmap = new Bitmap(lootStarBox.Size.Width, lootStarBox.Size.Height);
             gr = Graphics.FromImage(bitmap);
             for (int i = 0; i < Math.Min(this.hunting_place.loot_quality, 5); i++) {
-                gr.DrawImage(MainForm.star_image, new Rectangle(i * lootStarBox.Size.Width / 5, 0, lootStarBox.Size.Width / 5, lootStarBox.Size.Width / 5));
+                gr.DrawImage(MainForm.star_image[this.hunting_place.loot_quality - 1], new Rectangle(i * lootStarBox.Size.Width / 5, 0, lootStarBox.Size.Width / 5, lootStarBox.Size.Width / 5));
             }
             lootStarBox.Image = bitmap;
 

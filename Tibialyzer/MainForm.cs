@@ -34,7 +34,7 @@ namespace Tibialyzer {
         public static Image nextpage_image = null;
         public static Image item_background = null;
         public static Image cross_image = null;
-        public static Image star_image = null;
+        public static Image[] star_image = new Image[5];
         public static Image mapup_image = null;
         public static Image mapdown_image = null;
         public static Image checkmark_yes = null;
@@ -69,7 +69,6 @@ namespace Tibialyzer {
             prevpage_image = Image.FromFile(@"Images\prevpage.png");
             nextpage_image = Image.FromFile(@"Images\nextpage.png");
             cross_image = Image.FromFile(@"Images\cross.png");
-            star_image = Image.FromFile(@"Images\star.png");
             tibia_image = Image.FromFile(@"Images\tibia.png");
             mapup_image = Image.FromFile(@"Images\mapup.png");
             mapdown_image = Image.FromFile(@"Images\mapdown.png");
@@ -79,10 +78,6 @@ namespace Tibialyzer {
             for (int i = 0; i < 10; i++) {
                 image_numbers[i] = System.Drawing.Image.FromFile(@"Images\" + i.ToString() + ".png");
             }
-            Label fff = new Label();
-            fff.Text = "X";
-            fff.Location = new Point(this.Size.Width - 32, 8);
-            this.Controls.Add(fff);
 
             if (Directory.Exists("Extensions")) {
                 string[] files = Directory.GetFiles("Extensions");
@@ -96,6 +91,13 @@ namespace Tibialyzer {
             NotificationForm.Initialize();
             CreatureStatsForm.InitializeCreatureStats();
             HuntListForm.Initialize();
+
+            star_image[0] = Image.FromFile(@"Images\star0.png");
+            star_image[1] = Image.FromFile(@"Images\star1.png");
+            star_image[2] = Image.FromFile(@"Images\star2.png");
+            star_image[3] = Image.FromFile(@"Images\star3.png");
+            star_image[4] = Image.FromFile(@"Images\star4.png");
+
             BackgroundWorker bw = new BackgroundWorker();
             makeDraggable(this.Controls);
             bw.DoWork += bw_DoWork;
