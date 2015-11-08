@@ -606,6 +606,9 @@ namespace Tibialyzer {
             item.discard = GetBoolean(itemList, 8);
             item.convert_to_gold = GetBoolean(itemList, 9);
             item.look_text = itemList[10] != null ? itemList[10].ToString() : "Unknown";
+            if (itemList.Count > 11) {
+                item.current_npc_value = GetInteger(itemList, 11);
+            }
             return item;
         }
 
@@ -618,6 +621,7 @@ namespace Tibialyzer {
             Item item = ItemFromList(result);
             return item;
         }
+
         public Item GetItem(string name, ScriptScope pyScope) {
             CompileSourceAndExecute("c.execute('SELECT id, name, actual_value, vendor_value, stackable, capacity, category, image, discard, convert_to_gold, look_text FROM Items WHERE LOWER(name)=?' , ['" + name.Replace("'", "\\'") + "'])", pyScope);
             CompileSourceAndExecute("res = c.fetchall()", pyScope);
@@ -729,10 +733,12 @@ namespace Tibialyzer {
             });
         }
 
-        private void ShowNPCForm(NPC c, string comm) {
+        private void ShowNPCForm(NPC c, List<Item> buy_items, List<Item> sell_items, string comm) {
             if (c == null) return;
             NPCForm f = new NPCForm();
             f.npc = c;
+            f.buy_items = buy_items;
+            f.sell_items = sell_items;
 
             this.Invoke((MethodInvoker)delegate {
                 ShowNotification(f, comm);
@@ -776,6 +782,34 @@ namespace Tibialyzer {
             this.Invoke((MethodInvoker)delegate {
                 ShowNotification(f, comm);
             });
+        }
+
+        public void ShowNPCNotification(string name, ScriptScope pyScope, string comm) {
+            NPC npc = GetNPC(name, pyScope);
+            if (npc == null) return;
+            List<Item> buy_items = new List<Item>();
+            List<Item> sell_items = new List<Item>();
+            CompileSourceAndExecute("c.execute('SELECT Items.id, Items.name, Items.actual_value, Items.vendor_value, Items.stackable, Items.capacity, Items.category, Items.image, Items.discard, Items.convert_to_gold, Items.look_text, catalog.value FROM Items INNER JOIN SellItems AS catalog ON Items.id=catalog.itemid AND catalog.vendorid=?', [" + npc.id + "])", pyScope);
+            CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
+            IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
+            foreach (object obj in result) {
+                Item item = ItemFromList(obj as IronPython.Runtime.List);
+                if (item != null) {
+                    sell_items.Add(item);
+                }
+            }
+            CompileSourceAndExecute("c.execute('SELECT Items.id, Items.name, Items.actual_value, Items.vendor_value, Items.stackable, Items.capacity, Items.category, Items.image, Items.discard, Items.convert_to_gold, Items.look_text, catalog.value FROM Items INNER JOIN BuyItems AS catalog ON Items.id=catalog.itemid AND catalog.vendorid=?', [" + npc.id + "])", pyScope);
+            CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
+            result = pyScope.GetVariable("result") as IronPython.Runtime.List;
+            foreach (object obj in result) {
+                Item item = ItemFromList(obj as IronPython.Runtime.List);
+                if (item != null) {
+                    buy_items.Add(item);
+                }
+            }
+            sell_items = sell_items.OrderBy(o => o.current_npc_value).ToList();
+            buy_items = buy_items.OrderBy(o => o.current_npc_value).ToList();
+            ShowNPCForm(npc, buy_items, sell_items, comm);
         }
 
         public void ShowItemNotification(string name, ScriptScope pyScope, string comm) {
@@ -1021,8 +1055,7 @@ namespace Tibialyzer {
                         continue;
                     }
                 } else if (comp.StartsWith("npc@")) {
-                    NPC npc = GetNPC(c.Split('@')[1].Trim().ToLower(), pyScope);
-                    ShowNPCForm(npc, c);
+                    ShowNPCNotification(c.Split('@')[1].Trim().ToLower(), pyScope, c);
                 } else if (comp.StartsWith("run@")) {
                     if (!allow_extensions) continue;
                     try {
@@ -1152,8 +1185,7 @@ namespace Tibialyzer {
                                 IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
                                 if (result.Count > 0) {
                                     string name = (result[0] as IronPython.Runtime.PythonTuple)[0].ToString();
-                                    NPC npc = GetNPC(name.ToLower(), pyScope);
-                                    ShowNPCForm(npc, c);
+                                    ShowNPCNotification(name.ToLower(), pyScope, c);
                                     break;
                                 }
                             }

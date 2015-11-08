@@ -131,6 +131,7 @@ namespace Tibialyzer {
         public bool convert_to_gold;
         public string look_text;
         public int drops = 0;
+        public int current_npc_value = 0;
 
         public override string GetName() { return name; }
         public override Image GetImage() { return image; }

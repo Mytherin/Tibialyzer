@@ -5,15 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Windows.Forms;
 
 namespace Tibialyzer {
     class NPCForm : NotificationForm {
         public NPC npc = null;
+        public List<Item> buy_items;
+        public List<Item> sell_items;
         private Bitmap map_image = null;
         private System.Windows.Forms.PictureBox mapUpLevel;
         private System.Windows.Forms.PictureBox mapDownLevel;
         private Coordinate map_coordinates;
-
+        private static Font text_font = new Font(FontFamily.GenericSansSerif, 11, FontStyle.Bold);
         public NPCForm() {
             InitializeComponent();
         }
@@ -109,9 +112,17 @@ namespace Tibialyzer {
             if (disposing) {
                 base.Cleanup();
                 if (npc != null) npc.Dispose();
+                if (buy_items != null) foreach (Item item in buy_items) item.Dispose();
+                if (sell_items != null) foreach (Item item in sell_items) item.Dispose();
                 if (map_image != null) map_image.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        string prefix;
+        private string TooltipFunction(TibiaObject obj) {
+            Item item = obj as Item;
+            return String.Format("{0} {1} for {2} gold.", prefix, item.name, item.current_npc_value);
         }
 
         private void NPCForm_Load(object sender, EventArgs e) {
@@ -136,9 +147,58 @@ namespace Tibialyzer {
             this.mapDownLevel.Image = MainForm.mapdown_image;
             this.mapDownLevel.Click -= c_Click;
             this.mapDownLevel.Click += mapDownLevel_Click;
+
+            float scale = 1.0f;
+            if (buy_items.Count + sell_items.Count > 200) {
+                scale = 0.6f;
+            } else if (buy_items.Count + sell_items.Count > 80) {
+                scale = 0.75f;
+            }
+
+            int y = mapBox.Location.Y + mapBox.Size.Height + 20;
+            if (buy_items.Count > 0) {
+                prefix = "Sells";
+                Label label = new Label();
+                label.Text = "Sells";
+                label.Location = new Point(40, y);
+                label.ForeColor = MainForm.label_text_color;
+                label.BackColor = Color.Transparent;
+                label.Font = text_font;
+                this.Controls.Add(label);
+                y += 20;
+
+                y = y + MainForm.DisplayCreatureList(this.Controls, (buy_items as IEnumerable<TibiaObject>).ToList(), 10, y, this.Size.Width - 10, 4, false, TooltipFunction, scale);
+            }
+            if (sell_items.Count > 0) {
+                prefix = "Buys";
+                Label label = new Label();
+                label.Text = "Buys";
+                label.Location = new Point(40, y);
+                label.ForeColor = MainForm.label_text_color;
+                label.BackColor = Color.Transparent;
+                label.Font = text_font;
+                this.Controls.Add(label);
+                y += 20;
+
+                y = y + MainForm.DisplayCreatureList(this.Controls, (sell_items as IEnumerable<TibiaObject>).ToList(), 10, y, this.Size.Width - 10, 4, false, TooltipFunction, scale);
+            }
+            foreach (Control control in this.Controls)
+                if (control is PictureBox)
+                    control.Click += openItemBox;
+            this.Size = new Size(this.Size.Width, y + 20);
             base.NotificationFinalize();
             this.ResumeLayout(false);
         }
+
+        private string command_start = "item@";
+        private bool clicked = false;
+        void openItemBox(object sender, EventArgs e) {
+            if (clicked) return;
+            clicked = true;
+            this.ReturnFocusToTibia();
+            MainForm.mainForm.priority_command = command_start + (sender as Control).Name;
+        }
+
 
         float current_zoom = 1.0f;
         private void UpdateMap() {
