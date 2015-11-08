@@ -21,14 +21,21 @@ namespace Tibialyzer {
             }
         }
 
+        private ToolTip resistance_tooltip = new ToolTip();
         private static Dictionary<string, Color> resistance_colors = new Dictionary<string, Color>();
         private static Dictionary<string, Image> resistance_images = new Dictionary<string, Image>();
         private System.Windows.Forms.PictureBox[] resistance_controls = new PictureBox[7];
         public Creature creature;
         public CreatureStatsForm() {
             InitializeComponent();
-            // add colors for every resistance
 
+            resistance_tooltip.AutoPopDelay = 60000;
+            resistance_tooltip.InitialDelay = 500;
+            resistance_tooltip.ReshowDelay = 500;
+            resistance_tooltip.ShowAlways = true;
+            resistance_tooltip.UseFading = true;
+            
+            // add colors for every resistance
             resistance_controls[0] = resistanceLabel1;
             resistance_controls[1] = resistanceLabel2;
             resistance_controls[2] = resistanceLabel3;
@@ -54,13 +61,6 @@ namespace Tibialyzer {
 
         private void AddResistances(List<Resistance> resistances) {
             List<Resistance> sorted_list = resistances.OrderByDescending(o => o.resistance).ToList();
-            ToolTip resistance_tooltip = new ToolTip();
-            resistance_tooltip.AutoPopDelay = 60000;
-            resistance_tooltip.InitialDelay = 500;
-            resistance_tooltip.ReshowDelay = 500;
-            resistance_tooltip.ShowAlways = true;
-            resistance_tooltip.UseFading = true;
-            
             int i = 0;
             foreach (Resistance resistance in sorted_list) {
                 resistance_tooltip.SetToolTip(resistance_controls[i], "Damage taken from " + resistance.name + ": " + resistance.resistance.ToString() + "%");
@@ -97,13 +97,13 @@ namespace Tibialyzer {
             // load image from the creature
             this.mainImage.Image = creature.image;
             // set health of creature
-            this.healthLabel.Text = health.ToString() + " Health";
+            this.healthLabel.Text = (health > 0 ? health.ToString() + " Health" : "Unknown");
             horizontal = 96 - healthLabel.Size.Width;
             left = horizontal / 2;
             right = horizontal - left;
             this.healthLabel.Padding = new Padding(left, 2, right, 2);
             // set exp of creature
-            this.expLabel.Text = experience.ToString() + " Exp";
+            this.expLabel.Text = (experience > 0 ? experience.ToString() : "Unknown") + " Exp";
             horizontal = 96 - expLabel.Size.Width;
             left = horizontal / 2;
             right = horizontal - left;
@@ -132,12 +132,31 @@ namespace Tibialyzer {
             this.abilitiesLabel.Text = RemoveTextInBrackets(this.creature.abilities.Replace(", ", "\n"));
             this.abilitiesLabel.BorderStyle = BorderStyle.FixedSingle;
 
+            string tooltip;
             this.illusionableBox.Image = creature.illusionable ? MainForm.checkmark_yes : MainForm.checkmark_no;
+            tooltip = creature.illusionable ? "Creature illusion works for this creature." : "Creature illusion does not work for this creature.";
+            resistance_tooltip.SetToolTip(illusionableBox, tooltip);
+            resistance_tooltip.SetToolTip(illusionableLabel, tooltip);
             this.summonableBox.Image = creature.summoncost > 0 ? MainForm.checkmark_yes : MainForm.checkmark_no;
+            tooltip = creature.summoncost > 0 ? "This creature can be summoned for " + creature.summoncost + " mana." : "This creature cannot be summoned.";
+            resistance_tooltip.SetToolTip(summonableBox, tooltip);
+            resistance_tooltip.SetToolTip(summonableLabel, tooltip);
             this.invisibleBox.Image = !creature.senseinvis ? MainForm.checkmark_yes : MainForm.checkmark_no;
+            tooltip = !creature.senseinvis ? "This creature does not detect invisibility." : "This creature detects invisibility.";
+            resistance_tooltip.SetToolTip(invisibleBox, tooltip);
+            resistance_tooltip.SetToolTip(invisibleLabel, tooltip);
             this.paralysableBox.Image = creature.paralysable ? MainForm.checkmark_yes : MainForm.checkmark_no;
+            tooltip = creature.paralysable ? "This creature can be paralysed." : "This creature cannot be paralysed.";
+            resistance_tooltip.SetToolTip(paralysableBox, tooltip);
+            resistance_tooltip.SetToolTip(paralysableLabel, tooltip);
             this.pushableBox.Image = creature.pushable ? MainForm.checkmark_yes : MainForm.checkmark_no;
+            tooltip = creature.pushable ? "This creature can be pushed." : "This creature cannot be pushed.";
+            resistance_tooltip.SetToolTip(pushableBox, tooltip);
+            resistance_tooltip.SetToolTip(pushableLabel, tooltip);
             this.pushesBox.Image = creature.pushes ? MainForm.checkmark_yes : MainForm.checkmark_no;
+            tooltip = creature.pushes ? "This creature pushes smaller creatures." : "This creature cannot push smaller creatures.";
+            resistance_tooltip.SetToolTip(pushesBox, tooltip);
+            resistance_tooltip.SetToolTip(pushesLabel, tooltip);
 
             this.Size = new Size(this.Size.Width, (int)Math.Max(this.abilitiesLabel.Location.Y + this.abilitiesLabel.Size.Height + 10, this.expLabel.Location.Y + this.expLabel.Height + 10));
             this.nameLabel.Font = f;

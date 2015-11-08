@@ -134,9 +134,6 @@ namespace Tibialyzer
                     x += item_size.Width + item_spacing;
                 }
             }
-            Graphics graphics = Graphics.FromImage(MainForm.image_numbers[0]);
-            this.totalValueLabel.Text = "Total Value: " + total_value.ToString();
-            this.totalValueLabel.Location = new Point(this.Width / 2 - ((int)graphics.MeasureString(totalValueLabel.Text, totalValueLabel.Font).Width) / 2, totalValueLabel.Location.Y);
             x = 0;
             y = y + item_size.Height + item_spacing;
             if (y < max_creature_y)
@@ -206,6 +203,8 @@ namespace Tibialyzer
             this.ResumeLayout(false);
             this.PerformLayout();
             this.Size = new Size(max_x + item_spacing * 2, base_y + y + item_spacing + 10);
+            this.totalValueLabel.Text = "Total Value: " + total_value.ToString();
+            this.totalValueLabel.Location = new Point((int)(this.Width / 2.0 - this.totalValueLabel.Width / 2.0), totalValueLabel.Location.Y);
             if (screenshot_path == "")
                 base.NotificationFinalize();
             this.ResumeForm();

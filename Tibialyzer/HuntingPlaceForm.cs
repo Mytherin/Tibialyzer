@@ -162,7 +162,7 @@ namespace Tibialyzer {
             this.huntingPlaceName.BackColor = System.Drawing.Color.Transparent;
             this.huntingPlaceName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.huntingPlaceName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.huntingPlaceName.Location = new System.Drawing.Point(6, 24);
+            this.huntingPlaceName.Location = new System.Drawing.Point(6, 27);
             this.huntingPlaceName.Name = "huntingPlaceName";
             this.huntingPlaceName.Size = new System.Drawing.Size(158, 34);
             this.huntingPlaceName.TabIndex = 3;

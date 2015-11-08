@@ -42,17 +42,17 @@
             this.healthLabel = new System.Windows.Forms.Label();
             this.mainImage = new System.Windows.Forms.PictureBox();
             this.summonableBox = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.summonableLabel = new System.Windows.Forms.Label();
             this.illusionableBox = new System.Windows.Forms.PictureBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.illusionableLabel = new System.Windows.Forms.Label();
             this.invisibleBox = new System.Windows.Forms.PictureBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.invisibleLabel = new System.Windows.Forms.Label();
             this.paralysableBox = new System.Windows.Forms.PictureBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.paralysableLabel = new System.Windows.Forms.Label();
             this.pushableBox = new System.Windows.Forms.PictureBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.pushableLabel = new System.Windows.Forms.Label();
             this.pushesBox = new System.Windows.Forms.PictureBox();
-            this.label6 = new System.Windows.Forms.Label();
+            this.pushesLabel = new System.Windows.Forms.Label();
             this.abilitiesLabel = new System.Windows.Forms.Label();
             this.maxDamageLabel = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -197,16 +197,16 @@
             this.summonableBox.TabIndex = 11;
             this.summonableBox.TabStop = false;
             // 
-            // label1
+            // summonableLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.label1.Location = new System.Drawing.Point(290, 14);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(68, 13);
-            this.label1.TabIndex = 12;
-            this.label1.Text = "Summonable";
+            this.summonableLabel.AutoSize = true;
+            this.summonableLabel.BackColor = System.Drawing.Color.Transparent;
+            this.summonableLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.summonableLabel.Location = new System.Drawing.Point(290, 14);
+            this.summonableLabel.Name = "summonableLabel";
+            this.summonableLabel.Size = new System.Drawing.Size(68, 13);
+            this.summonableLabel.TabIndex = 12;
+            this.summonableLabel.Text = "Summonable";
             // 
             // illusionableBox
             // 
@@ -218,16 +218,16 @@
             this.illusionableBox.TabIndex = 13;
             this.illusionableBox.TabStop = false;
             // 
-            // label2
+            // illusionableLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.label2.Location = new System.Drawing.Point(290, 31);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(59, 13);
-            this.label2.TabIndex = 14;
-            this.label2.Text = "Illusionable";
+            this.illusionableLabel.AutoSize = true;
+            this.illusionableLabel.BackColor = System.Drawing.Color.Transparent;
+            this.illusionableLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.illusionableLabel.Location = new System.Drawing.Point(290, 31);
+            this.illusionableLabel.Name = "illusionableLabel";
+            this.illusionableLabel.Size = new System.Drawing.Size(59, 13);
+            this.illusionableLabel.TabIndex = 14;
+            this.illusionableLabel.Text = "Illusionable";
             // 
             // invisibleBox
             // 
@@ -239,16 +239,16 @@
             this.invisibleBox.TabIndex = 15;
             this.invisibleBox.TabStop = false;
             // 
-            // label3
+            // invisibleLabel
             // 
-            this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.label3.Location = new System.Drawing.Point(290, 48);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(45, 13);
-            this.label3.TabIndex = 16;
-            this.label3.Text = "Invisible";
+            this.invisibleLabel.AutoSize = true;
+            this.invisibleLabel.BackColor = System.Drawing.Color.Transparent;
+            this.invisibleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.invisibleLabel.Location = new System.Drawing.Point(290, 48);
+            this.invisibleLabel.Name = "invisibleLabel";
+            this.invisibleLabel.Size = new System.Drawing.Size(45, 13);
+            this.invisibleLabel.TabIndex = 16;
+            this.invisibleLabel.Text = "Invisible";
             // 
             // paralysableBox
             // 
@@ -260,16 +260,16 @@
             this.paralysableBox.TabIndex = 17;
             this.paralysableBox.TabStop = false;
             // 
-            // label4
+            // paralysableLabel
             // 
-            this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.Transparent;
-            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.label4.Location = new System.Drawing.Point(290, 65);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(61, 13);
-            this.label4.TabIndex = 18;
-            this.label4.Text = "Paralysable";
+            this.paralysableLabel.AutoSize = true;
+            this.paralysableLabel.BackColor = System.Drawing.Color.Transparent;
+            this.paralysableLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.paralysableLabel.Location = new System.Drawing.Point(290, 65);
+            this.paralysableLabel.Name = "paralysableLabel";
+            this.paralysableLabel.Size = new System.Drawing.Size(61, 13);
+            this.paralysableLabel.TabIndex = 18;
+            this.paralysableLabel.Text = "Paralysable";
             // 
             // pushableBox
             // 
@@ -281,16 +281,16 @@
             this.pushableBox.TabIndex = 19;
             this.pushableBox.TabStop = false;
             // 
-            // label5
+            // pushableLabel
             // 
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.Transparent;
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.label5.Location = new System.Drawing.Point(290, 82);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(51, 13);
-            this.label5.TabIndex = 20;
-            this.label5.Text = "Pushable";
+            this.pushableLabel.AutoSize = true;
+            this.pushableLabel.BackColor = System.Drawing.Color.Transparent;
+            this.pushableLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.pushableLabel.Location = new System.Drawing.Point(290, 82);
+            this.pushableLabel.Name = "pushableLabel";
+            this.pushableLabel.Size = new System.Drawing.Size(51, 13);
+            this.pushableLabel.TabIndex = 20;
+            this.pushableLabel.Text = "Pushable";
             // 
             // pushesBox
             // 
@@ -302,16 +302,16 @@
             this.pushesBox.TabIndex = 21;
             this.pushesBox.TabStop = false;
             // 
-            // label6
+            // pushesLabel
             // 
-            this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.Color.Transparent;
-            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.label6.Location = new System.Drawing.Point(290, 99);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(42, 13);
-            this.label6.TabIndex = 22;
-            this.label6.Text = "Pushes";
+            this.pushesLabel.AutoSize = true;
+            this.pushesLabel.BackColor = System.Drawing.Color.Transparent;
+            this.pushesLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.pushesLabel.Location = new System.Drawing.Point(290, 99);
+            this.pushesLabel.Name = "pushesLabel";
+            this.pushesLabel.Size = new System.Drawing.Size(42, 13);
+            this.pushesLabel.TabIndex = 22;
+            this.pushesLabel.Text = "Pushes";
             // 
             // abilitiesLabel
             // 
@@ -378,17 +378,17 @@
             this.Controls.Add(this.maxDamageLabel);
             this.Controls.Add(this.abilitiesLabel);
             this.Controls.Add(this.pushesBox);
-            this.Controls.Add(this.label6);
+            this.Controls.Add(this.pushesLabel);
             this.Controls.Add(this.pushableBox);
-            this.Controls.Add(this.label5);
+            this.Controls.Add(this.pushableLabel);
             this.Controls.Add(this.paralysableBox);
-            this.Controls.Add(this.label4);
+            this.Controls.Add(this.paralysableLabel);
             this.Controls.Add(this.invisibleBox);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.invisibleLabel);
             this.Controls.Add(this.illusionableBox);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.illusionableLabel);
             this.Controls.Add(this.summonableBox);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.summonableLabel);
             this.Controls.Add(this.nameLabel);
             this.Controls.Add(this.resistanceLabel7);
             this.Controls.Add(this.resistanceLabel6);
@@ -437,17 +437,17 @@
         private System.Windows.Forms.PictureBox resistanceLabel7;
         private System.Windows.Forms.Label nameLabel;
         private System.Windows.Forms.PictureBox summonableBox;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label summonableLabel;
         private System.Windows.Forms.PictureBox illusionableBox;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label illusionableLabel;
         private System.Windows.Forms.PictureBox invisibleBox;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label invisibleLabel;
         private System.Windows.Forms.PictureBox paralysableBox;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label paralysableLabel;
         private System.Windows.Forms.PictureBox pushableBox;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label pushableLabel;
         private System.Windows.Forms.PictureBox pushesBox;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label pushesLabel;
         private System.Windows.Forms.Label abilitiesLabel;
         private System.Windows.Forms.Label maxDamageLabel;
         private System.Windows.Forms.Label label7;
