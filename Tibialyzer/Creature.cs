@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 using System.Drawing;
 
 namespace Tibialyzer {
-    public abstract class TibiaObject {
+    public abstract class TibiaObject : IDisposable {
         public abstract string GetName();
         public abstract Image GetImage();
+        public virtual void Dispose() {
+
+        }
     }
 
     public class Command {
@@ -65,7 +68,7 @@ namespace Tibialyzer {
         public string url;
     }
 
-    public class HuntingPlace : TibiaObject, IDisposable {
+    public class HuntingPlace : TibiaObject {
         public int id;
         public string name;
         public string city;
@@ -97,7 +100,7 @@ namespace Tibialyzer {
         }
     }
 
-    public class NPC : TibiaObject, IDisposable {
+    public class NPC : TibiaObject {
         public int id;
         public string name;
         public string city;
@@ -118,7 +121,7 @@ namespace Tibialyzer {
         }
     }
 
-    public class Item : TibiaObject, IDisposable {
+    public class Item : TibiaObject {
         public int id;
         public string name;
         public int vendor_value;
@@ -166,7 +169,7 @@ namespace Tibialyzer {
         public float percentage;
     }
 
-    public class Creature : TibiaObject, IDisposable {
+    public class Creature : TibiaObject {
         public string name;
         public int id;
         public int health;

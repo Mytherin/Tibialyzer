@@ -5,6 +5,9 @@ settings = dict()
 c.execute('CREATE TABLE IF NOT EXISTS RecentLootFiles(day INTEGER, hour INTEGER, minute INTEGER, message STRING);')
 conn.commit()
 
+c.execute('SELECT name FROM Items')
+item_names = set([str.lower(x[0]) for x in c.fetchall()])
+
 ignore_stamp = 0
 
 
@@ -13,15 +16,15 @@ total_experience_results = dict()
 total_damage_results = dict()
 total_commands = dict()
 total_urls = dict()
+total_looks = dict()
 new_items = list()
 new_commands = list()
 new_advances = list()
 level_advances = list()
-seen_logs = set()
 
 start_location = 0
-def search_chunk(chunk, item_drops,exp,damage_dealt,commands,urls):
-    global seen_logs
+def search_chunk(chunk,item_drops,exp,damage_dealt,commands,urls):
+    global total_looks
     useful = False
     latest = [x.split(':') for x in get_latest_timestamps(5, ignore_stamp)]
     latest = [int(x[0]) * 60 + int(x[1]) for x in latest]
@@ -33,8 +36,6 @@ def search_chunk(chunk, item_drops,exp,damage_dealt,commands,urls):
            continue
         if ': ' in log_message[6:]:
             if len(log_message) > 14 and log_message[5:14] == ' Loot of ':
-                if log_message in seen_logs: continue
-                seen_logs = seen_logs.union(log_message)
                 if t not in item_drops: item_drops[t] = list()
                 list.append(item_drops[t], log_message)
                 useful = True
@@ -54,6 +55,9 @@ def search_chunk(chunk, item_drops,exp,damage_dealt,commands,urls):
                 elif 'www' in command or 'http' in command or '.com' in command or '.net' in command or '.tv' in command:
                     if t not in urls: urls[t] = list()
                     list.append(urls[t], [player, command])
+        elif len(log_message) > 14 and log_message[5:14] == ' You see ':
+            if t not in total_looks: total_looks[t] = set()
+            total_looks[t] = total_looks[t].union([log_message])
         elif len(log_message) > 17 and log_message[5:17] == ' You gained ':
             try:
                 e = int(log_message[17:].split(' ')[0])
@@ -433,3 +437,23 @@ def get_recent_commands(type="commands",max_entries=15):
             recent_commands.append(entry)
     return recent_commands
 
+def get_recent_looks():
+    look_items = set()
+    stamp = get_latest_timestamps(5)
+    for s in stamp:
+        if s not in total_looks: continue
+        for log_message in total_looks[s]:
+            splits = log_message[14:].split('(')[0].split('.')[0].split(' ')
+            item_name = ""
+            for split in splits:
+                if split == 'a' or split == 'an': continue
+                try: int(split); continue;
+                except: pass
+                item_name += split + " ";
+            item = item_name[:-1].strip()
+            if item not in item_names:
+                if item[:-1] in item_names:
+                    item = item[:-1]
+                else: continue
+            look_items = look_items.union([item])
+    return look_items

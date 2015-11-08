@@ -9,31 +9,48 @@ using System.Windows.Forms;
 
 namespace Tibialyzer {
     class CreatureList : NotificationForm {
-        public List<Creature> creatures;
+        public List<TibiaObject> objects;
+        public string title = "List";
+        public string prefix = "creature@";
 
         public CreatureList() {
-            creatures = null;
+            objects = null;
             InitializeComponent();
         }
 
         private void InitializeComponent() {
+            this.listTitle = new System.Windows.Forms.Label();
             this.SuspendLayout();
+            // 
+            // listTitle
+            // 
+            this.listTitle.AutoSize = true;
+            this.listTitle.BackColor = System.Drawing.Color.Transparent;
+            this.listTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.listTitle.Location = new System.Drawing.Point(152, 9);
+            this.listTitle.Name = "listTitle";
+            this.listTitle.Size = new System.Drawing.Size(32, 16);
+            this.listTitle.TabIndex = 14;
+            this.listTitle.Text = "List";
             // 
             // CreatureList
             // 
-            this.ClientSize = new System.Drawing.Size(344, 52);
+            this.ClientSize = new System.Drawing.Size(344, 76);
+            this.Controls.Add(this.listTitle);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "CreatureList";
             this.Load += new System.EventHandler(this.CreatureList_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         protected override void Dispose(bool disposing) {
             if (disposing) {
                 base.Cleanup();
-                if (creatures != null) {
-                    foreach (Creature creature in creatures)
+                if (objects != null) {
+                    foreach (TibiaObject creature in objects)
                         creature.Dispose();
                 }
             }
@@ -42,9 +59,13 @@ namespace Tibialyzer {
 
         private void CreatureList_Load(object sender, EventArgs e) {
             this.SuspendForm();
-            int y = MainForm.DisplayCreatureList(this.Controls, (creatures as IEnumerable<TibiaObject>).ToList(), 10, 10, 344, 4, true);
+            int base_y =  this.listTitle.Location.Y + this.listTitle.Height + 10;
+            int y = MainForm.DisplayCreatureList(this.Controls, objects, 10, base_y, 344, 4, true);
 
-            this.Size = new Size(this.Size.Width, this.Size.Height + y);
+            this.listTitle.Text = title;
+            this.listTitle.Location = new Point(this.Size.Width / 2 - this.listTitle.Width / 2, this.listTitle.Location.Y);
+            
+            this.Size = new Size(this.Size.Width, base_y + y + 10);
 
             foreach (Control control in this.Controls)
                 if (control is PictureBox)
@@ -54,12 +75,14 @@ namespace Tibialyzer {
             this.ResumeForm();
         }
 
+        private Label listTitle;
+
         private bool clicked = false;
         void openItemBox(object sender, EventArgs e) {
             if (clicked) return;
             clicked = true;
             this.ReturnFocusToTibia();
-            MainForm.mainForm.priority_command = "creature@" + (sender as Control).Name;
+            MainForm.mainForm.priority_command = prefix + (sender as Control).Name;
         }
     }
 }

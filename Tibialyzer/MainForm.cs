@@ -718,10 +718,12 @@ namespace Tibialyzer {
             });
         }
 
-        private void ShowCreatureList(List<Creature> c, string comm) {
+        private void ShowCreatureList(List<TibiaObject> c, string title, string prefix, string comm) {
             if (c == null) return;
             CreatureList f = new CreatureList();
-            f.creatures = c;
+            f.objects = c;
+            f.title = title;
+            f.prefix = prefix;
 
             this.Invoke((MethodInvoker)delegate {
                 ShowNotification(f, comm);
@@ -910,11 +912,21 @@ namespace Tibialyzer {
                                 creatures.Add(cr);
                         }
 
-                        ShowCreatureList(creatures, c);
+                        ShowCreatureList((creatures as IEnumerable<TibiaObject>).ToList(), "Creature List", "creature@", c);
                     } else {
                         Creature cr = GetCreature(parameter, pyScope, true);
                         ShowCreatureDrops(cr, c);
                     }
+                } else if (comp.StartsWith("look@")) {
+                    CompileSourceAndExecute("result = list(get_recent_looks())", pyScope);
+                    IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
+                    List<TibiaObject> objects = new List<TibiaObject>();
+                    foreach (object obj in result) {
+                        string item_name = obj.ToString();
+                        Item item = GetItem(item_name, pyScope);
+                        if (item != null) objects.Add(item);
+                    }
+                    ShowCreatureList(objects, "Looked At Items", "item@", c);
                 } else if (comp.StartsWith("stats@")) {
                     Creature cr = GetCreature(c.Split('@')[1].Trim().ToLower(), pyScope);
                     ShowCreatureStats(cr, c);
