@@ -192,6 +192,7 @@ namespace Tibialyzer {
         public List<ItemDrop> itemdrops;
         public Skin skin;
         public int kills = 0;
+        public float percentage;
 
         public Creature() {
             name = "Unknown";

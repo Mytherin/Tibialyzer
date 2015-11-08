@@ -990,15 +990,21 @@ namespace Tibialyzer {
                 } else if (comp.StartsWith("drop@")) {
                     Item i = GetItem(c.Split('@')[1].Trim().ToLower(), pyScope);
                     if (i == null) continue;
-                    CompileSourceAndExecute("c.execute('SELECT c.id,c.name,c.health,c.experience,c.maxdamage,c.summon,c.illusionable,c.pushable,c.pushes,c.physical,c.holy,c.death,c.fire,c.energy,c.ice,c.earth,c.drown,c.lifedrain,c.paralysable,c.senseinvis,c.image FROM (SELECT * FROM Items WHERE name=?) AS i INNER JOIN CreatureDrops AS crd ON crd.itemid=i.id INNER JOIN Creatures AS c ON c.id=crd.creatureid LIMIT ?', ['" + i.name.Replace("'", "\\'") + "', " + max_creatures.ToString() + "])", pyScope);
+                    CompileSourceAndExecute("c.execute('SELECT c.id,c.name,c.health,c.experience,c.maxdamage,c.summon,c.illusionable,c.pushable,c.pushes,c.physical,c.holy,c.death,c.fire,c.energy,c.ice,c.earth,c.drown,c.lifedrain,c.paralysable,c.senseinvis,c.image,c.abilities,crd.percentage FROM (SELECT * FROM Items WHERE name=?) AS i INNER JOIN CreatureDrops AS crd ON crd.itemid=i.id INNER JOIN Creatures AS c ON c.id=crd.creatureid LIMIT ?', ['" + i.name.Replace("'", "\\'") + "', " + max_creatures.ToString() + "])", pyScope);
                     CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
 
                     List<Creature> creatures = new List<Creature>();
                     IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
                     foreach (object obj in result) {
                         Creature cr = CreatureFromList(obj as IronPython.Runtime.List);
-                        if (cr != null) creatures.Add(cr);
+                        if (cr != null) {
+                            cr.percentage = GetFloat(obj as IronPython.Runtime.List, 22);
+                            creatures.Add(cr);
+                        }
                     }
+
+                    creatures = creatures.OrderBy(o => -o.percentage).ToList();
+
 
                     ShowItemView(i, null, null, creatures, c);
                 } else if (comp.StartsWith("item@")) {

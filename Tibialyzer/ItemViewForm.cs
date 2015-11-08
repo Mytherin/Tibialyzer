@@ -30,6 +30,7 @@ namespace Tibialyzer {
         private System.Windows.Forms.CheckBox convertBox;
         private TextBox valueBox;
         public List<Creature> creatures = null;
+        private Label statsButton;
         private string previous_value;
 
         public ItemViewForm() {
@@ -61,6 +62,7 @@ namespace Tibialyzer {
             this.pickupBox = new System.Windows.Forms.CheckBox();
             this.convertBox = new System.Windows.Forms.CheckBox();
             this.valueBox = new System.Windows.Forms.TextBox();
+            this.statsButton = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.itemPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -155,9 +157,25 @@ namespace Tibialyzer {
             this.valueBox.TabIndex = 7;
             this.valueBox.TextChanged += new System.EventHandler(this.valueBox_TextChanged);
             // 
+            // statsButton
+            // 
+            this.statsButton.BackColor = System.Drawing.Color.Transparent;
+            this.statsButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.statsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.statsButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.statsButton.Location = new System.Drawing.Point(34, 110);
+            this.statsButton.Name = "statsButton";
+            this.statsButton.Padding = new System.Windows.Forms.Padding(2);
+            this.statsButton.Size = new System.Drawing.Size(96, 21);
+            this.statsButton.TabIndex = 27;
+            this.statsButton.Text = "Drops";
+            this.statsButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.statsButton.Click += new System.EventHandler(this.statsButton_Click);
+            // 
             // ItemViewForm
             // 
             this.ClientSize = new System.Drawing.Size(378, 137);
+            this.Controls.Add(this.statsButton);
             this.Controls.Add(this.valueBox);
             this.Controls.Add(this.convertBox);
             this.Controls.Add(this.pickupBox);
@@ -185,6 +203,11 @@ namespace Tibialyzer {
             return String.Format("{0} {1} for {2} gold.", prefix, item.name, npc.value);
         }
 
+        private string CreatureTooltipFunction(TibiaObject obj) {
+            Creature cr = obj as Creature;
+            return String.Format("{0}: {1}%", cr.name, cr.percentage < 0 ? "Unknown" : cr.percentage.ToString());
+        }
+
         private void ItemViewForm_Load(object sender, EventArgs e) {
             this.SuspendForm();
             this.NotificationInitialize();
@@ -201,7 +224,7 @@ namespace Tibialyzer {
             this.convertBox.Checked = item.convert_to_gold;
             this.itemPictureBox.Image = item.image;
 
-            int base_x = 20, base_y = 120;
+            int base_x = 20, base_y = this.statsButton.Location.Y + this.statsButton.Height + 5;
             int x = 0, y = 0;
             int max_x = 344;
             int spacing = 4;
@@ -238,6 +261,9 @@ namespace Tibialyzer {
                     }
                 }
                 command_start = "npc@";
+                switch_start = "drop@";
+                statsButton.Text = "Dropped By";
+                statsButton.Name = item.name.ToLower();
                 foreach (Control control in this.Controls)
                     if (control is PictureBox)
                         control.Click += openItemBox;
@@ -249,14 +275,17 @@ namespace Tibialyzer {
                 header.Font = valueLabel.Font;
                 header.Location = new Point(base_x + x, base_y + y);
                 y = y + header.Size.Height;
-                y = y + MainForm.DisplayCreatureList(this.Controls, (creatures as IEnumerable<TibiaObject>).ToList(), base_x, base_y + y, max_x, spacing, true);
+                y = y + MainForm.DisplayCreatureList(this.Controls, (creatures as IEnumerable<TibiaObject>).ToList(), base_x, base_y + y, max_x, spacing, true, CreatureTooltipFunction);
 
                 command_start = "creature@";
+                switch_start = "item@";
+                statsButton.Text = "Sold By";
+                statsButton.Name = item.name.ToLower();
                 foreach (Control control in this.Controls)
                     if (control is PictureBox)
                         control.Click += openItemBox;
             }
-            this.Size = new Size(this.Size.Width, this.Size.Height + y);
+            this.Size = new Size(this.Size.Width, base_y + y + 20);
             base.NotificationFinalize();
             this.ResumeForm();
         }
@@ -270,7 +299,13 @@ namespace Tibialyzer {
             MainForm.mainForm.priority_command = command_start + (sender as Control).Name;
         }
 
-
+        private string switch_start = "drop@";
+        private void statsButton_Click(object sender, EventArgs e) {
+            if (clicked) return;
+            clicked = true;
+            this.ReturnFocusToTibia();
+            MainForm.mainForm.priority_command = switch_start + (sender as Control).Name;
+        }
 
         private bool skip_event = false;
         private void pickupBox_CheckedChanged(object sender, EventArgs e) {

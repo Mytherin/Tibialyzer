@@ -229,6 +229,7 @@ namespace Tibialyzer {
             this.huntingPlaceName.Text = MainForm.ToTitle(hunting_place.name);
             this.levelLabel.Text = hunting_place.level.ToString();
 
+            int y;
             ToolTip tooltip = new ToolTip();
             tooltip.AutoPopDelay = 60000;
             tooltip.InitialDelay = 500;
@@ -281,16 +282,20 @@ namespace Tibialyzer {
 
             if (hunting_place.requirements != null && hunting_place.requirements.Count > 0) {
                 int count = 0;
+                y = 3;
                 foreach (Requirements requirement in hunting_place.requirements) {
                     Label label = new Label();
                     label.ForeColor = Color.Firebrick;
                     label.BackColor = Color.Transparent;
                     label.Font = requirement_font;
-                    label.Text = "- " + requirement.notes;
-                    label.Location = new Point(3, requirementLabel.Location.Y + requirementLabel.Size.Height + count * 20 + 3);
+                    label.Location = new Point(3, requirementLabel.Location.Y + requirementLabel.Size.Height + y);
                     label.AutoSize = true;
                     label.MaximumSize = new Size(170, 0);
+                    label.Text = "- " + requirement.notes;
                     label.Name = requirement.questid.ToString();
+                    using (Graphics graphics = label.CreateGraphics()) {
+                        y += (int)(Math.Ceiling(graphics.MeasureString(label.Text, label.Font).Width / 170.0)) * 14;
+                    }
                     this.Controls.Add(label);
                     count++;
                 }
@@ -299,7 +304,7 @@ namespace Tibialyzer {
             }
 
             int base_y = this.creatureLabel.Location.Y + this.creatureLabel.Height + 5;
-            int y = MainForm.DisplayCreatureList(this.Controls, (hunting_place.creatures as IEnumerable<TibiaObject>).ToList(), 10, base_y, this.Size.Width, 4, true, null, 0.8f);
+            y = MainForm.DisplayCreatureList(this.Controls, (hunting_place.creatures as IEnumerable<TibiaObject>).ToList(), 10, base_y, this.Size.Width, 4, true, null, 0.8f);
             foreach (Control c in this.Controls) {
                 if (c is PictureBox) {
                     c.Click += openCreatureMenu;
