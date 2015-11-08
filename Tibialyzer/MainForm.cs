@@ -356,6 +356,7 @@ namespace Tibialyzer {
             Image image = null;
             if (list[index] != null) {
                 var collection = list[index] as System.Collections.Generic.ICollection<System.Byte>;
+                if (collection == null) return image;
                 byte[] b = collection.ToArray<byte>();
                 image = byteArrayToImage(b);
 
@@ -796,12 +797,32 @@ namespace Tibialyzer {
 
         public void ShowNPCNotification(string name, ScriptScope pyScope, string comm) {
             NPC npc = GetNPC(name, pyScope);
-            if (npc == null) return;
+            IronPython.Runtime.List result;
+            if (npc == null) {
+                List<NPC> npcs = new List<NPC>();
+                string parameter = "%" + name + "%";
+                CompileSourceAndExecute("c.execute('SELECT id,name,city,x,y,z,image FROM NPCs WHERE LOWER(name) LIKE ? LIMIT ?', ['" + parameter.Replace("'", "\\'") + "', " + max_creatures.ToString() + "])", pyScope);
+                CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
+
+                result = pyScope.GetVariable("result") as IronPython.Runtime.List;
+
+                foreach (object obj in result) {
+                    npc = NPCFromList(obj as IronPython.Runtime.List);
+                    if (npc != null)
+                        npcs.Add(npc);
+                }
+                if (npcs.Count == 1) {
+                    ShowNPCNotification(npcs[0].name.ToLower(), pyScope, comm);
+                } else {
+                    ShowCreatureList((npcs as IEnumerable<TibiaObject>).ToList(), "NPC List", "npc@", comm);
+                }
+                return;
+            }
             List<Item> buy_items = new List<Item>();
             List<Item> sell_items = new List<Item>();
             CompileSourceAndExecute("c.execute('SELECT Items.id, Items.name, Items.actual_value, Items.vendor_value, Items.stackable, Items.capacity, Items.category, Items.image, Items.discard, Items.convert_to_gold, Items.look_text, catalog.value FROM Items INNER JOIN SellItems AS catalog ON Items.id=catalog.itemid AND catalog.vendorid=?', [" + npc.id + "])", pyScope);
             CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
-            IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
+            result = pyScope.GetVariable("result") as IronPython.Runtime.List;
             foreach (object obj in result) {
                 Item item = ItemFromList(obj as IronPython.Runtime.List);
                 if (item != null) {
@@ -823,12 +844,31 @@ namespace Tibialyzer {
         }
 
         public void ShowItemNotification(string name, ScriptScope pyScope, string comm) {
+            IronPython.Runtime.List result;
             Item i = GetItem(name, pyScope);
-            if (i == null) return;
+            if (i == null) {
+                List<Item> items = new List<Item>();
+                string parameter = "%" + name + "%";
+                CompileSourceAndExecute("c.execute('SELECT id, name, actual_value, vendor_value, stackable, capacity, category, image, discard, convert_to_gold, look_text FROM Items WHERE LOWER(name) LIKE ? LIMIT ?', ['" + parameter.Replace("'", "\\'") + "', " + max_creatures.ToString() + "])", pyScope);
+                CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
+
+                result = pyScope.GetVariable("result") as IronPython.Runtime.List;
+
+                foreach (object obj in result) {
+                    i = ItemFromList(obj as IronPython.Runtime.List);
+                    if (i != null)
+                        items.Add(i);
+                }
+                if (items.Count == 1) {
+                    ShowItemNotification(items[0].name.ToLower(), pyScope, comm);
+                } else {
+                    ShowCreatureList((items as IEnumerable<TibiaObject>).ToList(), "Item List", "item@", comm);
+                }
+                return;
+            }
 
             List<NPC> sell_npcs = new List<NPC>();
             List<NPC> buy_npcs = new List<NPC>();
-            IronPython.Runtime.List result;
             CompileSourceAndExecute("c.execute('SELECT NPCs.id, NPCs.name, NPCs.city, NPCs.x, NPCs.y, NPCs.z, NPCs.image, catalog.value  FROM (SELECT * FROM Items WHERE LOWER(name)=?) AS i INNER JOIN SellItems AS catalog ON i.id=catalog.itemid INNER JOIN NPCs ON catalog.vendorid=NPCs.id', ['" + i.name.Replace("'", "\\'") + "'])", pyScope);
             CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
             result = pyScope.GetVariable("result") as IronPython.Runtime.List;
