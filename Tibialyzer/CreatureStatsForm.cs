@@ -128,7 +128,7 @@ namespace Tibialyzer {
                 f = new Font(f.FontFamily, f.Size - 1.0f);
             }
 
-            this.maxDamageLabel.Text = "Max Damage: " + this.creature.maxdamage.ToString();
+            this.maxDamageLabel.Text = "Max Damage: " + (this.creature.maxdamage >= 0 ? this.creature.maxdamage.ToString() : "-");
             this.abilitiesLabel.Text = RemoveTextInBrackets(this.creature.abilities.Replace(", ", "\n"));
             this.abilitiesLabel.BorderStyle = BorderStyle.FixedSingle;
 

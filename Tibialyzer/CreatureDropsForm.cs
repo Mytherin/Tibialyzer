@@ -32,7 +32,7 @@ namespace Tibialyzer {
             picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
             picture_box.BackgroundImage = MainForm.item_background;
             picture_box.Click += openItemBox;
-            droprate_tooltip.SetToolTip(picture_box, prefix + drop.item.name + " is " + Math.Round(drop.percentage, 1).ToString() + "%.");
+            droprate_tooltip.SetToolTip(picture_box, prefix + drop.item.name + " is " + (drop.percentage >= 0 ? Math.Round(drop.percentage, 1).ToString() + "%." : "unknown."));
             this.Controls.Add(picture_box);
 
             // the 'dropbar' that roughly displays the droprate of the item

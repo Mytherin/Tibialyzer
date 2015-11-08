@@ -77,15 +77,15 @@ namespace Tibialyzer {
             // 
             // itemName
             // 
-            this.itemName.AutoSize = true;
             this.itemName.BackColor = System.Drawing.Color.Transparent;
             this.itemName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.itemName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.itemName.Location = new System.Drawing.Point(60, 94);
+            this.itemName.Location = new System.Drawing.Point(34, 84);
             this.itemName.Name = "itemName";
-            this.itemName.Size = new System.Drawing.Size(46, 16);
+            this.itemName.Size = new System.Drawing.Size(96, 16);
             this.itemName.TabIndex = 1;
             this.itemName.Text = "name";
+            this.itemName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // itemCategory
             // 
@@ -214,8 +214,18 @@ namespace Tibialyzer {
             CultureInfo c = System.Threading.Thread.CurrentThread.CurrentCulture;
 
             this.itemName.Text = c.TextInfo.ToTitleCase(item.name);
+            Font f = this.itemName.Font;
+            while (TextRenderer.MeasureText(this.itemName.Text, f).Width < this.itemName.Size.Width && TextRenderer.MeasureText(this.itemName.Text, f).Height < 26) {
+                f.Dispose();
+                f = new Font(f.FontFamily, f.Size + 1.0f);
+            }
+            while (TextRenderer.MeasureText(this.itemName.Text, f).Width > this.itemName.Size.Width && f.Size > 1) {
+                f.Dispose();
+                f = new Font(f.FontFamily, f.Size - 1.0f);
+            }
+            this.itemName.Font = f;
             this.itemCategory.Text = item.category;
-            this.itemName.Location = new Point(this.itemPictureBox.Location.X + this.itemPictureBox.Width / 2 - this.itemName.Size.Width / 2, this.itemPictureBox.Location.Y + this.itemPictureBox.Height + 5);
+            //this.itemName.Location = new Point(this.itemPictureBox.Location.X + this.itemPictureBox.Width / 2 - this.itemName.Size.Width / 2, this.itemPictureBox.Location.Y + this.itemPictureBox.Height + 5);
             this.itemCategory.Location = new Point(this.itemPictureBox.Location.X + this.itemPictureBox.Width / 2 - this.itemCategory.Size.Width / 2, this.itemPictureBox.Location.Y - this.itemCategory.Height - 5);
             this.itemPictureBox.BackgroundImage = MainForm.item_background;
             this.lookText.Text = item.look_text;
