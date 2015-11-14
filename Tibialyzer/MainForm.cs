@@ -58,7 +58,7 @@ namespace Tibialyzer {
         static List<string> cities = new List<string>() { "ab'dendriel", "carlin", "kazordoon", "venore", "thais", "ankrahmun", "farmine", "gray beach", "liberty bay", "port hope", "rathleton", "roshamuul", "yalahar", "svargrond", "edron", "darashia", "rookgaard", "dawnport", "gray beach" };
         public List<string> notification_items = new List<string>();
         private static List<string> extensions = new List<string>();
-
+        private ToolTip scan_tooltip = new ToolTip();
         private Stack<string> command_stack = new Stack<string>();
 
         public MainForm() {
@@ -103,7 +103,13 @@ namespace Tibialyzer {
             bw.DoWork += bw_DoWork;
             bw.RunWorkerAsync();
 
-            this.loadTimerImage.Image = new Bitmap(@"Images\load.gif");
+            scan_tooltip.AutoPopDelay = 60000;
+            scan_tooltip.InitialDelay = 500;
+            scan_tooltip.ReshowDelay = 0;
+            scan_tooltip.ShowAlways = true;
+            scan_tooltip.UseFading = true;
+            this.loadTimerImage.Image = new Bitmap(@"Images\scanningbar.gif");
+            scan_tooltip.SetToolTip(this.loadTimerImage, "Scanning Memory...");
         }
 
         void makeDraggable(Control.ControlCollection controls) {
@@ -131,7 +137,10 @@ namespace Tibialyzer {
                     circleTimer.Dispose();
                     circleTimer = null;
                     this.BeginInvoke((MethodInvoker)delegate {
-                        this.loadTimerImage.Enabled = true;
+                        if (!this.loadTimerImage.Enabled) {
+                            this.loadTimerImage.Enabled = true;
+                            scan_tooltip.SetToolTip(this.loadTimerImage, "Scanning Memory...");
+                        }
                     });
                 }
             }
@@ -139,7 +148,10 @@ namespace Tibialyzer {
 
         void circleTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
             this.Invoke((MethodInvoker)delegate {
-                this.loadTimerImage.Enabled = false;
+                if (this.loadTimerImage.Enabled) {
+                    this.loadTimerImage.Enabled = false;
+                    scan_tooltip.SetToolTip(this.loadTimerImage, "Waiting...");
+                }
             });
         }
 
@@ -168,9 +180,15 @@ namespace Tibialyzer {
             //byte[] buffer_array = new byte[array.Length];
             int start = 0;
             for (int i = 0; i < array.Length; i++) {
-                if (index == 5) {
+                if (index == 6) {
                     if (array[i] == 0) {
                         strings.Add(System.Text.Encoding.UTF8.GetString(array, start, (i - start)));
+                        index = 0;
+                    }
+                } else if (index == 5) {
+                    if (array[i] == ' ') {
+                        index++;
+                    } else {
                         index = 0;
                     }
                 } else if (array[i] > 47 && array[i] < 59) {
@@ -506,7 +524,7 @@ namespace Tibialyzer {
         }
 
         private HuntingPlace GetHuntingPlace(string name, ScriptScope pyScope) {
-            CompileSourceAndExecute("c.execute('SELECT id FROM HuntingPlaces WHERE LOWER(name)=?', ['" + name + "'])", pyScope);
+            CompileSourceAndExecute("c.execute('SELECT id FROM HuntingPlaces WHERE LOWER(name)=?', ['" + name.Replace("'", "\\'") + "'])", pyScope);
             CompileSourceAndExecute("res = [list(x) for x in c.fetchall()]", pyScope);
             CompileSourceAndExecute("result = res[0] if len(res) > 0 else None", pyScope);
             IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
@@ -906,7 +924,7 @@ namespace Tibialyzer {
         }
 
         private bool ReadMem(ScriptScope pyScope) {
-            if (!ReadMemory(pyScope)) return false;
+            ReadMemory(pyScope);
             ExecuteFile("parse_logresults.py", pyScope);
             float exph = pyScope.GetVariable<float>("exph");
             IronPython.Runtime.PythonDictionary damage = pyScope.GetVariable("dps") as IronPython.Runtime.PythonDictionary;
@@ -1142,7 +1160,7 @@ namespace Tibialyzer {
                 } else if (comp.StartsWith("savelog@")) {
                     CompileSourceAndExecute("save_log('" + c.Split('@')[1].Trim().Replace("'", "\\'") + "')", pyScope);
                 } else if (comp.StartsWith("loadlog@")) {
-                    CompileSourceAndExecute("load_log('" + c.Split('@')[1].Trim().Replace("'", "\\'") + "')", pyScope);
+                    CompileSourceAndExecute("load_log('" + c.Split('@')[1].Trim().Replace("'", "\\'").Replace("\\","/") + "')", pyScope);
                 } else if (comp.StartsWith("setdiscardgoldratio@")) {
                     double val;
                     if (double.TryParse(c.Split('@')[1].Trim(), out val)) {
@@ -1561,6 +1579,17 @@ namespace Tibialyzer {
         private void minimizeIcon_MouseDoubleClick(object sender, MouseEventArgs e) {
             this.minimizeIcon.Visible = false;
             this.Show();
+        }
+
+        private void commandTextBox_KeyPress(object sender, KeyPressEventArgs e) {
+            if (e.KeyChar == '\r') {
+                this.priority_command = (sender as TextBox).Text;
+                e.Handled = true;
+            }
+        }
+
+        private void executeCommand_Click(object sender, EventArgs e) {
+            this.priority_command = commandTextBox.Text;
         }
     }
 }

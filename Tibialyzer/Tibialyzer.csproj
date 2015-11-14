@@ -103,6 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Creature.cs" />
+    <Compile Include="EnterTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="HuntListForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -314,6 +317,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\prevpage.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\scanningbar.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\star.png">

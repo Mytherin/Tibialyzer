@@ -28,6 +28,9 @@
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.mainTab = new System.Windows.Forms.TabPage();
+            this.executeCommand = new System.Windows.Forms.Button();
+            this.label56 = new System.Windows.Forms.Label();
+            this.commandTextBox = new Tibialyzer.EnterTextBox();
             this.label49 = new System.Windows.Forms.Label();
             this.damageButton = new System.Windows.Forms.Button();
             this.saveLootImage = new System.Windows.Forms.Button();
@@ -159,6 +162,9 @@
             // 
             // mainTab
             // 
+            this.mainTab.Controls.Add(this.executeCommand);
+            this.mainTab.Controls.Add(this.label56);
+            this.mainTab.Controls.Add(this.commandTextBox);
             this.mainTab.Controls.Add(this.label49);
             this.mainTab.Controls.Add(this.damageButton);
             this.mainTab.Controls.Add(this.saveLootImage);
@@ -175,6 +181,34 @@
             this.mainTab.Text = "Main";
             this.mainTab.UseVisualStyleBackColor = true;
             this.mainTab.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
+            // 
+            // executeCommand
+            // 
+            this.executeCommand.Location = new System.Drawing.Point(386, 439);
+            this.executeCommand.Name = "executeCommand";
+            this.executeCommand.Size = new System.Drawing.Size(75, 23);
+            this.executeCommand.TabIndex = 12;
+            this.executeCommand.Text = "Execute";
+            this.executeCommand.UseVisualStyleBackColor = true;
+            this.executeCommand.Click += new System.EventHandler(this.executeCommand_Click);
+            // 
+            // label56
+            // 
+            this.label56.AutoSize = true;
+            this.label56.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label56.Location = new System.Drawing.Point(2, 442);
+            this.label56.Name = "label56";
+            this.label56.Size = new System.Drawing.Size(77, 16);
+            this.label56.TabIndex = 11;
+            this.label56.Text = "Command";
+            // 
+            // commandTextBox
+            // 
+            this.commandTextBox.Location = new System.Drawing.Point(81, 440);
+            this.commandTextBox.Name = "commandTextBox";
+            this.commandTextBox.Size = new System.Drawing.Size(299, 20);
+            this.commandTextBox.TabIndex = 9;
+            this.commandTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.commandTextBox_KeyPress);
             // 
             // label49
             // 
@@ -1175,9 +1209,9 @@
             // 
             this.loadTimerImage.BackColor = System.Drawing.Color.Transparent;
             this.loadTimerImage.Enabled = false;
-            this.loadTimerImage.Location = new System.Drawing.Point(558, 1);
+            this.loadTimerImage.Location = new System.Drawing.Point(478, 1);
             this.loadTimerImage.Name = "loadTimerImage";
-            this.loadTimerImage.Size = new System.Drawing.Size(20, 20);
+            this.loadTimerImage.Size = new System.Drawing.Size(100, 20);
             this.loadTimerImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.loadTimerImage.TabIndex = 3;
             this.loadTimerImage.TabStop = false;
@@ -1321,6 +1355,9 @@
         private System.Windows.Forms.Label minimizeButton;
         private System.Windows.Forms.NotifyIcon minimizeIcon;
         private System.Windows.Forms.PictureBox loadTimerImage;
+        private System.Windows.Forms.Label label56;
+        private EnterTextBox commandTextBox;
+        private System.Windows.Forms.Button executeCommand;
     }
 }
 
