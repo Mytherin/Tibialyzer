@@ -61,6 +61,13 @@ namespace Tibialyzer {
         private ToolTip scan_tooltip = new ToolTip();
         private Stack<string> command_stack = new Stack<string>();
 
+        enum ScanningState { Scanning, NoTibia, Stuck };
+        ScanningState current_state;
+
+        private Image loadingbar = null;
+        private Image loadingbarred = null;
+        private Image loadingbargray = null;
+
         public MainForm() {
             mainForm = this;
             InitializeComponent();
@@ -108,8 +115,15 @@ namespace Tibialyzer {
             scan_tooltip.ReshowDelay = 0;
             scan_tooltip.ShowAlways = true;
             scan_tooltip.UseFading = true;
-            this.loadTimerImage.Image = new Bitmap(@"Images\scanningbar.gif");
-            scan_tooltip.SetToolTip(this.loadTimerImage, "Scanning Memory...");
+
+            this.loadingbar = new Bitmap(@"Images\scanningbar.gif");
+            this.loadingbarred = new Bitmap(@"Images\scanningbar-red.gif");
+            this.loadingbargray = new Bitmap(@"Images\scanningbar-gray.gif");
+
+            this.loadTimerImage.Image = this.loadingbarred;
+            this.current_state = ScanningState.NoTibia;
+            this.loadTimerImage.Enabled = true;
+            scan_tooltip.SetToolTip(this.loadTimerImage, "No Tibia Client Found...");
         }
 
         void makeDraggable(Control.ControlCollection controls) {
@@ -133,26 +147,40 @@ namespace Tibialyzer {
                     circleTimer.Elapsed += circleTimer_Elapsed;
                     circleTimer.Enabled = true;
                 }
-                if (ReadMem(pyScope)) {
-                    circleTimer.Dispose();
-                    circleTimer = null;
-                    this.BeginInvoke((MethodInvoker)delegate {
-                        if (!this.loadTimerImage.Enabled) {
+                bool success = ReadMem(pyScope);
+                circleTimer.Dispose();
+                circleTimer = null;
+                if (success) {
+                    if (this.current_state != ScanningState.Scanning) {
+                        this.current_state = ScanningState.Scanning;
+                        this.BeginInvoke((MethodInvoker)delegate {
+                            this.loadTimerImage.Image = this.loadingbar;
                             this.loadTimerImage.Enabled = true;
                             scan_tooltip.SetToolTip(this.loadTimerImage, "Scanning Memory...");
-                        }
-                    });
+                        });
+                    }
+                } else {
+                    if (this.current_state != ScanningState.NoTibia) {
+                        this.current_state = ScanningState.NoTibia;
+                        this.BeginInvoke((MethodInvoker)delegate {
+                            this.loadTimerImage.Image = this.loadingbarred;
+                            this.loadTimerImage.Enabled = true;
+                            scan_tooltip.SetToolTip(this.loadTimerImage, "No Tibia Client Found...");
+                        });
+                    }
                 }
             }
         }
 
         void circleTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
-            this.Invoke((MethodInvoker)delegate {
-                if (this.loadTimerImage.Enabled) {
+            if (this.current_state != ScanningState.Stuck) {
+                this.current_state = ScanningState.Stuck;
+                this.Invoke((MethodInvoker)delegate {
+                    this.loadTimerImage.Image = this.loadingbargray;
+                    scan_tooltip.SetToolTip(this.loadTimerImage, "Waiting, possibly stuck...");
                     this.loadTimerImage.Enabled = false;
-                    scan_tooltip.SetToolTip(this.loadTimerImage, "Waiting...");
-                }
-            });
+                });
+            }
         }
 
 
@@ -314,7 +342,7 @@ namespace Tibialyzer {
             long proc_max_address_l = (long)proc_max_address;
             Process[] processes = Process.GetProcessesByName("Tibia");
             if (processes.Length == 0) {
-                Thread.Sleep(1000);
+                Thread.Sleep(250);
                 return false;
             }
             Process process = processes[0];
@@ -924,7 +952,7 @@ namespace Tibialyzer {
         }
 
         private bool ReadMem(ScriptScope pyScope) {
-            ReadMemory(pyScope);
+            bool retval = ReadMemory(pyScope);
             ExecuteFile("parse_logresults.py", pyScope);
             float exph = pyScope.GetVariable<float>("exph");
             IronPython.Runtime.PythonDictionary damage = pyScope.GetVariable("dps") as IronPython.Runtime.PythonDictionary;
@@ -1304,7 +1332,7 @@ namespace Tibialyzer {
                     }
                 }
             }
-            return true;
+            return retval;
         }
 
         public const int WM_NCLBUTTONDOWN = 0xA1;
