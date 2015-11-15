@@ -5,7 +5,7 @@ music_path = 'D:/Browser Downloads'
 import nt
 import os
 
-command = '"%s" ' % music_player_path
+command = 'start "" "%s"' % music_player_path
 directories = [music_path]
 files = nt.listdir(music_path)
 for f in files:
@@ -28,5 +28,6 @@ for dir in directories:
                 if len(new_command) < 32767:
                     command = new_command
 
+print command
 if command != '"%s" ' % music_player_path:
     nt.system(command)
