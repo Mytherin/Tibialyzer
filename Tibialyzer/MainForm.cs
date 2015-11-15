@@ -1352,17 +1352,10 @@ namespace Tibialyzer {
                 image_box.BackColor = Color.Transparent;
                 image_box.Size = new Size((int)(image.Width * magnification), height);
                 image_box.Location = new Point(base_x + x, base_y + y);
-                image_box.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+                image_box.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
                 image_box.Name = name;
                 controls.Add(image_box);
-                if (magnification != 1.0f) {
-                    Bitmap bitmap = new Bitmap((int)(image.Width * magnification), (int)(image.Height * magnification));
-                    Graphics gr = Graphics.FromImage(bitmap);
-                    gr.DrawImage(image, new Rectangle(0, 0, bitmap.Width, bitmap.Height), new Rectangle(0, 0, image.Width, image.Height), GraphicsUnit.Pixel);
-                    image_box.Image = bitmap;
-                } else {
-                    image_box.Image = image;
-                }
+                image_box.Image = image;
                 if (tooltip_function == null) {
                     value_tooltip.SetToolTip(image_box, System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(name));
                 } else {
