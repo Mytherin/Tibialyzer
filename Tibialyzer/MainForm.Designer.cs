@@ -34,19 +34,27 @@
             this.label49 = new System.Windows.Forms.Label();
             this.damageButton = new System.Windows.Forms.Button();
             this.saveLootImage = new System.Windows.Forms.Button();
-            this.importLogFile = new System.Windows.Forms.Button();
             this.resetButton = new System.Windows.Forms.Button();
-            this.exportLogButton = new System.Windows.Forms.Button();
             this.nameTextBox = new System.Windows.Forms.RichTextBox();
             this.namesLabel = new System.Windows.Forms.Label();
-            this.creatureTab = new System.Windows.Forms.TabPage();
-            this.creaturePanel = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.creatureSearch = new System.Windows.Forms.TextBox();
-            this.itemTab = new System.Windows.Forms.TabPage();
-            this.itemPanel = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.itemSearchBox = new System.Windows.Forms.TextBox();
+            this.huntingPage = new System.Windows.Forms.TabPage();
+            this.exportLogButton = new System.Windows.Forms.Button();
+            this.importLogFile = new System.Windows.Forms.Button();
+            this.creatureImagePanel = new System.Windows.Forms.Panel();
+            this.logMessageTextBox = new Tibialyzer.TransparentLabel();
+            this.startupHuntCheckbox = new System.Windows.Forms.CheckBox();
+            this.activeHuntButton = new System.Windows.Forms.Button();
+            this.creatureTrackLabel = new System.Windows.Forms.Label();
+            this.trackCreaturesBox = new System.Windows.Forms.RichTextBox();
+            this.trackCreaturesCheckbox = new System.Windows.Forms.CheckBox();
+            this.clearLogButton = new System.Windows.Forms.Button();
+            this.deleteHuntButton = new System.Windows.Forms.Button();
+            this.huntName = new System.Windows.Forms.Label();
+            this.huntNameBox = new System.Windows.Forms.TextBox();
+            this.newHuntButton = new System.Windows.Forms.Button();
+            this.label55 = new System.Windows.Forms.Label();
+            this.huntBox = new System.Windows.Forms.ListBox();
+            this.backgroundBox = new System.Windows.Forms.PictureBox();
             this.settingsTab = new System.Windows.Forms.TabPage();
             this.label50 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -60,21 +68,28 @@
             this.goldRatioTextBox = new System.Windows.Forms.TextBox();
             this.label52 = new System.Windows.Forms.Label();
             this.label51 = new System.Windows.Forms.Label();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.showNotificationCheckbox = new System.Windows.Forms.CheckBox();
             this.enableRichNotificationsCheckbox = new System.Windows.Forms.CheckBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.notificationPanel = new System.Windows.Forms.Panel();
+            this.specificNotificationTextbox = new System.Windows.Forms.RichTextBox();
+            this.specificNotificationCheckbox = new System.Windows.Forms.CheckBox();
             this.rareDropNotificationValueCheckbox = new System.Windows.Forms.CheckBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.notificationValue = new System.Windows.Forms.TextBox();
             this.label48 = new System.Windows.Forms.Label();
-            this.rareItemDropNotification = new System.Windows.Forms.ComboBox();
+            this.notificationTypeBox = new System.Windows.Forms.ComboBox();
             this.advanceCopyCheckbox = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.enableSimpleNotifications = new System.Windows.Forms.CheckBox();
             this.richNotificationsPanel = new System.Windows.Forms.Panel();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.notificationLengthSlider = new System.Windows.Forms.TrackBar();
             this.notificationLabel = new System.Windows.Forms.Label();
+            this.creatureTab = new System.Windows.Forms.TabPage();
+            this.creaturePanel = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.creatureSearch = new System.Windows.Forms.TextBox();
+            this.itemTab = new System.Windows.Forms.TabPage();
+            this.itemPanel = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.itemSearchBox = new System.Windows.Forms.TextBox();
             this.commandListTab = new System.Windows.Forms.TabPage();
             this.label44 = new System.Windows.Forms.Label();
             this.label45 = new System.Windows.Forms.Label();
@@ -126,15 +141,18 @@
             this.minimizeButton = new System.Windows.Forms.Label();
             this.minimizeIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.loadTimerImage = new System.Windows.Forms.PictureBox();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
-            this.creatureTab.SuspendLayout();
-            this.itemTab.SuspendLayout();
+            this.huntingPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.backgroundBox)).BeginInit();
             this.settingsTab.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.notificationPanel.SuspendLayout();
             this.richNotificationsPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.notificationLengthSlider)).BeginInit();
+            this.creatureTab.SuspendLayout();
+            this.itemTab.SuspendLayout();
             this.commandListTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loadTimerImage)).BeginInit();
             this.SuspendLayout();
@@ -149,9 +167,10 @@
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.mainTab);
+            this.tabControl1.Controls.Add(this.huntingPage);
+            this.tabControl1.Controls.Add(this.settingsTab);
             this.tabControl1.Controls.Add(this.creatureTab);
             this.tabControl1.Controls.Add(this.itemTab);
-            this.tabControl1.Controls.Add(this.settingsTab);
             this.tabControl1.Controls.Add(this.commandListTab);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tabControl1.Location = new System.Drawing.Point(0, 2);
@@ -168,9 +187,7 @@
             this.mainTab.Controls.Add(this.label49);
             this.mainTab.Controls.Add(this.damageButton);
             this.mainTab.Controls.Add(this.saveLootImage);
-            this.mainTab.Controls.Add(this.importLogFile);
             this.mainTab.Controls.Add(this.resetButton);
-            this.mainTab.Controls.Add(this.exportLogButton);
             this.mainTab.Controls.Add(this.nameTextBox);
             this.mainTab.Controls.Add(this.namesLabel);
             this.mainTab.Location = new System.Drawing.Point(4, 22);
@@ -241,16 +258,6 @@
             this.saveLootImage.UseVisualStyleBackColor = true;
             this.saveLootImage.Click += new System.EventHandler(this.saveLootImage_Click);
             // 
-            // importLogFile
-            // 
-            this.importLogFile.Location = new System.Drawing.Point(467, 48);
-            this.importLogFile.Name = "importLogFile";
-            this.importLogFile.Size = new System.Drawing.Size(122, 44);
-            this.importLogFile.TabIndex = 5;
-            this.importLogFile.Text = "Import Log File";
-            this.importLogFile.UseVisualStyleBackColor = true;
-            this.importLogFile.Click += new System.EventHandler(this.importLogFile_Click);
-            // 
             // resetButton
             // 
             this.resetButton.Location = new System.Drawing.Point(467, 430);
@@ -260,16 +267,6 @@
             this.resetButton.Text = "Reset Hunt";
             this.resetButton.UseVisualStyleBackColor = true;
             this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
-            // 
-            // exportLogButton
-            // 
-            this.exportLogButton.Location = new System.Drawing.Point(467, 109);
-            this.exportLogButton.Name = "exportLogButton";
-            this.exportLogButton.Size = new System.Drawing.Size(122, 40);
-            this.exportLogButton.TabIndex = 3;
-            this.exportLogButton.Text = "Export Log File";
-            this.exportLogButton.UseVisualStyleBackColor = true;
-            this.exportLogButton.Click += new System.EventHandler(this.exportLogButton_Click);
             // 
             // nameTextBox
             // 
@@ -290,97 +287,214 @@
             this.namesLabel.TabIndex = 1;
             this.namesLabel.Text = "Character Names To Accept Commands From";
             // 
-            // creatureTab
+            // huntingPage
             // 
-            this.creatureTab.Controls.Add(this.creaturePanel);
-            this.creatureTab.Controls.Add(this.label1);
-            this.creatureTab.Controls.Add(this.creatureSearch);
-            this.creatureTab.Location = new System.Drawing.Point(4, 22);
-            this.creatureTab.Name = "creatureTab";
-            this.creatureTab.Padding = new System.Windows.Forms.Padding(3);
-            this.creatureTab.Size = new System.Drawing.Size(642, 497);
-            this.creatureTab.TabIndex = 1;
-            this.creatureTab.Text = "Creatures";
-            this.creatureTab.UseVisualStyleBackColor = true;
-            this.creatureTab.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
+            this.huntingPage.Controls.Add(this.exportLogButton);
+            this.huntingPage.Controls.Add(this.importLogFile);
+            this.huntingPage.Controls.Add(this.creatureImagePanel);
+            this.huntingPage.Controls.Add(this.logMessageTextBox);
+            this.huntingPage.Controls.Add(this.startupHuntCheckbox);
+            this.huntingPage.Controls.Add(this.activeHuntButton);
+            this.huntingPage.Controls.Add(this.creatureTrackLabel);
+            this.huntingPage.Controls.Add(this.trackCreaturesBox);
+            this.huntingPage.Controls.Add(this.trackCreaturesCheckbox);
+            this.huntingPage.Controls.Add(this.clearLogButton);
+            this.huntingPage.Controls.Add(this.deleteHuntButton);
+            this.huntingPage.Controls.Add(this.huntName);
+            this.huntingPage.Controls.Add(this.huntNameBox);
+            this.huntingPage.Controls.Add(this.newHuntButton);
+            this.huntingPage.Controls.Add(this.label55);
+            this.huntingPage.Controls.Add(this.huntBox);
+            this.huntingPage.Controls.Add(this.backgroundBox);
+            this.huntingPage.Location = new System.Drawing.Point(4, 22);
+            this.huntingPage.Name = "huntingPage";
+            this.huntingPage.Size = new System.Drawing.Size(642, 497);
+            this.huntingPage.TabIndex = 5;
+            this.huntingPage.Text = "Hunting";
+            this.huntingPage.UseVisualStyleBackColor = true;
             // 
-            // creaturePanel
+            // exportLogButton
             // 
-            this.creaturePanel.AutoScroll = true;
-            this.creaturePanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.creaturePanel.Location = new System.Drawing.Point(3, 36);
-            this.creaturePanel.Name = "creaturePanel";
-            this.creaturePanel.Size = new System.Drawing.Size(636, 458);
-            this.creaturePanel.TabIndex = 2;
-            this.creaturePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
+            this.exportLogButton.Location = new System.Drawing.Point(8, 222);
+            this.exportLogButton.Name = "exportLogButton";
+            this.exportLogButton.Size = new System.Drawing.Size(100, 37);
+            this.exportLogButton.TabIndex = 6;
+            this.exportLogButton.Text = "Save Log To File";
+            this.exportLogButton.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // importLogFile
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Search";
+            this.importLogFile.Location = new System.Drawing.Point(195, 222);
+            this.importLogFile.Name = "importLogFile";
+            this.importLogFile.Size = new System.Drawing.Size(86, 37);
+            this.importLogFile.TabIndex = 7;
+            this.importLogFile.Text = "Import Log";
+            this.importLogFile.UseVisualStyleBackColor = true;
             // 
-            // creatureSearch
+            // creatureImagePanel
             // 
-            this.creatureSearch.Location = new System.Drawing.Point(55, 12);
-            this.creatureSearch.Name = "creatureSearch";
-            this.creatureSearch.Size = new System.Drawing.Size(579, 20);
-            this.creatureSearch.TabIndex = 0;
-            this.creatureSearch.TextChanged += new System.EventHandler(this.creatureSearch_TextChanged);
+            this.creatureImagePanel.Location = new System.Drawing.Point(287, 142);
+            this.creatureImagePanel.Name = "creatureImagePanel";
+            this.creatureImagePanel.Size = new System.Drawing.Size(170, 117);
+            this.creatureImagePanel.TabIndex = 16;
             // 
-            // itemTab
+            // logMessageTextBox
             // 
-            this.itemTab.Controls.Add(this.itemPanel);
-            this.itemTab.Controls.Add(this.label2);
-            this.itemTab.Controls.Add(this.itemSearchBox);
-            this.itemTab.Location = new System.Drawing.Point(4, 22);
-            this.itemTab.Name = "itemTab";
-            this.itemTab.Size = new System.Drawing.Size(642, 497);
-            this.itemTab.TabIndex = 2;
-            this.itemTab.Text = "Items";
-            this.itemTab.UseVisualStyleBackColor = true;
-            this.itemTab.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
+            this.logMessageTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.logMessageTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(0)))));
+            this.logMessageTextBox.Location = new System.Drawing.Point(8, 265);
+            this.logMessageTextBox.Name = "logMessageTextBox";
+            this.logMessageTextBox.ReadOnly = true;
+            this.logMessageTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this.logMessageTextBox.Size = new System.Drawing.Size(631, 224);
+            this.logMessageTextBox.TabIndex = 15;
+            this.logMessageTextBox.Text = "";
             // 
-            // itemPanel
+            // startupHuntCheckbox
             // 
-            this.itemPanel.AutoScroll = true;
-            this.itemPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.itemPanel.Location = new System.Drawing.Point(0, 36);
-            this.itemPanel.Name = "itemPanel";
-            this.itemPanel.Size = new System.Drawing.Size(642, 461);
-            this.itemPanel.TabIndex = 5;
-            this.itemPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
+            this.startupHuntCheckbox.AutoSize = true;
+            this.startupHuntCheckbox.Checked = true;
+            this.startupHuntCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.startupHuntCheckbox.Location = new System.Drawing.Point(152, 20);
+            this.startupHuntCheckbox.Name = "startupHuntCheckbox";
+            this.startupHuntCheckbox.Size = new System.Drawing.Size(128, 17);
+            this.startupHuntCheckbox.TabIndex = 13;
+            this.startupHuntCheckbox.Text = "New Hunt On Startup";
+            this.startupHuntCheckbox.UseVisualStyleBackColor = true;
+            this.startupHuntCheckbox.CheckedChanged += new System.EventHandler(this.startupHuntCheckbox_CheckedChanged);
             // 
-            // label2
+            // activeHuntButton
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 15);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(41, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Search";
+            this.activeHuntButton.Location = new System.Drawing.Point(432, 67);
+            this.activeHuntButton.Name = "activeHuntButton";
+            this.activeHuntButton.Size = new System.Drawing.Size(202, 33);
+            this.activeHuntButton.TabIndex = 10;
+            this.activeHuntButton.Text = "Set As Active Hunt";
+            this.activeHuntButton.UseVisualStyleBackColor = true;
+            this.activeHuntButton.Click += new System.EventHandler(this.activeHuntButton_Click);
             // 
-            // itemSearchBox
+            // creatureTrackLabel
             // 
-            this.itemSearchBox.Location = new System.Drawing.Point(55, 12);
-            this.itemSearchBox.Name = "itemSearchBox";
-            this.itemSearchBox.Size = new System.Drawing.Size(579, 20);
-            this.itemSearchBox.TabIndex = 3;
-            this.itemSearchBox.TextChanged += new System.EventHandler(this.itemSearchBox_TextChanged);
+            this.creatureTrackLabel.AutoSize = true;
+            this.creatureTrackLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.creatureTrackLabel.Location = new System.Drawing.Point(453, 124);
+            this.creatureTrackLabel.Name = "creatureTrackLabel";
+            this.creatureTrackLabel.Size = new System.Drawing.Size(170, 15);
+            this.creatureTrackLabel.TabIndex = 9;
+            this.creatureTrackLabel.Text = "Enter creature names to track.";
+            this.creatureTrackLabel.Visible = false;
+            // 
+            // trackCreaturesBox
+            // 
+            this.trackCreaturesBox.DetectUrls = false;
+            this.trackCreaturesBox.Enabled = false;
+            this.trackCreaturesBox.Location = new System.Drawing.Point(463, 142);
+            this.trackCreaturesBox.Name = "trackCreaturesBox";
+            this.trackCreaturesBox.Size = new System.Drawing.Size(160, 117);
+            this.trackCreaturesBox.TabIndex = 8;
+            this.trackCreaturesBox.Text = "";
+            this.trackCreaturesBox.TextChanged += new System.EventHandler(this.trackCreaturesBox_TextChanged);
+            // 
+            // trackCreaturesCheckbox
+            // 
+            this.trackCreaturesCheckbox.AutoSize = true;
+            this.trackCreaturesCheckbox.Checked = true;
+            this.trackCreaturesCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.trackCreaturesCheckbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.trackCreaturesCheckbox.Location = new System.Drawing.Point(463, 106);
+            this.trackCreaturesCheckbox.Name = "trackCreaturesCheckbox";
+            this.trackCreaturesCheckbox.Size = new System.Drawing.Size(160, 20);
+            this.trackCreaturesCheckbox.TabIndex = 7;
+            this.trackCreaturesCheckbox.Text = "Track All Creatures";
+            this.trackCreaturesCheckbox.UseVisualStyleBackColor = true;
+            this.trackCreaturesCheckbox.CheckedChanged += new System.EventHandler(this.trackCreaturesCheckbox_CheckedChanged);
+            // 
+            // clearLogButton
+            // 
+            this.clearLogButton.Location = new System.Drawing.Point(114, 222);
+            this.clearLogButton.Name = "clearLogButton";
+            this.clearLogButton.Size = new System.Drawing.Size(75, 37);
+            this.clearLogButton.TabIndex = 6;
+            this.clearLogButton.Text = "Clear Log";
+            this.clearLogButton.UseVisualStyleBackColor = true;
+            this.clearLogButton.Click += new System.EventHandler(this.clearLogButton_Click);
+            // 
+            // deleteHuntButton
+            // 
+            this.deleteHuntButton.Location = new System.Drawing.Point(287, 80);
+            this.deleteHuntButton.Name = "deleteHuntButton";
+            this.deleteHuntButton.Size = new System.Drawing.Size(75, 37);
+            this.deleteHuntButton.TabIndex = 5;
+            this.deleteHuntButton.Text = "Delete Hunt";
+            this.deleteHuntButton.UseVisualStyleBackColor = true;
+            this.deleteHuntButton.Click += new System.EventHandler(this.deleteHuntButton_Click);
+            // 
+            // huntName
+            // 
+            this.huntName.AutoSize = true;
+            this.huntName.Location = new System.Drawing.Point(429, 44);
+            this.huntName.Name = "huntName";
+            this.huntName.Size = new System.Drawing.Size(61, 13);
+            this.huntName.TabIndex = 4;
+            this.huntName.Text = "Hunt Name";
+            // 
+            // huntNameBox
+            // 
+            this.huntNameBox.Location = new System.Drawing.Point(495, 41);
+            this.huntNameBox.Name = "huntNameBox";
+            this.huntNameBox.Size = new System.Drawing.Size(144, 20);
+            this.huntNameBox.TabIndex = 3;
+            this.huntNameBox.TextChanged += new System.EventHandler(this.huntNameBox_TextChanged);
+            // 
+            // newHuntButton
+            // 
+            this.newHuntButton.Location = new System.Drawing.Point(287, 41);
+            this.newHuntButton.Name = "newHuntButton";
+            this.newHuntButton.Size = new System.Drawing.Size(75, 33);
+            this.newHuntButton.TabIndex = 2;
+            this.newHuntButton.Text = "New Hunt";
+            this.newHuntButton.UseVisualStyleBackColor = true;
+            this.newHuntButton.Click += new System.EventHandler(this.newHuntButton_Click);
+            // 
+            // label55
+            // 
+            this.label55.AutoSize = true;
+            this.label55.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label55.Location = new System.Drawing.Point(10, 17);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(104, 18);
+            this.label55.TabIndex = 1;
+            this.label55.Text = "List of Hunts";
+            // 
+            // huntBox
+            // 
+            this.huntBox.FormattingEnabled = true;
+            this.huntBox.Location = new System.Drawing.Point(8, 41);
+            this.huntBox.Name = "huntBox";
+            this.huntBox.Size = new System.Drawing.Size(273, 173);
+            this.huntBox.TabIndex = 0;
+            this.huntBox.SelectedIndexChanged += new System.EventHandler(this.huntBox_SelectedIndexChanged);
+            // 
+            // backgroundBox
+            // 
+            this.backgroundBox.BackColor = System.Drawing.Color.Black;
+            this.backgroundBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.backgroundBox.Location = new System.Drawing.Point(8, 265);
+            this.backgroundBox.Name = "backgroundBox";
+            this.backgroundBox.Size = new System.Drawing.Size(631, 224);
+            this.backgroundBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.backgroundBox.TabIndex = 14;
+            this.backgroundBox.TabStop = false;
             // 
             // settingsTab
             // 
             this.settingsTab.Controls.Add(this.label50);
             this.settingsTab.Controls.Add(this.panel2);
-            this.settingsTab.Controls.Add(this.checkBox3);
+            this.settingsTab.Controls.Add(this.showNotificationCheckbox);
             this.settingsTab.Controls.Add(this.enableRichNotificationsCheckbox);
-            this.settingsTab.Controls.Add(this.panel1);
+            this.settingsTab.Controls.Add(this.notificationPanel);
             this.settingsTab.Controls.Add(this.advanceCopyCheckbox);
-            this.settingsTab.Controls.Add(this.checkBox2);
-            this.settingsTab.Controls.Add(this.checkBox1);
+            this.settingsTab.Controls.Add(this.enableSimpleNotifications);
             this.settingsTab.Controls.Add(this.richNotificationsPanel);
             this.settingsTab.Location = new System.Drawing.Point(4, 22);
             this.settingsTab.Name = "settingsTab";
@@ -506,17 +620,18 @@
             this.label51.TabIndex = 0;
             this.label51.Text = resources.GetString("label51.Text");
             // 
-            // checkBox3
+            // showNotificationCheckbox
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Checked = true;
-            this.checkBox3.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox3.Location = new System.Drawing.Point(362, 23);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(195, 17);
-            this.checkBox3.TabIndex = 7;
-            this.checkBox3.Text = "Enable Rare Item Drop Notifications";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.showNotificationCheckbox.AutoSize = true;
+            this.showNotificationCheckbox.Checked = true;
+            this.showNotificationCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showNotificationCheckbox.Location = new System.Drawing.Point(362, 23);
+            this.showNotificationCheckbox.Name = "showNotificationCheckbox";
+            this.showNotificationCheckbox.Size = new System.Drawing.Size(195, 17);
+            this.showNotificationCheckbox.TabIndex = 7;
+            this.showNotificationCheckbox.Text = "Enable Rare Item Drop Notifications";
+            this.showNotificationCheckbox.UseVisualStyleBackColor = true;
+            this.showNotificationCheckbox.CheckedChanged += new System.EventHandler(this.showNotificationCheckbox_CheckedChanged);
             // 
             // enableRichNotificationsCheckbox
             // 
@@ -529,38 +644,42 @@
             this.enableRichNotificationsCheckbox.TabIndex = 2;
             this.enableRichNotificationsCheckbox.Text = "Enable Rich Notifications";
             this.enableRichNotificationsCheckbox.UseVisualStyleBackColor = true;
+            this.enableRichNotificationsCheckbox.CheckedChanged += new System.EventHandler(this.enableRichNotificationsCheckbox_CheckedChanged);
             // 
-            // panel1
+            // notificationPanel
             // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.richTextBox1);
-            this.panel1.Controls.Add(this.checkBox4);
-            this.panel1.Controls.Add(this.rareDropNotificationValueCheckbox);
-            this.panel1.Controls.Add(this.textBox1);
-            this.panel1.Controls.Add(this.label48);
-            this.panel1.Controls.Add(this.rareItemDropNotification);
-            this.panel1.Location = new System.Drawing.Point(358, 31);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(276, 459);
-            this.panel1.TabIndex = 8;
+            this.notificationPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.notificationPanel.Controls.Add(this.specificNotificationTextbox);
+            this.notificationPanel.Controls.Add(this.specificNotificationCheckbox);
+            this.notificationPanel.Controls.Add(this.rareDropNotificationValueCheckbox);
+            this.notificationPanel.Controls.Add(this.notificationValue);
+            this.notificationPanel.Controls.Add(this.label48);
+            this.notificationPanel.Controls.Add(this.notificationTypeBox);
+            this.notificationPanel.Location = new System.Drawing.Point(358, 31);
+            this.notificationPanel.Name = "notificationPanel";
+            this.notificationPanel.Size = new System.Drawing.Size(276, 459);
+            this.notificationPanel.TabIndex = 8;
             // 
-            // richTextBox1
+            // specificNotificationTextbox
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(9, 140);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(260, 316);
-            this.richTextBox1.TabIndex = 5;
-            this.richTextBox1.Text = "";
+            this.specificNotificationTextbox.Enabled = false;
+            this.specificNotificationTextbox.Location = new System.Drawing.Point(9, 140);
+            this.specificNotificationTextbox.Name = "specificNotificationTextbox";
+            this.specificNotificationTextbox.Size = new System.Drawing.Size(260, 316);
+            this.specificNotificationTextbox.TabIndex = 5;
+            this.specificNotificationTextbox.Text = "";
+            this.specificNotificationTextbox.TextChanged += new System.EventHandler(this.specificNotificationTextbox_TextChanged);
             // 
-            // checkBox4
+            // specificNotificationCheckbox
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(7, 116);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(269, 17);
-            this.checkBox4.TabIndex = 4;
-            this.checkBox4.Text = "Show Notifications on Specific Items (One Per Line)";
-            this.checkBox4.UseVisualStyleBackColor = true;
+            this.specificNotificationCheckbox.AutoSize = true;
+            this.specificNotificationCheckbox.Location = new System.Drawing.Point(7, 116);
+            this.specificNotificationCheckbox.Name = "specificNotificationCheckbox";
+            this.specificNotificationCheckbox.Size = new System.Drawing.Size(269, 17);
+            this.specificNotificationCheckbox.TabIndex = 4;
+            this.specificNotificationCheckbox.Text = "Show Notifications on Specific Items (One Per Line)";
+            this.specificNotificationCheckbox.UseVisualStyleBackColor = true;
+            this.specificNotificationCheckbox.CheckedChanged += new System.EventHandler(this.notificationSpecific_CheckedChanged);
             // 
             // rareDropNotificationValueCheckbox
             // 
@@ -573,14 +692,16 @@
             this.rareDropNotificationValueCheckbox.TabIndex = 3;
             this.rareDropNotificationValueCheckbox.Text = "Show Notifications on Items worth more than";
             this.rareDropNotificationValueCheckbox.UseVisualStyleBackColor = true;
+            this.rareDropNotificationValueCheckbox.CheckedChanged += new System.EventHandler(this.rareDropNotificationValueCheckbox_CheckedChanged);
             // 
-            // textBox1
+            // notificationValue
             // 
-            this.textBox1.Location = new System.Drawing.Point(74, 81);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(167, 20);
-            this.textBox1.TabIndex = 2;
-            this.textBox1.Text = "2000";
+            this.notificationValue.Location = new System.Drawing.Point(74, 81);
+            this.notificationValue.Name = "notificationValue";
+            this.notificationValue.Size = new System.Drawing.Size(167, 20);
+            this.notificationValue.TabIndex = 2;
+            this.notificationValue.Text = "2000";
+            this.notificationValue.TextChanged += new System.EventHandler(this.notificationValue_TextChanged);
             // 
             // label48
             // 
@@ -591,17 +712,19 @@
             this.label48.TabIndex = 1;
             this.label48.Text = "Notification Type";
             // 
-            // rareItemDropNotification
+            // notificationTypeBox
             // 
-            this.rareItemDropNotification.FormattingEnabled = true;
-            this.rareItemDropNotification.Items.AddRange(new object[] {
+            this.notificationTypeBox.Enabled = false;
+            this.notificationTypeBox.FormattingEnabled = true;
+            this.notificationTypeBox.Items.AddRange(new object[] {
             "Simple Notification",
             "Rich Notification"});
-            this.rareItemDropNotification.Location = new System.Drawing.Point(109, 13);
-            this.rareItemDropNotification.Name = "rareItemDropNotification";
-            this.rareItemDropNotification.Size = new System.Drawing.Size(121, 21);
-            this.rareItemDropNotification.TabIndex = 0;
-            this.rareItemDropNotification.Text = "Simple Notification";
+            this.notificationTypeBox.Location = new System.Drawing.Point(109, 13);
+            this.notificationTypeBox.Name = "notificationTypeBox";
+            this.notificationTypeBox.Size = new System.Drawing.Size(121, 21);
+            this.notificationTypeBox.TabIndex = 0;
+            this.notificationTypeBox.Text = "Simple Notification";
+            this.notificationTypeBox.SelectedIndexChanged += new System.EventHandler(this.notificationTypeBox_SelectedIndexChanged);
             // 
             // advanceCopyCheckbox
             // 
@@ -614,48 +737,41 @@
             this.advanceCopyCheckbox.TabIndex = 6;
             this.advanceCopyCheckbox.Text = "Automatically Copy Skill Advances to Clipboard";
             this.advanceCopyCheckbox.UseVisualStyleBackColor = true;
+            this.advanceCopyCheckbox.CheckedChanged += new System.EventHandler(this.advanceCopyCheckbox_CheckedChanged);
             // 
-            // checkBox2
+            // enableSimpleNotifications
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(11, 20);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(113, 17);
-            this.checkBox2.TabIndex = 5;
-            this.checkBox2.Text = "Enable Extensions";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(11, 43);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(154, 17);
-            this.checkBox1.TabIndex = 4;
-            this.checkBox1.Text = "Enable Simple Notifications";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.enableSimpleNotifications.AutoSize = true;
+            this.enableSimpleNotifications.Checked = true;
+            this.enableSimpleNotifications.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.enableSimpleNotifications.Location = new System.Drawing.Point(11, 43);
+            this.enableSimpleNotifications.Name = "enableSimpleNotifications";
+            this.enableSimpleNotifications.Size = new System.Drawing.Size(154, 17);
+            this.enableSimpleNotifications.TabIndex = 4;
+            this.enableSimpleNotifications.Text = "Enable Simple Notifications";
+            this.enableSimpleNotifications.UseVisualStyleBackColor = true;
+            this.enableSimpleNotifications.CheckedChanged += new System.EventHandler(this.enableSimpleNotifications_CheckedChanged);
             // 
             // richNotificationsPanel
             // 
             this.richNotificationsPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.richNotificationsPanel.Controls.Add(this.trackBar1);
+            this.richNotificationsPanel.Controls.Add(this.notificationLengthSlider);
             this.richNotificationsPanel.Controls.Add(this.notificationLabel);
             this.richNotificationsPanel.Location = new System.Drawing.Point(11, 90);
             this.richNotificationsPanel.Name = "richNotificationsPanel";
             this.richNotificationsPanel.Size = new System.Drawing.Size(306, 94);
             this.richNotificationsPanel.TabIndex = 3;
             // 
-            // trackBar1
+            // notificationLengthSlider
             // 
-            this.trackBar1.Location = new System.Drawing.Point(8, 31);
-            this.trackBar1.Maximum = 120;
-            this.trackBar1.Minimum = 5;
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(250, 45);
-            this.trackBar1.TabIndex = 0;
-            this.trackBar1.Value = 20;
+            this.notificationLengthSlider.Location = new System.Drawing.Point(8, 31);
+            this.notificationLengthSlider.Maximum = 120;
+            this.notificationLengthSlider.Minimum = 5;
+            this.notificationLengthSlider.Name = "notificationLengthSlider";
+            this.notificationLengthSlider.Size = new System.Drawing.Size(250, 45);
+            this.notificationLengthSlider.TabIndex = 0;
+            this.notificationLengthSlider.Value = 20;
+            this.notificationLengthSlider.Scroll += new System.EventHandler(this.notificationLengthSlider_Scroll);
             // 
             // notificationLabel
             // 
@@ -666,6 +782,87 @@
             this.notificationLabel.Size = new System.Drawing.Size(225, 16);
             this.notificationLabel.TabIndex = 1;
             this.notificationLabel.Text = "Notification Length: 20 Seconds";
+            // 
+            // creatureTab
+            // 
+            this.creatureTab.Controls.Add(this.creaturePanel);
+            this.creatureTab.Controls.Add(this.label1);
+            this.creatureTab.Controls.Add(this.creatureSearch);
+            this.creatureTab.Location = new System.Drawing.Point(4, 22);
+            this.creatureTab.Name = "creatureTab";
+            this.creatureTab.Padding = new System.Windows.Forms.Padding(3);
+            this.creatureTab.Size = new System.Drawing.Size(642, 497);
+            this.creatureTab.TabIndex = 1;
+            this.creatureTab.Text = "Creatures";
+            this.creatureTab.UseVisualStyleBackColor = true;
+            this.creatureTab.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
+            // 
+            // creaturePanel
+            // 
+            this.creaturePanel.AutoScroll = true;
+            this.creaturePanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.creaturePanel.Location = new System.Drawing.Point(3, 36);
+            this.creaturePanel.Name = "creaturePanel";
+            this.creaturePanel.Size = new System.Drawing.Size(636, 458);
+            this.creaturePanel.TabIndex = 2;
+            this.creaturePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(8, 15);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(41, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Search";
+            // 
+            // creatureSearch
+            // 
+            this.creatureSearch.Location = new System.Drawing.Point(55, 12);
+            this.creatureSearch.Name = "creatureSearch";
+            this.creatureSearch.Size = new System.Drawing.Size(579, 20);
+            this.creatureSearch.TabIndex = 0;
+            this.creatureSearch.TextChanged += new System.EventHandler(this.creatureSearch_TextChanged);
+            // 
+            // itemTab
+            // 
+            this.itemTab.Controls.Add(this.itemPanel);
+            this.itemTab.Controls.Add(this.label2);
+            this.itemTab.Controls.Add(this.itemSearchBox);
+            this.itemTab.Location = new System.Drawing.Point(4, 22);
+            this.itemTab.Name = "itemTab";
+            this.itemTab.Size = new System.Drawing.Size(642, 497);
+            this.itemTab.TabIndex = 2;
+            this.itemTab.Text = "Items";
+            this.itemTab.UseVisualStyleBackColor = true;
+            this.itemTab.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
+            // 
+            // itemPanel
+            // 
+            this.itemPanel.AutoScroll = true;
+            this.itemPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.itemPanel.Location = new System.Drawing.Point(0, 36);
+            this.itemPanel.Name = "itemPanel";
+            this.itemPanel.Size = new System.Drawing.Size(642, 461);
+            this.itemPanel.TabIndex = 5;
+            this.itemPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(8, 15);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(41, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Search";
+            // 
+            // itemSearchBox
+            // 
+            this.itemSearchBox.Location = new System.Drawing.Point(55, 12);
+            this.itemSearchBox.Name = "itemSearchBox";
+            this.itemSearchBox.Size = new System.Drawing.Size(579, 20);
+            this.itemSearchBox.TabIndex = 3;
+            this.itemSearchBox.TextChanged += new System.EventHandler(this.itemSearchBox_TextChanged);
             // 
             // commandListTab
             // 
@@ -1216,6 +1413,10 @@
             this.loadTimerImage.TabIndex = 3;
             this.loadTimerImage.TabStop = false;
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1234,19 +1435,22 @@
             this.tabControl1.ResumeLayout(false);
             this.mainTab.ResumeLayout(false);
             this.mainTab.PerformLayout();
-            this.creatureTab.ResumeLayout(false);
-            this.creatureTab.PerformLayout();
-            this.itemTab.ResumeLayout(false);
-            this.itemTab.PerformLayout();
+            this.huntingPage.ResumeLayout(false);
+            this.huntingPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.backgroundBox)).EndInit();
             this.settingsTab.ResumeLayout(false);
             this.settingsTab.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.notificationPanel.ResumeLayout(false);
+            this.notificationPanel.PerformLayout();
             this.richNotificationsPanel.ResumeLayout(false);
             this.richNotificationsPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.notificationLengthSlider)).EndInit();
+            this.creatureTab.ResumeLayout(false);
+            this.creatureTab.PerformLayout();
+            this.itemTab.ResumeLayout(false);
+            this.itemTab.PerformLayout();
             this.commandListTab.ResumeLayout(false);
             this.commandListTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loadTimerImage)).EndInit();
@@ -1271,9 +1475,7 @@
         private System.Windows.Forms.TextBox itemSearchBox;
         private System.Windows.Forms.RichTextBox nameTextBox;
         private System.Windows.Forms.Label namesLabel;
-        private System.Windows.Forms.Button exportLogButton;
         private System.Windows.Forms.Button resetButton;
-        private System.Windows.Forms.Button importLogFile;
         private System.Windows.Forms.TabPage commandListTab;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
@@ -1323,21 +1525,20 @@
         private System.Windows.Forms.Label label45;
         private System.Windows.Forms.Label label46;
         private System.Windows.Forms.Label label47;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox enableSimpleNotifications;
         private System.Windows.Forms.Panel richNotificationsPanel;
-        private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.TrackBar notificationLengthSlider;
         private System.Windows.Forms.Label notificationLabel;
         private System.Windows.Forms.CheckBox enableRichNotificationsCheckbox;
         private System.Windows.Forms.CheckBox advanceCopyCheckbox;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.Panel notificationPanel;
+        private System.Windows.Forms.RichTextBox specificNotificationTextbox;
+        private System.Windows.Forms.CheckBox specificNotificationCheckbox;
         private System.Windows.Forms.CheckBox rareDropNotificationValueCheckbox;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox notificationValue;
         private System.Windows.Forms.Label label48;
-        private System.Windows.Forms.ComboBox rareItemDropNotification;
-        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.ComboBox notificationTypeBox;
+        private System.Windows.Forms.CheckBox showNotificationCheckbox;
         private System.Windows.Forms.Label label49;
         private System.Windows.Forms.Label label50;
         private System.Windows.Forms.Panel panel2;
@@ -1358,6 +1559,25 @@
         private System.Windows.Forms.Label label56;
         private EnterTextBox commandTextBox;
         private System.Windows.Forms.Button executeCommand;
+        private System.Windows.Forms.TabPage huntingPage;
+        private System.Windows.Forms.CheckBox startupHuntCheckbox;
+        private System.Windows.Forms.Button activeHuntButton;
+        private System.Windows.Forms.Label creatureTrackLabel;
+        private System.Windows.Forms.RichTextBox trackCreaturesBox;
+        private System.Windows.Forms.CheckBox trackCreaturesCheckbox;
+        private System.Windows.Forms.Button clearLogButton;
+        private System.Windows.Forms.Button deleteHuntButton;
+        private System.Windows.Forms.Label huntName;
+        private System.Windows.Forms.TextBox huntNameBox;
+        private System.Windows.Forms.Button newHuntButton;
+        private System.Windows.Forms.Label label55;
+        private System.Windows.Forms.ListBox huntBox;
+        private System.Windows.Forms.PictureBox backgroundBox;
+        private TransparentLabel logMessageTextBox;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Panel creatureImagePanel;
+        private System.Windows.Forms.Button exportLogButton;
+        private System.Windows.Forms.Button importLogFile;
     }
 }
 

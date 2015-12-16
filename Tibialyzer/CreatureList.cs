@@ -46,17 +46,6 @@ namespace Tibialyzer {
 
         }
 
-        protected override void Dispose(bool disposing) {
-            if (disposing) {
-                base.Cleanup();
-                if (objects != null) {
-                    foreach (TibiaObject creature in objects)
-                        creature.Dispose();
-                }
-            }
-            base.Dispose(disposing);
-        }
-
         private void CreatureList_Load(object sender, EventArgs e) {
             this.SuspendForm();
             int base_y =  this.listTitle.Location.Y + this.listTitle.Height + 10;
@@ -82,7 +71,7 @@ namespace Tibialyzer {
             if (clicked) return;
             clicked = true;
             this.ReturnFocusToTibia();
-            MainForm.mainForm.priority_command = prefix + (sender as Control).Name;
+            MainForm.mainForm.ExecuteCommand(prefix + (sender as Control).Name);
         }
     }
 }

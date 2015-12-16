@@ -7,7 +7,6 @@ using System.Drawing;
 using System.Globalization;
 using System.Threading;
 using System.Windows.Forms;
-using IronPython.Hosting;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
 using System.Runtime.InteropServices;
@@ -20,7 +19,7 @@ namespace Tibialyzer {
         private Label nameLabel;
         private Label commandLabel;
 
-        public string type;
+        public int type;
         private List<Command> commands;
 
         public ListNotification(List<Command> commands) {
@@ -115,10 +114,10 @@ namespace Tibialyzer {
             this.ResumeForm();
         }
 
-        public static void OpenCommand(string command, string type) {
-            if (type == "commands") {
-                MainForm.mainForm.priority_command = command;
-            } else if (type == "urls") {
+        public static void OpenCommand(string command, int type) {
+            if (type == 0) {
+                MainForm.mainForm.ExecuteCommand(command);
+            } else if (type == 1) {
                 MainForm.OpenUrl(command);
             }
         }

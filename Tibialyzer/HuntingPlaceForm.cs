@@ -215,7 +215,6 @@ namespace Tibialyzer {
         protected override void Dispose(bool disposing) {
             if (disposing) {
                 base.Cleanup();
-                if (hunting_place != null) hunting_place.Dispose();
                 if (map_image != null) map_image.Dispose();
             }
             base.Dispose(disposing);
@@ -363,7 +362,7 @@ namespace Tibialyzer {
             clicked = true;
             this.ReturnFocusToTibia();
             string name = (sender as Control).Name;
-            MainForm.mainForm.priority_command = "creature@" + name.ToLower();
+            MainForm.mainForm.ExecuteCommand("creature@" + name.ToLower());
         }
 
         void label_Click(object sender, EventArgs e) {

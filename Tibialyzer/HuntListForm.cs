@@ -23,7 +23,6 @@ namespace Tibialyzer {
 
         private int start_index = 0;
         private int max_hunts = 15;
-        private List<Control> hunt_controls = new List<Control>();
 
         public HuntListForm() {
             InitializeComponent();
@@ -36,17 +35,6 @@ namespace Tibialyzer {
             rating_colors.Add(3, Color.FromArgb(22, 125, 190));
             rating_colors.Add(4, Color.Green);
             rating_colors.Add(5, Color.Gold);
-        }
-
-        protected override void Dispose(bool disposing) {
-            if (disposing) {
-                base.Cleanup();
-                if (hunting_places != null) {
-                    foreach (HuntingPlace h in hunting_places)
-                        h.Dispose();
-                }
-            }
-            base.Dispose(disposing);
         }
 
         private void InitializeComponent() {
@@ -149,12 +137,13 @@ namespace Tibialyzer {
         }
 
         private int RefreshHuntingPlaces() {
-            foreach (Control c in hunt_controls) {
-                this.Controls.Remove(c);
-                c.Dispose();
-            }
-            hunt_controls.Clear();
-
+            this.Controls.Clear();
+            this.Controls.Add(this.headerLabel);
+            this.Controls.Add(this.cityLabel);
+            this.Controls.Add(this.lootLabel);
+            this.Controls.Add(this.expLabel);
+            this.Controls.Add(this.levelLabel);
+            this.Controls.Add(this.nameLabel);
             int offset = 0;
             int base_offset = 20;
             int size = 24;
@@ -172,7 +161,6 @@ namespace Tibialyzer {
                 picture.Name = h.name.ToString();
                 picture.BackColor = Color.Transparent;
                 this.Controls.Add(picture);
-                hunt_controls.Add(picture);
 
                 Label name = new Label();
                 name.Text = h.name;
@@ -184,7 +172,6 @@ namespace Tibialyzer {
                 name.Name = h.name.ToString();
                 name.BackColor = Color.Transparent;
                 this.Controls.Add(name);
-                hunt_controls.Add(name);
 
                 List<Control> hcontrols = new List<Control>();
                 Label level = new Label();
@@ -203,7 +190,6 @@ namespace Tibialyzer {
                 exp.Name = h.name.ToString();
                 exp.Click += openHuntingPlace;
                 this.Controls.Add(exp);
-                hunt_controls.Add(exp);
 
                 PictureBox loot = new PictureBox();
                 loot.Image = MainForm.star_image[h.loot_quality - 1];
@@ -214,7 +200,6 @@ namespace Tibialyzer {
                 loot.Name = h.name.ToString();
                 loot.Click += openHuntingPlace;
                 this.Controls.Add(loot);
-                hunt_controls.Add(loot);
 
                 Label city = new Label();
                 city.Text = h.city;
@@ -230,7 +215,6 @@ namespace Tibialyzer {
                     c.Font = text_font;
                     c.Click += openHuntingPlace;
                     this.Controls.Add(c);
-                    hunt_controls.Add(c);
                 }
 
                 offset++;
@@ -247,7 +231,6 @@ namespace Tibialyzer {
                     prevpage.SizeMode = PictureBoxSizeMode.StretchImage;
                     prevpage.Click += prevpage_Click;
                     this.Controls.Add(prevpage);
-                    hunt_controls.Add(prevpage);
                 }
                 if (start_index + max_hunts < hunting_places.Count) {
                     PictureBox nextpage = new PictureBox();
@@ -258,7 +241,6 @@ namespace Tibialyzer {
                     nextpage.SizeMode = PictureBoxSizeMode.StretchImage;
                     nextpage.Click += nextpage_Click;
                     this.Controls.Add(nextpage);
-                    hunt_controls.Add(nextpage);
                 }
 
                 total_yoffset += 23 + 10;
@@ -303,7 +285,7 @@ namespace Tibialyzer {
             clicked = true;
             this.ReturnFocusToTibia();
             string name = (sender as Control).Name;
-            MainForm.mainForm.priority_command = "hunt@" + name.ToLower();
+            MainForm.mainForm.ExecuteCommand("hunt@" + name.ToLower());
         }
 
     }

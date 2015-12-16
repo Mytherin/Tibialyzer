@@ -117,7 +117,7 @@ namespace Tibialyzer {
             if (clicked) return;
             clicked = true;
             this.ReturnFocusToTibia();
-            MainForm.mainForm.priority_command = "item@" + (sender as Control).Name;
+            MainForm.mainForm.ExecuteCommand("item@" + (sender as Control).Name);
         }
 
         private void CreatureDropsForm_Load(object sender, EventArgs e) {
@@ -154,7 +154,7 @@ namespace Tibialyzer {
             if (clicked) return;
             clicked = true;
             this.ReturnFocusToTibia();
-            MainForm.mainForm.priority_command = "stats@" + (sender as Control).Name;
+            MainForm.mainForm.ExecuteCommand("stats@" + (sender as Control).Name);
         }
     }
 }

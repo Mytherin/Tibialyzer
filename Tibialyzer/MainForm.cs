@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
-using IronPython.Hosting;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
 using System.Numerics;
@@ -18,10 +17,21 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Data.SQLite;
 
 namespace Tibialyzer {
     public partial class MainForm : Form {
         public static MainForm mainForm;
+
+        public Dictionary<string, Item> itemNameMap = new Dictionary<string, Item>();
+        public Dictionary<int, Item> itemIdMap = new Dictionary<int, Item>();
+        public Dictionary<string, Creature> creatureNameMap = new Dictionary<string, Creature>();
+        public Dictionary<int, Creature> creatureIdMap = new Dictionary<int, Creature>();
+        public Dictionary<string, NPC> npcNameMap = new Dictionary<string, NPC>();
+        public Dictionary<int, NPC> npcIdMap = new Dictionary<int, NPC>();
+        public Dictionary<string, HuntingPlace> huntingPlaceNameMap = new Dictionary<string, HuntingPlace>();
+        public Dictionary<int, HuntingPlace> huntingPlaceIdMap = new Dictionary<int, HuntingPlace>();
+        
         public static ScriptEngine pyEngine = null;
         public static Color background_color = Color.FromArgb(0, 51, 102);
         public static double opacity = 0.8;
@@ -40,26 +50,27 @@ namespace Tibialyzer {
         public static Image checkmark_yes = null;
         public static Image checkmark_no = null;
         private bool keep_working = true;
-        private static string database_file = @"Database\Database.db";
-        private static string settings_file = @"Database\settings.txt";
+        private static string databaseFile = @"Database\Database.db";
+        private static string settingsFile = @"Database\settings.txt";
+        private static string pluralMapFile = @"Database\pluralMap.txt";
         private List<string> character_names = new List<string>();
         public static List<Map> map_files = new List<Map>();
         public static Color label_text_color = Color.FromArgb(191, 191, 191);
         public static int max_creatures = 50;
-        public string priority_command = null;
         public List<string> new_names = null;
         private bool prevent_settings_update = false;
         private bool minimize_notification = true;
-        public int notification_seconds = 20;
         public bool allow_extensions = true;
-        public bool copy_advances = true;
         public bool debug_mode = false;
         public int notification_value = 2000;
-        static List<string> cities = new List<string>() { "ab'dendriel", "carlin", "kazordoon", "venore", "thais", "ankrahmun", "farmine", "gray beach", "liberty bay", "port hope", "rathleton", "roshamuul", "yalahar", "svargrond", "edron", "darashia", "rookgaard", "dawnport", "gray beach" };
+        static HashSet<string> cities = new HashSet<string>() { "ab'dendriel", "carlin", "kazordoon", "venore", "thais", "ankrahmun", "farmine", "gray beach", "liberty bay", "port hope", "rathleton", "roshamuul", "yalahar", "svargrond", "edron", "darashia", "rookgaard", "dawnport", "gray beach" };
         public List<string> notification_items = new List<string>();
         private static List<string> extensions = new List<string>();
         private ToolTip scan_tooltip = new ToolTip();
         private Stack<string> command_stack = new Stack<string>();
+
+        private SQLiteConnection conn;
+        static Dictionary<string, Image> creatureImages = new Dictionary<string, Image>();
 
         enum ScanningState { Scanning, NoTibia, Stuck };
         ScanningState current_state;
@@ -71,7 +82,10 @@ namespace Tibialyzer {
         public MainForm() {
             mainForm = this;
             InitializeComponent();
-            InitializePython();
+
+            conn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", databaseFile));
+            conn.Open();
+
             back_image = Image.FromFile(@"Images\back.png");
             prevpage_image = Image.FromFile(@"Images\prevpage.png");
             nextpage_image = Image.FromFile(@"Images\nextpage.png");
@@ -105,6 +119,20 @@ namespace Tibialyzer {
             star_image[3] = Image.FromFile(@"Images\star3.png");
             star_image[4] = Image.FromFile(@"Images\star4.png");
 
+            prevent_settings_update = true;
+            this.loadDatabaseData();
+            this.loadSettings();
+            this.initializeNames();
+            this.initializeHunts();
+            this.initializeSettings();
+            this.initializeMaps();
+            this.initializePluralMap();
+            prevent_settings_update = false;
+
+            ignoreStamp = createStamp();
+
+            this.backgroundBox.Image = NotificationForm.background_image;
+
             BackgroundWorker bw = new BackgroundWorker();
             makeDraggable(this.Controls);
             bw.DoWork += bw_DoWork;
@@ -126,6 +154,420 @@ namespace Tibialyzer {
             scan_tooltip.SetToolTip(this.loadTimerImage, "No Tibia Client Found...");
         }
 
+        public static int DATABASE_NULL = -127;
+        public static string DATABASE_STRING_NULL = "";
+        private void loadDatabaseData() {
+            // first load creatures from the database
+            SQLiteCommand command = new SQLiteCommand("SELECT id, name, health, experience, maxdamage, summon, illusionable, pushable, pushes, physical, holy, death, fire, energy, ice, earth, drown, lifedrain, paralysable, senseinvis, image, abilities FROM Creatures", conn);
+            SQLiteDataReader reader = command.ExecuteReader();
+            while (reader.Read()) {
+                Creature cr = new Creature();
+                cr.id = reader.GetInt32(0);
+                cr.name = reader["name"].ToString();
+                cr.health = reader.IsDBNull(2) ? DATABASE_NULL : reader.GetInt32(2);
+                cr.experience = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
+                cr.maxdamage = reader.IsDBNull(4) ? DATABASE_NULL : reader.GetInt32(4);
+                cr.summoncost = reader.IsDBNull(5) ? DATABASE_NULL : reader.GetInt32(5);
+                cr.illusionable = reader.GetBoolean(6);
+                cr.pushable = reader.GetBoolean(7);
+                cr.pushes = reader.GetBoolean(8);
+                cr.res_phys = reader.GetInt32(9);
+                cr.res_holy = reader.GetInt32(10);
+                cr.res_death = reader.GetInt32(11);
+                cr.res_fire = reader.GetInt32(12);
+                cr.res_energy = reader.GetInt32(13);
+                cr.res_ice = reader.GetInt32(14);
+                cr.res_earth = reader.GetInt32(15);
+                cr.res_drown = reader.GetInt32(16);
+                cr.res_lifedrain = reader.GetInt32(17);
+                cr.paralysable = reader.GetBoolean(18);
+                cr.senseinvis = reader.GetBoolean(19);
+                cr.image = Image.FromStream(reader.GetStream(20));
+                cr.abilities = reader.IsDBNull(21) ? DATABASE_STRING_NULL : reader["abilities"].ToString();
+
+                creatureNameMap.Add(cr.name.ToLower(), cr);
+                creatureIdMap.Add(cr.id, cr);
+            }
+
+            // now load items
+            command = new SQLiteCommand("SELECT id, name, actual_value, vendor_value, stackable, capacity, category, image, discard, convert_to_gold, look_text FROM Items", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                Item item = new Item();
+                item.id = reader.GetInt32(0);
+                item.name = reader.GetString(1);
+                item.actual_value = reader.IsDBNull(2) ? DATABASE_NULL : reader.GetInt32(2);
+                item.vendor_value = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
+                item.stackable = reader.GetBoolean(4);
+                item.capacity = reader.GetFloat(5);
+                item.category = reader.GetString(6);
+                item.image = Image.FromStream(reader.GetStream(7));
+                item.discard = reader.GetBoolean(8);
+                item.convert_to_gold = reader.GetBoolean(9);
+                item.look_text = reader.GetString(10);
+                
+                if (item.image.RawFormat.Guid == ImageFormat.Gif.Guid) {
+                    int frames = item.image.GetFrameCount(FrameDimension.Time);
+                    if (frames == 1) {
+                        Bitmap new_bitmap = new Bitmap(item.image);
+                        new_bitmap.MakeTransparent();
+                        item.image.Dispose();
+                        item.image = new_bitmap;
+                    }
+                }
+
+                itemNameMap.Add(item.name.ToLower(), item);
+                itemIdMap.Add(item.id, item);
+            }
+
+            // skins for the creatures
+            command = new SQLiteCommand("SELECT creatureid, itemid, skinitemid, percentage FROM Skins", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                Skin skin = new Skin();
+                int creatureid = reader.GetInt32(0);
+                int itemid = reader.GetInt32(1);
+                int skinitemid = reader.GetInt32(2);
+                skin.percentage = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetFloat(3);
+
+                Creature creature = creatureIdMap[creatureid];
+                Item item = itemIdMap[itemid];
+                Item skinItem = itemIdMap[skinitemid];
+
+                skin.drop_item = item;
+                skin.skin_item = skinItem;
+                creature.skin = skin;
+            }
+
+
+            // creature drops
+            command = new SQLiteCommand("SELECT creatureid, itemid, percentage FROM CreatureDrops;", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                int creatureid = reader.GetInt32(0);
+                int itemid = reader.GetInt32(1);
+                float percentage = reader.IsDBNull(2) ? DATABASE_NULL : reader.GetFloat(2);
+
+                Item item = itemIdMap[itemid];
+                Creature creature = creatureIdMap[creatureid];
+                ItemDrop itemDrop = new ItemDrop();
+                itemDrop.item = item;
+                itemDrop.creature = creature;
+                itemDrop.percentage = percentage;
+
+                item.itemdrops.Add(itemDrop);
+                creature.itemdrops.Add(itemDrop);
+            }
+
+            // NPCs
+            command = new SQLiteCommand("SELECT id,name,city,x,y,z,image FROM NPCs;", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                NPC npc = new NPC();
+                npc.id = reader.GetInt32(0);
+                npc.name = reader["name"].ToString();
+                npc.city = reader["city"].ToString();
+                npc.pos.x = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetFloat(3);
+                npc.pos.y = reader.IsDBNull(4) ? DATABASE_NULL : reader.GetFloat(4);
+                npc.pos.z = reader.IsDBNull(5) ? DATABASE_NULL : reader.GetInt32(5);
+                npc.image = Image.FromStream(reader.GetStream(6));
+
+                // special case for rashid: change location based on day of the week
+                if (npc != null && npc.name == "Rashid") {
+                    SQLiteCommand rashidCommand = new SQLiteCommand(String.Format("SELECT city, x, y, z FROM RashidPositions WHERE day='{0}'", DateTime.Now.DayOfWeek.ToString()), conn);
+                    SQLiteDataReader rashidReader = rashidCommand.ExecuteReader();
+                    if (rashidReader.Read()) {
+                        npc.city = rashidReader["city"].ToString();
+                        npc.pos.x = rashidReader.GetFloat(1);
+                        npc.pos.y = rashidReader.GetFloat(2);
+                        npc.pos.z = rashidReader.GetInt32(3);
+                    }
+                }
+                npcNameMap.Add(npc.name.ToLower(), npc);
+                npcIdMap.Add(npc.id, npc);
+            }
+
+            // items that you can buy from NPCs
+            command = new SQLiteCommand("SELECT itemid, vendorid, value FROM BuyItems;", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                ItemSold buyItem = new ItemSold();
+                int itemid = reader.GetInt32(0);
+                int vendorid = reader.GetInt32(1);
+                buyItem.price = reader.GetInt32(2);
+
+                Item item = itemIdMap[itemid];
+                NPC npc = npcIdMap[vendorid];
+                buyItem.npc = npc;
+                buyItem.item = item;
+                item.buyItems.Add(buyItem);
+                npc.buyItems.Add(buyItem);
+            }
+            // items that you can sell to NPCs
+            command = new SQLiteCommand("SELECT itemid, vendorid, value FROM SellItems;", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                ItemSold sellItem = new ItemSold();
+                int itemid = reader.GetInt32(0);
+                int vendorid = reader.GetInt32(1);
+                sellItem.price = reader.GetInt32(2);
+
+                Item item = itemIdMap[itemid];
+                NPC npc = npcIdMap[vendorid];
+                sellItem.npc = npc;
+                sellItem.item = item;
+                item.sellItems.Add(sellItem);
+                npc.sellItems.Add(sellItem);
+            }
+
+            // Hunting Places
+            command = new SQLiteCommand("SELECT id, name, level, exprating, lootrating, image, city FROM HuntingPlaces;", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                HuntingPlace huntingPlace = new HuntingPlace();
+                huntingPlace.id = reader.GetInt32(0);
+                huntingPlace.name = reader["name"].ToString();
+                huntingPlace.level = reader.IsDBNull(2) ? DATABASE_NULL : reader.GetInt32(2);
+                huntingPlace.exp_quality = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
+                huntingPlace.loot_quality = reader.IsDBNull(4) ? DATABASE_NULL : reader.GetInt32(4);
+                huntingPlace.image = Image.FromStream(reader.GetStream(5));
+                huntingPlace.city = reader["city"].ToString();
+
+                huntingPlaceNameMap.Add(huntingPlace.name.ToLower(), huntingPlace);
+                huntingPlaceIdMap.Add(huntingPlace.id, huntingPlace);
+            }
+
+            // Coordinates for hunting places
+            command = new SQLiteCommand("SELECT huntingplaceid, x, y, z FROM HuntingPlaceCoordinates", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                Coordinate c = new Coordinate();
+                int huntingplaceid = reader.GetInt32(0);
+                c.x = reader.IsDBNull(1) ? DATABASE_NULL : reader.GetFloat(1);
+                c.y = reader.IsDBNull(2) ? DATABASE_NULL : reader.GetFloat(2);
+                c.z = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
+                if (huntingPlaceIdMap.ContainsKey(huntingplaceid)) huntingPlaceIdMap[huntingplaceid].coordinates.Add(c);
+            }
+
+            // Hunting place directions
+            command = new SQLiteCommand("SELECT huntingplaceid, x, y, z, ordering, name, notes FROM HuntingPlaceDirections ORDER BY ordering", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                Directions d = new Directions();
+                d.huntingplaceid = reader.GetInt32(0);
+                d.x = reader.IsDBNull(1) ? DATABASE_NULL : reader.GetFloat(1);
+                d.y = reader.IsDBNull(2) ? DATABASE_NULL : reader.GetFloat(2);
+                d.z = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
+                d.name = reader["name"].ToString();
+                d.notes = reader["notes"].ToString();
+                if (huntingPlaceIdMap.ContainsKey(d.huntingplaceid)) huntingPlaceIdMap[d.huntingplaceid].directions.Add(d);
+            }
+
+            // Hunting place requirements
+            command = new SQLiteCommand("SELECT huntingplaceid, questid, notes FROM HuntingPlaceRequirements", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                Requirements r = new Requirements();
+                r.huntingplaceid = reader.GetInt32(0);
+                r.questid = reader.IsDBNull(1) ? DATABASE_NULL : reader.GetInt32(1);
+                r.notes = reader["notes"].ToString();
+                if (huntingPlaceIdMap.ContainsKey(r.huntingplaceid)) huntingPlaceIdMap[r.huntingplaceid].requirements.Add(r);
+            }
+
+            // Hunting place creatures
+            command = new SQLiteCommand("SELECT huntingplaceid, creatureid FROM HuntingPlaceCreatures", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                int huntingplaceid = reader.GetInt32(0);
+                int creatureid = reader.GetInt32(1);
+                if (huntingPlaceIdMap.ContainsKey(huntingplaceid) && creatureIdMap.ContainsKey(creatureid)) {
+                    huntingPlaceIdMap[huntingplaceid].creatures.Add(creatureIdMap[creatureid]);
+                }
+            }
+        }
+
+        void initializePluralMap() {
+            StreamReader reader = new StreamReader(pluralMapFile);
+            string line;
+            while ((line = reader.ReadLine()) != null) {
+                if (line.Contains('=')) {
+                    string[] split = line.Split('=');
+                    if (!pluralMap.ContainsKey(split[0])) {
+                        pluralMap.Add(split[0], split[1]);
+                    }
+                }
+            }
+            reader.Close();
+        }
+
+        class Hunt {
+            public string name;
+            public bool temporary;
+            public bool trackAllCreatures;
+            public string trackedCreatures;
+            public Loot loot = new Loot();
+
+            public override string ToString() {
+                return name + "#" + trackAllCreatures.ToString() + "#" + trackedCreatures.Replace("\n", "#");
+            }
+        };
+
+        class Loot {
+            public Dictionary<string, List<string>> logMessages = new Dictionary<string, List<string>>();
+            public Dictionary<Creature, Dictionary<Item, int>> creatureLoot = new Dictionary<Creature, Dictionary<Item, int>>();
+            public Dictionary<Creature, int> killCount = new Dictionary<Creature, int>();
+        };
+
+        private Hunt activeHunt = null;
+        List<Hunt> hunts = new List<Hunt>();
+        bool showNotifications = true;
+        bool showNotificationsValue = true;
+        bool showNotificationsSpecific = false;
+        bool lootNotificationRich = false;
+        bool copyAdvances = true;
+        bool simpleNotifications = true;
+        bool richNotifications = true;
+        public int notificationLength = 20;
+
+        public Dictionary<string, List<string>> settings = new Dictionary<string, List<string>>();
+        void loadSettings() {
+            string line;
+            string currentSetting = null;
+
+            StreamReader file = new StreamReader(settingsFile);
+            while ((line = file.ReadLine()) != null) {
+                if (line.Length == 0) continue;
+                if (line[0] == '@') {
+                    currentSetting = line.Substring(1, line.Length - 1);
+                    if (!settings.ContainsKey(currentSetting))
+                        settings.Add(currentSetting, new List<string>());
+                } else if (currentSetting != null) {
+                    settings[currentSetting].Add(line);
+                }
+            }
+            file.Close();
+        }
+
+        void saveSettings() {
+            StreamWriter file = new StreamWriter(settingsFile);
+            foreach (KeyValuePair<string, List<string>> pair in settings) {
+                file.WriteLine("@" + pair.Key);
+                foreach (string str in pair.Value) {
+                    file.WriteLine(str);
+                }
+            }
+            file.Close();
+        }
+
+        void initializeNames() {
+            if (!settings.ContainsKey("Names")) settings.Add("Names", new List<string>());
+
+            string massiveString = "";
+            foreach (string str in settings["Names"]) {
+                massiveString += str + "\n";
+            }
+            this.nameTextBox.Text = massiveString;
+        }
+
+        void initializeHunts() {
+            //"Name#Track#Creature#Creature#Creature#Creature"
+            if (!settings.ContainsKey("Hunts")) {
+                settings.Add("Hunts", new List<string>() { "New Hunt#True#" });
+            }
+            int activeHuntIndex = 0, index = 0;
+            foreach (string str in settings["Hunts"]) {
+                SQLiteCommand command; SQLiteDataReader reader;
+                Hunt hunt = new Hunt();
+                string[] splits = str.Split('#');
+                if (splits.Length >= 3) {
+                    hunt.name = splits[0];
+                    hunt.trackAllCreatures = splits[1] == "True";
+                    hunt.temporary = false;
+                    string massiveString = "";
+                    for (int i = 3; i < splits.Length; i++) {
+                        if (splits[i].Length > 0) {
+                            massiveString += splits[i] + "\n";
+                        }
+                    }
+                    hunt.trackedCreatures = massiveString;
+                    // set this hunt to the active hunt if it is the active hunt
+                    if (settings.ContainsKey("ActiveHunt") && settings["ActiveHunt"].Count > 1 && settings["ActiveHunt"][0] == hunt.name) activeHuntIndex = index;
+
+                    // create the hunt table if it does not exist
+                    command = new SQLiteCommand(String.Format("CREATE TABLE IF NOT EXISTS \"{0}\"(day INTEGER, hour INTEGER, minute INTEGER, message STRING);", hunt.name.ToLower()), conn);
+                    command.ExecuteNonQuery();
+                    // load the data for the hunt from the database
+                    command = new SQLiteCommand(String.Format("SELECT message FROM \"{0}\" ORDER BY day, hour, minute;", hunt.name.ToLower()), conn);
+                    reader = command.ExecuteReader();
+                    while(reader.Read()) {
+                        string message = reader["message"].ToString();
+                        Tuple<Creature, List<Tuple<Item, int>>> resultList = ParseLootMessage(message);
+                        if (resultList == null) continue;
+
+                        string t = message.Substring(0, 5);
+                        if (!hunt.loot.logMessages.ContainsKey(t)) hunt.loot.logMessages.Add(t, new List<string>());
+                        hunt.loot.logMessages[t].Add(message);
+
+                        Creature cr = resultList.Item1;
+                        if (!hunt.loot.creatureLoot.ContainsKey(cr)) hunt.loot.creatureLoot.Add(cr, new Dictionary<Item, int>());
+                        foreach (Tuple<Item, int> tpl in resultList.Item2) {
+                            Item item = tpl.Item1;
+                            int count = tpl.Item2;
+                            if (!hunt.loot.creatureLoot[cr].ContainsKey(item)) hunt.loot.creatureLoot[cr].Add(item, count);
+                            else hunt.loot.creatureLoot[cr][item] += count;
+                        }
+                        if (!hunt.loot.killCount.ContainsKey(cr)) hunt.loot.killCount.Add(cr, 1);
+                        else hunt.loot.killCount[cr] += 1;
+                    }
+                    hunts.Add(hunt);
+                    index++;
+                }
+            }
+
+            skip_hunt_refresh = true;
+            huntBox.Items.Clear();
+            foreach(Hunt h in hunts) {
+                huntBox.Items.Add(h.name);
+            }
+            huntBox.SelectedIndex = activeHuntIndex;
+            activeHunt = hunts[activeHuntIndex];
+            skip_hunt_refresh = false;
+        }
+
+        void initializeSettings() {
+            this.notificationLength = getSettingInt("NotificationDuration") < 0 ? notificationLength : getSettingInt("NotificationDuration");
+            this.simpleNotifications = getSettingBool("EnableSimpleNotifications");
+            this.richNotifications = getSettingBool("EnableRichNotifications");
+            this.copyAdvances = getSettingBool("CopyAdvances");
+            this.showNotifications = getSettingBool("ShowNotifications");
+            this.lootNotificationRich = getSettingBool("UseRichNotificationType");
+            this.showNotificationsValue = getSettingBool("ShowNotificationsValue");
+            this.notification_value = getSettingInt("NotificationValue") < 0 ? notification_value : getSettingInt("NotificationValue");
+            this.showNotificationsSpecific = getSettingBool("ShowNotificationsSpecific");
+
+            this.richNotificationsPanel.Enabled = richNotifications;
+            this.notificationPanel.Enabled = showNotifications;
+            this.specificNotificationTextbox.Enabled = showNotificationsSpecific;
+            this.notificationLabel.Text = "Notification Length: " + notificationLength.ToString() + " Seconds";
+
+            this.notificationLengthSlider.Value = notificationLength;
+            this.enableSimpleNotifications.Checked = simpleNotifications;
+            this.enableRichNotificationsCheckbox.Checked = richNotifications;
+            this.advanceCopyCheckbox.Checked = copyAdvances;
+            this.showNotificationCheckbox.Checked = showNotifications;
+            this.notificationTypeBox.SelectedIndex = lootNotificationRich ? 1 : 0;
+            this.rareDropNotificationValueCheckbox.Checked = showNotificationsValue;
+            this.notificationValue.Text = notification_value.ToString();
+            this.specificNotificationCheckbox.Checked = showNotificationsSpecific;
+            string massiveString = "";
+            if (settings.ContainsKey("NotificationItems")) {
+                foreach (string str in settings["NotificationItems"]) {
+                    massiveString += str + "\n";
+                }
+            }
+            this.specificNotificationTextbox.Text = massiveString;
+        }
+
         void makeDraggable(Control.ControlCollection controls) {
             foreach (Control c in controls) {
                 if (c == this.closeButton || c == this.minimizeButton) continue;
@@ -140,14 +582,13 @@ namespace Tibialyzer {
 
         System.Timers.Timer circleTimer = null;
         void bw_DoWork(object sender, DoWorkEventArgs e) {
-            ScriptScope pyScope = CreateNewScope();
             while (keep_working) {
                 if (circleTimer == null) {
                     circleTimer = new System.Timers.Timer(1000);
                     circleTimer.Elapsed += circleTimer_Elapsed;
                     circleTimer.Enabled = true;
                 }
-                bool success = ReadMem(pyScope);
+                bool success = ScanMemory();
                 circleTimer.Dispose();
                 circleTimer = null;
                 if (success) {
@@ -187,507 +628,20 @@ namespace Tibialyzer {
         public static string ToTitle(string str) {
             return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(str);
         }
-
-        public static void ExecuteFile(string filename, ScriptScope pyScope) {
-            ScriptSource source = pyEngine.CreateScriptSourceFromFile(filename);
-            CompiledCode compiled = source.Compile();
-            // Executes in the scope of Python
-            compiled.Execute(pyScope);
-        }
-
-        public static void CompileSourceAndExecute(string code, ScriptScope pyScope) {
-            ScriptSource source = pyEngine.CreateScriptSourceFromString(code, SourceCodeKind.Statements);
-            CompiledCode compiled = source.Compile();
-            // Executes in the scope of Python
-            compiled.Execute(pyScope);
-        }
-
-        public static List<string> FindTimestamps(byte[] array) {
-            int index = 0;
-            List<string> strings = new List<string>();
-            //byte[] buffer_array = new byte[array.Length];
-            int start = 0;
-            for (int i = 0; i < array.Length; i++) {
-                if (index == 6) {
-                    if (array[i] == 0) {
-                        strings.Add(System.Text.Encoding.UTF8.GetString(array, start, (i - start)));
-                        index = 0;
-                    }
-                } else if (index == 5) {
-                    if (array[i] == ' ') {
-                        index++;
-                    } else {
-                        index = 0;
-                    }
-                } else if (array[i] > 47 && array[i] < 59) {
-                    if (index == 2) {
-                        if (array[i] == 58) {
-                            start = i - 2;
-                            index++; 
-                        } else {
-                            index = 0;
-                        }
-                    } else if (array[i] < 58) {
-                        index++;
-                    } else {
-                        index = 0;
-                    }
-                } else {
-                    index = 0;
-                }
-            }
-            return strings;
-        }
-
-        public static ScriptScope CreateNewScope(bool minimal = false) {
-            ScriptScope pyScope = pyEngine.CreateScope();
-            // add sqlite3 library to python
-            CompileSourceAndExecute("import sys, nt, clr", pyScope);
-            CompileSourceAndExecute("sys.path.append(nt.getcwd() + '\\Lib')", pyScope);
-            CompileSourceAndExecute("sys.path.append(nt.getcwd() + '\\Ironpython')", pyScope);
-            CompileSourceAndExecute("clr.AddReference('IronPython.dll')", pyScope);
-            CompileSourceAndExecute("clr.AddReference('IronPython.SQLite.dll')", pyScope);
-            CompileSourceAndExecute("clr.AddReference('IronPython.Modules.dll')", pyScope);
-            CompileSourceAndExecute("clr.AddReference('IronPython.Wpf.dll')", pyScope);
-            // setup database connection
-            CompileSourceAndExecute("import _sqlite3", pyScope);
-            CompileSourceAndExecute("conn = _sqlite3.connect('" + database_file + "')", pyScope);
-            CompileSourceAndExecute("c = conn.cursor()", pyScope);
-            if (!minimal) {
-                ExecuteFile("initialization.py", pyScope);
-                ExecuteFile("plural_map.py", pyScope);
-                CompileSourceAndExecute("ignore_stamp = create_stamp()", pyScope);
-                CompileSourceAndExecute("read_settings('" + settings_file + "')", pyScope);
-                InitializeMaps(pyScope);
-
-                IronPython.Runtime.PythonDictionary settings = pyScope.GetVariable("settings") as IronPython.Runtime.PythonDictionary;
-                IronPython.Runtime.List names = settings["Names"] as IronPython.Runtime.List;
-                string massive_string = "";
-                foreach (object obj in names) {
-                    massive_string += obj.ToString() + "\n";
-                }
-
-                MainForm.mainForm.Invoke((MethodInvoker)delegate {
-                    MainForm.mainForm.prevent_settings_update = true;
-                    MainForm.mainForm.nameTextBox.Text = massive_string;
-                    MainForm.mainForm.prevent_settings_update = false;
-                });
-            }
-            return pyScope;
-        }
-
-        public static void DestroyScope(ScriptScope scope) {
-            CompileSourceAndExecute("conn.close()", scope);
-        }
-
-        public void InitializePython() {
-            Dictionary<string, object> options = new Dictionary<string, object>();
-            if (debug_mode) options["Debug"] = true;
-            pyEngine = Python.CreateEngine(options);
-        }
-
-        //based on http://www.codeproject.com/Articles/716227/Csharp-How-to-Scan-a-Process-Memory
-        const int PROCESS_QUERY_INFORMATION = 0x0400;
-        const int MEM_COMMIT = 0x00001000;
-        const int PAGE_READWRITE = 0x04;
-        const int PROCESS_WM_READ = 0x0010;
-        public struct MEMORY_BASIC_INFORMATION {
-            public int BaseAddress;
-            public int AllocationBase;
-            public int AllocationProtect;
-            public int RegionSize;   // size of the region allocated by the program
-            public int State;   // check if allocated (MEM_COMMIT)
-            public int Protect; // page protection (must be PAGE_READWRITE)
-            public int lType;
-        }
-        public struct SYSTEM_INFO {
-            public ushort processorArchitecture;
-            ushort reserved;
-            public uint pageSize;
-            public IntPtr minimumApplicationAddress;
-            public IntPtr maximumApplicationAddress;
-            public IntPtr activeProcessorMask;
-            public uint numberOfProcessors;
-            public uint processorType;
-            public uint allocationGranularity;
-            public ushort processorLevel;
-            public ushort processorRevision;
-        }
-        [DllImport("kernel32.dll")]
-        static extern void GetSystemInfo(out SYSTEM_INFO lpSystemInfo);
-        [DllImport("kernel32.dll")]
-        public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
-        [DllImport("kernel32.dll")]
-        public static extern bool ReadProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
-        [DllImport("kernel32.dll", SetLastError = true)]
-        static extern int VirtualQueryEx(IntPtr hProcess, IntPtr lpAddress, out MEMORY_BASIC_INFORMATION lpBuffer, uint dwLength);
-
-        private bool ReadMemory(ScriptScope pyScope) {
-            CompileSourceAndExecute(
-                            "item_drops = dict()\n" +
-                            "exp = dict()\n" +
-                            "damage_dealt = dict()\n" +
-                            "commands = dict()\n" +
-                            "seen_logs = set()\n" + 
-                            "urls = dict()", pyScope);
-
-            SYSTEM_INFO sys_info = new SYSTEM_INFO();
-            GetSystemInfo(out sys_info);
-
-            IntPtr proc_min_address = sys_info.minimumApplicationAddress;
-            IntPtr proc_max_address = sys_info.maximumApplicationAddress;
-
-            // saving the values as long ints so I won't have to do a lot of casts later
-            long proc_min_address_l = (long)proc_min_address;
-            long proc_max_address_l = (long)proc_max_address;
-            Process[] processes = Process.GetProcessesByName("Tibia");
-            if (processes.Length == 0) {
-                Thread.Sleep(250);
-                return false;
-            }
-            Process process = processes[0];
-            IntPtr processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
-            MEMORY_BASIC_INFORMATION mem_basic_info = new MEMORY_BASIC_INFORMATION();
-            int bytesRead = 0;  // number of bytes read with ReadProcessMemory
-
-            //DateTime x = DateTime.Now;
-            while (proc_min_address_l < proc_max_address_l) {
-                // 28 = sizeof(MEMORY_BASIC_INFORMATION)
-                VirtualQueryEx(processHandle, proc_min_address, out mem_basic_info, 28);
-
-                // if this memory chunk is accessible
-                if (mem_basic_info.Protect == PAGE_READWRITE && mem_basic_info.State == MEM_COMMIT) {
-                    byte[] buffer = new byte[mem_basic_info.RegionSize];
-
-                    // read everything in the buffer above
-                    ReadProcessMemory((int)processHandle, mem_basic_info.BaseAddress, buffer, mem_basic_info.RegionSize, ref bytesRead);
-                    List<string> strings = FindTimestamps(buffer);
-                    if (strings.Count > 0) {
-                        pyScope.SetVariable("chunk", strings);
-                        CompileSourceAndExecute("useful = search_chunk(chunk, item_drops, exp, damage_dealt, commands, urls)", pyScope);
-                    }
-                }
-
-                // move to the next memory chunk
-                proc_min_address_l += mem_basic_info.RegionSize;
-                proc_min_address = new IntPtr(proc_min_address_l);
-            }
-            //Console.WriteLine((DateTime.Now - x).TotalMilliseconds);
-            process.Dispose();
-            return true;
-        }
-
-        public static int GetInteger(IronPython.Runtime.List list, int index) {
-            if (list.__len__() < index) {
-                return -127;
-            }
-            return list[index] == null || list[index].ToString() == "" ? -127 : int.Parse(list[index].ToString());
-        }
-
-        public static float GetFloat(IronPython.Runtime.List list, int index) {
-            if (list.__len__() < index) {
-                return -127;
-            }
-            return list[index] == null || list[index].ToString() == "" ? -127 : float.Parse(list[index].ToString());
-        }
-
-        public static bool GetBoolean(IronPython.Runtime.List list, int index) {
-            if (list.__len__() < index) {
-                return false;
-            }
-            return list[index] == null || list[index].ToString() == "" ? false : list[index].ToString() == "1";
-        }
-
-        public static Image GetImage(IronPython.Runtime.List list, int index, bool make_transparent = false) {
-            Image image = null;
-            if (list[index] != null) {
-                var collection = list[index] as System.Collections.Generic.ICollection<System.Byte>;
-                if (collection == null) return image;
-                byte[] b = collection.ToArray<byte>();
-                image = byteArrayToImage(b);
-
-                if (make_transparent) {
-                    if (image.RawFormat.Guid == ImageFormat.Gif.Guid) {
-                        int frames = image.GetFrameCount(FrameDimension.Time);
-                        if (frames == 1) {
-                            Bitmap new_bitmap = new Bitmap(image);
-                            new_bitmap.MakeTransparent();
-                            image.Dispose();
-                            image = new_bitmap;
-                        }
-                    }
-                }
-            }
-            return image;
-        }
-
-        public static void InitializeMaps(ScriptScope pyScope) {
-            CompileSourceAndExecute("c.execute('SELECT * FROM WorldMap')", pyScope);
-            CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
-            IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-            foreach (object obj in result) {
-                IronPython.Runtime.List list = obj as IronPython.Runtime.List;
+        
+        private void initializeMaps() {
+            SQLiteCommand command = new SQLiteCommand("SELECT * FROM WorldMap", conn);
+            SQLiteDataReader reader = command.ExecuteReader();
+            while(reader.Read()) {
                 Map m = new Map();
-                m.z = GetInteger(list, 0);
-                m.image = GetImage(list, 1);
+                m.z = reader.GetInt32(0);
+                m.image = Image.FromStream(reader.GetStream(1));
                 map_files.Add(m);
             }
         }
-
-        public static Image byteArrayToImage(byte[] byteArrayIn) {
-            MemoryStream ms = new MemoryStream(byteArrayIn);
-            Image returnImage = Image.FromStream(ms);
-            return returnImage;
-        }
-
-        private Creature CreatureFromList(IronPython.Runtime.List list) {
-            if (list == null) return null;
-            Creature c = new Creature();
-            c.name = list[1].ToString();
-            c.id = GetInteger(list, 0);
-            c.health = GetInteger(list, 2);
-            c.experience = GetInteger(list, 3);
-            c.maxdamage = GetInteger(list, 4);
-            c.summoncost = GetInteger(list, 5);
-            c.illusionable = GetBoolean(list, 6);
-            c.pushable = GetBoolean(list, 7);
-            c.pushes = GetBoolean(list, 8);
-            c.res_phys = GetInteger(list, 9);
-            c.res_holy = GetInteger(list, 10);
-            c.res_death = GetInteger(list, 11);
-            c.res_fire = GetInteger(list, 12);
-            c.res_energy = GetInteger(list, 13);
-            c.res_ice = GetInteger(list, 14);
-            c.res_earth = GetInteger(list, 15);
-            c.res_drown = GetInteger(list, 16);
-            c.res_lifedrain = GetInteger(list, 17);
-            c.paralysable = GetBoolean(list, 18);
-            c.senseinvis = GetBoolean(list, 19);
-            c.image = GetImage(list, 20);
-            c.abilities = list.Count > 21 && list[21] != null ? list[21].ToString() : "";
-            if (c.image == null) return null;
-            return c;
-        }
-
-        public Creature GetCreature(string name, ScriptScope pyScope, bool skin = false) {
-            // get the creature from the database
-            if (name == "random") {
-                CompileSourceAndExecute("c.execute('SELECT * FROM Creatures ORDER BY RANDOM() LIMIT 1')", pyScope);
-            } else {
-                CompileSourceAndExecute("c.execute('SELECT * FROM Creatures WHERE LOWER(name)=?', ['" + name.Replace("'", "\\'") + "'])", pyScope);
-            }
-            CompileSourceAndExecute("res = c.fetchall()", pyScope);
-            CompileSourceAndExecute("result = None if len(res) == 0 else list(res[0])", pyScope);
-
-            IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-            Creature c = CreatureFromList(result);
-            if (c == null) return null;
-            // now load the items
-            CompileSourceAndExecute("c.execute('SELECT id, name, actual_value, vendor_value, stackable, capacity, category, image, discard, convert_to_gold, look_text, percentage FROM CreatureDrops INNER JOIN Items ON CreatureDrops.itemid=Items.id WHERE CreatureDrops.creatureid=" + c.id.ToString() + "')", pyScope);
-            CompileSourceAndExecute("res = c.fetchall()", pyScope);
-            CompileSourceAndExecute("result = None if len(res) == 0 else res", pyScope);
-            CompileSourceAndExecute("result = [list(x) for x in result] if result != None else None", pyScope);
-            result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-            if (result == null) return c;
-            for (int i = 0; i < result.__len__(); i++) {
-                IronPython.Runtime.List itemList = result[i] as IronPython.Runtime.List;
-                if (itemList == null) continue;
-                Item item = ItemFromList(itemList);
-                ItemDrop itemDrop = new ItemDrop();
-                itemDrop.item = item;
-                itemDrop.percentage = GetFloat(itemList, 11);
-                c.itemdrops.Add(itemDrop);
-            }
-            if (skin) {
-                CompileSourceAndExecute("c.execute('SELECT Skins.itemid, Skins.skinitemid, percentage FROM Skins WHERE creatureid=?', [" + c.id + "])", pyScope);
-                CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
-                result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-                if (result.Count > 0) {
-                    result = result[0] as IronPython.Runtime.List;
-                    c.skin = new Skin();
-                    int drop_item = GetInteger(result, 0);
-                    int skin_item = GetInteger(result, 1);
-                    c.skin.percentage = GetFloat(result, 2);
-                    c.skin.skin_item = GetItem(skin_item, pyScope);
-                    c.skin.drop_item = GetItem(drop_item, pyScope);
-                }
-
-            }
-            return c;
-        }
-
-        private NPC NPCFromList(IronPython.Runtime.List itemList) {
-            if (itemList == null) return null;
-            NPC npc = new NPC();
-            npc.id = GetInteger(itemList, 0);
-            npc.name = itemList[1].ToString();
-            npc.city = itemList[2] != null ? itemList[2].ToString() : "Unknown";
-            npc.pos.x = GetFloat(itemList, 3);
-            npc.pos.y = GetFloat(itemList, 4);
-            npc.pos.z = GetInteger(itemList, 5);
-            npc.image = GetImage(itemList, 6);
-            return npc;
-        }
-
-        public NPC GetNPC(string name, ScriptScope pyScope) {
-            CompileSourceAndExecute("c.execute('SELECT id,name,city,x,y,z,image FROM NPCs WHERE LOWER(name)=?', ['" + name.Replace("'", "\\'") + "'])", pyScope);
-            CompileSourceAndExecute("res = c.fetchall()", pyScope);
-            CompileSourceAndExecute("result = None if len(res) == 0 else list(res[0])", pyScope);
-
-            IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-
-            NPC npc = NPCFromList(result);
-            if (npc != null && npc.name == "Rashid") {
-                CompileSourceAndExecute("import datetime", pyScope);
-                CompileSourceAndExecute("day = datetime.date.today().strftime('%A')", pyScope);
-                CompileSourceAndExecute("c.execute('SELECT city, x, y, z FROM RashidPositions WHERE day=?', [day])", pyScope);
-                CompileSourceAndExecute("result = list(c.fetchall()[0])", pyScope);
-                result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-                npc.city = result[0].ToString();
-                npc.pos.x = GetFloat(result, 1);
-                npc.pos.y = GetFloat(result, 2);
-                npc.pos.z = GetInteger(result, 3);
-            }
-            return npc;
-        }
-
-        private HuntingPlace GetHuntingPlace(string name, ScriptScope pyScope) {
-            CompileSourceAndExecute("c.execute('SELECT id FROM HuntingPlaces WHERE LOWER(name)=?', ['" + name.Replace("'", "\\'") + "'])", pyScope);
-            CompileSourceAndExecute("res = [list(x) for x in c.fetchall()]", pyScope);
-            CompileSourceAndExecute("result = res[0] if len(res) > 0 else None", pyScope);
-            IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-            if (result == null) return null;
-            return GetHuntingPlace(GetInteger(result, 0), pyScope);
-        }
-
-        private HuntingPlace GetHuntingPlace(int id, ScriptScope pyScope) {
-            CompileSourceAndExecute("c.execute('SELECT id, name, level, exprating, lootrating, image, city FROM HuntingPlaces WHERE id=?', [" + id + "])", pyScope);
-            CompileSourceAndExecute("res = [list(x) for x in c.fetchall()]", pyScope);
-            CompileSourceAndExecute("result = res[0] if len(res) > 0 else None", pyScope);
-            IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-            HuntingPlace h = HuntingPlaceFromList(result);
-            if (h == null) return null;
-
-            CompileSourceAndExecute("c.execute('SELECT x, y, z FROM HuntingPlaceCoordinates INNER JOIN HuntingPlaces ON HuntingPlaces.id=HuntingPlaceCoordinates.huntingplaceid WHERE id=?', [" + id + "])", pyScope);
-            CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
-            result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-            foreach (object obj in result) {
-                Coordinate c = CoordinateFromList(obj as IronPython.Runtime.List);
-                if (c != null) h.coordinates.Add(c);
-            }
-
-            CompileSourceAndExecute("c.execute('SELECT id, name, health, experience, maxdamage, summon, illusionable, pushable, pushes, physical, holy, death, fire, energy, ice, earth, drown, lifedrain, paralysable, senseinvis, image FROM HuntingPlaceCreatures INNER JOIN Creatures ON HuntingPlaceCreatures.creatureid=Creatures.id WHERE HuntingPlaceCreatures.huntingplaceid=?', [" + id + "])", pyScope);
-            CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
-            result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-            foreach (object obj in result) {
-                Creature c = CreatureFromList(obj as IronPython.Runtime.List);
-                if (c != null) h.creatures.Add(c);
-            }
-
-            CompileSourceAndExecute("c.execute('SELECT huntingplaceid, x, y, z, ordering, name, notes FROM HuntingPlaceDirections WHERE huntingplaceid=? ORDER BY ordering', [" + id + "])", pyScope);
-            CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
-            result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-            foreach (object obj in result) {
-                Directions c = DirectionsFromList(obj as IronPython.Runtime.List);
-                if (c != null) h.directions.Add(c);
-            }
-
-            CompileSourceAndExecute("c.execute('SELECT huntingplaceid, questid, notes FROM HuntingPlaceRequirements WHERE huntingplaceid=?', [" + id + "])", pyScope);
-            CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
-            result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-            foreach (object obj in result) {
-                Requirements c = RequirementsFromList(obj as IronPython.Runtime.List);
-                if (c != null) h.requirements.Add(c);
-            }
-            return h;
-        }
-
-        private Coordinate CoordinateFromList(IronPython.Runtime.List itemList) {
-            if (itemList == null) return null;
-            Coordinate c = new Coordinate();
-            c.x = GetFloat(itemList, 0);
-            c.y = GetFloat(itemList, 1);
-            c.z = GetInteger(itemList, 2);
-            return c;
-        }
-
-        private Directions DirectionsFromList(IronPython.Runtime.List itemList) {
-            if (itemList == null) return null;
-            Directions c = new Directions();
-            c.huntingplaceid = GetInteger(itemList, 0);
-            c.x = GetFloat(itemList, 1);
-            c.y = GetFloat(itemList, 2);
-            c.z = GetInteger(itemList, 3);
-            c.ordering = GetInteger(itemList, 4);
-            c.name = itemList[5] != null ? itemList[5].ToString() : "Unknown";
-            c.notes = itemList[6] != null ? itemList[6].ToString() : "Unknown";
-            return c;
-        }
-
-        private Requirements RequirementsFromList(IronPython.Runtime.List itemList) {
-            if (itemList == null) return null;
-            Requirements c = new Requirements();
-            c.huntingplaceid = GetInteger(itemList, 0);
-            c.questid = GetInteger(itemList, 1);
-            c.notes = itemList[2] != null ? itemList[2].ToString() : "Unknown";
-            return c;
-        }
-
-        private HuntingPlace HuntingPlaceFromList(IronPython.Runtime.List itemList) {
-            if (itemList == null) return null;
-            HuntingPlace h = new HuntingPlace();
-            h.id = GetInteger(itemList, 0);
-            h.name = itemList[1] != null ? itemList[1].ToString() : "Unknown";
-            h.level = GetInteger(itemList, 2);
-            h.exp_quality = GetInteger(itemList, 3);
-            h.loot_quality = GetInteger(itemList, 4);
-            h.image = GetImage(itemList, 5);
-            h.city = itemList[6] != null ? itemList[6].ToString() : "Unknown";
-            return h;
-        }
-
-        private Item ItemFromList(IronPython.Runtime.List itemList) {
-            if (itemList == null) return null;
-            Item item = new Item();
-            item.id = GetInteger(itemList, 0);
-            item.name = itemList[1].ToString();
-            item.actual_value = GetInteger(itemList, 2);
-            item.vendor_value = GetInteger(itemList, 3);
-            item.stackable = GetBoolean(itemList, 4);
-            item.capacity = GetFloat(itemList, 5);
-            item.category = itemList[6] != null ? itemList[6].ToString() : "Unknown";
-            item.image = GetImage(itemList, 7, true);
-            item.discard = GetBoolean(itemList, 8);
-            item.convert_to_gold = GetBoolean(itemList, 9);
-            item.look_text = itemList[10] != null ? itemList[10].ToString() : "Unknown";
-            int value;
-            if (itemList.Count > 11 && itemList[11] != null && int.TryParse(itemList[11].ToString(), out value)) {
-                item.current_npc_value = value;
-            }
-            return item;
-        }
-
-        public Item GetItem(int id, ScriptScope pyScope) {
-            CompileSourceAndExecute("c.execute('SELECT id, name, actual_value, vendor_value, stackable, capacity, category, image, discard, convert_to_gold, look_text FROM Items WHERE id=?' , [" + id.ToString() + "])", pyScope);
-            CompileSourceAndExecute("res = c.fetchall()", pyScope);
-            CompileSourceAndExecute("result = None if len(res) == 0 else list(res[0])", pyScope);
-
-            IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-            Item item = ItemFromList(result);
-            return item;
-        }
-
-        public Item GetItem(string name, ScriptScope pyScope) {
-            CompileSourceAndExecute("c.execute('SELECT id, name, actual_value, vendor_value, stackable, capacity, category, image, discard, convert_to_gold, look_text FROM Items WHERE LOWER(name)=?' , ['" + name.Replace("'", "\\'") + "'])", pyScope);
-            CompileSourceAndExecute("res = c.fetchall()", pyScope);
-            CompileSourceAndExecute("result = None if len(res) == 0 else list(res[0])", pyScope);
-
-            IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-            Item item = ItemFromList(result);
-            return item;
-        }
-
+        
         private void ShowSimpleNotification(string title, string text, Image image) {
+            if (!simpleNotifications) return;
             notifyIcon1.BalloonTipText = text;
             notifyIcon1.BalloonTipTitle = title;
             notifyIcon1.Icon = Icon.FromHandle(((Bitmap)image).GetHicon());
@@ -695,22 +649,19 @@ namespace Tibialyzer {
         }
 
         public void CloseNotification() {
-            this.Invoke((MethodInvoker)delegate {
-                if (tooltipForm != null) {
-                    tooltipForm.Close();
-                }
-            });
-        }
-
-        long last_notification = -1000;
-        private void ShowNotification(NotificationForm f, string command, bool screenshot = false) {
-            long current_time = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-            if (current_time - last_notification < 1000) return;
-            command_stack.Push(command);
             if (tooltipForm != null) {
                 tooltipForm.Close();
             }
-            last_notification = current_time;
+        }
+        
+        private void ShowNotification(NotificationForm f, string command, bool screenshot = false) {
+            if (!richNotifications) return;
+            
+            command_stack.Push(command);
+            Console.WriteLine(command_stack.Count);
+            if (tooltipForm != null) {
+                tooltipForm.Close();
+            }
             int position_x = 0, position_y = 0;
             Screen screen;
             Process[] tibia_process = Process.GetProcessesByName("Tibia");
@@ -720,7 +671,6 @@ namespace Tibialyzer {
                 Process tibia = tibia_process[0];
                 screen = Screen.FromHandle(tibia.MainWindowHandle);
             }
-            //position_x = screen.WorkingArea.Right - 30 - f.Width;
             position_x = screen.WorkingArea.Left + 30;
             position_y = screen.WorkingArea.Top + 30;
             f.StartPosition = FormStartPosition.Manual;
@@ -738,7 +688,7 @@ namespace Tibialyzer {
             if (command_stack.Count <= 1) return;
             command_stack.Pop(); // remove the current command
             string command = command_stack.Pop();
-            priority_command = command;
+            this.ExecuteCommand(command);
         }
 
         public bool HasBack() {
@@ -749,76 +699,60 @@ namespace Tibialyzer {
             if (c == null) return;
             CreatureDropsForm f = new CreatureDropsForm();
             f.creature = c;
-
-            this.Invoke((MethodInvoker)delegate {
-                ShowNotification(f, comm);
-            });
+            
+            ShowNotification(f, comm);
         }
 
         private void ShowCreatureStats(Creature c, string comm) {
             if (c == null) return;
             CreatureStatsForm f = new CreatureStatsForm();
             f.creature = c;
-
-            this.Invoke((MethodInvoker)delegate {
-                ShowNotification(f, comm);
-            });
+            
+            ShowNotification(f, comm);
         }
-
         private void ShowCreatureList(List<TibiaObject> c, string title, string prefix, string comm) {
             if (c == null) return;
             CreatureList f = new CreatureList();
             f.objects = c;
             f.title = title;
             f.prefix = prefix;
-
-            this.Invoke((MethodInvoker)delegate {
-                ShowNotification(f, comm);
-            });
+            
+            ShowNotification(f, comm);
         }
 
-        private void ShowItemView(Item i, List<NPC> BuyNPCs, List<NPC> SellNPCs, List<Creature> creatures, string comm) {
+        private void ShowItemView(Item i, Dictionary<NPC, int> BuyNPCs, Dictionary<NPC, int> SellNPCs, List<Creature> creatures, string comm) {
             if (i == null) return;
             ItemViewForm f = new ItemViewForm();
             f.item = i;
-            f.BuyNPCs = BuyNPCs;
-            f.SellNPCs = SellNPCs;
+            f.buyNPCs = BuyNPCs;
+            f.sellNPCs = SellNPCs;
             f.creatures = creatures;
-
-            this.Invoke((MethodInvoker)delegate {
-                ShowNotification(f, comm);
-            });
+            
+            ShowNotification(f, comm);
         }
 
-        private void ShowNPCForm(NPC c, List<Item> buy_items, List<Item> sell_items, string comm) {
+        private void ShowNPCForm(NPC c, string comm) {
             if (c == null) return;
             NPCForm f = new NPCForm();
             f.npc = c;
-            f.buy_items = buy_items;
-            f.sell_items = sell_items;
-
-            this.Invoke((MethodInvoker)delegate {
-                ShowNotification(f, comm);
-            });
+            
+            ShowNotification(f, comm);
         }
 
         private void ShowDamageMeter(Dictionary<string, int> dps, string comm, string filter = "", string screenshot_path = "") {
-            DamageMeter f = new DamageMeter(screenshot_path);
+            DamageChart f = new DamageChart(screenshot_path);
             f.dps = dps;
             f.filter = filter;
-            this.Invoke((MethodInvoker)delegate {
-                ShowNotification(f, comm, screenshot_path != "");
-            });
+
+            ShowNotification(f, comm, screenshot_path != "");
         }
 
-        private void ShowLootDrops(List<Creature> creatures, List<Item> items, string comm, string screenshot_path) {
+        private void ShowLootDrops(Dictionary<Creature, int> creatures, List<Tuple<Item, int>> items, string comm, string screenshot_path) {
             LootDropForm ldf = new LootDropForm(screenshot_path);
             ldf.creatures = creatures;
             ldf.items = items;
-
-            this.Invoke((MethodInvoker)delegate {
-                ShowNotification(ldf, comm, screenshot_path != "");
-            });
+            
+            ShowNotification(ldf, comm, screenshot_path != "");
         }
 
         private void ShowHuntList(List<HuntingPlace> h, string header, string comm) {
@@ -826,514 +760,28 @@ namespace Tibialyzer {
             HuntListForm f = new HuntListForm();
             f.hunting_places = h;
             f.header = header;
-
-            this.Invoke((MethodInvoker)delegate {
-                ShowNotification(f, comm);
-            });
+            
+            ShowNotification(f, comm);
         }
 
         private void ShowHuntingPlace(HuntingPlace h, string comm) {
             HuntingPlaceForm f = new HuntingPlaceForm();
             f.hunting_place = h;
-
-            this.Invoke((MethodInvoker)delegate {
-                ShowNotification(f, comm);
-            });
+            
+            ShowNotification(f, comm);
         }
 
-        public void ShowNPCNotification(string name, ScriptScope pyScope, string comm) {
-            NPC npc = GetNPC(name, pyScope);
-            IronPython.Runtime.List result;
-            if (npc == null) {
-                List<NPC> npcs = new List<NPC>();
-                string parameter = "%" + name + "%";
-                CompileSourceAndExecute("c.execute('SELECT id,name,city,x,y,z,image FROM NPCs WHERE LOWER(name) LIKE ? LIMIT ?', ['" + parameter.Replace("'", "\\'") + "', " + max_creatures.ToString() + "])", pyScope);
-                CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
-
-                result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-
-                foreach (object obj in result) {
-                    npc = NPCFromList(obj as IronPython.Runtime.List);
-                    if (npc != null)
-                        npcs.Add(npc);
-                }
-                if (npcs.Count == 1) {
-                    ShowNPCNotification(npcs[0].name.ToLower(), pyScope, comm);
-                } else {
-                    ShowCreatureList((npcs as IEnumerable<TibiaObject>).ToList(), "NPC List", "npc@", comm);
-                }
-                return;
-            }
-            List<Item> buy_items = new List<Item>();
-            List<Item> sell_items = new List<Item>();
-            CompileSourceAndExecute("c.execute('SELECT Items.id, Items.name, Items.actual_value, Items.vendor_value, Items.stackable, Items.capacity, Items.category, Items.image, Items.discard, Items.convert_to_gold, Items.look_text, catalog.value FROM Items INNER JOIN SellItems AS catalog ON Items.id=catalog.itemid AND catalog.vendorid=?', [" + npc.id + "])", pyScope);
-            CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
-            result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-            foreach (object obj in result) {
-                Item item = ItemFromList(obj as IronPython.Runtime.List);
-                if (item != null) {
-                    sell_items.Add(item);
-                }
-            }
-            CompileSourceAndExecute("c.execute('SELECT Items.id, Items.name, Items.actual_value, Items.vendor_value, Items.stackable, Items.capacity, Items.category, Items.image, Items.discard, Items.convert_to_gold, Items.look_text, catalog.value FROM Items INNER JOIN BuyItems AS catalog ON Items.id=catalog.itemid AND catalog.vendorid=?', [" + npc.id + "])", pyScope);
-            CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
-            result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-            foreach (object obj in result) {
-                Item item = ItemFromList(obj as IronPython.Runtime.List);
-                if (item != null) {
-                    buy_items.Add(item);
-                }
-            }
-            sell_items = sell_items.OrderBy(o => o.current_npc_value).ToList();
-            buy_items = buy_items.OrderBy(o => o.current_npc_value).ToList();
-            ShowNPCForm(npc, buy_items, sell_items, comm);
-        }
-
-        public void ShowItemNotification(string name, ScriptScope pyScope, string comm) {
-            IronPython.Runtime.List result;
-            Item i = GetItem(name, pyScope);
-            if (i == null) {
-                List<Item> items = new List<Item>();
-                string parameter = "%" + name + "%";
-                CompileSourceAndExecute("c.execute('SELECT id, name, actual_value, vendor_value, stackable, capacity, category, image, discard, convert_to_gold, look_text FROM Items WHERE LOWER(name) LIKE ? LIMIT ?', ['" + parameter.Replace("'", "\\'") + "', " + max_creatures.ToString() + "])", pyScope);
-                CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
-
-                result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-
-                foreach (object obj in result) {
-                    i = ItemFromList(obj as IronPython.Runtime.List);
-                    if (i != null)
-                        items.Add(i);
-                }
-                if (items.Count == 1) {
-                    ShowItemNotification(items[0].name.ToLower(), pyScope, comm);
-                } else {
-                    ShowCreatureList((items as IEnumerable<TibiaObject>).ToList(), "Item List", "item@", comm);
-                }
-                return;
-            }
-
-            List<NPC> sell_npcs = new List<NPC>();
-            List<NPC> buy_npcs = new List<NPC>();
-            CompileSourceAndExecute("c.execute('SELECT NPCs.id, NPCs.name, NPCs.city, NPCs.x, NPCs.y, NPCs.z, NPCs.image, catalog.value  FROM (SELECT * FROM Items WHERE LOWER(name)=?) AS i INNER JOIN SellItems AS catalog ON i.id=catalog.itemid INNER JOIN NPCs ON catalog.vendorid=NPCs.id', ['" + i.name.Replace("'", "\\'") + "'])", pyScope);
-            CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
-            result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-            foreach (object obj in result) {
-                NPC npc = NPCFromList(obj as IronPython.Runtime.List);
-                if (npc != null) {
-                    npc.value = GetInteger(obj as IronPython.Runtime.List, 7);
-                    sell_npcs.Add(npc);
-                }
-            }
-            CompileSourceAndExecute("c.execute('SELECT NPCs.id, NPCs.name, NPCs.city, NPCs.x, NPCs.y, NPCs.z, NPCs.image, catalog.value  FROM (SELECT * FROM Items WHERE LOWER(name)=?) AS i INNER JOIN BuyItems AS catalog ON i.id=catalog.itemid INNER JOIN NPCs ON catalog.vendorid=NPCs.id', ['" + i.name.Replace("'", "\\'") + "'])", pyScope);
-            CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
-            result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-            foreach (object obj in result) {
-                NPC npc = NPCFromList(obj as IronPython.Runtime.List);
-                if (npc != null) {
-                    npc.value = GetInteger(obj as IronPython.Runtime.List, 7);
-                    buy_npcs.Add(npc);
-                }
-            }
-            ShowItemView(i, buy_npcs, sell_npcs, null, comm);
-        }
-
-        private void ShowListNotification(List<Command> commands, string type, string comm) {
+        private void ShowListNotification(List<Command> commands, int type, string comm) {
             ListNotification f = new ListNotification(commands);
             f.type = type;
-
-            this.Invoke((MethodInvoker)delegate {
-                ShowNotification(f, comm);
-            });
+            
+            ShowNotification(f, comm);
         }
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e) {
             notifyIcon1.Visible = false;
         }
 
-        private bool ReadMem(ScriptScope pyScope) {
-            bool retval = ReadMemory(pyScope);
-            ExecuteFile("parse_logresults.py", pyScope);
-            float exph = pyScope.GetVariable<float>("exph");
-            IronPython.Runtime.PythonDictionary damage = pyScope.GetVariable("dps") as IronPython.Runtime.PythonDictionary;
-            IronPython.Runtime.List new_advances = pyScope.GetVariable("new_advances") as IronPython.Runtime.List;
-            if (copy_advances) {
-                foreach (object obj in new_advances)
-                    this.Invoke((MethodInvoker)delegate {
-                        Clipboard.SetText(obj.ToString());
-                    });
-                new_advances.Clear();
-            }
-            IronPython.Runtime.List commands = pyScope.GetVariable("new_commands") as IronPython.Runtime.List;
-            commands.reverse();
-            if (priority_command != null) {
-                commands.Add(priority_command);
-                priority_command = null;
-            }
-            if (new_names != null) {
-                IronPython.Runtime.PythonDictionary settings = pyScope.GetVariable("settings") as IronPython.Runtime.PythonDictionary;
-                IronPython.Runtime.List names = settings["Names"] as IronPython.Runtime.List;
-                names.Clear();
-                foreach (string str in new_names) {
-                    names.Add(str);
-                }
-                new_names = null;
-                CompileSourceAndExecute("write_settings('" + settings_file + "')", pyScope);
-            }
-
-            foreach (object command in commands) {
-                string c = command.ToString();
-                string comp = c.Trim().ToLower();
-                if (comp.StartsWith("creature@")) {
-                    string parameter = c.Split('@')[1].Trim().ToLower();
-                    if (!parameter.Contains('%')) {
-                        Creature cr = GetCreature(parameter, pyScope, true);
-                        if (cr != null) {
-                            ShowCreatureDrops(cr, c);
-                            continue;
-                        }
-                        parameter = "%" + parameter + "%";
-                    }
-                    List<Creature> creatures = new List<Creature>();
-                    CompileSourceAndExecute("c.execute('SELECT * FROM Creatures WHERE LOWER(name) LIKE ? LIMIT ?', ['" + parameter.Replace("'", "\\'") + "', " + max_creatures.ToString() + "])", pyScope);
-                    CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
-
-                    IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-
-                    foreach (object obj in result) {
-                        Creature cr = CreatureFromList(obj as IronPython.Runtime.List);
-                        if (cr != null)
-                            creatures.Add(cr);
-                    }
-                    if (creatures.Count == 1) {
-                        Creature new_creature = GetCreature(creatures[0].name.ToLower(), pyScope, true);
-                        ShowCreatureDrops(new_creature, c);
-                        creatures[0].Dispose();
-                    } else {
-                        ShowCreatureList((creatures as IEnumerable<TibiaObject>).ToList(), "Creature List", "creature@", c);
-                    }
-                } else if (comp.StartsWith("look@")) {
-                    CompileSourceAndExecute("result = list(get_recent_looks())", pyScope);
-                    IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-                    List<TibiaObject> objects = new List<TibiaObject>();
-                    foreach (object obj in result) {
-                        string item_name = obj.ToString();
-                        Item item = GetItem(item_name, pyScope);
-                        if (item != null) objects.Add(item);
-                    }
-                    ShowCreatureList(objects, "Looked At Items", "item@", c);
-                } else if (comp.StartsWith("stats@")) {
-                    Creature cr = GetCreature(c.Split('@')[1].Trim().ToLower(), pyScope);
-                    ShowCreatureStats(cr, c);
-                } else if (comp.StartsWith("delete@")) {
-                    CompileSourceAndExecute("delete_logmessage('" + c.Split('@')[1].Trim().Replace("'", "\\'") + "')", pyScope);
-                } else if (comp.StartsWith("skin@")) {
-                    string parameter = c.Split('@')[1].Trim().ToLower();
-                    Creature cr = GetCreature(parameter, pyScope, true);
-                    if (cr == null) continue;
-                    if (cr.skin == null) continue;
-                    CompileSourceAndExecute("insert_skin('" + cr.skin.drop_item.name.Replace("'", "\\'") + "')", pyScope);
-                } else if (comp.StartsWith("damage@")) {
-                    string[] splits = c.Split('@');
-                    string screenshot_path = "";
-                    string parameter = splits[1].Trim().ToLower();
-                    if (parameter == "screenshot" && splits.Length > 2) {
-                        parameter = "";
-                        screenshot_path = splits[2];
-                    }
-                    Dictionary<string, int> dps_dictionary = new Dictionary<string, int>();
-                    foreach (KeyValuePair<object, object> kvp in damage) {
-                        dps_dictionary.Add(kvp.Key.ToString(), (int)(float.Parse(kvp.Value.ToString())));
-                    }
-                    ShowDamageMeter(dps_dictionary, c, parameter, screenshot_path);
-                } else if (comp.StartsWith("exp@")) {
-                    ShowSimpleNotification("Experience", "Currently gaining " + ((int)exph).ToString() + " experience an hour.", tibia_image);
-                } else if (comp.StartsWith("loot@") || comp.StartsWith("clipboard@")) {
-                    string[] splits = c.Split('@');
-                    bool clipboard = comp.StartsWith("clipboard@");
-                    string screenshot_path = "";
-                    string parameter = splits[1].Trim().ToLower().Replace("'", "\\'");
-                    if (parameter == "screenshot" && splits.Length > 2) {
-                        parameter = "";
-                        screenshot_path = splits[2];
-                    }
-                    CompileSourceAndExecute("(creature_kills, creature_loot) =  get_recent_drops('" + parameter + "')", pyScope);
-                    IronPython.Runtime.List creature_kills = pyScope.GetVariable("creature_kills") as IronPython.Runtime.List;
-                    IronPython.Runtime.List creature_loot = pyScope.GetVariable("creature_loot") as IronPython.Runtime.List;
-                    List<Creature> creatures = new List<Creature>();
-                    List<Item> items = new List<Item>();
-                    foreach (object obj in creature_kills) {
-                        Creature cr = CreatureFromList((obj as IronPython.Runtime.PythonTuple)[0] as IronPython.Runtime.List);
-                        if (cr == null) throw new Exception("Invalid creature object returned during loot@ query.");
-                        cr.kills = int.Parse((obj as IronPython.Runtime.PythonTuple)[1].ToString());
-                        creatures.Add(cr);
-                    }
-                    foreach (object obj in creature_loot) {
-                        Item i = ItemFromList((obj as IronPython.Runtime.List)[0] as IronPython.Runtime.List);
-                        if (i == null) throw new Exception("Invalid item object returned during loot@ query.");
-                        i.drops = int.Parse((obj as IronPython.Runtime.List)[1].ToString());
-                        items.Add(i);
-                    }
-                    
-                    // Copy loot message to the clipboard
-                    // clipboard@<creature> copies the loot of a specific creature to the clipboard
-                    // clipboard@ copies all loot to the clipboard
-                    if (clipboard) {
-                        string loot_string;
-                        if (creatures.Count == 1) {
-                            loot_string = "Total Loot of " + creatures[0].kills + " " + creatures[0].name + (creatures[0].kills > 1 ? "s" : "") + ": ";
-                        } else {
-                            loot_string = "Total Loot of " + creatures.Sum(o => o.kills) + " Kills: ";
-                        }
-                        foreach (Item item in items) {
-                            loot_string += item.drops + " " + item.name + (item.drops > 1 ? "s" : "") + ", ";
-                        }
-                        loot_string = loot_string.Substring(0, loot_string.Length - 2) + ".";
-                        this.Invoke((MethodInvoker)delegate {
-                            Clipboard.SetText(loot_string);
-                        });
-                    }
-                    else ShowLootDrops(creatures, items, c, screenshot_path);
-                } else if (comp.StartsWith("reset@")) {
-                    CompileSourceAndExecute("reset_loot()", pyScope);
-                } else if (comp.StartsWith("drop@")) {
-                    Item i = GetItem(c.Split('@')[1].Trim().ToLower(), pyScope);
-                    if (i == null) continue;
-                    CompileSourceAndExecute("c.execute('SELECT c.id,c.name,c.health,c.experience,c.maxdamage,c.summon,c.illusionable,c.pushable,c.pushes,c.physical,c.holy,c.death,c.fire,c.energy,c.ice,c.earth,c.drown,c.lifedrain,c.paralysable,c.senseinvis,c.image,c.abilities,crd.percentage FROM (SELECT * FROM Items WHERE name=?) AS i INNER JOIN CreatureDrops AS crd ON crd.itemid=i.id INNER JOIN Creatures AS c ON c.id=crd.creatureid LIMIT ?', ['" + i.name.Replace("'", "\\'") + "', " + max_creatures.ToString() + "])", pyScope);
-                    CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
-
-                    List<Creature> creatures = new List<Creature>();
-                    IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-                    foreach (object obj in result) {
-                        Creature cr = CreatureFromList(obj as IronPython.Runtime.List);
-                        if (cr != null) {
-                            cr.percentage = GetFloat(obj as IronPython.Runtime.List, 22);
-                            creatures.Add(cr);
-                        }
-                    }
-
-                    creatures = creatures.OrderBy(o => -o.percentage).ToList();
-
-
-                    ShowItemView(i, null, null, creatures, c);
-                } else if (comp.StartsWith("item@")) {
-                    ShowItemNotification(c.Split('@')[1].Trim().ToLower(), pyScope, c);
-                } else if (comp.StartsWith("hunt@")) {
-                    string parameter = c.Split('@')[1].Trim().ToLower();
-                    HuntingPlace h = null;
-                    if (cities.Contains(parameter)) {
-                        List<HuntingPlace> hunting_places = new List<HuntingPlace>();
-                        CompileSourceAndExecute("c.execute('SELECT id, name, level, exprating, lootrating, image, city FROM HuntingPlaces WHERE LOWER(city)=?', ['" + parameter.Replace("'", "\\'") + "'])", pyScope);
-                        CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
-                        IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-                        foreach (object obj in result) {
-                            h = HuntingPlaceFromList(obj as IronPython.Runtime.List);
-                            if (h != null) hunting_places.Add(h);
-                        }
-                        ShowHuntList(hunting_places, "Hunts in " + parameter, c);
-                        continue;
-                    }
-                    h = GetHuntingPlace(parameter, pyScope);
-                    if (h != null) {
-                        ShowHuntingPlace(h, c);
-                        continue;
-                    }
-                    Creature cr = GetCreature(c.Split('@')[1].Trim().ToLower(), pyScope);
-                    if (cr != null) {
-                        CompileSourceAndExecute("c.execute('SELECT HuntingPlaces.id FROM HuntingPlaceCreatures INNER JOIN HuntingPlaces ON HuntingPlaces.id=HuntingPlaceCreatures.huntingplaceid WHERE creatureid=?', [" + cr.id + "])", pyScope);
-                        CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
-                        List<HuntingPlace> hunting_places = new List<HuntingPlace>();
-                        IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-                        foreach (object obj in result) {
-                            int id = GetInteger(obj as IronPython.Runtime.List, 0);
-                            h = GetHuntingPlace(id, pyScope);
-                            if (h != null) hunting_places.Add(h);
-                        }
-                        cr.Dispose();
-                        ShowHuntList(hunting_places, "Hunting Places of " + cr.name, c);
-                        continue;
-                    }
-                    int minlevel = -1, maxlevel = -1;
-                    int level;
-                    if (int.TryParse(parameter, out level)) {
-                        minlevel = (int)(level * 0.8);
-                        maxlevel = (int)(level * 1.2);
-                    } else if (parameter.Contains('-')) {
-                        string[] split = parameter.Split('-');
-                        int.TryParse(split[0].Trim(), out minlevel);
-                        int.TryParse(split[1].Trim(), out maxlevel);
-                    }
-                    if (minlevel >= 0 && maxlevel >= 0) {
-                        List<HuntingPlace> hunting_places = new List<HuntingPlace>();
-                        CompileSourceAndExecute("c.execute('SELECT id, name, level, exprating, lootrating, image, city FROM HuntingPlaces WHERE level>=? AND level <=?', [" + minlevel.ToString() + ", " + maxlevel.ToString() + "])", pyScope);
-                        CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", pyScope);
-                        IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-                        foreach (object obj in result) {
-                            h = HuntingPlaceFromList(obj as IronPython.Runtime.List);
-                            if (h != null) hunting_places.Add(h);
-                        }
-                        ShowHuntList(hunting_places, "Hunts between levels " + minlevel.ToString() + "-" + maxlevel.ToString(), c);
-                        continue;
-                    }
-                } else if (comp.StartsWith("npc@")) {
-                    ShowNPCNotification(c.Split('@')[1].Trim().ToLower(), pyScope, c);
-                } else if (comp.StartsWith("run@")) {
-                    if (!allow_extensions) continue;
-                    try {
-                        CompileSourceAndExecute("a = " + c.Split('@')[1], pyScope);
-                        ShowSimpleNotification(pyScope.GetVariable("a").ToString(), "Run result of " + c.Split('@')[1], tibia_image);
-                    } catch {
-                        continue;
-                    }
-                } else if (comp.StartsWith("savelog@")) {
-                    CompileSourceAndExecute("save_log('" + c.Split('@')[1].Trim().Replace("'", "\\'") + "')", pyScope);
-                } else if (comp.StartsWith("loadlog@")) {
-                    CompileSourceAndExecute("load_log('" + c.Split('@')[1].Trim().Replace("'", "\\'").Replace("\\","/") + "')", pyScope);
-                } else if (comp.StartsWith("setdiscardgoldratio@")) {
-                    double val;
-                    if (double.TryParse(c.Split('@')[1].Trim(), out val)) {
-                        CompileSourceAndExecute("set_gold_ratio(" + val.ToString() + ")", pyScope);
-                    }
-                } else if (comp.StartsWith("wiki@")) { 
-                    string parameter = c.Split('@')[1].Trim();
-                    string response = "";
-                    using (WebClient client = new WebClient()) {
-                        response = client.DownloadString(String.Format("http://tibia.wikia.com/api/v1/Search/List?query={0}&limit=1&minArticleQuality=10&batch=1&namespaces=0", parameter));
-                    }
-                    Regex regex = new Regex("\"url\":\"([^\"]+)\"");
-                    Match m = regex.Match(response);
-                    var gr = m.Groups[1];
-                    OpenUrl(gr.Value.Replace("\\/", "/"));
-                } else if (comp.StartsWith("char@")) {
-                    string parameter = c.Split('@')[1].Trim();
-                    OpenUrl("https://secure.tibia.com/community/?subtopic=characters&name=" + parameter);
-                } else if (comp.StartsWith("setconvertgoldratio@")) {
-                    string parameter = c.Split('@')[1].Trim();
-                    string[] split = parameter.Split('-');
-                    if (split.Length < 2) continue;
-                    int stackable = 0;
-                    if (split[0] == "1") stackable = 1;
-                    double val;
-                    if (double.TryParse(split[1], out val)) {
-                        CompileSourceAndExecute("set_convert_ratio(" + val.ToString() + ", " + stackable.ToString() + ")", pyScope);
-                    }
-                } else if (comp.StartsWith("recent@") || comp.StartsWith("url@") || comp.StartsWith("last@")) {
-                    bool url = comp.StartsWith("url@");
-                    string type = (url ? "urls" : "commands");
-                    string parameter = c.Split('@')[1].Trim().ToLower();
-                    if (comp.StartsWith("last@")) parameter = "1";
-                    // Show all recent commands, we show either the last 15 commands, or all commands in the last 5 minutes
-                    CompileSourceAndExecute("recent_commands = get_recent_commands(type='" + type + "')", pyScope);
-
-                    List<Command> command_list = new List<Command>();
-                    IronPython.Runtime.List result = pyScope.GetVariable("recent_commands") as IronPython.Runtime.List;
-                    foreach (object obj in result) {
-                        Command comm = new Command();
-                        comm.player = (obj as IronPython.Runtime.List)[0].ToString();
-                        comm.command = (obj as IronPython.Runtime.List)[1].ToString();
-                        command_list.Add(comm);
-                    }
-                    int number;
-                    //recent@<number> opens the last <number> command, so recent@1 opens the last command
-                    if (int.TryParse(parameter, out number)) {
-                        if (number > 0 && number <= command_list.Count) {
-                            ListNotification.OpenCommand(command_list[number - 1].command, type);;
-                            continue;
-                        }
-                    } else {
-                        //recent@<player> opens the last 
-                        bool found = false;
-                        foreach (Command comm in command_list) {
-                            if (comm.player.ToLower() == parameter) {
-                                ListNotification.OpenCommand(command_list[number].command, type);
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (found) continue;
-                    }
-                    ShowListNotification(command_list, url ? "urls" : "commands", c);
-                } else if (comp.StartsWith("pickup@")) {
-                    CompileSourceAndExecute("c.execute('UPDATE Items SET discard=0 WHERE LOWER(name)=?', ['" + c.Split('@')[1].Trim().ToLower().Replace("'", "\\'") + "'])", pyScope);
-                    CompileSourceAndExecute("conn.commit()", pyScope);
-                    CompileSourceAndExecute("invalidate_item('" + c.Split('@')[1].Trim().ToLower().Replace("'", "\\'") + "')", pyScope);
-                } else if (comp.StartsWith("nopickup@")) {
-                    CompileSourceAndExecute("c.execute('UPDATE Items SET discard=1 WHERE LOWER(name)=?', ['" + c.Split('@')[1].Trim().ToLower().Replace("'", "\\'") + "'])", pyScope);
-                    CompileSourceAndExecute("conn.commit()", pyScope);
-                    CompileSourceAndExecute("invalidate_item('" + c.Split('@')[1].Trim().ToLower().Replace("'", "\\'") + "')", pyScope);
-                } else if (comp.StartsWith("convert@")) {
-                    CompileSourceAndExecute("c.execute('UPDATE Items SET convert_to_gold=1 WHERE LOWER(name)=?', ['" + c.Split('@')[1].Trim().ToLower().Replace("'", "\\'") + "'])", pyScope);
-                    CompileSourceAndExecute("conn.commit()", pyScope);
-                    CompileSourceAndExecute("invalidate_item('" + c.Split('@')[1].Trim().ToLower().Replace("'", "\\'") + "')", pyScope);
-                } else if (comp.StartsWith("noconvert@")) {
-                    CompileSourceAndExecute("c.execute('UPDATE Items SET convert_to_gold=0 WHERE LOWER(name)=?', ['" + c.Split('@')[1].Trim().ToLower().Replace("'", "\\'") + "'])", pyScope);
-                    CompileSourceAndExecute("conn.commit()", pyScope);
-                    CompileSourceAndExecute("invalidate_item('" + c.Split('@')[1].Trim().ToLower().Replace("'", "\\'") + "')", pyScope);
-                } else if (comp.StartsWith("setval@")) {
-                    string parameter = c.Split('@')[1].Trim();
-                    if (!parameter.Contains('=')) continue;
-                    string[] split = parameter.Split('=');
-                    string item = split[0].Trim().ToLower().Replace("'", "\\'");
-                    int value = 0;
-                    try { value = int.Parse(split[1].Trim()); } catch { continue; }
-
-                    CompileSourceAndExecute("c.execute('UPDATE Items SET actual_value=? WHERE LOWER(name)=?', [" + value.ToString() + ",'" + item + "'])", pyScope);
-                    CompileSourceAndExecute("conn.commit()", pyScope);
-                } else {
-                    if (allow_extensions) {
-                        bool found_extension = false;
-                        foreach (string extension in extensions) {
-                            if (comp.StartsWith(extension + '@')) {
-                                found_extension = true;
-                                try {
-                                    CompileSourceAndExecute("_parameter = '" + c.Split('@')[1].Trim().Replace("'", "\\'") + "'", pyScope);
-                                    ExecuteFile(@"Extensions\" + extension + ".py", pyScope);
-                                } catch (Exception e) {
-                                    ShowSimpleNotification("Error in command " + command, e.ToString(), tibia_image);
-                                }
-                                break;
-                            }
-                        }
-                        if (found_extension) continue;
-                    }
-                    bool found = false;
-                    foreach (string city in cities) {
-                        if (comp.StartsWith(city + "@")) {
-                            string item_name = c.Split('@')[1].Trim();
-                            string[] tables = { "BuyItems", "SellItems" };
-                            for (int i = 0; i < tables.Length; i++) {
-                                CompileSourceAndExecute("c.execute('SELECT n.name FROM (SELECT * FROM NPCs WHERE LOWER(city)=?) AS n INNER JOIN " + tables[i] + " AS catalog ON n.id=catalog.vendorid INNER JOIN (SELECT * FROM Items WHERE LOWER(name)=?) AS i ON catalog.itemid=i.id', ['" + city + "', '" + item_name + "'])", pyScope);
-                                CompileSourceAndExecute("result = c.fetchall()", pyScope);
-                                IronPython.Runtime.List result = pyScope.GetVariable("result") as IronPython.Runtime.List;
-                                if (result.Count > 0) {
-                                    string name = (result[0] as IronPython.Runtime.PythonTuple)[0].ToString();
-                                    ShowNPCNotification(name.ToLower(), pyScope, c);
-                                    break;
-                                }
-                            }
-                            found = true;
-                        }
-                    }
-                    if (found) continue;
-                    //if we get here we didn't find any command
-                    ShowSimpleNotification("Unrecognized command", "Unrecognized command: " + command, tibia_image);
-                }
-            }
-            IronPython.Runtime.List item_drops = pyScope.GetVariable("new_items") as IronPython.Runtime.List;
-            foreach (object l in item_drops) {
-                IronPython.Runtime.List list = l as IronPython.Runtime.List;
-                string creature_name = list[0].ToString();
-                string item_name = list[1].ToString();
-                int item_value = GetInteger(list, 2);
-                if (item_value >= notification_value) {
-                    Creature c = GetCreature(creature_name.Trim().ToLower(), pyScope);
-                    if (c != null) {
-                        ShowSimpleNotification(creature_name, creature_name + " dropped a " + item_name + ".", c.image);
-                    }
-                }
-            }
-            return retval;
-        }
 
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
@@ -1398,19 +846,11 @@ namespace Tibialyzer {
         }
 
         private void creatureSearch_TextChanged(object sender, EventArgs e) {
-            ScriptScope mainScope = CreateNewScope(true);
-            string creature = (sender as TextBox).Text;
-            CompileSourceAndExecute("c.execute('SELECT * FROM Creatures WHERE name LIKE ? LIMIT 30', ['%" + creature.Replace("'", "\\'") + "%'])", mainScope);
-            CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", mainScope);
-            IronPython.Runtime.List creatures = mainScope.GetVariable("result") as IronPython.Runtime.List;
-            List<TibiaObject> l = new List<TibiaObject>();
-            foreach (object obj in creatures) {
-                Creature cr = CreatureFromList(obj as IronPython.Runtime.List);
-                if (cr != null) l.Add(cr);
-            }
+            string creature = (sender as TextBox).Text.ToLower();
             this.SuspendLayout();
             this.creaturePanel.Controls.Clear();
-            DisplayCreatureList(this.creaturePanel.Controls, l, 10, 10, this.creaturePanel.Width - 20, 4, false);
+            int count = 0;
+            DisplayCreatureList(this.creaturePanel.Controls, creatureNameMap.Values.Where(o => o.name.ToLower().Contains(creature) && count++ < 40).ToList<TibiaObject>(), 10, 10, this.creaturePanel.Width - 20, 4, false);
             foreach (Control c in creaturePanel.Controls) {
                 if (c is PictureBox) {
                     c.Click += ShowCreatureInformation;
@@ -1419,19 +859,11 @@ namespace Tibialyzer {
             this.ResumeLayout(false);
         }
         private void itemSearchBox_TextChanged(object sender, EventArgs e) {
-            ScriptScope mainScope = CreateNewScope(true);
-            string creature = (sender as TextBox).Text;
-            CompileSourceAndExecute("c.execute('SELECT id, name, actual_value, vendor_value, stackable, capacity, category, image, discard, convert_to_gold, look_text FROM Items WHERE name LIKE ? LIMIT 30', ['%" + creature.Replace("'", "\\'") + "%'])", mainScope);
-            CompileSourceAndExecute("result = [list(x) for x in c.fetchall()]", mainScope);
-            IronPython.Runtime.List creatures = mainScope.GetVariable("result") as IronPython.Runtime.List;
-            List<TibiaObject> l = new List<TibiaObject>();
-            foreach (object obj in creatures) {
-                Item i = ItemFromList(obj as IronPython.Runtime.List);
-                if (i != null) l.Add(i);
-            }
+            string item = (sender as TextBox).Text;
             this.SuspendLayout();
             this.itemPanel.Controls.Clear();
-            DisplayCreatureList(this.itemPanel.Controls, l, 10, 10, this.itemPanel.Width - 20, 4, false);
+            int count = 0;
+            DisplayCreatureList(this.itemPanel.Controls, itemNameMap.Values.Where(o => o.name.ToLower().Contains(item) && count++ < 40).ToList<TibiaObject>(), 10, 10, this.itemPanel.Width - 20, 4, false);
             foreach (Control c in itemPanel.Controls) {
                 if (c is PictureBox) {
                     c.Click += ShowItemInformation;
@@ -1439,25 +871,15 @@ namespace Tibialyzer {
             }
             this.ResumeLayout(false);
         }
-
+        
         void ShowCreatureInformation(object sender, EventArgs e) {
             string creature_name = (sender as Control).Name;
-            this.priority_command = "creature@" + creature_name;
+            this.ExecuteCommand("creature@" + creature_name);
         }
 
         void ShowItemInformation(object sender, EventArgs e) {
             string item_name = (sender as Control).Name;
-            this.priority_command = "item@" + item_name;
-        }
-
-        private void nameTextBox_TextChanged(object sender, EventArgs e) {
-            if (prevent_settings_update) return;
-            List<string> names = new List<string>();
-
-            string[] lines = (sender as RichTextBox).Text.Split('\n');
-            for (int i = 0; i < lines.Length; i++)
-                names.Add(lines[i]);
-            new_names = names;
+            this.ExecuteCommand("item@" + item_name);
         }
 
         private void exportLogButton_Click(object sender, EventArgs e) {
@@ -1472,12 +894,12 @@ namespace Tibialyzer {
             }
             DialogResult result = dialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK) {
-                priority_command = "savelog@" + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/");
+                this.ExecuteCommand("savelog@" + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/"));
             }
         }
 
         private void resetButton_Click(object sender, EventArgs e) {
-            priority_command = "reset@";
+            this.ExecuteCommand("reset@");
         }
 
         private void importLogFile_Click(object sender, EventArgs e) {
@@ -1485,7 +907,7 @@ namespace Tibialyzer {
             dialog.Title = "Import Log File";
             DialogResult result = dialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK) {
-                priority_command = "loadlog@" + dialog.FileName;
+                this.ExecuteCommand("loadlog@" + dialog.FileName);
             }
         }
 
@@ -1503,7 +925,7 @@ namespace Tibialyzer {
             }
             DialogResult result = dialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK) {
-                priority_command = "loot@screenshot@" + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/");
+                this.ExecuteCommand("loot@screenshot@" + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/"));
             }
 
         }
@@ -1522,34 +944,34 @@ namespace Tibialyzer {
             }
             DialogResult result = dialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK) {
-                priority_command = "damage@screenshot@" + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/");
+                this.ExecuteCommand("damage@screenshot@" + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/"));
             }
         }
 
         private void applyRatioButton_Click(object sender, EventArgs e) {
             double val = 0;
             if (double.TryParse(goldRatioTextBox.Text, out val)) {
-                priority_command = "setdiscardgoldratio@" + goldRatioTextBox.Text;
+                this.ExecuteCommand("setdiscardgoldratio@" + goldRatioTextBox.Text);
             }
         }
 
         private void stackableConvertApply_Click(object sender, EventArgs e) {
             double val = 0;
             if (double.TryParse(stackableConvertTextBox.Text, out val)) {
-                priority_command = "setconvertgoldratio@1-" + stackableConvertTextBox.Text;
+                this.ExecuteCommand("setconvertgoldratio@1-" + stackableConvertTextBox.Text);
             }
         }
 
         private void unstackableConvertApply_Click(object sender, EventArgs e) {
             double val = 0;
             if (double.TryParse(unstackableConvertTextBox.Text, out val)) {
-                priority_command = "setconvertgoldratio@0-" + unstackableConvertTextBox.Text;
+                this.ExecuteCommand("setconvertgoldratio@0-" + unstackableConvertTextBox.Text);
             }
         }
 
         public static void OpenUrl(string str) {
             // Weird command prompt escape characters
-            str = str.Trim().Replace(" ", "%20").Replace("&", "^&").Replace("|", "^|").Replace("(","^(").Replace(")","^)");
+            str = str.Trim().Replace(" ", "%20").Replace("&", "^&").Replace("|", "^|").Replace("(", "^(").Replace(")", "^)");
             // Always start with http:// or https://
             if (!str.StartsWith("http://") && !str.StartsWith("https://")) {
                 str = "http://" + str;
@@ -1604,13 +1026,318 @@ namespace Tibialyzer {
 
         private void commandTextBox_KeyPress(object sender, KeyPressEventArgs e) {
             if (e.KeyChar == '\r') {
-                this.priority_command = (sender as TextBox).Text;
+                this.ExecuteCommand((sender as TextBox).Text);
                 e.Handled = true;
             }
         }
 
         private void executeCommand_Click(object sender, EventArgs e) {
-            this.priority_command = commandTextBox.Text;
+            this.ExecuteCommand(commandTextBox.Text);
+        }
+        
+        private Hunt getActiveHunt() {
+            return activeHunt;
+        }
+
+        bool nameExists(string str) {
+            foreach (Hunt h in hunts) {
+                if (h.name == str) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void newHuntButton_Click(object sender, EventArgs e) {
+            Hunt h = new Hunt();
+            if (!nameExists("New Hunt")) {
+                h.name = "New Hunt";
+            } else {
+                int index = 1;
+                while (nameExists("New Hunt " + index)) index++;
+                h.name = "New Hunt " + index;
+            }
+            activeHunt = h;
+            h.trackAllCreatures = true;
+            h.trackedCreatures = "";
+            hunts.Add(h);
+            refreshHunts(true);
+        }
+
+        private void deleteHuntButton_Click(object sender, EventArgs e) {
+            if (hunts.Count <= 1) return;
+            Hunt h = getActiveHunt();
+            hunts.Remove(h);
+            saveHunts();
+            refreshHunts(true);
+        }
+
+        private void startupHuntCheckbox_CheckedChanged(object sender, EventArgs e) {
+
+        }
+
+        bool skip_hunt_refresh = false;
+        bool switch_hunt = false;
+        private void huntBox_SelectedIndexChanged(object sender, EventArgs e) {
+            if (skip_hunt_refresh) return;
+            switch_hunt = true;
+            Hunt h = hunts[(sender as ListBox).SelectedIndex];
+            this.huntNameBox.Text = h.name;
+            trackCreaturesCheckbox.Checked = h.trackAllCreatures;
+            if (h == activeHunt) {
+                activeHuntButton.Text = "Currently Active";
+                activeHuntButton.Enabled = false;
+            } else {
+                activeHuntButton.Text = "Set As Active Hunt";
+                activeHuntButton.Enabled = true;
+            }
+            trackCreaturesBox.Enabled = !h.trackAllCreatures;
+            trackCreaturesBox.Text = h.trackedCreatures;
+            refreshHuntImages();
+            switch_hunt = false;
+            this.ExecuteCommand("refreshlog@");
+        }
+
+        void refreshHunts(bool refreshSelection) {
+            Hunt h = getActiveHunt();
+            int currentHunt = 0;
+            skip_hunt_refresh = refreshSelection;
+
+            huntBox.Items.Clear();
+            foreach (Hunt hunt in hunts) {
+                huntBox.Items.Add(hunt.name);
+                if (hunt == h) currentHunt = huntBox.Items.Count - 1;
+            }
+            huntBox.SelectedIndex = refreshSelection ? 0 : currentHunt;
+            activeHunt = hunts[huntBox.SelectedIndex];
+
+            skip_hunt_refresh = false;
+        }
+
+        void saveHunts() {
+            List<string> huntStrings = new List<string>();
+            foreach (Hunt hunt in hunts) {
+                if (hunt.temporary) continue;
+                huntStrings.Add(hunt.ToString());
+            }
+            settings["Hunts"] = huntStrings;
+            saveSettings();
+        }
+
+        private void huntNameBox_TextChanged(object sender, EventArgs e) {
+            if (switch_hunt) return;
+            Hunt h = getActiveHunt();
+            h.name = (sender as TextBox).Text;
+
+            saveHunts();
+            refreshHunts(false);
+        }
+
+        private void activeHuntButton_Click(object sender, EventArgs e) {
+            if (switch_hunt) return;
+            Hunt h = getActiveHunt();
+            activeHuntButton.Text = "Currently Active";
+            activeHuntButton.Enabled = false;
+            saveHunts();
+        }
+
+        List<string> lootCreatures = new List<string>();
+        void refreshHuntImages() {
+            Hunt h = getActiveHunt();
+            int spacing = 4;
+            string[] creatures = h.trackedCreatures.Split('\n');
+            List<TibiaObject> creatureObjects = new List<TibiaObject>();
+            int totalWidth = spacing + spacing;
+            int maxHeight = -1;
+            foreach (string cr in creatures) {
+                string name = cr.ToLower();
+                if (creatureNameMap.ContainsKey(name) && !creatureObjects.Any(item => item.GetName() == name)) {
+                    Creature cc = creatureNameMap[name];
+                    totalWidth += cc.image.Width + spacing;
+                    maxHeight = Math.Max(maxHeight, cc.image.Height);
+                    creatureObjects.Add(cc);
+                    lootCreatures.Add(name);
+                }
+            }
+            float magnification = 1.0f;
+            if (totalWidth < creatureImagePanel.Width) {
+                // fits on one line
+                magnification = ((float)creatureImagePanel.Width) / totalWidth;
+                //also consider the height
+                float maxMagnification = ((float)creatureImagePanel.Height) / maxHeight;
+                if (magnification > maxMagnification) magnification = maxMagnification;
+            } else if (totalWidth < creatureImagePanel.Width * 2) {
+                // make it fit on two lines
+                magnification = (creatureImagePanel.Width * 1.7f) / totalWidth;
+                //also consider the height
+                float maxMagnification = creatureImagePanel.Height / (maxHeight * 2.0f);
+                if (magnification > maxMagnification) magnification = maxMagnification;
+            } else {
+                // make it fit on three lines
+                magnification = (creatureImagePanel.Width * 2.7f) / totalWidth;
+                //also consider the height
+                float maxMagnification = creatureImagePanel.Height / (maxHeight * 3.0f);
+                if (magnification > maxMagnification) magnification = maxMagnification;
+            }
+            creatureImagePanel.Controls.Clear();
+            DisplayCreatureList(creatureImagePanel.Controls, creatureObjects, 0, 0, creatureImagePanel.Width, spacing, false, null, magnification);
+        }
+
+        private void trackCreaturesBox_TextChanged(object sender, EventArgs e) {
+            if (switch_hunt) return;
+            Hunt h = hunts[huntBox.SelectedIndex];
+            h.trackedCreatures = (sender as RichTextBox).Text;
+
+            saveHunts();
+            refreshHuntImages();
+        }
+
+        private void trackCreaturesCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (switch_hunt) return;
+            bool chk = (sender as CheckBox).Checked;
+            this.creatureTrackLabel.Visible = !chk;
+            this.trackCreaturesBox.Enabled = !chk;
+
+            Hunt h = getActiveHunt();
+            h.trackAllCreatures = chk;
+
+            saveHunts();
+        }
+
+        private void clearLogButton_Click(object sender, EventArgs e) {
+
+        }
+
+        private bool getSettingBool(string key) {
+            if (!settings.ContainsKey(key) || settings[key].Count == 0) return false;
+            return settings[key][0] == "True";
+        }
+
+        private int getSettingInt(string key) {
+            if (!settings.ContainsKey(key) || settings[key].Count == 0) return -1;
+            int v;
+            if (int.TryParse(settings[key][0], out v)) {
+                return v;
+            }
+            return -1;
+        }
+
+        private void setSetting(string key, string value) {
+            if (!settings.ContainsKey(key)) settings.Add(key, new List<string>());
+            settings[key].Clear();
+            settings[key].Add(value);
+        }
+
+        private void rareDropNotificationValueCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("ShowNotificationsValue", (sender as CheckBox).Checked.ToString());
+            saveSettings();
+
+            this.showNotificationsValue = (sender as CheckBox).Checked;
+        }
+
+        private void notificationValue_TextChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+            int value;
+            if (int.TryParse((sender as TextBox).Text, out value)) {
+                this.notification_value = value;
+                setSetting("NotificationValue", notification_value.ToString());
+                saveSettings();
+            }
+        }
+
+        private void notificationSpecific_CheckedChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("ShowNotificationsSpecific", (sender as CheckBox).Checked.ToString());
+            saveSettings();
+
+            this.showNotificationsSpecific = (sender as CheckBox).Checked;
+            specificNotificationTextbox.Enabled = (sender as CheckBox).Checked;
+        }
+
+        private void specificNotificationTextbox_TextChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+            List<string> names = new List<string>();
+
+            string[] lines = (sender as RichTextBox).Text.Split('\n');
+            for (int i = 0; i < lines.Length; i++)
+                names.Add(lines[i].ToLower());
+            settings["NotificationItems"] = names;
+
+            saveSettings();
+        }
+
+        private void showNotificationCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+            string chk = (sender as CheckBox).Checked.ToString();
+
+            setSetting("ShowNotifications", chk);
+            saveSettings();
+
+            this.showNotifications = (sender as CheckBox).Checked;
+
+            notificationPanel.Enabled = (sender as CheckBox).Checked;
+        }
+
+        private void notificationTypeBox_SelectedIndexChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("UseRichNotificationType", ((sender as ComboBox).SelectedIndex == 1).ToString());
+            saveSettings();
+
+            this.lootNotificationRich = (sender as ComboBox).SelectedIndex == 1;
+        }
+
+        private void notificationLengthSlider_Scroll(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+            setSetting("NotificationDuration", (sender as TrackBar).Value.ToString());
+            saveSettings();
+
+            this.notificationLength = (sender as TrackBar).Value;
+            this.notificationLabel.Text = "Notification Length: " + notificationLength.ToString() + " Seconds";
+        }
+
+        private void enableRichNotificationsCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("EnableRichNotifications", (sender as CheckBox).Checked.ToString());
+            saveSettings();
+
+            this.richNotifications = (sender as CheckBox).Checked;
+
+            richNotificationsPanel.Enabled = (sender as CheckBox).Checked;
+        }
+
+        private void enableSimpleNotifications_CheckedChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("EnableSimpleNotifications", (sender as CheckBox).Checked.ToString());
+            saveSettings();
+
+            this.simpleNotifications = (sender as CheckBox).Checked;
+        }
+
+        private void advanceCopyCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("CopyAdvances", (sender as CheckBox).Checked.ToString());
+            saveSettings();
+
+            this.copyAdvances = (sender as CheckBox).Checked;
+        }
+
+        private void nameTextBox_TextChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+            List<string> names = new List<string>();
+
+            string[] lines = (sender as RichTextBox).Text.Split('\n');
+            for (int i = 0; i < lines.Length; i++)
+                names.Add(lines[i]);
+            settings["Names"] = names;
+
+            saveSettings();
         }
     }
 }

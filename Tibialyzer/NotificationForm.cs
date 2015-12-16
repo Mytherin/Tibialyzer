@@ -15,7 +15,7 @@ namespace Tibialyzer {
 
     public class NotificationForm : Form {
         System.Timers.Timer closeTimer = null;
-        static Bitmap background_image = null;
+        public static Bitmap background_image = null;
         protected PictureBox back_button;
 
         [DllImport("user32.dll")]
@@ -46,7 +46,7 @@ namespace Tibialyzer {
         protected void NotificationInitialize() {
             this.BackgroundImage = background_image;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            closeTimer = new System.Timers.Timer(1000 * MainForm.mainForm.notification_seconds);
+            closeTimer = new System.Timers.Timer(1000 * MainForm.mainForm.notificationLength);
             closeTimer.Elapsed += new System.Timers.ElapsedEventHandler(CloseNotification);
             closeTimer.Enabled = true;
 
@@ -90,9 +90,7 @@ namespace Tibialyzer {
 
         public void close() {
             try {
-                this.Invoke((MethodInvoker)delegate {
-                    this.Close();
-                });
+                this.Close();
             } catch {
 
             }
@@ -133,7 +131,10 @@ namespace Tibialyzer {
         public void CloseNotification(object sender, EventArgs e) {
             if (this.Opacity <= 0) {
                 closeTimer.Close();
-                close();
+
+                this.Invoke((MethodInvoker)delegate {
+                    close();
+                });
             } else {
                 if (this.IsHandleCreated && !this.IsDisposed) {
                     this.Invoke((MethodInvoker)delegate {

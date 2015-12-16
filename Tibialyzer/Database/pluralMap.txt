@@ -1,0 +1,65 @@
+#assorted 
+nails=nail
+skulls=skull
+#gems
+scarab coins=scarab coin
+small sapphires=small sapphire
+small diamonds=small diamond
+small emeralds=small emerald
+small topazes=small topaz
+small amethysts=small amethyst
+small rubies=small ruby
+black pearls=black pearl
+white pearls=white pearl
+orichalcum pearls=orichalcum pearl
+gold ingots=gold ingot
+green crystal fragments=green crystal fragment
+red crystal fragments=red crystal fragment
+green crystal shards=green crystal shard
+#arrows
+burst arrows=burst arrow
+crystalline arrows=crystalline arrow
+earth arrows=earth arrow
+flaming arrows=flaming arrow
+flash arrows=flash arrow
+onyx arrows=onyx arrow
+shiver arrows=shiver arrow
+sniper arrows=sniper arrow
+envenomed arrows=envenomed arrow
+poison arrows=poison arrow
+arrows=arrow
+#bolts
+bolts=bolt
+drill bolts=drill bolt
+infernal bolts=infernal bolt
+piercing bolts=piercing bolt
+power bolts=power bolt 
+prismatic bolts=prismatic bolt
+vortex bolts=vortex bolt
+#spears
+spears=spear
+hunting spears=hunting spear
+royal spears=royal spear
+enchanted spears=enchanted spear
+#other ammunition
+small stones=small stone
+throwing knives=throwing knife
+snowballs=snowball
+throwing stars=throwing star
+viper stars=viper star
+assassin stars=assassin star
+#food
+bananas=banana
+oranges=orange
+white mushrooms=white mushroom
+brown mushrooms=brown mushroom
+red mushrooms=red mushroom
+worms=worm
+mana potions=mana potion
+strong mana potions=strong mana potion
+great mana potions=great mana potion
+health potions=health potion
+strong health potions=strong health potion
+great health potions=great health potion
+ultimate health potions=ultimate health potion
+stampor talons=stampor talon

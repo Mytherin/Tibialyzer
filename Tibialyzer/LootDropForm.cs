@@ -9,30 +9,25 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Tibialyzer
-{
-    public partial class LootDropForm : NotificationForm
-    {
-        public List<Item> items = new List<Item>();
-        public List<Creature> creatures = new List<Creature>();
+namespace Tibialyzer {
+    public partial class LootDropForm : NotificationForm {
+        public List<Tuple<Item, int>> items;
+        public Dictionary<Creature, int> creatures;
         List<Image> images = new List<Image>();
 
         public static Font loot_font = new Font(FontFamily.GenericSansSerif, 14, FontStyle.Bold);
         private string screenshot_path;
-        public LootDropForm(string screenshot_path = "")
-        {
+        public LootDropForm(string screenshot_path = "") {
             this.screenshot_path = screenshot_path;
             if (screenshot_path != "") this.Visible = false;
             InitializeComponent();
         }
 
-        Image[] GetFrames(Image originalImg)
-        {
+        Image[] GetFrames(Image originalImg) {
             int numberOfFrames = originalImg.GetFrameCount(FrameDimension.Time);
 
             Image[] frames = new Image[numberOfFrames];
-            for (int i = 0; i < numberOfFrames; i++)
-            {
+            for (int i = 0; i < numberOfFrames; i++) {
                 originalImg.SelectActiveFrame(FrameDimension.Time, i);
                 frames[i] = ((Image)originalImg.Clone());
             }
@@ -40,8 +35,7 @@ namespace Tibialyzer
             return frames;
         }
 
-        private Image GetStackImage(Image[] stack, int count, Item item)
-        {
+        private Image GetStackImage(Image[] stack, int count, Item item) {
             if (stack == null) return item.image;
             int max = stack.Length;
             int index = 0;
@@ -56,16 +50,14 @@ namespace Tibialyzer
             return stack[index];
         }
 
-        private void SaveScreenshot()
-        {
+        private void SaveScreenshot() {
             Bitmap bitmap = new Bitmap(Size.Width, Size.Height);
             DrawToBitmap(bitmap, new Rectangle(0, 0, Size.Width, Size.Height));
             bitmap.Save(screenshot_path);
             bitmap.Dispose();
         }
 
-        private void LootDropForm_Load(object sender, EventArgs e)
-        {
+        private void LootDropForm_Load(object sender, EventArgs e) {
             this.SuspendForm();
             int base_x = 20, base_y = 30;
             int x = 0, y = 0;
@@ -84,22 +76,21 @@ namespace Tibialyzer
             value_tooltip.ShowAlways = true;
             value_tooltip.UseFading = true;
             int total_value = 0;
-            foreach(Item item in items)
-            {
+            foreach (Tuple<Item, int> tpl in items) {
+                Item item = tpl.Item1;
+                int count = tpl.Item2;
                 Image[] stacks = null;
                 if (item.stackable) {
                     stacks = GetFrames(item.image);
                 }
-                while (item.drops > 0)
-                {
-                    if (x >= (max_x - item_size.Width - item_spacing))
-                    {
+                while (count > 0) {
+                    if (x >= (max_x - item_size.Width - item_spacing)) {
                         x = 0;
                         y = y + item_size.Height + item_spacing;
                     }
                     int mitems = 1;
-                    if (item.stackable) mitems = Math.Min(item.drops, 100);
-                    item.drops -= mitems;
+                    if (item.stackable) mitems = Math.Min(count, 100);
+                    count -= mitems;
 
                     PictureBox picture_box = new PictureBox();
                     picture_box.Location = new System.Drawing.Point(base_x + x, base_y + y);
@@ -110,12 +101,12 @@ namespace Tibialyzer
                     if (item.stackable) {
                         Bitmap image = new Bitmap(GetStackImage(stacks, mitems, item));
                         Graphics gr = Graphics.FromImage(image);
-                        int numbers = (int)Math.Floor(Math.Log(mitems,10)) + 1;
+                        int numbers = (int)Math.Floor(Math.Log(mitems, 10)) + 1;
                         int xoffset = 1, logamount = mitems;
-                        for(int i = 0; i < numbers; i++) {
+                        for (int i = 0; i < numbers; i++) {
                             int imagenr = logamount % 10;
                             xoffset = xoffset + MainForm.image_numbers[imagenr].Width + 1;
-                            gr.DrawImage(MainForm.image_numbers[imagenr], 
+                            gr.DrawImage(MainForm.image_numbers[imagenr],
                                 new Point(image.Width - xoffset, image.Height - MainForm.image_numbers[imagenr].Height - 3));
                             logamount /= 10;
                         }
@@ -123,7 +114,7 @@ namespace Tibialyzer
                     } else {
                         picture_box.Image = item.image;
                     }
-                    
+
                     picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
                     picture_box.BackgroundImage = MainForm.item_background;
                     picture_box.Click += openItemBox;
@@ -136,30 +127,29 @@ namespace Tibialyzer
             }
             x = 0;
             y = y + item_size.Height + item_spacing;
-            if (y < max_creature_y)
-            {
+            if (y < max_creature_y) {
                 base_x = 5;
                 Size creature_size = new Size(1, 1);
                 Size labelSize = new Size(1, 1);
 
-                foreach (Creature creature in creatures)
-                {
+                foreach (KeyValuePair<Creature, int> tpl in creatures) {
+                    Creature creature = tpl.Key;
                     creature_size.Width = Math.Max(creature_size.Width, creature.image.Width);
                     creature_size.Height = Math.Max(creature_size.Height, creature.image.Height);
                 }
                 int i = 0;
-                foreach (Creature creature in creatures)
-                {
-                    if (x >= max_x - creature_size.Width - item_spacing * 2)
-                    {
+                foreach (Creature cr in creatures.Keys.OrderByDescending(o => creatures[o] * (1 + o.experience)).ToList<Creature>()) {
+                    Creature creature = cr;
+                    int killCount = creatures[cr];
+                    if (x >= max_x - creature_size.Width - item_spacing * 2) {
                         x = 0;
                         y = y + creature_size.Height + 20;
                     }
                     int xoffset = (creature_size.Width - creature.image.Width) / 2;
                     int yoffset = (creature_size.Height - creature.image.Height) / 2;
-                
+
                     Label count = new Label();
-                    count.Text = creature.kills.ToString() + "x";
+                    count.Text = killCount.ToString() + "x";
                     count.Font = loot_font;
                     count.Size = new Size(1, 10);
                     count.Location = new Point(base_x + x + xoffset, base_y + y + creature_size.Height);
@@ -180,13 +170,10 @@ namespace Tibialyzer
                     picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
                     picture_box.Click += openCreatureDrops;
                     picture_box.BackColor = Color.Transparent;
-                                        
-                    if (width > creature.image.Width)
-                    {
+
+                    if (width > creature.image.Width) {
                         picture_box.Location = new Point(picture_box.Location.X + (width - creature.image.Width) / 2, picture_box.Location.Y);
-                    }
-                    else
-                    {
+                    } else {
                         count.Location = new Point(count.Location.X + (width - measured_size) / 2, count.Location.Y);
                     }
 
@@ -213,20 +200,18 @@ namespace Tibialyzer
         }
 
         private bool clicked = false;
-        void openItemBox(object sender, EventArgs e)
-        {
+        void openItemBox(object sender, EventArgs e) {
             if (clicked) return;
             clicked = true;
             this.ReturnFocusToTibia();
-            MainForm.mainForm.priority_command = "item@" + (sender as Control).Name;
+            MainForm.mainForm.ExecuteCommand("item@" + (sender as Control).Name);
         }
 
-        void openCreatureDrops(object sender, EventArgs e)
-        {
+        void openCreatureDrops(object sender, EventArgs e) {
             if (clicked) return;
             clicked = true;
             this.ReturnFocusToTibia();
-            MainForm.mainForm.priority_command = "loot@" + (sender as Control).Name;
+            MainForm.mainForm.ExecuteCommand("loot@" + (sender as Control).Name);
         }
 
 

@@ -20,12 +20,6 @@
                 if (images != null)
                     foreach (System.Drawing.Image image in images)
                         image.Dispose();
-                if (creatures != null)
-                    foreach (Creature creature in creatures)
-                        creature.Dispose();
-                if (items != null)
-                    foreach (Item item in items)
-                        item.Dispose();
             }
             base.Dispose(disposing);
         }

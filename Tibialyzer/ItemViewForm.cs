@@ -7,7 +7,6 @@ using System.Drawing;
 using System.Globalization;
 using System.Threading;
 using System.Windows.Forms;
-using IronPython.Hosting;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
 using System.Runtime.InteropServices;
@@ -24,8 +23,8 @@ namespace Tibialyzer {
         private System.Windows.Forms.PictureBox itemPictureBox;
 
         public Item item;
-        public List<NPC> BuyNPCs = null;
-        public List<NPC> SellNPCs = null;
+        public Dictionary<NPC, int> buyNPCs = null;
+        public Dictionary<NPC, int> sellNPCs = null;
         private System.Windows.Forms.CheckBox pickupBox;
         private System.Windows.Forms.CheckBox convertBox;
         private TextBox valueBox;
@@ -34,23 +33,9 @@ namespace Tibialyzer {
         private string previous_value;
 
         public ItemViewForm() {
+            skip_event = true;
             InitializeComponent();
-        }
-
-        protected override void Dispose(bool disposing) {
-            if (disposing) {
-                base.Cleanup();
-                if (BuyNPCs != null)
-                    foreach (NPC npc in BuyNPCs)
-                        npc.Dispose();
-                if (SellNPCs != null)
-                    foreach (NPC npc in SellNPCs)
-                        npc.Dispose();
-                if (creatures != null)
-                    foreach (Creature cr in creatures)
-                        cr.Dispose();
-            }
-            base.Dispose(disposing);
+            skip_event = false;
         }
 
         private void InitializeComponent() {
@@ -200,15 +185,17 @@ namespace Tibialyzer {
         string prefix;
         private string TooltipFunction(TibiaObject obj) {
             NPC npc = obj as NPC;
-            return String.Format("{0} {1} for {2} gold.", prefix, item.name, npc.value);
+            return String.Format("{0} {1} for {2} gold.", prefix, item.name, prefix == "Sells" ? buyNPCs[npc] : sellNPCs[npc]);
         }
 
         private string CreatureTooltipFunction(TibiaObject obj) {
             Creature cr = obj as Creature;
-            return String.Format("{0}: {1}%", cr.name, cr.percentage < 0 ? "Unknown" : cr.percentage.ToString());
+            float percentage = item.itemdrops.Find(o => o.creature == cr).percentage;
+            return String.Format("{0}: {1}%", cr.name, percentage < 0 ? "Unknown" : percentage.ToString());
         }
 
         private void ItemViewForm_Load(object sender, EventArgs e) {
+            skip_event = true;
             this.SuspendForm();
             this.NotificationInitialize();
             CultureInfo c = System.Threading.Thread.CurrentThread.CurrentCulture;
@@ -248,10 +235,10 @@ namespace Tibialyzer {
             value_tooltip.UseFading = true;
 
             if (creatures == null) {
-                BuyNPCs = BuyNPCs.OrderBy(o => o.value).ToList();
-                SellNPCs = SellNPCs.OrderByDescending(o => o.value).ToList();
-                List<List<NPC>> npc_lists = new List<List<NPC>>();
-                npc_lists.Add(BuyNPCs); npc_lists.Add(SellNPCs);
+                List<NPC> buyNPCList = buyNPCs.Keys.ToList().OrderBy(o => buyNPCs[o]).ToList();
+                List<NPC> sellNPCList = sellNPCs.Keys.ToList().OrderBy(o => sellNPCs[o]).ToList();
+                List<List<NPC>> npc_lists = new List<List<NPC>> ();
+                npc_lists.Add(buyNPCList); npc_lists.Add(sellNPCList);
                 string[] header_string = { "Buy From:", "Sell To:" };
                 string[] info_string = { "Sells", "Buys" };
                 for (int i = 0; i < npc_lists.Count; i++) {
@@ -298,6 +285,7 @@ namespace Tibialyzer {
             this.Size = new Size(this.Size.Width, base_y + y + 20);
             base.NotificationFinalize();
             this.ResumeForm();
+            skip_event = false;
         }
 
         private string command_start = "npc@";
@@ -306,7 +294,8 @@ namespace Tibialyzer {
             if (clicked) return;
             clicked = true;
             this.ReturnFocusToTibia();
-            MainForm.mainForm.priority_command = command_start + (sender as Control).Name;
+            MainForm.mainForm.ExecuteCommand(command_start + (sender as Control).Name);
+            clicked = false;
         }
 
         private string switch_start = "drop@";
@@ -314,7 +303,8 @@ namespace Tibialyzer {
             if (clicked) return;
             clicked = true;
             this.ReturnFocusToTibia();
-            MainForm.mainForm.priority_command = switch_start + (sender as Control).Name;
+            MainForm.mainForm.ExecuteCommand(switch_start + (sender as Control).Name);
+            clicked = false;
         }
 
         private bool skip_event = false;
@@ -322,16 +312,16 @@ namespace Tibialyzer {
             if (skip_event) return;
             bool is_checked = (sender as CheckBox).Checked;
             this.ReturnFocusToTibia();
-            if (is_checked) MainForm.mainForm.priority_command = "pickup@" + item.name;
-            else MainForm.mainForm.priority_command = "nopickup@" + item.name;
+            if (is_checked) MainForm.mainForm.ExecuteCommand("pickup@" + item.name);
+            else MainForm.mainForm.ExecuteCommand("nopickup@" + item.name);
         }
 
         private void convertBox_CheckedChanged(object sender, EventArgs e) {
             if (skip_event) return;
             bool is_checked = (sender as CheckBox).Checked;
             this.ReturnFocusToTibia();
-            if (is_checked) MainForm.mainForm.priority_command = "convert@" + item.name;
-            else MainForm.mainForm.priority_command = "noconvert@" + item.name;
+            if (is_checked) MainForm.mainForm.ExecuteCommand("convert@" + item.name);
+            else MainForm.mainForm.ExecuteCommand("noconvert@" + item.name);
         }
 
         private void valueBox_TextChanged(object sender, EventArgs e) {
@@ -340,7 +330,7 @@ namespace Tibialyzer {
             string text = (sender as TextBox).Text;
             int new_value;
             if (int.TryParse(text, out new_value)) {
-                MainForm.mainForm.priority_command = "setval@" + item.name + "=" + new_value;
+                MainForm.mainForm.ExecuteCommand("setval@" + item.name + "=" + new_value);
                 previous_value = (sender as TextBox).Text;
             }
         }
