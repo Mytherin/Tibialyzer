@@ -44,21 +44,38 @@ namespace Tibialyzer {
                     }
                 }
             } else if (comp.StartsWith("look@")) {
-                List<string> times = getLatestTimes(5);
-                List<TibiaObject> items = new List<TibiaObject>();
-                foreach (string t in times) {
-                    if (!totalLooks.ContainsKey(t)) return true;
-                    foreach (string message in totalLooks[t]) {
-                        string itemName = parseLookItem(message).ToLower();
-                        if (itemNameMap.ContainsKey(itemName)) {
-                            items.Add(itemNameMap[itemName]);
+                string parameter = command.Split('@')[1].Trim().ToLower();
+                if (parameter == "on") {
+                    if (!settings.ContainsKey("LookMode")) settings.Add("LookMode", new List<string>());
+                    settings["LookMode"].Clear(); settings["LookMode"].Add("True");
+                    saveSettings();
+                } else if (parameter == "off") {
+                    if (!settings.ContainsKey("LookMode")) settings.Add("LookMode", new List<string>());
+                    settings["LookMode"].Clear(); settings["LookMode"].Add("False");
+                    saveSettings();
+                } else {
+                    List<string> times = getLatestTimes(5);
+                    List<TibiaObject> items = new List<TibiaObject>();
+                    foreach (string t in times) {
+                        if (!totalLooks.ContainsKey(t)) continue;
+                        foreach (string message in totalLooks[t]) {
+                            string itemName = parseLookItem(message).ToLower();
+                            if (itemNameMap.ContainsKey(itemName)) {
+                                items.Add(itemNameMap[itemName]);
+                            } else if (creatureNameMap.ContainsKey(itemName)) {
+                                items.Add(creatureNameMap[itemName]);
+                            }
                         }
                     }
-                }
-                if (items.Count == 1) {
-                    ShowItemNotification("item@" + items[0].GetName().ToLower());
-                } else if (items.Count > 1) {
-                    ShowCreatureList(items, "Looked At Items", "item@", command);
+                    if (items.Count == 1) {
+                        if (items[0] is Item) {
+                            ShowItemNotification("item@" + items[0].GetName().ToLower());
+                        } else if (items[0] is Creature) {
+                            ShowCreatureDrops(items[0] as Creature, command);
+                        }
+                    } else if (items.Count > 1) {
+                        ShowCreatureList(items, "Looked At Items", "item@", command);
+                    }
                 }
             } else if (comp.StartsWith("stats@")) {
                 string name = command.Split('@')[1].Trim().ToLower();
@@ -196,8 +213,13 @@ namespace Tibialyzer {
                     ShowLootDrops(creatureKills, itemDrops, command, screenshot_path);
                 }
             } else if (comp.StartsWith("reset@")) {
-                //reset@ loot deletes all loot from the currently active hunt
-                resetHunt(activeHunt);
+                string parameter = command.Split('@')[1].Trim().ToLower();
+                if (parameter == "old") {
+                    clearOldLog(activeHunt);
+                } else {
+                    //reset@ loot deletes all loot from the currently active hunt
+                    resetHunt(activeHunt);
+                }
             } else if (comp.StartsWith("drop@")) {
                 //show all creatures that drop the specified item
                 string parameter = command.Split('@')[1].Trim().ToLower();
@@ -319,6 +341,7 @@ namespace Tibialyzer {
                 string parameter = command.Split('@')[1].Trim().ToLower();
                 if (comp.StartsWith("last@")) parameter = "1";
                 List<Command> command_list = getRecentCommands(type).Select(o => new Command() { player = o.Item1, command = o.Item2 }).ToList();
+                command_list.Reverse();
                 int number;
                 //recent@<number> opens the last <number> command, so recent@1 opens the last command
                 if (int.TryParse(parameter, out number)) {
@@ -365,9 +388,10 @@ namespace Tibialyzer {
                 string[] split = parameter.Split('=');
                 string item = split[0].Trim().ToLower().Replace("'", "\\'");
                 int value = 0;
-                try { value = int.Parse(split[1].Trim()); } catch { return true; }
-                if (itemNameMap.ContainsKey(item)) {
-                    setItemValue(itemNameMap[item], value);
+                if (int.TryParse(split[1].Trim(), out value)) {
+                    if (itemNameMap.ContainsKey(item)) {
+                        setItemValue(itemNameMap[item], value);
+                    }
                 }
             } else {
                 bool found = false;
@@ -398,9 +422,28 @@ namespace Tibialyzer {
             ParseMemoryResults parseMemoryResults = ParseLogResults(readMemoryResults);
 
             if (copyAdvances && readMemoryResults != null) {
-                foreach (object obj in readMemoryResults.newAdvances)
+                foreach (object obj in readMemoryResults.newAdvances) {
+                    this.Invoke((MethodInvoker)delegate {
                         Clipboard.SetText(obj.ToString());
+                    });
+                }
                 readMemoryResults.newAdvances.Clear();
+            }
+
+            if (settings.ContainsKey("LookMode") && settings["LookMode"].Count > 0 && settings["LookMode"][0] == "True") {
+                foreach(string msg in readMemoryResults.newLooks) {
+                    string itemName = parseLookItem(msg).ToLower();
+                    if (itemNameMap.ContainsKey(itemName)) {
+                        this.Invoke((MethodInvoker)delegate {
+                            ShowItemNotification("item@" + itemName);
+                        });
+                    } else if (creatureNameMap.ContainsKey(itemName)) {
+                        this.Invoke((MethodInvoker)delegate {
+                            ShowCreatureDrops(creatureNameMap[itemName], "");
+                        });
+                    }
+                }
+                readMemoryResults.newLooks.Clear();
             }
 
             List<string> commands = parseMemoryResults == null ? new List<string>() : parseMemoryResults.newCommands.ToArray().ToList();
@@ -427,8 +470,25 @@ namespace Tibialyzer {
 
         private void ShowItemNotification(string command) {
             string parameter = command.Split('@')[1].Trim().ToLower();
-            if (!itemNameMap.ContainsKey(parameter)) return;
-            Item item = itemNameMap[parameter];
+            Item item;
+            if (!itemNameMap.ContainsKey(parameter)) {
+                List<TibiaObject> items = new List<TibiaObject>();
+                foreach(Item it in itemNameMap.Values) {
+                    if (it.name.ToLower().Contains(parameter)) {
+                        items.Add(it);
+                    }
+                }
+                if (items.Count == 0) {
+                    return;
+                } else if (items.Count > 1) {
+                    ShowCreatureList(items, "Item List" , "item@", command);
+                    return;
+                } else {
+                    item = items[0] as Item;
+                }
+            } else {
+                item = itemNameMap[parameter];
+            }
 
             Dictionary<NPC, int> sellNPCs = new Dictionary<NPC, int>();
             Dictionary<NPC, int> buyNPCs = new Dictionary<NPC, int>();

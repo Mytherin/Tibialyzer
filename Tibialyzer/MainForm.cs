@@ -60,8 +60,6 @@ namespace Tibialyzer {
         public List<string> new_names = null;
         private bool prevent_settings_update = false;
         private bool minimize_notification = true;
-        public bool allow_extensions = true;
-        public bool debug_mode = false;
         public int notification_value = 2000;
         static HashSet<string> cities = new HashSet<string>() { "ab'dendriel", "carlin", "kazordoon", "venore", "thais", "ankrahmun", "farmine", "gray beach", "liberty bay", "port hope", "rathleton", "roshamuul", "yalahar", "svargrond", "edron", "darashia", "rookgaard", "dawnport", "gray beach" };
         public List<string> notification_items = new List<string>();
@@ -85,7 +83,7 @@ namespace Tibialyzer {
 
             conn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", databaseFile));
             conn.Open();
-
+            
             back_image = Image.FromFile(@"Images\back.png");
             prevpage_image = Image.FromFile(@"Images\prevpage.png");
             nextpage_image = Image.FromFile(@"Images\nextpage.png");
@@ -1337,6 +1335,13 @@ namespace Tibialyzer {
                 names.Add(lines[i]);
             settings["Names"] = names;
 
+            saveSettings();
+        }
+
+        private void lookCheckBox_CheckedChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("LookMode", (sender as CheckBox).Checked.ToString());
             saveSettings();
         }
     }

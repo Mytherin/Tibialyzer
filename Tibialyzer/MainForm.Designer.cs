@@ -142,6 +142,7 @@
             this.minimizeIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.loadTimerImage = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.lookCheckBox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             this.huntingPage.SuspendLayout();
@@ -488,6 +489,7 @@
             // 
             // settingsTab
             // 
+            this.settingsTab.Controls.Add(this.lookCheckBox);
             this.settingsTab.Controls.Add(this.label50);
             this.settingsTab.Controls.Add(this.panel2);
             this.settingsTab.Controls.Add(this.showNotificationCheckbox);
@@ -1417,6 +1419,17 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // lookCheckBox
+            // 
+            this.lookCheckBox.AutoSize = true;
+            this.lookCheckBox.Location = new System.Drawing.Point(11, 20);
+            this.lookCheckBox.Name = "lookCheckBox";
+            this.lookCheckBox.Size = new System.Drawing.Size(194, 17);
+            this.lookCheckBox.TabIndex = 11;
+            this.lookCheckBox.Text = "Automatically View Looked At Items";
+            this.lookCheckBox.UseVisualStyleBackColor = true;
+            this.lookCheckBox.CheckedChanged += new System.EventHandler(this.lookCheckBox_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1578,6 +1591,7 @@
         private System.Windows.Forms.Panel creatureImagePanel;
         private System.Windows.Forms.Button exportLogButton;
         private System.Windows.Forms.Button importLogFile;
+        private System.Windows.Forms.CheckBox lookCheckBox;
     }
 }
 

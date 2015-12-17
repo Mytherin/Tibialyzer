@@ -65,6 +65,7 @@ namespace Tibialyzer {
             public Dictionary<string, List<Tuple<string, string>>> commands = new Dictionary<string, List<Tuple<string, string>>>();
             public Dictionary<string, List<Tuple<string, string>>> urls = new Dictionary<string, List<Tuple<string, string>>>();
             public List<string> newAdvances = new List<string>();
+            public List<string> newLooks = new List<string>();
         }
 
         public class ParseMemoryResults {
@@ -83,7 +84,7 @@ namespace Tibialyzer {
 
             IntPtr proc_min_address = sys_info.minimumApplicationAddress;
             IntPtr proc_max_address = sys_info.maximumApplicationAddress;
-            
+
             long proc_min_address_l = (long)proc_min_address;
             long proc_max_address_l = (long)proc_max_address;
             Process[] processes = Process.GetProcessesByName("Tibia");
@@ -96,6 +97,7 @@ namespace Tibialyzer {
             IntPtr processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
             MEMORY_BASIC_INFORMATION mem_basic_info = new MEMORY_BASIC_INFORMATION();
             int bytesRead = 0;  // number of bytes read with ReadProcessMemory
+            Stopwatch sw = Stopwatch.StartNew();
             try {
                 results = new ReadMemoryResults();
                 while (proc_min_address_l < proc_max_address_l) {
@@ -110,10 +112,10 @@ namespace Tibialyzer {
                         // read everything in the buffer above
                         ReadProcessMemory((int)processHandle, mem_basic_info.BaseAddress, buffer, mem_basic_info.RegionSize, ref bytesRead);
                         // scan the memory for strings that start with timestamps and end with the null terminator ('\0')
-                        List<string> strings = FindTimestamps(buffer); 
+                        List<string> strings = FindTimestamps(buffer);
                         if (strings.Count > 0) {
                             // if any timestamp strings were found, scan the chunk for any messages
-                            SearchChunk(strings, results); 
+                            SearchChunk(strings, results);
                         }
                     }
 
@@ -123,6 +125,8 @@ namespace Tibialyzer {
             } catch {
                 return null;
             }
+            sw.Stop();
+            Console.WriteLine("Time taken: {0}ms", sw.Elapsed.TotalMilliseconds);
             process.Dispose();
             return results;
         }
@@ -133,34 +137,29 @@ namespace Tibialyzer {
             // scan the memory for "timestamp values"
             // i.e. values that are like "xx:xx" where x = a number
             // we consider timestamps the "starting point" of a string, and the null terminator the "ending point"
-            int start = 0;
-            for (int i = 0; i < array.Length; i++) {
-                if (index == 6) {
-                    if (array[i] == 0) {
-                        strings.Add(System.Text.Encoding.UTF8.GetString(array, start, (i - start)));
-                        index = 0;
-                    }
-                } else if (index == 5) {
-                    if (array[i] == ' ') {
+            int start = 0, i = 0;
+            for (i = 0; i < array.Length; i++) {
+                if (index < 5) {
+                    if (array[i] > 47 && array[i] < 59) { // digits are 47-58, semicolon is 59
                         index++;
+                        start = i;
                     } else {
                         index = 0;
                     }
-                } else if (array[i] > 47 && array[i] < 59) {
-                    if (index == 2) {
-                        if (array[i] == 58) {
-                            start = i - 2;
-                            index++;
-                        } else {
-                            index = 0;
-                        }
-                    } else if (array[i] < 58) {
-                        index++;
-                    } else {
-                        index = 0;
+                } else if (array[i] == 0) { // scan for the null terminator
+                    start -= 4;
+                    string str = System.Text.Encoding.UTF8.GetString(array, start, (i - start));
+                    if (isDigit(str[0]) && isDigit(str[1]) && isDigit(str[3]) && isDigit(str[4]) && str[2] == ':') {
+                        strings.Add(str);
                     }
-                } else {
                     index = 0;
+                }
+            }
+            if (index == 5) {
+                start -= 4;
+                string str = System.Text.Encoding.UTF8.GetString(array, start, (i - start));
+                if (isDigit(str[0]) && isDigit(str[1]) && isDigit(str[3]) && isDigit(str[4]) && str[2] == ':') {
+                    strings.Add(str);
                 }
             }
             return strings;
@@ -207,7 +206,7 @@ namespace Tibialyzer {
             return stamps;
         }
 
-        bool isDigit(char c) {
+        static bool isDigit(char c) {
             return
                 c == '0' ||
                 c == '1' ||
@@ -220,7 +219,7 @@ namespace Tibialyzer {
                 c == '8' ||
                 c == '9';
         }
-        
+
         int getCount(string item) {
             int begin = -1, end = -1;
             for (int i = 0; i < item.Length; i++) {
@@ -301,9 +300,12 @@ namespace Tibialyzer {
                 stamps.Add(stamp);
                 if (stamp == ignoreStamp) return stamps;
 
-                hour = hour > 0 ? hour - 1 : 23;
-                minute = minute > 0 ? minute - 1 : 59;
-
+                if (minute == 0) {
+                    hour = hour > 0 ? hour - 1 : 23;
+                    minute = 59;
+                } else {
+                    minute = minute - 1;
+                }
             }
             return stamps;
         }
@@ -334,6 +336,38 @@ namespace Tibialyzer {
             }
         }
 
+        void clearOldLog(Hunt h) {
+            var time = DateTime.Now;
+            int hour = time.Hour;
+            int minute = time.Minute;
+            if (minute >= 5) {
+                minute -= 5;
+            } else {
+                hour--;
+                minute = 60 + (minute - 5);
+            }
+            int stamp = getDayStamp();
+
+            h.loot.creatureLoot.Clear();
+            h.loot.killCount.Clear();
+            h.loot.logMessages.Clear();
+            SQLiteCommand comm = new SQLiteCommand(String.Format("DELETE FROM \"{0}\" WHERE day < {1} OR hour < {2} OR (hour == {2} AND minute < {3})", h.name.ToLower(), stamp, hour, minute), conn);
+            comm.ExecuteNonQuery();
+
+            comm = new SQLiteCommand(String.Format("SELECT message FROM \"{0}\"", h.name.ToLower()), conn);
+            SQLiteDataReader reader = comm.ExecuteReader();
+            Dictionary<string, List<string>> logMessages = new Dictionary<string, List<string>>();
+            while (reader.Read()) {
+                string line = reader["message"].ToString();
+                if (line.Length < 15) continue;
+                string t = line.Substring(0, 5);
+                if (!(isDigit(t[0]) && isDigit(t[1]) && isDigit(t[3]) && isDigit(t[4]) && t[2] == ':')) continue; //not a valid timestamp
+                if (!logMessages.ContainsKey(t)) logMessages.Add(t, new List<string>());
+                logMessages[t].Add(line);
+            }
+            ParseLootMessages(h, logMessages, null, false);
+        }
+
         void resetHunt(Hunt h) {
             h.loot.creatureLoot.Clear();
             h.loot.killCount.Clear();
@@ -349,7 +383,7 @@ namespace Tibialyzer {
             StreamWriter streamWriter = new StreamWriter(logPath);
 
             // we load the data from the database instead of from the stored dictionary so it is ordered properly
-            SQLiteCommand comm = new SQLiteCommand("SELECT message FROM \"{0}\"", conn);
+            SQLiteCommand comm = new SQLiteCommand(String.Format("SELECT message FROM \"{0}\"", activeHunt.name.ToLower()), conn);
             SQLiteDataReader reader = comm.ExecuteReader();
             while (reader.Read()) {
                 streamWriter.WriteLine(reader["message"].ToString());
@@ -460,7 +494,7 @@ namespace Tibialyzer {
             command.ExecuteNonQuery();
         }
 
-        private void ParseLootMessages(Hunt h, Dictionary<string, List<string>> newDrops, List<Tuple<Creature, Item>> newItems) {
+        private void ParseLootMessages(Hunt h, Dictionary<string, List<string>> newDrops, List<Tuple<Creature, Item>> newItems, bool commit = true) {
             int stamp = getDayStamp();
             Dictionary<string, List<string>> itemDrops = h.loot.logMessages;
             // now the big one: parse the log messages and check the dropped items
@@ -498,14 +532,16 @@ namespace Tibialyzer {
                         }
                     }
                     itemDrops[t] = itemList;
-                    using (var transaction = conn.BeginTransaction()) {
-                        SQLiteCommand command;
-                        foreach (string msg in newMessages) {
-                            string query = String.Format("INSERT INTO \"{4}\" VALUES({0}, {1}, {2}, \"{3}\");", stamp, hour, minute, msg.Replace("\"", "\\\""), activeHunt.name.ToLower());
-                            command = new SQLiteCommand(query, conn, transaction);
-                            command.ExecuteNonQuery();
+                    if (commit) {
+                        using (var transaction = conn.BeginTransaction()) {
+                            SQLiteCommand command;
+                            foreach (string msg in newMessages) {
+                                string query = String.Format("INSERT INTO \"{4}\" VALUES({0}, {1}, {2}, \"{3}\");", stamp, hour, minute, msg.Replace("\"", "\\\""), activeHunt.name.ToLower());
+                                command = new SQLiteCommand(query, conn, transaction);
+                                command.ExecuteNonQuery();
+                            }
+                            transaction.Commit();
                         }
-                        transaction.Commit();
                     }
                 }
             }
@@ -650,6 +686,7 @@ namespace Tibialyzer {
                 // process the item to find out how much dropped and to convert to singular form (e.g. '4 small amethysts' => ('small amethyst', 4))
                 Tuple<string, int> processedItem = preprocessItem(item);
                 string itemName = processedItem.Item1;
+                if (itemName == "nothing") continue;
                 int itemCount = processedItem.Item2;
                 if (!itemNameMap.ContainsKey(itemName)) {
                     Console.WriteLine(String.Format("Warning, item {0} was not found in the database.", itemName));
@@ -663,7 +700,7 @@ namespace Tibialyzer {
 
         private int ignoreStamp = 0;
         private void SearchChunk(List<string> chunk, ReadMemoryResults res) {
-            List<int> stamps = getLatestStamps(5, ignoreStamp);
+            List<int> stamps = getLatestStamps(3, ignoreStamp);
             foreach (string logMessage in chunk) {
                 string t = logMessage.Substring(0, 5);
                 int hour = int.Parse(logMessage.Substring(0, 2));
@@ -674,7 +711,10 @@ namespace Tibialyzer {
                 if (logMessage.Length > 14 && logMessage.Substring(5, 9) == " You see ") {
                     // the message contains "you see", so it's a look message
                     if (!totalLooks.ContainsKey(t)) totalLooks.Add(t, new HashSet<string>());
-                    if (!totalLooks[t].Contains(logMessage)) totalLooks[t].Add(logMessage);
+                    if (!totalLooks[t].Contains(logMessage)) {
+                        totalLooks[t].Add(logMessage);
+                        res.newLooks.Add(logMessage);
+                    }
                 } else if (message.Contains(':')) {
                     if (logMessage.Length > 14 && logMessage.Substring(5, 9) == " Loot of ") { // loot drop message
                         if (!res.itemDrops.ContainsKey(t)) res.itemDrops.Add(t, new List<string>());
@@ -711,22 +751,19 @@ namespace Tibialyzer {
                     } catch {
                         continue;
                     }
-                } else {
+                } else if (logMessage.Length > 18) {
                     string[] split = message.Split(' ');
-                    if (split.Contains("hitpoints")) {
+                    if (split.Contains("hitpoints") && split.ToList().IndexOf("hitpoints") > 0) {
                         // damage log message (X loses Y hitpoints due to an attack by Z.)
                         int damage = 0;
-                        try {
-                            // damage always occurs one 'word' before the "hitpoints" word <X hitpoints>
-                            damage = int.Parse(split[split.ToList().IndexOf("hitpoints") - 1]);
-                        } catch {
+                        if (!int.TryParse(split[split.ToList().IndexOf("hitpoints") - 1], out damage)) {
                             continue;
                         }
                         string player;
                         if (logMessage.Substring(logMessage.Length - 12) == "your attack.") {
                             // X lost Y hitpoints because of your attack.
                             // attacker is the player himself
-                            player = "you";
+                            player = "You";
                         } else {
                             // X lost Y hitpoints because of an attack by Z.
                             // Z is the attacker => after the word "by"
@@ -740,9 +777,9 @@ namespace Tibialyzer {
                         if (!res.damageDealt.ContainsKey(player)) res.damageDealt.Add(player, new Dictionary<string, int>());
                         if (!res.damageDealt[player].ContainsKey(t)) res.damageDealt[player].Add(t, damage);
                         else res.damageDealt[player][t] = res.damageDealt[player][t] + damage;
-                    } else if (split.Contains("advanced")) {
+                    } else if (logMessage.Substring(5, 14) == " You advanced " && logMessage.ToLower().Contains("level")) {
                         // advancement log message (You advanced from level x to level x + 1.)
-                        if (logMessage.Substring(6, 13) == "You advanced " && logMessage.ToLower().Contains("level") && logMessage[logMessage.Length - 1] == '.' && !levelAdvances.Contains(logMessage)) {
+                        if (logMessage[logMessage.Length - 1] == '.' && !levelAdvances.Contains(logMessage)) {
                             res.newAdvances.Add(logMessage);
                             levelAdvances.Add(logMessage);
                         }
