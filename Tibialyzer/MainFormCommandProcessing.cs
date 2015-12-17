@@ -107,7 +107,14 @@ namespace Tibialyzer {
                 }
                 ShowDamageMeter(parseMemoryResults.damagePerSecond, command, parameter, screenshot_path);
             } else if (comp.StartsWith("exp@")) {
-                ShowSimpleNotification("Experience", "Currently gaining " + (parseMemoryResults == null ? "unknown" : ((int)parseMemoryResults.expPerHour).ToString()) + " experience an hour.", tibia_image);
+                string title = "Experience";
+                string text = "Currently gaining " + (parseMemoryResults == null ? "unknown" : ((int)parseMemoryResults.expPerHour).ToString()) + " experience an hour.";
+                Image image = tibia_image;
+                if (!lootNotificationRich) {
+                    ShowSimpleNotification(title, text, image);
+                } else {
+                    ShowSimpleNotification(new SimpleTextNotification(null, title, text));
+                }
             } else if (comp.StartsWith("loot@") || comp.StartsWith("clipboard@")) {
                 string[] splits = command.Split('@');
                 bool clipboard = comp.StartsWith("clipboard@");
@@ -220,6 +227,7 @@ namespace Tibialyzer {
                     //reset@ loot deletes all loot from the currently active hunt
                     resetHunt(activeHunt);
                 }
+                ignoreStamp = createStamp();
             } else if (comp.StartsWith("drop@")) {
                 //show all creatures that drop the specified item
                 string parameter = command.Split('@')[1].Trim().ToLower();
@@ -430,8 +438,8 @@ namespace Tibialyzer {
                 readMemoryResults.newAdvances.Clear();
             }
 
-            if (settings.ContainsKey("LookMode") && settings["LookMode"].Count > 0 && settings["LookMode"][0] == "True") {
-                foreach(string msg in readMemoryResults.newLooks) {
+            if (getSetting("LookMode")) {
+                foreach (string msg in readMemoryResults.newLooks) {
                     string itemName = parseLookItem(msg).ToLower();
                     if (itemNameMap.ContainsKey(itemName)) {
                         this.Invoke((MethodInvoker)delegate {
@@ -453,15 +461,27 @@ namespace Tibialyzer {
                 this.Invoke((MethodInvoker)delegate {
                     if (!ExecuteCommand(command, parseMemoryResults)) {
                         ShowSimpleNotification("Unrecognized command", "Unrecognized command: " + command, tibia_image);
-                        }
+                    }
                 });
             }
             if (this.showNotifications) {
-                foreach(Tuple<Creature,Item> tpl in parseMemoryResults.newItems) {
+                foreach (Tuple<Creature, List<Tuple<Item, int>>> tpl in parseMemoryResults.newItems) {
                     Creature cr = tpl.Item1;
-                    Item item = tpl.Item2;
-                    if ((Math.Max(item.actual_value, item.vendor_value) >= notification_value && showNotificationsValue) || (showNotificationsSpecific && settings["NotificationItems"].Contains(item.name.ToLower()))) { 
-                        ShowSimpleNotification(cr.name, cr.name + " dropped a " + item.name + ".", cr.image);
+                    List<Tuple<Item, int>> items = tpl.Item2;
+                    bool showNotification = getSetting("AlwaysShowLoot");
+                    foreach (Tuple<Item, int> tpl2 in items) {
+                        Item item = tpl2.Item1;
+                        if ((Math.Max(item.actual_value, item.vendor_value) >= notification_value && showNotificationsValue) || (showNotificationsSpecific && settings["NotificationItems"].Contains(item.name.ToLower()))) {
+                            showNotification = true;
+                            if (!lootNotificationRich) {
+                                ShowSimpleNotification(cr.name, cr.name + " dropped a " + item.name + ".", cr.image);
+                            }
+                        }
+                    }
+                    if (showNotification && lootNotificationRich) {
+                        this.Invoke((MethodInvoker)delegate {
+                            ShowSimpleNotification(new SimpleLootNotification(cr, items));
+                        });
                     }
                 }
             }
@@ -473,7 +493,7 @@ namespace Tibialyzer {
             Item item;
             if (!itemNameMap.ContainsKey(parameter)) {
                 List<TibiaObject> items = new List<TibiaObject>();
-                foreach(Item it in itemNameMap.Values) {
+                foreach (Item it in itemNameMap.Values) {
                     if (it.name.ToLower().Contains(parameter)) {
                         items.Add(it);
                     }
@@ -481,7 +501,7 @@ namespace Tibialyzer {
                 if (items.Count == 0) {
                     return;
                 } else if (items.Count > 1) {
-                    ShowCreatureList(items, "Item List" , "item@", command);
+                    ShowCreatureList(items, "Item List", "item@", command);
                     return;
                 } else {
                     item = items[0] as Item;

@@ -23,7 +23,7 @@ namespace Tibialyzer {
             InitializeComponent();
         }
 
-        Image[] GetFrames(Image originalImg) {
+        public static Image[] GetFrames(Image originalImg) {
             int numberOfFrames = originalImg.GetFrameCount(FrameDimension.Time);
 
             Image[] frames = new Image[numberOfFrames];
@@ -35,7 +35,7 @@ namespace Tibialyzer {
             return frames;
         }
 
-        private Image GetStackImage(Image[] stack, int count, Item item) {
+        public static Image GetStackImage(Image[] stack, int count, Item item) {
             if (stack == null) return item.image;
             int max = stack.Length;
             int index = 0;

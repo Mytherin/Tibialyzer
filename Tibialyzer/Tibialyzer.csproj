@@ -96,6 +96,15 @@
     <Compile Include="DamageChart.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="SimpleLootNotification.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SimpleNotification.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SimpleTextNotification.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Structures.cs" />
     <Compile Include="EnterTextBox.cs">
       <SubType>Component</SubType>
@@ -205,6 +214,15 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SimpleLootNotification.resx">
+      <DependentUpon>SimpleLootNotification.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimpleNotification.resx">
+      <DependentUpon>SimpleNotification.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimpleTextNotification.resx">
+      <DependentUpon>SimpleTextNotification.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Database\Database.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -229,6 +247,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Database\settings.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Database\pluralMap.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\0.png">
@@ -274,6 +295,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\death.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\defaulticon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\earth.png">
@@ -376,9 +400,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Libraries\System.Data.SQLite.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Database\pluralMap.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

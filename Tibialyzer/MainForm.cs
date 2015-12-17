@@ -31,7 +31,7 @@ namespace Tibialyzer {
         public Dictionary<int, NPC> npcIdMap = new Dictionary<int, NPC>();
         public Dictionary<string, HuntingPlace> huntingPlaceNameMap = new Dictionary<string, HuntingPlace>();
         public Dictionary<int, HuntingPlace> huntingPlaceIdMap = new Dictionary<int, HuntingPlace>();
-        
+
         public static ScriptEngine pyEngine = null;
         public static Color background_color = Color.FromArgb(0, 51, 102);
         public static double opacity = 0.8;
@@ -49,6 +49,7 @@ namespace Tibialyzer {
         public static Image mapdown_image = null;
         public static Image checkmark_yes = null;
         public static Image checkmark_no = null;
+        public static Image infoIcon = null;
         private bool keep_working = true;
         private static string databaseFile = @"Database\Database.db";
         private static string settingsFile = @"Database\settings.txt";
@@ -83,7 +84,7 @@ namespace Tibialyzer {
 
             conn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", databaseFile));
             conn.Open();
-            
+
             back_image = Image.FromFile(@"Images\back.png");
             prevpage_image = Image.FromFile(@"Images\prevpage.png");
             nextpage_image = Image.FromFile(@"Images\nextpage.png");
@@ -93,6 +94,8 @@ namespace Tibialyzer {
             mapdown_image = Image.FromFile(@"Images\mapdown.png");
             checkmark_no = Image.FromFile(@"Images\checkmark-no.png");
             checkmark_yes = Image.FromFile(@"Images\checkmark-yes.png");
+            infoIcon = Image.FromFile(@"Images\defaulticon.png");
+
             item_background = System.Drawing.Image.FromFile(@"Images\item_background.png");
             for (int i = 0; i < 10; i++) {
                 image_numbers[i] = System.Drawing.Image.FromFile(@"Images\" + i.ToString() + ".png");
@@ -203,7 +206,7 @@ namespace Tibialyzer {
                 item.discard = reader.GetBoolean(8);
                 item.convert_to_gold = reader.GetBoolean(9);
                 item.look_text = reader.GetString(10);
-                
+
                 if (item.image.RawFormat.Guid == ImageFormat.Gif.Guid) {
                     int frames = item.image.GetFrameCount(FrameDimension.Time);
                     if (frames == 1) {
@@ -497,7 +500,7 @@ namespace Tibialyzer {
                     // load the data for the hunt from the database
                     command = new SQLiteCommand(String.Format("SELECT message FROM \"{0}\" ORDER BY day, hour, minute;", hunt.name.ToLower()), conn);
                     reader = command.ExecuteReader();
-                    while(reader.Read()) {
+                    while (reader.Read()) {
                         string message = reader["message"].ToString();
                         Tuple<Creature, List<Tuple<Item, int>>> resultList = ParseLootMessage(message);
                         if (resultList == null) continue;
@@ -524,7 +527,7 @@ namespace Tibialyzer {
 
             skip_hunt_refresh = true;
             huntBox.Items.Clear();
-            foreach(Hunt h in hunts) {
+            foreach (Hunt h in hunts) {
                 huntBox.Items.Add(h.name);
             }
             huntBox.SelectedIndex = activeHuntIndex;
@@ -626,18 +629,18 @@ namespace Tibialyzer {
         public static string ToTitle(string str) {
             return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(str);
         }
-        
+
         private void initializeMaps() {
             SQLiteCommand command = new SQLiteCommand("SELECT * FROM WorldMap", conn);
             SQLiteDataReader reader = command.ExecuteReader();
-            while(reader.Read()) {
+            while (reader.Read()) {
                 Map m = new Map();
                 m.z = reader.GetInt32(0);
                 m.image = Image.FromStream(reader.GetStream(1));
                 map_files.Add(m);
             }
         }
-        
+
         private void ShowSimpleNotification(string title, string text, Image image) {
             if (!simpleNotifications) return;
             notifyIcon1.BalloonTipText = text;
@@ -651,10 +654,57 @@ namespace Tibialyzer {
                 tooltipForm.Close();
             }
         }
-        
+
+        int notificationSpacing = 5;
+        List<SimpleNotification> notificationStack = new List<SimpleNotification>();
+        private void ShowSimpleNotification(SimpleNotification f) {
+            int position_x = 0, position_y = 0;
+            Screen screen;
+            Process[] tibia_process = Process.GetProcessesByName("Tibia");
+            if (tibia_process.Length == 0) {
+                screen = Screen.FromControl(this);
+            } else {
+                Process tibia = tibia_process[0];
+                screen = Screen.FromHandle(tibia.MainWindowHandle);
+            }
+            position_x = screen.WorkingArea.Right - f.Width - notificationSpacing;
+            int basePosition = screen.WorkingArea.Bottom;
+            foreach (SimpleNotification notification in notificationStack) {
+                basePosition -= notification.Height + notificationSpacing;
+            }
+            position_y = basePosition - (f.Height + notificationSpacing);
+            f.StartPosition = FormStartPosition.Manual;
+            f.SetDesktopLocation(position_x + f.Width + notificationSpacing, position_y);
+            Console.WriteLine(position_y);
+            f.targetPositionX = position_x;
+            f.targetPositionY = position_y;
+            f.FormClosed += simpleNotificationClosed;
+
+            notificationStack.Add(f);
+
+            f.TopMost = true;
+            f.Show();
+        }
+
+        private void simpleNotificationClosed(object sender, FormClosedEventArgs e) {
+            SimpleNotification notification = sender as SimpleNotification;
+            if (notification == null) return;
+            bool moveDown = false;
+            int positionModification = 0;
+            foreach (SimpleNotification f in notificationStack) {
+                if (f == notification) {
+                    positionModification = f.Height + notificationSpacing;
+                    moveDown = true;
+                } else if (moveDown) {
+                    f.targetPositionY += positionModification;
+                }
+            }
+            notificationStack.Remove(notification);
+        }
+
         private void ShowNotification(NotificationForm f, string command, bool screenshot = false) {
             if (!richNotifications) return;
-            
+
             command_stack.Push(command);
             Console.WriteLine(command_stack.Count);
             if (tooltipForm != null) {
@@ -697,7 +747,7 @@ namespace Tibialyzer {
             if (c == null) return;
             CreatureDropsForm f = new CreatureDropsForm();
             f.creature = c;
-            
+
             ShowNotification(f, comm);
         }
 
@@ -705,7 +755,7 @@ namespace Tibialyzer {
             if (c == null) return;
             CreatureStatsForm f = new CreatureStatsForm();
             f.creature = c;
-            
+
             ShowNotification(f, comm);
         }
         private void ShowCreatureList(List<TibiaObject> c, string title, string prefix, string comm) {
@@ -714,7 +764,7 @@ namespace Tibialyzer {
             f.objects = c;
             f.title = title;
             f.prefix = prefix;
-            
+
             ShowNotification(f, comm);
         }
 
@@ -725,7 +775,7 @@ namespace Tibialyzer {
             f.buyNPCs = BuyNPCs;
             f.sellNPCs = SellNPCs;
             f.creatures = creatures;
-            
+
             ShowNotification(f, comm);
         }
 
@@ -733,7 +783,7 @@ namespace Tibialyzer {
             if (c == null) return;
             NPCForm f = new NPCForm();
             f.npc = c;
-            
+
             ShowNotification(f, comm);
         }
 
@@ -749,7 +799,7 @@ namespace Tibialyzer {
             LootDropForm ldf = new LootDropForm(screenshot_path);
             ldf.creatures = creatures;
             ldf.items = items;
-            
+
             ShowNotification(ldf, comm, screenshot_path != "");
         }
 
@@ -758,21 +808,21 @@ namespace Tibialyzer {
             HuntListForm f = new HuntListForm();
             f.hunting_places = h;
             f.header = header;
-            
+
             ShowNotification(f, comm);
         }
 
         private void ShowHuntingPlace(HuntingPlace h, string comm) {
             HuntingPlaceForm f = new HuntingPlaceForm();
             f.hunting_place = h;
-            
+
             ShowNotification(f, comm);
         }
 
         private void ShowListNotification(List<Command> commands, int type, string comm) {
             ListNotification f = new ListNotification(commands);
             f.type = type;
-            
+
             ShowNotification(f, comm);
         }
 
@@ -869,7 +919,7 @@ namespace Tibialyzer {
             }
             this.ResumeLayout(false);
         }
-        
+
         void ShowCreatureInformation(object sender, EventArgs e) {
             string creature_name = (sender as Control).Name;
             this.ExecuteCommand("creature@" + creature_name);
@@ -1032,7 +1082,7 @@ namespace Tibialyzer {
         private void executeCommand_Click(object sender, EventArgs e) {
             this.ExecuteCommand(commandTextBox.Text);
         }
-        
+
         private Hunt getActiveHunt() {
             return activeHunt;
         }
@@ -1220,6 +1270,10 @@ namespace Tibialyzer {
             return -1;
         }
 
+        private bool getSetting(string key) {
+            return settings.ContainsKey(key) && settings[key].Count > 0 && settings[key][0] == "True";
+        }
+
         private void setSetting(string key, string value) {
             if (!settings.ContainsKey(key)) settings.Add(key, new List<string>());
             settings[key].Clear();
@@ -1342,6 +1396,13 @@ namespace Tibialyzer {
             if (prevent_settings_update) return;
 
             setSetting("LookMode", (sender as CheckBox).Checked.ToString());
+            saveSettings();
+        }
+
+        private void alwaysShowLoot_CheckedChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("AlwaysShowLoot", (sender as CheckBox).Checked.ToString());
             saveSettings();
         }
     }

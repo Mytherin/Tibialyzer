@@ -1,4 +1,4 @@
-#assorted 
+﻿#assorted 
 nails=nail
 skulls=skull
 #gems
@@ -63,3 +63,4 @@ strong health potions=strong health potion
 great health potions=great health potion
 ultimate health potions=ultimate health potion
 stampor talons=stampor talon
+cherries=cherry

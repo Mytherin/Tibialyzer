@@ -30,7 +30,6 @@
             this.mainTab = new System.Windows.Forms.TabPage();
             this.executeCommand = new System.Windows.Forms.Button();
             this.label56 = new System.Windows.Forms.Label();
-            this.commandTextBox = new Tibialyzer.EnterTextBox();
             this.label49 = new System.Windows.Forms.Label();
             this.damageButton = new System.Windows.Forms.Button();
             this.saveLootImage = new System.Windows.Forms.Button();
@@ -41,7 +40,6 @@
             this.exportLogButton = new System.Windows.Forms.Button();
             this.importLogFile = new System.Windows.Forms.Button();
             this.creatureImagePanel = new System.Windows.Forms.Panel();
-            this.logMessageTextBox = new Tibialyzer.TransparentLabel();
             this.startupHuntCheckbox = new System.Windows.Forms.CheckBox();
             this.activeHuntButton = new System.Windows.Forms.Button();
             this.creatureTrackLabel = new System.Windows.Forms.Label();
@@ -56,6 +54,7 @@
             this.huntBox = new System.Windows.Forms.ListBox();
             this.backgroundBox = new System.Windows.Forms.PictureBox();
             this.settingsTab = new System.Windows.Forms.TabPage();
+            this.lookCheckBox = new System.Windows.Forms.CheckBox();
             this.label50 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.unstackableConvertApply = new System.Windows.Forms.Button();
@@ -142,7 +141,9 @@
             this.minimizeIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.loadTimerImage = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.lookCheckBox = new System.Windows.Forms.CheckBox();
+            this.alwaysShowLoot = new System.Windows.Forms.CheckBox();
+            this.commandTextBox = new Tibialyzer.EnterTextBox();
+            this.logMessageTextBox = new Tibialyzer.TransparentLabel();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             this.huntingPage.SuspendLayout();
@@ -220,14 +221,6 @@
             this.label56.TabIndex = 11;
             this.label56.Text = "Command";
             // 
-            // commandTextBox
-            // 
-            this.commandTextBox.Location = new System.Drawing.Point(81, 440);
-            this.commandTextBox.Name = "commandTextBox";
-            this.commandTextBox.Size = new System.Drawing.Size(299, 20);
-            this.commandTextBox.TabIndex = 9;
-            this.commandTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.commandTextBox_KeyPress);
-            // 
             // label49
             // 
             this.label49.AutoSize = true;
@@ -293,7 +286,6 @@
             this.huntingPage.Controls.Add(this.exportLogButton);
             this.huntingPage.Controls.Add(this.importLogFile);
             this.huntingPage.Controls.Add(this.creatureImagePanel);
-            this.huntingPage.Controls.Add(this.logMessageTextBox);
             this.huntingPage.Controls.Add(this.startupHuntCheckbox);
             this.huntingPage.Controls.Add(this.activeHuntButton);
             this.huntingPage.Controls.Add(this.creatureTrackLabel);
@@ -305,6 +297,7 @@
             this.huntingPage.Controls.Add(this.huntNameBox);
             this.huntingPage.Controls.Add(this.newHuntButton);
             this.huntingPage.Controls.Add(this.label55);
+            this.huntingPage.Controls.Add(this.logMessageTextBox);
             this.huntingPage.Controls.Add(this.huntBox);
             this.huntingPage.Controls.Add(this.backgroundBox);
             this.huntingPage.Location = new System.Drawing.Point(4, 22);
@@ -338,18 +331,6 @@
             this.creatureImagePanel.Name = "creatureImagePanel";
             this.creatureImagePanel.Size = new System.Drawing.Size(170, 117);
             this.creatureImagePanel.TabIndex = 16;
-            // 
-            // logMessageTextBox
-            // 
-            this.logMessageTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.logMessageTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(0)))));
-            this.logMessageTextBox.Location = new System.Drawing.Point(8, 265);
-            this.logMessageTextBox.Name = "logMessageTextBox";
-            this.logMessageTextBox.ReadOnly = true;
-            this.logMessageTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.logMessageTextBox.Size = new System.Drawing.Size(631, 224);
-            this.logMessageTextBox.TabIndex = 15;
-            this.logMessageTextBox.Text = "";
             // 
             // startupHuntCheckbox
             // 
@@ -506,6 +487,17 @@
             this.settingsTab.UseVisualStyleBackColor = true;
             this.settingsTab.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
             // 
+            // lookCheckBox
+            // 
+            this.lookCheckBox.AutoSize = true;
+            this.lookCheckBox.Location = new System.Drawing.Point(11, 20);
+            this.lookCheckBox.Name = "lookCheckBox";
+            this.lookCheckBox.Size = new System.Drawing.Size(194, 17);
+            this.lookCheckBox.TabIndex = 11;
+            this.lookCheckBox.Text = "Automatically View Looked At Items";
+            this.lookCheckBox.UseVisualStyleBackColor = true;
+            this.lookCheckBox.CheckedChanged += new System.EventHandler(this.lookCheckBox_CheckedChanged);
+            // 
             // label50
             // 
             this.label50.AutoSize = true;
@@ -651,6 +643,7 @@
             // notificationPanel
             // 
             this.notificationPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.notificationPanel.Controls.Add(this.alwaysShowLoot);
             this.notificationPanel.Controls.Add(this.specificNotificationTextbox);
             this.notificationPanel.Controls.Add(this.specificNotificationCheckbox);
             this.notificationPanel.Controls.Add(this.rareDropNotificationValueCheckbox);
@@ -716,7 +709,6 @@
             // 
             // notificationTypeBox
             // 
-            this.notificationTypeBox.Enabled = false;
             this.notificationTypeBox.FormattingEnabled = true;
             this.notificationTypeBox.Items.AddRange(new object[] {
             "Simple Notification",
@@ -1419,16 +1411,36 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // lookCheckBox
+            // alwaysShowLoot
             // 
-            this.lookCheckBox.AutoSize = true;
-            this.lookCheckBox.Location = new System.Drawing.Point(11, 20);
-            this.lookCheckBox.Name = "lookCheckBox";
-            this.lookCheckBox.Size = new System.Drawing.Size(194, 17);
-            this.lookCheckBox.TabIndex = 11;
-            this.lookCheckBox.Text = "Automatically View Looked At Items";
-            this.lookCheckBox.UseVisualStyleBackColor = true;
-            this.lookCheckBox.CheckedChanged += new System.EventHandler(this.lookCheckBox_CheckedChanged);
+            this.alwaysShowLoot.AutoSize = true;
+            this.alwaysShowLoot.Location = new System.Drawing.Point(9, 37);
+            this.alwaysShowLoot.Name = "alwaysShowLoot";
+            this.alwaysShowLoot.Size = new System.Drawing.Size(169, 17);
+            this.alwaysShowLoot.TabIndex = 12;
+            this.alwaysShowLoot.Text = "Always Show Loot Notification";
+            this.alwaysShowLoot.UseVisualStyleBackColor = true;
+            this.alwaysShowLoot.CheckedChanged += new System.EventHandler(this.alwaysShowLoot_CheckedChanged);
+            // 
+            // commandTextBox
+            // 
+            this.commandTextBox.Location = new System.Drawing.Point(81, 440);
+            this.commandTextBox.Name = "commandTextBox";
+            this.commandTextBox.Size = new System.Drawing.Size(299, 20);
+            this.commandTextBox.TabIndex = 9;
+            this.commandTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.commandTextBox_KeyPress);
+            // 
+            // logMessageTextBox
+            // 
+            this.logMessageTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.logMessageTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(0)))));
+            this.logMessageTextBox.Location = new System.Drawing.Point(8, 265);
+            this.logMessageTextBox.Name = "logMessageTextBox";
+            this.logMessageTextBox.ReadOnly = true;
+            this.logMessageTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this.logMessageTextBox.Size = new System.Drawing.Size(631, 224);
+            this.logMessageTextBox.TabIndex = 15;
+            this.logMessageTextBox.Text = "";
             // 
             // MainForm
             // 
@@ -1592,6 +1604,7 @@
         private System.Windows.Forms.Button exportLogButton;
         private System.Windows.Forms.Button importLogFile;
         private System.Windows.Forms.CheckBox lookCheckBox;
+        private System.Windows.Forms.CheckBox alwaysShowLoot;
     }
 }
 

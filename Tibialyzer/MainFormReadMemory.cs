@@ -71,7 +71,7 @@ namespace Tibialyzer {
         public class ParseMemoryResults {
             public Dictionary<string, int> damagePerSecond = new Dictionary<string, int>();
             public List<string> newCommands = new List<string>();
-            public List<Tuple<Creature, Item>> newItems = new List<Tuple<Creature, Item>>();
+            public List<Tuple<Creature, List<Tuple<Item, int>>>> newItems = new List<Tuple<Creature, List<Tuple<Item, int>>>>();
             public int expPerHour = 0;
         }
 
@@ -97,7 +97,6 @@ namespace Tibialyzer {
             IntPtr processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
             MEMORY_BASIC_INFORMATION mem_basic_info = new MEMORY_BASIC_INFORMATION();
             int bytesRead = 0;  // number of bytes read with ReadProcessMemory
-            Stopwatch sw = Stopwatch.StartNew();
             try {
                 results = new ReadMemoryResults();
                 while (proc_min_address_l < proc_max_address_l) {
@@ -125,8 +124,6 @@ namespace Tibialyzer {
             } catch {
                 return null;
             }
-            sw.Stop();
-            Console.WriteLine("Time taken: {0}ms", sw.Elapsed.TotalMilliseconds);
             process.Dispose();
             return results;
         }
@@ -494,7 +491,7 @@ namespace Tibialyzer {
             command.ExecuteNonQuery();
         }
 
-        private void ParseLootMessages(Hunt h, Dictionary<string, List<string>> newDrops, List<Tuple<Creature, Item>> newItems, bool commit = true) {
+        private void ParseLootMessages(Hunt h, Dictionary<string, List<string>> newDrops, List<Tuple<Creature, List<Tuple<Item, int>>>> newItems, bool commit = true) {
             int stamp = getDayStamp();
             Dictionary<string, List<string>> itemDrops = h.loot.logMessages;
             // now the big one: parse the log messages and check the dropped items
@@ -520,9 +517,11 @@ namespace Tibialyzer {
                             foreach (Tuple<Item, int> tpl in resultList.Item2) {
                                 Item item = tpl.Item1;
                                 int count = tpl.Item2;
-                                if (newItems != null) newItems.Add(new Tuple<Creature, Item>(cr, item));
                                 if (!h.loot.creatureLoot[cr].ContainsKey(item)) h.loot.creatureLoot[cr].Add(item, count);
                                 else h.loot.creatureLoot[cr][item] += count;
+                            }
+                            if (newItems != null) {
+                                newItems.Add(resultList);
                             }
 
                             if (!h.loot.killCount.ContainsKey(cr)) h.loot.killCount.Add(cr, 1);
