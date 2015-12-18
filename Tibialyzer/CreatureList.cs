@@ -11,7 +11,7 @@ namespace Tibialyzer {
     class CreatureList : NotificationForm {
         public List<TibiaObject> objects;
         public string title = "List";
-        public string prefix = "creature@";
+        public string prefix = "creature" + MainForm.commandSymbol;
 
         public CreatureList() {
             objects = null;

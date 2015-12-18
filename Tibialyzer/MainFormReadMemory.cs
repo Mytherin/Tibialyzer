@@ -333,17 +333,25 @@ namespace Tibialyzer {
             }
         }
 
-        void clearOldLog(Hunt h) {
+        void clearOldLog(Hunt h, int clearMinutes = 10) {
             var time = DateTime.Now;
             int hour = time.Hour;
             int minute = time.Minute;
-            if (minute >= 5) {
-                minute -= 5;
+            while(clearMinutes > 60) {
+                hour--;
+                clearMinutes -= 60;
+            }
+            if (minute >= clearMinutes) {
+                minute -= clearMinutes;
             } else {
                 hour--;
-                minute = 60 + (minute - 5);
+                minute = 60 + (minute - clearMinutes);
             }
             int stamp = getDayStamp();
+            while(hour < 0) {
+                hour += 24;
+                stamp--;
+            }
 
             h.loot.creatureLoot.Clear();
             h.loot.killCount.Clear();
@@ -486,9 +494,16 @@ namespace Tibialyzer {
             int stamp = getDayStamp();
             string timestamp = String.Format("{0}:{1}", (hour < 10 ? "0" + hour.ToString() : hour.ToString()), (minute < 10 ? "0" + minute.ToString() : minute.ToString()));
             string itemName = cr.skin.drop_item.name;
+            if (!itemNameMap.ContainsKey(itemName.ToLower())) return;
+            Item item = itemNameMap[itemName.ToLower()];
             string message = String.Format("{0} Loot of a {1}: {2}", timestamp, cr.name.ToLower(), itemName.ToLower());
             SQLiteCommand command = new SQLiteCommand(String.Format("INSERT INTO \"{4}\" VALUES({0}, {1}, {2}, \"{3}\");", stamp, hour, minute, message.Replace("\"", "\\\""), activeHunt.name.ToLower()), conn);
             command.ExecuteNonQuery();
+            if (!activeHunt.loot.logMessages.ContainsKey(timestamp)) activeHunt.loot.logMessages.Add(timestamp, new List<string>());
+            activeHunt.loot.logMessages[timestamp].Add(message);
+            if (!activeHunt.loot.creatureLoot.ContainsKey(cr)) activeHunt.loot.creatureLoot.Add(cr, new Dictionary<Item, int>());
+            if (!activeHunt.loot.creatureLoot[cr].ContainsKey(item)) activeHunt.loot.creatureLoot[cr].Add(item, 1);
+            else activeHunt.loot.creatureLoot[cr][itemNameMap[itemName.ToLower()]] += 1;
         }
 
         private void ParseLootMessages(Hunt h, Dictionary<string, List<string>> newDrops, List<Tuple<Creature, List<Tuple<Item, int>>>> newItems, bool commit = true) {
@@ -582,7 +597,9 @@ namespace Tibialyzer {
                         damage += totalDamageResults[player][t];
                     }
                 }
-                o.damagePerSecond.Add(player, damage);
+                if (damage > 0) {
+                    o.damagePerSecond.Add(player, damage);
+                }
             }
 
             // similar to damage, we keep a totalExperienceResults list

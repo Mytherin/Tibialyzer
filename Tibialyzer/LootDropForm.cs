@@ -204,14 +204,14 @@ namespace Tibialyzer {
             if (clicked) return;
             clicked = true;
             this.ReturnFocusToTibia();
-            MainForm.mainForm.ExecuteCommand("item@" + (sender as Control).Name);
+            MainForm.mainForm.ExecuteCommand("item" + MainForm.commandSymbol + (sender as Control).Name);
         }
 
         void openCreatureDrops(object sender, EventArgs e) {
             if (clicked) return;
             clicked = true;
             this.ReturnFocusToTibia();
-            MainForm.mainForm.ExecuteCommand("loot@" + (sender as Control).Name);
+            MainForm.mainForm.ExecuteCommand("loot" + MainForm.commandSymbol + (sender as Control).Name);
         }
 
 

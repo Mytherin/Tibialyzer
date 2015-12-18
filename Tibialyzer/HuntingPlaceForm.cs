@@ -362,7 +362,7 @@ namespace Tibialyzer {
             clicked = true;
             this.ReturnFocusToTibia();
             string name = (sender as Control).Name;
-            MainForm.mainForm.ExecuteCommand("creature@" + name.ToLower());
+            MainForm.mainForm.ExecuteCommand("creature" + MainForm.commandSymbol + name.ToLower());
         }
 
         void label_Click(object sender, EventArgs e) {

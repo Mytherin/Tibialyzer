@@ -54,6 +54,7 @@ namespace Tibialyzer {
         private static string databaseFile = @"Database\Database.db";
         private static string settingsFile = @"Database\settings.txt";
         private static string pluralMapFile = @"Database\pluralMap.txt";
+        private static string autohotkeyFile = @"Database\autohotkey.ahk";
         private List<string> character_names = new List<string>();
         public static List<Map> map_files = new List<Map>();
         public static Color label_text_color = Color.FromArgb(191, 191, 191);
@@ -121,14 +122,18 @@ namespace Tibialyzer {
             star_image[4] = Image.FromFile(@"Images\star4.png");
 
             prevent_settings_update = true;
+            this.initializePluralMap();
             this.loadDatabaseData();
             this.loadSettings();
             this.initializeNames();
             this.initializeHunts();
             this.initializeSettings();
             this.initializeMaps();
-            this.initializePluralMap();
             prevent_settings_update = false;
+
+            if (getSettingBool("StartAutohotkeyAutomatically")) {
+                startAutoHotkey_Click(null, null);
+            }
 
             ignoreStamp = createStamp();
 
@@ -560,6 +565,10 @@ namespace Tibialyzer {
             this.rareDropNotificationValueCheckbox.Checked = showNotificationsValue;
             this.notificationValue.Text = notification_value.ToString();
             this.specificNotificationCheckbox.Checked = showNotificationsSpecific;
+            this.lookCheckBox.Checked = getSettingBool("LookMode");
+            this.alwaysShowLoot.Checked = getSettingBool("AlwaysShowLoot");
+            this.startAutohotkeyScript.Checked = getSettingBool("StartAutohotkeyAutomatically");
+            this.shutdownOnExit.Checked = getSettingBool("ShutdownAutohotkeyOnExit");
             string massiveString = "";
             if (settings.ContainsKey("NotificationItems")) {
                 foreach (string str in settings["NotificationItems"]) {
@@ -567,6 +576,13 @@ namespace Tibialyzer {
                 }
             }
             this.specificNotificationTextbox.Text = massiveString;
+            massiveString = "";
+            if (settings.ContainsKey("AutoHotkeySettings")) {
+                foreach (string str in settings["AutoHotkeySettings"]) {
+                    massiveString += str + "\n";
+                }
+            }
+            this.autoHotkeyGridSettings.Text = massiveString;
         }
 
         void makeDraggable(Control.ControlCollection controls) {
@@ -922,12 +938,12 @@ namespace Tibialyzer {
 
         void ShowCreatureInformation(object sender, EventArgs e) {
             string creature_name = (sender as Control).Name;
-            this.ExecuteCommand("creature@" + creature_name);
+            this.ExecuteCommand("creature" + MainForm.commandSymbol + creature_name);
         }
 
         void ShowItemInformation(object sender, EventArgs e) {
             string item_name = (sender as Control).Name;
-            this.ExecuteCommand("item@" + item_name);
+            this.ExecuteCommand("item" + MainForm.commandSymbol + item_name);
         }
 
         private void exportLogButton_Click(object sender, EventArgs e) {
@@ -942,12 +958,12 @@ namespace Tibialyzer {
             }
             DialogResult result = dialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK) {
-                this.ExecuteCommand("savelog@" + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/"));
+                this.ExecuteCommand("savelog" + MainForm.commandSymbol + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/"));
             }
         }
 
         private void resetButton_Click(object sender, EventArgs e) {
-            this.ExecuteCommand("reset@");
+            this.ExecuteCommand("reset" + MainForm.commandSymbol);
         }
 
         private void importLogFile_Click(object sender, EventArgs e) {
@@ -955,7 +971,7 @@ namespace Tibialyzer {
             dialog.Title = "Import Log File";
             DialogResult result = dialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK) {
-                this.ExecuteCommand("loadlog@" + dialog.FileName);
+                this.ExecuteCommand("loadlog" + MainForm.commandSymbol + dialog.FileName);
             }
         }
 
@@ -973,7 +989,7 @@ namespace Tibialyzer {
             }
             DialogResult result = dialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK) {
-                this.ExecuteCommand("loot@screenshot@" + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/"));
+                this.ExecuteCommand("loot" + MainForm.commandSymbol + "screenshot" + MainForm.commandSymbol + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/"));
             }
 
         }
@@ -992,28 +1008,28 @@ namespace Tibialyzer {
             }
             DialogResult result = dialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK) {
-                this.ExecuteCommand("damage@screenshot@" + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/"));
+                this.ExecuteCommand("damage" + MainForm.commandSymbol + "screenshot" + MainForm.commandSymbol + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/"));
             }
         }
 
         private void applyRatioButton_Click(object sender, EventArgs e) {
             double val = 0;
             if (double.TryParse(goldRatioTextBox.Text, out val)) {
-                this.ExecuteCommand("setdiscardgoldratio@" + goldRatioTextBox.Text);
+                this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + goldRatioTextBox.Text);
             }
         }
 
         private void stackableConvertApply_Click(object sender, EventArgs e) {
             double val = 0;
             if (double.TryParse(stackableConvertTextBox.Text, out val)) {
-                this.ExecuteCommand("setconvertgoldratio@1-" + stackableConvertTextBox.Text);
+                this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "1-" + stackableConvertTextBox.Text);
             }
         }
 
         private void unstackableConvertApply_Click(object sender, EventArgs e) {
             double val = 0;
             if (double.TryParse(unstackableConvertTextBox.Text, out val)) {
-                this.ExecuteCommand("setconvertgoldratio@0-" + unstackableConvertTextBox.Text);
+                this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "0-" + unstackableConvertTextBox.Text);
             }
         }
 
@@ -1143,7 +1159,7 @@ namespace Tibialyzer {
             trackCreaturesBox.Text = h.trackedCreatures;
             refreshHuntImages();
             switch_hunt = false;
-            this.ExecuteCommand("refreshlog@");
+            this.ExecuteCommand("refreshlog" + MainForm.commandSymbol);
         }
 
         void refreshHunts(bool refreshSelection) {
@@ -1251,11 +1267,7 @@ namespace Tibialyzer {
 
             saveHunts();
         }
-
-        private void clearLogButton_Click(object sender, EventArgs e) {
-
-        }
-
+        
         private bool getSettingBool(string key) {
             if (!settings.ContainsKey(key) || settings[key].Count == 0) return false;
             return settings[key][0] == "True";
@@ -1404,6 +1416,102 @@ namespace Tibialyzer {
 
             setSetting("AlwaysShowLoot", (sender as CheckBox).Checked.ToString());
             saveSettings();
+        }
+
+        private void startAutohotkeyScript_CheckedChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("StartAutohotkeyAutomatically", (sender as CheckBox).Checked.ToString());
+            saveSettings();
+        }
+        private void shutdownOnExit_CheckedChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("ShutdownAutohotkeyOnExit", (sender as CheckBox).Checked.ToString());
+            saveSettings();
+        }
+
+        static string autoHotkeyURL = "http://ahkscript.org/download/ahk-install.exe";
+        private void downloadAutoHotkey_Click(object sender, EventArgs e) {
+            WebClient client = new WebClient();
+            
+            client.DownloadDataCompleted += Client_DownloadDataCompleted;
+            client.DownloadProgressChanged += Client_DownloadProgressChanged;
+
+            downloadBar.Visible = true;
+            downloadLabel.Visible = true;
+            downloadLabel.Text = "Downloading...";
+
+            client.DownloadDataAsync(new Uri(autoHotkeyURL));
+        }
+
+        private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e) {
+            this.downloadBar.Value = e.ProgressPercentage;
+            this.downloadBar.Maximum = 100;
+        }
+
+        private void Client_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e) {
+            downloadLabel.Text = "Writing...";
+            try {
+                string filepath = System.IO.Path.GetTempPath() + "autohotkeyinstaller.exe";
+                Console.WriteLine(filepath);
+                File.WriteAllBytes(filepath, e.Result);
+                System.Diagnostics.Process.Start(filepath);
+                downloadLabel.Text = "Download successful.";
+            } catch {
+                downloadLabel.Text = "Failed to download.";
+            }
+            downloadBar.Visible = false;
+        }
+        
+        private string modifyKeyString(string str) {
+            string value = str.ToLower();
+
+            if (value.Contains("alt+")) {
+                value = value.Replace("alt+", "!");
+            }
+            if (value.Contains("ctrl+")) {
+                value = value.Replace("ctrl+", "^");
+            }
+            if (value.Contains("shift+")) {
+                value = value.Replace("shift+", "+");
+            }
+            return value;
+        }
+
+        private void autoHotkeyGridSettings_TextChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+            if (!settings.ContainsKey("AutoHotkeySettings")) settings.Add("AutoHotkeySettings", autoHotkeyGridSettings.Text.Split('\n').ToList());
+            else settings["AutoHotkeySettings"] = autoHotkeyGridSettings.Text.Split('\n').ToList();
+            saveSettings();
+        }
+
+        private void writeToAutoHotkeyFile() {
+            if (!settings.ContainsKey("AutoHotkeySettings")) return;
+            using (StreamWriter writer = new StreamWriter(autohotkeyFile)) {
+                writer.WriteLine("#IfWinActive, Tibia");
+                foreach(string line in settings["AutoHotkeySettings"]) {
+                    if (line[0] == '#') continue;
+                    writer.WriteLine(modifyKeyString(line));
+                }
+            }
+        }
+
+        private void startAutoHotkey_Click(object sender, EventArgs e) {
+            writeToAutoHotkeyFile();
+            System.Diagnostics.Process.Start(autohotkeyFile);
+        }
+
+        private void shutdownAutoHotkey_Click(object sender, EventArgs e) {
+            foreach (var process in Process.GetProcessesByName("AutoHotkey")) {
+                process.Kill();
+            }
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
+            if (getSettingBool("ShutdownAutohotkeyOnExit")) {
+                shutdownAutoHotkey_Click(null, null);
+            }
         }
     }
 }

@@ -185,7 +185,7 @@ namespace Tibialyzer {
             this.ResumeLayout(false);
         }
 
-        private string command_start = "item@";
+        private string command_start = "item" + MainForm.commandSymbol;
         private bool clicked = false;
         void openItemBox(object sender, EventArgs e) {
             if (clicked) return;

@@ -28,7 +28,17 @@ namespace Tibialyzer {
             int item_spacing = 4;
             Size item_size = new Size(32, 32);
 
+            List<Tuple<Item, int>> updatedItems = new List<Tuple<Item, int>>();
             foreach (Tuple<Item, int> tpl in items) {
+                if (tpl.Item1.name.ToLower() == "gold coin" && tpl.Item2 > 100) {
+                    updatedItems.Add(new Tuple<Item, int>(MainForm.mainForm.itemNameMap["platinum coin"], tpl.Item2 / 100));
+                    updatedItems.Add(new Tuple<Item,int>(tpl.Item1, tpl.Item2 % 100));
+                } else {
+                    updatedItems.Add(tpl);
+                }
+            }
+
+            foreach (Tuple<Item, int> tpl in updatedItems) {
                 Item item = tpl.Item1;
                 int count = tpl.Item2;
                 Image[] stacks = null;

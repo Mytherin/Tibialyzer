@@ -21,30 +21,32 @@ using System.Data.SQLite;
 
 namespace Tibialyzer {
     public partial class MainForm : Form {
-
+        public static char commandSymbol = '@';
         public bool ExecuteCommand(string command, ParseMemoryResults parseMemoryResults = null) {
             string comp = command.Trim().ToLower();
             Console.WriteLine(command);
-            if (comp.StartsWith("creature@")) {
-                string parameter = command.Split('@')[1].Trim().ToLower();
+            if (comp.StartsWith("creature" + MainForm.commandSymbol)) { //creature@
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                 if (creatureNameMap.ContainsKey(parameter)) {
                     Creature cr = creatureNameMap[parameter];
                     ShowCreatureDrops(cr, command);
                 } else {
+                    int count = 0;
                     List<Creature> creatures = new List<Creature>();
                     foreach (KeyValuePair<string, Creature> kvp in creatureNameMap) {
                         if (kvp.Key.Contains(parameter)) {
                             creatures.Add(kvp.Value);
+                            if (count++ > 50) break;
                         }
                     }
                     if (creatures.Count == 1) {
                         ShowCreatureDrops(creatures[0], command);
                     } else if (creatures.Count > 1) {
-                        ShowCreatureList((creatures as IEnumerable<TibiaObject>).ToList(), "Creature List", "creature@", command);
+                        ShowCreatureList((creatures as IEnumerable<TibiaObject>).ToList(), "Creature List", "creature" + MainForm.commandSymbol, command);
                     }
                 }
-            } else if (comp.StartsWith("look@")) {
-                string parameter = command.Split('@')[1].Trim().ToLower();
+            } else if (comp.StartsWith("look" + MainForm.commandSymbol)) { //look@
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                 if (parameter == "on") {
                     if (!settings.ContainsKey("LookMode")) settings.Add("LookMode", new List<string>());
                     settings["LookMode"].Clear(); settings["LookMode"].Add("True");
@@ -69,36 +71,48 @@ namespace Tibialyzer {
                     }
                     if (items.Count == 1) {
                         if (items[0] is Item) {
-                            ShowItemNotification("item@" + items[0].GetName().ToLower());
+                            ShowItemNotification("item" + MainForm.commandSymbol + items[0].GetName().ToLower());
                         } else if (items[0] is Creature) {
                             ShowCreatureDrops(items[0] as Creature, command);
                         }
                     } else if (items.Count > 1) {
-                        ShowCreatureList(items, "Looked At Items", "item@", command);
+                        ShowCreatureList(items, "Looked At Items", "item" + MainForm.commandSymbol, command);
                     }
                 }
-            } else if (comp.StartsWith("stats@")) {
-                string name = command.Split('@')[1].Trim().ToLower();
+            } else if (comp.StartsWith("stats" + MainForm.commandSymbol)) { //stats@
+                string name = command.Split(commandSymbol)[1].Trim().ToLower();
                 if (creatureNameMap.ContainsKey(name)) {
                     Creature cr = creatureNameMap[name];
                     ShowCreatureStats(cr, command);
                 }
-            } else if (comp.StartsWith("delete@")) {
-                string parameter = command.Split('@')[1].Trim().ToLower();
+            } else if (comp.StartsWith("delete" + MainForm.commandSymbol)) { //delete@
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                 int killCount;
                 if (int.TryParse(parameter, out killCount)) {
                     deleteCreatureWithThreshold(killCount);
                 } else if (creatureNameMap.ContainsKey(parameter)) {
                     deleteCreatureFromLog(creatureNameMap[parameter]);
                 }
-            } else if (comp.StartsWith("skin@")) {
-                string parameter = command.Split('@')[1].Trim().ToLower();
+            } else if (comp.StartsWith("skin" + MainForm.commandSymbol)) { //skin@
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                 if (creatureNameMap.ContainsKey(parameter)) {
                     Creature cr = creatureNameMap[parameter];
                     insertSkin(cr);
+                } else {
+                    // find creature with highest killcount with a skin and skin that
+                    Creature cr = null;
+                    int kills = -1;
+                    foreach (KeyValuePair<Creature, int> kvp in activeHunt.loot.killCount) {
+                        if (kvp.Value > kills && kvp.Key.skin != null) {
+                            cr = kvp.Key;
+                        }
+                    }
+                    if (cr != null) {
+                        insertSkin(cr);
+                    }
                 }
-            } else if (comp.StartsWith("damage@") && parseMemoryResults != null) {
-                string[] splits = command.Split('@');
+            } else if (comp.StartsWith("damage" + MainForm.commandSymbol) && parseMemoryResults != null) { //damage@
+                string[] splits = command.Split(commandSymbol);
                 string screenshot_path = "";
                 string parameter = splits[1].Trim().ToLower();
                 if (parameter == "screenshot" && splits.Length > 2) {
@@ -106,7 +120,7 @@ namespace Tibialyzer {
                     screenshot_path = splits[2];
                 }
                 ShowDamageMeter(parseMemoryResults.damagePerSecond, command, parameter, screenshot_path);
-            } else if (comp.StartsWith("exp@")) {
+            } else if (comp.StartsWith("exp" + MainForm.commandSymbol)) { //exp@
                 string title = "Experience";
                 string text = "Currently gaining " + (parseMemoryResults == null ? "unknown" : ((int)parseMemoryResults.expPerHour).ToString()) + " experience an hour.";
                 Image image = tibia_image;
@@ -115,9 +129,9 @@ namespace Tibialyzer {
                 } else {
                     ShowSimpleNotification(new SimpleTextNotification(null, title, text));
                 }
-            } else if (comp.StartsWith("loot@") || comp.StartsWith("clipboard@")) {
-                string[] splits = command.Split('@');
-                bool clipboard = comp.StartsWith("clipboard@");
+            } else if (comp.StartsWith("loot" + MainForm.commandSymbol) || comp.StartsWith("clipboard" + MainForm.commandSymbol)) { //loot@ clipboard@
+                string[] splits = command.Split(commandSymbol);
+                bool clipboard = comp.StartsWith("clipboard" + MainForm.commandSymbol);
                 string screenshot_path = "";
                 string parameter = splits[1].Trim().ToLower();
                 if (parameter == "screenshot" && splits.Length > 2) {
@@ -219,18 +233,21 @@ namespace Tibialyzer {
                     // display loot notification
                     ShowLootDrops(creatureKills, itemDrops, command, screenshot_path);
                 }
-            } else if (comp.StartsWith("reset@")) {
-                string parameter = command.Split('@')[1].Trim().ToLower();
+            } else if (comp.StartsWith("reset" + MainForm.commandSymbol)) { //reset@
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
+                int time = 0;
                 if (parameter == "old") {
                     clearOldLog(activeHunt);
+                } else if (int.TryParse(parameter, out time) && time > 0) {
+                    clearOldLog(activeHunt, time);
                 } else {
                     //reset@ loot deletes all loot from the currently active hunt
                     resetHunt(activeHunt);
                 }
                 ignoreStamp = createStamp();
-            } else if (comp.StartsWith("drop@")) {
+            } else if (comp.StartsWith("drop" + MainForm.commandSymbol)) {
                 //show all creatures that drop the specified item
-                string parameter = command.Split('@')[1].Trim().ToLower();
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                 if (!itemNameMap.ContainsKey(parameter)) return true;
                 Item item = itemNameMap[parameter];
 
@@ -247,11 +264,11 @@ namespace Tibialyzer {
                 }
 
                 ShowItemView(item, null, null, creatures, command);
-            } else if (comp.StartsWith("item@")) {
+            } else if (comp.StartsWith("item" + MainForm.commandSymbol)) {
                 //show the item with all the NPCs that sell it
                 ShowItemNotification(command);
-            } else if (comp.StartsWith("hunt@")) {
-                string parameter = command.Split('@')[1].Trim().ToLower();
+            } else if (comp.StartsWith("hunt" + MainForm.commandSymbol)) {
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                 if (cities.Contains(parameter)) {
                     List<HuntingPlace> huntingPlaces = new List<HuntingPlace>();
                     foreach (HuntingPlace huntingPlace in huntingPlaceIdMap.Values) {
@@ -300,8 +317,8 @@ namespace Tibialyzer {
                     ShowHuntList(huntingPlaces, "Hunts between levels " + minlevel.ToString() + "-" + maxlevel.ToString(), command);
                     return true;
                 }
-            } else if (comp.StartsWith("npc@")) {
-                string parameter = command.Split('@')[1].Trim().ToLower();
+            } else if (comp.StartsWith("npc" + MainForm.commandSymbol)) {
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                 if (npcNameMap.ContainsKey(parameter)) {
                     NPC npc = npcNameMap[parameter];
                     ShowNPCForm(npc, command);
@@ -311,17 +328,17 @@ namespace Tibialyzer {
                     int count = 0;
                     ShowCreatureList(npcNameMap.Values.Where(o => o.name.Contains(parameter) && count++ < 40).ToList<TibiaObject>(), "NPC List", "npc@", command);
                 }
-            } else if (comp.StartsWith("savelog@")) {
-                saveLog(command.Split('@')[1].Trim().Replace("'", "\\'"));
-            } else if (comp.StartsWith("loadlog@")) {
-                loadLog(command.Split('@')[1].Trim().Replace("'", "\\'"));
-            } else if (comp.StartsWith("setdiscardgoldratio@")) {
+            } else if (comp.StartsWith("savelog" + MainForm.commandSymbol)) {
+                saveLog(command.Split(commandSymbol)[1].Trim().Replace("'", "\\'"));
+            } else if (comp.StartsWith("loadlog" + MainForm.commandSymbol)) {
+                loadLog(command.Split(commandSymbol)[1].Trim().Replace("'", "\\'"));
+            } else if (comp.StartsWith("setdiscardgoldratio" + MainForm.commandSymbol)) {
                 double val;
-                if (double.TryParse(command.Split('@')[1].Trim(), out val)) {
+                if (double.TryParse(command.Split(commandSymbol)[1].Trim(), out val)) {
                     setGoldRatio(val);
                 }
-            } else if (comp.StartsWith("wiki@")) {
-                string parameter = command.Split('@')[1].Trim();
+            } else if (comp.StartsWith("wiki" + MainForm.commandSymbol)) {
+                string parameter = command.Split(commandSymbol)[1].Trim();
                 string response = "";
                 using (WebClient client = new WebClient()) {
                     response = client.DownloadString(String.Format("http://tibia.wikia.com/api/v1/Search/List?query={0}&limit=1&minArticleQuality=10&batch=1&namespaces=0", parameter));
@@ -330,11 +347,11 @@ namespace Tibialyzer {
                 Match m = regex.Match(response);
                 var gr = m.Groups[1];
                 OpenUrl(gr.Value.Replace("\\/", "/"));
-            } else if (comp.StartsWith("char@")) {
-                string parameter = command.Split('@')[1].Trim();
+            } else if (comp.StartsWith("char" + MainForm.commandSymbol)) {
+                string parameter = command.Split(commandSymbol)[1].Trim();
                 OpenUrl("https://secure.tibia.com/community/?subtopic=characters&name=" + parameter);
-            } else if (comp.StartsWith("setconvertgoldratio@")) {
-                string parameter = command.Split('@')[1].Trim();
+            } else if (comp.StartsWith("setconvertgoldratio" + MainForm.commandSymbol)) {
+                string parameter = command.Split(commandSymbol)[1].Trim();
                 string[] split = parameter.Split('-');
                 if (split.Length < 2) return true;
                 int stackable = 0;
@@ -343,11 +360,11 @@ namespace Tibialyzer {
                 if (double.TryParse(split[1], out val)) {
                     setConvertRatio(val, stackable == 1);
                 }
-            } else if (comp.StartsWith("recent@") || comp.StartsWith("url@") || comp.StartsWith("last@")) {
-                bool url = comp.StartsWith("url@");
+            } else if (comp.StartsWith("recent" + MainForm.commandSymbol) || comp.StartsWith("url" + MainForm.commandSymbol) || comp.StartsWith("last" + MainForm.commandSymbol)) {
+                bool url = comp.StartsWith("url" + MainForm.commandSymbol);
                 int type = url ? 1 : 0;
-                string parameter = command.Split('@')[1].Trim().ToLower();
-                if (comp.StartsWith("last@")) parameter = "1";
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
+                if (comp.StartsWith("last" + MainForm.commandSymbol)) parameter = "1";
                 List<Command> command_list = getRecentCommands(type).Select(o => new Command() { player = o.Item1, command = o.Item2 }).ToList();
                 command_list.Reverse();
                 int number;
@@ -370,28 +387,28 @@ namespace Tibialyzer {
                     if (found) return true;
                 }
                 ShowListNotification(command_list, type, command);
-            } else if (comp.StartsWith("pickup@")) {
-                string parameter = command.Split('@')[1].Trim().ToLower();
+            } else if (comp.StartsWith("pickup" + MainForm.commandSymbol)) {
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                 if (itemNameMap.ContainsKey(parameter)) {
                     setItemDiscard(itemNameMap[parameter], false);
                 }
-            } else if (comp.StartsWith("nopickup@")) {
-                string parameter = command.Split('@')[1].Trim().ToLower();
+            } else if (comp.StartsWith("nopickup" + MainForm.commandSymbol)) {
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                 if (itemNameMap.ContainsKey(parameter)) {
                     setItemDiscard(itemNameMap[parameter], true);
                 }
-            } else if (comp.StartsWith("convert@")) {
-                string parameter = command.Split('@')[1].Trim().ToLower();
+            } else if (comp.StartsWith("convert" + MainForm.commandSymbol)) {
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                 if (itemNameMap.ContainsKey(parameter)) {
                     setItemConvert(itemNameMap[parameter], true);
                 }
-            } else if (comp.StartsWith("noconvert@")) {
-                string parameter = command.Split('@')[1].Trim().ToLower();
+            } else if (comp.StartsWith("noconvert" + MainForm.commandSymbol)) {
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                 if (itemNameMap.ContainsKey(parameter)) {
                     setItemConvert(itemNameMap[parameter], false);
                 }
-            } else if (comp.StartsWith("setval@")) {
-                string parameter = command.Split('@')[1].Trim();
+            } else if (comp.StartsWith("setval" + MainForm.commandSymbol)) {
+                string parameter = command.Split(commandSymbol)[1].Trim();
                 if (!parameter.Contains('=')) return true;
                 string[] split = parameter.Split('=');
                 string item = split[0].Trim().ToLower().Replace("'", "\\'");
@@ -404,8 +421,8 @@ namespace Tibialyzer {
             } else {
                 bool found = false;
                 foreach (string city in cities) {
-                    if (comp.StartsWith(city + "@")) {
-                        string itemName = command.Split('@')[1].Trim().ToLower();
+                    if (comp.StartsWith(city + MainForm.commandSymbol)) {
+                        string itemName = command.Split(commandSymbol)[1].Trim().ToLower();
                         if (itemNameMap.ContainsKey(itemName)) {
                             Item item = itemNameMap[itemName];
                             foreach (ItemSold itemSold in item.buyItems.Union(item.sellItems)) {
@@ -438,7 +455,7 @@ namespace Tibialyzer {
                 readMemoryResults.newAdvances.Clear();
             }
 
-            if (getSetting("LookMode")) {
+            if (getSetting("LookMode") && readMemoryResults != null) {
                 foreach (string msg in readMemoryResults.newLooks) {
                     string itemName = parseLookItem(msg).ToLower();
                     if (itemNameMap.ContainsKey(itemName)) {
@@ -464,7 +481,7 @@ namespace Tibialyzer {
                     }
                 });
             }
-            if (this.showNotifications) {
+            if (this.showNotifications && parseMemoryResults != null) {
                 foreach (Tuple<Creature, List<Tuple<Item, int>>> tpl in parseMemoryResults.newItems) {
                     Creature cr = tpl.Item1;
                     List<Tuple<Item, int>> items = tpl.Item2;
@@ -489,13 +506,15 @@ namespace Tibialyzer {
         }
 
         private void ShowItemNotification(string command) {
-            string parameter = command.Split('@')[1].Trim().ToLower();
+            string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
             Item item;
             if (!itemNameMap.ContainsKey(parameter)) {
+                int count = 0;
                 List<TibiaObject> items = new List<TibiaObject>();
                 foreach (Item it in itemNameMap.Values) {
                     if (it.name.ToLower().Contains(parameter)) {
                         items.Add(it);
+                        if (count++ > 100) break;
                     }
                 }
                 if (items.Count == 0) {

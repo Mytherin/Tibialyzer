@@ -30,6 +30,7 @@
             this.mainTab = new System.Windows.Forms.TabPage();
             this.executeCommand = new System.Windows.Forms.Button();
             this.label56 = new System.Windows.Forms.Label();
+            this.commandTextBox = new Tibialyzer.EnterTextBox();
             this.label49 = new System.Windows.Forms.Label();
             this.damageButton = new System.Windows.Forms.Button();
             this.saveLootImage = new System.Windows.Forms.Button();
@@ -51,6 +52,7 @@
             this.huntNameBox = new System.Windows.Forms.TextBox();
             this.newHuntButton = new System.Windows.Forms.Button();
             this.label55 = new System.Windows.Forms.Label();
+            this.logMessageTextBox = new Tibialyzer.TransparentLabel();
             this.huntBox = new System.Windows.Forms.ListBox();
             this.backgroundBox = new System.Windows.Forms.PictureBox();
             this.settingsTab = new System.Windows.Forms.TabPage();
@@ -70,6 +72,7 @@
             this.showNotificationCheckbox = new System.Windows.Forms.CheckBox();
             this.enableRichNotificationsCheckbox = new System.Windows.Forms.CheckBox();
             this.notificationPanel = new System.Windows.Forms.Panel();
+            this.alwaysShowLoot = new System.Windows.Forms.CheckBox();
             this.specificNotificationTextbox = new System.Windows.Forms.RichTextBox();
             this.specificNotificationCheckbox = new System.Windows.Forms.CheckBox();
             this.rareDropNotificationValueCheckbox = new System.Windows.Forms.CheckBox();
@@ -89,6 +92,16 @@
             this.itemPanel = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.itemSearchBox = new System.Windows.Forms.TextBox();
+            this.autoHotkey = new System.Windows.Forms.TabPage();
+            this.shutdownOnExit = new System.Windows.Forms.CheckBox();
+            this.shutdownAutoHotkey = new System.Windows.Forms.Button();
+            this.startAutoHotkey = new System.Windows.Forms.Button();
+            this.autoHotkeyGridSettings = new System.Windows.Forms.RichTextBox();
+            this.startAutohotkeyScript = new System.Windows.Forms.CheckBox();
+            this.downloadLabel = new System.Windows.Forms.Label();
+            this.downloadBar = new System.Windows.Forms.ProgressBar();
+            this.downloadAutoHotkey = new System.Windows.Forms.Button();
+            this.label57 = new System.Windows.Forms.Label();
             this.commandListTab = new System.Windows.Forms.TabPage();
             this.label44 = new System.Windows.Forms.Label();
             this.label45 = new System.Windows.Forms.Label();
@@ -141,9 +154,6 @@
             this.minimizeIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.loadTimerImage = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.alwaysShowLoot = new System.Windows.Forms.CheckBox();
-            this.commandTextBox = new Tibialyzer.EnterTextBox();
-            this.logMessageTextBox = new Tibialyzer.TransparentLabel();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             this.huntingPage.SuspendLayout();
@@ -155,6 +165,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.notificationLengthSlider)).BeginInit();
             this.creatureTab.SuspendLayout();
             this.itemTab.SuspendLayout();
+            this.autoHotkey.SuspendLayout();
             this.commandListTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loadTimerImage)).BeginInit();
             this.SuspendLayout();
@@ -173,6 +184,7 @@
             this.tabControl1.Controls.Add(this.settingsTab);
             this.tabControl1.Controls.Add(this.creatureTab);
             this.tabControl1.Controls.Add(this.itemTab);
+            this.tabControl1.Controls.Add(this.autoHotkey);
             this.tabControl1.Controls.Add(this.commandListTab);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tabControl1.Location = new System.Drawing.Point(0, 2);
@@ -220,6 +232,14 @@
             this.label56.Size = new System.Drawing.Size(77, 16);
             this.label56.TabIndex = 11;
             this.label56.Text = "Command";
+            // 
+            // commandTextBox
+            // 
+            this.commandTextBox.Location = new System.Drawing.Point(81, 440);
+            this.commandTextBox.Name = "commandTextBox";
+            this.commandTextBox.Size = new System.Drawing.Size(299, 20);
+            this.commandTextBox.TabIndex = 9;
+            this.commandTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.commandTextBox_KeyPress);
             // 
             // label49
             // 
@@ -315,6 +335,7 @@
             this.exportLogButton.TabIndex = 6;
             this.exportLogButton.Text = "Save Log To File";
             this.exportLogButton.UseVisualStyleBackColor = true;
+            this.exportLogButton.Click += new System.EventHandler(this.exportLogButton_Click);
             // 
             // importLogFile
             // 
@@ -324,6 +345,7 @@
             this.importLogFile.TabIndex = 7;
             this.importLogFile.Text = "Import Log";
             this.importLogFile.UseVisualStyleBackColor = true;
+            this.importLogFile.Click += new System.EventHandler(this.importLogFile_Click);
             // 
             // creatureImagePanel
             // 
@@ -399,7 +421,7 @@
             this.clearLogButton.TabIndex = 6;
             this.clearLogButton.Text = "Clear Log";
             this.clearLogButton.UseVisualStyleBackColor = true;
-            this.clearLogButton.Click += new System.EventHandler(this.clearLogButton_Click);
+            this.clearLogButton.Click += new System.EventHandler(this.resetButton_Click);
             // 
             // deleteHuntButton
             // 
@@ -447,6 +469,18 @@
             this.label55.Size = new System.Drawing.Size(104, 18);
             this.label55.TabIndex = 1;
             this.label55.Text = "List of Hunts";
+            // 
+            // logMessageTextBox
+            // 
+            this.logMessageTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.logMessageTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(0)))));
+            this.logMessageTextBox.Location = new System.Drawing.Point(8, 265);
+            this.logMessageTextBox.Name = "logMessageTextBox";
+            this.logMessageTextBox.ReadOnly = true;
+            this.logMessageTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this.logMessageTextBox.Size = new System.Drawing.Size(631, 224);
+            this.logMessageTextBox.TabIndex = 15;
+            this.logMessageTextBox.Text = "";
             // 
             // huntBox
             // 
@@ -655,6 +689,17 @@
             this.notificationPanel.Size = new System.Drawing.Size(276, 459);
             this.notificationPanel.TabIndex = 8;
             // 
+            // alwaysShowLoot
+            // 
+            this.alwaysShowLoot.AutoSize = true;
+            this.alwaysShowLoot.Location = new System.Drawing.Point(9, 37);
+            this.alwaysShowLoot.Name = "alwaysShowLoot";
+            this.alwaysShowLoot.Size = new System.Drawing.Size(169, 17);
+            this.alwaysShowLoot.TabIndex = 12;
+            this.alwaysShowLoot.Text = "Always Show Loot Notification";
+            this.alwaysShowLoot.UseVisualStyleBackColor = true;
+            this.alwaysShowLoot.CheckedChanged += new System.EventHandler(this.alwaysShowLoot_CheckedChanged);
+            // 
             // specificNotificationTextbox
             // 
             this.specificNotificationTextbox.Enabled = false;
@@ -857,6 +902,113 @@
             this.itemSearchBox.Size = new System.Drawing.Size(579, 20);
             this.itemSearchBox.TabIndex = 3;
             this.itemSearchBox.TextChanged += new System.EventHandler(this.itemSearchBox_TextChanged);
+            // 
+            // autoHotkey
+            // 
+            this.autoHotkey.Controls.Add(this.shutdownOnExit);
+            this.autoHotkey.Controls.Add(this.shutdownAutoHotkey);
+            this.autoHotkey.Controls.Add(this.startAutoHotkey);
+            this.autoHotkey.Controls.Add(this.autoHotkeyGridSettings);
+            this.autoHotkey.Controls.Add(this.startAutohotkeyScript);
+            this.autoHotkey.Controls.Add(this.downloadLabel);
+            this.autoHotkey.Controls.Add(this.downloadBar);
+            this.autoHotkey.Controls.Add(this.downloadAutoHotkey);
+            this.autoHotkey.Controls.Add(this.label57);
+            this.autoHotkey.Location = new System.Drawing.Point(4, 22);
+            this.autoHotkey.Name = "autoHotkey";
+            this.autoHotkey.Size = new System.Drawing.Size(642, 497);
+            this.autoHotkey.TabIndex = 6;
+            this.autoHotkey.Text = "AutoHotkey";
+            this.autoHotkey.UseVisualStyleBackColor = true;
+            // 
+            // shutdownOnExit
+            // 
+            this.shutdownOnExit.AutoSize = true;
+            this.shutdownOnExit.Location = new System.Drawing.Point(11, 66);
+            this.shutdownOnExit.Name = "shutdownOnExit";
+            this.shutdownOnExit.Size = new System.Drawing.Size(210, 17);
+            this.shutdownOnExit.TabIndex = 8;
+            this.shutdownOnExit.Text = "Shutdown AutoHotkey on Program Exit";
+            this.shutdownOnExit.UseVisualStyleBackColor = true;
+            this.shutdownOnExit.CheckedChanged += new System.EventHandler(this.shutdownOnExit_CheckedChanged);
+            // 
+            // shutdownAutoHotkey
+            // 
+            this.shutdownAutoHotkey.Location = new System.Drawing.Point(474, 155);
+            this.shutdownAutoHotkey.Name = "shutdownAutoHotkey";
+            this.shutdownAutoHotkey.Size = new System.Drawing.Size(141, 49);
+            this.shutdownAutoHotkey.TabIndex = 7;
+            this.shutdownAutoHotkey.Text = "Shutdown Autohotkey";
+            this.shutdownAutoHotkey.UseVisualStyleBackColor = true;
+            this.shutdownAutoHotkey.Click += new System.EventHandler(this.shutdownAutoHotkey_Click);
+            // 
+            // startAutoHotkey
+            // 
+            this.startAutoHotkey.Location = new System.Drawing.Point(474, 100);
+            this.startAutoHotkey.Name = "startAutoHotkey";
+            this.startAutoHotkey.Size = new System.Drawing.Size(141, 49);
+            this.startAutoHotkey.TabIndex = 6;
+            this.startAutoHotkey.Text = "Start AutoHotkey";
+            this.startAutoHotkey.UseVisualStyleBackColor = true;
+            this.startAutoHotkey.Click += new System.EventHandler(this.startAutoHotkey_Click);
+            // 
+            // autoHotkeyGridSettings
+            // 
+            this.autoHotkeyGridSettings.Location = new System.Drawing.Point(11, 89);
+            this.autoHotkeyGridSettings.Name = "autoHotkeyGridSettings";
+            this.autoHotkeyGridSettings.Size = new System.Drawing.Size(302, 400);
+            this.autoHotkeyGridSettings.TabIndex = 5;
+            this.autoHotkeyGridSettings.Text = resources.GetString("autoHotkeyGridSettings.Text");
+            this.autoHotkeyGridSettings.TextChanged += new System.EventHandler(this.autoHotkeyGridSettings_TextChanged);
+            // 
+            // startAutohotkeyScript
+            // 
+            this.startAutohotkeyScript.AutoSize = true;
+            this.startAutohotkeyScript.Location = new System.Drawing.Point(11, 46);
+            this.startAutohotkeyScript.Name = "startAutohotkeyScript";
+            this.startAutohotkeyScript.Size = new System.Drawing.Size(189, 17);
+            this.startAutohotkeyScript.TabIndex = 4;
+            this.startAutohotkeyScript.Text = "Start AutoHotkey Script on Startup";
+            this.startAutohotkeyScript.UseVisualStyleBackColor = true;
+            this.startAutohotkeyScript.CheckedChanged += new System.EventHandler(this.startAutohotkeyScript_CheckedChanged);
+            // 
+            // downloadLabel
+            // 
+            this.downloadLabel.AutoSize = true;
+            this.downloadLabel.Location = new System.Drawing.Point(390, 18);
+            this.downloadLabel.Name = "downloadLabel";
+            this.downloadLabel.Size = new System.Drawing.Size(78, 13);
+            this.downloadLabel.TabIndex = 3;
+            this.downloadLabel.Text = "Downloading...";
+            this.downloadLabel.Visible = false;
+            // 
+            // downloadBar
+            // 
+            this.downloadBar.Location = new System.Drawing.Point(474, 71);
+            this.downloadBar.Name = "downloadBar";
+            this.downloadBar.Size = new System.Drawing.Size(141, 23);
+            this.downloadBar.TabIndex = 2;
+            this.downloadBar.Visible = false;
+            // 
+            // downloadAutoHotkey
+            // 
+            this.downloadAutoHotkey.Location = new System.Drawing.Point(474, 15);
+            this.downloadAutoHotkey.Name = "downloadAutoHotkey";
+            this.downloadAutoHotkey.Size = new System.Drawing.Size(141, 49);
+            this.downloadAutoHotkey.TabIndex = 1;
+            this.downloadAutoHotkey.Text = "Download AutoHotkey";
+            this.downloadAutoHotkey.UseVisualStyleBackColor = true;
+            this.downloadAutoHotkey.Click += new System.EventHandler(this.downloadAutoHotkey_Click);
+            // 
+            // label57
+            // 
+            this.label57.AutoSize = true;
+            this.label57.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label57.Location = new System.Drawing.Point(8, 15);
+            this.label57.Name = "label57";
+            this.label57.Size = new System.Drawing.Size(378, 16);
+            this.label57.TabIndex = 0;
+            this.label57.Text = "Autohotkey scripts require AutoHotkey to be installed.";
             // 
             // commandListTab
             // 
@@ -1411,37 +1563,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // alwaysShowLoot
-            // 
-            this.alwaysShowLoot.AutoSize = true;
-            this.alwaysShowLoot.Location = new System.Drawing.Point(9, 37);
-            this.alwaysShowLoot.Name = "alwaysShowLoot";
-            this.alwaysShowLoot.Size = new System.Drawing.Size(169, 17);
-            this.alwaysShowLoot.TabIndex = 12;
-            this.alwaysShowLoot.Text = "Always Show Loot Notification";
-            this.alwaysShowLoot.UseVisualStyleBackColor = true;
-            this.alwaysShowLoot.CheckedChanged += new System.EventHandler(this.alwaysShowLoot_CheckedChanged);
-            // 
-            // commandTextBox
-            // 
-            this.commandTextBox.Location = new System.Drawing.Point(81, 440);
-            this.commandTextBox.Name = "commandTextBox";
-            this.commandTextBox.Size = new System.Drawing.Size(299, 20);
-            this.commandTextBox.TabIndex = 9;
-            this.commandTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.commandTextBox_KeyPress);
-            // 
-            // logMessageTextBox
-            // 
-            this.logMessageTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.logMessageTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(0)))));
-            this.logMessageTextBox.Location = new System.Drawing.Point(8, 265);
-            this.logMessageTextBox.Name = "logMessageTextBox";
-            this.logMessageTextBox.ReadOnly = true;
-            this.logMessageTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.logMessageTextBox.Size = new System.Drawing.Size(631, 224);
-            this.logMessageTextBox.TabIndex = 15;
-            this.logMessageTextBox.Text = "";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1456,6 +1577,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
             this.tabControl1.ResumeLayout(false);
             this.mainTab.ResumeLayout(false);
@@ -1476,6 +1598,8 @@
             this.creatureTab.PerformLayout();
             this.itemTab.ResumeLayout(false);
             this.itemTab.PerformLayout();
+            this.autoHotkey.ResumeLayout(false);
+            this.autoHotkey.PerformLayout();
             this.commandListTab.ResumeLayout(false);
             this.commandListTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loadTimerImage)).EndInit();
@@ -1605,6 +1729,16 @@
         private System.Windows.Forms.Button importLogFile;
         private System.Windows.Forms.CheckBox lookCheckBox;
         private System.Windows.Forms.CheckBox alwaysShowLoot;
+        private System.Windows.Forms.TabPage autoHotkey;
+        private System.Windows.Forms.Button downloadAutoHotkey;
+        private System.Windows.Forms.Label label57;
+        private System.Windows.Forms.ProgressBar downloadBar;
+        private System.Windows.Forms.Label downloadLabel;
+        private System.Windows.Forms.CheckBox startAutohotkeyScript;
+        private System.Windows.Forms.RichTextBox autoHotkeyGridSettings;
+        private System.Windows.Forms.Button startAutoHotkey;
+        private System.Windows.Forms.Button shutdownAutoHotkey;
+        private System.Windows.Forms.CheckBox shutdownOnExit;
     }
 }
 

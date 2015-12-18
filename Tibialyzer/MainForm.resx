@@ -132,6 +132,59 @@ Crown Armor   = 121.1
 Golden Armor  = 250
 Platinum Coin = 1000</value>
   </data>
+  <data name="autoHotkeyGridSettings.Text" xml:space="preserve">
+    <value># Suspend autohotkey mode with Ctrl+Enter
+Ctrl+Enter::Suspend
+# WASD Movement
+W::Up
+A::Left
+S::Down
+D::Right
+# Enable diagonal movement with QEZC
+Q::NumpadHome
+E::NumpadPgUp
+Z::NumpadEnd
+C::NumpadPgDn
+# Map spells to numeric keys instead
+1::F1
+2::F2
+3::F3
+4::F4
+5::F5
+6::F6
+7::F7
+8::F8
+9::F9
+0::F10
+-::F11
+=::F12
+# Shift modified spells
+Shift+1::Shift+F1
+Shift+2::Shift+F2
+Shift+3::Shift+F3
+Shift+4::Shift+F4
+Shift+5::Shift+F5
+Shift+6::Shift+F6
+Shift+7::Shift+F7
+Shift+8::Shift+F8
+Shift+9::Shift+F9
+Shift+0::Shift+F10
+Shift+-::Shift+F11
+Shift+=::Shift+F12
+# Ctrl modified spells
+Ctrl+1::Ctrl+F1
+Ctrl+2::Ctrl+F2
+Ctrl+3::Ctrl+F3
+Ctrl+4::Ctrl+F4
+Ctrl+5::Ctrl+F5
+Ctrl+6::Ctrl+F6
+Ctrl+7::Ctrl+F7
+Ctrl+8::Ctrl+F8
+Ctrl+9::Ctrl+F9
+Ctrl+0::Ctrl+F10
+Ctrl+-::Ctrl+F11
+Ctrl+=::Ctrl+F12</value>
+  </data>
   <metadata name="minimizeIcon.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>130, 17</value>
   </metadata>

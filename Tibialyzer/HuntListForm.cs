@@ -285,7 +285,7 @@ namespace Tibialyzer {
             clicked = true;
             this.ReturnFocusToTibia();
             string name = (sender as Control).Name;
-            MainForm.mainForm.ExecuteCommand("hunt@" + name.ToLower());
+            MainForm.mainForm.ExecuteCommand("hunt" + MainForm.commandSymbol + name.ToLower());
         }
 
     }

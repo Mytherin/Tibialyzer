@@ -123,6 +123,20 @@ namespace Tibialyzer {
             get { return true; }
         }
 
+        static int WS_EX_NOACTIVATE = 0x08000000;
+        static int WS_EX_TOOLWINDOW = 0x00000080;
+
+        protected override CreateParams CreateParams {
+            get {
+                CreateParams baseParams = base.CreateParams;
+
+                baseParams.ExStyle |= (int)(
+                  WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW);
+
+                return baseParams;
+            }
+        }
+
         protected void ResetTimer() {
             this.closeTimer.Stop();
             this.closeTimer.Start();

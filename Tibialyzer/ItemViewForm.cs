@@ -257,8 +257,8 @@ namespace Tibialyzer {
                         y = y + MainForm.DisplayCreatureList(this.Controls, (npc_list as IEnumerable<TibiaObject>).ToList(), base_x, base_y + y, max_x, spacing, true, TooltipFunction);
                     }
                 }
-                command_start = "npc@";
-                switch_start = "drop@";
+                command_start = "npc" + MainForm.commandSymbol;
+                switch_start = "drop" + MainForm.commandSymbol;
                 statsButton.Text = "Dropped By";
                 statsButton.Name = item.name.ToLower();
                 foreach (Control control in this.Controls)
@@ -274,8 +274,8 @@ namespace Tibialyzer {
                 y = y + header.Size.Height;
                 y = y + MainForm.DisplayCreatureList(this.Controls, (creatures as IEnumerable<TibiaObject>).ToList(), base_x, base_y + y, max_x, spacing, true, CreatureTooltipFunction);
 
-                command_start = "creature@";
-                switch_start = "item@";
+                command_start = "creature" + MainForm.commandSymbol;
+                switch_start = "item" + MainForm.commandSymbol;
                 statsButton.Text = "Sold By";
                 statsButton.Name = item.name.ToLower();
                 foreach (Control control in this.Controls)
@@ -288,7 +288,7 @@ namespace Tibialyzer {
             skip_event = false;
         }
 
-        private string command_start = "npc@";
+        private string command_start = "npc" + MainForm.commandSymbol;
         private bool clicked = false;
         void openItemBox(object sender, EventArgs e) {
             if (clicked) return;
@@ -298,7 +298,7 @@ namespace Tibialyzer {
             clicked = false;
         }
 
-        private string switch_start = "drop@";
+        private string switch_start = "drop" + MainForm.commandSymbol;
         private void statsButton_Click(object sender, EventArgs e) {
             if (clicked) return;
             clicked = true;
@@ -312,16 +312,16 @@ namespace Tibialyzer {
             if (skip_event) return;
             bool is_checked = (sender as CheckBox).Checked;
             this.ReturnFocusToTibia();
-            if (is_checked) MainForm.mainForm.ExecuteCommand("pickup@" + item.name);
-            else MainForm.mainForm.ExecuteCommand("nopickup@" + item.name);
+            if (is_checked) MainForm.mainForm.ExecuteCommand("pickup" + MainForm.commandSymbol + item.name);
+            else MainForm.mainForm.ExecuteCommand("nopickup" + MainForm.commandSymbol + item.name);
         }
 
         private void convertBox_CheckedChanged(object sender, EventArgs e) {
             if (skip_event) return;
             bool is_checked = (sender as CheckBox).Checked;
             this.ReturnFocusToTibia();
-            if (is_checked) MainForm.mainForm.ExecuteCommand("convert@" + item.name);
-            else MainForm.mainForm.ExecuteCommand("noconvert@" + item.name);
+            if (is_checked) MainForm.mainForm.ExecuteCommand("convert" + MainForm.commandSymbol + item.name);
+            else MainForm.mainForm.ExecuteCommand("noconvert" + MainForm.commandSymbol + item.name);
         }
 
         private void valueBox_TextChanged(object sender, EventArgs e) {
@@ -330,7 +330,7 @@ namespace Tibialyzer {
             string text = (sender as TextBox).Text;
             int new_value;
             if (int.TryParse(text, out new_value)) {
-                MainForm.mainForm.ExecuteCommand("setval@" + item.name + "=" + new_value);
+                MainForm.mainForm.ExecuteCommand("setval" + MainForm.commandSymbol + item.name + "=" + new_value);
                 previous_value = (sender as TextBox).Text;
             }
         }

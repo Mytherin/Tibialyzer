@@ -201,7 +201,7 @@ namespace Tibialyzer {
             if (clicked) return;
             clicked = true;
             this.ReturnFocusToTibia();
-            MainForm.mainForm.ExecuteCommand("creature@" + (sender as Control).Name);
+            MainForm.mainForm.ExecuteCommand("creature" + MainForm.commandSymbol + (sender as Control).Name);
         }
     }
 }
