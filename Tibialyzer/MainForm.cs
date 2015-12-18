@@ -959,7 +959,7 @@ namespace Tibialyzer {
             }
             DialogResult result = dialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK) {
-                this.ExecuteCommand("savelog" + MainForm.commandSymbol + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/"));
+                saveLog(getSelectedHunt(), dialog.FileName);
             }
         }
 
@@ -972,7 +972,7 @@ namespace Tibialyzer {
             dialog.Title = "Import Log File";
             DialogResult result = dialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK) {
-                this.ExecuteCommand("loadlog" + MainForm.commandSymbol + dialog.FileName);
+                loadLog(getSelectedHunt(), dialog.FileName);
                 refreshHunts();
             }
         }
@@ -1560,7 +1560,6 @@ namespace Tibialyzer {
             if (m != null && m.Msg == 0x317) {
                 // We intercept this message because this message signifies the AutoHotkey state (suspended or not)
                 int wParam = m.WParam.ToInt32();
-                Console.WriteLine(wParam);
                 if (wParam == 32) {
                     // 32 signifies we have entered suspended mode, so we warn the user with a popup
                     if (window == null) {

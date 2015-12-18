@@ -391,11 +391,11 @@ namespace Tibialyzer {
             comm.ExecuteNonQuery();
         }
 
-        void saveLog(string logPath) {
+        void saveLog(Hunt h, string logPath) {
             StreamWriter streamWriter = new StreamWriter(logPath);
 
             // we load the data from the database instead of from the stored dictionary so it is ordered properly
-            SQLiteCommand comm = new SQLiteCommand(String.Format("SELECT message FROM \"{0}\"", activeHunt.name.ToLower()), conn);
+            SQLiteCommand comm = new SQLiteCommand(String.Format("SELECT message FROM \"{0}\"", h.name.ToLower()), conn);
             SQLiteDataReader reader = comm.ExecuteReader();
             while (reader.Read()) {
                 streamWriter.WriteLine(reader["message"].ToString());
@@ -404,8 +404,8 @@ namespace Tibialyzer {
             streamWriter.Close();
         }
 
-        void loadLog(string logPath) {
-            resetHunt(activeHunt);
+        void loadLog(Hunt h, string logPath) {
+            resetHunt(h);
             StreamReader streamReader = new StreamReader(logPath);
             string line;
             Dictionary<string, List<string>> logMessages = new Dictionary<string, List<string>>();
@@ -416,7 +416,7 @@ namespace Tibialyzer {
                 if (!logMessages.ContainsKey(t)) logMessages.Add(t, new List<string>());
                 logMessages[t].Add(line);
             }
-            ParseLootMessages(activeHunt, logMessages, null);
+            ParseLootMessages(h, logMessages, null);
         }
 
         void setGoldRatio(double ratio) {

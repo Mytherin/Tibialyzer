@@ -342,9 +342,9 @@ namespace Tibialyzer {
                     ShowCreatureList(npcNameMap.Values.Where(o => o.name.Contains(parameter) && count++ < 40).ToList<TibiaObject>(), "NPC List", "npc@", command);
                 }
             } else if (comp.StartsWith("savelog" + MainForm.commandSymbol)) {
-                saveLog(command.Split(commandSymbol)[1].Trim().Replace("'", "\\'"));
+                saveLog(activeHunt, command.Split(commandSymbol)[1].Trim().Replace("'", "\\'"));
             } else if (comp.StartsWith("loadlog" + MainForm.commandSymbol)) {
-                loadLog(command.Split(commandSymbol)[1].Trim().Replace("'", "\\'"));
+                loadLog(activeHunt, command.Split(commandSymbol)[1].Trim().Replace("'", "\\'"));
             } else if (comp.StartsWith("setdiscardgoldratio" + MainForm.commandSymbol)) {
                 double val;
                 if (double.TryParse(command.Split(commandSymbol)[1].Trim(), out val)) {
