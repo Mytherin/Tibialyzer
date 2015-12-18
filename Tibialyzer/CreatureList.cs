@@ -19,6 +19,7 @@ namespace Tibialyzer {
         }
 
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreatureList));
             this.listTitle = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -39,7 +40,9 @@ namespace Tibialyzer {
             this.ClientSize = new System.Drawing.Size(344, 76);
             this.Controls.Add(this.listTitle);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CreatureList";
+            this.Text = "Tibia Object List";
             this.Load += new System.EventHandler(this.CreatureList_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -38,6 +38,7 @@ namespace Tibialyzer {
         }
 
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HuntListForm));
             this.nameLabel = new System.Windows.Forms.Label();
             this.levelLabel = new System.Windows.Forms.Label();
             this.expLabel = new System.Windows.Forms.Label();
@@ -129,7 +130,9 @@ namespace Tibialyzer {
             this.Controls.Add(this.nameLabel);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "HuntListForm";
+            this.Text = "Hunt List";
             this.Load += new System.EventHandler(this.CreatureHuntForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

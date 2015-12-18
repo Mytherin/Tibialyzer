@@ -154,8 +154,20 @@ namespace Tibialyzer {
                     } else {
                         return true; // if there are no kills of the specified creature, just skip the command
                     }
-                } else {
+                } else if (activeHunt.trackAllCreatures || activeHunt.trackedCreatures.Length == 0) {
                     creatureKills = activeHunt.loot.killCount; //display all creatures
+                } else {
+                    // only display tracked creatures
+                    creatureKills = new Dictionary<Creature, int>();
+                    string[] creatures = activeHunt.trackedCreatures.Split('\n');
+                    foreach(string creature in creatures) {
+                        if (!creatureNameMap.ContainsKey(creature.ToLower())) continue;
+                        Creature cr = creatureNameMap[creature.ToLower()];
+                        if (!activeHunt.loot.killCount.ContainsKey(cr)) continue;
+
+                        creatureKills.Add(cr, activeHunt.loot.killCount[cr]);
+                    }
+
                 }
 
                 // now handle item drops, gather a count for every item
@@ -244,6 +256,7 @@ namespace Tibialyzer {
                     //reset@ loot deletes all loot from the currently active hunt
                     resetHunt(activeHunt);
                 }
+                refreshHunts();
                 ignoreStamp = createStamp();
             } else if (comp.StartsWith("drop" + MainForm.commandSymbol)) {
                 //show all creatures that drop the specified item

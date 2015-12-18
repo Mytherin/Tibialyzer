@@ -39,6 +39,7 @@ namespace Tibialyzer {
         }
 
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ItemViewForm));
             this.statsButton = new System.Windows.Forms.Label();
             this.valueBox = new System.Windows.Forms.TextBox();
             this.convertBox = new System.Windows.Forms.CheckBox();
@@ -170,7 +171,9 @@ namespace Tibialyzer {
             this.Controls.Add(this.itemName);
             this.Controls.Add(this.itemPictureBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ItemViewForm";
+            this.Text = "Item View";
             this.Load += new System.EventHandler(this.ItemViewForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.itemPictureBox)).EndInit();
             this.ResumeLayout(false);

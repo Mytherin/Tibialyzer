@@ -490,14 +490,15 @@ namespace Tibialyzer {
                     hunt.trackAllCreatures = splits[1] == "True";
                     hunt.temporary = false;
                     string massiveString = "";
-                    for (int i = 3; i < splits.Length; i++) {
+                    for (int i = 2; i < splits.Length; i++) {
                         if (splits[i].Length > 0) {
                             massiveString += splits[i] + "\n";
                         }
                     }
                     hunt.trackedCreatures = massiveString;
                     // set this hunt to the active hunt if it is the active hunt
-                    if (settings.ContainsKey("ActiveHunt") && settings["ActiveHunt"].Count > 1 && settings["ActiveHunt"][0] == hunt.name) activeHuntIndex = index;
+                    if (settings.ContainsKey("ActiveHunt") && settings["ActiveHunt"].Count > 0 && settings["ActiveHunt"][0] == hunt.name)
+                        activeHuntIndex = index;
 
                     // create the hunt table if it does not exist
                     command = new SQLiteCommand(String.Format("CREATE TABLE IF NOT EXISTS \"{0}\"(day INTEGER, hour INTEGER, minute INTEGER, message STRING);", hunt.name.ToLower()), conn);
@@ -535,9 +536,9 @@ namespace Tibialyzer {
             foreach (Hunt h in hunts) {
                 huntBox.Items.Add(h.name);
             }
-            huntBox.SelectedIndex = activeHuntIndex;
             activeHunt = hunts[activeHuntIndex];
             skip_hunt_refresh = false;
+            huntBox.SelectedIndex = activeHuntIndex;
         }
 
         void initializeSettings() {
@@ -972,6 +973,7 @@ namespace Tibialyzer {
             DialogResult result = dialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK) {
                 this.ExecuteCommand("loadlog" + MainForm.commandSymbol + dialog.FileName);
+                refreshHunts();
             }
         }
 
@@ -1102,6 +1104,10 @@ namespace Tibialyzer {
         private Hunt getActiveHunt() {
             return activeHunt;
         }
+        private Hunt getSelectedHunt() {
+            if (huntBox.SelectedIndex < 0) return null;
+            return hunts[huntBox.SelectedIndex];
+        }
 
         bool nameExists(string str) {
             foreach (Hunt h in hunts) {
@@ -1125,12 +1131,12 @@ namespace Tibialyzer {
             h.trackAllCreatures = true;
             h.trackedCreatures = "";
             hunts.Add(h);
-            refreshHunts(true);
+            refreshHunts();
         }
 
         private void deleteHuntButton_Click(object sender, EventArgs e) {
             if (hunts.Count <= 1) return;
-            Hunt h = getActiveHunt();
+            Hunt h = getSelectedHunt();
             hunts.Remove(h);
             saveHunts();
             refreshHunts(true);
@@ -1145,7 +1151,7 @@ namespace Tibialyzer {
         private void huntBox_SelectedIndexChanged(object sender, EventArgs e) {
             if (skip_hunt_refresh) return;
             switch_hunt = true;
-            Hunt h = hunts[(sender as ListBox).SelectedIndex];
+            Hunt h = getSelectedHunt();
             this.huntNameBox.Text = h.name;
             trackCreaturesCheckbox.Checked = h.trackAllCreatures;
             if (h == activeHunt) {
@@ -1157,15 +1163,28 @@ namespace Tibialyzer {
             }
             trackCreaturesBox.Enabled = !h.trackAllCreatures;
             trackCreaturesBox.Text = h.trackedCreatures;
-            refreshHuntImages();
+            refreshHuntImages(h);
+            refreshHuntLog(h);
             switch_hunt = false;
-            this.ExecuteCommand("refreshlog" + MainForm.commandSymbol);
         }
 
-        void refreshHunts(bool refreshSelection) {
-            Hunt h = getActiveHunt();
+        void refreshHuntLog(Hunt h) {
+            string massiveString = "";
+            List<string> timestamps = h.loot.logMessages.Keys.OrderByDescending(o => o).ToList();
+            foreach (string t in timestamps) {
+                List<string> strings = h.loot.logMessages[t].ToArray().ToList();
+                strings.Reverse();
+                foreach (string str in strings) {
+                    massiveString += str + "\n";
+                }
+            }
+            this.logMessageTextBox.Text = massiveString;
+        }
+
+        void refreshHunts(bool refreshSelection = false) {
+            Hunt h = getSelectedHunt();
             int currentHunt = 0;
-            skip_hunt_refresh = refreshSelection;
+            skip_hunt_refresh = true;
 
             huntBox.Items.Clear();
             foreach (Hunt hunt in hunts) {
@@ -1176,6 +1195,7 @@ namespace Tibialyzer {
             activeHunt = hunts[huntBox.SelectedIndex];
 
             skip_hunt_refresh = false;
+            huntBox_SelectedIndexChanged(huntBox, null);
         }
 
         void saveHunts() {
@@ -1185,29 +1205,36 @@ namespace Tibialyzer {
                 huntStrings.Add(hunt.ToString());
             }
             settings["Hunts"] = huntStrings;
+            if (activeHunt != null) {
+                setSetting("ActiveHunt", activeHunt.name);
+            }
             saveSettings();
         }
 
         private void huntNameBox_TextChanged(object sender, EventArgs e) {
             if (switch_hunt) return;
-            Hunt h = getActiveHunt();
-            h.name = (sender as TextBox).Text;
-
+            Hunt h = getSelectedHunt();
+            string oldTable = h.name;
+            string newTable = (sender as TextBox).Text;
+            if (oldTable == newTable || newTable.Length <= 0) return;
+            h.name = newTable;
+            SQLiteCommand comm = new SQLiteCommand(String.Format("ALTER TABLE \"{0}\" RENAME TO \"{1}\";", oldTable, h.name), conn);
+            comm.ExecuteNonQuery();
             saveHunts();
-            refreshHunts(false);
+            refreshHunts();
         }
 
         private void activeHuntButton_Click(object sender, EventArgs e) {
             if (switch_hunt) return;
-            Hunt h = getActiveHunt();
+            Hunt h = getSelectedHunt();
             activeHuntButton.Text = "Currently Active";
             activeHuntButton.Enabled = false;
+            activeHunt = h;
             saveHunts();
         }
 
         List<string> lootCreatures = new List<string>();
-        void refreshHuntImages() {
-            Hunt h = getActiveHunt();
+        void refreshHuntImages(Hunt h) {
             int spacing = 4;
             string[] creatures = h.trackedCreatures.Split('\n');
             List<TibiaObject> creatureObjects = new List<TibiaObject>();
@@ -1253,7 +1280,7 @@ namespace Tibialyzer {
             h.trackedCreatures = (sender as RichTextBox).Text;
 
             saveHunts();
-            refreshHuntImages();
+            refreshHuntImages(h);
         }
 
         private void trackCreaturesCheckbox_CheckedChanged(object sender, EventArgs e) {
@@ -1466,7 +1493,7 @@ namespace Tibialyzer {
         
         private string modifyKeyString(string str) {
             string value = str.ToLower();
-
+            
             if (value.Contains("alt+")) {
                 value = value.Replace("alt+", "!");
             }
@@ -1489,10 +1516,24 @@ namespace Tibialyzer {
         private void writeToAutoHotkeyFile() {
             if (!settings.ContainsKey("AutoHotkeySettings")) return;
             using (StreamWriter writer = new StreamWriter(autohotkeyFile)) {
-                writer.WriteLine("#IfWinActive, Tibia");
-                foreach(string line in settings["AutoHotkeySettings"]) {
-                    if (line[0] == '#') continue;
-                    writer.WriteLine(modifyKeyString(line));
+                writer.WriteLine("#SingleInstance force");
+                writer.WriteLine("#IfWinActive ahk_class TibiaClient");
+                foreach (string line in settings["AutoHotkeySettings"]) {
+                    if (line.Length == 0 || line[0] == '#') continue;
+                    if (line.ToLower().Contains("suspend")) {
+                        // if the key is set to suspend the hotkey layout, we set it up so it sends a message to us 
+                        writer.WriteLine(line.ToLower().Split(new string[] { "suspend" }, StringSplitOptions.None)[0]);
+                        writer.WriteLine("suspend");
+                        writer.WriteLine("if (A_IsSuspended)");
+                        // message 32 is suspend
+                        writer.WriteLine("PostMessage, 0x317,32,32,,Tibialyzer");
+                        writer.WriteLine("else");
+                        // message 33 is not suspended
+                        writer.WriteLine("PostMessage, 0x317,33,33,,Tibialyzer");
+                        writer.WriteLine("return");
+                    } else {
+                        writer.WriteLine(modifyKeyString(line));
+                    }
                 }
             }
         }
@@ -1512,6 +1553,44 @@ namespace Tibialyzer {
             if (getSettingBool("ShutdownAutohotkeyOnExit")) {
                 shutdownAutoHotkey_Click(null, null);
             }
+        }
+
+        AutoHotkeySuspendedMode window = null;
+        protected override void WndProc(ref Message m) {
+            if (m != null && m.Msg == 0x317) {
+                // We intercept this message because this message signifies the AutoHotkey state (suspended or not)
+                int wParam = m.WParam.ToInt32();
+                Console.WriteLine(wParam);
+                if (wParam == 32) {
+                    // 32 signifies we have entered suspended mode, so we warn the user with a popup
+                    if (window == null) {
+                        Screen screen;
+                        Process[] tibia_process = Process.GetProcessesByName("Tibia");
+                        if (tibia_process.Length == 0) {
+                            screen = Screen.FromControl(this);
+                        } else {
+                            Process tibia = tibia_process[0];
+                            screen = Screen.FromHandle(tibia.MainWindowHandle);
+                        }
+                        window = new AutoHotkeySuspendedMode();
+                        window.StartPosition = FormStartPosition.Manual;
+                        window.SetDesktopLocation(screen.WorkingArea.Right - window.Width - 10, screen.WorkingArea.Top + 10);
+                        window.TopMost = true;
+                        window.Show();
+                    }
+                } else if (wParam == 33) {
+                    // 33 signifies we are not suspended, destroy the suspended window (if it exists)
+                    if (window != null && !window.IsDisposed) {
+                        try {
+                            window.Close();
+                        } catch {
+
+                        }
+                        window = null;
+                    }
+                }
+            }
+            base.WndProc(ref m);
         }
     }
 }

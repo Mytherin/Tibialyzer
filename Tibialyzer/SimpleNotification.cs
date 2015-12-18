@@ -12,20 +12,22 @@ namespace Tibialyzer {
         public int targetPositionX = 0, targetPositionY = 0;
         System.Timers.Timer closeTimer = null;
 
-        protected void InitializeSimpleNotification() {
+        protected void InitializeSimpleNotification(bool movement = true, bool destroy = true) {
             this.Click += c_Click;
             foreach (Control c in this.Controls) {
                 c.Click += c_Click;
             }
 
-            moveTimer = new System.Timers.Timer(10);
-            moveTimer.Elapsed += MoveTimer_Elapsed;
-            moveTimer.Enabled = true;
-
-
-            closeTimer = new System.Timers.Timer(8000);
-            closeTimer.Elapsed += new System.Timers.ElapsedEventHandler(CloseNotification);
-            closeTimer.Enabled = true;
+            if (movement) {
+                moveTimer = new System.Timers.Timer(5);
+                moveTimer.Elapsed += MoveTimer_Elapsed;
+                moveTimer.Enabled = true;
+            }
+            if (destroy) {
+                closeTimer = new System.Timers.Timer(8000);
+                closeTimer.Elapsed += new System.Timers.ElapsedEventHandler(CloseNotification);
+                closeTimer.Enabled = true;
+            }
         }
         
 
@@ -33,8 +35,8 @@ namespace Tibialyzer {
             int desktopX = this.DesktopLocation.X;
             int desktopY = this.DesktopLocation.Y;
             if (this.Visible && (desktopX != targetPositionX || desktopY != targetPositionY)) {
-                int updatedX = Math.Abs(desktopX - targetPositionX) < 3 ? targetPositionX : (int)(desktopX + (targetPositionX - desktopX) / 10.0);
-                int updatedY = Math.Abs(desktopY - targetPositionY) < 3 ? targetPositionY : (int)(desktopY + (targetPositionY - desktopY) / 10.0);
+                int updatedX = Math.Abs(desktopX - targetPositionX) < 3 ? targetPositionX : (int)(desktopX + (targetPositionX - desktopX) / 5.0);
+                int updatedY = Math.Abs(desktopY - targetPositionY) < 3 ? targetPositionY : (int)(desktopY + (targetPositionY - desktopY) / 5.0);
                 
                 this.Invoke((MethodInvoker)delegate {
                     if (!this.IsDisposed) {
@@ -51,14 +53,22 @@ namespace Tibialyzer {
             if (this.Opacity <= 0) {
                 closeTimer.Close();
 
-                this.Invoke((MethodInvoker)delegate {
-                    close();
-                });
+                try {
+                    this.Invoke((MethodInvoker)delegate {
+                        close();
+                    });
+                } catch {
+
+                }
             } else {
                 if (this.IsHandleCreated && !this.IsDisposed) {
-                    this.Invoke((MethodInvoker)delegate {
-                        this.Opacity -= 0.03;
-                    });
+                    try {
+                        this.Invoke((MethodInvoker)delegate {
+                            this.Opacity -= 0.03;
+                        });
+                    } catch {
+
+                    }
                     closeTimer.Interval = 20;
                     closeTimer.Start();
                 }
@@ -91,6 +101,19 @@ namespace Tibialyzer {
             } catch {
 
             }
+        }
+
+        private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SimpleNotification));
+            this.SuspendLayout();
+            // 
+            // SimpleNotification
+            // 
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "SimpleNotification";
+            this.ResumeLayout(false);
+
         }
 
         protected void c_Click(object sender, EventArgs e) {

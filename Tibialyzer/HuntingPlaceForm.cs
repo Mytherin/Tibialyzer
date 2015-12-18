@@ -31,6 +31,7 @@ namespace Tibialyzer {
         }
 
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HuntingPlaceForm));
             this.requirementLabel = new System.Windows.Forms.Label();
             this.cityLabel = new System.Windows.Forms.Label();
             this.levelLabel = new System.Windows.Forms.Label();
@@ -194,7 +195,9 @@ namespace Tibialyzer {
             this.Controls.Add(this.huntingPlaceName);
             this.Controls.Add(this.mapBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "HuntingPlaceForm";
+            this.Text = "Hunting Place";
             this.Load += new System.EventHandler(this.HuntingPlaceForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.lootStarBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.experienceStarBox)).EndInit();

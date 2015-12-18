@@ -286,7 +286,7 @@
             // 
             this.nameTextBox.Location = new System.Drawing.Point(11, 69);
             this.nameTextBox.Name = "nameTextBox";
-            this.nameTextBox.Size = new System.Drawing.Size(320, 213);
+            this.nameTextBox.Size = new System.Drawing.Size(196, 215);
             this.nameTextBox.TabIndex = 2;
             this.nameTextBox.Text = "";
             this.nameTextBox.TextChanged += new System.EventHandler(this.nameTextBox_TextChanged);
@@ -322,7 +322,7 @@
             this.huntingPage.Controls.Add(this.backgroundBox);
             this.huntingPage.Location = new System.Drawing.Point(4, 22);
             this.huntingPage.Name = "huntingPage";
-            this.huntingPage.Size = new System.Drawing.Size(642, 497);
+            this.huntingPage.Size = new System.Drawing.Size(642, 379);
             this.huntingPage.TabIndex = 5;
             this.huntingPage.Text = "Hunting";
             this.huntingPage.UseVisualStyleBackColor = true;
@@ -515,7 +515,7 @@
             this.settingsTab.Controls.Add(this.richNotificationsPanel);
             this.settingsTab.Location = new System.Drawing.Point(4, 22);
             this.settingsTab.Name = "settingsTab";
-            this.settingsTab.Size = new System.Drawing.Size(642, 497);
+            this.settingsTab.Size = new System.Drawing.Size(642, 379);
             this.settingsTab.TabIndex = 3;
             this.settingsTab.Text = "Settings";
             this.settingsTab.UseVisualStyleBackColor = true;
@@ -754,6 +754,7 @@
             // 
             // notificationTypeBox
             // 
+            this.notificationTypeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.notificationTypeBox.FormattingEnabled = true;
             this.notificationTypeBox.Items.AddRange(new object[] {
             "Simple Notification",
@@ -762,7 +763,6 @@
             this.notificationTypeBox.Name = "notificationTypeBox";
             this.notificationTypeBox.Size = new System.Drawing.Size(121, 21);
             this.notificationTypeBox.TabIndex = 0;
-            this.notificationTypeBox.Text = "Simple Notification";
             this.notificationTypeBox.SelectedIndexChanged += new System.EventHandler(this.notificationTypeBox_SelectedIndexChanged);
             // 
             // advanceCopyCheckbox
@@ -830,7 +830,7 @@
             this.creatureTab.Location = new System.Drawing.Point(4, 22);
             this.creatureTab.Name = "creatureTab";
             this.creatureTab.Padding = new System.Windows.Forms.Padding(3);
-            this.creatureTab.Size = new System.Drawing.Size(642, 497);
+            this.creatureTab.Size = new System.Drawing.Size(642, 379);
             this.creatureTab.TabIndex = 1;
             this.creatureTab.Text = "Creatures";
             this.creatureTab.UseVisualStyleBackColor = true;
@@ -840,7 +840,7 @@
             // 
             this.creaturePanel.AutoScroll = true;
             this.creaturePanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.creaturePanel.Location = new System.Drawing.Point(3, 36);
+            this.creaturePanel.Location = new System.Drawing.Point(3, -82);
             this.creaturePanel.Name = "creaturePanel";
             this.creaturePanel.Size = new System.Drawing.Size(636, 458);
             this.creaturePanel.TabIndex = 2;
@@ -870,7 +870,7 @@
             this.itemTab.Controls.Add(this.itemSearchBox);
             this.itemTab.Location = new System.Drawing.Point(4, 22);
             this.itemTab.Name = "itemTab";
-            this.itemTab.Size = new System.Drawing.Size(642, 497);
+            this.itemTab.Size = new System.Drawing.Size(642, 379);
             this.itemTab.TabIndex = 2;
             this.itemTab.Text = "Items";
             this.itemTab.UseVisualStyleBackColor = true;
@@ -880,7 +880,7 @@
             // 
             this.itemPanel.AutoScroll = true;
             this.itemPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.itemPanel.Location = new System.Drawing.Point(0, 36);
+            this.itemPanel.Location = new System.Drawing.Point(0, -82);
             this.itemPanel.Name = "itemPanel";
             this.itemPanel.Size = new System.Drawing.Size(642, 461);
             this.itemPanel.TabIndex = 5;
@@ -916,7 +916,7 @@
             this.autoHotkey.Controls.Add(this.label57);
             this.autoHotkey.Location = new System.Drawing.Point(4, 22);
             this.autoHotkey.Name = "autoHotkey";
-            this.autoHotkey.Size = new System.Drawing.Size(642, 497);
+            this.autoHotkey.Size = new System.Drawing.Size(642, 379);
             this.autoHotkey.TabIndex = 6;
             this.autoHotkey.Text = "AutoHotkey";
             this.autoHotkey.UseVisualStyleBackColor = true;
@@ -956,7 +956,7 @@
             // 
             this.autoHotkeyGridSettings.Location = new System.Drawing.Point(11, 89);
             this.autoHotkeyGridSettings.Name = "autoHotkeyGridSettings";
-            this.autoHotkeyGridSettings.Size = new System.Drawing.Size(302, 400);
+            this.autoHotkeyGridSettings.Size = new System.Drawing.Size(457, 400);
             this.autoHotkeyGridSettings.TabIndex = 5;
             this.autoHotkeyGridSettings.Text = resources.GetString("autoHotkeyGridSettings.Text");
             this.autoHotkeyGridSettings.TextChanged += new System.EventHandler(this.autoHotkeyGridSettings_TextChanged);
@@ -1060,7 +1060,7 @@
             this.commandListTab.Controls.Add(this.explainLabel);
             this.commandListTab.Location = new System.Drawing.Point(4, 22);
             this.commandListTab.Name = "commandListTab";
-            this.commandListTab.Size = new System.Drawing.Size(642, 497);
+            this.commandListTab.Size = new System.Drawing.Size(642, 379);
             this.commandListTab.TabIndex = 4;
             this.commandListTab.Text = "Command List";
             this.commandListTab.UseVisualStyleBackColor = true;
@@ -1576,7 +1576,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "Tibialyzer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
             this.tabControl1.ResumeLayout(false);

@@ -28,6 +28,7 @@ namespace Tibialyzer {
         }
 
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ListNotification));
             this.nameLabel = new System.Windows.Forms.Label();
             this.commandLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -63,7 +64,9 @@ namespace Tibialyzer {
             this.Controls.Add(this.nameLabel);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ListNotification";
+            this.Text = "List Notification";
             this.Load += new System.EventHandler(this.ListNotification_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

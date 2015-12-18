@@ -20,6 +20,7 @@ namespace Tibialyzer {
         }
 
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NPCForm));
             this.mapBox = new System.Windows.Forms.PictureBox();
             this.npcImage = new System.Windows.Forms.PictureBox();
             this.creatureName = new System.Windows.Forms.Label();
@@ -87,7 +88,9 @@ namespace Tibialyzer {
             this.Controls.Add(this.npcImage);
             this.Controls.Add(this.mapBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "NPCForm";
+            this.Text = "NPC Form";
             this.Load += new System.EventHandler(this.NPCForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.mapBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.npcImage)).EndInit();

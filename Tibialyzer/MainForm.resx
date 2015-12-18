@@ -133,8 +133,8 @@ Golden Armor  = 250
 Platinum Coin = 1000</value>
   </data>
   <data name="autoHotkeyGridSettings.Text" xml:space="preserve">
-    <value># Suspend autohotkey mode with Ctrl+Enter
-Ctrl+Enter::Suspend
+    <value># Activate/deactive autohotkey when enter is pressed
+~Enter::Suspend
 # WASD Movement
 W::Up
 A::Left

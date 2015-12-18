@@ -58,6 +58,9 @@
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>TibialyzerIcon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Dynamic, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -93,6 +96,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoHotkeySuspendedMode.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="DamageChart.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -168,6 +174,9 @@
     <Compile Include="TransparentLabel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <EmbeddedResource Include="AutoHotkeySuspendedMode.resx">
+      <DependentUpon>AutoHotkeySuspendedMode.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DamageChart.resx">
       <DependentUpon>DamageChart.cs</DependentUpon>
     </EmbeddedResource>
@@ -402,6 +411,7 @@
     <Content Include="Libraries\System.Data.SQLite.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TibialyzerIcon.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

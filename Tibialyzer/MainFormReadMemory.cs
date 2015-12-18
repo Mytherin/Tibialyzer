@@ -242,6 +242,13 @@ namespace Tibialyzer {
                 if (isDigit(split[0])) continue;
                 itemName = itemName == "" ? split : itemName + " " + split;
             }
+            if (pluralMap.ContainsKey(itemName)) itemName = pluralMap[itemName];
+            if (!itemNameMap.ContainsKey(itemName) && itemName.Length > 0) {
+                string singular = itemName.Substring(0, itemName.Length - 1);
+                if (itemNameMap.ContainsKey(singular)) {
+                    itemName = singular;
+                }
+            }
             return itemName;
         }
 

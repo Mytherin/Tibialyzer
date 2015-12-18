@@ -22,6 +22,7 @@ namespace Tibialyzer {
         }
 
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SimpleTextNotification));
             this.textLabel = new System.Windows.Forms.Label();
             this.titleLabel = new System.Windows.Forms.Label();
             this.notificationImage = new System.Windows.Forms.PictureBox();
@@ -69,7 +70,9 @@ namespace Tibialyzer {
             this.Controls.Add(this.titleLabel);
             this.Controls.Add(this.notificationImage);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SimpleTextNotification";
+            this.Text = "Text Notification";
             ((System.ComponentModel.ISupportInitialize)(this.notificationImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

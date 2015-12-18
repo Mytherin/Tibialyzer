@@ -93,6 +93,7 @@ namespace Tibialyzer {
         }
 
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SimpleLootNotification));
             this.creatureDropLabel = new System.Windows.Forms.Label();
             this.creatureBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.creatureBox)).BeginInit();
@@ -125,7 +126,9 @@ namespace Tibialyzer {
             this.Controls.Add(this.creatureBox);
             this.Controls.Add(this.creatureDropLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SimpleLootNotification";
+            this.Text = "Loot Notification";
             ((System.ComponentModel.ISupportInitialize)(this.creatureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

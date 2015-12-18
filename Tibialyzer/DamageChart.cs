@@ -36,6 +36,7 @@ namespace Tibialyzer {
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DamageChart));
             this.mChart = new Tibialyzer.TransparentChart();
             ((System.ComponentModel.ISupportInitialize)(this.mChart)).BeginInit();
             this.SuspendLayout();
@@ -73,7 +74,9 @@ namespace Tibialyzer {
             this.ClientSize = new System.Drawing.Size(450, 321);
             this.Controls.Add(this.mChart);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DamageChart";
+            this.Text = "Damage Chart";
             this.Load += new System.EventHandler(this.DamageChart_Load);
             ((System.ComponentModel.ISupportInitialize)(this.mChart)).EndInit();
             this.ResumeLayout(false);

@@ -34,6 +34,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreatureDropsForm));
             this.nameLabel = new System.Windows.Forms.Label();
             this.mainImage = new System.Windows.Forms.PictureBox();
             this.statsButton = new System.Windows.Forms.Label();
@@ -85,8 +86,9 @@
             this.Controls.Add(this.nameLabel);
             this.Controls.Add(this.mainImage);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CreatureDropsForm";
-            this.Text = "Form2";
+            this.Text = "Creature Drops";
             this.Load += new System.EventHandler(this.CreatureDropsForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.mainImage)).EndInit();
             this.ResumeLayout(false);

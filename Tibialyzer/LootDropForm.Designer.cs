@@ -32,6 +32,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LootDropForm));
             this.totalValueLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -54,8 +55,9 @@
             this.ClientSize = new System.Drawing.Size(348, 261);
             this.Controls.Add(this.totalValueLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LootDropForm";
-            this.Text = "LootDropForm";
+            this.Text = "Loot Drop Form";
             this.Load += new System.EventHandler(this.LootDropForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

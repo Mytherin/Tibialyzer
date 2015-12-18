@@ -30,6 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreatureStatsForm));
             this.nameLabel = new System.Windows.Forms.Label();
             this.resistanceLabel7 = new System.Windows.Forms.PictureBox();
             this.resistanceLabel6 = new System.Windows.Forms.PictureBox();
@@ -401,8 +402,9 @@
             this.Controls.Add(this.healthLabel);
             this.Controls.Add(this.mainImage);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CreatureStatsForm";
-            this.Text = "Form2";
+            this.Text = "Creature Stats";
             this.Load += new System.EventHandler(this.CreatureStatsForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.resistanceLabel7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.resistanceLabel6)).EndInit();
