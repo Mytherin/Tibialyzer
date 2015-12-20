@@ -160,7 +160,7 @@ namespace Tibialyzer {
                     // only display tracked creatures
                     creatureKills = new Dictionary<Creature, int>();
                     string[] creatures = activeHunt.trackedCreatures.Split('\n');
-                    foreach(string creature in creatures) {
+                    foreach (string creature in creatures) {
                         if (!creatureNameMap.ContainsKey(creature.ToLower())) continue;
                         Creature cr = creatureNameMap[creature.ToLower()];
                         if (!activeHunt.loot.killCount.ContainsKey(cr)) continue;
@@ -431,6 +431,8 @@ namespace Tibialyzer {
                         setItemValue(itemNameMap[item], value);
                     }
                 }
+            } else if (comp.StartsWith("screenshot" + MainForm.commandSymbol)) {
+                takeScreenshot("Screenshot");
             } else {
                 bool found = false;
                 foreach (string city in cities) {
@@ -459,16 +461,25 @@ namespace Tibialyzer {
             ReadMemoryResults readMemoryResults = ReadMemory();
             ParseMemoryResults parseMemoryResults = ParseLogResults(readMemoryResults);
 
-            if (copyAdvances && readMemoryResults != null) {
-                foreach (object obj in readMemoryResults.newAdvances) {
+
+
+            if (readMemoryResults != null && readMemoryResults.newAdvances.Count > 0) {
+                if (getSettingBool("AutoScreenshotAdvance")) {
                     this.Invoke((MethodInvoker)delegate {
-                        Clipboard.SetText(obj.ToString());
+                        takeScreenshot("Advance");
                     });
+                }
+                if (copyAdvances) {
+                    foreach (object obj in readMemoryResults.newAdvances) {
+                        this.Invoke((MethodInvoker)delegate {
+                            Clipboard.SetText(obj.ToString());
+                        });
+                    }
                 }
                 readMemoryResults.newAdvances.Clear();
             }
 
-            if (getSetting("LookMode") && readMemoryResults != null) {
+            if (getSettingBool("LookMode") && readMemoryResults != null) {
                 foreach (string msg in readMemoryResults.newLooks) {
                     string itemName = parseLookItem(msg).ToLower();
                     if (itemNameMap.ContainsKey(itemName)) {
@@ -494,21 +505,26 @@ namespace Tibialyzer {
                     }
                 });
             }
-            if (this.showNotifications && parseMemoryResults != null) {
+            if (parseMemoryResults != null) {
                 foreach (Tuple<Creature, List<Tuple<Item, int>>> tpl in parseMemoryResults.newItems) {
                     Creature cr = tpl.Item1;
                     List<Tuple<Item, int>> items = tpl.Item2;
-                    bool showNotification = getSetting("AlwaysShowLoot");
+                    bool showNotification = getSettingBool("AlwaysShowLoot");
                     foreach (Tuple<Item, int> tpl2 in items) {
                         Item item = tpl2.Item1;
                         if ((Math.Max(item.actual_value, item.vendor_value) >= notification_value && showNotificationsValue) || (showNotificationsSpecific && settings["NotificationItems"].Contains(item.name.ToLower()))) {
                             showNotification = true;
-                            if (!lootNotificationRich) {
+                            if (getSettingBool("AutoScreenshotItemDrop")) {
+                                this.Invoke((MethodInvoker)delegate {
+                                    takeScreenshot("Loot");
+                                });
+                            }
+                            if (this.showNotifications && !lootNotificationRich) {
                                 ShowSimpleNotification(cr.name, cr.name + " dropped a " + item.name + ".", cr.image);
                             }
                         }
                     }
-                    if (showNotification && lootNotificationRich) {
+                    if (this.showNotifications && showNotification && lootNotificationRich) {
                         this.Invoke((MethodInvoker)delegate {
                             ShowSimpleNotification(new SimpleLootNotification(cr, items));
                         });

@@ -102,6 +102,16 @@
             this.downloadBar = new System.Windows.Forms.ProgressBar();
             this.downloadAutoHotkey = new System.Windows.Forms.Button();
             this.label57 = new System.Windows.Forms.Label();
+            this.screenshotPage = new System.Windows.Forms.TabPage();
+            this.enableScreenshotBox = new System.Windows.Forms.CheckBox();
+            this.screenshotPanel = new System.Windows.Forms.Panel();
+            this.screenshotDirectoryBox = new System.Windows.Forms.TextBox();
+            this.label58 = new System.Windows.Forms.Label();
+            this.autoScreenshotAdvance = new System.Windows.Forms.CheckBox();
+            this.screenshotBrowse = new System.Windows.Forms.Button();
+            this.autoScreenshotDrop = new System.Windows.Forms.CheckBox();
+            this.screenshotList = new System.Windows.Forms.ListBox();
+            this.screenshotBox = new System.Windows.Forms.PictureBox();
             this.commandListTab = new System.Windows.Forms.TabPage();
             this.label44 = new System.Windows.Forms.Label();
             this.label45 = new System.Windows.Forms.Label();
@@ -154,6 +164,8 @@
             this.minimizeIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.loadTimerImage = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.openInExplorer = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             this.huntingPage.SuspendLayout();
@@ -166,6 +178,9 @@
             this.creatureTab.SuspendLayout();
             this.itemTab.SuspendLayout();
             this.autoHotkey.SuspendLayout();
+            this.screenshotPage.SuspendLayout();
+            this.screenshotPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.screenshotBox)).BeginInit();
             this.commandListTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loadTimerImage)).BeginInit();
             this.SuspendLayout();
@@ -185,6 +200,7 @@
             this.tabControl1.Controls.Add(this.creatureTab);
             this.tabControl1.Controls.Add(this.itemTab);
             this.tabControl1.Controls.Add(this.autoHotkey);
+            this.tabControl1.Controls.Add(this.screenshotPage);
             this.tabControl1.Controls.Add(this.commandListTab);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tabControl1.Location = new System.Drawing.Point(0, 2);
@@ -322,7 +338,7 @@
             this.huntingPage.Controls.Add(this.backgroundBox);
             this.huntingPage.Location = new System.Drawing.Point(4, 22);
             this.huntingPage.Name = "huntingPage";
-            this.huntingPage.Size = new System.Drawing.Size(642, 379);
+            this.huntingPage.Size = new System.Drawing.Size(642, 497);
             this.huntingPage.TabIndex = 5;
             this.huntingPage.Text = "Hunting";
             this.huntingPage.UseVisualStyleBackColor = true;
@@ -515,7 +531,7 @@
             this.settingsTab.Controls.Add(this.richNotificationsPanel);
             this.settingsTab.Location = new System.Drawing.Point(4, 22);
             this.settingsTab.Name = "settingsTab";
-            this.settingsTab.Size = new System.Drawing.Size(642, 379);
+            this.settingsTab.Size = new System.Drawing.Size(642, 497);
             this.settingsTab.TabIndex = 3;
             this.settingsTab.Text = "Settings";
             this.settingsTab.UseVisualStyleBackColor = true;
@@ -830,7 +846,7 @@
             this.creatureTab.Location = new System.Drawing.Point(4, 22);
             this.creatureTab.Name = "creatureTab";
             this.creatureTab.Padding = new System.Windows.Forms.Padding(3);
-            this.creatureTab.Size = new System.Drawing.Size(642, 379);
+            this.creatureTab.Size = new System.Drawing.Size(642, 497);
             this.creatureTab.TabIndex = 1;
             this.creatureTab.Text = "Creatures";
             this.creatureTab.UseVisualStyleBackColor = true;
@@ -840,7 +856,7 @@
             // 
             this.creaturePanel.AutoScroll = true;
             this.creaturePanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.creaturePanel.Location = new System.Drawing.Point(3, -82);
+            this.creaturePanel.Location = new System.Drawing.Point(3, 36);
             this.creaturePanel.Name = "creaturePanel";
             this.creaturePanel.Size = new System.Drawing.Size(636, 458);
             this.creaturePanel.TabIndex = 2;
@@ -870,7 +886,7 @@
             this.itemTab.Controls.Add(this.itemSearchBox);
             this.itemTab.Location = new System.Drawing.Point(4, 22);
             this.itemTab.Name = "itemTab";
-            this.itemTab.Size = new System.Drawing.Size(642, 379);
+            this.itemTab.Size = new System.Drawing.Size(642, 497);
             this.itemTab.TabIndex = 2;
             this.itemTab.Text = "Items";
             this.itemTab.UseVisualStyleBackColor = true;
@@ -880,7 +896,7 @@
             // 
             this.itemPanel.AutoScroll = true;
             this.itemPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.itemPanel.Location = new System.Drawing.Point(0, -82);
+            this.itemPanel.Location = new System.Drawing.Point(0, 36);
             this.itemPanel.Name = "itemPanel";
             this.itemPanel.Size = new System.Drawing.Size(642, 461);
             this.itemPanel.TabIndex = 5;
@@ -916,7 +932,7 @@
             this.autoHotkey.Controls.Add(this.label57);
             this.autoHotkey.Location = new System.Drawing.Point(4, 22);
             this.autoHotkey.Name = "autoHotkey";
-            this.autoHotkey.Size = new System.Drawing.Size(642, 379);
+            this.autoHotkey.Size = new System.Drawing.Size(642, 497);
             this.autoHotkey.TabIndex = 6;
             this.autoHotkey.Text = "AutoHotkey";
             this.autoHotkey.UseVisualStyleBackColor = true;
@@ -1010,6 +1026,111 @@
             this.label57.TabIndex = 0;
             this.label57.Text = "Autohotkey scripts require AutoHotkey to be installed.";
             // 
+            // screenshotPage
+            // 
+            this.screenshotPage.Controls.Add(this.enableScreenshotBox);
+            this.screenshotPage.Controls.Add(this.screenshotPanel);
+            this.screenshotPage.Controls.Add(this.screenshotList);
+            this.screenshotPage.Controls.Add(this.screenshotBox);
+            this.screenshotPage.Location = new System.Drawing.Point(4, 22);
+            this.screenshotPage.Name = "screenshotPage";
+            this.screenshotPage.Size = new System.Drawing.Size(642, 497);
+            this.screenshotPage.TabIndex = 7;
+            this.screenshotPage.Text = "Screenshots";
+            this.screenshotPage.UseVisualStyleBackColor = true;
+            // 
+            // enableScreenshotBox
+            // 
+            this.enableScreenshotBox.AutoSize = true;
+            this.enableScreenshotBox.Location = new System.Drawing.Point(294, 278);
+            this.enableScreenshotBox.Name = "enableScreenshotBox";
+            this.enableScreenshotBox.Size = new System.Drawing.Size(121, 17);
+            this.enableScreenshotBox.TabIndex = 7;
+            this.enableScreenshotBox.Text = "Enable Screenshots";
+            this.enableScreenshotBox.UseVisualStyleBackColor = true;
+            this.enableScreenshotBox.CheckedChanged += new System.EventHandler(this.enableScreenshotBox_CheckedChanged);
+            // 
+            // screenshotPanel
+            // 
+            this.screenshotPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.screenshotPanel.Controls.Add(this.openInExplorer);
+            this.screenshotPanel.Controls.Add(this.screenshotDirectoryBox);
+            this.screenshotPanel.Controls.Add(this.label58);
+            this.screenshotPanel.Controls.Add(this.autoScreenshotAdvance);
+            this.screenshotPanel.Controls.Add(this.screenshotBrowse);
+            this.screenshotPanel.Controls.Add(this.autoScreenshotDrop);
+            this.screenshotPanel.Location = new System.Drawing.Point(288, 285);
+            this.screenshotPanel.Name = "screenshotPanel";
+            this.screenshotPanel.Size = new System.Drawing.Size(346, 203);
+            this.screenshotPanel.TabIndex = 7;
+            // 
+            // screenshotDirectoryBox
+            // 
+            this.screenshotDirectoryBox.Location = new System.Drawing.Point(3, 41);
+            this.screenshotDirectoryBox.Name = "screenshotDirectoryBox";
+            this.screenshotDirectoryBox.ReadOnly = true;
+            this.screenshotDirectoryBox.Size = new System.Drawing.Size(336, 20);
+            this.screenshotDirectoryBox.TabIndex = 4;
+            // 
+            // label58
+            // 
+            this.label58.AutoSize = true;
+            this.label58.Location = new System.Drawing.Point(3, 24);
+            this.label58.Name = "label58";
+            this.label58.Size = new System.Drawing.Size(106, 13);
+            this.label58.TabIndex = 6;
+            this.label58.Text = "Screenshot Directory";
+            // 
+            // autoScreenshotAdvance
+            // 
+            this.autoScreenshotAdvance.AutoSize = true;
+            this.autoScreenshotAdvance.Location = new System.Drawing.Point(3, 150);
+            this.autoScreenshotAdvance.Name = "autoScreenshotAdvance";
+            this.autoScreenshotAdvance.Size = new System.Drawing.Size(273, 17);
+            this.autoScreenshotAdvance.TabIndex = 2;
+            this.autoScreenshotAdvance.Text = "Automatically take a screenshot when you advance.";
+            this.autoScreenshotAdvance.UseVisualStyleBackColor = true;
+            this.autoScreenshotAdvance.CheckedChanged += new System.EventHandler(this.autoScreenshot_CheckedChanged);
+            // 
+            // screenshotBrowse
+            // 
+            this.screenshotBrowse.Location = new System.Drawing.Point(263, 67);
+            this.screenshotBrowse.Name = "screenshotBrowse";
+            this.screenshotBrowse.Size = new System.Drawing.Size(75, 23);
+            this.screenshotBrowse.TabIndex = 5;
+            this.screenshotBrowse.Text = "Browse...";
+            this.screenshotBrowse.UseVisualStyleBackColor = true;
+            this.screenshotBrowse.Click += new System.EventHandler(this.screenshotBrowse_Click);
+            // 
+            // autoScreenshotDrop
+            // 
+            this.autoScreenshotDrop.AutoSize = true;
+            this.autoScreenshotDrop.Location = new System.Drawing.Point(3, 173);
+            this.autoScreenshotDrop.Name = "autoScreenshotDrop";
+            this.autoScreenshotDrop.Size = new System.Drawing.Size(289, 17);
+            this.autoScreenshotDrop.TabIndex = 3;
+            this.autoScreenshotDrop.Text = "Automatically take a screenshot when a rare item drops.";
+            this.autoScreenshotDrop.UseVisualStyleBackColor = true;
+            this.autoScreenshotDrop.CheckedChanged += new System.EventHandler(this.autoScreenshotDrop_CheckedChanged);
+            // 
+            // screenshotList
+            // 
+            this.screenshotList.FormattingEnabled = true;
+            this.screenshotList.Location = new System.Drawing.Point(3, 3);
+            this.screenshotList.Name = "screenshotList";
+            this.screenshotList.Size = new System.Drawing.Size(270, 485);
+            this.screenshotList.TabIndex = 1;
+            this.screenshotList.SelectedIndexChanged += new System.EventHandler(this.screenshotList_SelectedIndexChanged);
+            // 
+            // screenshotBox
+            // 
+            this.screenshotBox.Location = new System.Drawing.Point(288, 3);
+            this.screenshotBox.Name = "screenshotBox";
+            this.screenshotBox.Size = new System.Drawing.Size(346, 262);
+            this.screenshotBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.screenshotBox.TabIndex = 0;
+            this.screenshotBox.TabStop = false;
+            // 
             // commandListTab
             // 
             this.commandListTab.Controls.Add(this.label44);
@@ -1060,7 +1181,7 @@
             this.commandListTab.Controls.Add(this.explainLabel);
             this.commandListTab.Location = new System.Drawing.Point(4, 22);
             this.commandListTab.Name = "commandListTab";
-            this.commandListTab.Size = new System.Drawing.Size(642, 379);
+            this.commandListTab.Size = new System.Drawing.Size(642, 497);
             this.commandListTab.TabIndex = 4;
             this.commandListTab.Text = "Command List";
             this.commandListTab.UseVisualStyleBackColor = true;
@@ -1563,6 +1684,16 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // openInExplorer
+            // 
+            this.openInExplorer.Location = new System.Drawing.Point(6, 68);
+            this.openInExplorer.Name = "openInExplorer";
+            this.openInExplorer.Size = new System.Drawing.Size(103, 23);
+            this.openInExplorer.TabIndex = 7;
+            this.openInExplorer.Text = "Open In Explorer";
+            this.openInExplorer.UseVisualStyleBackColor = true;
+            this.openInExplorer.Click += new System.EventHandler(this.openInExplorer_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1600,6 +1731,11 @@
             this.itemTab.PerformLayout();
             this.autoHotkey.ResumeLayout(false);
             this.autoHotkey.PerformLayout();
+            this.screenshotPage.ResumeLayout(false);
+            this.screenshotPage.PerformLayout();
+            this.screenshotPanel.ResumeLayout(false);
+            this.screenshotPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.screenshotBox)).EndInit();
             this.commandListTab.ResumeLayout(false);
             this.commandListTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loadTimerImage)).EndInit();
@@ -1739,6 +1875,18 @@
         private System.Windows.Forms.Button startAutoHotkey;
         private System.Windows.Forms.Button shutdownAutoHotkey;
         private System.Windows.Forms.CheckBox shutdownOnExit;
+        private System.Windows.Forms.TabPage screenshotPage;
+        private System.Windows.Forms.CheckBox autoScreenshotDrop;
+        private System.Windows.Forms.CheckBox autoScreenshotAdvance;
+        private System.Windows.Forms.ListBox screenshotList;
+        private System.Windows.Forms.PictureBox screenshotBox;
+        private System.Windows.Forms.Panel screenshotPanel;
+        private System.Windows.Forms.TextBox screenshotDirectoryBox;
+        private System.Windows.Forms.Label label58;
+        private System.Windows.Forms.Button screenshotBrowse;
+        private System.Windows.Forms.CheckBox enableScreenshotBox;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.Button openInExplorer;
     }
 }
 

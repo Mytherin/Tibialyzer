@@ -584,6 +584,20 @@ namespace Tibialyzer {
                 }
             }
             this.autoHotkeyGridSettings.Text = massiveString;
+
+            this.autoScreenshotAdvance.Checked = getSettingBool("AutoScreenshotAdvance");
+            this.autoScreenshotDrop.Checked = getSettingBool("AutoScreenshotItemDrop");
+            this.enableScreenshotBox.Checked = getSettingBool("EnableScreenshots");
+            this.screenshotPanel.Enabled = enableScreenshotBox.Checked;
+            if (getSettingString("ScreenshotPath") == null) {
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "Screenshots");
+                setSetting("ScreenshotPath", path);
+                if (!Directory.Exists(path)) {
+                    Directory.CreateDirectory(path);
+                }
+            }
+            screenshotDirectoryBox.Text = getSettingString("ScreenshotPath");
+            refreshScreenshots();
         }
 
         void makeDraggable(Control.ControlCollection controls) {
@@ -1309,8 +1323,9 @@ namespace Tibialyzer {
             return -1;
         }
 
-        private bool getSetting(string key) {
-            return settings.ContainsKey(key) && settings[key].Count > 0 && settings[key][0] == "True";
+        private string getSettingString(string key) {
+            if (!settings.ContainsKey(key) || settings[key].Count == 0) return null;
+            return settings[key][0];
         }
 
         private void setSetting(string key, string value) {
@@ -1443,6 +1458,124 @@ namespace Tibialyzer {
 
             setSetting("AlwaysShowLoot", (sender as CheckBox).Checked.ToString());
             saveSettings();
+        }
+
+        private void enableScreenshotBox_CheckedChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("EnableScreenshots", (sender as CheckBox).Checked.ToString());
+            saveSettings();
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RECT {
+            public int left;
+            public int top;
+            public int right;
+            public int bottom;
+        }
+
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern bool GetWindowRect(IntPtr hWnd, ref RECT Rect);
+
+        void takeScreenshot(string name) {
+            string path = getSettingString("ScreenshotPath");
+            if (path == null) return;
+
+            Process[] tibia_process = Process.GetProcessesByName("Tibia");
+            if (tibia_process.Length == 0) return; //no tibia to take screenshot of
+            
+            RECT Rect = new RECT();
+            if (!GetWindowRect(tibia_process[0].MainWindowHandle, ref Rect)) return;
+
+            Bitmap bitmap = new Bitmap(Rect.right - Rect.left, Rect.bottom - Rect.top);
+            using (Graphics gr = Graphics.FromImage(bitmap)) {
+                gr.CopyFromScreen(new Point(Rect.left,Rect.top), Point.Empty, bitmap.Size);
+            }
+            DateTime dt = DateTime.Now;
+            name = String.Format("{0} - {1}-{2}-{3} {4}h{5}m{6}s{7}ms.png", name, dt.Year.ToString("D4"), dt.Month.ToString("D2"), dt.Day.ToString("D2"), dt.Hour.ToString("D2"), dt.Minute.ToString("D2"), dt.Second.ToString("D2"), dt.Millisecond.ToString("D4"));
+            path = Path.Combine(path, name);
+            bitmap.Save(path, ImageFormat.Png);
+            
+            refreshScreenshots();
+        }
+
+        List<string> imageExtensions = new List<string> { ".jpg", ".bmp", ".gif", ".png" };
+        void refreshScreenshots() {
+            string selectedValue = screenshotList.SelectedIndex >= 0 ? screenshotList.Items[screenshotList.SelectedIndex].ToString() : null;
+            int index = 0;
+
+            string path = getSettingString("ScreenshotPath");
+            if (path == null) return;
+            string[] files = Directory.GetFiles(path);
+
+            refreshingScreenshots = true;
+
+            screenshotList.Items.Clear();
+            foreach(string file in files) {
+                if (imageExtensions.Contains(Path.GetExtension(file).ToLower())) { //check if file is an image
+                    string f = Path.GetFileName(file);
+                    if (f == selectedValue) {
+                        index = screenshotList.Items.Count;
+                    }
+                    screenshotList.Items.Add(f);
+                }
+            }
+            
+            refreshingScreenshots = false;
+            if (screenshotList.Items.Count > 0) {
+                screenshotList.SelectedIndex = index;
+            }
+        }
+
+        private void screenshotBrowse_Click(object sender, EventArgs e) {
+            folderBrowserDialog1.SelectedPath = getSettingString("ScreenshotPath");
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK) {
+                setSetting("ScreenshotPath", folderBrowserDialog1.SelectedPath);
+                screenshotDirectoryBox.Text = getSettingString("ScreenshotPath");
+                refreshScreenshots();
+            }
+        }
+
+        private void autoScreenshot_CheckedChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("AutoScreenshotAdvance", (sender as CheckBox).Checked.ToString());
+            saveSettings();
+        }
+
+        private void autoScreenshotDrop_CheckedChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("AutoScreenshotItemDrop", (sender as CheckBox).Checked.ToString());
+            saveSettings();
+        }
+
+        bool refreshingScreenshots = false;
+        private void screenshotList_SelectedIndexChanged(object sender, EventArgs e) {
+            if (refreshingScreenshots) return;
+            if (screenshotList.SelectedIndex >= 0) {
+                string selectedImage = screenshotList.Items[screenshotList.SelectedIndex].ToString();
+
+                string path = getSettingString("ScreenshotPath");
+                if (path == null) return;
+
+                string imagePath = Path.Combine(path, selectedImage);
+                
+                Image image = Image.FromFile(imagePath);
+                if (image != null) {
+                    if (screenshotBox.Image != null) {
+                        screenshotBox.Image.Dispose();
+                    }
+                    screenshotBox.Image = image;
+                }
+            }
+        }
+
+        private void openInExplorer_Click(object sender, EventArgs e) {
+            string path = getSettingString("ScreenshotPath");
+            if (path == null) return;
+            Process.Start(path);
         }
 
         private void startAutohotkeyScript_CheckedChanged(object sender, EventArgs e) {
