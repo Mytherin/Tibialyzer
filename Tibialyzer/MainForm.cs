@@ -1491,9 +1491,7 @@ namespace Tibialyzer {
             downloadBar.Visible = false;
         }
         
-        private string modifyKeyString(string str) {
-            string value = str.ToLower();
-            
+        private string modifyKeyString(string value) {
             if (value.Contains("alt+")) {
                 value = value.Replace("alt+", "!");
             }
@@ -1503,6 +1501,11 @@ namespace Tibialyzer {
             if (value.Contains("shift+")) {
                 value = value.Replace("shift+", "+");
             }
+            if (value.Contains("command=")) {
+                string[] split = value.Split(new string[] { "command=" }, StringSplitOptions.None);
+                value = split[0] + "SendMessage, 0xC, 0, \"" + split[1] + "\",,Tibialyzer"; //command is send through the WM_SETTEXT message
+            }
+
             return value;
         }
 
@@ -1518,11 +1521,12 @@ namespace Tibialyzer {
             using (StreamWriter writer = new StreamWriter(autohotkeyFile)) {
                 writer.WriteLine("#SingleInstance force");
                 writer.WriteLine("#IfWinActive ahk_class TibiaClient");
-                foreach (string line in settings["AutoHotkeySettings"]) {
+                foreach (string l in settings["AutoHotkeySettings"]) {
+                    string line = l.ToLower();
                     if (line.Length == 0 || line[0] == '#') continue;
-                    if (line.ToLower().Contains("suspend")) {
+                    if (line.Contains("suspend")) {
                         // if the key is set to suspend the hotkey layout, we set it up so it sends a message to us 
-                        writer.WriteLine(line.ToLower().Split(new string[] { "suspend" }, StringSplitOptions.None)[0]);
+                        writer.WriteLine(modifyKeyString(line.ToLower().Split(new string[] { "suspend" }, StringSplitOptions.None)[0]));
                         writer.WriteLine("suspend");
                         writer.WriteLine("if (A_IsSuspended)");
                         // message 32 is suspend
@@ -1557,8 +1561,17 @@ namespace Tibialyzer {
 
         AutoHotkeySuspendedMode window = null;
         protected override void WndProc(ref Message m) {
-            if (m != null && m.Msg == 0x317) {
+            if (m.Msg == 0xC) {
+                string command = Marshal.PtrToStringUni(m.LParam);
+                if (command != null) {
+                    if (this.ExecuteCommand(command)) {
+                        return; //if the passed along string is a command, we have executed it successfully
+                    }
+                }
+            }
+            if (m.Msg == 0x317) {
                 // We intercept this message because this message signifies the AutoHotkey state (suspended or not)
+                
                 int wParam = m.WParam.ToInt32();
                 if (wParam == 32) {
                     // 32 signifies we have entered suspended mode, so we warn the user with a popup

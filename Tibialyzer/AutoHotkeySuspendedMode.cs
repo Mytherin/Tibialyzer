@@ -1,17 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Tibialyzer {
     class AutoHotkeySuspendedMode : SimpleNotification {
         private System.Windows.Forms.Label typeModeLabel;
+        System.Timers.Timer showTimer = null;
 
         public AutoHotkeySuspendedMode() {
             this.InitializeComponent();
+            this.FormClosing += AutoHotkeySuspendedMode_FormClosing;
 
             this.InitializeSimpleNotification(false, false);
+
+            showTimer = new System.Timers.Timer(10);
+            showTimer.Elapsed += ShowTimer_Elapsed; ;
+            showTimer.Enabled = true;
+        }
+
+        private void AutoHotkeySuspendedMode_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e) {
+            this.showTimer.Dispose();
+        }
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetWindowThreadProcessId(IntPtr hWnd, out uint ProcessId);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
+
+        string GetActiveProcessFileName() {
+            IntPtr hwnd = GetForegroundWindow();
+            uint pid;
+            GetWindowThreadProcessId(hwnd, out pid);
+            Process p = Process.GetProcessById((int)pid);
+            return p.ProcessName;
+        }
+
+        private void ShowTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
+            try {
+                // only show the suspended window when tibia is active
+                bool visible = GetActiveProcessFileName() == "Tibia";
+                this.Invoke((MethodInvoker)delegate {
+                    this.Visible = visible;
+                });
+            } catch {
+
+            }
         }
 
         private void InitializeComponent() {
@@ -25,9 +64,9 @@ namespace Tibialyzer {
             this.typeModeLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.typeModeLabel.Location = new System.Drawing.Point(12, 9);
             this.typeModeLabel.Name = "typeModeLabel";
-            this.typeModeLabel.Size = new System.Drawing.Size(215, 42);
+            this.typeModeLabel.Size = new System.Drawing.Size(218, 42);
             this.typeModeLabel.TabIndex = 0;
-            this.typeModeLabel.Text = "Type Mode";
+            this.typeModeLabel.Text = "Suspended";
             // 
             // AutoHotkeySuspendedMode
             // 
