@@ -103,6 +103,9 @@
     <Compile Include="DamageChart.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="RichTextBoxAutoHotkey.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="SimpleLootNotification.cs">
       <SubType>Form</SubType>
     </Compile>

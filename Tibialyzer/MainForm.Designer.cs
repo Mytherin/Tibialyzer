@@ -96,7 +96,7 @@
             this.shutdownOnExit = new System.Windows.Forms.CheckBox();
             this.shutdownAutoHotkey = new System.Windows.Forms.Button();
             this.startAutoHotkey = new System.Windows.Forms.Button();
-            this.autoHotkeyGridSettings = new System.Windows.Forms.RichTextBox();
+            this.autoHotkeyGridSettings = new Tibialyzer.RichTextBoxAutoHotkey();
             this.startAutohotkeyScript = new System.Windows.Forms.CheckBox();
             this.downloadLabel = new System.Windows.Forms.Label();
             this.downloadBar = new System.Windows.Forms.ProgressBar();
@@ -105,6 +105,7 @@
             this.screenshotPage = new System.Windows.Forms.TabPage();
             this.enableScreenshotBox = new System.Windows.Forms.CheckBox();
             this.screenshotPanel = new System.Windows.Forms.Panel();
+            this.openInExplorer = new System.Windows.Forms.Button();
             this.screenshotDirectoryBox = new System.Windows.Forms.TextBox();
             this.label58 = new System.Windows.Forms.Label();
             this.autoScreenshotAdvance = new System.Windows.Forms.CheckBox();
@@ -165,7 +166,6 @@
             this.loadTimerImage = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.openInExplorer = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             this.huntingPage.SuspendLayout();
@@ -970,6 +970,7 @@
             // 
             // autoHotkeyGridSettings
             // 
+            this.autoHotkeyGridSettings.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.autoHotkeyGridSettings.Location = new System.Drawing.Point(11, 89);
             this.autoHotkeyGridSettings.Name = "autoHotkeyGridSettings";
             this.autoHotkeyGridSettings.Size = new System.Drawing.Size(457, 400);
@@ -1063,6 +1064,16 @@
             this.screenshotPanel.Name = "screenshotPanel";
             this.screenshotPanel.Size = new System.Drawing.Size(346, 203);
             this.screenshotPanel.TabIndex = 7;
+            // 
+            // openInExplorer
+            // 
+            this.openInExplorer.Location = new System.Drawing.Point(6, 68);
+            this.openInExplorer.Name = "openInExplorer";
+            this.openInExplorer.Size = new System.Drawing.Size(103, 23);
+            this.openInExplorer.TabIndex = 7;
+            this.openInExplorer.Text = "Open In Explorer";
+            this.openInExplorer.UseVisualStyleBackColor = true;
+            this.openInExplorer.Click += new System.EventHandler(this.openInExplorer_Click);
             // 
             // screenshotDirectoryBox
             // 
@@ -1684,16 +1695,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // openInExplorer
-            // 
-            this.openInExplorer.Location = new System.Drawing.Point(6, 68);
-            this.openInExplorer.Name = "openInExplorer";
-            this.openInExplorer.Size = new System.Drawing.Size(103, 23);
-            this.openInExplorer.TabIndex = 7;
-            this.openInExplorer.Text = "Open In Explorer";
-            this.openInExplorer.UseVisualStyleBackColor = true;
-            this.openInExplorer.Click += new System.EventHandler(this.openInExplorer_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1871,7 +1872,6 @@
         private System.Windows.Forms.ProgressBar downloadBar;
         private System.Windows.Forms.Label downloadLabel;
         private System.Windows.Forms.CheckBox startAutohotkeyScript;
-        private System.Windows.Forms.RichTextBox autoHotkeyGridSettings;
         private System.Windows.Forms.Button startAutoHotkey;
         private System.Windows.Forms.Button shutdownAutoHotkey;
         private System.Windows.Forms.CheckBox shutdownOnExit;
@@ -1887,6 +1887,7 @@
         private System.Windows.Forms.CheckBox enableScreenshotBox;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Button openInExplorer;
+        private RichTextBoxAutoHotkey autoHotkeyGridSettings;
     }
 }
 

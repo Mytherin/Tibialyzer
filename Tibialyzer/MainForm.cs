@@ -584,6 +584,7 @@ namespace Tibialyzer {
                 }
             }
             this.autoHotkeyGridSettings.Text = massiveString;
+            (this.autoHotkeyGridSettings as RichTextBoxAutoHotkey).RefreshSyntax();
 
             this.autoScreenshotAdvance.Checked = getSettingBool("AutoScreenshotAdvance");
             this.autoScreenshotDrop.Checked = getSettingBool("AutoScreenshotItemDrop");
