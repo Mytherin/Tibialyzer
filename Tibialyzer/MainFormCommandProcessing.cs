@@ -21,8 +21,12 @@ using System.Data.SQLite;
 
 namespace Tibialyzer {
     public partial class MainForm : Form {
+        public ParseMemoryResults lastResults;
         public static char commandSymbol = '@';
         public bool ExecuteCommand(string command, ParseMemoryResults parseMemoryResults = null) {
+            if (parseMemoryResults == null) {
+                parseMemoryResults = lastResults;
+            }
             string comp = command.Trim().ToLower();
             Console.WriteLine(command);
             if (comp.StartsWith("creature" + MainForm.commandSymbol)) { //creature@
@@ -143,6 +147,11 @@ namespace Tibialyzer {
                 bool all = parameter == "all" || raw; //all mode means 'display everything'
 
                 // first handle creature kills
+                string[] creatures = activeHunt.trackedCreatures.Split('\n');
+                for(int i = 0; i < creatures.Length; i++) {
+                    creatures[i] = creatures[i].ToLower();
+                }
+
                 Dictionary<Creature, int> creatureKills;
                 Creature lootCreature = null;
                 if (creatureNameMap.ContainsKey(parameter)) {
@@ -159,7 +168,6 @@ namespace Tibialyzer {
                 } else {
                     // only display tracked creatures
                     creatureKills = new Dictionary<Creature, int>();
-                    string[] creatures = activeHunt.trackedCreatures.Split('\n');
                     foreach (string creature in creatures) {
                         if (!creatureNameMap.ContainsKey(creature.ToLower())) continue;
                         Creature cr = creatureNameMap[creature.ToLower()];
@@ -175,6 +183,7 @@ namespace Tibialyzer {
                 Dictionary<Item, int> itemCounts = new Dictionary<Item, int>();
                 foreach (KeyValuePair<Creature, Dictionary<Item, int>> kvp in activeHunt.loot.creatureLoot) {
                     if (lootCreature != null && kvp.Key != lootCreature) continue; // if lootCreature is specified, only consider loot from the specified creature
+                    if (!activeHunt.trackAllCreatures && activeHunt.trackedCreatures.Length > 0 && !creatures.Contains(kvp.Key.name.ToLower())) continue;
                     foreach (KeyValuePair<Item, int> kvp2 in kvp.Value) {
                         Item item = kvp2.Key;
                         int value = kvp2.Value;
@@ -461,8 +470,9 @@ namespace Tibialyzer {
             ReadMemoryResults readMemoryResults = ReadMemory();
             ParseMemoryResults parseMemoryResults = ParseLogResults(readMemoryResults);
 
-
-
+            if (parseMemoryResults != null) {
+                lastResults = parseMemoryResults;
+            }
             if (readMemoryResults != null && readMemoryResults.newAdvances.Count > 0) {
                 if (getSettingBool("AutoScreenshotAdvance")) {
                     this.Invoke((MethodInvoker)delegate {

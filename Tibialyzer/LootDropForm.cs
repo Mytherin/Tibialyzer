@@ -118,8 +118,9 @@ namespace Tibialyzer {
                     picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
                     picture_box.BackgroundImage = MainForm.item_background;
                     picture_box.Click += openItemBox;
-                    value_tooltip.SetToolTip(picture_box, System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(item.name) + " value: " + Math.Max(item.actual_value, item.vendor_value) * mitems);
-                    total_value += Math.Max(item.actual_value, item.vendor_value) * mitems;
+                    int individualValue = Math.Max(item.actual_value, item.vendor_value);
+                    value_tooltip.SetToolTip(picture_box, System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(item.name) + " value: " + (individualValue >= 0 ? (individualValue * mitems).ToString() : "Unknown"));
+                    if (individualValue > 0) total_value += individualValue * mitems;
                     this.Controls.Add(picture_box);
 
                     x += item_size.Width + item_spacing;

@@ -64,3 +64,4 @@ great health potions=great health potion
 ultimate health potions=ultimate health potion
 stampor talons=stampor talon
 cherries=cherry
+dark rosaries=dark rosary
