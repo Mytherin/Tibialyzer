@@ -1466,6 +1466,8 @@ namespace Tibialyzer {
 
             setSetting("EnableScreenshots", (sender as CheckBox).Checked.ToString());
             saveSettings();
+
+            this.screenshotPanel.Enabled = (sender as CheckBox).Checked;
         }
 
         [StructLayout(LayoutKind.Sequential)]

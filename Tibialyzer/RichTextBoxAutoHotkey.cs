@@ -87,7 +87,7 @@ namespace Tibialyzer {
         }
 
         protected override void OnTextChanged(EventArgs e) {
-            if (highlighting) return;
+            base.OnTextChanged(e);
             highlighting = true;
             string text = this.Text.ToLower();
             var initialScroll = RTBScrollPos;
