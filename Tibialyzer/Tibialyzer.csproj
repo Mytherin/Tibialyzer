@@ -103,6 +103,7 @@
     <Compile Include="DamageChart.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Pathfinder.cs" />
     <Compile Include="RichTextBoxAutoHotkey.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -237,6 +238,9 @@
       <DependentUpon>SimpleTextNotification.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Database\Database.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Database\Nodes.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Libraries\System.Data.SQLite.dll.config">

@@ -53,6 +53,7 @@ namespace Tibialyzer {
         private bool keep_working = true;
         private static string databaseFile = @"Database\Database.db";
         private static string settingsFile = @"Database\settings.txt";
+        private static string nodeDatabase = @"Database\Nodes.db";
         private static string pluralMapFile = @"Database\pluralMap.txt";
         private static string autohotkeyFile = @"Database\autohotkey.ahk";
         private List<string> character_names = new List<string>();
@@ -129,6 +130,7 @@ namespace Tibialyzer {
             this.initializeHunts();
             this.initializeSettings();
             this.initializeMaps();
+            Pathfinder.LoadFromDatabase(nodeDatabase);
             prevent_settings_update = false;
 
             if (getSettingBool("StartAutohotkeyAutomatically")) {
