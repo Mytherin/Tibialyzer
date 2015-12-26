@@ -58,6 +58,7 @@
             this.maxDamageLabel = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.statsButton = new System.Windows.Forms.Label();
+            this.huntButton = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.resistanceLabel7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.resistanceLabel6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.resistanceLabel5)).BeginInit();
@@ -155,7 +156,7 @@
             this.expLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.expLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.expLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.expLabel.Location = new System.Drawing.Point(9, 168);
+            this.expLabel.Location = new System.Drawing.Point(9, 191);
             this.expLabel.Name = "expLabel";
             this.expLabel.Padding = new System.Windows.Forms.Padding(0, 2, 0, 2);
             this.expLabel.Size = new System.Drawing.Size(62, 19);
@@ -170,7 +171,7 @@
             this.healthLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.healthLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.healthLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(179)))), ((int)(((byte)(60)))));
-            this.healthLabel.Location = new System.Drawing.Point(9, 150);
+            this.healthLabel.Location = new System.Drawing.Point(9, 173);
             this.healthLabel.Name = "healthLabel";
             this.healthLabel.Padding = new System.Windows.Forms.Padding(0, 2, 0, 2);
             this.healthLabel.Size = new System.Drawing.Size(58, 19);
@@ -369,11 +370,27 @@
             this.statsButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.statsButton.Click += new System.EventHandler(this.statsButton_Click);
             // 
+            // huntButton
+            // 
+            this.huntButton.BackColor = System.Drawing.Color.Transparent;
+            this.huntButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.huntButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.huntButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.huntButton.Location = new System.Drawing.Point(9, 149);
+            this.huntButton.Name = "huntButton";
+            this.huntButton.Padding = new System.Windows.Forms.Padding(2);
+            this.huntButton.Size = new System.Drawing.Size(96, 21);
+            this.huntButton.TabIndex = 27;
+            this.huntButton.Text = "Hunts";
+            this.huntButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.huntButton.Click += new System.EventHandler(this.huntButton_Click);
+            // 
             // CreatureStatsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(378, 203);
+            this.ClientSize = new System.Drawing.Size(378, 227);
+            this.Controls.Add(this.huntButton);
             this.Controls.Add(this.statsButton);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.maxDamageLabel);
@@ -454,5 +471,6 @@
         private System.Windows.Forms.Label maxDamageLabel;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label statsButton;
+        private System.Windows.Forms.Label huntButton;
     }
 }

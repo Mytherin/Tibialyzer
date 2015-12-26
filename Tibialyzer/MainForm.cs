@@ -392,6 +392,9 @@ namespace Tibialyzer {
                     huntingPlaceIdMap[huntingplaceid].creatures.Add(creatureIdMap[creatureid]);
                 }
             }
+            foreach(HuntingPlace h in huntingPlaceIdMap.Values) {
+                h.creatures = h.creatures.OrderBy(o => o.experience).ToList();
+            }
         }
 
         void initializePluralMap() {
@@ -882,13 +885,8 @@ namespace Tibialyzer {
 
         public static int DisplayCreatureList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, int max_x, int spacing, bool transparent, Func<TibiaObject, string> tooltip_function = null, float magnification = 1.0f) {
             int x = 0, y = 0;
-            int width = 0, height = 0;
-            foreach (TibiaObject cr in l) {
-                Image image = cr.GetImage();
-                if (image.Width * magnification > width) width = (int)(image.Width * magnification);
-                if (image.Height * magnification > height) height = (int)(image.Height * magnification);
-            }
 
+            int height = 0;
             // add a tooltip that displays the creature names
             ToolTip value_tooltip = new ToolTip();
             value_tooltip.AutoPopDelay = 60000;
@@ -902,6 +900,10 @@ namespace Tibialyzer {
                 if (max_x < (x + base_x + (int)(image.Width * magnification) + spacing)) {
                     x = 0;
                     y = y + spacing + height;
+                    height = 0;
+                }
+                if ((int)(image.Height * magnification) > height) {
+                    height = (int)(image.Height * magnification);
                 }
                 PictureBox image_box;
                 if (transparent) image_box = new PictureBox();

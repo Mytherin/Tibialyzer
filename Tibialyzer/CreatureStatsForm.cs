@@ -84,6 +84,7 @@ namespace Tibialyzer {
             this.SuspendForm();
             int horizontal, left, right;
             this.statsButton.Name = creature.name.ToLower();
+            this.huntButton.Name = creature.name.ToLower();
             int health = creature.health;
             int experience = creature.experience;
             List<Resistance> resistances = new List<Resistance>();
@@ -202,6 +203,13 @@ namespace Tibialyzer {
             clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("creature" + MainForm.commandSymbol + (sender as Control).Name);
+        }
+
+        private void huntButton_Click(object sender, EventArgs e) {
+            if (clicked) return;
+            clicked = true;
+            this.ReturnFocusToTibia();
+            MainForm.mainForm.ExecuteCommand("hunt" + MainForm.commandSymbol + (sender as Control).Name);
         }
     }
 }

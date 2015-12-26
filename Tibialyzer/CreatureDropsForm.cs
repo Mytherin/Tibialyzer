@@ -89,7 +89,7 @@ namespace Tibialyzer {
             if (creature.skin != null) {
                 ItemDrop skinDrop = new ItemDrop();
                 PictureBox picture_box = new PictureBox();
-                picture_box.Location = new System.Drawing.Point(20, this.statsButton.Location.Y + this.statsButton.Size.Height + 10);
+                picture_box.Location = new System.Drawing.Point(20, this.huntButton.Location.Y + this.huntButton.Size.Height + 10);
                 picture_box.Name = creature.skin.skin_item.name;
                 picture_box.Size = new System.Drawing.Size(item_size.Width, item_size.Height);
                 picture_box.TabIndex = 1;
@@ -102,8 +102,8 @@ namespace Tibialyzer {
 
                 skinDrop.item = creature.skin.drop_item;
                 skinDrop.percentage = creature.skin.percentage;
-                DisplayItem(skinDrop, 20 + item_size.Width + item_spacing, this.statsButton.Location.Y + this.statsButton.Size.Height + 10, 0, 0, item_size, droprate_tooltip, dropbar_height, "Skin rate of ");
-                if (y < this.statsButton.Location.Y + this.statsButton.Size.Height) y = this.statsButton.Location.Y + this.statsButton.Size.Height;
+                DisplayItem(skinDrop, 20 + item_size.Width + item_spacing, this.huntButton.Location.Y + this.huntButton.Size.Height + 10, 0, 0, item_size, droprate_tooltip, dropbar_height, "Skin rate of ");
+                if (y < this.huntButton.Location.Y + this.huntButton.Size.Height) y = this.huntButton.Location.Y + this.huntButton.Size.Height;
             }
 
             if (this.Height < (y + item_size.Height * 2 + item_spacing)) {
@@ -126,6 +126,7 @@ namespace Tibialyzer {
             // load image from the creature
             this.mainImage.Image = this.creature.image;
             this.statsButton.Name = this.creature.name.ToLower();
+            this.huntButton.Name = this.creature.name.ToLower();
             // set background of actual form to transparent
             this.BackColor = MainForm.background_color;
             this.Opacity = MainForm.opacity;
@@ -155,6 +156,13 @@ namespace Tibialyzer {
             clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("stats" + MainForm.commandSymbol + (sender as Control).Name);
+        }
+
+        private void huntButton_Click(object sender, EventArgs e) {
+            if (clicked) return;
+            clicked = true;
+            this.ReturnFocusToTibia();
+            MainForm.mainForm.ExecuteCommand("hunt" + MainForm.commandSymbol + (sender as Control).Name);
         }
     }
 }
