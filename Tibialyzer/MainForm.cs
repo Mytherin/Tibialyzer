@@ -9,8 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
-using Microsoft.Scripting;
-using Microsoft.Scripting.Hosting;
 using System.Numerics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -31,8 +29,7 @@ namespace Tibialyzer {
         public Dictionary<int, NPC> npcIdMap = new Dictionary<int, NPC>();
         public Dictionary<string, HuntingPlace> huntingPlaceNameMap = new Dictionary<string, HuntingPlace>();
         public Dictionary<int, HuntingPlace> huntingPlaceIdMap = new Dictionary<int, HuntingPlace>();
-
-        public static ScriptEngine pyEngine = null;
+        
         public static Color background_color = Color.FromArgb(0, 51, 102);
         public static double opacity = 0.8;
         public static bool transparent = true;

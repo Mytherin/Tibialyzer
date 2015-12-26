@@ -7,8 +7,6 @@ using System.Drawing;
 using System.Globalization;
 using System.Threading;
 using System.Windows.Forms;
-using Microsoft.Scripting;
-using Microsoft.Scripting.Hosting;
 using System.Runtime.InteropServices;
 using System.Drawing.Drawing2D;
 using System.Diagnostics;
