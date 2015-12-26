@@ -496,9 +496,13 @@ namespace Tibialyzer {
                         this.Invoke((MethodInvoker)delegate {
                             ShowItemNotification("item@" + itemName);
                         });
-                    } else if (creatureNameMap.ContainsKey(itemName)) {
+                    } else if (creatureNameMap.ContainsKey(itemName) || (itemName.Contains("dead ") && (itemName = itemName.Replace("dead ", "")) != null && creatureNameMap.ContainsKey(itemName))) {
                         this.Invoke((MethodInvoker)delegate {
                             ShowCreatureDrops(creatureNameMap[itemName], "");
+                        });
+                    } else if (npcNameMap.ContainsKey(itemName)) {
+                        this.Invoke((MethodInvoker)delegate {
+                            ShowNPCForm(npcNameMap[itemName], "");
                         });
                     }
                 }
