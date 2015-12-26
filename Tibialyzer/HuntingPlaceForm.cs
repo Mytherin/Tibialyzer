@@ -229,7 +229,7 @@ namespace Tibialyzer {
             if (hunting_place == null) return;
             this.cityLabel.Text = hunting_place.city;
             this.huntingPlaceName.Text = MainForm.ToTitle(hunting_place.name);
-            this.levelLabel.Text = hunting_place.level.ToString();
+            this.levelLabel.Text = hunting_place.level < 0 ? "--" : hunting_place.level.ToString();
 
             int y;
             ToolTip tooltip = new ToolTip();

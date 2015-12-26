@@ -86,7 +86,13 @@ namespace Tibialyzer {
                 if (creatureNameMap.ContainsKey(name)) {
                     Creature cr = creatureNameMap[name];
                     ShowCreatureStats(cr, command);
+                } 
+            } else if (comp.StartsWith("close" + MainForm.commandSymbol)) { //close@
+                // close all notifications
+                if (tooltipForm != null) {
+                    tooltipForm.Close();
                 }
+                ClearSimpleNotifications();
             } else if (comp.StartsWith("delete" + MainForm.commandSymbol)) { //delete@
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                 int killCount;

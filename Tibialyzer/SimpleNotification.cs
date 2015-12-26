@@ -37,14 +37,30 @@ namespace Tibialyzer {
             if (this.Visible && (desktopX != targetPositionX || desktopY != targetPositionY)) {
                 int updatedX = Math.Abs(desktopX - targetPositionX) < 3 ? targetPositionX : (int)(desktopX + (targetPositionX - desktopX) / 5.0);
                 int updatedY = Math.Abs(desktopY - targetPositionY) < 3 ? targetPositionY : (int)(desktopY + (targetPositionY - desktopY) / 5.0);
-                
-                this.Invoke((MethodInvoker)delegate {
-                    if (!this.IsDisposed) {
-                        this.SetDesktopLocation(updatedX, updatedY);
-                    }
-                });
+                try {
+                    this.Invoke((MethodInvoker)delegate {
+                        if (!this.IsDisposed) {
+                            this.SetDesktopLocation(updatedX, updatedY);
+                        }
+                    });
+                } catch {
+
+                }
             }
         }
+
+        public void ClearTimers() {
+            if (moveTimer != null) {
+                moveTimer.Dispose();
+                moveTimer = null;
+            }
+
+            if (closeTimer != null) {
+                closeTimer.Dispose();
+                closeTimer = null;
+            }
+        }
+
         public void CloseNotification(object sender, EventArgs e) {
             if (moveTimer != null) {
                 moveTimer.Dispose();

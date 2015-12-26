@@ -63,7 +63,6 @@ namespace Tibialyzer {
         public int notification_value = 2000;
         static HashSet<string> cities = new HashSet<string>() { "ab'dendriel", "carlin", "kazordoon", "venore", "thais", "ankrahmun", "farmine", "gray beach", "liberty bay", "port hope", "rathleton", "roshamuul", "yalahar", "svargrond", "edron", "darashia", "rookgaard", "dawnport", "gray beach" };
         public List<string> notification_items = new List<string>();
-        private static List<string> extensions = new List<string>();
         private ToolTip scan_tooltip = new ToolTip();
         private Stack<string> command_stack = new Stack<string>();
 
@@ -99,16 +98,7 @@ namespace Tibialyzer {
             for (int i = 0; i < 10; i++) {
                 image_numbers[i] = System.Drawing.Image.FromFile(@"Images\" + i.ToString() + ".png");
             }
-
-            if (Directory.Exists("Extensions")) {
-                string[] files = Directory.GetFiles("Extensions");
-                for (int i = 0; i < files.Length; i++) {
-                    if (files[i].EndsWith(".py")) {
-                        string[] split = files[i].Split('\\');
-                        extensions.Add(split[split.Length - 1].Substring(0, split[split.Length - 1].Length - 3));
-                    }
-                }
-            }
+            
             NotificationForm.Initialize();
             CreatureStatsForm.InitializeCreatureStats();
             HuntListForm.Initialize();
@@ -689,6 +679,8 @@ namespace Tibialyzer {
             }
         }
 
+
+        bool clearSimpleNotifications = false;
         int notificationSpacing = 5;
         List<SimpleNotification> notificationStack = new List<SimpleNotification>();
         private void ShowSimpleNotification(SimpleNotification f) {
@@ -720,7 +712,18 @@ namespace Tibialyzer {
             f.Show();
         }
 
+        private void ClearSimpleNotifications() {
+            clearSimpleNotifications = true;
+            foreach (SimpleNotification f in notificationStack) {
+                f.ClearTimers();
+                f.Close();
+            }
+            notificationStack.Clear();
+            clearSimpleNotifications = false;
+        }
+
         private void simpleNotificationClosed(object sender, FormClosedEventArgs e) {
+            if (clearSimpleNotifications) return;
             SimpleNotification notification = sender as SimpleNotification;
             if (notification == null) return;
             bool moveDown = false;
