@@ -30,7 +30,6 @@
             this.mainTab = new System.Windows.Forms.TabPage();
             this.executeCommand = new System.Windows.Forms.Button();
             this.label56 = new System.Windows.Forms.Label();
-            this.commandTextBox = new Tibialyzer.EnterTextBox();
             this.label49 = new System.Windows.Forms.Label();
             this.damageButton = new System.Windows.Forms.Button();
             this.saveLootImage = new System.Windows.Forms.Button();
@@ -52,7 +51,6 @@
             this.huntNameBox = new System.Windows.Forms.TextBox();
             this.newHuntButton = new System.Windows.Forms.Button();
             this.label55 = new System.Windows.Forms.Label();
-            this.logMessageTextBox = new Tibialyzer.TransparentLabel();
             this.huntBox = new System.Windows.Forms.ListBox();
             this.backgroundBox = new System.Windows.Forms.PictureBox();
             this.settingsTab = new System.Windows.Forms.TabPage();
@@ -96,7 +94,6 @@
             this.shutdownOnExit = new System.Windows.Forms.CheckBox();
             this.shutdownAutoHotkey = new System.Windows.Forms.Button();
             this.startAutoHotkey = new System.Windows.Forms.Button();
-            this.autoHotkeyGridSettings = new Tibialyzer.RichTextBoxAutoHotkey();
             this.startAutohotkeyScript = new System.Windows.Forms.CheckBox();
             this.downloadLabel = new System.Windows.Forms.Label();
             this.downloadBar = new System.Windows.Forms.ProgressBar();
@@ -166,6 +163,10 @@
             this.loadTimerImage = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.commandTextBox = new Tibialyzer.EnterTextBox();
+            this.logMessageTextBox = new Tibialyzer.TransparentLabel();
+            this.autoHotkeyGridSettings = new Tibialyzer.RichTextBoxAutoHotkey();
+            this.autohotkeyWarningLabel = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             this.huntingPage.SuspendLayout();
@@ -248,14 +249,6 @@
             this.label56.Size = new System.Drawing.Size(77, 16);
             this.label56.TabIndex = 11;
             this.label56.Text = "Command";
-            // 
-            // commandTextBox
-            // 
-            this.commandTextBox.Location = new System.Drawing.Point(81, 440);
-            this.commandTextBox.Name = "commandTextBox";
-            this.commandTextBox.Size = new System.Drawing.Size(299, 20);
-            this.commandTextBox.TabIndex = 9;
-            this.commandTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.commandTextBox_KeyPress);
             // 
             // label49
             // 
@@ -485,18 +478,6 @@
             this.label55.Size = new System.Drawing.Size(104, 18);
             this.label55.TabIndex = 1;
             this.label55.Text = "List of Hunts";
-            // 
-            // logMessageTextBox
-            // 
-            this.logMessageTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.logMessageTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(0)))));
-            this.logMessageTextBox.Location = new System.Drawing.Point(8, 265);
-            this.logMessageTextBox.Name = "logMessageTextBox";
-            this.logMessageTextBox.ReadOnly = true;
-            this.logMessageTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.logMessageTextBox.Size = new System.Drawing.Size(631, 224);
-            this.logMessageTextBox.TabIndex = 15;
-            this.logMessageTextBox.Text = "";
             // 
             // huntBox
             // 
@@ -921,15 +902,16 @@
             // 
             // autoHotkey
             // 
+            this.autoHotkey.Controls.Add(this.autohotkeyWarningLabel);
             this.autoHotkey.Controls.Add(this.shutdownOnExit);
             this.autoHotkey.Controls.Add(this.shutdownAutoHotkey);
             this.autoHotkey.Controls.Add(this.startAutoHotkey);
-            this.autoHotkey.Controls.Add(this.autoHotkeyGridSettings);
             this.autoHotkey.Controls.Add(this.startAutohotkeyScript);
             this.autoHotkey.Controls.Add(this.downloadLabel);
             this.autoHotkey.Controls.Add(this.downloadBar);
             this.autoHotkey.Controls.Add(this.downloadAutoHotkey);
             this.autoHotkey.Controls.Add(this.label57);
+            this.autoHotkey.Controls.Add(this.autoHotkeyGridSettings);
             this.autoHotkey.Location = new System.Drawing.Point(4, 22);
             this.autoHotkey.Name = "autoHotkey";
             this.autoHotkey.Size = new System.Drawing.Size(642, 497);
@@ -967,16 +949,6 @@
             this.startAutoHotkey.Text = "Start AutoHotkey";
             this.startAutoHotkey.UseVisualStyleBackColor = true;
             this.startAutoHotkey.Click += new System.EventHandler(this.startAutoHotkey_Click);
-            // 
-            // autoHotkeyGridSettings
-            // 
-            this.autoHotkeyGridSettings.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.autoHotkeyGridSettings.Location = new System.Drawing.Point(11, 89);
-            this.autoHotkeyGridSettings.Name = "autoHotkeyGridSettings";
-            this.autoHotkeyGridSettings.Size = new System.Drawing.Size(457, 400);
-            this.autoHotkeyGridSettings.TabIndex = 5;
-            this.autoHotkeyGridSettings.Text = resources.GetString("autoHotkeyGridSettings.Text");
-            this.autoHotkeyGridSettings.TextChanged += new System.EventHandler(this.autoHotkeyGridSettings_TextChanged);
             // 
             // startAutohotkeyScript
             // 
@@ -1695,6 +1667,48 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // commandTextBox
+            // 
+            this.commandTextBox.Location = new System.Drawing.Point(81, 440);
+            this.commandTextBox.Name = "commandTextBox";
+            this.commandTextBox.Size = new System.Drawing.Size(299, 20);
+            this.commandTextBox.TabIndex = 9;
+            this.commandTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.commandTextBox_KeyPress);
+            // 
+            // logMessageTextBox
+            // 
+            this.logMessageTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.logMessageTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(0)))));
+            this.logMessageTextBox.Location = new System.Drawing.Point(8, 265);
+            this.logMessageTextBox.Name = "logMessageTextBox";
+            this.logMessageTextBox.ReadOnly = true;
+            this.logMessageTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this.logMessageTextBox.Size = new System.Drawing.Size(631, 224);
+            this.logMessageTextBox.TabIndex = 15;
+            this.logMessageTextBox.Text = "";
+            // 
+            // autoHotkeyGridSettings
+            // 
+            this.autoHotkeyGridSettings.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.autoHotkeyGridSettings.Location = new System.Drawing.Point(11, 89);
+            this.autoHotkeyGridSettings.Name = "autoHotkeyGridSettings";
+            this.autoHotkeyGridSettings.Size = new System.Drawing.Size(457, 400);
+            this.autoHotkeyGridSettings.TabIndex = 5;
+            this.autoHotkeyGridSettings.Text = resources.GetString("autoHotkeyGridSettings.Text");
+            this.autoHotkeyGridSettings.TextChanged += new System.EventHandler(this.autoHotkeyGridSettings_TextChanged);
+            // 
+            // autohotkeyWarningLabel
+            // 
+            this.autohotkeyWarningLabel.AutoSize = true;
+            this.autohotkeyWarningLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.autohotkeyWarningLabel.Location = new System.Drawing.Point(472, 461);
+            this.autohotkeyWarningLabel.MaximumSize = new System.Drawing.Size(200, 0);
+            this.autohotkeyWarningLabel.Name = "autohotkeyWarningLabel";
+            this.autohotkeyWarningLabel.Size = new System.Drawing.Size(173, 26);
+            this.autohotkeyWarningLabel.TabIndex = 10;
+            this.autohotkeyWarningLabel.Text = "Warning: Changes made, but Autohotkey has not been restarted.";
+            this.autohotkeyWarningLabel.Visible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1888,6 +1902,7 @@
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Button openInExplorer;
         private RichTextBoxAutoHotkey autoHotkeyGridSettings;
+        private System.Windows.Forms.Label autohotkeyWarningLabel;
     }
 }
 

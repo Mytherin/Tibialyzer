@@ -1652,6 +1652,7 @@ namespace Tibialyzer {
             if (!settings.ContainsKey("AutoHotkeySettings")) settings.Add("AutoHotkeySettings", autoHotkeyGridSettings.Text.Split('\n').ToList());
             else settings["AutoHotkeySettings"] = autoHotkeyGridSettings.Text.Split('\n').ToList();
             saveSettings();
+            this.autohotkeyWarningLabel.Visible = true;
         }
 
         private void writeToAutoHotkeyFile() {
@@ -1681,6 +1682,7 @@ namespace Tibialyzer {
         }
 
         private void startAutoHotkey_Click(object sender, EventArgs e) {
+            this.autohotkeyWarningLabel.Visible = false;
             writeToAutoHotkeyFile();
             System.Diagnostics.Process.Start(autohotkeyFile);
         }
@@ -1700,6 +1702,7 @@ namespace Tibialyzer {
         AutoHotkeySuspendedMode window = null;
         protected override void WndProc(ref Message m) {
             if (m.Msg == 0xC) {
+                // This messages is send by AutoHotkey to execute a command
                 string command = Marshal.PtrToStringUni(m.LParam);
                 if (command != null) {
                     if (this.ExecuteCommand(command)) {
