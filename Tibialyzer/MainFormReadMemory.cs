@@ -65,17 +65,18 @@ namespace Tibialyzer {
             public Dictionary<string, List<Tuple<string, string>>> commands = new Dictionary<string, List<Tuple<string, string>>>();
             public Dictionary<string, List<Tuple<string, string>>> urls = new Dictionary<string, List<Tuple<string, string>>>();
             public List<string> newAdvances = new List<string>();
-            public List<string> newLooks = new List<string>();
+            public Dictionary<string, List<string>> lookMessages = new Dictionary<string, List<string>>();
         }
 
         public class ParseMemoryResults {
             public Dictionary<string, int> damagePerSecond = new Dictionary<string, int>();
             public List<string> newCommands = new List<string>();
+            public List<string> newLooks = new List<string>();
             public List<Tuple<Creature, List<Tuple<Item, int>>>> newItems = new List<Tuple<Creature, List<Tuple<Item, int>>>>();
             public int expPerHour = 0;
         }
 
-        private Dictionary<string, HashSet<string>> totalLooks = new Dictionary<string, HashSet<string>>();
+        private Dictionary<string, List<string>> totalLooks = new Dictionary<string, List<string>>();
         private HashSet<string> levelAdvances = new HashSet<string>();
         private ReadMemoryResults ReadMemory() {
             ReadMemoryResults results = null;
@@ -238,7 +239,8 @@ namespace Tibialyzer {
             string itemName = "";
             foreach (string split in splits) {
                 if (split.Length == 0) continue;
-                if (split == "a" || split == "an") continue;
+                if (split == "that") break;
+                if (itemName == "" && (split == "a" || split == "an")) continue;
                 if (isDigit(split[0])) continue;
                 itemName = itemName == "" ? split : itemName + " " + split;
             }
@@ -270,19 +272,16 @@ namespace Tibialyzer {
             }
             string itemName = "";
             string[] split = item.Split(' ');
-            for (int i = split.Length - 1; i >= 0; i--) {
+            for(int i = 0; i < split.Length; i++) {
                 if (split[i].Length == 0) continue;
-                if (split[i] == "a" || split[i] == "an") {
-                    break;
-                } else if (isDigit(split[i][0])) {
+                if ((split[i] == "a" || split[i] == "an") && itemName == "") continue;
+                if (isDigit(split[i][0])) {
                     if (int.TryParse(split[i], out count)) {
-                        break;
+                        continue;
                     }
-                } else {
-                    itemName = itemName == "" ? split[i] : split[i] + " " + itemName;
                 }
+                itemName = itemName == "" ? split[i] : itemName + " " + split[i];
             }
-
             if (count > 1) {
                 if (pluralMap.ContainsKey(itemName)) {
                     itemName = pluralMap[itemName];
@@ -625,6 +624,27 @@ namespace Tibialyzer {
             }
             o.expPerHour *= 4;
 
+            // Update the look information
+            foreach (KeyValuePair<string, List<string>> kvp in res.lookMessages) {
+                string t = kvp.Key;
+                List<string> currentMessages = kvp.Value;
+                if (!totalLooks.ContainsKey(t)) totalLooks[t] = new List<string>();
+                if (currentMessages.Count > totalLooks[t].Count) {
+                    List<string> unseenLooks = new List<string>();
+                    List<string> lookList = totalLooks[t].ToArray().ToList(); 
+                    foreach (string lookMessage in currentMessages) {
+                        if (!totalLooks[t].Contains(lookMessage)) {
+                            unseenLooks.Add(lookMessage);
+                            o.newLooks.Add(lookMessage);
+                        } else {
+                            totalLooks[t].Remove(lookMessage);
+                        }
+                    }
+                    lookList.AddRange(unseenLooks);
+                    totalLooks[t] = lookList;
+                }
+            }
+
             // now parse any new commands given by users
             foreach (KeyValuePair<string, List<Tuple<string, string>>> kvp in res.commands) {
                 string t = kvp.Key;
@@ -733,11 +753,8 @@ namespace Tibialyzer {
                 string message = logMessage.Substring(6); // message without timestamp
                 if (logMessage.Length > 14 && logMessage.Substring(5, 9) == " You see ") {
                     // the message contains "you see", so it's a look message
-                    if (!totalLooks.ContainsKey(t)) totalLooks.Add(t, new HashSet<string>());
-                    if (!totalLooks[t].Contains(logMessage)) {
-                        totalLooks[t].Add(logMessage);
-                        res.newLooks.Add(logMessage);
-                    }
+                    if (!res.lookMessages.ContainsKey(t)) res.lookMessages.Add(t, new List<string>());
+                    res.lookMessages[t].Add(logMessage);
                 } else if (message.Contains(':')) {
                     if (logMessage.Length > 14 && logMessage.Substring(5, 9) == " Loot of ") { // loot drop message
                         if (!res.itemDrops.ContainsKey(t)) res.itemDrops.Add(t, new List<string>());

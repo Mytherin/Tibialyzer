@@ -490,7 +490,7 @@ namespace Tibialyzer {
             }
 
             if (getSettingBool("LookMode") && readMemoryResults != null) {
-                foreach (string msg in readMemoryResults.newLooks) {
+                foreach (string msg in parseMemoryResults.newLooks) {
                     string itemName = parseLookItem(msg).ToLower();
                     if (itemNameMap.ContainsKey(itemName)) {
                         this.Invoke((MethodInvoker)delegate {
@@ -502,7 +502,7 @@ namespace Tibialyzer {
                         });
                     }
                 }
-                readMemoryResults.newLooks.Clear();
+                parseMemoryResults.newLooks.Clear();
             }
 
             List<string> commands = parseMemoryResults == null ? new List<string>() : parseMemoryResults.newCommands.ToArray().ToList();
@@ -519,12 +519,28 @@ namespace Tibialyzer {
                 foreach (Tuple<Creature, List<Tuple<Item, int>>> tpl in parseMemoryResults.newItems) {
                     Creature cr = tpl.Item1;
                     List<Tuple<Item, int>> items = tpl.Item2;
-                    bool showNotification = getSettingBool("AlwaysShowLoot");
+                    bool showNotification = false;  
+                    if (getSettingBool("AlwaysShowLoot")) {
+                        // If AlwaysShowLoot is enabled, we always show a notification, as long as the creature is part of the hunts' creature list
+                        if (activeHunt.trackAllCreatures) {
+                            showNotification = true;
+                        } else {
+                            string[] creatures = activeHunt.trackedCreatures.Split('\n');
+                            for (int i = 0; i < creatures.Length; i++) {
+                                creatures[i] = creatures[i].ToLower();
+                            }
+                            if (creatures.Contains(cr.name.ToLower())) {
+                                showNotification = true;
+                            }
+                        }
+                    }
+
                     foreach (Tuple<Item, int> tpl2 in items) {
                         Item item = tpl2.Item1;
                         if ((Math.Max(item.actual_value, item.vendor_value) >= notification_value && showNotificationsValue) || (showNotificationsSpecific && settings["NotificationItems"].Contains(item.name.ToLower()))) {
                             showNotification = true;
                             if (getSettingBool("AutoScreenshotItemDrop")) {
+                                // Take a screenshot if Tibialyzer is set to take screenshots of valuable loot
                                 this.Invoke((MethodInvoker)delegate {
                                     takeScreenshot("Loot");
                                 });
