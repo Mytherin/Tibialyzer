@@ -493,6 +493,15 @@ namespace Tibialyzer {
                 readMemoryResults.newAdvances.Clear();
             }
 
+            if (parseMemoryResults.death) {
+                if (getSettingBool("AutoScreenshotDeath")) {
+                    this.Invoke((MethodInvoker)delegate {
+                        takeScreenshot("Death");
+                    });
+                }
+                parseMemoryResults.death = false;
+            }
+
             if (getSettingBool("LookMode") && readMemoryResults != null) {
                 foreach (string msg in parseMemoryResults.newLooks) {
                     string itemName = parseLookItem(msg).ToLower();

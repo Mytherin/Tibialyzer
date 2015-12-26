@@ -580,6 +580,8 @@ namespace Tibialyzer {
 
             this.autoScreenshotAdvance.Checked = getSettingBool("AutoScreenshotAdvance");
             this.autoScreenshotDrop.Checked = getSettingBool("AutoScreenshotItemDrop");
+            this.autoScreenshotDeath.Checked = getSettingBool("AutoScreenshotDeath");
+
             this.enableScreenshotBox.Checked = getSettingBool("EnableScreenshots");
             this.screenshotPanel.Enabled = enableScreenshotBox.Checked;
             if (getSettingString("ScreenshotPath") == null) {
@@ -589,6 +591,7 @@ namespace Tibialyzer {
                     Directory.CreateDirectory(path);
                 }
             }
+            
             screenshotDirectoryBox.Text = getSettingString("ScreenshotPath");
             refreshScreenshots();
         }
@@ -1555,6 +1558,13 @@ namespace Tibialyzer {
             if (prevent_settings_update) return;
 
             setSetting("AutoScreenshotItemDrop", (sender as CheckBox).Checked.ToString());
+            saveSettings();
+        }
+        
+        private void autoScreenshotDeath_CheckedChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("AutoScreenshotDeath", (sender as CheckBox).Checked.ToString());
             saveSettings();
         }
 

@@ -64,6 +64,7 @@ namespace Tibialyzer {
             public Dictionary<string, List<Tuple<string, string>>> urls = new Dictionary<string, List<Tuple<string, string>>>();
             public List<string> newAdvances = new List<string>();
             public Dictionary<string, List<string>> lookMessages = new Dictionary<string, List<string>>();
+            public Dictionary<string, bool> deaths = new Dictionary<string, bool>();
         }
 
         public class ParseMemoryResults {
@@ -72,6 +73,7 @@ namespace Tibialyzer {
             public List<string> newLooks = new List<string>();
             public List<Tuple<Creature, List<Tuple<Item, int>>>> newItems = new List<Tuple<Creature, List<Tuple<Item, int>>>>();
             public int expPerHour = 0;
+            public bool death = false;
         }
 
         private Dictionary<string, List<string>> totalLooks = new Dictionary<string, List<string>>();
@@ -570,6 +572,7 @@ namespace Tibialyzer {
         private Dictionary<string, Dictionary<string, int>> totalDamageResults = new Dictionary<string, Dictionary<string, int>>();
         private Dictionary<string, List<Tuple<string, string>>> totalURLs = new Dictionary<string, List<Tuple<string, string>>>();
         private Dictionary<string, int> totalExperienceResults = new Dictionary<string, int>();
+        private Dictionary<string, bool> totalDeaths = new Dictionary<string, bool>();
         private ParseMemoryResults ParseLogResults(ReadMemoryResults res) {
             if (res == null) return null;
             ParseMemoryResults o = new ParseMemoryResults();
@@ -643,6 +646,17 @@ namespace Tibialyzer {
                 }
             }
 
+            // Update death information
+            foreach(KeyValuePair<string, bool> kvp in res.deaths) {
+                if (!totalDeaths.ContainsKey(kvp.Key)) {
+                    totalDeaths.Add(kvp.Key, false);
+                }
+                if (kvp.Value && !totalDeaths[kvp.Key]) {
+                    o.death = true;
+                    totalDeaths[kvp.Key] = true;
+                }
+            }
+
             // now parse any new commands given by users
             foreach (KeyValuePair<string, List<Tuple<string, string>>> kvp in res.commands) {
                 string t = kvp.Key;
@@ -650,9 +664,9 @@ namespace Tibialyzer {
                 if (!totalCommands.ContainsKey(t)) totalCommands[t] = new List<Tuple<string, string>>();
                 if (currentCommands.Count > totalCommands[t].Count) {
                     List<Tuple<string, string>> unseenCommands = new List<Tuple<string, string>>();
-                    List<Tuple<string, string>> commandsList = totalCommands[t].ToArray().ToList(); //hopefully this copies the list
+                    List<Tuple<string, string>> commandsList = totalCommands[t].ToArray().ToList(); // create a copy of the list
                     foreach (Tuple<string, string> command in currentCommands) {
-                        if (!totalCommands[t].Contains(command)) { //this might not work, because it might just check the reference instead of the actual values: test
+                        if (!totalCommands[t].Contains(command)) {
                             unseenCommands.Add(command);
                             string player = command.Item1;
                             string cmd = command.Item2;
@@ -789,6 +803,9 @@ namespace Tibialyzer {
                     } catch {
                         continue;
                     }
+                } else if (logMessage.Length == 19 && logMessage.Substring(5, 14) == " You are dead.") {
+                    if (!res.deaths.ContainsKey(t))
+                        res.deaths.Add(t, true);
                 } else if (logMessage.Length > 18) {
                     string[] split = message.Split(' ');
                     if (split.Contains("hitpoints") && split.ToList().IndexOf("hitpoints") > 0) {
