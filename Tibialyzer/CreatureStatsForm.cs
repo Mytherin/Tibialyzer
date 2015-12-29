@@ -22,8 +22,8 @@ namespace Tibialyzer {
         }
 
         private ToolTip resistance_tooltip = new ToolTip();
-        private static Dictionary<string, Color> resistance_colors = new Dictionary<string, Color>();
-        private static Dictionary<string, Image> resistance_images = new Dictionary<string, Image>();
+        public static Dictionary<string, Color> resistance_colors = new Dictionary<string, Color>();
+        public static Dictionary<string, Image> resistance_images = new Dictionary<string, Image>();
         private System.Windows.Forms.PictureBox[] resistance_controls = new PictureBox[7];
         public Creature creature;
         public CreatureStatsForm() {
@@ -47,7 +47,7 @@ namespace Tibialyzer {
 
         public static void InitializeCreatureStats() {
             resistance_colors.Add("Ice", Color.DodgerBlue);
-            resistance_colors.Add("Fire", Color.Firebrick);
+            resistance_colors.Add("Fire", Color.FromArgb(255,64,64));
             resistance_colors.Add("Holy", Color.DarkOrange);
             resistance_colors.Add("Phys", Color.DimGray);
             resistance_colors.Add("Earth", Color.ForestGreen);
@@ -71,6 +71,7 @@ namespace Tibialyzer {
                 using (Brush brush = new SolidBrush(resistance_colors[resistance.name])) {
                     gr.FillRectangle(brush, new Rectangle(19, 0, bitmap.Width - 19, bitmap.Height));
                 }
+                gr.DrawRectangle(Pens.Black, new Rectangle(19, 0, bitmap.Width - 20, bitmap.Height - 1));
                 gr.DrawImage(resistance_images[resistance.name], new Point(2, 2));
                 resistance_controls[i].Width = bitmap.Width;
                 resistance_controls[i].Height = bitmap.Height;
@@ -118,7 +119,7 @@ namespace Tibialyzer {
                 this.TransparencyKey = MainForm.background_color;
                 this.Opacity = 1;
             }
-            this.nameLabel.Text = this.creature.name;
+            this.nameLabel.Text = MainForm.ToTitle(this.creature.name);
             Font f = this.nameLabel.Font;
             while (TextRenderer.MeasureText(this.creature.name, f).Width < this.mainImage.Size.Width && TextRenderer.MeasureText(this.creature.name, f).Height < 26) {
                 f.Dispose();

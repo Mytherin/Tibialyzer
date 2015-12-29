@@ -29,24 +29,53 @@ namespace Tibialyzer {
         public Dictionary<int, NPC> npcIdMap = new Dictionary<int, NPC>();
         public Dictionary<string, HuntingPlace> huntingPlaceNameMap = new Dictionary<string, HuntingPlace>();
         public Dictionary<int, HuntingPlace> huntingPlaceIdMap = new Dictionary<int, HuntingPlace>();
-        
+        public Dictionary<string, Spell> spellNameMap = new Dictionary<string, Spell>();
+        public Dictionary<int, Spell> spellIdMap = new Dictionary<int, Spell>();
+        public Dictionary<int, Quest> questIdMap = new Dictionary<int, Quest>();
+        public Dictionary<string, Quest> questNameMap = new Dictionary<string, Quest>();
+        public Dictionary<int, Mount> mountIdMap = new Dictionary<int, Mount>();
+        public Dictionary<string, Mount> mountNameMap = new Dictionary<string, Mount>();
+        public Dictionary<string, Outfit> outfitNameMap = new Dictionary<string, Outfit>();
+        public Dictionary<int, Outfit> outfitIdMap = new Dictionary<int, Outfit>();
+
+        public static Creature getCreature(string name) {
+            name = name.ToLower().Trim();
+            if (!mainForm.creatureNameMap.ContainsKey(name)) return null;
+            return mainForm.creatureNameMap[name];
+        }
+        public static NPC getNPC(string name) {
+            name = name.ToLower().Trim();
+            if (!mainForm.npcNameMap.ContainsKey(name)) return null;
+            return mainForm.npcNameMap[name];
+        }
+        public static Item getItem(string name) {
+            name = name.ToLower().Trim();
+            if (!mainForm.itemNameMap.ContainsKey(name)) return null;
+            return mainForm.itemNameMap[name];
+        }
+
+        public static List<string> vocations = new List<string> { "knight", "druid", "paladin", "sorcerer" };
+
         public static Color background_color = Color.FromArgb(0, 51, 102);
         public static double opacity = 0.8;
         public static bool transparent = true;
         public static Image[] image_numbers = new Image[10];
         private Form tooltipForm = null;
+        public static Image tibia_store_image = null;
         private static Image tibia_image = null;
         public static Image back_image = null;
         public static Image prevpage_image = null;
         public static Image nextpage_image = null;
         public static Image item_background = null;
         public static Image cross_image = null;
-        public static Image[] star_image = new Image[5];
+        public static Image[] star_image = new Image[6];
+        public static Image[] star_image_text = new Image[6];
         public static Image mapup_image = null;
         public static Image mapdown_image = null;
         public static Image checkmark_yes = null;
         public static Image checkmark_no = null;
         public static Image infoIcon = null;
+        public static Dictionary<string, Image> vocationImages = new Dictionary<string, Image>();
         private bool keep_working = true;
         private static string databaseFile = @"Database\Database.db";
         private static string settingsFile = @"Database\settings.txt";
@@ -93,21 +122,28 @@ namespace Tibialyzer {
             checkmark_no = Image.FromFile(@"Images\checkmark-no.png");
             checkmark_yes = Image.FromFile(@"Images\checkmark-yes.png");
             infoIcon = Image.FromFile(@"Images\defaulticon.png");
+            tibia_store_image = Image.FromFile(@"Images\tibiastore.png");
 
             item_background = System.Drawing.Image.FromFile(@"Images\item_background.png");
             for (int i = 0; i < 10; i++) {
                 image_numbers[i] = System.Drawing.Image.FromFile(@"Images\" + i.ToString() + ".png");
             }
-            
+
+            vocationImages.Add("knight", Image.FromFile(@"Images\Knight.png"));
+            vocationImages.Add("paladin", Image.FromFile(@"Images\Paladin.png"));
+            vocationImages.Add("druid", Image.FromFile(@"Images\Druid.png"));
+            vocationImages.Add("sorcerer", Image.FromFile(@"Images\Sorcerer.png"));
+
             NotificationForm.Initialize();
             CreatureStatsForm.InitializeCreatureStats();
             HuntListForm.Initialize();
 
-            star_image[0] = Image.FromFile(@"Images\star0.png");
-            star_image[1] = Image.FromFile(@"Images\star1.png");
-            star_image[2] = Image.FromFile(@"Images\star2.png");
-            star_image[3] = Image.FromFile(@"Images\star3.png");
-            star_image[4] = Image.FromFile(@"Images\star4.png");
+            for (int i = 0; i < 5; i++) {
+                star_image[i] = Image.FromFile(@"Images\star" + i + ".png");
+                star_image_text[i] = Image.FromFile(@"Images\star" + i + "_text.png");
+            }
+            star_image[5] = Image.FromFile(@"Images\starunknown.png");
+            star_image_text[5] = Image.FromFile(@"Images\starunknown_text.png");
 
             prevent_settings_update = true;
             this.initializePluralMap();
@@ -153,7 +189,7 @@ namespace Tibialyzer {
         public static string DATABASE_STRING_NULL = "";
         private void loadDatabaseData() {
             // first load creatures from the database
-            SQLiteCommand command = new SQLiteCommand("SELECT id, name, health, experience, maxdamage, summon, illusionable, pushable, pushes, physical, holy, death, fire, energy, ice, earth, drown, lifedrain, paralysable, senseinvis, image, abilities FROM Creatures", conn);
+            SQLiteCommand command = new SQLiteCommand("SELECT id, name, health, experience, maxdamage, summon, illusionable, pushable, pushes, physical, holy, death, fire, energy, ice, earth, drown, lifedrain, paralysable, senseinvis, image, abilities, title, speed, armor FROM Creatures", conn);
             SQLiteDataReader reader = command.ExecuteReader();
             while (reader.Read()) {
                 Creature cr = new Creature();
@@ -166,26 +202,38 @@ namespace Tibialyzer {
                 cr.illusionable = reader.GetBoolean(6);
                 cr.pushable = reader.GetBoolean(7);
                 cr.pushes = reader.GetBoolean(8);
-                cr.res_phys = reader.GetInt32(9);
-                cr.res_holy = reader.GetInt32(10);
-                cr.res_death = reader.GetInt32(11);
-                cr.res_fire = reader.GetInt32(12);
-                cr.res_energy = reader.GetInt32(13);
-                cr.res_ice = reader.GetInt32(14);
-                cr.res_earth = reader.GetInt32(15);
-                cr.res_drown = reader.GetInt32(16);
-                cr.res_lifedrain = reader.GetInt32(17);
+                cr.res_phys = reader.IsDBNull(9) ? 100 : reader.GetInt32(9);
+                cr.res_holy = reader.IsDBNull(10) ? 100 : reader.GetInt32(10);
+                cr.res_death = reader.IsDBNull(11) ? 100 : reader.GetInt32(11);
+                cr.res_fire = reader.IsDBNull(12) ? 100 : reader.GetInt32(12);
+                cr.res_energy = reader.IsDBNull(13) ? 100 : reader.GetInt32(13);
+                cr.res_ice = reader.IsDBNull(14) ? 100 : reader.GetInt32(14);
+                cr.res_earth = reader.IsDBNull(15) ? 100 : reader.GetInt32(15);
+                cr.res_drown = reader.IsDBNull(16) ? 100 : reader.GetInt32(16);
+                cr.res_lifedrain = reader.IsDBNull(17) ? 100 : reader.GetInt32(17);
                 cr.paralysable = reader.GetBoolean(18);
                 cr.senseinvis = reader.GetBoolean(19);
+                if (reader.IsDBNull(20)) {
+                    continue;
+                }
                 cr.image = Image.FromStream(reader.GetStream(20));
                 cr.abilities = reader.IsDBNull(21) ? DATABASE_STRING_NULL : reader["abilities"].ToString();
+                cr.title = reader[22].ToString();
+                cr.speed = reader.IsDBNull(23) ? DATABASE_NULL : reader.GetInt32(23);
+                cr.armor = reader.IsDBNull(24) ? DATABASE_NULL : reader.GetInt32(24);
 
-                creatureNameMap.Add(cr.name.ToLower(), cr);
+                if (creatureNameMap.ContainsKey(cr.name.ToLower())) {
+                    if (cr.name.ToLower() == cr.title.ToLower()) {
+                        creatureNameMap[cr.name.ToLower()] = cr;
+                    }
+                } else {
+                    creatureNameMap.Add(cr.name.ToLower(), cr);
+                }
                 creatureIdMap.Add(cr.id, cr);
             }
 
             // now load items
-            command = new SQLiteCommand("SELECT id, name, actual_value, vendor_value, stackable, capacity, category, image, discard, convert_to_gold, look_text FROM Items", conn);
+            command = new SQLiteCommand("SELECT id, name, actual_value, vendor_value, stackable, capacity, category, image, discard, convert_to_gold, look_text, title, currency FROM Items", conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 Item item = new Item();
@@ -194,12 +242,14 @@ namespace Tibialyzer {
                 item.actual_value = reader.IsDBNull(2) ? DATABASE_NULL : reader.GetInt32(2);
                 item.vendor_value = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
                 item.stackable = reader.GetBoolean(4);
-                item.capacity = reader.GetFloat(5);
-                item.category = reader.GetString(6);
+                item.capacity = reader.IsDBNull(5) ? DATABASE_NULL : reader.GetFloat(5);
+                item.category = reader.IsDBNull(6) ? "Unknown" : reader.GetString(6);
                 item.image = Image.FromStream(reader.GetStream(7));
                 item.discard = reader.GetBoolean(8);
                 item.convert_to_gold = reader.GetBoolean(9);
-                item.look_text = reader.GetString(10);
+                item.look_text = reader.IsDBNull(10) ? String.Format("You see a {0}.", item.name) : reader.GetString(10);
+                item.title = reader.GetString(11);
+                item.currency = reader.IsDBNull(12) ? DATABASE_NULL : reader.GetInt32(12);
 
                 if (item.image.RawFormat.Guid == ImageFormat.Gif.Guid) {
                     int frames = item.image.GetFrameCount(FrameDimension.Time);
@@ -211,12 +261,18 @@ namespace Tibialyzer {
                     }
                 }
 
-                itemNameMap.Add(item.name.ToLower(), item);
+                if (itemNameMap.ContainsKey(item.name.ToLower())) {
+                    if (item.name.ToLower() == item.title.ToLower()) {
+                        itemNameMap[item.name.ToLower()] = item;
+                    }
+                } else {
+                    itemNameMap.Add(item.name.ToLower(), item);
+                }
                 itemIdMap.Add(item.id, item);
             }
 
             // skins for the creatures
-            command = new SQLiteCommand("SELECT creatureid, itemid, skinitemid, percentage FROM Skins", conn);
+            command = new SQLiteCommand("SELECT creatureid, skinitemid, knifeitemid, percentage FROM Skins", conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 Skin skin = new Skin();
@@ -255,17 +311,18 @@ namespace Tibialyzer {
             }
 
             // NPCs
-            command = new SQLiteCommand("SELECT id,name,city,x,y,z,image FROM NPCs;", conn);
+            command = new SQLiteCommand("SELECT id,name,city,x,y,z,image,job FROM NPCs;", conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 NPC npc = new NPC();
                 npc.id = reader.GetInt32(0);
                 npc.name = reader["name"].ToString();
                 npc.city = reader["city"].ToString();
-                npc.pos.x = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetFloat(3);
-                npc.pos.y = reader.IsDBNull(4) ? DATABASE_NULL : reader.GetFloat(4);
+                npc.pos.x = reader.IsDBNull(3) ? DATABASE_NULL : (int)(Coordinate.MaxWidth * reader.GetFloat(3));
+                npc.pos.y = reader.IsDBNull(4) ? DATABASE_NULL : (int)(Coordinate.MaxHeight * reader.GetFloat(4));
                 npc.pos.z = reader.IsDBNull(5) ? DATABASE_NULL : reader.GetInt32(5);
                 npc.image = Image.FromStream(reader.GetStream(6));
+                npc.job = reader.IsDBNull(7) ? "" : reader.GetString(7);
 
                 // special case for rashid: change location based on day of the week
                 if (npc != null && npc.name == "Rashid") {
@@ -273,8 +330,8 @@ namespace Tibialyzer {
                     SQLiteDataReader rashidReader = rashidCommand.ExecuteReader();
                     if (rashidReader.Read()) {
                         npc.city = rashidReader["city"].ToString();
-                        npc.pos.x = rashidReader.GetFloat(1);
-                        npc.pos.y = rashidReader.GetFloat(2);
+                        npc.pos.x = (int)(Coordinate.MaxWidth * rashidReader.GetFloat(1));
+                        npc.pos.y = (int)(Coordinate.MaxHeight * rashidReader.GetFloat(2));
                         npc.pos.z = rashidReader.GetInt32(3);
                     }
                 }
@@ -325,9 +382,15 @@ namespace Tibialyzer {
                 huntingPlace.level = reader.IsDBNull(2) ? DATABASE_NULL : reader.GetInt32(2);
                 huntingPlace.exp_quality = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
                 huntingPlace.loot_quality = reader.IsDBNull(4) ? DATABASE_NULL : reader.GetInt32(4);
-                huntingPlace.image = Image.FromStream(reader.GetStream(5));
+                string imageName = reader.GetString(5).ToLower();
+                if (creatureNameMap.ContainsKey(imageName)) {
+                    huntingPlace.image = creatureNameMap[imageName].image;
+                } else {
+                    huntingPlace.image = npcNameMap[imageName].image;
+                }
                 huntingPlace.city = reader["city"].ToString();
 
+                string huntNameLower = huntingPlace.name.ToLower();
                 huntingPlaceNameMap.Add(huntingPlace.name.ToLower(), huntingPlace);
                 huntingPlaceIdMap.Add(huntingPlace.id, huntingPlace);
             }
@@ -338,35 +401,23 @@ namespace Tibialyzer {
             while (reader.Read()) {
                 Coordinate c = new Coordinate();
                 int huntingplaceid = reader.GetInt32(0);
-                c.x = reader.IsDBNull(1) ? DATABASE_NULL : reader.GetFloat(1);
-                c.y = reader.IsDBNull(2) ? DATABASE_NULL : reader.GetFloat(2);
+                c.x = reader.IsDBNull(1) ? DATABASE_NULL : (int)(Coordinate.MaxWidth * reader.GetFloat(1));
+                c.y = reader.IsDBNull(2) ? DATABASE_NULL : (int)(Coordinate.MaxHeight * reader.GetFloat(2));
                 c.z = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
                 if (huntingPlaceIdMap.ContainsKey(huntingplaceid)) huntingPlaceIdMap[huntingplaceid].coordinates.Add(c);
             }
 
             // Hunting place directions
-            command = new SQLiteCommand("SELECT huntingplaceid, x, y, z, ordering, name, notes FROM HuntingPlaceDirections ORDER BY ordering", conn);
+            command = new SQLiteCommand("SELECT huntingplaceid, beginx, beginy, beginz,endx, endy, endz, ordering, description FROM HuntDirections ORDER BY ordering", conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 Directions d = new Directions();
                 d.huntingplaceid = reader.GetInt32(0);
-                d.x = reader.IsDBNull(1) ? DATABASE_NULL : reader.GetFloat(1);
-                d.y = reader.IsDBNull(2) ? DATABASE_NULL : reader.GetFloat(2);
-                d.z = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
-                d.name = reader["name"].ToString();
-                d.notes = reader["notes"].ToString();
+                d.begin = new Coordinate(reader.GetInt32(1), reader.GetInt32(2), reader.GetInt32(3));
+                d.end = new Coordinate(reader.GetInt32(4), reader.GetInt32(5), reader.GetInt32(6));
+                d.ordering = reader.GetInt32(7);
+                d.description = reader["description"].ToString();
                 if (huntingPlaceIdMap.ContainsKey(d.huntingplaceid)) huntingPlaceIdMap[d.huntingplaceid].directions.Add(d);
-            }
-
-            // Hunting place requirements
-            command = new SQLiteCommand("SELECT huntingplaceid, questid, notes FROM HuntingPlaceRequirements", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                Requirements r = new Requirements();
-                r.huntingplaceid = reader.GetInt32(0);
-                r.questid = reader.IsDBNull(1) ? DATABASE_NULL : reader.GetInt32(1);
-                r.notes = reader["notes"].ToString();
-                if (huntingPlaceIdMap.ContainsKey(r.huntingplaceid)) huntingPlaceIdMap[r.huntingplaceid].requirements.Add(r);
             }
 
             // Hunting place creatures
@@ -379,8 +430,197 @@ namespace Tibialyzer {
                     huntingPlaceIdMap[huntingplaceid].creatures.Add(creatureIdMap[creatureid]);
                 }
             }
-            foreach(HuntingPlace h in huntingPlaceIdMap.Values) {
+            foreach (HuntingPlace h in huntingPlaceIdMap.Values) {
                 h.creatures = h.creatures.OrderBy(o => o.experience).ToList();
+            }
+
+            // Spells
+            command = new SQLiteCommand("SELECT id, name, words, element, cooldown, premium, promotion, levelrequired, goldcost, manacost, knight, paladin, sorcerer, druid, image FROM Spells", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                Spell spell = new Spell();
+                spell.id = reader.GetInt32(0);
+                spell.name = reader["name"].ToString();
+                spell.words = reader["words"].ToString();
+                spell.element = reader.IsDBNull(3) ? "Unknown" : reader.GetString(3);
+                spell.cooldown = reader.IsDBNull(4) ? DATABASE_NULL : reader.GetInt32(4);
+                spell.premium = reader.GetBoolean(5);
+                spell.promotion = reader.GetBoolean(6);
+                spell.levelrequired = reader.GetInt32(7);
+                spell.goldcost = reader.GetInt32(8);
+                spell.manacost = reader.GetInt32(9);
+                spell.knight = reader.GetBoolean(10);
+                spell.paladin = reader.GetBoolean(11);
+                spell.sorcerer = reader.GetBoolean(12);
+                spell.druid = reader.GetBoolean(13);
+                spell.image = Image.FromStream(reader.GetStream(14));
+
+                spellIdMap.Add(spell.id, spell);
+                spellNameMap.Add(spell.name.ToLower(), spell);
+            }
+
+            // Spell NPCs
+            command = new SQLiteCommand("SELECT spellid, npcid, paladin, knight, druid, sorcerer FROM SpellNPCs", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                int spellid = reader.GetInt32(0);
+                int npcid = reader.GetInt32(1);
+                bool paladin = reader.GetBoolean(2);
+                bool knight = reader.GetBoolean(3);
+                bool druid = reader.GetBoolean(4);
+                bool sorcerer = reader.GetBoolean(5);
+
+                Spell spell = spellIdMap[spellid];
+                NPC npc = npcIdMap[npcid];
+
+                SpellTaught teach = new SpellTaught();
+                teach.spell = spell;
+                teach.npc = npc;
+                teach.paladin = paladin;
+                teach.knight = knight;
+                teach.sorcerer = sorcerer;
+                teach.druid = druid;
+
+                npc.spellsTaught.Add(teach);
+                spell.teachNPCs.Add(teach);
+            }
+
+            // Outfits
+            command = new SQLiteCommand("SELECT id, title, name, premium FROM Outfits", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                Outfit outfit = new Outfit();
+                outfit.id = reader.GetInt32(0);
+                outfit.title = reader.GetString(1);
+                outfit.name = reader.GetString(2);
+                outfit.premium = reader.GetBoolean(3);
+                outfitNameMap.Add(outfit.name.ToLower(), outfit);
+                outfitIdMap.Add(outfit.id, outfit);
+            }
+
+            // Outfit Images
+            command = new SQLiteCommand("SELECT outfitid, male, addon, image FROM OutfitImages", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                int outfitid = reader.GetInt32(0);
+                bool male = reader.GetBoolean(1);
+                int addon = reader.GetInt32(2);
+                Image image = Image.FromStream(reader.GetStream(3));
+
+                if (male) {
+                    outfitIdMap[outfitid].maleImages[addon] = image;
+                } else {
+                    outfitIdMap[outfitid].femaleImages[addon] = image;
+                }
+            }
+
+            // Mounts
+            command = new SQLiteCommand("SELECT id, title, name, tameitemid, tamecreatureid, speed, tibiastore, image FROM Mounts", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                Mount mount = new Mount();
+                mount.id = reader.GetInt32(0);
+                mount.title = reader.GetString(1);
+                mount.name = reader.GetString(2);
+
+                int tameitem = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
+                if (tameitem > 0) mount.tameitem = itemIdMap[tameitem];
+                int tamecreature = reader.IsDBNull(4) ? DATABASE_NULL : reader.GetInt32(4);
+                if (tamecreature > 0) mount.tamecreature = creatureIdMap[tamecreature];
+                mount.speed = reader.GetInt32(5);
+                mount.tibiastore = reader.GetBoolean(6);
+                mount.image = Image.FromStream(reader.GetStream(7));
+
+                mountIdMap.Add(mount.id, mount);
+                mountNameMap.Add(mount.name.ToLower(), mount);
+            }
+
+            // Quests
+            command = new SQLiteCommand("SELECT id, title, name, minlevel, premium, city, legend FROM Quests", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                Quest quest = new Quest();
+                quest.id = reader.GetInt32(0);
+                quest.title = reader.GetString(1);
+                quest.name = reader.GetString(2);
+                quest.minlevel = reader.GetInt32(3);
+                quest.premium = reader.GetBoolean(4);
+                quest.city = reader.IsDBNull(5) ? "Unknown" : reader.GetString(5);
+                quest.legend = reader.IsDBNull(6) ? "No legend available." : reader.GetString(6);
+                if (quest.legend == "..." || quest.legend == "")
+                    quest.legend = "No legend available.";
+
+                questIdMap.Add(quest.id, quest);
+                questNameMap.Add(quest.name.ToLower(), quest);
+            }
+
+            // Quest Rewards
+            command = new SQLiteCommand("SELECT questid, itemid FROM QuestRewards", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                questIdMap[reader.GetInt32(0)].rewardItems.Add(itemIdMap[reader.GetInt32(1)]);
+            }
+
+            // Quest Outfits
+            command = new SQLiteCommand("SELECT questid, outfitid FROM QuestOutfits", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                int questid = reader.GetInt32(0);
+                int outfitid = reader.GetInt32(1);
+                if (outfitIdMap.ContainsKey(outfitid)) {
+                    questIdMap[questid].rewardOutfits.Add(outfitIdMap[outfitid]);
+                    outfitIdMap[outfitid].quest = questIdMap[questid];
+                }
+            }
+
+            // Quest Dangers
+            command = new SQLiteCommand("SELECT questid, creatureid FROM QuestDangers", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                questIdMap[reader.GetInt32(0)].questDangers.Add(creatureIdMap[reader.GetInt32(1)]);
+            }
+
+            // Quest Item Requirements
+            command = new SQLiteCommand("SELECT questid, count, itemid FROM QuestItemRequirements", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                questIdMap[reader.GetInt32(0)].questRequirements.Add(new Tuple<int, Item>(reader.GetInt32(1), itemIdMap[reader.GetInt32(2)]));
+            }
+
+            // Quest Additional Requirements
+            command = new SQLiteCommand("SELECT questid, requirementtext FROM QuestAdditionalRequirements", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                questIdMap[reader.GetInt32(0)].additionalRequirements.Add(reader.GetString(1));
+            }
+
+            // Quest Instructions
+            command = new SQLiteCommand("SELECT questid, beginx, beginy, beginz, endx, endy, endz, description, ordering FROM QuestInstructions ORDER BY ordering", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                QuestInstruction instruction = new QuestInstruction();
+                instruction.quest = questIdMap[reader.GetInt32(0)];
+                instruction.begin = new Coordinate(reader.GetInt32(1), reader.GetInt32(2), reader.GetInt32(3));
+                if (reader.IsDBNull(4)) {
+                    instruction.end = new Coordinate(DATABASE_NULL, DATABASE_NULL, reader.GetInt32(6));
+                } else {
+                    instruction.end = new Coordinate(reader.GetInt32(4), reader.GetInt32(5), reader.GetInt32(6));
+                }
+                instruction.description = reader.GetString(7);
+                instruction.ordering = reader.GetInt32(8);
+
+                instruction.quest.questInstructions.Add(instruction);
+            }
+            // Hunting place requirements
+            command = new SQLiteCommand("SELECT huntingplaceid, questid, requirementtext FROM HuntRequirements", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                Requirements r = new Requirements();
+                r.huntingplaceid = reader.GetInt32(0);
+                int questid = reader.IsDBNull(1) ? DATABASE_NULL : reader.GetInt32(1);
+                r.quest = questIdMap[questid];
+                r.notes = reader["requirementtext"].ToString();
+                if (huntingPlaceIdMap.ContainsKey(r.huntingplaceid)) huntingPlaceIdMap[r.huntingplaceid].requirements.Add(r);
             }
         }
 
@@ -591,7 +831,7 @@ namespace Tibialyzer {
                     Directory.CreateDirectory(path);
                 }
             }
-            
+
             screenshotDirectoryBox.Text = getSettingString("ScreenshotPath");
             refreshScreenshots();
         }
@@ -663,7 +903,7 @@ namespace Tibialyzer {
             while (reader.Read()) {
                 Map m = new Map();
                 m.z = reader.GetInt32(0);
-                m.image = Image.FromStream(reader.GetStream(1));
+                m.image = new Bitmap(Image.FromStream(reader.GetStream(1)));
                 map_files.Add(m);
             }
         }
@@ -859,6 +1099,40 @@ namespace Tibialyzer {
             ShowNotification(f, comm);
         }
 
+        private void ShowSpellNotification(Spell spell, string comm) {
+            SpellForm f = new SpellForm(spell);
+
+            ShowNotification(f, comm);
+        }
+
+        private void ShowOutfitNotification(Outfit outfit, string comm) {
+            OutfitForm f = new OutfitForm(outfit);
+
+            ShowNotification(f, comm);
+        }
+        private void ShowQuestNotification(Quest quest, string comm) {
+            QuestForm f = new QuestForm(quest);
+
+            ShowNotification(f, comm);
+        }
+        private void ShowHuntGuideNotification(HuntingPlace hunt, string comm) {
+            if (hunt.directions.Count == 0) return;
+            QuestGuideForm f = new QuestGuideForm(hunt);
+
+            ShowNotification(f, comm);
+        }
+
+        private void ShowQuestGuideNotification(Quest quest, string comm) {
+            QuestGuideForm f = new QuestGuideForm(quest);
+
+            ShowNotification(f, comm);
+        }
+        private void ShowMountNotification(Mount mount, string comm) {
+            MountForm f = new MountForm(mount);
+
+            ShowNotification(f, comm);
+        }
+
         private void ShowListNotification(List<Command> commands, int type, string comm) {
             ListNotification f = new ListNotification(commands);
             f.type = type;
@@ -886,7 +1160,117 @@ namespace Tibialyzer {
             }
         }
 
-        public static int DisplayCreatureList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, int max_x, int spacing, bool transparent, Func<TibiaObject, string> tooltip_function = null, float magnification = 1.0f) {
+        public static int convertX(double x, Rectangle sourceRectangle, Rectangle pictureRectangle) {
+            return (int)((x - (double)sourceRectangle.X) / (double)sourceRectangle.Width * (double)pictureRectangle.Width);
+        }
+        public static int convertY(double y, Rectangle sourceRectangle, Rectangle pictureRectangle) {
+            return (int)((y - (double)sourceRectangle.Y) / (double)sourceRectangle.Height * (double)pictureRectangle.Height);
+        }
+
+
+        private static Pen pathPen = new Pen(Color.FromArgb(25, 25, 112), 1);
+        private static Pen startPen = new Pen(Color.FromArgb(191, 191, 191), 1);
+        private static Pen endPen = new Pen(Color.FromArgb(34, 139, 34), 1);
+        public static PictureBox DrawRoute(Coordinate begin, Coordinate end, Size pictureBoxSize, Size minSize, Size maxSize) {
+            if (end.x >= 0 && begin.z != end.z) {
+                throw new Exception("Can't draw route with different z-coordinates");
+            }
+            Bitmap mapImage;
+            Rectangle sourceRectangle;
+            MapPictureBox pictureBox = new MapPictureBox();
+            if (pictureBoxSize.Width != 0) {
+                pictureBox.Size = pictureBoxSize;
+            }
+            pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+
+            if (end.x < 0) {
+                if (pictureBoxSize.Width == 0) {
+                    pictureBoxSize = new Size(Math.Min(Math.Max(end.z, minSize.Width),maxSize.Width),
+                        Math.Min(Math.Max(end.z, minSize.Height), maxSize.Height));
+                    pictureBox.Size = pictureBoxSize;
+                }
+                mapImage = new Bitmap(map_files[begin.z].image);
+                using (Graphics gr = Graphics.FromImage(mapImage)) {
+                    int crossSize = 4;
+                    gr.DrawImage(MainForm.cross_image, new Rectangle(begin.x - crossSize,begin.y - crossSize, crossSize * 2, crossSize * 2));
+                }
+                pictureBox.mapImage = mapImage;
+                pictureBox.sourceWidth = end.z;
+                pictureBox.mapCoordinate = new Coordinate(begin.x, begin.y, begin.z);
+                pictureBox.zCoordinate = begin.z;
+                pictureBox.UpdateMap();
+                return pictureBox;
+
+            }
+
+            // First find the route at a high level
+            Node beginNode = Pathfinder.GetNode(begin.x, begin.y, begin.z);
+            Node endNode = Pathfinder.GetNode(end.x, end.y, end.z);
+
+            List<Rectangle> collisionBounds = null;
+            DijkstraNode highresult = Dijkstra.FindRoute(beginNode, endNode);
+            if (highresult != null) {
+                collisionBounds = new List<Rectangle>();
+                while (highresult != null) {
+                    highresult.rect.Inflate(5, 5);
+                    collisionBounds.Add(highresult.rect);
+                    highresult = highresult.previous;
+                }
+                if (collisionBounds.Count == 0) collisionBounds = null;
+            }
+
+            DijkstraPoint result = Dijkstra.FindRoute(map_files[begin.z].image, new Point(begin.x, begin.y), new Point(end.x, end.y), collisionBounds);
+            if (result == null) {
+                throw new Exception("Couldn't find route.");
+            }
+
+            // create a rectangle from the result
+            double minX = int.MaxValue, minY = int.MaxValue, maxX = int.MinValue, maxY = int.MinValue;
+            DijkstraPoint node = result;
+            while (node != null) {
+                if (node.point.X < minX) minX = node.point.X;
+                if (node.point.Y < minY) minY = node.point.Y;
+                if (node.point.X > maxX) maxX = node.point.X;
+                if (node.point.Y > maxY) maxY = node.point.Y;
+                node = node.previous;
+            }
+
+            minX -= 10;
+            minY -= 10;
+            maxX += 10;
+            maxY += 10;
+
+            int size = (int)Math.Max(maxX - minX, maxY - minY);
+            sourceRectangle = new Rectangle((int)minX, (int)minY, size, size);
+            if (pictureBoxSize.Width == 0) {
+                pictureBoxSize = new Size(Math.Min(Math.Max(sourceRectangle.Width, minSize.Width), maxSize.Width),
+                    Math.Min(Math.Max(sourceRectangle.Height, minSize.Height), maxSize.Height));
+                pictureBox.Size = pictureBoxSize;
+            }
+            mapImage = new Bitmap(map_files[begin.z].image);
+
+            using (Graphics gr = Graphics.FromImage(mapImage)) {
+                node = result;
+                while (node.previous != null) {
+                    gr.DrawLine(pathPen,
+                        new Point(node.point.X, node.point.Y),
+                        new Point(node.previous.point.X, node.previous.point.Y));
+                    node = node.previous;
+                }
+                int crossSize = 2;
+                gr.DrawEllipse(startPen, new Rectangle(begin.x - crossSize, begin.y - crossSize, crossSize * 2, crossSize * 2));
+                gr.DrawEllipse(endPen, new Rectangle(end.x - crossSize, end.y - crossSize, crossSize * 2, crossSize * 2));
+            }
+            pictureBox.mapImage = mapImage;
+            pictureBox.sourceWidth = size;
+            pictureBox.mapCoordinate = new Coordinate(sourceRectangle.X + sourceRectangle.Width / 2, sourceRectangle.Y + sourceRectangle.Height / 2, begin.z);
+            pictureBox.zCoordinate = begin.z;
+            pictureBox.UpdateMap();
+
+            return pictureBox;
+        }
+
+        public static int DisplayCreatureList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, int max_x, int spacing, bool transparent, Func<TibiaObject, string> tooltip_function = null, float magnification = 1.0f, List<Control> createdControls = null) {
             int x = 0, y = 0;
 
             int height = 0;
@@ -918,6 +1302,7 @@ namespace Tibialyzer {
                 image_box.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
                 image_box.Name = name;
                 controls.Add(image_box);
+                if (createdControls != null) createdControls.Add(image_box);
                 image_box.Image = image;
                 if (tooltip_function == null) {
                     value_tooltip.SetToolTip(image_box, System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(name));
@@ -1316,7 +1701,7 @@ namespace Tibialyzer {
 
             saveHunts();
         }
-        
+
         private bool getSettingBool(string key) {
             if (!settings.ContainsKey(key) || settings[key].Count == 0) return false;
             return settings[key][0] == "True";
@@ -1494,19 +1879,19 @@ namespace Tibialyzer {
 
             Process[] tibia_process = Process.GetProcessesByName("Tibia");
             if (tibia_process.Length == 0) return; //no tibia to take screenshot of
-            
+
             RECT Rect = new RECT();
             if (!GetWindowRect(tibia_process[0].MainWindowHandle, ref Rect)) return;
 
             Bitmap bitmap = new Bitmap(Rect.right - Rect.left, Rect.bottom - Rect.top);
             using (Graphics gr = Graphics.FromImage(bitmap)) {
-                gr.CopyFromScreen(new Point(Rect.left,Rect.top), Point.Empty, bitmap.Size);
+                gr.CopyFromScreen(new Point(Rect.left, Rect.top), Point.Empty, bitmap.Size);
             }
             DateTime dt = DateTime.Now;
             name = String.Format("{0} - {1}-{2}-{3} {4}h{5}m{6}s{7}ms.png", name, dt.Year.ToString("D4"), dt.Month.ToString("D2"), dt.Day.ToString("D2"), dt.Hour.ToString("D2"), dt.Minute.ToString("D2"), dt.Second.ToString("D2"), dt.Millisecond.ToString("D4"));
             path = Path.Combine(path, name);
             bitmap.Save(path, ImageFormat.Png);
-            
+
             refreshScreenshots();
         }
 
@@ -1522,7 +1907,7 @@ namespace Tibialyzer {
             refreshingScreenshots = true;
 
             screenshotList.Items.Clear();
-            foreach(string file in files) {
+            foreach (string file in files) {
                 if (imageExtensions.Contains(Path.GetExtension(file).ToLower())) { //check if file is an image
                     string f = Path.GetFileName(file);
                     if (f == selectedValue) {
@@ -1531,7 +1916,7 @@ namespace Tibialyzer {
                     screenshotList.Items.Add(f);
                 }
             }
-            
+
             refreshingScreenshots = false;
             if (screenshotList.Items.Count > 0) {
                 screenshotList.SelectedIndex = index;
@@ -1560,7 +1945,7 @@ namespace Tibialyzer {
             setSetting("AutoScreenshotItemDrop", (sender as CheckBox).Checked.ToString());
             saveSettings();
         }
-        
+
         private void autoScreenshotDeath_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
@@ -1578,7 +1963,7 @@ namespace Tibialyzer {
                 if (path == null) return;
 
                 string imagePath = Path.Combine(path, selectedImage);
-                
+
                 Image image = Image.FromFile(imagePath);
                 if (image != null) {
                     if (screenshotBox.Image != null) {
@@ -1611,7 +1996,7 @@ namespace Tibialyzer {
         static string autoHotkeyURL = "http://ahkscript.org/download/ahk-install.exe";
         private void downloadAutoHotkey_Click(object sender, EventArgs e) {
             WebClient client = new WebClient();
-            
+
             client.DownloadDataCompleted += Client_DownloadDataCompleted;
             client.DownloadProgressChanged += Client_DownloadProgressChanged;
 
@@ -1640,7 +2025,7 @@ namespace Tibialyzer {
             }
             downloadBar.Visible = false;
         }
-        
+
         private string modifyKeyString(string value) {
             if (value.Contains("alt+")) {
                 value = value.Replace("alt+", "!");
@@ -1724,7 +2109,7 @@ namespace Tibialyzer {
             }
             if (m.Msg == 0x317) {
                 // We intercept this message because this message signifies the AutoHotkey state (suspended or not)
-                
+
                 int wParam = m.WParam.ToInt32();
                 if (wParam == 32) {
                     // 32 signifies we have entered suspended mode, so we warn the user with a popup

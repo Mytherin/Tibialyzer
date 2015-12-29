@@ -10,8 +10,6 @@ using System.Windows.Forms;
 namespace Tibialyzer {
     class HuntingPlaceForm : NotificationForm {
         public HuntingPlace hunting_place = null;
-        private Coordinate target = null;
-        private Coordinate map_coordinates;
         private Label huntingPlaceName;
         private Label creatureLabel;
         private System.Windows.Forms.PictureBox mapDownLevel;
@@ -23,8 +21,9 @@ namespace Tibialyzer {
         private Label levelLabel;
         private Label cityLabel;
         private Label requirementLabel;
-        private Bitmap map_image = null;
+        private Label guideButton;
         private static Font requirement_font = new Font(FontFamily.GenericSansSerif, 7.5f, FontStyle.Bold);
+        private Coordinate targetCoordinate;
 
         public HuntingPlaceForm() {
             InitializeComponent();
@@ -43,7 +42,8 @@ namespace Tibialyzer {
             this.mapUpLevel = new System.Windows.Forms.PictureBox();
             this.creatureLabel = new System.Windows.Forms.Label();
             this.huntingPlaceName = new System.Windows.Forms.Label();
-            this.mapBox = new System.Windows.Forms.PictureBox();
+            this.mapBox = new MapPictureBox();
+            this.guideButton = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.lootStarBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.experienceStarBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapDownLevel)).BeginInit();
@@ -179,9 +179,25 @@ namespace Tibialyzer {
             this.mapBox.TabIndex = 0;
             this.mapBox.TabStop = false;
             // 
+            // guideButton
+            // 
+            this.guideButton.BackColor = System.Drawing.Color.Transparent;
+            this.guideButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.guideButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.guideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.guideButton.Location = new System.Drawing.Point(269, 209);
+            this.guideButton.Name = "guideButton";
+            this.guideButton.Padding = new System.Windows.Forms.Padding(2);
+            this.guideButton.Size = new System.Drawing.Size(96, 21);
+            this.guideButton.TabIndex = 31;
+            this.guideButton.Text = "Guide";
+            this.guideButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.guideButton.Click += new System.EventHandler(this.guideButton_Click);
+            // 
             // HuntingPlaceForm
             // 
             this.ClientSize = new System.Drawing.Size(382, 273);
+            this.Controls.Add(this.guideButton);
             this.Controls.Add(this.requirementLabel);
             this.Controls.Add(this.cityLabel);
             this.Controls.Add(this.levelLabel);
@@ -209,7 +225,7 @@ namespace Tibialyzer {
 
         }
 
-        private System.Windows.Forms.PictureBox mapBox;
+        private MapPictureBox mapBox;
 
         protected override bool ShowWithoutActivation {
             get { return true; }
@@ -218,7 +234,6 @@ namespace Tibialyzer {
         protected override void Dispose(bool disposing) {
             if (disposing) {
                 base.Cleanup();
-                if (map_image != null) map_image.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -230,6 +245,10 @@ namespace Tibialyzer {
             this.cityLabel.Text = hunting_place.city;
             this.huntingPlaceName.Text = MainForm.ToTitle(hunting_place.name);
             this.levelLabel.Text = hunting_place.level < 0 ? "--" : hunting_place.level.ToString();
+
+            if (hunting_place.directions.Count == 0) {
+                guideButton.Visible = false;
+            }
 
             int y;
             ToolTip tooltip = new ToolTip();
@@ -256,30 +275,10 @@ namespace Tibialyzer {
                     this.Controls.Add(label);
                     count++;
                 }
-                int offset = (count - 1) * 25;
-                int dircount = 1;
-                foreach (Directions dir in this.hunting_place.directions) {
-                    Label label = new Label();
-                    label.ForeColor = MainForm.label_text_color;
-                    label.BackColor = Color.Transparent;
-                    label.Name = (dircount - 1).ToString();
-                    label.Font = requirement_font;
-                    label.Text = dir.name;
-                    label.BorderStyle = BorderStyle.FixedSingle;
-                    label.Location = new Point(mapBox.Location.X + offset, mapBox.Location.Y + mapBox.Size.Height + 5);
-                    label.Click += direction_Click;
-                    this.Controls.Add(label);
-                    int width = TextRenderer.MeasureText(label.Text, label.Font).Width + 5;
-                    label.Size = new Size(width, 26);
-                    label.TextAlign = ContentAlignment.MiddleCenter;
-                    tooltip.SetToolTip(label, dir.notes);
-                    offset += TextRenderer.MeasureText(label.Text, label.Font).Width + 5;
-                    dircount++;
-                }
-                target = new Coordinate(this.hunting_place.coordinates[0]);
-                map_coordinates = new Coordinate(this.hunting_place.coordinates[0]);
+                targetCoordinate = this.hunting_place.coordinates[0];
+
             } else {
-                map_coordinates = new Coordinate(0.5f, 0.5f, 7);
+                targetCoordinate = new Coordinate();
             }
 
             if (hunting_place.requirements != null && hunting_place.requirements.Count > 0) {
@@ -294,7 +293,8 @@ namespace Tibialyzer {
                     label.AutoSize = true;
                     label.MaximumSize = new Size(170, 0);
                     label.Text = "- " + requirement.notes;
-                    label.Name = requirement.questid.ToString();
+                    label.Name = requirement.quest.name.ToString();
+                    label.Click += openQuest;
                     using (Graphics graphics = label.CreateGraphics()) {
                         y += (int)(Math.Ceiling(graphics.MeasureString(label.Text, label.Font).Width / 170.0)) * 14;
                     }
@@ -326,15 +326,15 @@ namespace Tibialyzer {
 
             Bitmap bitmap = new Bitmap(experienceStarBox.Size.Width, experienceStarBox.Size.Height);
             Graphics gr = Graphics.FromImage(bitmap);
-            for (int i = 0; i < Math.Min(this.hunting_place.exp_quality, 5); i++) {
-                gr.DrawImage(MainForm.star_image[this.hunting_place.exp_quality - 1], new Rectangle(i * experienceStarBox.Size.Width / 5, 0, experienceStarBox.Size.Width / 5, experienceStarBox.Size.Width / 5));
+            for (int i = 0; i < (this.hunting_place.exp_quality < 0 ? 5 : Math.Min(this.hunting_place.exp_quality, 5)); i++) {
+                gr.DrawImage(MainForm.star_image[this.hunting_place.exp_quality < 0 ? 5 : this.hunting_place.exp_quality - 1], new Rectangle(i * experienceStarBox.Size.Width / 5, 0, experienceStarBox.Size.Width / 5, experienceStarBox.Size.Width / 5));
             }
             experienceStarBox.Image = bitmap;
 
             bitmap = new Bitmap(lootStarBox.Size.Width, lootStarBox.Size.Height);
             gr = Graphics.FromImage(bitmap);
-            for (int i = 0; i < Math.Min(this.hunting_place.loot_quality, 5); i++) {
-                gr.DrawImage(MainForm.star_image[this.hunting_place.loot_quality - 1], new Rectangle(i * lootStarBox.Size.Width / 5, 0, lootStarBox.Size.Width / 5, lootStarBox.Size.Width / 5));
+            for (int i = 0; i < (this.hunting_place.loot_quality < 0 ? 5 : Math.Min(this.hunting_place.loot_quality, 5)); i++) {
+                gr.DrawImage(MainForm.star_image[this.hunting_place.loot_quality < 0 ? 5 : this.hunting_place.loot_quality - 1], new Rectangle(i * lootStarBox.Size.Width / 5, 0, lootStarBox.Size.Width / 5, lootStarBox.Size.Width / 5));
             }
             lootStarBox.Image = bitmap;
 
@@ -343,10 +343,6 @@ namespace Tibialyzer {
             UpdateMap();
 
             mapBox.Click -= c_Click;
-            mapBox.MouseDown += mapBox_MouseDown;
-            mapBox.MouseUp += mapBox_MouseUp;
-            mapBox.MouseMove += mapBox_MouseMove;
-            mapBox.MouseWheel += mapBox_MouseWheel;
 
             this.mapUpLevel.Image = MainForm.mapup_image;
             this.mapUpLevel.Click -= c_Click;
@@ -358,7 +354,6 @@ namespace Tibialyzer {
             this.ResumeForm();
         }
 
-
         private bool clicked = false;
         protected void openCreatureMenu(object sender, EventArgs e) {
             if (clicked) return;
@@ -367,116 +362,53 @@ namespace Tibialyzer {
             string name = (sender as Control).Name;
             MainForm.mainForm.ExecuteCommand("creature" + MainForm.commandSymbol + name.ToLower());
         }
+        private void openQuest(object sender, EventArgs e) {
+            if (clicked) return;
+            clicked = true;
+            this.ReturnFocusToTibia();
+            string name = (sender as Control).Name;
+            MainForm.mainForm.ExecuteCommand("quest" + MainForm.commandSymbol + name.ToLower());
+        }
+        private void guideButton_Click(object sender, EventArgs e) {
+            if (clicked) return;
+            clicked = true;
+            this.ReturnFocusToTibia();
+            string name = (sender as Control).Name;
+            MainForm.mainForm.ExecuteCommand("direction" + MainForm.commandSymbol + hunting_place.name.ToLower());
+        }
 
         void label_Click(object sender, EventArgs e) {
             Coordinate new_coordinate = hunting_place.coordinates[int.Parse((sender as Control).Name)];
-            this.target = new Coordinate(new_coordinate);
-            this.map_coordinates = new Coordinate(new_coordinate);
+            this.targetCoordinate = new Coordinate(new_coordinate);
             UpdateMap();
         }
-
-        void direction_Click(object sender, EventArgs e) {
-            Directions direction = hunting_place.directions[int.Parse((sender as Control).Name)];
-            this.target = new Coordinate(direction.x, direction.y, direction.z);
-            this.map_coordinates = new Coordinate(direction.x, direction.y, direction.z);
-            UpdateMap();
-        }
-
-        float current_zoom = 1.0f;
+        
         private void UpdateMap() {
-            if (map_image != null) map_image.Dispose();
-            map_image = new Bitmap(mapBox.Width, mapBox.Height);
-            Graphics gr = Graphics.FromImage(map_image);
-
-            Image big_map = MainForm.map_files[map_coordinates.z].image;
-            Point point = new Point((int)(map_coordinates.x * (7f / 8f) * big_map.Width), (int)(map_coordinates.y * big_map.Height));
-            Rectangle sourceRectangle = new Rectangle(
-                point.X - (int)(mapBox.Width / 2 * current_zoom),
-                point.Y - (int)(mapBox.Height / 2 * current_zoom),
-                (int)(mapBox.Width * current_zoom),
-                (int)(mapBox.Height * current_zoom));
-
-            gr.DrawImage(big_map, new Rectangle(0, 0, mapBox.Width, mapBox.Height), sourceRectangle, GraphicsUnit.Pixel);
-
-            if (target != null) {
-                if (target.z == this.map_coordinates.z) {
-                    point = new Point((int)(target.x * (7f / 8f) * big_map.Width), (int)(target.y * big_map.Height));
-                    int width = (int)(20 / this.current_zoom);
-                    Rectangle cross_rectangle = new Rectangle(point.X - width / 2, point.Y - width / 2, width, width);
-                    if (sourceRectangle.IntersectsWith(cross_rectangle)) {
-                        int x = (int)(mapBox.Width * ((float)point.X - sourceRectangle.X) / sourceRectangle.Width);
-                        int y = (int)(mapBox.Height * ((float)point.Y - sourceRectangle.Y) / sourceRectangle.Height);
-                        gr.DrawImage(MainForm.cross_image, new Rectangle(x - width / 2, y - width / 2, width, width));
-                    }
-                }
-
+            if (mapBox.mapImage != null) {
+                mapBox.mapImage.Dispose();
             }
-
-            mapBox.Image = map_image;
+            Bitmap image = new Bitmap(MainForm.map_files[targetCoordinate.z].image);
+            using(Graphics gr = Graphics.FromImage(image)) {
+                const int crossSize = 8;
+                gr.DrawImage(MainForm.cross_image, new Rectangle(targetCoordinate.x - crossSize, targetCoordinate.y - crossSize, crossSize * 2, crossSize * 2));
+            }
+            mapBox.mapImage = image;
+            mapBox.mapCoordinate = new Coordinate(targetCoordinate);
+            mapBox.beginCoordinate = new Coordinate(targetCoordinate);
+            mapBox.zCoordinate = targetCoordinate.z;
+            mapBox.sourceWidth = mapBox.Width;
+            mapBox.UpdateMap();
         }
 
         void mapUpLevel_Click(object sender, EventArgs e) {
-            this.map_coordinates.z -= 1;
-            if (this.map_coordinates.z < 0) this.map_coordinates.z = 0;
-            UpdateMap();
+            mapBox.mapCoordinate.z--;
+            mapBox.UpdateMap();
             base.ResetTimer();
         }
 
         void mapDownLevel_Click(object sender, EventArgs e) {
-            this.map_coordinates.z += 1;
-            if (this.map_coordinates.z >= MainForm.map_files.Count) this.map_coordinates.z = MainForm.map_files.Count - 1;
-            UpdateMap();
-            base.ResetTimer();
-        }
-
-
-        bool drag_map = false;
-        Point center_point;
-        Point screen_center;
-        void mapBox_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e) {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left) {
-                if (drag_map) {
-                    drag_map = false;
-                    System.Windows.Forms.Cursor.Show();
-                    base.ResetTimer();
-                    System.Windows.Forms.Cursor.Position = screen_center;
-                }
-            }
-        }
-
-        void mapBox_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e) {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left) {
-                mapBox.Focus();
-                screen_center = this.PointToScreen(new Point(
-                    mapBox.Location.X + mapBox.Size.Width / 2,
-                    mapBox.Location.Y + mapBox.Size.Height / 2));
-                System.Windows.Forms.Cursor.Position = screen_center;
-                center_point = new Point(mapBox.Size.Width / 2, mapBox.Size.Height / 2);
-                System.Windows.Forms.Cursor.Hide();
-                drag_map = true;
-                base.ResetTimer();
-            }
-
-        }
-
-        bool disable_move = false;
-        float mouse_factor = 0.0005f;
-        void mapBox_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e) {
-            if (disable_move) return;
-            if (drag_map) {
-                map_coordinates.x = Math.Max(Math.Min(map_coordinates.x + mouse_factor * (e.X - center_point.X), 1), 0);
-                map_coordinates.y = Math.Max(Math.Min(map_coordinates.y + mouse_factor * (e.Y - center_point.Y), 1), 0);
-                UpdateMap();
-                center_point.X = e.X;
-                center_point.Y = e.Y;
-                base.ResetTimer();
-            }
-        }
-
-        void mapBox_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e) {
-            current_zoom -= 0.0005f * e.Delta;
-            current_zoom = Math.Min(Math.Max(current_zoom, 0.2f), 2.15f);
-            UpdateMap();
+            mapBox.mapCoordinate.z++;
+            mapBox.UpdateMap();
             base.ResetTimer();
         }
     }

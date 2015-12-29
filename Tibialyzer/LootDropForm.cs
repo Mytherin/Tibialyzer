@@ -214,7 +214,5 @@ namespace Tibialyzer {
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("loot" + MainForm.commandSymbol + (sender as Control).Name);
         }
-
-
     }
 }

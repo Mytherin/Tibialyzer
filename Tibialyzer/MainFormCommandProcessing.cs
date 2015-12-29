@@ -86,7 +86,7 @@ namespace Tibialyzer {
                 if (creatureNameMap.ContainsKey(name)) {
                     Creature cr = creatureNameMap[name];
                     ShowCreatureStats(cr, command);
-                } 
+                }
             } else if (comp.StartsWith("close" + MainForm.commandSymbol)) { //close@
                 // close all notifications
                 if (tooltipForm != null) {
@@ -152,7 +152,7 @@ namespace Tibialyzer {
 
                 // first handle creature kills
                 string[] creatures = activeHunt.trackedCreatures.Split('\n');
-                for(int i = 0; i < creatures.Length; i++) {
+                for (int i = 0; i < creatures.Length; i++) {
                     creatures[i] = creatures[i].ToLower();
                 }
 
@@ -290,10 +290,10 @@ namespace Tibialyzer {
                 }
 
                 ShowItemView(item, null, null, creatures, command);
-            } else if (comp.StartsWith("item" + MainForm.commandSymbol)) {
+            } else if (comp.StartsWith("item" + MainForm.commandSymbol)) { //item@
                 //show the item with all the NPCs that sell it
                 ShowItemNotification(command);
-            } else if (comp.StartsWith("hunt" + MainForm.commandSymbol)) {
+            } else if (comp.StartsWith("hunt" + MainForm.commandSymbol)) { //hunt@
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                 if (cities.Contains(parameter)) {
                     List<HuntingPlace> huntingPlaces = new List<HuntingPlace>();
@@ -319,7 +319,7 @@ namespace Tibialyzer {
                             }
                         }
                     }
-                    ShowHuntList(huntingPlaces, "Hunts in " + parameter, command);
+                    ShowHuntList(huntingPlaces, "Hunts containing creature " + ToTitle(parameter), command);
                     return true;
                 }
                 int minlevel = -1, maxlevel = -1;
@@ -413,6 +413,141 @@ namespace Tibialyzer {
                     if (found) return true;
                 }
                 ShowListNotification(command_list, type, command);
+            } else if (comp.StartsWith("spell" + MainForm.commandSymbol)) { // spell@
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
+                if (spellNameMap.ContainsKey(parameter)) {
+                    ShowSpellNotification(spellNameMap[parameter], command);
+                } else {
+                    List<TibiaObject> spellList = new List<TibiaObject>();
+                    string title;
+                    if (vocationImages.Keys.Contains(parameter)) {
+                        foreach (Spell spell in spellNameMap.Values) {
+                            if ((parameter == "druid" && spell.druid) ||
+                                (parameter == "sorcerer" && spell.sorcerer) ||
+                                (parameter == "knight" && spell.knight) ||
+                                (parameter == "paladin" && spell.paladin)) {
+                                spellList.Add(spell);
+                            }
+                        }
+                        title = ToTitle(parameter) + " Spells";
+                    } else {
+                        foreach (Spell spell in spellNameMap.Values) {
+                            if (spell.name.ToLower().Contains(parameter)) {
+                                spellList.Add(spell);
+                            }
+                        }
+                        title = "Spells Containing \"" + parameter + "\"";
+                    }
+                    spellList = spellList.OrderBy(o => (o as Spell).levelrequired).ToList<TibiaObject>();
+                    if (spellList.Count == 1) {
+                        ShowSpellNotification(spellList[0] as Spell, command);
+                    } else if (spellList.Count > 1) {
+                        ShowCreatureList(spellList, title, "spell" + MainForm.commandSymbol, command);
+                    }
+                }
+            } else if (comp.StartsWith("outfit" + MainForm.commandSymbol)) { // outfit@
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
+                List<TibiaObject> outfitList = new List<TibiaObject>();
+                if (outfitNameMap.ContainsKey(parameter)) {
+                    ShowOutfitNotification(outfitNameMap[parameter], command);
+                } else {
+                    string title;
+                    foreach (Outfit outfit in outfitIdMap.Values) {
+                        if (outfit.name.ToLower().Contains(parameter)) {
+                            outfitList.Add(outfit);
+                        }
+                    }
+                    title = "Outfits Containing \"" + parameter + "\"";
+                    if (outfitList.Count == 1) {
+                        ShowOutfitNotification(outfitList[0] as Outfit, command);
+                    } else if (outfitList.Count > 1) {
+                        ShowCreatureList(outfitList, title, "outfit" + MainForm.commandSymbol, command);
+                    }
+                }
+            } else if (comp.StartsWith("quest" + MainForm.commandSymbol)) { // quest@
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
+                List<Quest> questList = new List<Quest>();
+                if (questNameMap.ContainsKey(parameter)) {
+                    ShowQuestNotification(questNameMap[parameter], command);
+                } else {
+                    string title;
+                    string[] splitStrings = parameter.Split(' ');
+                    foreach (Quest quest in questIdMap.Values) {
+                        bool found = true;
+                        foreach(string str in splitStrings) {
+                            if (!quest.name.ToLower().Contains(str)) {
+                                found = false;
+                                break;
+                            }
+                        }
+                        if (found) {
+                            questList.Add(quest);
+                        }
+                    }
+                    title = "Quests Containing \"" + parameter + "\"";
+                    if (questList.Count == 1) {
+                        ShowQuestNotification(questList[0], command);
+                    } else if (questList.Count > 1) {
+                        //ShowQuestList(questList, title, command);
+                    }
+                }
+            } else if (comp.StartsWith("guide" + MainForm.commandSymbol)) { // guide@
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
+                List<Quest> questList = new List<Quest>();
+                if (questNameMap.ContainsKey(parameter)) {
+                    ShowQuestGuideNotification(questNameMap[parameter], command);
+                } else {
+                    string title;
+                    foreach (Quest quest in questIdMap.Values) {
+                        if (quest.name.ToLower().Contains(parameter)) {
+                            questList.Add(quest);
+                        }
+                    }
+                    title = "Quests Containing \"" + parameter + "\"";
+                    if (questList.Count == 1) {
+                        ShowQuestGuideNotification(questList[0], command);
+                    } else if (questList.Count > 1) {
+                        //ShowQuestList(questList, title, command);
+                    }
+                }
+            } else if (comp.StartsWith("direction" + MainForm.commandSymbol)) { // direction@
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
+                List<HuntingPlace> huntList = new List<HuntingPlace>();
+                if (huntingPlaceNameMap.ContainsKey(parameter)) {
+                    ShowHuntGuideNotification(huntingPlaceNameMap[parameter], command);
+                } else {
+                    string title;
+                    foreach (HuntingPlace hunt in huntingPlaceIdMap.Values) {
+                        if (hunt.name.ToLower().Contains(parameter)) {
+                            huntList.Add(hunt);
+                        }
+                    }
+                    title = "Hunts Containing \"" + parameter + "\"";
+                    if (huntList.Count == 1) {
+                        ShowHuntGuideNotification(huntList[0], command);
+                    } else if (huntList.Count > 1) {
+                        ShowHuntList(huntList, title, command);
+                    }
+                }
+            } else if (comp.StartsWith("mount" + MainForm.commandSymbol)) { // mount@
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
+                List<TibiaObject> mountList = new List<TibiaObject>();
+                if (mountNameMap.ContainsKey(parameter)) {
+                    ShowMountNotification(mountNameMap[parameter], command);
+                } else {
+                    string title;
+                    foreach (Mount mount in mountIdMap.Values) {
+                        if (mount.name.ToLower().Contains(parameter)) {
+                            mountList.Add(mount);
+                        }
+                    }
+                    title = "Mounts Containing \"" + parameter + "\"";
+                    if (mountList.Count == 1) {
+                        ShowMountNotification(mountList[0] as Mount, command);
+                    } else if (mountList.Count > 1) {
+                        ShowCreatureList(mountList, title, "mount" + MainForm.commandSymbol, command);
+                    }
+                }
             } else if (comp.StartsWith("pickup" + MainForm.commandSymbol)) {
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                 if (itemNameMap.ContainsKey(parameter)) {
@@ -459,7 +594,16 @@ namespace Tibialyzer {
                                     break;
                                 }
                             }
+                        } else if (spellNameMap.ContainsKey(itemName)) {
+                            Spell spell = spellNameMap[itemName];
+                            foreach(SpellTaught teach in spell.teachNPCs) {
+                                if (teach.npc.city.ToLower() == city) {
+                                    ShowNPCForm(teach.npc, command);
+                                    break;
+                                }
+                            }
                         }
+
                         found = true;
                     }
                 }
@@ -493,7 +637,7 @@ namespace Tibialyzer {
                 readMemoryResults.newAdvances.Clear();
             }
 
-            if (parseMemoryResults.death) {
+            if (parseMemoryResults != null && parseMemoryResults.death) {
                 if (getSettingBool("AutoScreenshotDeath")) {
                     this.Invoke((MethodInvoker)delegate {
                         takeScreenshot("Death");
@@ -536,7 +680,7 @@ namespace Tibialyzer {
                 foreach (Tuple<Creature, List<Tuple<Item, int>>> tpl in parseMemoryResults.newItems) {
                     Creature cr = tpl.Item1;
                     List<Tuple<Item, int>> items = tpl.Item2;
-                    bool showNotification = false;  
+                    bool showNotification = false;
                     if (getSettingBool("AlwaysShowLoot")) {
                         // If AlwaysShowLoot is enabled, we always show a notification, as long as the creature is part of the hunts' creature list
                         if (activeHunt.trackAllCreatures) {

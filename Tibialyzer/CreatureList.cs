@@ -37,7 +37,7 @@ namespace Tibialyzer {
             // 
             // CreatureList
             // 
-            this.ClientSize = new System.Drawing.Size(344, 76);
+            this.ClientSize = new System.Drawing.Size(352, 76);
             this.Controls.Add(this.listTitle);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

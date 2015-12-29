@@ -10,10 +10,8 @@ using System.Windows.Forms;
 namespace Tibialyzer {
     class NPCForm : NotificationForm {
         public NPC npc = null;
-        private Bitmap map_image = null;
         private System.Windows.Forms.PictureBox mapUpLevel;
         private System.Windows.Forms.PictureBox mapDownLevel;
-        private Coordinate map_coordinates;
         private static Font text_font = new Font(FontFamily.GenericSansSerif, 11, FontStyle.Bold);
         public NPCForm() {
             InitializeComponent();
@@ -21,7 +19,7 @@ namespace Tibialyzer {
 
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NPCForm));
-            this.mapBox = new System.Windows.Forms.PictureBox();
+            this.mapBox = new MapPictureBox();
             this.npcImage = new System.Windows.Forms.PictureBox();
             this.creatureName = new System.Windows.Forms.Label();
             this.mapUpLevel = new System.Windows.Forms.PictureBox();
@@ -101,7 +99,7 @@ namespace Tibialyzer {
 
         }
 
-        private System.Windows.Forms.PictureBox mapBox;
+        private MapPictureBox mapBox;
         private System.Windows.Forms.PictureBox npcImage;
         private System.Windows.Forms.Label creatureName;
 
@@ -109,18 +107,16 @@ namespace Tibialyzer {
             get { return true; }
         }
 
-        protected override void Dispose(bool disposing) {
-            if (disposing) {
-                base.Cleanup();
-                if (map_image != null) map_image.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-        
         string prefix;
         private string TooltipFunction(TibiaObject obj) {
-            Item item = obj as Item;
-            return String.Format("{0} {1} for {2} gold.", prefix, item.name, prefix == "Sells" ? npc.buyItems.Find(o => o.item == item).price : npc.sellItems.Find(o => o.item == item).price);
+            if (obj is Item) {
+                Item item = obj as Item;
+                return String.Format("{0} {1} for {2} gold.", prefix, item.name, prefix == "Sells" ? npc.buyItems.Find(o => o.item == item).price : npc.sellItems.Find(o => o.item == item).price);
+            } else if (obj is Spell) {
+                Spell spell = obj as Spell;
+                return String.Format("{0} {1} for {2} gold.", prefix, spell.name, spell.goldcost);
+            }
+            return "";
         }
 
         private void NPCForm_Load(object sender, EventArgs e) {
@@ -128,16 +124,22 @@ namespace Tibialyzer {
             NotificationInitialize();
             if (npc == null) return;
             npcImage.Image = npc.image;
-            creatureName.Text = npc.city;
+            creatureName.Text = MainForm.ToTitle(npc.city);
 
-            map_coordinates = new Coordinate(npc.pos);
-            UpdateMap();
+
+            Bitmap bitmap = new Bitmap(MainForm.map_files[npc.pos.z].image);
+            using (Graphics gr = Graphics.FromImage(bitmap)) {
+                const int crossSize = 8;
+                gr.DrawImage(MainForm.cross_image, new Rectangle(npc.pos.x - crossSize, npc.pos.y - crossSize, crossSize * 2, crossSize * 2));
+            }
+
+            mapBox.mapImage = bitmap;
+            mapBox.sourceWidth = mapBox.Width;
+            mapBox.mapCoordinate = new Coordinate(npc.pos);
+            mapBox.zCoordinate = npc.pos.z;
+            mapBox.UpdateMap();
 
             mapBox.Click -= c_Click;
-            mapBox.MouseDown += mapBox_MouseDown;
-            mapBox.MouseUp += mapBox_MouseUp;
-            mapBox.MouseMove += mapBox_MouseMove;
-            mapBox.MouseWheel += mapBox_MouseWheel;
 
             this.mapUpLevel.Image = MainForm.mapup_image;
             this.mapUpLevel.Click -= c_Click;
@@ -145,7 +147,7 @@ namespace Tibialyzer {
             this.mapDownLevel.Image = MainForm.mapdown_image;
             this.mapDownLevel.Click -= c_Click;
             this.mapDownLevel.Click += mapDownLevel_Click;
-            
+
             float scale = 1.0f;
             if (npc.buyItems.Count + npc.sellItems.Count > 200) {
                 scale = 0.6f;
@@ -164,7 +166,7 @@ namespace Tibialyzer {
                 label.Font = text_font;
                 this.Controls.Add(label);
                 y += 20;
-                
+
                 y = y + MainForm.DisplayCreatureList(this.Controls, npc.buyItems.Select(o => o.item).ToList<TibiaObject>(), 10, y, this.Size.Width - 10, 4, false, TooltipFunction, scale);
             }
             if (npc.sellItems.Count > 0) {
@@ -183,6 +185,22 @@ namespace Tibialyzer {
             foreach (Control control in this.Controls)
                 if (control is PictureBox)
                     control.Click += openItemBox;
+            if (npc.spellsTaught.Count > 0) {
+                prefix = "Teaches";
+                Label label = new Label();
+                label.Text = "Teaches";
+                label.Location = new Point(40, y);
+                label.ForeColor = MainForm.label_text_color;
+                label.BackColor = Color.Transparent;
+                label.Font = text_font;
+                this.Controls.Add(label);
+                y += 20;
+                List<Control> spellControls = new List<Control>();
+                y = y + MainForm.DisplayCreatureList(this.Controls, npc.spellsTaught.Select(o => o.spell).OrderBy(p => p.levelrequired).ToList<TibiaObject>(), 10, y, this.Size.Width - 10, 4, false, TooltipFunction, 1, spellControls);
+                foreach (Control control in spellControls) {
+                    control.Click += openSpellBox;
+                }
+            }
             this.Size = new Size(this.Size.Width, y + 20);
             base.NotificationFinalize();
             this.ResumeLayout(false);
@@ -196,101 +214,23 @@ namespace Tibialyzer {
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand(command_start + (sender as Control).Name);
         }
-
-
-        float current_zoom = 1.0f;
-        private void UpdateMap() {
-            if (map_image != null) map_image.Dispose();
-            map_image = new Bitmap(mapBox.Width, mapBox.Height);
-            Graphics gr = Graphics.FromImage(map_image);
-
-            Image big_map = MainForm.map_files[map_coordinates.z].image;
-            Point point = new Point((int)(map_coordinates.x * (7f / 8f) * big_map.Width), (int)(map_coordinates.y * big_map.Height));
-            Rectangle sourceRectangle = new Rectangle(
-                point.X - (int)(mapBox.Width / 2 * current_zoom),
-                point.Y - (int)(mapBox.Height / 2 * current_zoom),
-                (int)(mapBox.Width * current_zoom),
-                (int)(mapBox.Height * current_zoom));
-
-            gr.DrawImage(big_map, new Rectangle(0, 0, mapBox.Width, mapBox.Height), sourceRectangle, GraphicsUnit.Pixel);
-
-            if (npc.pos.z == this.map_coordinates.z) {
-                point = new Point((int)(npc.pos.x * (7f / 8f) * big_map.Width), (int)(npc.pos.y * big_map.Height));
-                //int width = (int)(20 / this.current_zoom);
-                int width = 20;
-                Rectangle cross_rectangle = new Rectangle(point.X - width / 2, point.Y - width / 2, width, width);
-                if (sourceRectangle.IntersectsWith(cross_rectangle)) {
-                    int x = (int)(mapBox.Width * ((float)point.X - sourceRectangle.X) / sourceRectangle.Width);
-                    int y = (int)(mapBox.Height * ((float)point.Y - sourceRectangle.Y) / sourceRectangle.Height);
-                    gr.DrawImage(MainForm.cross_image, new Rectangle(x - width / 2, y - width / 2, width, width));
-                }
-            }
-
-            mapBox.Image = map_image;
+        private string spell_start = "spell" + MainForm.commandSymbol;
+        void openSpellBox(object sender, EventArgs e) {
+            if (clicked) return;
+            clicked = true;
+            this.ReturnFocusToTibia();
+            MainForm.mainForm.ExecuteCommand(spell_start + (sender as Control).Name);
         }
 
         void mapUpLevel_Click(object sender, EventArgs e) {
-            this.map_coordinates.z -= 1;
-            if (this.map_coordinates.z < 0) this.map_coordinates.z = 0;
-            UpdateMap();
+            mapBox.mapCoordinate.z--;
+            mapBox.UpdateMap();
             base.ResetTimer();
         }
 
         void mapDownLevel_Click(object sender, EventArgs e) {
-            this.map_coordinates.z += 1;
-            if (this.map_coordinates.z >= MainForm.map_files.Count) this.map_coordinates.z = MainForm.map_files.Count - 1;
-            UpdateMap();
-            base.ResetTimer();
-        }
-
-
-        bool drag_map = false;
-        Point center_point;
-        Point screen_center;
-        void mapBox_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e) {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left) {
-                if (drag_map) {
-                    drag_map = false;
-                    System.Windows.Forms.Cursor.Show();
-                    base.ResetTimer();
-                    System.Windows.Forms.Cursor.Position = screen_center;
-                }
-            }
-        }
-
-        void mapBox_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e) {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left) {
-                mapBox.Focus();
-                screen_center = this.PointToScreen(new Point(
-                    mapBox.Location.X + mapBox.Size.Width / 2,
-                    mapBox.Location.Y + mapBox.Size.Height / 2));
-                System.Windows.Forms.Cursor.Position = screen_center;
-                center_point = new Point(mapBox.Size.Width / 2, mapBox.Size.Height / 2);
-                System.Windows.Forms.Cursor.Hide();
-                drag_map = true;
-                base.ResetTimer();
-            }
-
-        }
-
-        bool disable_move = false;
-        float mouse_factor = 0.0005f;
-        void mapBox_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e) {
-            if (disable_move) return;
-            if (drag_map) {
-                map_coordinates.x = Math.Max(Math.Min(map_coordinates.x + mouse_factor * (e.X - center_point.X), 1), 0);
-                map_coordinates.y = Math.Max(Math.Min(map_coordinates.y + mouse_factor * (e.Y - center_point.Y), 1), 0);
-                UpdateMap();
-                center_point.X = e.X;
-                center_point.Y = e.Y;
-                base.ResetTimer();
-            }
-        }
-
-        void mapBox_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e) {
-            current_zoom -= 0.0005f * e.Delta;
-            current_zoom = Math.Min(Math.Max(current_zoom, 0.2f), 2.15f);
-            UpdateMap();
+            mapBox.mapCoordinate.z++;
+            mapBox.UpdateMap();
             base.ResetTimer();
         }
     }

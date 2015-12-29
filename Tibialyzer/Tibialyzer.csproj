@@ -87,7 +87,22 @@
     <Compile Include="DamageChart.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MapPictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MountForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OutfitForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Pathfinder.cs" />
+    <Compile Include="QuestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="QuestGuideForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="RichTextBoxAutoHotkey.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -98,6 +113,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="SimpleTextNotification.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SpellForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Structures.cs" />
@@ -193,6 +211,9 @@
     <EmbeddedResource Include="CreatureDropsForm.resx">
       <DependentUpon>CreatureDropsForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MountForm.resx">
+      <DependentUpon>MountForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="NotificationForm.resx">
       <DependentUpon>NotificationForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -201,6 +222,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="NPCForm.resx">
       <DependentUpon>NPCForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutfitForm.resx">
+      <DependentUpon>OutfitForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -212,6 +236,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="QuestForm.resx">
+      <DependentUpon>QuestForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QuestGuideForm.resx">
+      <DependentUpon>QuestGuideForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SimpleLootNotification.resx">
       <DependentUpon>SimpleLootNotification.cs</DependentUpon>
     </EmbeddedResource>
@@ -220,6 +250,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SimpleTextNotification.resx">
       <DependentUpon>SimpleTextNotification.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SpellForm.resx">
+      <DependentUpon>SpellForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Database\Database.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -301,6 +334,9 @@
     <Content Include="Images\defaulticon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Druid.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\earth.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -319,6 +355,9 @@
     <Content Include="Images\item_background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Knight.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\load.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -329,6 +368,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\nextpage.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Paladin.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\phys.png">
@@ -346,22 +388,46 @@
     <Content Include="Images\scanningbar.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Sorcerer.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\star.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\star0.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\star0_text.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\star1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\star1_text.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\star2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\star2_text.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\star3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\star3_text.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\star4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\star4_text.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\starunknown.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\starunknown_text.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\tibia.png">
@@ -374,6 +440,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\TibialyzerIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\tibiastore.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Libraries\System.Data.SQLite.dll">

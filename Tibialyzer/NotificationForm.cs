@@ -56,6 +56,13 @@ namespace Tibialyzer {
             }
         }
 
+        protected void refreshTimer() {
+            closeTimer.Dispose();
+            closeTimer = new System.Timers.Timer(1000 * MainForm.mainForm.notificationLength);
+            closeTimer.Elapsed += new System.Timers.ElapsedEventHandler(CloseNotification);
+            closeTimer.Enabled = true;
+        }
+
         protected void RegisterForClose(Control c) {
             c.Click += c_Click;
         }

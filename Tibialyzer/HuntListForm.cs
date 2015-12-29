@@ -35,6 +35,7 @@ namespace Tibialyzer {
             rating_colors.Add(3, Color.FromArgb(22, 125, 190));
             rating_colors.Add(4, Color.Green);
             rating_colors.Add(5, Color.Gold);
+            rating_colors.Add(-127, Color.DarkGray);
         }
 
         private void InitializeComponent() {
@@ -153,12 +154,12 @@ namespace Tibialyzer {
             int current_index = -1;
 
             foreach (HuntingPlace h in hunting_places) {
-                if (current_index++ < start_index) continue;
+                if (++current_index < start_index) continue;
                 if (current_index > start_index + max_hunts) break;
                 PictureBox picture = new PictureBox();
                 picture.Image = h.image;
                 picture.Size = new Size(size, size);
-                picture.SizeMode = PictureBoxSizeMode.StretchImage;
+                picture.SizeMode = PictureBoxSizeMode.Zoom;
                 picture.Location = new Point(nameLabel.Location.X - size, this.nameLabel.Location.Y + size * offset + base_offset - 4);
                 picture.Click += openHuntingPlace;
                 picture.Name = h.name.ToString();
@@ -185,20 +186,20 @@ namespace Tibialyzer {
                 hcontrols.Add(level);
 
                 PictureBox exp = new PictureBox();
-                exp.Image = MainForm.star_image[h.exp_quality - 1];
+                exp.Image = MainForm.star_image_text[h.exp_quality < 0 ? 5 : h.exp_quality - 1];
                 exp.BackColor = Color.Transparent;
                 exp.Location = new Point(expLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
-                exp.Size = new Size(16, 16);
+                exp.Size = new Size(24, 16);
                 exp.SizeMode = PictureBoxSizeMode.StretchImage;
                 exp.Name = h.name.ToString();
                 exp.Click += openHuntingPlace;
                 this.Controls.Add(exp);
 
                 PictureBox loot = new PictureBox();
-                loot.Image = MainForm.star_image[h.loot_quality - 1];
+                loot.Image = MainForm.star_image_text[h.loot_quality < 0 ? 5 : h.loot_quality - 1];
                 loot.BackColor = Color.Transparent;
                 loot.Location = new Point(lootLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
-                loot.Size = new Size(16, 16);
+                loot.Size = new Size(24, 16);
                 loot.SizeMode = PictureBoxSizeMode.StretchImage;
                 loot.Name = h.name.ToString();
                 loot.Click += openHuntingPlace;

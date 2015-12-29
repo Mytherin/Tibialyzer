@@ -135,7 +135,7 @@ namespace Tibialyzer {
                 this.Opacity = 1;
             }
             CombineItems();
-            this.nameLabel.Text = this.creature.name;
+            this.nameLabel.Text = MainForm.ToTitle(this.creature.name);
             Font f = this.nameLabel.Font;
             while (TextRenderer.MeasureText(this.creature.name, f).Width < this.mainImage.Size.Width && TextRenderer.MeasureText(this.creature.name, f).Height < 26) {
                 f.Dispose();
