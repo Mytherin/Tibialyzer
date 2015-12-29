@@ -580,7 +580,7 @@ namespace Tibialyzer {
                     }
                 }
             } else if (comp.StartsWith("screenshot" + MainForm.commandSymbol)) {
-                takeScreenshot("Screenshot");
+                saveScreenshot("Screenshot", takeScreenshot());
             } else {
                 bool found = false;
                 foreach (string city in cities) {
@@ -624,7 +624,7 @@ namespace Tibialyzer {
             if (readMemoryResults != null && readMemoryResults.newAdvances.Count > 0) {
                 if (getSettingBool("AutoScreenshotAdvance")) {
                     this.Invoke((MethodInvoker)delegate {
-                        takeScreenshot("Advance");
+                        saveScreenshot("Advance", takeScreenshot());
                     });
                 }
                 if (copyAdvances) {
@@ -640,7 +640,7 @@ namespace Tibialyzer {
             if (parseMemoryResults != null && parseMemoryResults.death) {
                 if (getSettingBool("AutoScreenshotDeath")) {
                     this.Invoke((MethodInvoker)delegate {
-                        takeScreenshot("Death");
+                        saveScreenshot("Death", takeScreenshot());
                     });
                 }
                 parseMemoryResults.death = false;
@@ -704,8 +704,24 @@ namespace Tibialyzer {
                             showNotification = true;
                             if (getSettingBool("AutoScreenshotItemDrop")) {
                                 // Take a screenshot if Tibialyzer is set to take screenshots of valuable loot
+                                Bitmap screenshot = takeScreenshot();
+                                if (screenshot == null) continue;
+                                // Add a notification to the screenshot
+                                SimpleLootNotification screenshotNotification = new SimpleLootNotification(cr, items);
+                                Bitmap notification = new Bitmap(screenshotNotification.Width, screenshotNotification.Height);
+                                screenshotNotification.DrawToBitmap(notification, new Rectangle(0, 0, screenshotNotification.Width, screenshotNotification.Height));
+                                foreach(Control c in screenshotNotification.Controls) {
+                                    c.DrawToBitmap(notification, new Rectangle(c.Location, c.Size));
+                                }
+                                screenshotNotification.Dispose();
+                                if (screenshot.Width > notification.Width && screenshot.Height > notification.Height) {
+                                    using(Graphics gr = Graphics.FromImage(screenshot)) {
+                                        gr.DrawImage(notification, new Point(screenshot.Width - notification.Width, screenshot.Height - notification.Height));
+                                    }
+                                }
+                                notification.Dispose();
                                 this.Invoke((MethodInvoker)delegate {
-                                    takeScreenshot("Loot");
+                                    saveScreenshot("Loot", screenshot);
                                 });
                             }
                             if (this.showNotifications && !lootNotificationRich) {

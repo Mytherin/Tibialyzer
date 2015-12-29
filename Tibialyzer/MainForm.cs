@@ -1892,25 +1892,31 @@ namespace Tibialyzer {
         [DllImport("user32.dll", SetLastError = true)]
         static extern bool GetWindowRect(IntPtr hWnd, ref RECT Rect);
 
-        void takeScreenshot(string name) {
-            string path = getSettingString("ScreenshotPath");
-            if (path == null) return;
-
+        Bitmap takeScreenshot() {
             Process[] tibia_process = Process.GetProcessesByName("Tibia");
-            if (tibia_process.Length == 0) return; //no tibia to take screenshot of
+            if (tibia_process.Length == 0) return null; //no tibia to take screenshot of
 
             RECT Rect = new RECT();
-            if (!GetWindowRect(tibia_process[0].MainWindowHandle, ref Rect)) return;
+            if (!GetWindowRect(tibia_process[0].MainWindowHandle, ref Rect)) return null;
 
             Bitmap bitmap = new Bitmap(Rect.right - Rect.left, Rect.bottom - Rect.top);
             using (Graphics gr = Graphics.FromImage(bitmap)) {
                 gr.CopyFromScreen(new Point(Rect.left, Rect.top), Point.Empty, bitmap.Size);
             }
+            return bitmap;
+
+        }
+        
+        void saveScreenshot(string name, Bitmap bitmap) {
+            if (bitmap == null) return;
+            string path = getSettingString("ScreenshotPath");
+            if (path == null) return;
+
             DateTime dt = DateTime.Now;
             name = String.Format("{0} - {1}-{2}-{3} {4}h{5}m{6}s{7}ms.png", name, dt.Year.ToString("D4"), dt.Month.ToString("D2"), dt.Day.ToString("D2"), dt.Hour.ToString("D2"), dt.Minute.ToString("D2"), dt.Second.ToString("D2"), dt.Millisecond.ToString("D4"));
             path = Path.Combine(path, name);
             bitmap.Save(path, ImageFormat.Png);
-
+            bitmap.Dispose();
             refreshScreenshots();
         }
 
