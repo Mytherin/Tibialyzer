@@ -740,7 +740,7 @@ namespace Tibialyzer {
             foreach (string item in items) {
                 // process the item to find out how much dropped and to convert to singular form (e.g. '4 small amethysts' => ('small amethyst', 4))
                 Tuple<string, int> processedItem = preprocessItem(item);
-                string itemName = processedItem.Item1;
+                string itemName = processedItem.Item1.Trim();
                 if (itemName == "nothing") continue;
                 int itemCount = processedItem.Item2;
                 if (!itemNameMap.ContainsKey(itemName)) {

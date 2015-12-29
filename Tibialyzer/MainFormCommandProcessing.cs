@@ -488,7 +488,7 @@ namespace Tibialyzer {
                     if (questList.Count == 1) {
                         ShowQuestNotification(questList[0], command);
                     } else if (questList.Count > 1) {
-                        //ShowQuestList(questList, title, command);
+                        ShowQuestList(questList, title, command);
                     }
                 }
             } else if (comp.StartsWith("guide" + MainForm.commandSymbol)) { // guide@
@@ -507,7 +507,7 @@ namespace Tibialyzer {
                     if (questList.Count == 1) {
                         ShowQuestGuideNotification(questList[0], command);
                     } else if (questList.Count > 1) {
-                        //ShowQuestList(questList, title, command);
+                        ShowQuestList(questList, title, command);
                     }
                 }
             } else if (comp.StartsWith("direction" + MainForm.commandSymbol)) { // direction@
@@ -653,7 +653,9 @@ namespace Tibialyzer {
                         this.Invoke((MethodInvoker)delegate {
                             ShowItemNotification("item@" + itemName);
                         });
-                    } else if (creatureNameMap.ContainsKey(itemName) || (itemName.Contains("dead ") && (itemName = itemName.Replace("dead ", "")) != null && creatureNameMap.ContainsKey(itemName))) {
+                    } else if (creatureNameMap.ContainsKey(itemName) || 
+                        (itemName.Contains("dead ") && (itemName = itemName.Replace("dead ", "")) != null && creatureNameMap.ContainsKey(itemName)) ||
+                        (itemName.Contains("slain ") && (itemName = itemName.Replace("slain ", "")) != null && creatureNameMap.ContainsKey(itemName))) {
                         this.Invoke((MethodInvoker)delegate {
                             ShowCreatureDrops(creatureNameMap[itemName], "");
                         });

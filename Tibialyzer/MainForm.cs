@@ -1115,6 +1115,16 @@ namespace Tibialyzer {
 
             ShowNotification(f, comm);
         }
+
+        private void ShowQuestList(List<Quest> questList, string header, string comm) {
+            if (questList != null) questList = questList.OrderBy(o => o.minlevel).ToList();
+            HuntListForm f = new HuntListForm();
+            f.quests = questList;
+            f.header = header;
+
+            ShowNotification(f, comm);
+        }
+
         private void ShowHuntGuideNotification(HuntingPlace hunt, string comm) {
             if (hunt.directions.Count == 0) return;
             QuestGuideForm f = new QuestGuideForm(hunt);

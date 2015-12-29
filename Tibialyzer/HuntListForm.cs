@@ -16,6 +16,7 @@ namespace Tibialyzer {
 
         public string header = null;
         public List<HuntingPlace> hunting_places;
+        public List<Quest> quests;
 
         private static Font text_font = new Font(FontFamily.GenericSansSerif, 9, FontStyle.Bold);
         private Label headerLabel;
@@ -153,79 +154,164 @@ namespace Tibialyzer {
             int size = 24;
             int current_index = -1;
 
-            foreach (HuntingPlace h in hunting_places) {
-                if (++current_index < start_index) continue;
-                if (current_index > start_index + max_hunts) break;
-                PictureBox picture = new PictureBox();
-                picture.Image = h.image;
-                picture.Size = new Size(size, size);
-                picture.SizeMode = PictureBoxSizeMode.Zoom;
-                picture.Location = new Point(nameLabel.Location.X - size, this.nameLabel.Location.Y + size * offset + base_offset - 4);
-                picture.Click += openHuntingPlace;
-                picture.Name = h.name.ToString();
-                picture.BackColor = Color.Transparent;
-                this.Controls.Add(picture);
+            int huntCount;
+            if (hunting_places != null) {
+                huntCount = hunting_places.Count;
+                initialCommand = "hunt";
+                foreach (HuntingPlace h in hunting_places) {
+                    if (++current_index < start_index) continue;
+                    if (current_index > start_index + max_hunts) break;
+                    PictureBox picture = new PictureBox();
+                    picture.Image = h.image;
+                    picture.Size = new Size(size, size);
+                    picture.SizeMode = PictureBoxSizeMode.Zoom;
+                    picture.Location = new Point(nameLabel.Location.X - size, this.nameLabel.Location.Y + size * offset + base_offset - 4);
+                    picture.Click += openHuntingPlace;
+                    picture.Name = h.name.ToString();
+                    picture.BackColor = Color.Transparent;
+                    this.Controls.Add(picture);
 
-                Label name = new Label();
-                name.Text = h.name;
-                name.Location = new Point(nameLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
-                name.ForeColor = MainForm.label_text_color;
-                name.Size = new Size(this.levelLabel.Location.X - this.nameLabel.Location.X, 20);
-                name.Font = text_font;
-                name.Click += openHuntingPlace;
-                name.Name = h.name.ToString();
-                name.BackColor = Color.Transparent;
-                this.Controls.Add(name);
+                    Label name = new Label();
+                    name.Text = h.name;
+                    name.Location = new Point(nameLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
+                    name.ForeColor = MainForm.label_text_color;
+                    name.Size = new Size(this.levelLabel.Location.X - this.nameLabel.Location.X, 20);
+                    name.Font = text_font;
+                    name.Click += openHuntingPlace;
+                    name.Name = h.name.ToString();
+                    name.BackColor = Color.Transparent;
+                    this.Controls.Add(name);
 
-                List<Control> hcontrols = new List<Control>();
-                Label level = new Label();
-                level.Text = h.level == -127 ? "-" : h.level.ToString();
-                level.Location = new Point(levelLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
-                level.ForeColor = Color.SeaGreen;
-                level.BackColor = Color.Transparent;
-                hcontrols.Add(level);
+                    List<Control> hcontrols = new List<Control>();
+                    Label level = new Label();
+                    level.Text = h.level == -127 ? "-" : h.level.ToString();
+                    level.Location = new Point(levelLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
+                    level.ForeColor = Color.SeaGreen;
+                    level.BackColor = Color.Transparent;
+                    hcontrols.Add(level);
 
-                PictureBox exp = new PictureBox();
-                exp.Image = MainForm.star_image_text[h.exp_quality < 0 ? 5 : h.exp_quality - 1];
-                exp.BackColor = Color.Transparent;
-                exp.Location = new Point(expLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
-                exp.Size = new Size(24, 16);
-                exp.SizeMode = PictureBoxSizeMode.StretchImage;
-                exp.Name = h.name.ToString();
-                exp.Click += openHuntingPlace;
-                this.Controls.Add(exp);
+                    PictureBox exp = new PictureBox();
+                    exp.Image = MainForm.star_image_text[h.exp_quality < 0 ? 5 : h.exp_quality - 1];
+                    exp.BackColor = Color.Transparent;
+                    exp.Location = new Point(expLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
+                    exp.Size = new Size(24, 16);
+                    exp.SizeMode = PictureBoxSizeMode.StretchImage;
+                    exp.Name = h.name.ToString();
+                    exp.Click += openHuntingPlace;
+                    this.Controls.Add(exp);
 
-                PictureBox loot = new PictureBox();
-                loot.Image = MainForm.star_image_text[h.loot_quality < 0 ? 5 : h.loot_quality - 1];
-                loot.BackColor = Color.Transparent;
-                loot.Location = new Point(lootLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
-                loot.Size = new Size(24, 16);
-                loot.SizeMode = PictureBoxSizeMode.StretchImage;
-                loot.Name = h.name.ToString();
-                loot.Click += openHuntingPlace;
-                this.Controls.Add(loot);
+                    PictureBox loot = new PictureBox();
+                    loot.Image = MainForm.star_image_text[h.loot_quality < 0 ? 5 : h.loot_quality - 1];
+                    loot.BackColor = Color.Transparent;
+                    loot.Location = new Point(lootLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
+                    loot.Size = new Size(24, 16);
+                    loot.SizeMode = PictureBoxSizeMode.StretchImage;
+                    loot.Name = h.name.ToString();
+                    loot.Click += openHuntingPlace;
+                    this.Controls.Add(loot);
 
-                Label city = new Label();
-                city.Text = h.city;
-                city.Location = new Point(cityLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
-                city.ForeColor = MainForm.label_text_color;
-                city.BackColor = Color.Transparent;
-                hcontrols.Add(city);
+                    Label city = new Label();
+                    city.Text = h.city;
+                    city.Location = new Point(cityLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
+                    city.ForeColor = MainForm.label_text_color;
+                    city.BackColor = Color.Transparent;
+                    hcontrols.Add(city);
 
-                foreach (Control c in hcontrols) {
-                    c.Name = h.name.ToString();
-                    c.Size = new Size(1, 1);
-                    c.AutoSize = true;
-                    c.Font = text_font;
-                    c.Click += openHuntingPlace;
-                    this.Controls.Add(c);
+                    foreach (Control c in hcontrols) {
+                        c.Name = h.name.ToString();
+                        c.Size = new Size(1, 1);
+                        c.AutoSize = true;
+                        c.Font = text_font;
+                        c.Click += openHuntingPlace;
+                        this.Controls.Add(c);
+                    }
+
+                    offset++;
                 }
+            } else {
+                huntCount = quests.Count;
+                initialCommand = "quest";
+                //expLabel.Visible = false;
+                lootLabel.Visible = false;
+                expLabel.Text = "Premium";
+                foreach (Quest q in quests) {
+                    if (++current_index < start_index) continue;
+                    if (current_index > start_index + max_hunts) break;
+                    Image image = null;
+                    if (q.rewardOutfits.Count > 0) {
+                        image = q.rewardOutfits[0].GetImage();
+                    } else if (q.rewardItems.Count > 0) {
+                        image = q.rewardItems.OrderByDescending(o => o.GetMaxValue()).First().image;
+                    } else if (q.questDangers.Count > 0) {
+                        image = q.questDangers.OrderByDescending(o => o.experience).First().image;
+                    }
 
-                offset++;
+                    if (image != null) {
+                        PictureBox picture = new PictureBox();
+                        picture.Image = image;
+                        picture.Size = new Size(size, size);
+                        picture.SizeMode = PictureBoxSizeMode.Zoom;
+                        picture.Location = new Point(nameLabel.Location.X - size, this.nameLabel.Location.Y + size * offset + base_offset - 4);
+                        picture.Click += openHuntingPlace;
+                        picture.Name = q.name.ToString();
+                        picture.BackColor = Color.Transparent;
+                        this.Controls.Add(picture);
+                    }
+                    
+                    Label name = new Label();
+                    name.Text = q.name;
+                    name.Location = new Point(nameLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
+                    name.ForeColor = MainForm.label_text_color;
+                    name.Size = new Size(this.levelLabel.Location.X - this.nameLabel.Location.X, 20);
+                    name.Font = text_font;
+                    name.Click += openHuntingPlace;
+                    name.Name = q.name.ToString();
+                    name.BackColor = Color.Transparent;
+                    this.Controls.Add(name);
+                    
+                    Label level = new Label();
+                    level.Text = q.minlevel == -127 ? "-" : q.minlevel.ToString();
+                    level.Location = new Point(levelLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
+                    level.ForeColor = Color.SeaGreen;
+                    level.BackColor = Color.Transparent;
+                    level.Name = q.name.ToString();
+                    level.Size = new Size(1, 1);
+                    level.AutoSize = true;
+                    level.Font = text_font;
+                    level.Click += openHuntingPlace;
+                    this.Controls.Add(level);
+
+                    Label premium = new Label();
+                    premium.Text = q.premium ? "Yes" : "No";
+                    premium.Location = new Point(expLabel.Location.X, this.expLabel.Location.Y + size * offset + base_offset);
+                    premium.ForeColor = q.premium ? Color.SeaGreen : Color.RoyalBlue;
+                    premium.BackColor = Color.Transparent;
+                    premium.Name = q.name.ToString();
+                    premium.Size = new Size(1, 1);
+                    premium.AutoSize = true;
+                    premium.Font = text_font;
+                    premium.Click += openHuntingPlace;
+                    this.Controls.Add(premium);
+
+                    Label city = new Label();
+                    city.Text = MainForm.ToTitle(q.city);
+                    city.Location = new Point(cityLabel.Location.X, this.nameLabel.Location.Y + size * offset + base_offset);
+                    city.ForeColor = MainForm.label_text_color;
+                    city.BackColor = Color.Transparent;
+                    city.Name = q.name.ToString();
+                    city.Size = new Size(1, 1);
+                    city.AutoSize = true;
+                    city.Font = text_font;
+                    city.Click += openHuntingPlace;
+                    this.Controls.Add(city);
+
+
+                    offset++;
+                }
             }
             int total_yoffset = this.nameLabel.Location.Y + this.nameLabel.Size.Height + offset * size + base_offset;
             // if there are too many hunts to be displayed on one page, add 'prev' and 'next' buttons
-            if (hunting_places.Count > max_hunts) {
+            if (huntCount > max_hunts) {
                 if (start_index > 0) {
                     PictureBox prevpage = new PictureBox();
                     prevpage.Location = new Point(10, total_yoffset);
@@ -236,7 +322,7 @@ namespace Tibialyzer {
                     prevpage.Click += prevpage_Click;
                     this.Controls.Add(prevpage);
                 }
-                if (start_index + max_hunts < hunting_places.Count) {
+                if (start_index + max_hunts < huntCount) {
                     PictureBox nextpage = new PictureBox();
                     nextpage.Location = new Point(this.Size.Width - 108, total_yoffset);
                     nextpage.Size = new Size(98, 23);
@@ -272,6 +358,7 @@ namespace Tibialyzer {
             this.SuspendForm();
             RefreshHuntingPlaces();
             this.ResumeForm();
+            base.ResetTimer();
         }
 
         void nextpage_Click(object sender, EventArgs e) {
@@ -279,17 +366,17 @@ namespace Tibialyzer {
             this.SuspendForm();
             RefreshHuntingPlaces();
             this.ResumeForm();
+            base.ResetTimer();
         }
-
-
-
+        
+        private string initialCommand = "hunt";
         private bool clicked = false;
         protected void openHuntingPlace(object sender, EventArgs e) {
             if (clicked) return;
             clicked = true;
             this.ReturnFocusToTibia();
             string name = (sender as Control).Name;
-            MainForm.mainForm.ExecuteCommand("hunt" + MainForm.commandSymbol + name.ToLower());
+            MainForm.mainForm.ExecuteCommand(initialCommand + MainForm.commandSymbol + name.ToLower());
         }
 
     }
