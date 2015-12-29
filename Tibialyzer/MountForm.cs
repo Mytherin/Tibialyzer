@@ -111,7 +111,6 @@ namespace Tibialyzer {
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MountForm";
-            this.Load += new System.EventHandler(this.MountForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.tameCreatureImageBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tameItemImageBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mountImageBox)).EndInit();
@@ -120,7 +119,7 @@ namespace Tibialyzer {
 
         }
 
-        private void MountForm_Load(object sender, EventArgs e) {
+        public override void LoadForm() {
             if (mount == null) return;
             this.SuspendLayout();
             NotificationInitialize();

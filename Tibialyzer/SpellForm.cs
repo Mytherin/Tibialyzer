@@ -297,7 +297,6 @@ namespace Tibialyzer {
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SpellForm";
-            this.Load += new System.EventHandler(this.SpellForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.promotionBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.premiumBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spellImageBox)).EndInit();
@@ -310,7 +309,7 @@ namespace Tibialyzer {
 
         }
 
-        private void SpellForm_Load(object sender, EventArgs e) {
+        public override void LoadForm() {
             if (spell == null) return;
             this.SuspendLayout();
             NotificationInitialize();

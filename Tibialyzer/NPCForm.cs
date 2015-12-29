@@ -89,7 +89,6 @@ namespace Tibialyzer {
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "NPCForm";
             this.Text = "NPC Form";
-            this.Load += new System.EventHandler(this.NPCForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.mapBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.npcImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapUpLevel)).EndInit();
@@ -119,7 +118,7 @@ namespace Tibialyzer {
             return "";
         }
 
-        private void NPCForm_Load(object sender, EventArgs e) {
+        public override void LoadForm() {
             this.SuspendLayout();
             NotificationInitialize();
             if (npc == null) return;

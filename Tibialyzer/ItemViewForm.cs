@@ -172,7 +172,6 @@ namespace Tibialyzer {
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ItemViewForm";
             this.Text = "Item View";
-            this.Load += new System.EventHandler(this.ItemViewForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.itemPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -195,7 +194,7 @@ namespace Tibialyzer {
             return String.Format("{0}: {1}%", cr.name, percentage < 0 ? "Unknown" : percentage.ToString());
         }
 
-        private void ItemViewForm_Load(object sender, EventArgs e) {
+        public override void LoadForm() {
             skip_event = true;
             this.SuspendForm();
             this.NotificationInitialize();

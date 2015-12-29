@@ -166,7 +166,6 @@ namespace Tibialyzer {
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "OutfitForm";
-            this.Load += new System.EventHandler(this.OutfitForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.femaleAddon3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.femaleAddon2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.femaleAddon1)).EndInit();
@@ -180,7 +179,7 @@ namespace Tibialyzer {
 
         }
 
-        private void OutfitForm_Load(object sender, EventArgs e) {
+        public override void LoadForm() {
             if (outfit == null) return;
             this.SuspendLayout();
             NotificationInitialize();

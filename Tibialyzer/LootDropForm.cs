@@ -16,10 +16,7 @@ namespace Tibialyzer {
         List<Image> images = new List<Image>();
 
         public static Font loot_font = new Font(FontFamily.GenericSansSerif, 14, FontStyle.Bold);
-        private string screenshot_path;
-        public LootDropForm(string screenshot_path = "") {
-            this.screenshot_path = screenshot_path;
-            if (screenshot_path != "") this.Visible = false;
+        public LootDropForm() {
             InitializeComponent();
         }
 
@@ -49,15 +46,8 @@ namespace Tibialyzer {
             if (index >= max) index = max - 1;
             return stack[index];
         }
-
-        private void SaveScreenshot() {
-            Bitmap bitmap = new Bitmap(Size.Width, Size.Height);
-            DrawToBitmap(bitmap, new Rectangle(0, 0, Size.Width, Size.Height));
-            bitmap.Save(screenshot_path);
-            bitmap.Dispose();
-        }
-
-        private void LootDropForm_Load(object sender, EventArgs e) {
+        
+        public override void LoadForm() {
             this.SuspendForm();
             int base_x = 20, base_y = 30;
             int x = 0, y = 0;
@@ -193,11 +183,8 @@ namespace Tibialyzer {
             this.Size = new Size(max_x + item_spacing * 2, base_y + y + item_spacing + 10);
             this.totalValueLabel.Text = "Total Value: " + total_value.ToString();
             this.totalValueLabel.Location = new Point((int)(this.Width / 2.0 - this.totalValueLabel.Width / 2.0), totalValueLabel.Location.Y);
-            if (screenshot_path == "")
-                base.NotificationFinalize();
+            base.NotificationFinalize();
             this.ResumeForm();
-            if (screenshot_path != "")
-                SaveScreenshot();
         }
 
         private bool clicked = false;

@@ -17,19 +17,10 @@ namespace Tibialyzer {
             public int damage;
         };
         public string filter = "";
-
-        private string screenshot_path;
-        public DamageChart(string screenshot_path = "") {
-            this.screenshot_path = screenshot_path;
-            if (screenshot_path != "") this.Visible = false;
+        
+        public DamageChart() {
             InitializeComponent();
             NotificationInitialize();
-        }
-        private void SaveScreenshot() {
-            Bitmap bitmap = new Bitmap(Size.Width, Size.Height);
-            DrawToBitmap(bitmap, new Rectangle(0, 0, Size.Width, Size.Height));
-            bitmap.Save(screenshot_path);
-            bitmap.Dispose();
         }
 
         private void InitializeComponent() {
@@ -77,13 +68,12 @@ namespace Tibialyzer {
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DamageChart";
             this.Text = "Damage Chart";
-            this.Load += new System.EventHandler(this.DamageChart_Load);
             ((System.ComponentModel.ISupportInitialize)(this.mChart)).EndInit();
             this.ResumeLayout(false);
 
         }
 
-        private void DamageChart_Load(object sender, EventArgs e) {
+        public override void LoadForm() {
             this.SuspendForm();
             int maxdeeps = -1;
             foreach (int deeps in dps.Values) {
@@ -128,25 +118,6 @@ namespace Tibialyzer {
                 this.mChart.Series[0].Points.Add(point);
                 i++;
             }
-            /*
-            Bitmap bitmap = new Bitmap(this.mChart.Width, this.mChart.Height);
-            this.mChart.DrawToBitmap(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height));
-
-            PictureBox box = new PictureBox();
-            box.Location = new Point(mChart.Location.X, mChart.Location.Y);
-            box.Size = new Size(mChart.Width, mChart.Height);
-            box.Image = bitmap;
-            box.BackColor = Color.Transparent;
-            this.Controls.Remove(mChart);
-            this.Controls.Add(box);
-            mChart.Dispose();
-            RegisterForClose(box);*/
-            if (screenshot_path == "")
-                base.NotificationFinalize();
-            this.ResumeForm();
-            if (screenshot_path != "")
-                SaveScreenshot();
-
         }
     }
 }

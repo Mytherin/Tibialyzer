@@ -982,9 +982,22 @@ namespace Tibialyzer {
             notificationStack.Remove(notification);
         }
 
-        private void ShowNotification(NotificationForm f, string command, bool screenshot = false) {
+        private void ShowNotification(NotificationForm f, string command, string screenshot_path = "") {
             if (!richNotifications) return;
 
+            f.LoadForm();
+            if (screenshot_path != "") {
+                f.Visible = false;
+                Bitmap bitmap = new Bitmap(f.Width, f.Height);
+                f.DrawToBitmap(bitmap, new Rectangle(0, 0, f.Width, f.Height));
+                foreach (Control c in f.Controls) {
+                    c.DrawToBitmap(bitmap, new Rectangle(new Point(Math.Min(Math.Max(c.Location.X, 0), f.Width), Math.Min(Math.Max(c.Location.Y, 0), f.Height)), c.Size));
+                }
+                bitmap.Save(screenshot_path);
+                bitmap.Dispose();
+                f.Dispose();
+                return;
+            }
             command_stack.Push(command);
             Console.WriteLine(command_stack.Count);
             if (tooltipForm != null) {
@@ -1005,11 +1018,7 @@ namespace Tibialyzer {
             f.SetDesktopLocation(position_x, position_y);
             f.TopMost = true;
             f.Show();
-
-            if (screenshot) {
-                f.Close();
-                tooltipForm = null;
-            } else tooltipForm = f;
+            tooltipForm = f;
         }
 
         public void Back() {
@@ -1068,19 +1077,19 @@ namespace Tibialyzer {
         }
 
         private void ShowDamageMeter(Dictionary<string, int> dps, string comm, string filter = "", string screenshot_path = "") {
-            DamageChart f = new DamageChart(screenshot_path);
+            DamageChart f = new DamageChart();
             f.dps = dps;
             f.filter = filter;
 
-            ShowNotification(f, comm, screenshot_path != "");
+            ShowNotification(f, comm, screenshot_path);
         }
 
         private void ShowLootDrops(Dictionary<Creature, int> creatures, List<Tuple<Item, int>> items, string comm, string screenshot_path) {
-            LootDropForm ldf = new LootDropForm(screenshot_path);
+            LootDropForm ldf = new LootDropForm();
             ldf.creatures = creatures;
             ldf.items = items;
-
-            ShowNotification(ldf, comm, screenshot_path != "");
+            
+            ShowNotification(ldf, comm, screenshot_path);
         }
 
         private void ShowHuntList(List<HuntingPlace> h, string header, string comm) {

@@ -120,7 +120,7 @@ namespace Tibialyzer {
             MainForm.mainForm.ExecuteCommand("item" + MainForm.commandSymbol + (sender as Control).Name);
         }
 
-        private void CreatureDropsForm_Load(object sender, EventArgs e) {
+        public override void LoadForm() {
             this.SuspendForm();
             base.NotificationInitialize();
             // load image from the creature

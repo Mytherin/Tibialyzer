@@ -135,7 +135,6 @@ namespace Tibialyzer {
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "HuntListForm";
             this.Text = "Hunt List";
-            this.Load += new System.EventHandler(this.CreatureHuntForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -338,7 +337,7 @@ namespace Tibialyzer {
             return total_yoffset;
         }
 
-        private void CreatureHuntForm_Load(object sender, EventArgs e) {
+        public override void LoadForm() {
             this.SuspendForm();
             this.NotificationInitialize();
 

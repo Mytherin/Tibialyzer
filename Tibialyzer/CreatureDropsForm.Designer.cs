@@ -106,7 +106,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CreatureDropsForm";
             this.Text = "Creature Drops";
-            this.Load += new System.EventHandler(this.CreatureDropsForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.mainImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

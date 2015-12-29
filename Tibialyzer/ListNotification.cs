@@ -65,13 +65,12 @@ namespace Tibialyzer {
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ListNotification";
             this.Text = "List Notification";
-            this.Load += new System.EventHandler(this.ListNotification_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
-        private void ListNotification_Load(object sender, EventArgs e) {
+        public override void LoadForm() {
             this.SuspendForm();
 
             this.NotificationInitialize();

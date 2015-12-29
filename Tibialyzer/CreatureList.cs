@@ -43,13 +43,12 @@ namespace Tibialyzer {
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CreatureList";
             this.Text = "Tibia Object List";
-            this.Load += new System.EventHandler(this.CreatureList_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
-        private void CreatureList_Load(object sender, EventArgs e) {
+        public override void LoadForm() {
             this.SuspendForm();
             int base_y =  this.listTitle.Location.Y + this.listTitle.Height + 10;
             int y = MainForm.DisplayCreatureList(this.Controls, objects, 10, base_y, 344, 4, true);

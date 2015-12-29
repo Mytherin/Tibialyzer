@@ -80,8 +80,7 @@ namespace Tibialyzer {
             }
         }
 
-
-        private void CreatureStatsForm_Load(object sender, EventArgs e) {
+        public override void LoadForm() {
             this.SuspendForm();
             int horizontal, left, right;
             this.statsButton.Name = creature.name.ToLower();

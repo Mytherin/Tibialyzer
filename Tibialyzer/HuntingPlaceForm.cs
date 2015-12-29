@@ -214,7 +214,6 @@ namespace Tibialyzer {
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "HuntingPlaceForm";
             this.Text = "Hunting Place";
-            this.Load += new System.EventHandler(this.HuntingPlaceForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.lootStarBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.experienceStarBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapDownLevel)).EndInit();
@@ -238,7 +237,7 @@ namespace Tibialyzer {
             base.Dispose(disposing);
         }
 
-        private void HuntingPlaceForm_Load(object sender, EventArgs e) {
+        public override void LoadForm() {
             this.SuspendForm();
             NotificationInitialize();
             if (hunting_place == null) return;
@@ -322,7 +321,6 @@ namespace Tibialyzer {
                 f.Dispose();
                 f = new Font(f.FontFamily, f.Size - 1.0f);
             }
-
 
             Bitmap bitmap = new Bitmap(experienceStarBox.Size.Width, experienceStarBox.Size.Height);
             Graphics gr = Graphics.FromImage(bitmap);

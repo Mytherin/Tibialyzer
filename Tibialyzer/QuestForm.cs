@@ -164,14 +164,13 @@ namespace Tibialyzer {
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "QuestForm";
-            this.Load += new System.EventHandler(this.QuestForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.premiumBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
-        private void QuestForm_Load(object sender, EventArgs e) {
+        public override void LoadForm() {
             if (quest == null) return;
             this.SuspendLayout();
             NotificationInitialize();

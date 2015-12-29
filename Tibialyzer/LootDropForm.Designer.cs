@@ -58,7 +58,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LootDropForm";
             this.Text = "Loot Drop Form";
-            this.Load += new System.EventHandler(this.LootDropForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
