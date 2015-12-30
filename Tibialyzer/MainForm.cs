@@ -608,7 +608,7 @@ namespace Tibialyzer {
                 }
                 instruction.description = reader.GetString(7);
                 instruction.ordering = reader.GetInt32(8);
-                string missionName = reader.IsDBNull(9) ? "Mission Guide" : reader.GetString(9);
+                string missionName = reader.IsDBNull(9) ? "Guide" : reader.GetString(9);
 
                 if (!instruction.quest.questInstructions.ContainsKey(missionName))
                     instruction.quest.questInstructions.Add(missionName, new List<QuestInstruction>());
@@ -1193,7 +1193,7 @@ namespace Tibialyzer {
         private static Pen pathPen = new Pen(Color.FromArgb(25, 25, 112), 1);
         private static Pen startPen = new Pen(Color.FromArgb(191, 191, 191), 1);
         private static Pen endPen = new Pen(Color.FromArgb(34, 139, 34), 1);
-        public static PictureBox DrawRoute(Coordinate begin, Coordinate end, Size pictureBoxSize, Size minSize, Size maxSize) {
+        public static PictureBox DrawRoute(Coordinate begin, Coordinate end, Size pictureBoxSize, Size minSize, Size maxSize, List<Color> additionalWalkableColors) {
             if (end.x >= 0 && begin.z != end.z) {
                 throw new Exception("Can't draw route with different z-coordinates");
             }
@@ -1241,7 +1241,7 @@ namespace Tibialyzer {
                 if (collisionBounds.Count == 0) collisionBounds = null;
             }
 
-            DijkstraPoint result = Dijkstra.FindRoute(map_files[begin.z].image, new Point(begin.x, begin.y), new Point(end.x, end.y), collisionBounds);
+            DijkstraPoint result = Dijkstra.FindRoute(map_files[begin.z].image, new Point(begin.x, begin.y), new Point(end.x, end.y), collisionBounds, additionalWalkableColors);
             if (result == null) {
                 throw new Exception("Couldn't find route.");
             }

@@ -108,8 +108,8 @@ namespace Tibialyzer {
         }
 
         private static List<Color> walkableColors = new List<Color> { Color.FromArgb(0, 204, 0), Color.FromArgb(153, 153, 153), Color.FromArgb(255, 204, 153), Color.FromArgb(153, 102, 51), Color.FromArgb(255, 255, 255), Color.FromArgb(153, 153, 153), Color.FromArgb(204, 255, 255), Color.FromArgb(255, 255, 0) };
-        public static bool isWalkable(Color color) {
-            return walkableColors.Contains(color);
+        public static bool isWalkable(Color color, List<Color> additionalWalkableColors) {
+            return walkableColors.Contains(color) || additionalWalkableColors.Contains(color);
         }
 
         public static Point[] getNeighbors(Point point) {
@@ -128,8 +128,8 @@ namespace Tibialyzer {
             return null;
         }
 
-        public static DijkstraPoint FindRoute(Bitmap mapImage, Point start, Point end, List<Rectangle> bounds) {
-            if (!isWalkable(mapImage.GetPixel(start.X, start.Y))) {
+        public static DijkstraPoint FindRoute(Bitmap mapImage, Point start, Point end, List<Rectangle> bounds, List<Color> additionalWalkableColors) {
+            if (!isWalkable(mapImage.GetPixel(start.X, start.Y), additionalWalkableColors)) {
                 throw new Exception(String.Format("Point ({0},{1}) is not walkable.", start.X, start.Y));
             }
 
@@ -155,7 +155,7 @@ namespace Tibialyzer {
                 //check all the neighbors of the current point
                 foreach (Point p in getNeighbors(current.point)) {
                     if (closedSet.Contains(p)) continue;
-                    if (!isWalkable(mapImage.GetPixel(p.X, p.Y))) {
+                    if (!isWalkable(mapImage.GetPixel(p.X, p.Y), additionalWalkableColors)) {
                         closedSet.Add(p);
                         continue;
                     }
@@ -183,7 +183,7 @@ namespace Tibialyzer {
                 }
             }
             if (closestDistance > 5 && bounds != null) {
-                return FindRoute(mapImage, start, end, null);
+                return FindRoute(mapImage, start, end, null, additionalWalkableColors);
             }
             return closestNode;
         }

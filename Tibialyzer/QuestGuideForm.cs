@@ -309,9 +309,9 @@ namespace Tibialyzer {
                 }
             }
 
-            if (instructionIndex > minInstructions || (maxInstructions > instructionIndex && questInstruction != null)) {
+            if (instructionIndex > minInstructions || (maxInstructions > instructionIndex && (quest == null || questInstruction != null))) {
                 y += 5;
-                if (maxInstructions > instructionIndex && questInstruction != null) {
+                if (maxInstructions > instructionIndex && (quest == null || questInstruction != null)) {
                     nextButton.Location = new Point(this.Size.Width - 105, y);
                     nextButton.Visible = true;
                 } else {
@@ -359,7 +359,19 @@ namespace Tibialyzer {
             const int mapSize = 180;
             Size minSize = new Size(120, 120);
 
-            PictureBox map = MainForm.DrawRoute(begin, end, variableSize ? new Size(0, 0) : new Size(mapSize, mapSize), minSize, new Size(mapSize, mapSize));
+            List<Color> additionalWalkableColors = new List<Color>();
+            if (description.ToLower().Contains("walkablecolor=")) {
+                string[] split = description.Split('@');
+                foreach(string str in split) {
+                    if (str.ToLower().Contains("walkablecolor=")) {
+                        string[] rgb = str.Split('=')[1].Split(',');
+                        additionalWalkableColors.Add(Color.FromArgb(int.Parse(rgb[0]), int.Parse(rgb[1]), int.Parse(rgb[2])));
+                        description = description.Replace(str + "@", "");
+                    }
+                }
+            }
+
+            PictureBox map = MainForm.DrawRoute(begin, end, variableSize ? new Size(0, 0) : new Size(mapSize, mapSize), minSize, new Size(mapSize, mapSize), additionalWalkableColors);
             width = map.Width + 5;
             if (!noText) {
                 map.Location = new Point(this.Size.Width - (map.Width + 5), y);
