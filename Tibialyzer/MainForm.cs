@@ -595,7 +595,7 @@ namespace Tibialyzer {
             }
 
             // Quest Instructions
-            command = new SQLiteCommand("SELECT questid, beginx, beginy, beginz, endx, endy, endz, description, ordering FROM QuestInstructions ORDER BY ordering", conn);
+            command = new SQLiteCommand("SELECT questid, beginx, beginy, beginz, endx, endy, endz, description, ordering, missionname FROM QuestInstructions ORDER BY ordering", conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 QuestInstruction instruction = new QuestInstruction();
@@ -608,8 +608,11 @@ namespace Tibialyzer {
                 }
                 instruction.description = reader.GetString(7);
                 instruction.ordering = reader.GetInt32(8);
+                string missionName = reader.IsDBNull(9) ? "Mission Guide" : reader.GetString(9);
 
-                instruction.quest.questInstructions.Add(instruction);
+                if (!instruction.quest.questInstructions.ContainsKey(missionName))
+                    instruction.quest.questInstructions.Add(missionName, new List<QuestInstruction>());
+                instruction.quest.questInstructions[missionName].Add(instruction);
             }
             // Hunting place requirements
             command = new SQLiteCommand("SELECT huntingplaceid, questid, requirementtext FROM HuntRequirements", conn);

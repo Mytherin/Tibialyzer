@@ -122,7 +122,7 @@ namespace Tibialyzer {
         public List<Creature> questDangers;
         public List<Tuple<int,Item>> questRequirements;
         public List<string> additionalRequirements;
-        public List<QuestInstruction> questInstructions;
+        public Dictionary<string, List<QuestInstruction>> questInstructions;
 
         public Quest() {
             rewardOutfits = new List<Outfit>();
@@ -130,7 +130,7 @@ namespace Tibialyzer {
             questDangers = new List<Creature>();
             questRequirements = new List<Tuple<int, Item>>();
             additionalRequirements = new List<string>();
-            questInstructions = new List<QuestInstruction>();
+            questInstructions = new Dictionary<string, List<QuestInstruction>>();
         }
     }
 
