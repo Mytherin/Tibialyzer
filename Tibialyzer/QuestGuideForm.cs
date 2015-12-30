@@ -440,13 +440,15 @@ namespace Tibialyzer {
                         }
                     }
                     Label label = new Label();
-                    label.Text = instruction == "" ? "" : "- " + instruction;
                     label.Location = new Point(x, y);
                     label.ForeColor = MainForm.label_text_color;
                     label.BackColor = Color.Transparent;
                     label.Font = requirementFont;
                     label.AutoSize = true;
                     label.MaximumSize = new Size(this.Size.Width - (map.Size.Width) - x, 0);
+                    string labelText = CreateLinks(label, instruction);
+                    label.Text = labelText == "" ? "" : "- " + labelText;
+
                     int labelHeight = 0;
                     using (Graphics gr = Graphics.FromHwnd(label.Handle)) {
                         labelHeight = (int)(gr.MeasureString(label.Text, label.Font, this.Size.Width - (map.Size.Width + 10) - x).Height * 1.2);
@@ -460,11 +462,12 @@ namespace Tibialyzer {
                 if (y < minY) y = minY;
             } else {
                 Label label = new Label();
-                label.Text = description == "" ? "" : "- " + description;
                 label.Location = new Point(5, y);
                 label.ForeColor = MainForm.label_text_color;
                 label.BackColor = Color.Transparent;
                 label.Font = requirementFont;
+                string labelText = CreateLinks(label, description);
+                label.Text = labelText == "" ? "" : "- " + labelText;
                 Size size;
                 using (Graphics gr = Graphics.FromHwnd(label.Handle)) {
                     size = gr.MeasureString(label.Text, label.Font, this.Size.Width - (map.Size.Width + 10)).ToSize();
@@ -475,6 +478,22 @@ namespace Tibialyzer {
                 y += Math.Max(label.Size.Height, map.Size.Height) + 10;
             }
             return y;
+        }
+
+        private string CreateLinks(Control label, string linkText) {
+            if (linkText.Contains('{') && linkText.Contains('}')) {
+                int startLink = linkText.IndexOf('{');
+                int endLink = linkText.IndexOf('}');
+                if (endLink > startLink) {
+                    string link = linkText.Substring(startLink + 1, endLink - startLink - 1);
+                    string[] split = link.Split('|');
+                    label.Name = split[0] + "@" + split[1];
+                    label.Click += QuestTitle_Click;
+                    linkText = linkText.Replace(linkText.Substring(startLink, endLink - startLink + 1), split[2]);
+                    label.ForeColor = Color.FromArgb(65, 105, 225);
+                }
+            }
+            return linkText;
         }
 
         private bool clicked = false;
