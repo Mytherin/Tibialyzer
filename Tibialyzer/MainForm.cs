@@ -37,6 +37,9 @@ namespace Tibialyzer {
         public Dictionary<string, Mount> mountNameMap = new Dictionary<string, Mount>();
         public Dictionary<string, Outfit> outfitNameMap = new Dictionary<string, Outfit>();
         public Dictionary<int, Outfit> outfitIdMap = new Dictionary<int, Outfit>();
+        public Dictionary<int, City> cityIdMap = new Dictionary<int, City>();
+        public Dictionary<string, City> cityNameMap = new Dictionary<string, City>();
+        public Dictionary<string, Image> utilityImages = new Dictionary<string, Image>();
 
         public static Creature getCreature(string name) {
             name = name.ToLower().Trim();
@@ -123,6 +126,18 @@ namespace Tibialyzer {
             checkmark_yes = Image.FromFile(@"Images\checkmark-yes.png");
             infoIcon = Image.FromFile(@"Images\defaulticon.png");
             tibia_store_image = Image.FromFile(@"Images\tibiastore.png");
+            utilityImages.Add("offline training", Image.FromFile(@"Images\offlinetraining.png"));
+            utilityImages.Add("offline training melee", utilityImages["offline training"]);
+            utilityImages.Add("offline training magic", Image.FromFile(@"Images\offlinetrainingmagic.png"));
+            utilityImages.Add("offline training distance", Image.FromFile(@"Images\offlinetrainingdistance.png"));
+            utilityImages.Add("potion", Image.FromFile(@"Images\potionstore.png"));
+            utilityImages.Add("boat", Image.FromFile(@"Images\boat.png"));
+            utilityImages.Add("depot", Image.FromFile(@"Images\depot.png"));
+            utilityImages.Add("bank", Image.FromFile(@"Images\bank.png"));
+            utilityImages.Add("temple", Image.FromFile(@"Images\temple.png"));
+            utilityImages.Add("ore wagon", Image.FromFile(@"Images\orewagon.png"));
+            utilityImages.Add("whirlpool", Image.FromFile(@"Images\whirlpool.png"));
+            utilityImages.Add("post office", Image.FromFile(@"Images\postoffice.png"));
 
             item_background = System.Drawing.Image.FromFile(@"Images\item_background.png");
             for (int i = 0; i < 10; i++) {
@@ -625,6 +640,29 @@ namespace Tibialyzer {
                 r.notes = reader["requirementtext"].ToString();
                 if (huntingPlaceIdMap.ContainsKey(r.huntingplaceid)) huntingPlaceIdMap[r.huntingplaceid].requirements.Add(r);
             }
+            // Cities
+            command = new SQLiteCommand("SELECT id, name, x, y, z FROM Cities", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                City city = new City();
+                city.id = reader.GetInt32(0);
+                city.name = reader.GetString(1).ToLower();
+                city.location = new Coordinate(reader.GetInt32(2), reader.GetInt32(3), reader.GetInt32(4));
+
+                cityIdMap.Add(city.id, city);
+                cityNameMap.Add(city.name, city);
+            }
+            // City Utilities
+            command = new SQLiteCommand("SELECT cityid,name,x,y,z FROM CityUtilities", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                int cityid = reader.GetInt32(0);
+                Utility utility = new Utility();
+                utility.name = reader.GetString(1).ToLower();
+                utility.location = new Coordinate(reader.GetInt32(2), reader.GetInt32(3), reader.GetInt32(4));
+
+                cityIdMap[cityid].utilities.Add(utility);
+            }
         }
 
         void initializePluralMap() {
@@ -988,6 +1026,9 @@ namespace Tibialyzer {
         private void ShowNotification(NotificationForm f, string command, string screenshot_path = "") {
             if (!richNotifications) return;
 
+            if (screenshot_path == "") {
+                command_stack.Push(command);
+            }
             f.LoadForm();
             if (screenshot_path != "") {
                 f.Visible = false;
@@ -1001,8 +1042,6 @@ namespace Tibialyzer {
                 f.Dispose();
                 return;
             }
-            command_stack.Push(command);
-            Console.WriteLine(command_stack.Count);
             if (tooltipForm != null) {
                 tooltipForm.Close();
             }
@@ -1154,6 +1193,12 @@ namespace Tibialyzer {
 
             ShowNotification(f, comm);
         }
+        private void ShowCityDisplayForm(City city, string comm) {
+            CityDisplayForm f = new CityDisplayForm();
+            f.city = city;
+
+            ShowNotification(f, comm);
+        }
 
         private void ShowListNotification(List<Command> commands, int type, string comm) {
             ListNotification f = new ListNotification(commands);
@@ -1193,7 +1238,7 @@ namespace Tibialyzer {
         private static Pen pathPen = new Pen(Color.FromArgb(25, 25, 112), 1);
         private static Pen startPen = new Pen(Color.FromArgb(191, 191, 191), 1);
         private static Pen endPen = new Pen(Color.FromArgb(34, 139, 34), 1);
-        public static PictureBox DrawRoute(Coordinate begin, Coordinate end, Size pictureBoxSize, Size minSize, Size maxSize, List<Color> additionalWalkableColors) {
+        public static MapPictureBox DrawRoute(Coordinate begin, Coordinate end, Size pictureBoxSize, Size minSize, Size maxSize, List<Color> additionalWalkableColors, Image crossImage = null, int crossSize = 12) {
             if (end.x >= 0 && begin.z != end.z) {
                 throw new Exception("Can't draw route with different z-coordinates");
             }
@@ -1206,20 +1251,24 @@ namespace Tibialyzer {
             pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
 
             if (end.x < 0) {
+                if (crossImage == null) {
+                    crossImage = MainForm.cross_image;
+                }
                 if (pictureBoxSize.Width == 0) {
                     pictureBoxSize = new Size(Math.Min(Math.Max(end.z, minSize.Width),maxSize.Width),
                         Math.Min(Math.Max(end.z, minSize.Height), maxSize.Height));
                     pictureBox.Size = pictureBoxSize;
                 }
                 mapImage = new Bitmap(map_files[begin.z].image);
-                using (Graphics gr = Graphics.FromImage(mapImage)) {
-                    int crossSize = 4;
-                    gr.DrawImage(MainForm.cross_image, new Rectangle(begin.x - crossSize,begin.y - crossSize, crossSize * 2, crossSize * 2));
-                }
                 pictureBox.mapImage = mapImage;
                 pictureBox.sourceWidth = end.z;
                 pictureBox.mapCoordinate = new Coordinate(begin.x, begin.y, begin.z);
                 pictureBox.zCoordinate = begin.z;
+                Target target = new Target();
+                target.coordinate = begin;
+                target.image = crossImage;
+                target.size = crossSize;
+                pictureBox.targets.Add(target);
                 pictureBox.UpdateMap();
                 return pictureBox;
 
@@ -1279,7 +1328,7 @@ namespace Tibialyzer {
                         new Point(node.previous.point.X, node.previous.point.Y));
                     node = node.previous;
                 }
-                int crossSize = 2;
+                crossSize = 2;
                 gr.DrawEllipse(startPen, new Rectangle(begin.x - crossSize, begin.y - crossSize, crossSize * 2, crossSize * 2));
                 gr.DrawEllipse(endPen, new Rectangle(end.x - crossSize, end.y - crossSize, crossSize * 2, crossSize * 2));
             }

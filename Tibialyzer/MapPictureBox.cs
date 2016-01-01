@@ -7,15 +7,24 @@ using System.Drawing;
 using System.Windows.Forms;
 
 namespace Tibialyzer {
-    class MapPictureBox : PictureBox {
+    public class Target {
+        public Image image;
+        public int size;
+        public Coordinate coordinate;
+    }
+
+    public class MapPictureBox : PictureBox {
         public Image mapImage;
         public Coordinate mapCoordinate;
         public int sourceWidth;
         public int zCoordinate;
         public Coordinate beginCoordinate;
+        public List<Target> targets;
         public int beginWidth;
         public const int minWidth = 40;
         public const int maxWidth = 400;
+        public delegate void MapUpdatedHandler();
+        public event MapUpdatedHandler MapUpdated;
 
         public MapPictureBox() {
             mapImage = null;
@@ -23,6 +32,7 @@ namespace Tibialyzer {
             beginCoordinate = null;
             sourceWidth = 0;
             beginWidth = 0;
+            targets = new List<Target>();
         }
 
         protected override void Dispose(bool disposing) {
@@ -52,22 +62,37 @@ namespace Tibialyzer {
                 } else {
                     gr.DrawImage(MainForm.map_files[mapCoordinate.z].image, new Rectangle(0, 0, bitmap.Width, bitmap.Height), sourceRectangle, GraphicsUnit.Pixel);
                 }
+                foreach (Target target in targets) {
+                    if (target.coordinate.z == mapCoordinate.z) {
+                        int x = target.coordinate.x - (mapCoordinate.x - sourceWidth / 2);
+                        int y = target.coordinate.y - (mapCoordinate.y - sourceWidth / 2);
+                        if (x >= 0 && y >= 0 && x < sourceWidth && y < sourceWidth) {
+                            x = (int)((double)x / sourceWidth * bitmap.Width);
+                            y = (int)((double)y / sourceWidth * bitmap.Height);
+                            int targetWidth = (int)((double)target.size / target.image.Height * target.image.Width);
+                            gr.DrawImage(target.image, new Rectangle(x - targetWidth, y - target.size, targetWidth * 2, target.size * 2));
+                        }
+                    }
+                }
             }
             if (this.Image != null) {
                 this.Image.Dispose();
             }
             this.Image = bitmap;
+            if (MapUpdated != null)
+                MapUpdated();
         }
 
         bool drag_map = false;
         Point center_point;
         Point screen_center;
+        Point initial_position;
         protected override void OnMouseUp(MouseEventArgs e) {
             if (e.Button == System.Windows.Forms.MouseButtons.Left) {
                 if (drag_map) {
                     drag_map = false;
                     System.Windows.Forms.Cursor.Show();
-                    System.Windows.Forms.Cursor.Position = screen_center;
+                    System.Windows.Forms.Cursor.Position = initial_position;
                 }
             }
             base.OnMouseUp(e);
@@ -76,6 +101,7 @@ namespace Tibialyzer {
         protected override void OnMouseDown(MouseEventArgs e) {
             if (e.Button == System.Windows.Forms.MouseButtons.Left) {
                 this.Focus();
+                initial_position = System.Windows.Forms.Cursor.Position;
                 screen_center = this.PointToScreen(new Point(
                     this.Size.Width / 2,
                     this.Size.Height / 2));

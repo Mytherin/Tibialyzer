@@ -182,10 +182,10 @@ namespace Tibialyzer {
             base.OnPaintBackground(e);
             using (Pen p = new Pen(Brushes.Black, 5)) {
                 e.Graphics.DrawRectangle(p, new Rectangle(0, 0, Width - 2, Height - 2));
-                e.Graphics.DrawLine(p, new Point(14, 0), new Point(0, 14));
+                /*e.Graphics.DrawLine(p, new Point(14, 0), new Point(0, 14));
                 e.Graphics.DrawLine(p, new Point(16, Height), new Point(0, Height - 16));
                 e.Graphics.DrawLine(p, new Point(Width - 14, 0), new Point(Width, 14));
-                e.Graphics.DrawLine(p, new Point(Width - 16, Height), new Point(Width, Height - 16));
+                e.Graphics.DrawLine(p, new Point(Width - 16, Height), new Point(Width, Height - 16));*/
             }
         }
 

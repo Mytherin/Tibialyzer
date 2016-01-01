@@ -84,12 +84,13 @@
     <Compile Include="AutoHotkeySuspendedMode.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="CityDisplayForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="DamageChart.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MapPictureBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="MapPictureBox.cs" />
     <Compile Include="MountForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -183,6 +184,9 @@
     </Compile>
     <EmbeddedResource Include="AutoHotkeySuspendedMode.resx">
       <DependentUpon>AutoHotkeySuspendedMode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CityDisplayForm.resx">
+      <DependentUpon>CityDisplayForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DamageChart.resx">
       <DependentUpon>DamageChart.cs</DependentUpon>
@@ -322,6 +326,12 @@
     <Content Include="Images\background_image.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\bank.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\boat.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\checkmark-no.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -332,6 +342,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\defaulticon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\depot.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Druid.png">
@@ -370,10 +383,28 @@
     <Content Include="Images\nextpage.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\offlinetraining.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\offlinetrainingdistance.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\offlinetrainingmagic.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\orewagon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\Paladin.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\phys.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\postoffice.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\potionstore.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\prevpage.png">
@@ -430,6 +461,9 @@
     <Content Include="Images\starunknown_text.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\temple.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\tibia.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -443,6 +477,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\tibiastore.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\whirlpool.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Libraries\System.Data.SQLite.dll">

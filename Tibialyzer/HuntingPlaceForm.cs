@@ -42,7 +42,7 @@ namespace Tibialyzer {
             this.mapUpLevel = new System.Windows.Forms.PictureBox();
             this.creatureLabel = new System.Windows.Forms.Label();
             this.huntingPlaceName = new System.Windows.Forms.Label();
-            this.mapBox = new MapPictureBox();
+            this.mapBox = new Tibialyzer.MapPictureBox();
             this.guideButton = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.lootStarBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.experienceStarBox)).BeginInit();

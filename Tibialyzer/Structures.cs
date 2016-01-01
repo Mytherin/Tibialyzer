@@ -109,6 +109,21 @@ namespace Tibialyzer {
         public int ordering;
     }
 
+    public class Utility {
+        public string name;
+        public Coordinate location;
+    }
+
+    public class City {
+        public int id;
+        public string name;
+        public Coordinate location;
+        public List<Utility> utilities;
+        public City() {
+            utilities = new List<Utility>();
+        }
+    }
+
     public class Quest {
         public int id;
         public string title;

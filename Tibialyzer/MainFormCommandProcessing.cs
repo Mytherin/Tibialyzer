@@ -119,6 +119,12 @@ namespace Tibialyzer {
                         insertSkin(cr);
                     }
                 }
+            } else if (comp.StartsWith("city" + MainForm.commandSymbol)) { //city@
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
+                if (cityNameMap.ContainsKey(parameter)) {
+                    City city = cityNameMap[parameter];
+                    ShowCityDisplayForm(city, command);
+                }
             } else if (comp.StartsWith("damage" + MainForm.commandSymbol) && parseMemoryResults != null) { //damage@
                 string[] splits = command.Split(commandSymbol);
                 string screenshot_path = "";
@@ -469,22 +475,31 @@ namespace Tibialyzer {
                 List<Quest> questList = new List<Quest>();
                 if (questNameMap.ContainsKey(parameter)) {
                     ShowQuestNotification(questNameMap[parameter], command);
-                } else {
+                } else  {
                     string title;
-                    string[] splitStrings = parameter.Split(' ');
-                    foreach (Quest quest in questIdMap.Values) {
-                        bool found = true;
-                        foreach(string str in splitStrings) {
-                            if (!quest.name.ToLower().Contains(str)) {
-                                found = false;
-                                break;
+                    if (cities.Contains(parameter)) {
+                        title = "Quests In " + parameter;
+                        foreach (Quest q in questIdMap.Values) {
+                            if (q.city.ToLower() == parameter) {
+                                questList.Add(q);
                             }
                         }
-                        if (found) {
-                            questList.Add(quest);
+                    } else {
+                        title = "Quests Containing \"" + parameter + "\"";
+                        string[] splitStrings = parameter.Split(' ');
+                        foreach (Quest quest in questIdMap.Values) {
+                            bool found = true;
+                            foreach (string str in splitStrings) {
+                                if (!quest.name.ToLower().Contains(str)) {
+                                    found = false;
+                                    break;
+                                }
+                            }
+                            if (found) {
+                                questList.Add(quest);
+                            }
                         }
                     }
-                    title = "Quests Containing \"" + parameter + "\"";
                     if (questList.Count == 1) {
                         ShowQuestNotification(questList[0], command);
                     } else if (questList.Count > 1) {
