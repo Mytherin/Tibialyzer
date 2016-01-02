@@ -14,6 +14,11 @@ namespace Tibialyzer {
         public SimpleLootNotification(Creature cr, List<Tuple<Item, int>> items) : base() {
             this.InitializeComponent();
 
+            disposableObjects.Add(cr);
+            foreach(Tuple<Item,int> tpl in items) {
+                disposableObjects.Add(tpl.Item1);
+            }
+
             ToolTip value_tooltip = new ToolTip();
             value_tooltip.AutoPopDelay = 60000;
             value_tooltip.InitialDelay = 500;
@@ -31,7 +36,9 @@ namespace Tibialyzer {
             List<Tuple<Item, int>> updatedItems = new List<Tuple<Item, int>>();
             foreach (Tuple<Item, int> tpl in items) {
                 if (tpl.Item1.name.ToLower() == "gold coin" && tpl.Item2 > 100) {
-                    updatedItems.Add(new Tuple<Item, int>(MainForm.mainForm.itemNameMap["platinum coin"], tpl.Item2 / 100));
+                    Item platinumCoin = MainForm.getItem("platinum coin");
+                    disposableObjects.Add(platinumCoin);
+                    updatedItems.Add(new Tuple<Item, int>(platinumCoin, tpl.Item2 / 100));
                     updatedItems.Add(new Tuple<Item,int>(tpl.Item1, tpl.Item2 % 100));
                 } else {
                     updatedItems.Add(tpl);

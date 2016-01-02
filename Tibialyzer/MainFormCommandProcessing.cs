@@ -29,22 +29,15 @@ namespace Tibialyzer {
             Console.WriteLine(command);
             if (comp.StartsWith("creature" + MainForm.commandSymbol)) { //creature@
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                if (creatureNameMap.ContainsKey(parameter)) {
-                    Creature cr = creatureNameMap[parameter];
+                Creature cr = getCreature(parameter);
+                if (cr != null) {
                     ShowCreatureDrops(cr, command);
                 } else {
-                    int count = 0;
-                    List<Creature> creatures = new List<Creature>();
-                    foreach (KeyValuePair<string, Creature> kvp in creatureNameMap) {
-                        if (kvp.Key.Contains(parameter)) {
-                            creatures.Add(kvp.Value);
-                            if (count++ > 50) break;
-                        }
-                    }
+                    List<TibiaObject> creatures = searchCreature(parameter, 50);
                     if (creatures.Count == 1) {
-                        ShowCreatureDrops(creatures[0], command);
+                        ShowCreatureDrops(creatures[0] as Creature, command);
                     } else if (creatures.Count > 1) {
-                        ShowCreatureList((creatures as IEnumerable<TibiaObject>).ToList(), "Creature List", "creature" + MainForm.commandSymbol, command);
+                        ShowCreatureList(creatures, "Creature List", "creature" + MainForm.commandSymbol, command);
                     }
                 }
             } else if (comp.StartsWith("look" + MainForm.commandSymbol)) { //look@
@@ -64,10 +57,15 @@ namespace Tibialyzer {
                         if (!totalLooks.ContainsKey(t)) continue;
                         foreach (string message in totalLooks[t]) {
                             string itemName = parseLookItem(message).ToLower();
-                            if (itemNameMap.ContainsKey(itemName)) {
-                                items.Add(itemNameMap[itemName]);
-                            } else if (creatureNameMap.ContainsKey(itemName)) {
-                                items.Add(creatureNameMap[itemName]);
+                            Item item = getItem(itemName);
+
+                            if (item != null) {
+                                items.Add(item);
+                            } else {
+                                Creature cr = getCreature(itemName);
+                                if (cr != null) {
+                                    items.Add(cr);
+                                }
                             }
                         }
                     }
@@ -83,8 +81,8 @@ namespace Tibialyzer {
                 }
             } else if (comp.StartsWith("stats" + MainForm.commandSymbol)) { //stats@
                 string name = command.Split(commandSymbol)[1].Trim().ToLower();
-                if (creatureNameMap.ContainsKey(name)) {
-                    Creature cr = creatureNameMap[name];
+                Creature cr = getCreature(name);
+                if (cr != null) {
                     ShowCreatureStats(cr, command);
                 }
             } else if (comp.StartsWith("close" + MainForm.commandSymbol)) { //close@
@@ -98,17 +96,19 @@ namespace Tibialyzer {
                 int killCount;
                 if (int.TryParse(parameter, out killCount)) {
                     deleteCreatureWithThreshold(killCount);
-                } else if (creatureNameMap.ContainsKey(parameter)) {
-                    deleteCreatureFromLog(creatureNameMap[parameter]);
+                } else {
+                    Creature cr = getCreature(parameter);
+                    if (cr != null) {
+                        deleteCreatureFromLog(cr);
+                    }
                 }
             } else if (comp.StartsWith("skin" + MainForm.commandSymbol)) { //skin@
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                if (creatureNameMap.ContainsKey(parameter)) {
-                    Creature cr = creatureNameMap[parameter];
+                Creature cr = getCreature(parameter);
+                if (cr != null) {
                     insertSkin(cr);
                 } else {
                     // find creature with highest killcount with a skin and skin that
-                    Creature cr = null;
                     int kills = -1;
                     foreach (KeyValuePair<Creature, int> kvp in activeHunt.loot.killCount) {
                         if (kvp.Value > kills && kvp.Key.skin != null) {
@@ -163,10 +163,9 @@ namespace Tibialyzer {
                 }
 
                 Dictionary<Creature, int> creatureKills;
-                Creature lootCreature = null;
-                if (creatureNameMap.ContainsKey(parameter)) {
+                Creature lootCreature = getCreature(parameter);
+                if (lootCreature != null) {
                     //the command is loot@<creature>, so we only display the kills and loot from the specified creature
-                    lootCreature = creatureNameMap[parameter];
                     creatureKills = new Dictionary<Creature, int>();
                     if (activeHunt.loot.killCount.ContainsKey(lootCreature)) {
                         creatureKills.Add(lootCreature, activeHunt.loot.killCount[lootCreature]);
@@ -179,8 +178,8 @@ namespace Tibialyzer {
                     // only display tracked creatures
                     creatureKills = new Dictionary<Creature, int>();
                     foreach (string creature in creatures) {
-                        if (!creatureNameMap.ContainsKey(creature.ToLower())) continue;
-                        Creature cr = creatureNameMap[creature.ToLower()];
+                        Creature cr = getCreature(creature.ToLower());
+                        if (cr == null) continue;
                         if (!activeHunt.loot.killCount.ContainsKey(cr)) continue;
 
                         creatureKills.Add(cr, activeHunt.loot.killCount[cr]);
@@ -217,21 +216,17 @@ namespace Tibialyzer {
                 }
 
                 // handle coin drops, we always convert the gold to the highest possible denomination (so if gold = 10K, we display a crystal coin)
-                Tuple<Item, int> goldCoin = new Tuple<Item, int>(itemNameMap["gold coin"], extraGold);
-                Tuple<Item, int> platinumCoin = new Tuple<Item, int>(itemNameMap["platinum coin"], extraGold / 100);
-                Tuple<Item, int> crystalCoin = new Tuple<Item, int>(itemNameMap["crystal coin"], extraGold / 10000);
-
                 int currentGold = extraGold;
                 if (currentGold > 10000) {
-                    itemDrops.Add(new Tuple<Item, int>(itemNameMap["crystal coin"], currentGold / 10000));
+                    itemDrops.Add(new Tuple<Item, int>(getItem("crystal coin"), currentGold / 10000));
                     currentGold = currentGold % 10000;
                 }
                 if (currentGold > 100) {
-                    itemDrops.Add(new Tuple<Item, int>(itemNameMap["platinum coin"], currentGold / 100));
+                    itemDrops.Add(new Tuple<Item, int>(getItem("platinum coin"), currentGold / 100));
                     currentGold = currentGold % 100;
                 }
                 if (currentGold > 0) {
-                    itemDrops.Add(new Tuple<Item, int>(itemNameMap["gold coin"], currentGold));
+                    itemDrops.Add(new Tuple<Item, int>(getItem("gold coin"), currentGold));
                 }
 
                 // now order by value so most valuable items are placed first
@@ -277,11 +272,11 @@ namespace Tibialyzer {
                 }
                 refreshHunts();
                 ignoreStamp = createStamp();
-            } else if (comp.StartsWith("drop" + MainForm.commandSymbol)) {
+            } else if (comp.StartsWith("drop" + MainForm.commandSymbol)) { //drop@
                 //show all creatures that drop the specified item
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                if (!itemNameMap.ContainsKey(parameter)) return true;
-                Item item = itemNameMap[parameter];
+                Item item = getItem(parameter);
+                if (item == null) return true;
 
                 List<ItemDrop> itemDrops = new List<ItemDrop>();
                 foreach (ItemDrop itemDrop in item.itemdrops) {
@@ -290,9 +285,9 @@ namespace Tibialyzer {
 
                 itemDrops.OrderByDescending(o => o.percentage);
 
-                List<Creature> creatures = new List<Creature>();
+                Dictionary<Creature, float> creatures = new Dictionary<Creature, float>();
                 foreach (ItemDrop itemDrop in itemDrops) {
-                    creatures.Add(itemDrop.creature);
+                    creatures.Add(getCreature(itemDrop.creatureid), itemDrop.percentage);
                 }
 
                 ShowItemView(item, null, null, creatures, command);
@@ -302,29 +297,18 @@ namespace Tibialyzer {
             } else if (comp.StartsWith("hunt" + MainForm.commandSymbol)) { //hunt@
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                 if (cities.Contains(parameter)) {
-                    List<HuntingPlace> huntingPlaces = new List<HuntingPlace>();
-                    foreach (HuntingPlace huntingPlace in huntingPlaceIdMap.Values) {
-                        if (huntingPlace.city.ToLower() == parameter) {
-                            huntingPlaces.Add(huntingPlace);
-                        }
-                    }
+                    List<HuntingPlace> huntingPlaces = getHuntsInCity(parameter);
                     ShowHuntList(huntingPlaces, "Hunts in " + parameter, command);
                     return true;
                 }
-                if (huntingPlaceNameMap.ContainsKey(parameter)) {
-                    ShowHuntingPlace(huntingPlaceNameMap[parameter], command);
+                HuntingPlace h = getHunt(parameter);
+                if (h != null) {
+                    ShowHuntingPlace(h, command);
                     return true;
                 }
-                if (creatureNameMap.ContainsKey(parameter)) {
-                    Creature cr = creatureNameMap[parameter];
-                    List<HuntingPlace> huntingPlaces = new List<HuntingPlace>();
-                    foreach (HuntingPlace h in huntingPlaceIdMap.Values) {
-                        foreach (Creature hc in h.creatures) {
-                            if (hc == cr) {
-                                huntingPlaces.Add(h);
-                            }
-                        }
-                    }
+                Creature cr = getCreature(parameter);
+                if (cr != null) {
+                    List<HuntingPlace> huntingPlaces = getHuntsForCreature(cr.id);
                     ShowHuntList(huntingPlaces, "Hunts containing creature " + ToTitle(parameter), command);
                     return true;
                 }
@@ -339,26 +323,30 @@ namespace Tibialyzer {
                     int.TryParse(split[1].Trim(), out maxlevel);
                 }
                 if (minlevel >= 0 && maxlevel >= 0) {
-                    List<HuntingPlace> huntingPlaces = new List<HuntingPlace>();
-                    foreach (HuntingPlace h in huntingPlaceIdMap.Values) {
-                        if (h.level >= minlevel && h.level <= maxlevel) {
-                            huntingPlaces.Add(h);
-                        }
-                    }
+                    List<HuntingPlace> huntingPlaces = getHuntsForLevels(minlevel, maxlevel);
                     huntingPlaces = huntingPlaces.OrderBy(o => o.level).ToList();
                     ShowHuntList(huntingPlaces, "Hunts between levels " + minlevel.ToString() + "-" + maxlevel.ToString(), command);
                     return true;
+                } else {
+                    string title;
+                    List<HuntingPlace> huntList = searchHunt(parameter);
+                    title = "Hunts Containing \"" + parameter + "\"";
+                    if (huntList.Count == 1) {
+                        ShowHuntGuideNotification(huntList[0], command);
+                    } else if (huntList.Count > 1) {
+                        ShowHuntList(huntList, title, command);
+                    }
                 }
             } else if (comp.StartsWith("npc" + MainForm.commandSymbol)) {
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                if (npcNameMap.ContainsKey(parameter)) {
-                    NPC npc = npcNameMap[parameter];
+                NPC npc = getNPC(parameter);
+                if (npc != null) {
                     ShowNPCForm(npc, command);
                 } else if (cities.Contains(parameter)) {
-                    ShowCreatureList(npcNameMap.Values.Where(o => o.city.ToLower() == parameter).ToList<TibiaObject>(), "NPC List", "npc@", command);
+                    ShowCreatureList(getNPCWithCity(parameter), "NPC List", "npc@", command);
                 } else {
                     int count = 0;
-                    ShowCreatureList(npcNameMap.Values.Where(o => o.name.Contains(parameter) && count++ < 40).ToList<TibiaObject>(), "NPC List", "npc@", command);
+                    ShowCreatureList(searchNPC(parameter, 50), "NPC List", "npc@", command);
                 }
             } else if (comp.StartsWith("savelog" + MainForm.commandSymbol)) {
                 saveLog(activeHunt, command.Split(commandSymbol)[1].Trim().Replace("'", "\\'"));
@@ -421,27 +409,17 @@ namespace Tibialyzer {
                 ShowListNotification(command_list, type, command);
             } else if (comp.StartsWith("spell" + MainForm.commandSymbol)) { // spell@
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                if (spellNameMap.ContainsKey(parameter)) {
-                    ShowSpellNotification(spellNameMap[parameter], command);
+                Spell spell = getSpell(parameter);
+                if (spell != null) {
+                    ShowSpellNotification(spell, command);
                 } else {
                     List<TibiaObject> spellList = new List<TibiaObject>();
                     string title;
                     if (vocationImages.Keys.Contains(parameter)) {
-                        foreach (Spell spell in spellNameMap.Values) {
-                            if ((parameter == "druid" && spell.druid) ||
-                                (parameter == "sorcerer" && spell.sorcerer) ||
-                                (parameter == "knight" && spell.knight) ||
-                                (parameter == "paladin" && spell.paladin)) {
-                                spellList.Add(spell);
-                            }
-                        }
+                        spellList = getSpellsForVocation(parameter);
                         title = ToTitle(parameter) + " Spells";
                     } else {
-                        foreach (Spell spell in spellNameMap.Values) {
-                            if (spell.name.ToLower().Contains(parameter)) {
-                                spellList.Add(spell);
-                            }
-                        }
+                        spellList = searchSpell(parameter);
                         title = "Spells Containing \"" + parameter + "\"";
                     }
                     spellList = spellList.OrderBy(o => (o as Spell).levelrequired).ToList<TibiaObject>();
@@ -453,16 +431,12 @@ namespace Tibialyzer {
                 }
             } else if (comp.StartsWith("outfit" + MainForm.commandSymbol)) { // outfit@
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                List<TibiaObject> outfitList = new List<TibiaObject>();
-                if (outfitNameMap.ContainsKey(parameter)) {
-                    ShowOutfitNotification(outfitNameMap[parameter], command);
+                Outfit outfit = getOutfit(parameter);
+                if (outfit != null) {
+                    ShowOutfitNotification(outfit, command);
                 } else {
                     string title;
-                    foreach (Outfit outfit in outfitIdMap.Values) {
-                        if (outfit.name.ToLower().Contains(parameter)) {
-                            outfitList.Add(outfit);
-                        }
-                    }
+                    List<TibiaObject> outfitList = searchOutfit(parameter);
                     title = "Outfits Containing \"" + parameter + "\"";
                     if (outfitList.Count == 1) {
                         ShowOutfitNotification(outfitList[0] as Outfit, command);
@@ -528,15 +502,12 @@ namespace Tibialyzer {
             } else if (comp.StartsWith("direction" + MainForm.commandSymbol)) { // direction@
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                 List<HuntingPlace> huntList = new List<HuntingPlace>();
-                if (huntingPlaceNameMap.ContainsKey(parameter)) {
-                    ShowHuntGuideNotification(huntingPlaceNameMap[parameter], command);
+                HuntingPlace h = getHunt(parameter);
+                if (h != null) {
+                    ShowHuntGuideNotification(h, command);
                 } else {
                     string title;
-                    foreach (HuntingPlace hunt in huntingPlaceIdMap.Values) {
-                        if (hunt.name.ToLower().Contains(parameter)) {
-                            huntList.Add(hunt);
-                        }
-                    }
+                    huntList = searchHunt(parameter);
                     title = "Hunts Containing \"" + parameter + "\"";
                     if (huntList.Count == 1) {
                         ShowHuntGuideNotification(huntList[0], command);
@@ -546,16 +517,12 @@ namespace Tibialyzer {
                 }
             } else if (comp.StartsWith("mount" + MainForm.commandSymbol)) { // mount@
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                List<TibiaObject> mountList = new List<TibiaObject>();
-                if (mountNameMap.ContainsKey(parameter)) {
-                    ShowMountNotification(mountNameMap[parameter], command);
+                Mount m = getMount(parameter);
+                if (m != null) {
+                    ShowMountNotification(m, command);
                 } else {
                     string title;
-                    foreach (Mount mount in mountIdMap.Values) {
-                        if (mount.name.ToLower().Contains(parameter)) {
-                            mountList.Add(mount);
-                        }
-                    }
+                    List<TibiaObject> mountList = searchMount(parameter);
                     title = "Mounts Containing \"" + parameter + "\"";
                     if (mountList.Count == 1) {
                         ShowMountNotification(mountList[0] as Mount, command);
@@ -565,23 +532,27 @@ namespace Tibialyzer {
                 }
             } else if (comp.StartsWith("pickup" + MainForm.commandSymbol)) {
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                if (itemNameMap.ContainsKey(parameter)) {
-                    setItemDiscard(itemNameMap[parameter], false);
+                Item item = getItem(parameter);
+                if (item != null) { 
+                    setItemDiscard(item, false);
                 }
             } else if (comp.StartsWith("nopickup" + MainForm.commandSymbol)) {
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                if (itemNameMap.ContainsKey(parameter)) {
-                    setItemDiscard(itemNameMap[parameter], true);
+                Item item = getItem(parameter);
+                if (item != null) {
+                    setItemDiscard(item, true);
                 }
             } else if (comp.StartsWith("convert" + MainForm.commandSymbol)) {
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                if (itemNameMap.ContainsKey(parameter)) {
-                    setItemConvert(itemNameMap[parameter], true);
+                Item item = getItem(parameter);
+                if (item != null) {
+                    setItemConvert(item, true);
                 }
             } else if (comp.StartsWith("noconvert" + MainForm.commandSymbol)) {
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                if (itemNameMap.ContainsKey(parameter)) {
-                    setItemConvert(itemNameMap[parameter], false);
+                Item item = getItem(parameter);
+                if (item != null) {
+                    setItemConvert(item, false);
                 }
             } else if (comp.StartsWith("setval" + MainForm.commandSymbol)) {
                 string parameter = command.Split(commandSymbol)[1].Trim();
@@ -590,8 +561,9 @@ namespace Tibialyzer {
                 string item = split[0].Trim().ToLower().Replace("'", "\\'");
                 int value = 0;
                 if (int.TryParse(split[1].Trim(), out value)) {
-                    if (itemNameMap.ContainsKey(item)) {
-                        setItemValue(itemNameMap[item], value);
+                    Item it = getItem(parameter);
+                    if (it != null) {
+                        setItemValue(it, value);
                     }
                 }
             } else if (comp.StartsWith("screenshot" + MainForm.commandSymbol)) {
@@ -601,20 +573,18 @@ namespace Tibialyzer {
                 foreach (string city in cities) {
                     if (comp.StartsWith(city + MainForm.commandSymbol)) {
                         string itemName = command.Split(commandSymbol)[1].Trim().ToLower();
-                        if (itemNameMap.ContainsKey(itemName)) {
-                            Item item = itemNameMap[itemName];
-                            foreach (ItemSold itemSold in item.buyItems.Union(item.sellItems)) {
-                                if (itemSold.npc.city.ToLower() == city) {
-                                    ShowNPCForm(itemSold.npc, command);
-                                    break;
-                                }
+                        Item item = getItem(itemName);
+                        if (item != null) {
+                            NPC npc = getNPCSellingItemInCity(item.id, city);
+                            if (npc != null) {
+                                ShowNPCForm(npc, command);
                             }
-                        } else if (spellNameMap.ContainsKey(itemName)) {
-                            Spell spell = spellNameMap[itemName];
-                            foreach(SpellTaught teach in spell.teachNPCs) {
-                                if (teach.npc.city.ToLower() == city) {
-                                    ShowNPCForm(teach.npc, command);
-                                    break;
+                        } else {
+                            Spell spell = getSpell(itemName);
+                            if (spell != null) {
+                                NPC npc = getNPCTeachingSpellInCity(spell.id, city);
+                                if (npc != null) {
+                                    ShowNPCForm(npc, command);
                                 }
                             }
                         }
@@ -664,20 +634,23 @@ namespace Tibialyzer {
             if (getSettingBool("LookMode") && readMemoryResults != null) {
                 foreach (string msg in parseMemoryResults.newLooks) {
                     string itemName = parseLookItem(msg).ToLower();
-                    if (itemNameMap.ContainsKey(itemName)) {
+                    if (itemExists(itemName)) {
                         this.Invoke((MethodInvoker)delegate {
                             ShowItemNotification("item@" + itemName);
                         });
-                    } else if (creatureNameMap.ContainsKey(itemName) || 
-                        (itemName.Contains("dead ") && (itemName = itemName.Replace("dead ", "")) != null && creatureNameMap.ContainsKey(itemName)) ||
-                        (itemName.Contains("slain ") && (itemName = itemName.Replace("slain ", "")) != null && creatureNameMap.ContainsKey(itemName))) {
+                    } else if (creatureExists(itemName) ||
+                        (itemName.Contains("dead ") && (itemName = itemName.Replace("dead ", "")) != null && creatureExists(itemName)) ||
+                        (itemName.Contains("slain ") && (itemName = itemName.Replace("slain ", "")) != null && creatureExists(itemName))) {
                         this.Invoke((MethodInvoker)delegate {
-                            ShowCreatureDrops(creatureNameMap[itemName], "");
+                            ShowCreatureDrops(getCreature(itemName), "");
                         });
-                    } else if (npcNameMap.ContainsKey(itemName)) {
-                        this.Invoke((MethodInvoker)delegate {
-                            ShowNPCForm(npcNameMap[itemName], "");
-                        });
+                    } else {
+                        NPC npc = getNPC(itemName);
+                        if (npc != null) {
+                            this.Invoke((MethodInvoker)delegate {
+                                ShowNPCForm(npc, "");
+                            });
+                        }
                     }
                 }
                 parseMemoryResults.newLooks.Clear();
@@ -756,16 +729,10 @@ namespace Tibialyzer {
 
         private void ShowItemNotification(string command) {
             string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-            Item item;
-            if (!itemNameMap.ContainsKey(parameter)) {
+            Item item = getItem(parameter);
+            if (item == null) {
                 int count = 0;
-                List<TibiaObject> items = new List<TibiaObject>();
-                foreach (Item it in itemNameMap.Values) {
-                    if (it.name.ToLower().Contains(parameter)) {
-                        items.Add(it);
-                        if (count++ > 100) break;
-                    }
-                }
+                List<TibiaObject> items = searchItem(parameter, 100);
                 if (items.Count == 0) {
                     return;
                 } else if (items.Count > 1) {
@@ -774,18 +741,18 @@ namespace Tibialyzer {
                 } else {
                     item = items[0] as Item;
                 }
-            } else {
-                item = itemNameMap[parameter];
             }
 
             Dictionary<NPC, int> sellNPCs = new Dictionary<NPC, int>();
             Dictionary<NPC, int> buyNPCs = new Dictionary<NPC, int>();
 
             foreach (ItemSold itemSold in item.buyItems) {
-                buyNPCs.Add(itemSold.npc, itemSold.price);
+                NPC npc = getNPC(itemSold.npcid);
+                buyNPCs.Add(npc, itemSold.price);
             }
             foreach (ItemSold itemSold in item.sellItems) {
-                sellNPCs.Add(itemSold.npc, itemSold.price);
+                NPC npc = getNPC(itemSold.npcid);
+                sellNPCs.Add(npc, itemSold.price);
             }
 
             ShowItemView(item, buyNPCs, sellNPCs, null, command);

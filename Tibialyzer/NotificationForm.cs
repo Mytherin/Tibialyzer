@@ -17,11 +17,23 @@ namespace Tibialyzer {
         System.Timers.Timer closeTimer = null;
         public static Bitmap background_image = null;
         protected PictureBox back_button;
+        protected List<TibiaObject> disposableObjects = new List<TibiaObject>();
+
+
+        protected override void Dispose(bool disposing) {
+            if (disposing) {
+                foreach(TibiaObject obj in disposableObjects) {
+                    obj.Dispose();
+                }
+                disposableObjects.Clear();
+            }
+            base.Dispose(disposing);
+        }
 
         [DllImport("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, Int32 wMsg, bool wParam, Int32 lParam);
 
-        private const int WM_SETREDRAW = 11;
+        public const int WM_SETREDRAW = 11;
 
         public void SuspendDrawing() {
             SendMessage(this.Handle, WM_SETREDRAW, false, 0);
@@ -119,6 +131,7 @@ namespace Tibialyzer {
         [DllImport("user32.dll")]
         static extern bool SetForegroundWindow(IntPtr hWnd);
         public void ReturnFocusToTibia() {
+            return;
             Process[] tibia_process = Process.GetProcessesByName("Tibia");
             if (tibia_process.Length != 0) {
                 SetForegroundWindow(tibia_process[0].MainWindowHandle);
@@ -162,9 +175,13 @@ namespace Tibialyzer {
                 });
             } else {
                 if (this.IsHandleCreated && !this.IsDisposed) {
-                    this.Invoke((MethodInvoker)delegate {
-                        this.Opacity -= 0.03;
-                    });
+                    try {
+                        this.Invoke((MethodInvoker)delegate {
+                            this.Opacity -= 0.03;
+                        });
+                    } catch {
+
+                    }
                     closeTimer.Interval = 20;
                     closeTimer.Start();
                 }

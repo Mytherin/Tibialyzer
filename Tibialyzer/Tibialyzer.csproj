@@ -90,6 +90,9 @@
     <Compile Include="DamageChart.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MainFormStorage.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MapPictureBox.cs" />
     <Compile Include="MountForm.cs">
       <SubType>Form</SubType>

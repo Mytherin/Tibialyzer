@@ -239,6 +239,7 @@ namespace Tibialyzer {
 
         public override void LoadForm() {
             this.SuspendForm();
+            disposableObjects.Add(hunting_place);
             NotificationInitialize();
             if (hunting_place == null) return;
             this.cityLabel.Text = hunting_place.city;
@@ -305,7 +306,15 @@ namespace Tibialyzer {
             }
 
             int base_y = this.creatureLabel.Location.Y + this.creatureLabel.Height + 5;
-            y = MainForm.DisplayCreatureList(this.Controls, (hunting_place.creatures as IEnumerable<TibiaObject>).ToList(), 10, base_y, this.Size.Width, 4, true, null, 0.8f);
+
+            List<TibiaObject> creatures = new List<TibiaObject>();
+            foreach(int creatureid in hunting_place.creatures) {
+                Creature cr = MainForm.getCreature(creatureid);
+                disposableObjects.Add(cr);
+                creatures.Add(cr);
+            }
+
+            y = MainForm.DisplayCreatureList(this.Controls, creatures, 10, base_y, this.Size.Width, 4, true, null, 0.8f);
             foreach (Control c in this.Controls) {
                 if (c is PictureBox) {
                     c.Click += openCreatureMenu;
@@ -351,25 +360,18 @@ namespace Tibialyzer {
             base.NotificationFinalize();
             this.ResumeForm();
         }
-
-        private bool clicked = false;
+        
         protected void openCreatureMenu(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             this.ReturnFocusToTibia();
             string name = (sender as Control).Name;
             MainForm.mainForm.ExecuteCommand("creature" + MainForm.commandSymbol + name.ToLower());
         }
         private void openQuest(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             this.ReturnFocusToTibia();
             string name = (sender as Control).Name;
             MainForm.mainForm.ExecuteCommand("quest" + MainForm.commandSymbol + name.ToLower());
         }
         private void guideButton_Click(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             this.ReturnFocusToTibia();
             string name = (sender as Control).Name;
             MainForm.mainForm.ExecuteCommand("direction" + MainForm.commandSymbol + hunting_place.name.ToLower());
@@ -382,18 +384,18 @@ namespace Tibialyzer {
         }
         
         private void UpdateMap() {
-            if (mapBox.mapImage != null) {
-                mapBox.mapImage.Dispose();
+            Target target = new Target();
+            target.coordinate = new Coordinate(targetCoordinate);
+            target.image = MainForm.cross_image;
+            target.size = 12;
+
+            if (mapBox.map != null) {
+                mapBox.map.Dispose();
             }
-            Bitmap image = new Bitmap(MainForm.map_files[targetCoordinate.z].image);
-            using(Graphics gr = Graphics.FromImage(image)) {
-                const int crossSize = 8;
-                gr.DrawImage(MainForm.cross_image, new Rectangle(targetCoordinate.x - crossSize, targetCoordinate.y - crossSize, crossSize * 2, crossSize * 2));
-            }
-            mapBox.mapImage = image;
+            mapBox.map = MainForm.getMap(targetCoordinate.z);
+            mapBox.targets.Clear();
+            mapBox.targets.Add(target);
             mapBox.mapCoordinate = new Coordinate(targetCoordinate);
-            mapBox.beginCoordinate = new Coordinate(targetCoordinate);
-            mapBox.zCoordinate = targetCoordinate.z;
             mapBox.sourceWidth = mapBox.Width;
             mapBox.UpdateMap();
         }

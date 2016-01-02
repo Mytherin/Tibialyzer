@@ -238,11 +238,25 @@ namespace Tibialyzer {
                     if (current_index > start_index + max_hunts) break;
                     Image image = null;
                     if (q.rewardOutfits.Count > 0) {
-                        image = q.rewardOutfits[0].GetImage();
+                        Outfit o = MainForm.getOutfit(q.rewardOutfits[0]);
+                        this.disposableObjects.Add(o);
+                        image = o.GetImage();
                     } else if (q.rewardItems.Count > 0) {
-                        image = q.rewardItems.OrderByDescending(o => o.GetMaxValue()).First().image;
+                        List<Item> items = new List<Item>();
+                        foreach(int i in q.rewardItems) {
+                            Item item = MainForm.getItem(i);
+                            items.Add(item);
+                            disposableObjects.Add(item); 
+                        }
+                        image = items.OrderByDescending(o => o.GetMaxValue()).First().image;
                     } else if (q.questDangers.Count > 0) {
-                        image = q.questDangers.OrderByDescending(o => o.experience).First().image;
+                        List<Creature> creatures = new List<Creature>();
+                        foreach(int i in q.questDangers) {
+                            Creature cr = MainForm.getCreature(i);
+                            creatures.Add(cr);
+                            disposableObjects.Add(cr);
+                        }
+                        image = creatures.OrderByDescending(o => o.experience).First().image;
                     }
 
                     if (image != null) {
@@ -340,6 +354,12 @@ namespace Tibialyzer {
         public override void LoadForm() {
             this.SuspendForm();
             this.NotificationInitialize();
+
+            if (hunting_places != null) {
+                foreach(HuntingPlace h in hunting_places) {
+                    disposableObjects.Add(h);
+                }
+            }
 
             if (header != null) {
                 headerLabel.Text = header;

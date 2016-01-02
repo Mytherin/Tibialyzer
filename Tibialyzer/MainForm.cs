@@ -21,42 +21,6 @@ namespace Tibialyzer {
     public partial class MainForm : Form {
         public static MainForm mainForm;
 
-        public Dictionary<string, Item> itemNameMap = new Dictionary<string, Item>();
-        public Dictionary<int, Item> itemIdMap = new Dictionary<int, Item>();
-        public Dictionary<string, Creature> creatureNameMap = new Dictionary<string, Creature>();
-        public Dictionary<int, Creature> creatureIdMap = new Dictionary<int, Creature>();
-        public Dictionary<string, NPC> npcNameMap = new Dictionary<string, NPC>();
-        public Dictionary<int, NPC> npcIdMap = new Dictionary<int, NPC>();
-        public Dictionary<string, HuntingPlace> huntingPlaceNameMap = new Dictionary<string, HuntingPlace>();
-        public Dictionary<int, HuntingPlace> huntingPlaceIdMap = new Dictionary<int, HuntingPlace>();
-        public Dictionary<string, Spell> spellNameMap = new Dictionary<string, Spell>();
-        public Dictionary<int, Spell> spellIdMap = new Dictionary<int, Spell>();
-        public Dictionary<int, Quest> questIdMap = new Dictionary<int, Quest>();
-        public Dictionary<string, Quest> questNameMap = new Dictionary<string, Quest>();
-        public Dictionary<int, Mount> mountIdMap = new Dictionary<int, Mount>();
-        public Dictionary<string, Mount> mountNameMap = new Dictionary<string, Mount>();
-        public Dictionary<string, Outfit> outfitNameMap = new Dictionary<string, Outfit>();
-        public Dictionary<int, Outfit> outfitIdMap = new Dictionary<int, Outfit>();
-        public Dictionary<int, City> cityIdMap = new Dictionary<int, City>();
-        public Dictionary<string, City> cityNameMap = new Dictionary<string, City>();
-        public Dictionary<string, Image> utilityImages = new Dictionary<string, Image>();
-
-        public static Creature getCreature(string name) {
-            name = name.ToLower().Trim();
-            if (!mainForm.creatureNameMap.ContainsKey(name)) return null;
-            return mainForm.creatureNameMap[name];
-        }
-        public static NPC getNPC(string name) {
-            name = name.ToLower().Trim();
-            if (!mainForm.npcNameMap.ContainsKey(name)) return null;
-            return mainForm.npcNameMap[name];
-        }
-        public static Item getItem(string name) {
-            name = name.ToLower().Trim();
-            if (!mainForm.itemNameMap.ContainsKey(name)) return null;
-            return mainForm.itemNameMap[name];
-        }
-
         public static List<string> vocations = new List<string> { "knight", "druid", "paladin", "sorcerer" };
 
         public static Color background_color = Color.FromArgb(0, 51, 102);
@@ -86,7 +50,6 @@ namespace Tibialyzer {
         private static string pluralMapFile = @"Database\pluralMap.txt";
         private static string autohotkeyFile = @"Database\autohotkey.ahk";
         private List<string> character_names = new List<string>();
-        public static List<Map> map_files = new List<Map>();
         public static Color label_text_color = Color.FromArgb(191, 191, 191);
         public static int max_creatures = 50;
         public List<string> new_names = null;
@@ -203,353 +166,8 @@ namespace Tibialyzer {
         public static int DATABASE_NULL = -127;
         public static string DATABASE_STRING_NULL = "";
         private void loadDatabaseData() {
-            // first load creatures from the database
-            SQLiteCommand command = new SQLiteCommand("SELECT id, name, health, experience, maxdamage, summon, illusionable, pushable, pushes, physical, holy, death, fire, energy, ice, earth, drown, lifedrain, paralysable, senseinvis, image, abilities, title, speed, armor FROM Creatures", conn);
-            SQLiteDataReader reader = command.ExecuteReader();
-            while (reader.Read()) {
-                Creature cr = new Creature();
-                cr.id = reader.GetInt32(0);
-                cr.name = reader["name"].ToString();
-                cr.health = reader.IsDBNull(2) ? DATABASE_NULL : reader.GetInt32(2);
-                cr.experience = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
-                cr.maxdamage = reader.IsDBNull(4) ? DATABASE_NULL : reader.GetInt32(4);
-                cr.summoncost = reader.IsDBNull(5) ? DATABASE_NULL : reader.GetInt32(5);
-                cr.illusionable = reader.GetBoolean(6);
-                cr.pushable = reader.GetBoolean(7);
-                cr.pushes = reader.GetBoolean(8);
-                cr.res_phys = reader.IsDBNull(9) ? 100 : reader.GetInt32(9);
-                cr.res_holy = reader.IsDBNull(10) ? 100 : reader.GetInt32(10);
-                cr.res_death = reader.IsDBNull(11) ? 100 : reader.GetInt32(11);
-                cr.res_fire = reader.IsDBNull(12) ? 100 : reader.GetInt32(12);
-                cr.res_energy = reader.IsDBNull(13) ? 100 : reader.GetInt32(13);
-                cr.res_ice = reader.IsDBNull(14) ? 100 : reader.GetInt32(14);
-                cr.res_earth = reader.IsDBNull(15) ? 100 : reader.GetInt32(15);
-                cr.res_drown = reader.IsDBNull(16) ? 100 : reader.GetInt32(16);
-                cr.res_lifedrain = reader.IsDBNull(17) ? 100 : reader.GetInt32(17);
-                cr.paralysable = reader.GetBoolean(18);
-                cr.senseinvis = reader.GetBoolean(19);
-                if (reader.IsDBNull(20)) {
-                    continue;
-                }
-                cr.image = Image.FromStream(reader.GetStream(20));
-                cr.abilities = reader.IsDBNull(21) ? DATABASE_STRING_NULL : reader["abilities"].ToString();
-                cr.title = reader[22].ToString();
-                cr.speed = reader.IsDBNull(23) ? DATABASE_NULL : reader.GetInt32(23);
-                cr.armor = reader.IsDBNull(24) ? DATABASE_NULL : reader.GetInt32(24);
-
-                if (creatureNameMap.ContainsKey(cr.name.ToLower())) {
-                    if (cr.name.ToLower() == cr.title.ToLower()) {
-                        creatureNameMap[cr.name.ToLower()] = cr;
-                    }
-                } else {
-                    creatureNameMap.Add(cr.name.ToLower(), cr);
-                }
-                creatureIdMap.Add(cr.id, cr);
-            }
-
-            // now load items
-            command = new SQLiteCommand("SELECT id, name, actual_value, vendor_value, stackable, capacity, category, image, discard, convert_to_gold, look_text, title, currency FROM Items", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                Item item = new Item();
-                item.id = reader.GetInt32(0);
-                item.name = reader.GetString(1);
-                item.actual_value = reader.IsDBNull(2) ? DATABASE_NULL : reader.GetInt32(2);
-                item.vendor_value = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
-                item.stackable = reader.GetBoolean(4);
-                item.capacity = reader.IsDBNull(5) ? DATABASE_NULL : reader.GetFloat(5);
-                item.category = reader.IsDBNull(6) ? "Unknown" : reader.GetString(6);
-                item.image = Image.FromStream(reader.GetStream(7));
-                item.discard = reader.GetBoolean(8);
-                item.convert_to_gold = reader.GetBoolean(9);
-                item.look_text = reader.IsDBNull(10) ? String.Format("You see a {0}.", item.name) : reader.GetString(10);
-                item.title = reader.GetString(11);
-                item.currency = reader.IsDBNull(12) ? DATABASE_NULL : reader.GetInt32(12);
-
-                if (item.image.RawFormat.Guid == ImageFormat.Gif.Guid) {
-                    int frames = item.image.GetFrameCount(FrameDimension.Time);
-                    if (frames == 1) {
-                        Bitmap new_bitmap = new Bitmap(item.image);
-                        new_bitmap.MakeTransparent();
-                        item.image.Dispose();
-                        item.image = new_bitmap;
-                    }
-                }
-
-                if (itemNameMap.ContainsKey(item.name.ToLower())) {
-                    if (item.name.ToLower() == item.title.ToLower()) {
-                        itemNameMap[item.name.ToLower()] = item;
-                    }
-                } else {
-                    itemNameMap.Add(item.name.ToLower(), item);
-                }
-                itemIdMap.Add(item.id, item);
-            }
-
-            // skins for the creatures
-            command = new SQLiteCommand("SELECT creatureid, skinitemid, knifeitemid, percentage FROM Skins", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                Skin skin = new Skin();
-                int creatureid = reader.GetInt32(0);
-                int itemid = reader.GetInt32(1);
-                int skinitemid = reader.GetInt32(2);
-                skin.percentage = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetFloat(3);
-
-                Creature creature = creatureIdMap[creatureid];
-                Item item = itemIdMap[itemid];
-                Item skinItem = itemIdMap[skinitemid];
-
-                skin.drop_item = item;
-                skin.skin_item = skinItem;
-                creature.skin = skin;
-            }
-
-
-            // creature drops
-            command = new SQLiteCommand("SELECT creatureid, itemid, percentage FROM CreatureDrops;", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                int creatureid = reader.GetInt32(0);
-                int itemid = reader.GetInt32(1);
-                float percentage = reader.IsDBNull(2) ? DATABASE_NULL : reader.GetFloat(2);
-
-                Item item = itemIdMap[itemid];
-                Creature creature = creatureIdMap[creatureid];
-                ItemDrop itemDrop = new ItemDrop();
-                itemDrop.item = item;
-                itemDrop.creature = creature;
-                itemDrop.percentage = percentage;
-
-                item.itemdrops.Add(itemDrop);
-                creature.itemdrops.Add(itemDrop);
-            }
-
-            // NPCs
-            command = new SQLiteCommand("SELECT id,name,city,x,y,z,image,job FROM NPCs;", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                NPC npc = new NPC();
-                npc.id = reader.GetInt32(0);
-                npc.name = reader["name"].ToString();
-                npc.city = reader["city"].ToString();
-                npc.pos.x = reader.IsDBNull(3) ? DATABASE_NULL : (int)(Coordinate.MaxWidth * reader.GetFloat(3));
-                npc.pos.y = reader.IsDBNull(4) ? DATABASE_NULL : (int)(Coordinate.MaxHeight * reader.GetFloat(4));
-                npc.pos.z = reader.IsDBNull(5) ? DATABASE_NULL : reader.GetInt32(5);
-                npc.image = Image.FromStream(reader.GetStream(6));
-                npc.job = reader.IsDBNull(7) ? "" : reader.GetString(7);
-
-                // special case for rashid: change location based on day of the week
-                if (npc != null && npc.name == "Rashid") {
-                    SQLiteCommand rashidCommand = new SQLiteCommand(String.Format("SELECT city, x, y, z FROM RashidPositions WHERE day='{0}'", DateTime.Now.DayOfWeek.ToString()), conn);
-                    SQLiteDataReader rashidReader = rashidCommand.ExecuteReader();
-                    if (rashidReader.Read()) {
-                        npc.city = rashidReader["city"].ToString();
-                        npc.pos.x = (int)(Coordinate.MaxWidth * rashidReader.GetFloat(1));
-                        npc.pos.y = (int)(Coordinate.MaxHeight * rashidReader.GetFloat(2));
-                        npc.pos.z = rashidReader.GetInt32(3);
-                    }
-                }
-                npcNameMap.Add(npc.name.ToLower(), npc);
-                npcIdMap.Add(npc.id, npc);
-            }
-
-            // items that you can buy from NPCs
-            command = new SQLiteCommand("SELECT itemid, vendorid, value FROM BuyItems;", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                ItemSold buyItem = new ItemSold();
-                int itemid = reader.GetInt32(0);
-                int vendorid = reader.GetInt32(1);
-                buyItem.price = reader.GetInt32(2);
-
-                Item item = itemIdMap[itemid];
-                NPC npc = npcIdMap[vendorid];
-                buyItem.npc = npc;
-                buyItem.item = item;
-                item.buyItems.Add(buyItem);
-                npc.buyItems.Add(buyItem);
-            }
-            // items that you can sell to NPCs
-            command = new SQLiteCommand("SELECT itemid, vendorid, value FROM SellItems;", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                ItemSold sellItem = new ItemSold();
-                int itemid = reader.GetInt32(0);
-                int vendorid = reader.GetInt32(1);
-                sellItem.price = reader.GetInt32(2);
-
-                Item item = itemIdMap[itemid];
-                NPC npc = npcIdMap[vendorid];
-                sellItem.npc = npc;
-                sellItem.item = item;
-                item.sellItems.Add(sellItem);
-                npc.sellItems.Add(sellItem);
-            }
-
-            // Hunting Places
-            command = new SQLiteCommand("SELECT id, name, level, exprating, lootrating, image, city FROM HuntingPlaces;", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                HuntingPlace huntingPlace = new HuntingPlace();
-                huntingPlace.id = reader.GetInt32(0);
-                huntingPlace.name = reader["name"].ToString();
-                huntingPlace.level = reader.IsDBNull(2) ? DATABASE_NULL : reader.GetInt32(2);
-                huntingPlace.exp_quality = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
-                huntingPlace.loot_quality = reader.IsDBNull(4) ? DATABASE_NULL : reader.GetInt32(4);
-                string imageName = reader.GetString(5).ToLower();
-                if (creatureNameMap.ContainsKey(imageName)) {
-                    huntingPlace.image = creatureNameMap[imageName].image;
-                } else {
-                    huntingPlace.image = npcNameMap[imageName].image;
-                }
-                huntingPlace.city = reader["city"].ToString();
-
-                string huntNameLower = huntingPlace.name.ToLower();
-                huntingPlaceNameMap.Add(huntingPlace.name.ToLower(), huntingPlace);
-                huntingPlaceIdMap.Add(huntingPlace.id, huntingPlace);
-            }
-
-            // Coordinates for hunting places
-            command = new SQLiteCommand("SELECT huntingplaceid, x, y, z FROM HuntingPlaceCoordinates", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                Coordinate c = new Coordinate();
-                int huntingplaceid = reader.GetInt32(0);
-                c.x = reader.IsDBNull(1) ? DATABASE_NULL : (int)(Coordinate.MaxWidth * reader.GetFloat(1));
-                c.y = reader.IsDBNull(2) ? DATABASE_NULL : (int)(Coordinate.MaxHeight * reader.GetFloat(2));
-                c.z = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
-                if (huntingPlaceIdMap.ContainsKey(huntingplaceid)) huntingPlaceIdMap[huntingplaceid].coordinates.Add(c);
-            }
-
-            // Hunting place directions
-            command = new SQLiteCommand("SELECT huntingplaceid, beginx, beginy, beginz,endx, endy, endz, ordering, description FROM HuntDirections ORDER BY ordering", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                Directions d = new Directions();
-                d.huntingplaceid = reader.GetInt32(0);
-                d.begin = new Coordinate(reader.GetInt32(1), reader.GetInt32(2), reader.GetInt32(3));
-                d.end = new Coordinate(reader.GetInt32(4), reader.GetInt32(5), reader.GetInt32(6));
-                d.ordering = reader.GetInt32(7);
-                d.description = reader["description"].ToString();
-                if (huntingPlaceIdMap.ContainsKey(d.huntingplaceid)) huntingPlaceIdMap[d.huntingplaceid].directions.Add(d);
-            }
-
-            // Hunting place creatures
-            command = new SQLiteCommand("SELECT huntingplaceid, creatureid FROM HuntingPlaceCreatures", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                int huntingplaceid = reader.GetInt32(0);
-                int creatureid = reader.GetInt32(1);
-                if (huntingPlaceIdMap.ContainsKey(huntingplaceid) && creatureIdMap.ContainsKey(creatureid)) {
-                    huntingPlaceIdMap[huntingplaceid].creatures.Add(creatureIdMap[creatureid]);
-                }
-            }
-            foreach (HuntingPlace h in huntingPlaceIdMap.Values) {
-                h.creatures = h.creatures.OrderBy(o => o.experience).ToList();
-            }
-
-            // Spells
-            command = new SQLiteCommand("SELECT id, name, words, element, cooldown, premium, promotion, levelrequired, goldcost, manacost, knight, paladin, sorcerer, druid, image FROM Spells", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                Spell spell = new Spell();
-                spell.id = reader.GetInt32(0);
-                spell.name = reader["name"].ToString();
-                spell.words = reader["words"].ToString();
-                spell.element = reader.IsDBNull(3) ? "Unknown" : reader.GetString(3);
-                spell.cooldown = reader.IsDBNull(4) ? DATABASE_NULL : reader.GetInt32(4);
-                spell.premium = reader.GetBoolean(5);
-                spell.promotion = reader.GetBoolean(6);
-                spell.levelrequired = reader.GetInt32(7);
-                spell.goldcost = reader.GetInt32(8);
-                spell.manacost = reader.GetInt32(9);
-                spell.knight = reader.GetBoolean(10);
-                spell.paladin = reader.GetBoolean(11);
-                spell.sorcerer = reader.GetBoolean(12);
-                spell.druid = reader.GetBoolean(13);
-                spell.image = Image.FromStream(reader.GetStream(14));
-
-                spellIdMap.Add(spell.id, spell);
-                spellNameMap.Add(spell.name.ToLower(), spell);
-            }
-
-            // Spell NPCs
-            command = new SQLiteCommand("SELECT spellid, npcid, paladin, knight, druid, sorcerer FROM SpellNPCs", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                int spellid = reader.GetInt32(0);
-                int npcid = reader.GetInt32(1);
-                bool paladin = reader.GetBoolean(2);
-                bool knight = reader.GetBoolean(3);
-                bool druid = reader.GetBoolean(4);
-                bool sorcerer = reader.GetBoolean(5);
-
-                Spell spell = spellIdMap[spellid];
-                NPC npc = npcIdMap[npcid];
-
-                SpellTaught teach = new SpellTaught();
-                teach.spell = spell;
-                teach.npc = npc;
-                teach.paladin = paladin;
-                teach.knight = knight;
-                teach.sorcerer = sorcerer;
-                teach.druid = druid;
-
-                npc.spellsTaught.Add(teach);
-                spell.teachNPCs.Add(teach);
-            }
-
-            // Outfits
-            command = new SQLiteCommand("SELECT id, title, name, premium FROM Outfits", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                Outfit outfit = new Outfit();
-                outfit.id = reader.GetInt32(0);
-                outfit.title = reader.GetString(1);
-                outfit.name = reader.GetString(2);
-                outfit.premium = reader.GetBoolean(3);
-                outfitNameMap.Add(outfit.name.ToLower(), outfit);
-                outfitIdMap.Add(outfit.id, outfit);
-            }
-
-            // Outfit Images
-            command = new SQLiteCommand("SELECT outfitid, male, addon, image FROM OutfitImages", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                int outfitid = reader.GetInt32(0);
-                bool male = reader.GetBoolean(1);
-                int addon = reader.GetInt32(2);
-                Image image = Image.FromStream(reader.GetStream(3));
-
-                if (male) {
-                    outfitIdMap[outfitid].maleImages[addon] = image;
-                } else {
-                    outfitIdMap[outfitid].femaleImages[addon] = image;
-                }
-            }
-
-            // Mounts
-            command = new SQLiteCommand("SELECT id, title, name, tameitemid, tamecreatureid, speed, tibiastore, image FROM Mounts", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                Mount mount = new Mount();
-                mount.id = reader.GetInt32(0);
-                mount.title = reader.GetString(1);
-                mount.name = reader.GetString(2);
-
-                int tameitem = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
-                if (tameitem > 0) mount.tameitem = itemIdMap[tameitem];
-                int tamecreature = reader.IsDBNull(4) ? DATABASE_NULL : reader.GetInt32(4);
-                if (tamecreature > 0) mount.tamecreature = creatureIdMap[tamecreature];
-                mount.speed = reader.GetInt32(5);
-                mount.tibiastore = reader.GetBoolean(6);
-                mount.image = Image.FromStream(reader.GetStream(7));
-
-                mountIdMap.Add(mount.id, mount);
-                mountNameMap.Add(mount.name.ToLower(), mount);
-            }
-
+            SQLiteCommand command;
+            SQLiteDataReader reader;
             // Quests
             command = new SQLiteCommand("SELECT id, title, name, minlevel, premium, city, legend FROM Quests", conn);
             reader = command.ExecuteReader();
@@ -573,7 +191,7 @@ namespace Tibialyzer {
             command = new SQLiteCommand("SELECT questid, itemid FROM QuestRewards", conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
-                questIdMap[reader.GetInt32(0)].rewardItems.Add(itemIdMap[reader.GetInt32(1)]);
+                questIdMap[reader.GetInt32(0)].rewardItems.Add(reader.GetInt32(1));
             }
 
             // Quest Outfits
@@ -582,24 +200,21 @@ namespace Tibialyzer {
             while (reader.Read()) {
                 int questid = reader.GetInt32(0);
                 int outfitid = reader.GetInt32(1);
-                if (outfitIdMap.ContainsKey(outfitid)) {
-                    questIdMap[questid].rewardOutfits.Add(outfitIdMap[outfitid]);
-                    outfitIdMap[outfitid].quest = questIdMap[questid];
-                }
+                questIdMap[questid].rewardOutfits.Add(outfitid);
             }
 
             // Quest Dangers
             command = new SQLiteCommand("SELECT questid, creatureid FROM QuestDangers", conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
-                questIdMap[reader.GetInt32(0)].questDangers.Add(creatureIdMap[reader.GetInt32(1)]);
+                questIdMap[reader.GetInt32(0)].questDangers.Add(reader.GetInt32(1));
             }
 
             // Quest Item Requirements
             command = new SQLiteCommand("SELECT questid, count, itemid FROM QuestItemRequirements", conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
-                questIdMap[reader.GetInt32(0)].questRequirements.Add(new Tuple<int, Item>(reader.GetInt32(1), itemIdMap[reader.GetInt32(2)]));
+                questIdMap[reader.GetInt32(0)].questRequirements.Add(new Tuple<int, int>(reader.GetInt32(1), reader.GetInt32(2)));
             }
 
             // Quest Additional Requirements
@@ -614,7 +229,7 @@ namespace Tibialyzer {
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 QuestInstruction instruction = new QuestInstruction();
-                instruction.quest = questIdMap[reader.GetInt32(0)];
+                instruction.questid = reader.GetInt32(0);
                 instruction.begin = new Coordinate(reader.GetInt32(1), reader.GetInt32(2), reader.GetInt32(3));
                 if (reader.IsDBNull(4)) {
                     instruction.end = new Coordinate(DATABASE_NULL, DATABASE_NULL, reader.GetInt32(6));
@@ -625,20 +240,11 @@ namespace Tibialyzer {
                 instruction.ordering = reader.GetInt32(8);
                 string missionName = reader.IsDBNull(9) ? "Guide" : reader.GetString(9);
 
-                if (!instruction.quest.questInstructions.ContainsKey(missionName))
-                    instruction.quest.questInstructions.Add(missionName, new List<QuestInstruction>());
-                instruction.quest.questInstructions[missionName].Add(instruction);
-            }
-            // Hunting place requirements
-            command = new SQLiteCommand("SELECT huntingplaceid, questid, requirementtext FROM HuntRequirements", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                Requirements r = new Requirements();
-                r.huntingplaceid = reader.GetInt32(0);
-                int questid = reader.IsDBNull(1) ? DATABASE_NULL : reader.GetInt32(1);
-                r.quest = questIdMap[questid];
-                r.notes = reader["requirementtext"].ToString();
-                if (huntingPlaceIdMap.ContainsKey(r.huntingplaceid)) huntingPlaceIdMap[r.huntingplaceid].requirements.Add(r);
+                Quest quest = questIdMap[instruction.questid];
+
+                if (!quest.questInstructions.ContainsKey(missionName))
+                    quest.questInstructions.Add(missionName, new List<QuestInstruction>());
+                quest.questInstructions[missionName].Add(instruction);
             }
             // Cities
             command = new SQLiteCommand("SELECT id, name, x, y, z FROM Cities", conn);
@@ -814,6 +420,17 @@ namespace Tibialyzer {
             huntBox.SelectedIndex = activeHuntIndex;
         }
 
+        public void SuspendForm() {
+            this.SuspendLayout();
+            NotificationForm.SendMessage(this.Handle, NotificationForm.WM_SETREDRAW, false, 0);
+        }
+
+        public void ResumeForm() {
+            this.ResumeLayout(false);
+            NotificationForm.SendMessage(this.Handle, NotificationForm.WM_SETREDRAW, true, 0);
+            this.Refresh();
+        }
+
         void initializeSettings() {
             this.notificationLength = getSettingInt("NotificationDuration") < 0 ? notificationLength : getSettingInt("NotificationDuration");
             this.simpleNotifications = getSettingBool("EnableSimpleNotifications");
@@ -939,13 +556,12 @@ namespace Tibialyzer {
         }
 
         private void initializeMaps() {
-            SQLiteCommand command = new SQLiteCommand("SELECT * FROM WorldMap", conn);
+            SQLiteCommand command = new SQLiteCommand("SELECT z FROM WorldMap", conn);
             SQLiteDataReader reader = command.ExecuteReader();
             while (reader.Read()) {
                 Map m = new Map();
                 m.z = reader.GetInt32(0);
-                m.image = new Bitmap(Image.FromStream(reader.GetStream(1)));
-                map_files.Add(m);
+                mapFiles.Add(m);
             }
         }
 
@@ -1099,7 +715,7 @@ namespace Tibialyzer {
             ShowNotification(f, comm);
         }
 
-        private void ShowItemView(Item i, Dictionary<NPC, int> BuyNPCs, Dictionary<NPC, int> SellNPCs, List<Creature> creatures, string comm) {
+        private void ShowItemView(Item i, Dictionary<NPC, int> BuyNPCs, Dictionary<NPC, int> SellNPCs, Dictionary<Creature, float> creatures, string comm) {
             if (i == null) return;
             ItemViewForm f = new ItemViewForm();
             f.item = i;
@@ -1235,14 +851,13 @@ namespace Tibialyzer {
         }
 
 
-        private static Pen pathPen = new Pen(Color.FromArgb(25, 25, 112), 1);
-        private static Pen startPen = new Pen(Color.FromArgb(191, 191, 191), 1);
-        private static Pen endPen = new Pen(Color.FromArgb(34, 139, 34), 1);
+        public static Pen pathPen = new Pen(Color.FromArgb(25, 25, 112), 1);
+        public static Pen startPen = new Pen(Color.FromArgb(191, 191, 191), 1);
+        public static Pen endPen = new Pen(Color.FromArgb(34, 139, 34), 1);
         public static MapPictureBox DrawRoute(Coordinate begin, Coordinate end, Size pictureBoxSize, Size minSize, Size maxSize, List<Color> additionalWalkableColors, Image crossImage = null, int crossSize = 12) {
             if (end.x >= 0 && begin.z != end.z) {
                 throw new Exception("Can't draw route with different z-coordinates");
             }
-            Bitmap mapImage;
             Rectangle sourceRectangle;
             MapPictureBox pictureBox = new MapPictureBox();
             if (pictureBoxSize.Width != 0) {
@@ -1259,8 +874,8 @@ namespace Tibialyzer {
                         Math.Min(Math.Max(end.z, minSize.Height), maxSize.Height));
                     pictureBox.Size = pictureBoxSize;
                 }
-                mapImage = new Bitmap(map_files[begin.z].image);
-                pictureBox.mapImage = mapImage;
+                Map map = getMap(begin.z);
+                pictureBox.map = map;
                 pictureBox.sourceWidth = end.z;
                 pictureBox.mapCoordinate = new Coordinate(begin.x, begin.y, begin.z);
                 pictureBox.zCoordinate = begin.z;
@@ -1290,7 +905,8 @@ namespace Tibialyzer {
                 if (collisionBounds.Count == 0) collisionBounds = null;
             }
 
-            DijkstraPoint result = Dijkstra.FindRoute(map_files[begin.z].image, new Point(begin.x, begin.y), new Point(end.x, end.y), collisionBounds, additionalWalkableColors);
+            Map m = getMap(begin.z);
+            DijkstraPoint result = Dijkstra.FindRoute(m.image, new Point(begin.x, begin.y), new Point(end.x, end.y), collisionBounds, additionalWalkableColors);
             if (result == null) {
                 throw new Exception("Couldn't find route.");
             }
@@ -1318,21 +934,13 @@ namespace Tibialyzer {
                     Math.Min(Math.Max(sourceRectangle.Height, minSize.Height), maxSize.Height));
                 pictureBox.Size = pictureBoxSize;
             }
-            mapImage = new Bitmap(map_files[begin.z].image);
+            TibiaPath path = new TibiaPath();
+            path.begin = new Coordinate(begin);
+            path.end = new Coordinate(end);
+            path.path = result;
+            pictureBox.paths.Add(path);
 
-            using (Graphics gr = Graphics.FromImage(mapImage)) {
-                node = result;
-                while (node.previous != null) {
-                    gr.DrawLine(pathPen,
-                        new Point(node.point.X, node.point.Y),
-                        new Point(node.previous.point.X, node.previous.point.Y));
-                    node = node.previous;
-                }
-                crossSize = 2;
-                gr.DrawEllipse(startPen, new Rectangle(begin.x - crossSize, begin.y - crossSize, crossSize * 2, crossSize * 2));
-                gr.DrawEllipse(endPen, new Rectangle(end.x - crossSize, end.y - crossSize, crossSize * 2, crossSize * 2));
-            }
-            pictureBox.mapImage = mapImage;
+            pictureBox.map = m;
             pictureBox.sourceWidth = size;
             pictureBox.mapCoordinate = new Coordinate(sourceRectangle.X + sourceRectangle.Width / 2, sourceRectangle.Y + sourceRectangle.Height / 2, begin.z);
             pictureBox.zCoordinate = begin.z;
@@ -1393,7 +1001,7 @@ namespace Tibialyzer {
             this.SuspendLayout();
             this.creaturePanel.Controls.Clear();
             int count = 0;
-            DisplayCreatureList(this.creaturePanel.Controls, creatureNameMap.Values.Where(o => o.name.ToLower().Contains(creature) && count++ < 40).ToList<TibiaObject>(), 10, 10, this.creaturePanel.Width - 20, 4, false);
+            DisplayCreatureList(this.creaturePanel.Controls, MainForm.searchCreature(creature, 50), 10, 10, this.creaturePanel.Width - 20, 4, false);
             foreach (Control c in creaturePanel.Controls) {
                 if (c is PictureBox) {
                     c.Click += ShowCreatureInformation;
@@ -1405,8 +1013,7 @@ namespace Tibialyzer {
             string item = (sender as TextBox).Text;
             this.SuspendLayout();
             this.itemPanel.Controls.Clear();
-            int count = 0;
-            DisplayCreatureList(this.itemPanel.Controls, itemNameMap.Values.Where(o => o.name.ToLower().Contains(item) && count++ < 40).ToList<TibiaObject>(), 10, 10, this.itemPanel.Width - 20, 4, false);
+            DisplayCreatureList(this.itemPanel.Controls, MainForm.searchItem(item, 50), 10, 10, this.itemPanel.Width - 20, 4, false);
             foreach (Control c in itemPanel.Controls) {
                 if (c is PictureBox) {
                     c.Click += ShowItemInformation;
@@ -1720,8 +1327,8 @@ namespace Tibialyzer {
             int maxHeight = -1;
             foreach (string cr in creatures) {
                 string name = cr.ToLower();
-                if (creatureNameMap.ContainsKey(name) && !creatureObjects.Any(item => item.GetName() == name)) {
-                    Creature cc = creatureNameMap[name];
+                Creature cc = getCreature(name);
+                if (cc != null && !creatureObjects.Any(item => item.GetName() == name)) {
                     totalWidth += cc.image.Width + spacing;
                     maxHeight = Math.Max(maxHeight, cc.image.Height);
                     creatureObjects.Add(cc);

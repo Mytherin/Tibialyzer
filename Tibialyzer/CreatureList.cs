@@ -50,6 +50,10 @@ namespace Tibialyzer {
 
         public override void LoadForm() {
             this.SuspendForm();
+            foreach(TibiaObject obj in objects) {
+                disposableObjects.Add(obj);
+            }
+
             int base_y =  this.listTitle.Location.Y + this.listTitle.Height + 10;
             int y = MainForm.DisplayCreatureList(this.Controls, objects, 10, base_y, 344, 4, true);
 

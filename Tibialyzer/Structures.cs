@@ -7,6 +7,7 @@ using System.Drawing;
 
 namespace Tibialyzer {
     public abstract class TibiaObject : IDisposable {
+        public bool permanent;
         public abstract string GetName();
         public abstract Image GetImage();
         public virtual void Dispose() {
@@ -47,13 +48,13 @@ namespace Tibialyzer {
     }
 
     public struct SpellTaught {
-        public Spell spell;
-        public NPC npc;
+        public int spellid;
+        public int npcid;
         public bool knight;
         public bool druid;
         public bool paladin;
         public bool sorcerer;
-            
+
         public bool GetVocation(int i) {
             if (i == 0) return knight;
             if (i == 1) return druid;
@@ -70,15 +71,26 @@ namespace Tibialyzer {
         public bool premium;
         public Image[] maleImages = new Image[4];
         public Image[] femaleImages = new Image[4];
-        public Quest quest;
-        
+        public int questid;
+
         public override string GetName() { return name; }
         public override Image GetImage() {
-            for(int i = 3; i >= 0; i--) {
+            for (int i = 3; i >= 0; i--) {
                 if (maleImages[i] != null) return maleImages[i];
                 if (femaleImages[i] != null) return femaleImages[i];
             }
             throw new Exception("Outfit without image");
+        }
+
+        public override void Dispose() {
+            if (permanent) return;
+
+            for (int i = 0; i < 4; i++) {
+                if (maleImages[i] != null)
+                    maleImages[i].Dispose();
+                if (femaleImages[i] != null)
+                    femaleImages[i].Dispose();
+            }
         }
     }
 
@@ -86,23 +98,25 @@ namespace Tibialyzer {
         public int id;
         public string title;
         public string name;
-        public Item tameitem;
-        public Creature tamecreature;
+        public int tameitemid;
+        public int tamecreatureid;
         public int speed;
         public bool tibiastore;
         public Image image;
 
         public Mount() {
-            tameitem = null;
-            tamecreature = null;
         }
 
         public override string GetName() { return name; }
         public override Image GetImage() { return image; }
+        public override void Dispose() {
+            if (permanent) return;
+            image.Dispose();
+        }
     }
 
     public class QuestInstruction {
-        public Quest quest;
+        public int questid;
         public Coordinate begin;
         public Coordinate end;
         public string description;
@@ -132,18 +146,18 @@ namespace Tibialyzer {
         public bool premium;
         public string city;
         public string legend;
-        public List<Outfit> rewardOutfits;
-        public List<Item> rewardItems;
-        public List<Creature> questDangers;
-        public List<Tuple<int,Item>> questRequirements;
+        public List<int> rewardOutfits;
+        public List<int> rewardItems;
+        public List<int> questDangers;
+        public List<Tuple<int, int>> questRequirements;
         public List<string> additionalRequirements;
         public Dictionary<string, List<QuestInstruction>> questInstructions;
 
         public Quest() {
-            rewardOutfits = new List<Outfit>();
-            rewardItems = new List<Item>();
-            questDangers = new List<Creature>();
-            questRequirements = new List<Tuple<int, Item>>();
+            rewardOutfits = new List<int>();
+            rewardItems = new List<int>();
+            questDangers = new List<int>();
+            questRequirements = new List<Tuple<int, int>>();
             additionalRequirements = new List<string>();
             questInstructions = new Dictionary<string, List<QuestInstruction>>();
         }
@@ -169,6 +183,10 @@ namespace Tibialyzer {
         public List<SpellTaught> teachNPCs = new List<SpellTaught>();
         public override string GetName() { return name; }
         public override Image GetImage() { return image; }
+        public override void Dispose() {
+            if (permanent) return;
+            image.Dispose();
+        }
     }
 
     public class Directions {
@@ -184,7 +202,7 @@ namespace Tibialyzer {
         public Quest quest;
         public string notes;
     }
-    
+
     public class HuntingPlace : TibiaObject {
         public int id;
         public string name;
@@ -193,7 +211,7 @@ namespace Tibialyzer {
         public int exp_quality;
         public int loot_quality;
         public Image image;
-        public List<Creature> creatures;
+        public List<int> creatures;
         public List<Coordinate> coordinates;
         public List<Directions> directions;
         public List<Requirements> requirements;
@@ -202,18 +220,16 @@ namespace Tibialyzer {
         public override Image GetImage() { return image; }
 
         public HuntingPlace() {
-            this.creatures = new List<Creature>();
+            this.creatures = new List<int>();
             this.coordinates = new List<Coordinate>();
             this.directions = new List<Directions>();
             this.requirements = new List<Requirements>();
             this.image = null;
         }
 
-        public void Dispose() {
+        public override void Dispose() {
+            if (permanent) return;
             if (image != null) image.Dispose();
-            if (creatures != null)
-                foreach (Creature creature in creatures)
-                    creature.Dispose();
         }
     }
 
@@ -240,7 +256,8 @@ namespace Tibialyzer {
             image = null;
         }
 
-        public void Dispose() {
+        public override void Dispose() {
+            if (permanent) return;
             if (image != null) image.Dispose();
         }
     }
@@ -276,41 +293,51 @@ namespace Tibialyzer {
             sellItems = new List<ItemSold>();
             buyItems = new List<ItemSold>();
         }
-
-        public void Dispose() {
+    
+        public override void Dispose() {
+            if (permanent) return;
             if (image != null) image.Dispose();
         }
     }
 
-    public class Map {
+    public class Map : TibiaObject {
         public Bitmap image;
         public int z;
+        public int references = 0;
+        
+        public Map() {
+        }
+
+        public override Image GetImage() {
+            return image;
+        }
+        public override string GetName() {
+            return z.ToString();
+        }
+        public override void Dispose() {
+            references--;
+            if (references <= 0) {
+                image.Dispose();
+                image = null;
+            }
+        }
     }
 
-    public class Skin : IDisposable {
-        public Item drop_item;
-        public Item skin_item;
+    public class Skin {
+        public int dropitemid;
+        public int skinitemid;
         public float percentage;
-        public Skin() {
-            drop_item = null;
-            skin_item = null;
-        }
-
-        public void Dispose() {
-            if (drop_item != null) drop_item.Dispose();
-            if (skin_item != null) skin_item.Dispose();
-        }
     }
 
     public class ItemDrop {
-        public Creature creature;
-        public Item item;
+        public int creatureid;
+        public int itemid;
         public float percentage;
     }
 
     public class ItemSold {
-        public NPC npc;
-        public Item item;
+        public int npcid;
+        public int itemid;
         public int price;
     }
 
@@ -350,19 +377,11 @@ namespace Tibialyzer {
             itemdrops = new List<ItemDrop>();
         }
 
-        public void Dispose() {
-            if (image != null) image.Dispose();
-            if (skin != null) {
-                skin.Dispose();
-            }
-            if (itemdrops != null) {
-                foreach (ItemDrop drop in itemdrops)
-                    if (drop.item != null)
-                        drop.item.Dispose();
-            }
-        }
-
         public override string GetName() { return name; }
         public override Image GetImage() { return image; }
+        public override void Dispose() {
+            if (permanent) return;
+            if (image != null) image.Dispose();
+        }
     }
 }

@@ -106,11 +106,13 @@ namespace Tibialyzer {
             get { return true; }
         }
 
+        private Dictionary<Item, int> sellItems = new Dictionary<Item, int>();
+        private Dictionary<Item, int> buyItems = new Dictionary<Item, int>();
         string prefix;
         private string TooltipFunction(TibiaObject obj) {
             if (obj is Item) {
                 Item item = obj as Item;
-                return String.Format("{0} {1} for {2} gold.", prefix, item.name, prefix == "Sells" ? npc.buyItems.Find(o => o.item == item).price : npc.sellItems.Find(o => o.item == item).price);
+                return String.Format("{0} {1} for {2} gold.", prefix, item.name, prefix == "Sells" ? sellItems[item] : buyItems[item]);
             } else if (obj is Spell) {
                 Spell spell = obj as Spell;
                 return String.Format("{0} {1} for {2} gold.", prefix, spell.name, spell.goldcost);
@@ -119,20 +121,26 @@ namespace Tibialyzer {
         }
 
         public override void LoadForm() {
+            if (npc == null) return;
+            disposableObjects.Add(npc);
+
             this.SuspendLayout();
             NotificationInitialize();
-            if (npc == null) return;
             npcImage.Image = npc.image;
             creatureName.Text = MainForm.ToTitle(npc.city);
 
 
-            Bitmap bitmap = new Bitmap(MainForm.map_files[npc.pos.z].image);
-            using (Graphics gr = Graphics.FromImage(bitmap)) {
-                const int crossSize = 8;
-                gr.DrawImage(MainForm.cross_image, new Rectangle(npc.pos.x - crossSize, npc.pos.y - crossSize, crossSize * 2, crossSize * 2));
-            }
+            Map m = MainForm.getMap(npc.pos.z);
 
-            mapBox.mapImage = bitmap;
+            mapBox.map = m;
+            mapBox.mapImage = null;
+
+            Target t = new Target();
+            t.coordinate = new Coordinate(npc.pos);
+            t.image = MainForm.cross_image;
+            t.size = 8;
+
+            mapBox.targets.Add(t);
             mapBox.sourceWidth = mapBox.Width;
             mapBox.mapCoordinate = new Coordinate(npc.pos);
             mapBox.zCoordinate = npc.pos.z;
@@ -166,7 +174,15 @@ namespace Tibialyzer {
                 this.Controls.Add(label);
                 y += 20;
 
-                y = y + MainForm.DisplayCreatureList(this.Controls, npc.buyItems.Select(o => o.item).ToList<TibiaObject>(), 10, y, this.Size.Width - 10, 4, false, TooltipFunction, scale);
+                List<TibiaObject> list = new List<TibiaObject>();
+                foreach(ItemSold itemSold in npc.buyItems) {
+                    Item item = MainForm.getItem(itemSold.itemid);
+                    sellItems.Add(item, itemSold.price);
+                    disposableObjects.Add(item);
+                    list.Add(item);
+                }
+
+                y = y + MainForm.DisplayCreatureList(this.Controls, list, 10, y, this.Size.Width - 10, 4, false, TooltipFunction, scale);
             }
             if (npc.sellItems.Count > 0) {
                 prefix = "Buys";
@@ -179,7 +195,15 @@ namespace Tibialyzer {
                 this.Controls.Add(label);
                 y += 20;
 
-                y = y + MainForm.DisplayCreatureList(this.Controls, npc.sellItems.Select(o => o.item).ToList<TibiaObject>(), 10, y, this.Size.Width - 10, 4, false, TooltipFunction, scale);
+                List<TibiaObject> list = new List<TibiaObject>();
+                foreach (ItemSold itemSold in npc.sellItems) {
+                    Item item = MainForm.getItem(itemSold.itemid);
+                    buyItems.Add(item, itemSold.price);
+                    disposableObjects.Add(item);
+                    list.Add(item);
+                }
+
+                y = y + MainForm.DisplayCreatureList(this.Controls, list, 10, y, this.Size.Width - 10, 4, false, TooltipFunction, scale);
             }
             foreach (Control control in this.Controls)
                 if (control is PictureBox)
@@ -195,7 +219,16 @@ namespace Tibialyzer {
                 this.Controls.Add(label);
                 y += 20;
                 List<Control> spellControls = new List<Control>();
-                y = y + MainForm.DisplayCreatureList(this.Controls, npc.spellsTaught.Select(o => o.spell).OrderBy(p => p.levelrequired).ToList<TibiaObject>(), 10, y, this.Size.Width - 10, 4, false, TooltipFunction, 1, spellControls);
+
+                List<TibiaObject> list = new List<TibiaObject>();
+                foreach (SpellTaught teach in npc.spellsTaught) {
+                    Spell spell = MainForm.getSpell(teach.spellid);
+                    disposableObjects.Add(spell);
+                    list.Add(spell);
+                }
+                list = list.OrderBy(o => (o as Spell).levelrequired).ToList();
+                
+                y = y + MainForm.DisplayCreatureList(this.Controls, list, 10, y, this.Size.Width - 10, 4, false, TooltipFunction, 1, spellControls);
                 foreach (Control control in spellControls) {
                     control.Click += openSpellBox;
                 }
@@ -206,17 +239,12 @@ namespace Tibialyzer {
         }
 
         private string command_start = "item" + MainForm.commandSymbol;
-        private bool clicked = false;
         void openItemBox(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand(command_start + (sender as Control).Name);
         }
         private string spell_start = "spell" + MainForm.commandSymbol;
         void openSpellBox(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand(spell_start + (sender as Control).Name);
         }

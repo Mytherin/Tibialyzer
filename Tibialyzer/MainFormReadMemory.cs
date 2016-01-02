@@ -245,9 +245,9 @@ namespace Tibialyzer {
                 itemName = itemName == "" ? split : itemName + " " + split;
             }
             if (pluralMap.ContainsKey(itemName)) itemName = pluralMap[itemName];
-            if (!itemNameMap.ContainsKey(itemName) && itemName.Length > 0) {
+            if (!itemExists(itemName) && itemName.Length > 0) {
                 string singular = itemName.Substring(0, itemName.Length - 1);
-                if (itemNameMap.ContainsKey(singular)) {
+                if (itemExists(singular)) {
                     itemName = singular;
                 }
             }
@@ -421,12 +421,10 @@ namespace Tibialyzer {
         void setGoldRatio(double ratio) {
             using (var transaction = conn.BeginTransaction()) {
                 SQLiteCommand command;
-                foreach (Item item in itemNameMap.Values) {
-                    double goldratio = Math.Max(item.actual_value, item.vendor_value) / item.capacity;
-                    item.discard = goldratio < ratio;
-                    command = new SQLiteCommand(String.Format("UPDATE Items SET discard={0} WHERE id={1}", item.discard ? 1 : 0, item.id), conn);
-                    command.ExecuteNonQuery();
-                }
+                command = new SQLiteCommand("UPDATE Items SET discard=0;", conn, transaction);
+                command.ExecuteNonQuery();
+                command = new SQLiteCommand(String.Format("UPDATE Items SET discard=1 WHERE MAX(vendor_value, actual_value) / capacity < {0};", ratio), conn, transaction);
+                command.ExecuteNonQuery();
                 transaction.Commit();
             }
         }
@@ -434,14 +432,10 @@ namespace Tibialyzer {
         void setConvertRatio(double ratio, bool stackable) {
             using (var transaction = conn.BeginTransaction()) {
                 SQLiteCommand command;
-                foreach (Item item in itemNameMap.Values) {
-                    if (item.stackable == stackable) {
-                        double goldratio = Math.Max(item.actual_value, item.vendor_value) / item.capacity;
-                        item.convert_to_gold = goldratio < ratio;
-                        command = new SQLiteCommand(String.Format("UPDATE Items SET convert_to_gold={0} WHERE id={1}", item.convert_to_gold ? 1 : 0, item.id), conn);
-                        command.ExecuteNonQuery();
-                    }
-                }
+                command = new SQLiteCommand(String.Format("UPDATE Items SET convert_to_gold=0 WHERE stackable={0};", stackable ? 1 : 0), conn, transaction);
+                command.ExecuteNonQuery();
+                command = new SQLiteCommand(String.Format("UPDATE Items SET convert_to_gold=1 WHERE stackable={0} AND MAX(vendor_value, actual_value) / capacity < {1};", stackable ? 1 : 0, ratio), conn, transaction);
+                command.ExecuteNonQuery();
                 transaction.Commit();
             }
         }
@@ -499,17 +493,24 @@ namespace Tibialyzer {
             int minute = time.Minute;
             int stamp = getDayStamp();
             string timestamp = String.Format("{0}:{1}", (hour < 10 ? "0" + hour.ToString() : hour.ToString()), (minute < 10 ? "0" + minute.ToString() : minute.ToString()));
-            string itemName = cr.skin.drop_item.name;
-            if (!itemNameMap.ContainsKey(itemName.ToLower())) return;
-            Item item = itemNameMap[itemName.ToLower()];
-            string message = String.Format("{0} Loot of a {1}: {2}", timestamp, cr.name.ToLower(), itemName.ToLower());
+            Item item = getItem(cr.skin.dropitemid);
+            if (item == null) return;
+            string message = String.Format("{0} Loot of a {1}: {2}", timestamp, cr.name.ToLower(), item.name.ToLower());
             SQLiteCommand command = new SQLiteCommand(String.Format("INSERT INTO \"{4}\" VALUES({0}, {1}, {2}, \"{3}\");", stamp, hour, minute, message.Replace("\"", "\\\""), activeHunt.name.ToLower()), conn);
             command.ExecuteNonQuery();
             if (!activeHunt.loot.logMessages.ContainsKey(timestamp)) activeHunt.loot.logMessages.Add(timestamp, new List<string>());
             activeHunt.loot.logMessages[timestamp].Add(message);
-            if (!activeHunt.loot.creatureLoot.ContainsKey(cr)) activeHunt.loot.creatureLoot.Add(cr, new Dictionary<Item, int>());
-            if (!activeHunt.loot.creatureLoot[cr].ContainsKey(item)) activeHunt.loot.creatureLoot[cr].Add(item, 1);
-            else activeHunt.loot.creatureLoot[cr][itemNameMap[itemName.ToLower()]] += 1;
+            if (!activeHunt.loot.creatureLoot.ContainsKey(cr)) {
+                activeHunt.loot.creatureLoot.Add(cr, new Dictionary<Item, int>());
+            }
+            foreach(Item i in activeHunt.loot.creatureLoot[cr].Keys) {
+                if (i.id == cr.skin.dropitemid) {
+                    activeHunt.loot.creatureLoot[cr][i] += 1;
+                    item.Dispose();
+                    return;
+                }
+            }
+            activeHunt.loot.creatureLoot[cr].Add(item, 1);
         }
 
         private void ParseLootMessages(Hunt h, Dictionary<string, List<string>> newDrops, List<Tuple<Creature, List<Tuple<Item, int>>>> newItems, bool commit = true) {
@@ -708,9 +709,9 @@ namespace Tibialyzer {
             if (creature[0] == 'a') {
                 creature = creature.Split(new char[] { ' ' }, 2)[1];
             }
-            Creature cr = null;
-            if (creatureNameMap.ContainsKey(creature.ToLower())) {
-                return creatureNameMap[creature.ToLower()];
+            Creature cr = getCreature(creature.ToLower());
+            if (cr != null) {
+                return cr;
             } else {
                 Console.WriteLine(String.Format("Warning, creature {0} was not found in the database.", creature));
                 return null;
@@ -727,10 +728,8 @@ namespace Tibialyzer {
             if (creature[0] == 'a') {
                 creature = creature.Split(new char[] { ' ' }, 2)[1];
             }
-            Creature cr = null;
-            if (creatureNameMap.ContainsKey(creature.ToLower())) {
-                cr = creatureNameMap[creature.ToLower()];
-            } else {
+            Creature cr = getCreature(creature.ToLower());
+            if (cr == null) {
                 Console.WriteLine(String.Format("Warning, creature {0} was not found in the database.", creature));
                 return null;
             }
@@ -743,10 +742,10 @@ namespace Tibialyzer {
                 string itemName = processedItem.Item1.Trim();
                 if (itemName == "nothing") continue;
                 int itemCount = processedItem.Item2;
-                if (!itemNameMap.ContainsKey(itemName)) {
+                Item it = getItem(itemName);
+                if (it == null) {
                     Console.WriteLine(String.Format("Warning, item {0} was not found in the database.", itemName));
                 } else {
-                    Item it = itemNameMap[itemName];
                     itemList.Add(new Tuple<Item, int>(it, itemCount));
                 }
             }

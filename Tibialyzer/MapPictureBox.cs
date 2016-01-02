@@ -13,6 +13,12 @@ namespace Tibialyzer {
         public Coordinate coordinate;
     }
 
+    public class TibiaPath {
+        public DijkstraPoint path;
+        public Coordinate begin;
+        public Coordinate end;
+    }
+
     public class MapPictureBox : PictureBox {
         public Image mapImage;
         public Coordinate mapCoordinate;
@@ -20,7 +26,10 @@ namespace Tibialyzer {
         public int zCoordinate;
         public Coordinate beginCoordinate;
         public List<Target> targets;
+        public List<TibiaPath> paths;
         public int beginWidth;
+        public Map map;
+        public Map otherMap;
         public const int minWidth = 40;
         public const int maxWidth = 400;
         public delegate void MapUpdatedHandler();
@@ -33,13 +42,31 @@ namespace Tibialyzer {
             sourceWidth = 0;
             beginWidth = 0;
             targets = new List<Target>();
+            paths = new List<TibiaPath>();
+            map = null;
+            otherMap = null;
         }
 
+        
         protected override void Dispose(bool disposing) {
             if (mapImage != null) {
                 mapImage.Dispose();
             }
+            if (map != null) {
+                map.Dispose();
+            }
+            if (otherMap != null) {
+                otherMap.Dispose();
+            }
             base.Dispose(disposing);
+        }
+
+        private int convertx(int x) {
+            return (int)((double)(x - (mapCoordinate.x - sourceWidth / 2)) / sourceWidth * this.Width);
+        }
+
+        private int converty(int y) {
+            return (int)((double)(y - (mapCoordinate.y - sourceWidth / 2)) / sourceWidth * this.Height);
         }
 
         public void UpdateMap() {
@@ -49,8 +76,8 @@ namespace Tibialyzer {
             }
             if (mapCoordinate.z < 0) {
                 mapCoordinate.z = 0;
-            } else if (mapCoordinate.z >= MainForm.map_files.Count) {
-                mapCoordinate.z = MainForm.map_files.Count - 1;
+            } else if (mapCoordinate.z >= MainForm.mapFilesCount) {
+                mapCoordinate.z = MainForm.mapFilesCount - 1;
             }
 
             sourceWidth = Math.Min(Math.Max(sourceWidth, minWidth), maxWidth);
@@ -58,10 +85,30 @@ namespace Tibialyzer {
             Bitmap bitmap = new Bitmap(this.Width, this.Height);
             using (Graphics gr = Graphics.FromImage(bitmap)) {
                 if (mapCoordinate.z == zCoordinate) {
-                    gr.DrawImage(mapImage, new Rectangle(0, 0, bitmap.Width, bitmap.Height), sourceRectangle, GraphicsUnit.Pixel);
+                    gr.DrawImage(map != null ? map.image : mapImage, new Rectangle(0, 0, bitmap.Width, bitmap.Height), sourceRectangle, GraphicsUnit.Pixel);
                 } else {
-                    gr.DrawImage(MainForm.map_files[mapCoordinate.z].image, new Rectangle(0, 0, bitmap.Width, bitmap.Height), sourceRectangle, GraphicsUnit.Pixel);
+                    Map m = MainForm.getMap(mapCoordinate.z);
+                    if (otherMap != null && m != otherMap) {
+                        otherMap.Dispose();
+                    }
+                    otherMap = m;
+                    gr.DrawImage(m.image, new Rectangle(0, 0, bitmap.Width, bitmap.Height), sourceRectangle, GraphicsUnit.Pixel);
                 }
+                foreach(TibiaPath path in paths) {
+                    if (path.begin.z == mapCoordinate.z) {
+                        DijkstraPoint node = path.path;
+                        while (node.previous != null) {
+                            gr.DrawLine(MainForm.pathPen,
+                                new Point(convertx(node.point.X), converty(node.point.Y)),
+                                new Point(convertx(node.previous.point.X), converty(node.previous.point.Y)));
+                            node = node.previous;
+                        }
+                        const int circlesize = 4;
+                        gr.DrawEllipse(MainForm.startPen, new Rectangle(convertx(path.begin.x) - circlesize, converty(path.begin.y) - circlesize, circlesize * 2, circlesize * 2));
+                        gr.DrawEllipse(MainForm.endPen, new Rectangle(convertx(path.end.x) - circlesize, converty(path.end.y) - circlesize, circlesize * 2, circlesize * 2));
+                    }
+                }
+
                 foreach (Target target in targets) {
                     if (target.coordinate.z == mapCoordinate.z) {
                         int x = target.coordinate.x - (mapCoordinate.x - sourceWidth / 2);

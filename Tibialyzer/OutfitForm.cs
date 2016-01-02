@@ -181,6 +181,9 @@ namespace Tibialyzer {
 
         public override void LoadForm() {
             if (outfit == null) return;
+
+            disposableObjects.Add(outfit);
+
             this.SuspendLayout();
             NotificationInitialize();
 
@@ -194,9 +197,10 @@ namespace Tibialyzer {
             this.femaleAddon2.Image = outfit.femaleImages[2];
             this.femaleAddon3.Image = outfit.femaleImages[3];
 
-            if (outfit.quest != null) {
-                this.obtainedLabel.Text = "Rewarded by " + outfit.quest.name;
-                obtainedCommand = "quest" + MainForm.commandSymbol + outfit.quest.name;
+            if (outfit.questid > 0) {
+                Quest quest = MainForm.getQuest(outfit.questid);
+                this.obtainedLabel.Text = "Rewarded by " + quest.name;
+                obtainedCommand = "quest" + MainForm.commandSymbol + quest.name;
                 this.obtainedLabel.Click += ObtainedLabel_Click;
             } else {
                 this.obtainedLabel.Visible = false;

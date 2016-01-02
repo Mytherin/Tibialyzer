@@ -121,6 +121,7 @@ namespace Tibialyzer {
 
         public override void LoadForm() {
             if (mount == null) return;
+            disposableObjects.Add(mount);
             this.SuspendLayout();
             NotificationInitialize();
 
@@ -133,16 +134,21 @@ namespace Tibialyzer {
                 this.tameCreatureLabel.Text = "Tibia Store";
                 this.tameCreatureImageBox.Location = new System.Drawing.Point(this.tameCreatureImageBox.Location.X, this.tameCreatureImageBox.Location.Y - 50);
                 this.tameCreatureLabel.Location = new System.Drawing.Point(this.tameCreatureLabel.Location.X, this.tameCreatureLabel.Location.Y - 50);
-            } else if (mount.tamecreature != null && mount.tameitem != null) {
-                this.tameCreatureImageBox.Image = mount.tamecreature.image;
-                this.tameCreatureLabel.Text = MainForm.ToTitle(mount.tamecreature.name);
-                this.tameItemImageBox.Image = mount.tameitem.image;
-                this.tameItemLabel.Text = MainForm.ToTitle(mount.tameitem.name);
+            } else if (mount.tamecreatureid > 0 && mount.tameitemid > 0) {
+                Creature tameCreature = MainForm.getCreature(mount.tamecreatureid);
+                disposableObjects.Add(tameCreature);
+                Item tameItem = MainForm.getItem(mount.tameitemid);
+                disposableObjects.Add(tameItem);
 
-                tameCreatureImageBox.Name = mount.tamecreature.name;
-                tameCreatureLabel.Name = mount.tamecreature.name;
-                tameItemImageBox.Name = mount.tameitem.name;
-                tameItemLabel.Name = mount.tameitem.name;
+                this.tameCreatureImageBox.Image = tameCreature.image;
+                this.tameCreatureLabel.Text = MainForm.ToTitle(tameCreature.name);
+                this.tameItemImageBox.Image = tameItem.image;
+                this.tameItemLabel.Text = MainForm.ToTitle(tameItem.name);
+
+                tameCreatureImageBox.Name = tameCreature.name;
+                tameCreatureLabel.Name = tameCreature.name;
+                tameItemImageBox.Name = tameItem.name;
+                tameItemLabel.Name = tameItem.name;
 
                 this.tameCreatureLabel.Click += TameCreatureImageBox_Click;
                 this.tameCreatureImageBox.Click += TameCreatureImageBox_Click;

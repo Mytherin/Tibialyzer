@@ -182,7 +182,12 @@ namespace Tibialyzer {
             this.legendLabel.Text = quest.legend;
 
             List<TibiaObject> rewards = new List<TibiaObject>();
-            rewards.AddRange(this.quest.rewardItems.OrderBy(o => -Math.Max(o.actual_value, o.vendor_value)));
+            foreach(int reward in quest.rewardItems) {
+                Item item = MainForm.getItem(reward);
+                disposableObjects.Add(item);
+                rewards.Add(item);
+            }
+            rewards = rewards.OrderByDescending(o => (o as Item).GetMaxValue()).ToList<TibiaObject>();
             int y = -1;
             using (Graphics gr = Graphics.FromHwnd(legendLabel.Handle)) {
                 y = this.legendLabel.Location.Y + (int)gr.MeasureString(this.legendLabel.Text, this.legendLabel.Font, this.legendLabel.MaximumSize.Width).Height + 20;
@@ -207,7 +212,15 @@ namespace Tibialyzer {
                 }
                 if (quest.rewardOutfits.Count > 0) {
                     List<Control> outfitControls = new List<Control>();
-                    y = y + MainForm.DisplayCreatureList(this.Controls, quest.rewardOutfits.ToList<TibiaObject>(), 10, y, this.Size.Width - 10, 4, false, null, 1, outfitControls);
+
+                    List<TibiaObject> rewardOutfits = new List<TibiaObject>();
+                    foreach (int reward in quest.rewardOutfits) {
+                        Outfit outfit = MainForm.getOutfit(reward);
+                        disposableObjects.Add(outfit);
+                        rewards.Add(outfit);
+                    }
+
+                    y = y + MainForm.DisplayCreatureList(this.Controls, rewardOutfits, 10, y, this.Size.Width - 10, 4, false, null, 1, outfitControls);
                     foreach (Control control in outfitControls) {
                         control.Click += outfitClick;
                     }

@@ -82,6 +82,7 @@ namespace Tibialyzer {
 
         public override void LoadForm() {
             this.SuspendForm();
+            disposableObjects.Add(creature);
             int horizontal, left, right;
             this.statsButton.Name = creature.name.ToLower();
             this.huntButton.Name = creature.name.ToLower();

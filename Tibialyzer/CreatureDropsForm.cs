@@ -13,7 +13,6 @@ namespace Tibialyzer {
 
     public partial class CreatureDropsForm : NotificationForm {
         public Creature creature;
-        private List<Image> images = new List<Image>();
 
         public CreatureDropsForm() {
             InitializeComponent();
@@ -21,18 +20,20 @@ namespace Tibialyzer {
 
         private void DisplayItem(ItemDrop drop, int base_x, int base_y, int x, int y, Size item_size, ToolTip droprate_tooltip, int dropbar_height, string prefix = "Drop rate of ") {
 
+            Item dropItem = MainForm.getItem(drop.itemid);
+            this.disposableObjects.Add(dropItem);
             // the main picture of the item
             PictureBox picture_box = new PictureBox();
             picture_box.Location = new System.Drawing.Point(base_x + x, base_y + y);
-            picture_box.Name = drop.item.name;
+            picture_box.Name = dropItem.name;
             picture_box.Size = new System.Drawing.Size(item_size.Width, item_size.Height);
             picture_box.TabIndex = 1;
             picture_box.TabStop = false;
-            picture_box.Image = drop.item.image;
+            picture_box.Image = dropItem.image;
             picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
             picture_box.BackgroundImage = MainForm.item_background;
             picture_box.Click += openItemBox;
-            droprate_tooltip.SetToolTip(picture_box, prefix + drop.item.name + " is " + (drop.percentage >= 0 ? Math.Round(drop.percentage, 1).ToString() + "%." : "unknown."));
+            droprate_tooltip.SetToolTip(picture_box, prefix + dropItem.name + " is " + (drop.percentage >= 0 ? Math.Round(drop.percentage, 1).ToString() + "%." : "unknown."));
             this.Controls.Add(picture_box);
 
             // the 'dropbar' that roughly displays the droprate of the item
@@ -87,20 +88,22 @@ namespace Tibialyzer {
             }
 
             if (creature.skin != null) {
+                Item skinItem = MainForm.getItem(creature.skin.skinitemid);
+                this.disposableObjects.Add(skinItem);
                 ItemDrop skinDrop = new ItemDrop();
                 PictureBox picture_box = new PictureBox();
                 picture_box.Location = new System.Drawing.Point(20, this.huntButton.Location.Y + this.huntButton.Size.Height + 10);
-                picture_box.Name = creature.skin.skin_item.name;
+                picture_box.Name = skinItem.name;
                 picture_box.Size = new System.Drawing.Size(item_size.Width, item_size.Height);
                 picture_box.TabIndex = 1;
                 picture_box.TabStop = false;
-                picture_box.Image = creature.skin.skin_item.image;
+                picture_box.Image = skinItem.image;
                 picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
                 picture_box.BackgroundImage = MainForm.item_background;
-                picture_box.Click += openItemBox; droprate_tooltip.SetToolTip(picture_box, "You can skin this creature with the item " + creature.skin.skin_item.name + ".");
+                picture_box.Click += openItemBox; droprate_tooltip.SetToolTip(picture_box, "You can skin this creature with the item " + skinItem.name + ".");
                 this.Controls.Add(picture_box);
 
-                skinDrop.item = creature.skin.drop_item;
+                skinDrop.itemid = creature.skin.dropitemid;
                 skinDrop.percentage = creature.skin.percentage;
                 DisplayItem(skinDrop, 20 + item_size.Width + item_spacing, this.huntButton.Location.Y + this.huntButton.Size.Height + 10, 0, 0, item_size, droprate_tooltip, dropbar_height, "Skin rate of ");
                 if (y < this.huntButton.Location.Y + this.huntButton.Size.Height) y = this.huntButton.Location.Y + this.huntButton.Size.Height;
@@ -123,6 +126,7 @@ namespace Tibialyzer {
         public override void LoadForm() {
             this.SuspendForm();
             base.NotificationInitialize();
+            disposableObjects.Add(creature);
             // load image from the creature
             this.mainImage.Image = this.creature.image;
             this.statsButton.Name = this.creature.name.ToLower();

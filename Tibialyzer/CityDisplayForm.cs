@@ -228,8 +228,6 @@ namespace Tibialyzer {
                 mapBox.mapCoordinate = new Coordinate(utility.location);
                 mapBox.UpdateMap();
             } else {
-                if (clicked) return;
-                clicked = true;
                 NPC npc = npcList[int.Parse((sender as Control).Name)] as NPC;
                 MainForm.mainForm.ExecuteCommand("npc" + MainForm.commandSymbol + npc.name);
             }
@@ -278,7 +276,7 @@ namespace Tibialyzer {
                     coordinate = new Coordinate((tibiaObjects[index] as NPC).pos);
                 } else {
                     name = utilities[index].name;
-                    image = MainForm.mainForm.utilityImages[name];
+                    image = MainForm.utilityImages[name];
                     coordinate = new Coordinate(utilities[index].location);
                 }
 
@@ -320,11 +318,9 @@ namespace Tibialyzer {
 
         private void npcButton_Click(object sender, EventArgs e) {
             this.SuspendForm();
-            List<TibiaObject> npcs = new List<TibiaObject>();
-            foreach(NPC npc in MainForm.mainForm.npcIdMap.Values) {
-                if (npc.city.ToLower() == city.name.ToLower()) {
-                    npcs.Add(npc);
-                }
+            List<TibiaObject> npcs = MainForm.getNPCWithCity(city.name.ToLower());
+            foreach(NPC npc in npcs) {
+                disposableObjects.Add(npc);
             }
             int listHeight = InitializeList(null, npcs);
 
@@ -334,20 +330,13 @@ namespace Tibialyzer {
             this.Refresh();
             this.refreshTimer();
         }
-
-        private bool clicked = false;
-
+        
         private void huntButton_Click(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             MainForm.mainForm.ExecuteCommand("hunt" + MainForm.commandSymbol + city.name);
         }
 
         private void questButton_Click(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             MainForm.mainForm.ExecuteCommand("quest" + MainForm.commandSymbol + city.name);
-
         }
 
         private void utilityButton_Click(object sender, EventArgs e) {

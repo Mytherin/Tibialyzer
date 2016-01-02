@@ -145,7 +145,13 @@ namespace Tibialyzer {
                     // Item requirements
                     if (this.quest.questRequirements.Count > 0) {
 
-                        List<Tuple<int, Item>> rewards = this.quest.questRequirements.OrderBy(o => o.Item1 * o.Item2.GetMaxValue()).ToList();
+                        List<Tuple<int, Item>> rewards = new List<Tuple<int, Item>>();
+                        foreach(Tuple<int,int> tpl in quest.questRequirements) {
+                            Item item = MainForm.getItem(tpl.Item2);
+                            disposableObjects.Add(item);
+                            rewards.Add(new Tuple<int, Item>(tpl.Item1, item));
+                        }
+                        rewards = rewards.OrderBy(o => o.Item1 * o.Item2.GetMaxValue()).ToList();
                         List<TibiaObject> itemList = rewards.Select(o => o.Item2).ToList<TibiaObject>();
 
                         List<Control> itemControls = new List<Control>();

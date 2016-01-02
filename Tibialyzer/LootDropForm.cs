@@ -13,7 +13,6 @@ namespace Tibialyzer {
     public partial class LootDropForm : NotificationForm {
         public List<Tuple<Item, int>> items;
         public Dictionary<Creature, int> creatures;
-        List<Image> images = new List<Image>();
 
         public static Font loot_font = new Font(FontFamily.GenericSansSerif, 14, FontStyle.Bold);
         public LootDropForm() {
@@ -49,6 +48,13 @@ namespace Tibialyzer {
         
         public override void LoadForm() {
             this.SuspendForm();
+            foreach(Tuple<Item,int> tpl in items) {
+                disposableObjects.Add(tpl.Item1);
+            }
+            foreach(Creature cr in creatures.Keys) {
+                disposableObjects.Add(cr);
+            }
+
             int base_x = 20, base_y = 30;
             int x = 0, y = 0;
             int item_spacing = 4;

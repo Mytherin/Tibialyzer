@@ -87,7 +87,9 @@ namespace Tibialyzer {
         }
 
         protected override void OnTextChanged(EventArgs e) {
+            if (highlighting) return;
             base.OnTextChanged(e);
+            this.SuspendLayout();
             highlighting = true;
             string text = this.Text.ToLower();
             var initialScroll = RTBScrollPos;
@@ -105,6 +107,7 @@ namespace Tibialyzer {
             this.SelectionColor = Color.Black;
             RTBScrollPos = initialScroll;
             highlighting = false;
+            this.ResumeLayout();
         }
 
         protected override void WndProc(ref System.Windows.Forms.Message m) {

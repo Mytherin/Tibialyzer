@@ -26,7 +26,7 @@ namespace Tibialyzer {
         private System.Windows.Forms.CheckBox pickupBox;
         private System.Windows.Forms.CheckBox convertBox;
         private TextBox valueBox;
-        public List<Creature> creatures = null;
+        public Dictionary<Creature, float> creatures = null;
         private Label statsButton;
         private string previous_value;
 
@@ -190,11 +190,12 @@ namespace Tibialyzer {
 
         private string CreatureTooltipFunction(TibiaObject obj) {
             Creature cr = obj as Creature;
-            float percentage = item.itemdrops.Find(o => o.creature == cr).percentage;
+            float percentage = creatures[cr];
             return String.Format("{0}: {1}%", cr.name, percentage < 0 ? "Unknown" : percentage.ToString());
         }
 
         public override void LoadForm() {
+            disposableObjects.Add(item);
             skip_event = true;
             this.SuspendForm();
             this.NotificationInitialize();
@@ -235,9 +236,15 @@ namespace Tibialyzer {
             value_tooltip.UseFading = true;
 
             if (creatures == null) {
+                foreach (NPC npc in buyNPCs.Keys) {
+                    disposableObjects.Add(npc);
+                }
+                foreach (NPC npc in sellNPCs.Keys) {
+                    disposableObjects.Add(npc);
+                }
                 List<NPC> buyNPCList = buyNPCs.Keys.ToList().OrderBy(o => buyNPCs[o]).ToList();
                 List<NPC> sellNPCList = sellNPCs.Keys.ToList().OrderBy(o => sellNPCs[o]).ToList();
-                List<List<NPC>> npc_lists = new List<List<NPC>> ();
+                List<List<NPC>> npc_lists = new List<List<NPC>>();
                 npc_lists.Add(buyNPCList); npc_lists.Add(sellNPCList);
                 string[] header_string = { "Buy From:", "Sell To:" };
                 string[] info_string = { "Sells", "Buys" };
@@ -265,6 +272,12 @@ namespace Tibialyzer {
                     if (control is PictureBox)
                         control.Click += openItemBox;
             } else {
+                List<TibiaObject> creatureList = new List<TibiaObject>();
+                foreach (Creature cr in creatures.Keys) {
+                    disposableObjects.Add(cr);
+                    creatureList.Add(cr);
+                }
+
                 Label header = new Label();
                 header.ForeColor = MainForm.label_text_color;
                 header.BackColor = Color.Transparent;
@@ -272,7 +285,8 @@ namespace Tibialyzer {
                 header.Font = valueLabel.Font;
                 header.Location = new Point(base_x + x, base_y + y);
                 y = y + header.Size.Height;
-                y = y + MainForm.DisplayCreatureList(this.Controls, (creatures as IEnumerable<TibiaObject>).ToList(), base_x, base_y + y, max_x, spacing, true, CreatureTooltipFunction);
+
+                y = y + MainForm.DisplayCreatureList(this.Controls, creatureList, base_x, base_y + y, max_x, spacing, true, CreatureTooltipFunction);
 
                 command_start = "creature" + MainForm.commandSymbol;
                 switch_start = "item" + MainForm.commandSymbol;
