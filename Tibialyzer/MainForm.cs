@@ -855,7 +855,7 @@ namespace Tibialyzer {
         public static Pen startPen = new Pen(Color.FromArgb(191, 191, 191), 2);
         public static Pen endPen = new Pen(Color.FromArgb(34, 139, 34), 2);
         public static MapPictureBox DrawRoute(Coordinate begin, Coordinate end, Size pictureBoxSize, Size minSize, Size maxSize, List<Color> additionalWalkableColors, List<Target> targetList = null) {
-            if (targetList == null && begin.z != end.z) {
+            if (end.x >= 0 && begin.z != end.z) {
                 throw new Exception("Can't draw route with different z-coordinates");
             }
             Rectangle sourceRectangle;
@@ -866,21 +866,23 @@ namespace Tibialyzer {
             pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
 
             if (targetList != null) {
-                if (pictureBoxSize.Width == 0) {
-                    pictureBoxSize = new Size(Math.Min(Math.Max(end.z, minSize.Width),maxSize.Width),
-                        Math.Min(Math.Max(end.z, minSize.Height), maxSize.Height));
-                    pictureBox.Size = pictureBoxSize;
-                }
-                Map map = getMap(begin.z);
-                pictureBox.map = map;
-                pictureBox.sourceWidth = end.z;
-                pictureBox.mapCoordinate = new Coordinate(begin.x, begin.y, begin.z);
-                pictureBox.zCoordinate = begin.z;
-                foreach(Target target in targetList) {
+                foreach (Target target in targetList) {
                     pictureBox.targets.Add(target);
                 }
-                pictureBox.UpdateMap();
-                return pictureBox;
+                if (end.x < 0) {
+                    if (pictureBoxSize.Width == 0) {
+                        pictureBoxSize = new Size(Math.Min(Math.Max(end.z, minSize.Width), maxSize.Width),
+                            Math.Min(Math.Max(end.z, minSize.Height), maxSize.Height));
+                        pictureBox.Size = pictureBoxSize;
+                    }
+                    Map map = getMap(begin.z);
+                    pictureBox.map = map;
+                    pictureBox.sourceWidth = end.z;
+                    pictureBox.mapCoordinate = new Coordinate(begin.x, begin.y, begin.z);
+                    pictureBox.zCoordinate = begin.z;
+                    pictureBox.UpdateMap();
+                    return pictureBox;
+                }
 
             }
 

@@ -45,6 +45,8 @@ namespace Tibialyzer {
         private static Dictionary<string, Outfit> _outfitNameMap = new Dictionary<string, Outfit>();
         private static Dictionary<int, Outfit> _outfitIdMap = new Dictionary<int, Outfit>();
         public static bool outfitsLoaded = false;
+        private static Dictionary<string, WorldObject> _worldObjectNameMap = new Dictionary<string, WorldObject>();
+        public static bool worldObjectsLoaded = false;
 
         public static Dictionary<int, City> cityIdMap = new Dictionary<int, City>();
         public static Dictionary<string, City> cityNameMap = new Dictionary<string, City>();
@@ -332,8 +334,8 @@ namespace Tibialyzer {
             npc.id = reader.GetInt32(0);
             npc.name = reader["name"].ToString();
             npc.city = reader["city"].ToString();
-            npc.pos.x = reader.IsDBNull(3) ? DATABASE_NULL : (int)(Coordinate.MaxWidth * reader.GetFloat(3));
-            npc.pos.y = reader.IsDBNull(4) ? DATABASE_NULL : (int)(Coordinate.MaxHeight * reader.GetFloat(4));
+            npc.pos.x = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
+            npc.pos.y = reader.IsDBNull(4) ? DATABASE_NULL : reader.GetInt32(4);
             npc.pos.z = reader.IsDBNull(5) ? DATABASE_NULL : reader.GetInt32(5);
             npc.image = Image.FromStream(reader.GetStream(6));
             npc.job = reader.IsDBNull(7) ? "" : reader.GetString(7);
@@ -344,8 +346,8 @@ namespace Tibialyzer {
                 reader = command.ExecuteReader();
                 if (reader.Read()) {
                     npc.city = reader["city"].ToString();
-                    npc.pos.x = (int)(Coordinate.MaxWidth * reader.GetFloat(1));
-                    npc.pos.y = (int)(Coordinate.MaxHeight * reader.GetFloat(2));
+                    npc.pos.x = reader.GetInt32(1);
+                    npc.pos.y = reader.GetInt32(2);
                     npc.pos.z = reader.GetInt32(3);
                 }
             }
@@ -457,13 +459,13 @@ namespace Tibialyzer {
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 Coordinate c = new Coordinate();
-                c.x = reader.IsDBNull(0) ? DATABASE_NULL : (int)(Coordinate.MaxWidth * reader.GetFloat(0));
-                c.y = reader.IsDBNull(1) ? DATABASE_NULL : (int)(Coordinate.MaxHeight * reader.GetFloat(1));
+                c.x = reader.IsDBNull(0) ? DATABASE_NULL : reader.GetInt32(0);
+                c.y = reader.IsDBNull(1) ? DATABASE_NULL : reader.GetInt32(1);
                 c.z = reader.IsDBNull(2) ? DATABASE_NULL : reader.GetInt32(2);
                 huntingPlace.coordinates.Add(c);
             }
             // Hunting place directions
-            command = new SQLiteCommand(String.Format("SELECT beginx, beginy, beginz,endx, endy, endz, ordering, description FROM HuntDirections WHERE huntingplaceid={0} ORDER BY ordering", huntingPlace.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT beginx, beginy, beginz,endx, endy, endz, ordering, description, settings FROM HuntDirections WHERE huntingplaceid={0} ORDER BY ordering", huntingPlace.id), mainForm.conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 Directions d = new Directions();
@@ -472,6 +474,7 @@ namespace Tibialyzer {
                 d.end = new Coordinate(reader.GetInt32(3), reader.GetInt32(4), reader.GetInt32(5));
                 d.ordering = reader.GetInt32(6);
                 d.description = reader["description"].ToString();
+                d.settings = reader.GetString(8);
                 huntingPlace.directions.Add(d);
             }
 
@@ -727,6 +730,47 @@ namespace Tibialyzer {
             }
             return outfit;
         }
+        #endregion
+
+        #region World Object Handling
+        public static WorldObject getWorldObject(string name) {
+            name = name.ToLower().Trim();
+            if (_worldObjectNameMap.ContainsKey(name)) {
+                return _worldObjectNameMap[name];
+            }
+            if (worldObjectsLoaded) return null;
+
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM WorldObjects WHERE LOWER(title)=\"{1}\";", _worldObjectProperties, name.Replace("\"", "\\\"")), mainForm.conn);
+            WorldObject o = createWorldObject(command.ExecuteReader());
+            return registerWorldObject(o);
+        }
+
+        private static WorldObject registerWorldObject(WorldObject h) {
+            if (h == null) return null;
+            lock (SpellLock) {
+                string name = h.title.ToLower();
+                if (_worldObjectNameMap.ContainsKey(name)) {
+                    h.image.Dispose();
+                    return _worldObjectNameMap[name];
+                }
+                _worldObjectNameMap.Add(name, h);
+            }
+            return h;
+        }
+
+        private static string _worldObjectProperties = "title, name, image";
+        private static WorldObject createWorldObject(SQLiteDataReader reader) {
+            if (!reader.Read()) {
+                return null;
+            }
+
+            WorldObject o = new WorldObject();
+            o.title = reader.GetString(0);
+            o.name = reader.GetString(1);
+            o.image = Image.FromStream(reader.GetStream(2)); ;
+            return o;
+        }
+
         #endregion
 
         public static Quest getQuest(string name) {

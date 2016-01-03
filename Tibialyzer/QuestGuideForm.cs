@@ -50,8 +50,10 @@ namespace Tibialyzer {
                 int ordering = hunt.directions[hunt.directions.Count - 1].ordering;
                 for (int i = hunt.directions.Count - 1; i >= 0; i--) {
                     if (hunt.directions[i].ordering < ordering) {
-                        maxInstructions = i + 2;
+                        maxInstructions = i + 1;
                         break;
+                    } else if (i == 0) {
+                        maxInstructions = i + 1;
                     }
                 }
             }
@@ -334,7 +336,7 @@ namespace Tibialyzer {
                         begin.Add(hunt.directions[currentIndex].begin);
                         end.Add(hunt.directions[currentIndex].end);
                         description.Add(hunt.directions[currentIndex].description);
-                        settings.Add(null);
+                        settings.Add(hunt.directions[currentIndex].settings);
                         currentIndex++;
                     }
                 }
@@ -476,6 +478,9 @@ namespace Tibialyzer {
                                     break;
                                 case "spell":
                                     image = MainForm.getSpell(setting[2]).image;
+                                    break;
+                                case "object":
+                                    image = MainForm.getWorldObject(setting[2]).image;
                                     break;
                                 default:
                                     throw new Exception("Unknown image type " + setting[1] + ".");
@@ -672,7 +677,7 @@ namespace Tibialyzer {
                     }
                 } else {
                     int ordering = this.direction.ordering;
-                    while ((this.direction = this.hunt.directions[instructionIndex++]).ordering == ordering) ;
+                    while (instructionIndex < this.hunt.directions.Count &&(this.direction = this.hunt.directions[instructionIndex++]).ordering == ordering) ;
                 }
                 this.SuspendLayout();
                 setupGuide();

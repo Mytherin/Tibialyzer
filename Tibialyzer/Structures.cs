@@ -64,6 +64,15 @@ namespace Tibialyzer {
         }
     }
 
+    public class WorldObject : TibiaObject {
+        public string title;
+        public string name;
+        public Image image;
+
+        public override string GetName() { return name; }
+        public override Image GetImage() { return image; }
+    }
+
     public class Outfit : TibiaObject {
         public int id;
         public string title;
@@ -196,6 +205,7 @@ namespace Tibialyzer {
         public Coordinate end;
         public int ordering;
         public string description;
+        public string settings;
     }
 
     public class Requirements {
