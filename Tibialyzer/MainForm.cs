@@ -225,7 +225,7 @@ namespace Tibialyzer {
             }
 
             // Quest Instructions
-            command = new SQLiteCommand("SELECT questid, beginx, beginy, beginz, endx, endy, endz, description, ordering, missionname FROM QuestInstructions ORDER BY ordering", conn);
+            command = new SQLiteCommand("SELECT questid, beginx, beginy, beginz, endx, endy, endz, description, ordering, missionname, settings FROM QuestInstructions ORDER BY ordering", conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 QuestInstruction instruction = new QuestInstruction();
@@ -236,8 +236,9 @@ namespace Tibialyzer {
                 } else {
                     instruction.end = new Coordinate(reader.GetInt32(4), reader.GetInt32(5), reader.GetInt32(6));
                 }
-                instruction.description = reader.GetString(7);
+                instruction.description = reader.IsDBNull(7) ? "" : reader.GetString(7);
                 instruction.ordering = reader.GetInt32(8);
+                instruction.settings = reader.IsDBNull(10) ? null : reader.GetString(10);
                 string missionName = reader.IsDBNull(9) ? "Guide" : reader.GetString(9);
 
                 Quest quest = questIdMap[instruction.questid];
@@ -482,7 +483,7 @@ namespace Tibialyzer {
 
             this.enableScreenshotBox.Checked = getSettingBool("EnableScreenshots");
             this.screenshotPanel.Enabled = enableScreenshotBox.Checked;
-            if (getSettingString("ScreenshotPath") == null) {
+            if (getSettingString("ScreenshotPath") == null || !Directory.Exists(getSettingString("ScreenshotPath"))) {
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "Screenshots");
                 setSetting("ScreenshotPath", path);
                 if (!Directory.Exists(path)) {
@@ -849,13 +850,12 @@ namespace Tibialyzer {
         public static int convertY(double y, Rectangle sourceRectangle, Rectangle pictureRectangle) {
             return (int)((y - (double)sourceRectangle.Y) / (double)sourceRectangle.Height * (double)pictureRectangle.Height);
         }
-
-
-        public static Pen pathPen = new Pen(Color.FromArgb(25, 25, 112), 1);
-        public static Pen startPen = new Pen(Color.FromArgb(191, 191, 191), 1);
-        public static Pen endPen = new Pen(Color.FromArgb(34, 139, 34), 1);
-        public static MapPictureBox DrawRoute(Coordinate begin, Coordinate end, Size pictureBoxSize, Size minSize, Size maxSize, List<Color> additionalWalkableColors, Image crossImage = null, int crossSize = 12) {
-            if (end.x >= 0 && begin.z != end.z) {
+        
+        public static Pen pathPen = new Pen(Color.FromArgb(25, 25, 25), 3);
+        public static Pen startPen = new Pen(Color.FromArgb(191, 191, 191), 2);
+        public static Pen endPen = new Pen(Color.FromArgb(34, 139, 34), 2);
+        public static MapPictureBox DrawRoute(Coordinate begin, Coordinate end, Size pictureBoxSize, Size minSize, Size maxSize, List<Color> additionalWalkableColors, List<Target> targetList = null) {
+            if (targetList == null && begin.z != end.z) {
                 throw new Exception("Can't draw route with different z-coordinates");
             }
             Rectangle sourceRectangle;
@@ -865,10 +865,7 @@ namespace Tibialyzer {
             }
             pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
 
-            if (end.x < 0) {
-                if (crossImage == null) {
-                    crossImage = MainForm.cross_image;
-                }
+            if (targetList != null) {
                 if (pictureBoxSize.Width == 0) {
                     pictureBoxSize = new Size(Math.Min(Math.Max(end.z, minSize.Width),maxSize.Width),
                         Math.Min(Math.Max(end.z, minSize.Height), maxSize.Height));
@@ -879,11 +876,9 @@ namespace Tibialyzer {
                 pictureBox.sourceWidth = end.z;
                 pictureBox.mapCoordinate = new Coordinate(begin.x, begin.y, begin.z);
                 pictureBox.zCoordinate = begin.z;
-                Target target = new Target();
-                target.coordinate = begin;
-                target.image = crossImage;
-                target.size = crossSize;
-                pictureBox.targets.Add(target);
+                foreach(Target target in targetList) {
+                    pictureBox.targets.Add(target);
+                }
                 pictureBox.UpdateMap();
                 return pictureBox;
 
@@ -1380,12 +1375,12 @@ namespace Tibialyzer {
             saveHunts();
         }
 
-        private bool getSettingBool(string key) {
+        public bool getSettingBool(string key) {
             if (!settings.ContainsKey(key) || settings[key].Count == 0) return false;
             return settings[key][0] == "True";
         }
 
-        private int getSettingInt(string key) {
+        public int getSettingInt(string key) {
             if (!settings.ContainsKey(key) || settings[key].Count == 0) return -1;
             int v;
             if (int.TryParse(settings[key][0], out v)) {
@@ -1394,12 +1389,12 @@ namespace Tibialyzer {
             return -1;
         }
 
-        private string getSettingString(string key) {
+        public string getSettingString(string key) {
             if (!settings.ContainsKey(key) || settings[key].Count == 0) return null;
             return settings[key][0];
         }
 
-        private void setSetting(string key, string value) {
+        public void setSetting(string key, string value) {
             if (!settings.ContainsKey(key)) settings.Add(key, new List<string>());
             settings[key].Clear();
             settings[key].Add(value);
@@ -1586,6 +1581,11 @@ namespace Tibialyzer {
 
             string path = getSettingString("ScreenshotPath");
             if (path == null) return;
+
+            if (!Directory.Exists(path)) {
+                return;
+            }
+
             string[] files = Directory.GetFiles(path);
 
             refreshingScreenshots = true;

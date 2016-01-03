@@ -120,6 +120,7 @@ namespace Tibialyzer {
         public Coordinate begin;
         public Coordinate end;
         public string description;
+        public string settings;
         public int ordering;
     }
 

@@ -18,8 +18,6 @@ namespace Tibialyzer {
         private Label legendLabel;
         private Label guideButton;
         private Label questTitle;
-
-
         public Quest quest;
 
         public QuestForm(Quest q) {
@@ -217,7 +215,7 @@ namespace Tibialyzer {
                     foreach (int reward in quest.rewardOutfits) {
                         Outfit outfit = MainForm.getOutfit(reward);
                         disposableObjects.Add(outfit);
-                        rewards.Add(outfit);
+                        rewardOutfits.Add(outfit);
                     }
 
                     y = y + MainForm.DisplayCreatureList(this.Controls, rewardOutfits, 10, y, this.Size.Width - 10, 4, false, null, 1, outfitControls);

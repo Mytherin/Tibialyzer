@@ -11,6 +11,9 @@ namespace Tibialyzer {
         private Label questTitle;
         private static Font requirementFont = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 
+        private readonly int[] widths = { 392, 542, 692 };
+        private readonly int minwidth = 392;
+        private readonly int maxwidth = 1000;
 
         public HuntingPlace hunt;
         public Directions direction;
@@ -23,6 +26,9 @@ namespace Tibialyzer {
         private Label nextButton;
         private Label prevButton;
         public List<Control> addedControls = new List<Control>();
+        private Label normalButton;
+        private Label largeButton;
+        private Label largestButton;
         private List<QuestInstruction> questInstructionList;
         public QuestGuideForm(Quest q) {
             this.quest = q;
@@ -56,6 +62,9 @@ namespace Tibialyzer {
             this.questTitle = new System.Windows.Forms.Label();
             this.nextButton = new System.Windows.Forms.Label();
             this.prevButton = new System.Windows.Forms.Label();
+            this.normalButton = new System.Windows.Forms.Label();
+            this.largeButton = new System.Windows.Forms.Label();
+            this.largestButton = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // questTitle
@@ -101,9 +110,57 @@ namespace Tibialyzer {
             this.prevButton.Visible = false;
             this.prevButton.Click += new System.EventHandler(this.prevButton_Click);
             // 
+            // normalButton
+            // 
+            this.normalButton.BackColor = System.Drawing.Color.Transparent;
+            this.normalButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.normalButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.normalButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.normalButton.Location = new System.Drawing.Point(272, 3);
+            this.normalButton.Name = "normalButton";
+            this.normalButton.Padding = new System.Windows.Forms.Padding(2);
+            this.normalButton.Size = new System.Drawing.Size(40, 21);
+            this.normalButton.TabIndex = 36;
+            this.normalButton.Text = "+";
+            this.normalButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.normalButton.Click += new System.EventHandler(this.normalButton_Click);
+            // 
+            // largeButton
+            // 
+            this.largeButton.BackColor = System.Drawing.Color.Transparent;
+            this.largeButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.largeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.largeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.largeButton.Location = new System.Drawing.Point(311, 3);
+            this.largeButton.Name = "largeButton";
+            this.largeButton.Padding = new System.Windows.Forms.Padding(2);
+            this.largeButton.Size = new System.Drawing.Size(40, 21);
+            this.largeButton.TabIndex = 35;
+            this.largeButton.Text = "++";
+            this.largeButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.largeButton.Click += new System.EventHandler(this.largeButton_Click);
+            // 
+            // largestButton
+            // 
+            this.largestButton.BackColor = System.Drawing.Color.Transparent;
+            this.largestButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.largestButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.largestButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.largestButton.Location = new System.Drawing.Point(350, 3);
+            this.largestButton.Name = "largestButton";
+            this.largestButton.Padding = new System.Windows.Forms.Padding(2);
+            this.largestButton.Size = new System.Drawing.Size(40, 21);
+            this.largestButton.TabIndex = 34;
+            this.largestButton.Text = "+++";
+            this.largestButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.largestButton.Click += new System.EventHandler(this.largestButton_Click);
+            // 
             // QuestGuideForm
             // 
             this.ClientSize = new System.Drawing.Size(392, 75);
+            this.Controls.Add(this.normalButton);
+            this.Controls.Add(this.largeButton);
+            this.Controls.Add(this.largestButton);
             this.Controls.Add(this.prevButton);
             this.Controls.Add(this.nextButton);
             this.Controls.Add(this.questTitle);
@@ -128,8 +185,12 @@ namespace Tibialyzer {
                     questTitle.Text = quest.title + " - " + missionName;
                 }
             }
+            int sizeWidth = 392;
             int y = this.questTitle.Location.Y + 40;
             if (questInstruction == null && hunt == null) {
+                this.largestButton.Visible = false;
+                this.largeButton.Visible = false;
+                this.normalButton.Visible = false;
                 if (this.quest.additionalRequirements.Count > 0 || this.quest.questRequirements.Count > 0) {
                     Label label = new Label();
                     label.Text = "Requirements";
@@ -241,9 +302,21 @@ namespace Tibialyzer {
                     y += 20;
                 }
             } else {
+                int suggestedWidth = MainForm.mainForm.getSettingInt("GuideFormWidth");
+                if (suggestedWidth > minwidth && suggestedWidth < maxwidth) {
+                    sizeWidth = suggestedWidth;
+                }
+                this.Size = new Size(sizeWidth, Size.Height);
+                this.largestButton.Visible = true;
+                this.largeButton.Visible = true;
+                this.normalButton.Visible = true;
+                this.largestButton.Location = new Point(this.Size.Width - largestButton.Width - 4, 4);
+                this.largeButton.Location = new Point(this.Size.Width - largestButton.Width * 2 - 4, 4);
+                this.normalButton.Location = new Point(this.Size.Width - largestButton.Width * 3 - 4, 4);
                 List<Coordinate> begin = new List<Coordinate>();
                 List<Coordinate> end = new List<Coordinate>();
                 List<string> description = new List<string>();
+                List<string> settings = new List<string>();
                 if (questInstruction != null) {
                     int ordering = questInstruction.ordering;
                     int currentIndex = instructionIndex - 1;
@@ -251,6 +324,7 @@ namespace Tibialyzer {
                         begin.Add(questInstructionList[currentIndex].begin);
                         end.Add(questInstructionList[currentIndex].end);
                         description.Add(questInstructionList[currentIndex].description);
+                        settings.Add(questInstructionList[currentIndex].settings);
                         currentIndex++;
                     }
                 } else {
@@ -260,6 +334,7 @@ namespace Tibialyzer {
                         begin.Add(hunt.directions[currentIndex].begin);
                         end.Add(hunt.directions[currentIndex].end);
                         description.Add(hunt.directions[currentIndex].description);
+                        settings.Add(null);
                         currentIndex++;
                     }
                 }
@@ -296,7 +371,7 @@ namespace Tibialyzer {
                 int maxY = 0;
                 for (int i = 0; i < begin.Count; i++) {
                     int xOffset;
-                    int newY = drawDirections(begin[i], end[i], description[i], startX, y, begin.Count > 1, begin.Count, noText, out xOffset);
+                    int newY = drawDirections(begin[i], end[i], settings[i], description[i], startX, y, begin.Count > 1, begin.Count, noText, out xOffset);
                     if (noText) {
                         startX += xOffset;
                         if (newY > maxY) {
@@ -332,7 +407,8 @@ namespace Tibialyzer {
                 y += 20;
             }
 
-            this.Size = new Size(this.Size.Width, y + 20);
+            this.Size = new Size(sizeWidth, y + 10);
+
             refreshTimer();
         }
 
@@ -360,31 +436,70 @@ namespace Tibialyzer {
             this.ResumeLayout(true);
             this.Refresh();
         }
+        
 
-        private int drawDirections(Coordinate begin, Coordinate end, string description, int start_x, int y, bool variableSize, int imageCount, bool noText, out int width) {
-            const int mapSize = 180;
-            Size minSize = new Size(120, 120);
+        private int drawDirections(Coordinate begin, Coordinate end, string settings, string description, int start_x, int y, bool variableSize, int imageCount, bool noText, out int width) {
+            int mapSize = this.Size.Width / 2;
+            Size minSize = new Size(mapSize, mapSize);
 
             List<Color> additionalWalkableColors = new List<Color>();
-            if (description.ToLower().Contains("walkablecolor=")) {
-                string[] split = description.Split('@');
-                foreach(string str in split) {
-                    if (str.ToLower().Contains("walkablecolor=")) {
-                        string[] rgb = str.Split('=')[1].Split(',');
-                        additionalWalkableColors.Add(Color.FromArgb(int.Parse(rgb[0]), int.Parse(rgb[1]), int.Parse(rgb[2])));
-                        description = description.Replace(str + "@", "");
+            List<Target> targetList = new List<Target>();
+            // parse settings
+            if (settings != null) {
+                string[] splits = settings.ToLower().Split('@');
+                foreach (string split in splits) {
+                    string[] setting = split.Split('=');
+                    switch(setting[0]) {
+                        case "walkablecolor":
+                            string[] rgb = setting[1].Split(',');
+                            additionalWalkableColors.Add(Color.FromArgb(int.Parse(rgb[0]), int.Parse(rgb[1]), int.Parse(rgb[2])));
+                            break;
+                        case "marking":
+                            Target target = new Target();
+                            string[] coordinate = setting[1].Split(',');
+                            target.size = 12;
+                            target.image = MainForm.cross_image;
+                            target.coordinate = new Coordinate(int.Parse(coordinate[0]), int.Parse(coordinate[1]), int.Parse(coordinate[2]));
+                            targetList.Add(target);
+                            break;
+                        case "markicon":
+                            Image image = null;
+                            switch(setting[1].ToLower()) {
+                                case "item":
+                                    image = MainForm.getItem(setting[2]).image;
+                                    break;
+                                case "npc":
+                                    image = MainForm.getNPC(setting[2]).image;
+                                    break;
+                                case "cr":
+                                    image = MainForm.getCreature(setting[2]).image;
+                                    break;
+                                case "spell":
+                                    image = MainForm.getSpell(setting[2]).image;
+                                    break;
+                                default:
+                                    throw new Exception("Unknown image type " + setting[1] + ".");
+                            }
+                            targetList[targetList.Count - 1].image = image;
+                            break;
+                        case "marksize":
+                            targetList[targetList.Count - 1].size = int.Parse(setting[1]);
+                            break;
                     }
                 }
             }
+            if (targetList.Count == 0) {
+                targetList = null;
+            }
 
-            PictureBox map = MainForm.DrawRoute(begin, end, variableSize ? new Size(0, 0) : new Size(mapSize, mapSize), minSize, new Size(mapSize, mapSize), additionalWalkableColors);
+            MapPictureBox map = MainForm.DrawRoute(begin, end, variableSize ? new Size(0, 0) : new Size(mapSize, mapSize), minSize, new Size(mapSize, mapSize), additionalWalkableColors, targetList);
             width = map.Width + 5;
             if (!noText) {
                 map.Location = new Point(this.Size.Width - (map.Width + 5), y);
             } else {
                 map.Location = new Point(start_x, y);
             }
-
+            map.MapUpdated += refreshTimer;
             this.Controls.Add(map);
             addedControls.Add(map);
             if (noText) {
@@ -396,6 +511,10 @@ namespace Tibialyzer {
                 string[] questStrings = description.Split('@');
                 int minY = y + map.Size.Height + 10;
                 foreach (string instruction in questStrings) {
+                    if (instruction == "") {
+                        y += 10;
+                        continue;
+                    }
                     if (instruction.Contains("=")) {
                         string[] splits = instruction.Split('=');
                         if (splits[0].ToLower() == "cr" || splits[0].ToLower() == "npc" || splits[0].ToLower() == "item") {
@@ -457,7 +576,7 @@ namespace Tibialyzer {
 
                     int labelHeight = 0;
                     using (Graphics gr = Graphics.FromHwnd(label.Handle)) {
-                        labelHeight = (int)(gr.MeasureString(label.Text, label.Font, this.Size.Width - (map.Size.Width + 10) - x).Height * 1.2);
+                        labelHeight = (int)(gr.MeasureString(label.Text, label.Font, this.Size.Width - (map.Size.Width + 10) - x, StringFormat.GenericTypographic).Height * 1.2);
                     }
                     addedControls.Add(label);
                     this.Controls.Add(label);
@@ -485,7 +604,7 @@ namespace Tibialyzer {
             }
             return y;
         }
-
+        
         private string CreateLinks(Control label, string linkText) {
             if (linkText.Contains('{') && linkText.Contains('}')) {
                 int startLink = linkText.IndexOf('{');
@@ -524,6 +643,9 @@ namespace Tibialyzer {
 
             this.nextButton.Click -= c_Click;
             this.prevButton.Click -= c_Click;
+            this.normalButton.Click -= c_Click;
+            this.largeButton.Click -= c_Click;
+            this.largestButton.Click -= c_Click;
 
             if (quest != null) {
                 this.questTitle.Text = quest.title;
@@ -586,6 +708,30 @@ namespace Tibialyzer {
                 this.ResumeLayout(true);
                 this.Refresh();
             }
+        }
+        
+        private void normalButton_Click(object sender, EventArgs e) {
+            MainForm.mainForm.setSetting("GuideFormWidth", widths[0].ToString());
+            this.SuspendLayout();
+            setupGuide();
+            this.ResumeLayout(true);
+            this.Refresh();
+        }
+
+        private void largeButton_Click(object sender, EventArgs e) {
+            MainForm.mainForm.setSetting("GuideFormWidth", widths[1].ToString());
+            this.SuspendLayout();
+            setupGuide();
+            this.ResumeLayout(true);
+            this.Refresh();
+        }
+
+        private void largestButton_Click(object sender, EventArgs e) {
+            MainForm.mainForm.setSetting("GuideFormWidth", widths[2].ToString());
+            this.SuspendLayout();
+            setupGuide();
+            this.ResumeLayout(true);
+            this.Refresh();
         }
     }
 }

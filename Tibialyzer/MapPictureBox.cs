@@ -96,16 +96,17 @@ namespace Tibialyzer {
                 }
                 foreach(TibiaPath path in paths) {
                     if (path.begin.z == mapCoordinate.z) {
+                        List<Point> points = new List<Point>();
+                        int i = 0;
                         DijkstraPoint node = path.path;
-                        while (node.previous != null) {
-                            gr.DrawLine(MainForm.pathPen,
-                                new Point(convertx(node.point.X), converty(node.point.Y)),
-                                new Point(convertx(node.previous.point.X), converty(node.previous.point.Y)));
+                        while (node != null) {
+                            points.Add(new Point(convertx(node.point.X), converty(node.point.Y)));
                             node = node.previous;
                         }
-                        const int circlesize = 4;
-                        gr.DrawEllipse(MainForm.startPen, new Rectangle(convertx(path.begin.x) - circlesize, converty(path.begin.y) - circlesize, circlesize * 2, circlesize * 2));
-                        gr.DrawEllipse(MainForm.endPen, new Rectangle(convertx(path.end.x) - circlesize, converty(path.end.y) - circlesize, circlesize * 2, circlesize * 2));
+                        gr.DrawLines(MainForm.pathPen, points.ToArray());
+                        //const int circlesize = 4;
+                        //gr.DrawEllipse(MainForm.startPen, new Rectangle(convertx(path.begin.x) - circlesize, converty(path.begin.y) - circlesize, circlesize * 2, circlesize * 2));
+                        //gr.DrawEllipse(MainForm.endPen, new Rectangle(convertx(path.end.x) - circlesize, converty(path.end.y) - circlesize, circlesize * 2, circlesize * 2));
                     }
                 }
 

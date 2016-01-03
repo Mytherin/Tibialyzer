@@ -709,10 +709,9 @@ namespace Tibialyzer {
             command = new SQLiteCommand(String.Format("SELECT male, addon, image FROM OutfitImages WHERE outfitid={0}", outfit.id), mainForm.conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
-                int outfitid = reader.GetInt32(0);
-                bool male = reader.GetBoolean(1);
-                int addon = reader.GetInt32(2);
-                Image image = Image.FromStream(reader.GetStream(3));
+                bool male = reader.GetBoolean(0);
+                int addon = reader.GetInt32(1);
+                Image image = Image.FromStream(reader.GetStream(2));
 
                 if (male) {
                     outfit.maleImages[addon] = image;
