@@ -121,7 +121,6 @@ namespace Tibialyzer {
 
         public override void LoadForm() {
             if (mount == null) return;
-            disposableObjects.Add(mount);
             this.SuspendLayout();
             NotificationInitialize();
 

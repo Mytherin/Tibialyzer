@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 using System.Drawing;
 
 namespace Tibialyzer {
-    public abstract class TibiaObject : IDisposable {
+    public abstract class TibiaObject {
         public bool permanent;
         public abstract string GetName();
         public abstract Image GetImage();
-        public virtual void Dispose() {
-
-        }
     }
 
     public class Command {
@@ -90,17 +87,6 @@ namespace Tibialyzer {
             }
             throw new Exception("Outfit without image");
         }
-
-        public override void Dispose() {
-            if (permanent) return;
-
-            for (int i = 0; i < 4; i++) {
-                if (maleImages[i] != null)
-                    maleImages[i].Dispose();
-                if (femaleImages[i] != null)
-                    femaleImages[i].Dispose();
-            }
-        }
     }
 
     public class Mount : TibiaObject {
@@ -118,10 +104,6 @@ namespace Tibialyzer {
 
         public override string GetName() { return name; }
         public override Image GetImage() { return image; }
-        public override void Dispose() {
-            if (permanent) return;
-            image.Dispose();
-        }
     }
 
     public class QuestInstruction {
@@ -193,10 +175,6 @@ namespace Tibialyzer {
         public List<SpellTaught> teachNPCs = new List<SpellTaught>();
         public override string GetName() { return name; }
         public override Image GetImage() { return image; }
-        public override void Dispose() {
-            if (permanent) return;
-            image.Dispose();
-        }
     }
 
     public class Directions {
@@ -236,11 +214,6 @@ namespace Tibialyzer {
             this.directions = new List<Directions>();
             this.requirements = new List<Requirements>();
             this.image = null;
-        }
-
-        public override void Dispose() {
-            if (permanent) return;
-            if (image != null) image.Dispose();
         }
     }
 
@@ -325,7 +298,7 @@ namespace Tibialyzer {
         public override string GetName() {
             return z.ToString();
         }
-        public override void Dispose() {
+        public void Dispose() {
             references--;
             if (references <= 0) {
                 image.Dispose();

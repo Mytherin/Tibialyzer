@@ -182,7 +182,6 @@ namespace Tibialyzer {
             List<TibiaObject> rewards = new List<TibiaObject>();
             foreach(int reward in quest.rewardItems) {
                 Item item = MainForm.getItem(reward);
-                disposableObjects.Add(item);
                 rewards.Add(item);
             }
             rewards = rewards.OrderByDescending(o => (o as Item).GetMaxValue()).ToList<TibiaObject>();
@@ -214,7 +213,6 @@ namespace Tibialyzer {
                     List<TibiaObject> rewardOutfits = new List<TibiaObject>();
                     foreach (int reward in quest.rewardOutfits) {
                         Outfit outfit = MainForm.getOutfit(reward);
-                        disposableObjects.Add(outfit);
                         rewardOutfits.Add(outfit);
                     }
 

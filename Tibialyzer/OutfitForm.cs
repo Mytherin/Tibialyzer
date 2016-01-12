@@ -181,9 +181,7 @@ namespace Tibialyzer {
 
         public override void LoadForm() {
             if (outfit == null) return;
-
-            disposableObjects.Add(outfit);
-
+            
             this.SuspendLayout();
             NotificationInitialize();
 

@@ -11,19 +11,7 @@ namespace Tibialyzer {
         System.Timers.Timer moveTimer = null;
         public int targetPositionX = 0, targetPositionY = 0;
         System.Timers.Timer closeTimer = null;
-
-        protected List<TibiaObject> disposableObjects = new List<TibiaObject>();
         
-        protected override void Dispose(bool disposing) {
-            if (disposing) {
-                foreach (TibiaObject obj in disposableObjects) {
-                    obj.Dispose();
-                }
-                disposableObjects.Clear();
-            }
-            base.Dispose(disposing);
-        }
-
         protected void InitializeSimpleNotification(bool movement = true, bool destroy = true) {
             this.Click += c_Click;
             foreach (Control c in this.Controls) {
@@ -94,11 +82,11 @@ namespace Tibialyzer {
                         this.Invoke((MethodInvoker)delegate {
                             this.Opacity -= 0.03;
                         });
+                        closeTimer.Interval = 20;
+                        closeTimer.Start();
                     } catch {
 
                     }
-                    closeTimer.Interval = 20;
-                    closeTimer.Start();
                 }
 
             }

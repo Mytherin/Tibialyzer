@@ -319,9 +319,6 @@ namespace Tibialyzer {
         private void npcButton_Click(object sender, EventArgs e) {
             this.SuspendForm();
             List<TibiaObject> npcs = MainForm.getNPCWithCity(city.name.ToLower());
-            foreach(NPC npc in npcs) {
-                disposableObjects.Add(npc);
-            }
             int listHeight = InitializeList(null, npcs);
 
             this.Size = new Size(this.Size.Width, Math.Max(listHeight, baseHeight));

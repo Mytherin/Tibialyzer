@@ -256,25 +256,24 @@ namespace Tibialyzer {
                         header.ForeColor = MainForm.label_text_color;
                         header.BackColor = Color.Transparent;
                         header.Text = header_string[i];
-                        header.Font = valueLabel.Font;
+                        header.Font = MainForm.fontList[5];
                         header.Location = new Point(base_x + x, base_y + y);
                         y = y + header.Size.Height;
                         this.Controls.Add(header);
 
-                        y = y + MainForm.DisplayCreatureList(this.Controls, (npc_list as IEnumerable<TibiaObject>).ToList(), base_x, base_y + y, max_x, spacing, true, TooltipFunction);
+                        y = y + MainForm.DisplayCreatureList(this.Controls, (npc_list as IEnumerable<TibiaObject>).ToList(), base_x, base_y + y, max_x, spacing, true, TooltipFunction, 1, createdControls);
                     }
                 }
                 command_start = "npc" + MainForm.commandSymbol;
                 switch_start = "drop" + MainForm.commandSymbol;
                 statsButton.Text = "Dropped By";
-                statsButton.Name = item.name.ToLower();
-                foreach (Control control in this.Controls)
+                statsButton.Name = item.GetName().ToLower();
+                foreach (Control control in createdControls)
                     if (control is PictureBox)
                         control.Click += openItemBox;
             } else {
                 List<TibiaObject> creatureList = new List<TibiaObject>();
                 foreach (Creature cr in creatures.Keys) {
-                    disposableObjects.Add(cr);
                     creatureList.Add(cr);
                 }
 

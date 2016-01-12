@@ -172,13 +172,12 @@ namespace Tibialyzer {
                 label.BackColor = Color.Transparent;
                 label.Font = text_font;
                 this.Controls.Add(label);
-                y += 20;
+                y += 25;
 
                 List<TibiaObject> list = new List<TibiaObject>();
                 foreach(ItemSold itemSold in npc.buyItems) {
                     Item item = MainForm.getItem(itemSold.itemid);
                     sellItems.Add(item, itemSold.price);
-                    disposableObjects.Add(item);
                     list.Add(item);
                 }
 
@@ -193,13 +192,12 @@ namespace Tibialyzer {
                 label.BackColor = Color.Transparent;
                 label.Font = text_font;
                 this.Controls.Add(label);
-                y += 20;
+                y += 25;
 
                 List<TibiaObject> list = new List<TibiaObject>();
                 foreach (ItemSold itemSold in npc.sellItems) {
                     Item item = MainForm.getItem(itemSold.itemid);
                     buyItems.Add(item, itemSold.price);
-                    disposableObjects.Add(item);
                     list.Add(item);
                 }
 
@@ -217,13 +215,12 @@ namespace Tibialyzer {
                 label.BackColor = Color.Transparent;
                 label.Font = text_font;
                 this.Controls.Add(label);
-                y += 20;
+                y += 25;
                 List<Control> spellControls = new List<Control>();
 
                 List<TibiaObject> list = new List<TibiaObject>();
                 foreach (SpellTaught teach in npc.spellsTaught) {
                     Spell spell = MainForm.getSpell(teach.spellid);
-                    disposableObjects.Add(spell);
                     list.Add(spell);
                 }
                 list = list.OrderBy(o => (o as Spell).levelrequired).ToList();

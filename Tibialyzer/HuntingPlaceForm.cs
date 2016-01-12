@@ -239,7 +239,6 @@ namespace Tibialyzer {
 
         public override void LoadForm() {
             this.SuspendForm();
-            disposableObjects.Add(hunting_place);
             NotificationInitialize();
             if (hunting_place == null) return;
             this.cityLabel.Text = hunting_place.city;
@@ -310,7 +309,6 @@ namespace Tibialyzer {
             List<TibiaObject> creatures = new List<TibiaObject>();
             foreach(int creatureid in hunting_place.creatures) {
                 Creature cr = MainForm.getCreature(creatureid);
-                disposableObjects.Add(cr);
                 creatures.Add(cr);
             }
 

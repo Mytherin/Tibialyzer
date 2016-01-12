@@ -10,14 +10,15 @@ namespace Tibialyzer {
     class SimpleLootNotification : SimpleNotification {
         private Label creatureDropLabel;
         private PictureBox creatureBox;
+        public Creature creature;
 
         public SimpleLootNotification(Creature cr, List<Tuple<Item, int>> items) : base() {
             this.InitializeComponent();
+            this.creature = cr;
+            
+            this.InitializeSimpleNotification();
 
-            disposableObjects.Add(cr);
-            foreach(Tuple<Item,int> tpl in items) {
-                disposableObjects.Add(tpl.Item1);
-            }
+            creatureBox.Click -= c_Click;
 
             ToolTip value_tooltip = new ToolTip();
             value_tooltip.AutoPopDelay = 60000;

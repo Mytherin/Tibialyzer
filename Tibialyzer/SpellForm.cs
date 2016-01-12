@@ -32,7 +32,6 @@ namespace Tibialyzer {
         public SpellForm(Spell spell) {
             this.InitializeComponent();
             this.spell = spell;
-            disposableObjects.Add(spell);
         }
 
         private void InitializeComponent() {
@@ -352,7 +351,6 @@ namespace Tibialyzer {
                     if (teach.GetVocation(i)) {
                         NPC npc = MainForm.getNPC(teach.npcid);
                         npcList[i].Add(npc);
-                        disposableObjects.Add(npc);
                     }
                 }
             }

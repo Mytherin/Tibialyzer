@@ -16,20 +16,9 @@ namespace Tibialyzer {
     public class NotificationForm : Form {
         System.Timers.Timer closeTimer = null;
         public static Bitmap background_image = null;
+        public TibialyzerCommand command;
         protected PictureBox back_button;
-        protected List<TibiaObject> disposableObjects = new List<TibiaObject>();
-
-
-        protected override void Dispose(bool disposing) {
-            if (disposing) {
-                foreach(TibiaObject obj in disposableObjects) {
-                    obj.Dispose();
-                }
-                disposableObjects.Clear();
-            }
-            base.Dispose(disposing);
-        }
-
+        
         [DllImport("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, Int32 wMsg, bool wParam, Int32 lParam);
 
@@ -51,7 +40,9 @@ namespace Tibialyzer {
 
         public void ResumeForm() {
             this.ResumeLayout(false);
-            this.ResumeDrawing();
+            if (this.Visible) {
+                this.ResumeDrawing();
+            }
         }
 
         Region fill_region = null;

@@ -239,14 +239,12 @@ namespace Tibialyzer {
                     Image image = null;
                     if (q.rewardOutfits.Count > 0) {
                         Outfit o = MainForm.getOutfit(q.rewardOutfits[0]);
-                        this.disposableObjects.Add(o);
                         image = o.GetImage();
                     } else if (q.rewardItems.Count > 0) {
                         List<Item> items = new List<Item>();
                         foreach(int i in q.rewardItems) {
                             Item item = MainForm.getItem(i);
                             items.Add(item);
-                            disposableObjects.Add(item); 
                         }
                         image = items.OrderByDescending(o => o.GetMaxValue()).First().image;
                     } else if (q.questDangers.Count > 0) {
@@ -254,7 +252,6 @@ namespace Tibialyzer {
                         foreach(int i in q.questDangers) {
                             Creature cr = MainForm.getCreature(i);
                             creatures.Add(cr);
-                            disposableObjects.Add(cr);
                         }
                         image = creatures.OrderByDescending(o => o.experience).First().image;
                     }
