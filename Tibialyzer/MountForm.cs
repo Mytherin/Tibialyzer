@@ -135,19 +135,17 @@ namespace Tibialyzer {
                 this.tameCreatureLabel.Location = new System.Drawing.Point(this.tameCreatureLabel.Location.X, this.tameCreatureLabel.Location.Y - 50);
             } else if (mount.tamecreatureid > 0 && mount.tameitemid > 0) {
                 Creature tameCreature = MainForm.getCreature(mount.tamecreatureid);
-                disposableObjects.Add(tameCreature);
                 Item tameItem = MainForm.getItem(mount.tameitemid);
-                disposableObjects.Add(tameItem);
 
                 this.tameCreatureImageBox.Image = tameCreature.image;
-                this.tameCreatureLabel.Text = MainForm.ToTitle(tameCreature.name);
+                this.tameCreatureLabel.Text = MainForm.ToTitle(tameCreature.displayname);
                 this.tameItemImageBox.Image = tameItem.image;
-                this.tameItemLabel.Text = MainForm.ToTitle(tameItem.name);
+                this.tameItemLabel.Text = MainForm.ToTitle(tameItem.displayname);
 
-                tameCreatureImageBox.Name = tameCreature.name;
-                tameCreatureLabel.Name = tameCreature.name;
-                tameItemImageBox.Name = tameItem.name;
-                tameItemLabel.Name = tameItem.name;
+                tameCreatureImageBox.Name = tameCreature.GetName();
+                tameCreatureLabel.Name = tameCreature.GetName();
+                tameItemImageBox.Name = tameItem.GetName();
+                tameItemLabel.Name = tameItem.GetName();
 
                 this.tameCreatureLabel.Click += TameCreatureImageBox_Click;
                 this.tameCreatureImageBox.Click += TameCreatureImageBox_Click;

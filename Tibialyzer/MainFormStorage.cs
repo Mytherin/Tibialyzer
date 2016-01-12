@@ -102,9 +102,9 @@ namespace Tibialyzer {
                     return _itemIdMap[item.id];
                 }
                 _itemIdMap.Add(item.id, item);
-                string name = item.name.ToLower();
+                string name = item.GetName().ToLower();
                 if (!_itemNameMap.ContainsKey(name)) {
-                    _itemNameMap.Add(item.name.ToLower(), item);
+                    _itemNameMap.Add(item.GetName().ToLower(), item);
                 }
             }
             return item;
@@ -121,16 +121,16 @@ namespace Tibialyzer {
             Item item = new Item();
             item.permanent = true;
             item.id = reader.GetInt32(0);
-            item.name = reader.GetString(1);
-            item.actual_value = reader.IsDBNull(2) ? DATABASE_NULL : reader.GetInt32(2);
-            item.vendor_value = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
+            item.displayname = reader.GetString(1);
+            item.actual_value = reader.IsDBNull(2) ? DATABASE_NULL : reader.GetInt64(2);
+            item.vendor_value = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt64(3);
             item.stackable = reader.GetBoolean(4);
             item.capacity = reader.IsDBNull(5) ? DATABASE_NULL : reader.GetFloat(5);
             item.category = reader.IsDBNull(6) ? "Unknown" : reader.GetString(6);
             item.image = Image.FromStream(reader.GetStream(7));
             item.discard = reader.GetBoolean(8);
             item.convert_to_gold = reader.GetBoolean(9);
-            item.look_text = reader.IsDBNull(10) ? String.Format("You see a {0}.", item.name) : reader.GetString(10);
+            item.look_text = reader.IsDBNull(10) ? String.Format("You see a {0}.", item.displayname) : reader.GetString(10);
             item.title = reader.GetString(11);
             item.currency = reader.IsDBNull(12) ? DATABASE_NULL : reader.GetInt32(12);
 
@@ -208,9 +208,9 @@ namespace Tibialyzer {
                     return _creatureIdMap[cr.id];
                 }
                 _creatureIdMap.Add(cr.id, cr);
-                string name = cr.name.ToLower();
+                string name = cr.GetName().ToLower();
                 if (!_creatureNameMap.ContainsKey(name)) {
-                    _creatureNameMap.Add(cr.name.ToLower(), cr);
+                    _creatureNameMap.Add(cr.GetName().ToLower(), cr);
                 }
             }
             return cr;
@@ -227,7 +227,7 @@ namespace Tibialyzer {
             Creature cr = new Creature();
             cr.permanent = true;
             cr.id = reader.GetInt32(0);
-            cr.name = reader["name"].ToString();
+            cr.displayname = reader["name"].ToString();
             cr.health = reader.IsDBNull(2) ? DATABASE_NULL : reader.GetInt32(2);
             cr.experience = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
             cr.maxdamage = reader.IsDBNull(4) ? DATABASE_NULL : reader.GetInt32(4);
@@ -694,7 +694,7 @@ namespace Tibialyzer {
             return h;
         }
 
-        private static string _outfitProperties = "id, title, name, premium";
+        private static string _outfitProperties = "id, title, name, premium, tibiastore";
         private static Outfit createOutfit(SQLiteDataReader reader) {
             SQLiteCommand command;
             if (!reader.Read()) {
@@ -707,6 +707,7 @@ namespace Tibialyzer {
             outfit.title = reader.GetString(1);
             outfit.name = reader.GetString(2);
             outfit.premium = reader.GetBoolean(3);
+            outfit.tibiastore = reader.GetBoolean(4);
 
             // Outfit Images
             command = new SQLiteCommand(String.Format("SELECT male, addon, image FROM OutfitImages WHERE outfitid={0}", outfit.id), mainForm.conn);
@@ -728,6 +729,7 @@ namespace Tibialyzer {
             while (reader.Read()) {
                 outfit.questid = reader.GetInt32(0);
             }
+
             return outfit;
         }
         #endregion

@@ -538,15 +538,15 @@ namespace Tibialyzer {
                             if (splits[0].ToLower() == "cr") {
                                 Creature cr = MainForm.getCreature(imageString);
                                 image = cr.image;
-                                command = "creature" + MainForm.commandSymbol + cr.name.ToLower();
+                                command = "creature" + MainForm.commandSymbol + cr.GetName().ToLower();
                             } else if (splits[0].ToLower() == "npc") {
                                 NPC npc = MainForm.getNPC(imageString);
                                 image = npc.image;
-                                command = "npc" + MainForm.commandSymbol + npc.name.ToLower();
+                                command = "npc" + MainForm.commandSymbol + npc.GetName().ToLower();
                             } else if (splits[0].ToLower() == "item") {
                                 Item item = MainForm.getItem(imageString);
                                 image = item.image;
-                                command = "item" + MainForm.commandSymbol + item.name.ToLower();
+                                command = "item" + MainForm.commandSymbol + item.GetName().ToLower();
                             }
                             PictureBox pictureBox = new PictureBox();
                             pictureBox.Location = new Point(x, y);

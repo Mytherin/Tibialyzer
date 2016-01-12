@@ -17,7 +17,6 @@
             {
                 base.Cleanup();
                 components.Dispose();
-                if (creature != null) creature.Dispose();
             }
             base.Dispose(disposing);
         }

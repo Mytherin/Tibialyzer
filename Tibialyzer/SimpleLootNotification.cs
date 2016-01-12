@@ -36,9 +36,8 @@ namespace Tibialyzer {
 
             List<Tuple<Item, int>> updatedItems = new List<Tuple<Item, int>>();
             foreach (Tuple<Item, int> tpl in items) {
-                if (tpl.Item1.name.ToLower() == "gold coin" && tpl.Item2 > 100) {
+                if (tpl.Item1.GetName().ToLower() == "gold coin" && tpl.Item2 > 100) {
                     Item platinumCoin = MainForm.getItem("platinum coin");
-                    disposableObjects.Add(platinumCoin);
                     updatedItems.Add(new Tuple<Item, int>(platinumCoin, tpl.Item2 / 100));
                     updatedItems.Add(new Tuple<Item,int>(tpl.Item1, tpl.Item2 % 100));
                 } else {
@@ -95,9 +94,11 @@ namespace Tibialyzer {
             }
 
             this.creatureBox.Image = cr.image;
-            this.creatureDropLabel.Text = String.Format("Loot of {0}.", cr.name);
+            this.creatureDropLabel.Text = String.Format("Loot of {0}.", cr.displayname);
+        }
 
-            this.InitializeSimpleNotification();
+        private void openItem_Click(object sender, EventArgs e) {
+            MainForm.mainForm.ExecuteCommand("item" + MainForm.commandSymbol + (sender as Control).Name);
         }
 
         private void InitializeComponent() {

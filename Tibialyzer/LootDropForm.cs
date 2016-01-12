@@ -159,7 +159,7 @@ namespace Tibialyzer {
                     int width = Math.Max(measured_size, creature.image.Width);
                     PictureBox picture_box = new PictureBox();
                     picture_box.Location = new System.Drawing.Point(base_x + x + xoffset, base_y + y + yoffset + (creature_size.Height - creature.image.Height) / 2);
-                    picture_box.Name = creature.name;
+                    picture_box.Name = creature.GetName();
                     picture_box.Size = new System.Drawing.Size(creature.image.Width, creature.image.Height);
                     picture_box.TabIndex = 1;
                     picture_box.TabStop = false;

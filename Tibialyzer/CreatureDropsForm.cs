@@ -17,15 +17,14 @@ namespace Tibialyzer {
         public CreatureDropsForm() {
             InitializeComponent();
         }
-
+        
         private void DisplayItem(ItemDrop drop, int base_x, int base_y, int x, int y, Size item_size, ToolTip droprate_tooltip, int dropbar_height, string prefix = "Drop rate of ") {
 
             Item dropItem = MainForm.getItem(drop.itemid);
-            this.disposableObjects.Add(dropItem);
             // the main picture of the item
             PictureBox picture_box = new PictureBox();
             picture_box.Location = new System.Drawing.Point(base_x + x, base_y + y);
-            picture_box.Name = dropItem.name;
+            picture_box.Name = dropItem.GetName();
             picture_box.Size = new System.Drawing.Size(item_size.Width, item_size.Height);
             picture_box.TabIndex = 1;
             picture_box.TabStop = false;
@@ -33,7 +32,7 @@ namespace Tibialyzer {
             picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
             picture_box.BackgroundImage = MainForm.item_background;
             picture_box.Click += openItemBox;
-            droprate_tooltip.SetToolTip(picture_box, prefix + dropItem.name + " is " + (drop.percentage >= 0 ? Math.Round(drop.percentage, 1).ToString() + "%." : "unknown."));
+            droprate_tooltip.SetToolTip(picture_box, prefix + dropItem.displayname + " is " + (drop.percentage >= 0 ? Math.Round(drop.percentage, 1).ToString() + "%." : "unknown."));
             this.Controls.Add(picture_box);
 
             // the 'dropbar' that roughly displays the droprate of the item
@@ -89,18 +88,17 @@ namespace Tibialyzer {
 
             if (creature.skin != null) {
                 Item skinItem = MainForm.getItem(creature.skin.skinitemid);
-                this.disposableObjects.Add(skinItem);
                 ItemDrop skinDrop = new ItemDrop();
                 PictureBox picture_box = new PictureBox();
                 picture_box.Location = new System.Drawing.Point(20, this.huntButton.Location.Y + this.huntButton.Size.Height + 10);
-                picture_box.Name = skinItem.name;
+                picture_box.Name = skinItem.GetName();
                 picture_box.Size = new System.Drawing.Size(item_size.Width, item_size.Height);
                 picture_box.TabIndex = 1;
                 picture_box.TabStop = false;
                 picture_box.Image = skinItem.image;
                 picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
                 picture_box.BackgroundImage = MainForm.item_background;
-                picture_box.Click += openItemBox; droprate_tooltip.SetToolTip(picture_box, "You can skin this creature with the item " + skinItem.name + ".");
+                picture_box.Click += openItemBox; droprate_tooltip.SetToolTip(picture_box, "You can skin this creature with the item " + skinItem.displayname + ".");
                 this.Controls.Add(picture_box);
 
                 skinDrop.itemid = creature.skin.dropitemid;
@@ -126,11 +124,10 @@ namespace Tibialyzer {
         public override void LoadForm() {
             this.SuspendForm();
             base.NotificationInitialize();
-            disposableObjects.Add(creature);
             // load image from the creature
             this.mainImage.Image = this.creature.image;
-            this.statsButton.Name = this.creature.name.ToLower();
-            this.huntButton.Name = this.creature.name.ToLower();
+            this.statsButton.Name = this.creature.GetName().ToLower();
+            this.huntButton.Name = this.creature.GetName().ToLower();
             // set background of actual form to transparent
             this.BackColor = MainForm.background_color;
             this.Opacity = MainForm.opacity;
@@ -139,15 +136,18 @@ namespace Tibialyzer {
                 this.Opacity = 1;
             }
             CombineItems();
-            this.nameLabel.Text = MainForm.ToTitle(this.creature.name);
-            Font f = this.nameLabel.Font;
-            while (TextRenderer.MeasureText(this.creature.name, f).Width < this.mainImage.Size.Width && TextRenderer.MeasureText(this.creature.name, f).Height < 26) {
-                f.Dispose();
-                f = new Font(f.FontFamily, f.Size + 1.0f);
-            }
-            while (TextRenderer.MeasureText(this.creature.name, f).Width > this.mainImage.Size.Width && f.Size > 1) {
-                f.Dispose();
-                f = new Font(f.FontFamily, f.Size - 1.0f);
+            this.nameLabel.Text = MainForm.ToTitle(this.creature.displayname);
+            Font f = MainForm.fontList[0];
+            Font prevFont = f;
+            for(int i = 0; i < MainForm.fontList.Count; i++) {
+                Font font = MainForm.fontList[i];
+                int width = TextRenderer.MeasureText(this.nameLabel.Text, font).Width;
+                if (width < this.mainImage.Size.Width) {
+                    f = prevFont;
+                } else {
+                    break;
+                }
+                prevFont = font;
             }
             this.nameLabel.Font = f;
             this.nameLabel.Left = this.mainImage.Left + (mainImage.Width - this.nameLabel.Size.Width) / 2;

@@ -326,7 +326,7 @@ namespace Tibialyzer {
     }
 
     public class Creature : TibiaObject {
-        public string name;
+        public string displayname;
         public string title;
         public int id;
         public int health;

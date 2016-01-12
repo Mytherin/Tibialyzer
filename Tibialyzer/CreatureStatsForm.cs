@@ -82,10 +82,9 @@ namespace Tibialyzer {
 
         public override void LoadForm() {
             this.SuspendForm();
-            disposableObjects.Add(creature);
             int horizontal, left, right;
-            this.statsButton.Name = creature.name.ToLower();
-            this.huntButton.Name = creature.name.ToLower();
+            this.statsButton.Name = creature.GetName().ToLower();
+            this.huntButton.Name = creature.GetName().ToLower();
             int health = creature.health;
             int experience = creature.experience;
             List<Resistance> resistances = new List<Resistance>();

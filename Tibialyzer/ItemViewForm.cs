@@ -281,19 +281,19 @@ namespace Tibialyzer {
                 header.ForeColor = MainForm.label_text_color;
                 header.BackColor = Color.Transparent;
                 header.Text = "Dropped By";
-                header.Font = valueLabel.Font;
+                header.Font = MainForm.fontList[5];
                 header.Location = new Point(base_x + x, base_y + y);
                 y = y + header.Size.Height;
 
-                y = y + MainForm.DisplayCreatureList(this.Controls, creatureList, base_x, base_y + y, max_x, spacing, true, CreatureTooltipFunction);
+                List<Control> createdControls = new List<Control>();
+                y = y + MainForm.DisplayCreatureList(this.Controls, creatureList, base_x, base_y + y, max_x, spacing, true, CreatureTooltipFunction, 1, createdControls);
 
                 command_start = "creature" + MainForm.commandSymbol;
                 switch_start = "item" + MainForm.commandSymbol;
                 statsButton.Text = "Sold By";
-                statsButton.Name = item.name.ToLower();
-                foreach (Control control in this.Controls)
-                    if (control is PictureBox)
-                        control.Click += openItemBox;
+                statsButton.Name = item.GetName().ToLower();
+                foreach (Control control in createdControls)
+                    control.Click += openItemBox;
             }
             this.Size = new Size(this.Size.Width, base_y + y + 20);
             base.NotificationFinalize();

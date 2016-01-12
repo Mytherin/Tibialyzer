@@ -680,7 +680,7 @@ namespace Tibialyzer {
                             for (int i = 0; i < creatures.Length; i++) {
                                 creatures[i] = creatures[i].ToLower();
                             }
-                            if (creatures.Contains(cr.name.ToLower())) {
+                            if (creatures.Contains(cr.GetName().ToLower())) {
                                 showNotification = true;
                             }
                         }
@@ -713,7 +713,7 @@ namespace Tibialyzer {
                                 });
                             }
                             if (this.showNotifications && !lootNotificationRich) {
-                                ShowSimpleNotification(cr.name, cr.name + " dropped a " + item.name + ".", cr.image);
+                                ShowSimpleNotification(cr.displayname, cr.displayname + " dropped a " + item.displayname + ".", cr.image);
                             }
                         }
                     }
