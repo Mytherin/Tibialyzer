@@ -22,6 +22,7 @@ namespace Tibialyzer {
         private Label headerLabel;
         public static Dictionary<int, Color> rating_colors;
 
+        public int initialPage;
         private int start_index = 0;
         private int max_hunts = 15;
 
@@ -351,16 +352,12 @@ namespace Tibialyzer {
         public override void LoadForm() {
             this.SuspendForm();
             this.NotificationInitialize();
-
-            if (hunting_places != null) {
-                foreach(HuntingPlace h in hunting_places) {
-                    disposableObjects.Add(h);
-                }
-            }
-
+            
             if (header != null) {
                 headerLabel.Text = header;
             }
+            int huntCount = hunting_places != null ? hunting_places.Count : quests.Count;
+            start_index = Math.Min(Math.Max(initialPage * max_hunts, 0), (huntCount / max_hunts) * max_hunts);
 
             int total_yoffset = RefreshHuntingPlaces();
 
@@ -369,18 +366,27 @@ namespace Tibialyzer {
             this.ResumeForm();
         }
 
+        void updateCommand() {
+            string[] split = command.command.Split(MainForm.commandSymbol);
+            command.command = split[0] + MainForm.commandSymbol + split[1] + MainForm.commandSymbol + (start_index / max_hunts);
+        }
+
         void prevpage_Click(object sender, EventArgs e) {
             start_index = Math.Max(start_index - max_hunts, 0);
+            updateCommand();
             this.SuspendForm();
-            RefreshHuntingPlaces();
+            int total_yoffset = RefreshHuntingPlaces();
+            this.Size = new Size(this.Size.Width, total_yoffset);
             this.ResumeForm();
             base.ResetTimer();
         }
 
         void nextpage_Click(object sender, EventArgs e) {
             start_index += max_hunts;
+            updateCommand();
             this.SuspendForm();
-            RefreshHuntingPlaces();
+            int total_yoffset = RefreshHuntingPlaces();
+            this.Size = new Size(this.Size.Width, total_yoffset);
             this.ResumeForm();
             base.ResetTimer();
         }

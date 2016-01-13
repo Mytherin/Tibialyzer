@@ -56,51 +56,70 @@ namespace Tibialyzer {
             OnTextChanged(null);
         }
 
-        private void modifyText(string text, List<string> keywords, Color color, Color backColor) {
+        private void modifyText(string text, List<string> keywords, Color color, Color backColor, int start, int end) {
             foreach (string keyword in keywords) {
                 int index = 0, baseIndex = 0;
                 int length = keyword.Length;
                 string copy = text;
                 while ((index = copy.IndexOf(keyword)) >= 0) {
-                    this.SelectionStart = baseIndex + index;
-                    this.SelectionLength = length;
-                    if (backColor != Color.Empty) this.SelectionBackColor = backColor;
-                    if (color != Color.Empty) this.SelectionColor = color;
+                    if (baseIndex + index + keyword.Length >= start && baseIndex + index <= end) {
+                        this.SelectionStart = baseIndex + index;
+                        this.SelectionLength = length;
+                        if (backColor != Color.Empty) this.SelectionBackColor = backColor;
+                        if (color != Color.Empty) this.SelectionColor = color;
+                    }
                     copy = copy.Substring(index + length);
                     baseIndex += index + length;
                 }
             }
         }
 
-        private void modifyText(string text, List<Regex> keywords, Color color, Color backColor) {
+        private void modifyText(string text, List<Regex> keywords, Color color, Color backColor, int start, int end) {
             foreach (Regex regex in keywords) {
                 MatchCollection mc = regex.Matches(text);
                 foreach (Match m in mc) {
                     int startIndex = m.Index;
-                    int stopIndex = m.Length;
-                    this.SelectionStart = startIndex;
-                    this.SelectionLength = stopIndex;
-                    if (backColor != Color.Empty) this.SelectionBackColor = backColor;
-                    if (color != Color.Empty) this.SelectionColor = color;
+                    if (startIndex + m.Length >= start && startIndex <= end) {
+                        int stopIndex = m.Length;
+                        this.SelectionStart = startIndex;
+                        this.SelectionLength = stopIndex;
+                        if (backColor != Color.Empty) this.SelectionBackColor = backColor;
+                        if (color != Color.Empty) this.SelectionColor = color;
+                    }
                 }
             }
         }
 
+        bool highlighted = false;
         protected override void OnTextChanged(EventArgs e) {
             if (highlighting) return;
             base.OnTextChanged(e);
             this.SuspendLayout();
             highlighting = true;
             string text = this.Text.ToLower();
+
+            int start = 0, end = text.Length - 1;
+
+            if (highlighted) {
+                start = Math.Max(this.SelectionStart - 25, start);
+                end = Math.Min(this.SelectionStart + 25, end);
+            } else {
+                highlighted = true;
+            }
+
             var initialScroll = RTBScrollPos;
             int initialCursorPosition = this.SelectionStart;
             int initialLength = this.SelectionLength;
 
-            modifyText(text, keywordStrings, keywordColor, Color.Empty);
-            modifyText(text, modifierStrings, modifierColor, Color.Empty);
-            modifyText(text, keywordRegexes, keywordColor, Color.Empty);
-            modifyText(text, commentRegexes, commentColor, Color.Empty);
-            modifyText(text, commandRegexes, commandColor, Color.Empty);
+            this.SelectionStart = start;
+            this.SelectionLength = end - start;
+            this.SelectionColor = Color.Black;
+
+            modifyText(text, keywordStrings, keywordColor, Color.Empty, start, end);
+            modifyText(text, modifierStrings, modifierColor, Color.Empty, start, end);
+            modifyText(text, keywordRegexes, keywordColor, Color.Empty, start, end);
+            modifyText(text, commentRegexes, commentColor, Color.Empty, start, end);
+            modifyText(text, commandRegexes, commandColor, Color.Empty, start, end);
 
             this.SelectionStart = initialCursorPosition;
             this.SelectionLength = initialLength;

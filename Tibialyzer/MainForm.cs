@@ -127,6 +127,7 @@ namespace Tibialyzer {
             this.initializePluralMap();
             this.loadDatabaseData();
             this.loadSettings();
+            MainForm.initializeFonts();
             this.initializeNames();
             this.initializeHunts();
             this.initializeSettings();
@@ -161,6 +162,12 @@ namespace Tibialyzer {
             this.current_state = ScanningState.NoTibia;
             this.loadTimerImage.Enabled = true;
             scan_tooltip.SetToolTip(this.loadTimerImage, "No Tibia Client Found...");
+        }
+
+        public static void initializeFonts() {
+            for (int i = 7; i < 20; i++) {
+                fontList.Add(new System.Drawing.Font("Microsoft Sans Serif", i, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0))));
+            }
         }
 
         public static int DATABASE_NULL = -127;
@@ -286,24 +293,6 @@ namespace Tibialyzer {
             reader.Close();
         }
 
-        class Hunt {
-            public string name;
-            public bool temporary;
-            public bool trackAllCreatures;
-            public string trackedCreatures;
-            public Loot loot = new Loot();
-
-            public override string ToString() {
-                return name + "#" + trackAllCreatures.ToString() + "#" + trackedCreatures.Replace("\n", "#");
-            }
-        };
-
-        class Loot {
-            public Dictionary<string, List<string>> logMessages = new Dictionary<string, List<string>>();
-            public Dictionary<Creature, Dictionary<Item, int>> creatureLoot = new Dictionary<Creature, Dictionary<Item, int>>();
-            public Dictionary<Creature, int> killCount = new Dictionary<Creature, int>();
-        };
-
         private Hunt activeHunt = null;
         List<Hunt> hunts = new List<Hunt>();
         bool showNotifications = true;
@@ -335,14 +324,19 @@ namespace Tibialyzer {
         }
 
         void saveSettings() {
-            StreamWriter file = new StreamWriter(settingsFile);
-            foreach (KeyValuePair<string, List<string>> pair in settings) {
-                file.WriteLine("@" + pair.Key);
-                foreach (string str in pair.Value) {
-                    file.WriteLine(str);
+            try {
+                lock (settings) {
+                    using (StreamWriter file = new StreamWriter(settingsFile)) {
+                        foreach (KeyValuePair<string, List<string>> pair in settings) {
+                            file.WriteLine("@" + pair.Key);
+                            foreach (string str in pair.Value) {
+                                file.WriteLine(str);
+                            }
+                        }
+                    }
                 }
+            } catch {
             }
-            file.Close();
         }
 
         void initializeNames() {
@@ -409,6 +403,13 @@ namespace Tibialyzer {
                     hunts.Add(hunt);
                     index++;
                 }
+            }
+            if (hunts.Count == 0) {
+                Hunt h = new Hunt();
+                h.name = "New Hunt";
+                h.dbtableid = 1;
+                hunts.Add(h);
+                resetHunt(h);
             }
 
             skip_hunt_refresh = true;
@@ -644,11 +645,13 @@ namespace Tibialyzer {
             if (!richNotifications) return;
 
             if (screenshot_path == "") {
-                command_stack.Push(command);
+                TibialyzerCommand cmd = new TibialyzerCommand(command);
+                command_stack.Push(cmd);
+                f.command = cmd;
             }
+            f.Visible = false;
             f.LoadForm();
             if (screenshot_path != "") {
-                f.Visible = false;
                 Bitmap bitmap = new Bitmap(f.Width, f.Height);
                 f.DrawToBitmap(bitmap, new Rectangle(0, 0, f.Width, f.Height));
                 foreach (Control c in f.Controls) {
@@ -683,7 +686,7 @@ namespace Tibialyzer {
         public void Back() {
             if (command_stack.Count <= 1) return;
             command_stack.Pop(); // remove the current command
-            string command = command_stack.Pop();
+            string command = command_stack.Pop().command;
             this.ExecuteCommand(command);
         }
 
@@ -743,19 +746,21 @@ namespace Tibialyzer {
             ShowNotification(f, comm, screenshot_path);
         }
 
-        private void ShowLootDrops(Dictionary<Creature, int> creatures, List<Tuple<Item, int>> items, string comm, string screenshot_path) {
+        private void ShowLootDrops(Dictionary<Creature, int> creatures, List<Tuple<Item, int>> items, Hunt h, string comm, string screenshot_path) {
             LootDropForm ldf = new LootDropForm();
             ldf.creatures = creatures;
             ldf.items = items;
-            
+            ldf.hunt = h;
+
             ShowNotification(ldf, comm, screenshot_path);
         }
 
-        private void ShowHuntList(List<HuntingPlace> h, string header, string comm) {
+        private void ShowHuntList(List<HuntingPlace> h, string header, string comm, int page) {
             if (h != null) h = h.OrderBy(o => o.level).ToList();
             HuntListForm f = new HuntListForm();
             f.hunting_places = h;
             f.header = header;
+            f.initialPage = page;
 
             ShowNotification(f, comm);
         }
@@ -784,24 +789,28 @@ namespace Tibialyzer {
             ShowNotification(f, comm);
         }
 
-        private void ShowQuestList(List<Quest> questList, string header, string comm) {
+        private void ShowQuestList(List<Quest> questList, string header, string comm, int page) {
             if (questList != null) questList = questList.OrderBy(o => o.minlevel).ToList();
             HuntListForm f = new HuntListForm();
             f.quests = questList;
             f.header = header;
+            f.initialPage = page;
 
             ShowNotification(f, comm);
         }
 
-        private void ShowHuntGuideNotification(HuntingPlace hunt, string comm) {
+        private void ShowHuntGuideNotification(HuntingPlace hunt, string comm, int page) {
             if (hunt.directions.Count == 0) return;
             QuestGuideForm f = new QuestGuideForm(hunt);
+            f.initialPage = page;
 
             ShowNotification(f, comm);
         }
 
-        private void ShowQuestGuideNotification(Quest quest, string comm) {
+        private void ShowQuestGuideNotification(Quest quest, string comm, int page, string mission) {
             QuestGuideForm f = new QuestGuideForm(quest);
+            f.initialPage = page;
+            f.initialMission = mission;
 
             ShowNotification(f, comm);
         }
@@ -850,7 +859,7 @@ namespace Tibialyzer {
         public static int convertY(double y, Rectangle sourceRectangle, Rectangle pictureRectangle) {
             return (int)((y - (double)sourceRectangle.Y) / (double)sourceRectangle.Height * (double)pictureRectangle.Height);
         }
-        
+
         public static Pen pathPen = new Pen(Color.FromArgb(25, 25, 25), 3);
         public static Pen startPen = new Pen(Color.FromArgb(191, 191, 191), 2);
         public static Pen endPen = new Pen(Color.FromArgb(34, 139, 34), 2);
@@ -946,7 +955,16 @@ namespace Tibialyzer {
             return pictureBox;
         }
 
-        public static int DisplayCreatureList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, int max_x, int spacing, bool transparent, Func<TibiaObject, string> tooltip_function = null, float magnification = 1.0f, List<Control> createdControls = null) {
+        public class PageInfo {
+            public bool prevPage = false;
+            public bool nextPage = false;
+            public PageInfo(bool prevPage, bool nextPage) {
+                this.prevPage = prevPage;
+                this.nextPage = nextPage;
+            }
+        }
+
+        public static int DisplayCreatureList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, int max_x, int spacing, bool transparent, Func<TibiaObject, string> tooltip_function = null, float magnification = 1.0f, List<Control> createdControls = null, int page = 0, int pageheight = 10000, PageInfo pageInfo = null) {
             int x = 0, y = 0;
 
             int height = 0;
@@ -957,36 +975,69 @@ namespace Tibialyzer {
             value_tooltip.ReshowDelay = 0;
             value_tooltip.ShowAlways = true;
             value_tooltip.UseFading = true;
+            int currentPage = 0;
+            if (pageInfo != null) {
+                pageInfo.prevPage = page > 0;
+            }
             foreach (TibiaObject cr in l) {
+                int imageWidth;
+                int imageHeight;
                 Image image = cr.GetImage();
                 string name = cr.GetName();
-                if (max_x < (x + base_x + (int)(image.Width * magnification) + spacing)) {
+
+                if ((cr is Item || (cr is LazyTibiaObject && (cr as LazyTibiaObject).type == TibiaObjectType.Item)) ||
+                    (cr is Spell || (cr is LazyTibiaObject && (cr as LazyTibiaObject).type == TibiaObjectType.Spell))) {
+                    imageWidth = 32;
+                    imageHeight = 32;
+                } else {
+                    imageWidth = image.Width;
+                    imageHeight = image.Height;
+                }
+
+
+                if (max_x < (x + base_x + (int)(imageWidth * magnification) + spacing)) {
                     x = 0;
                     y = y + spacing + height;
                     height = 0;
+                    if (y > pageheight) {
+                        if (page > currentPage) {
+                            y = 0;
+                            currentPage += 1;
+                        } else {
+                            if (pageInfo != null) {
+                                pageInfo.nextPage = true;
+                            }
+                            break;
+                        }
+                    }
                 }
-                if ((int)(image.Height * magnification) > height) {
-                    height = (int)(image.Height * magnification);
+                if ((int)(imageHeight * magnification) > height) {
+                    height = (int)(imageHeight * magnification);
                 }
-                PictureBox image_box;
-                if (transparent) image_box = new PictureBox();
-                else image_box = new PictureBox();
-                image_box.Image = image;
-                image_box.BackColor = Color.Transparent;
-                image_box.Size = new Size((int)(image.Width * magnification), height);
-                image_box.Location = new Point(base_x + x, base_y + y);
-                image_box.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-                image_box.Name = name;
-                controls.Add(image_box);
-                if (createdControls != null) createdControls.Add(image_box);
-                image_box.Image = image;
-                if (tooltip_function == null) {
-                    value_tooltip.SetToolTip(image_box, System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(name));
-                } else {
-                    value_tooltip.SetToolTip(image_box, tooltip_function(cr));
+                if (currentPage == page) {
+                    PictureBox image_box;
+                    if (transparent) image_box = new PictureBox();
+                    else image_box = new PictureBox();
+                    image_box.Image = image;
+                    image_box.BackColor = Color.Transparent;
+                    image_box.Size = new Size((int)(imageWidth * magnification), height);
+                    image_box.Location = new Point(base_x + x, base_y + y);
+                    image_box.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+                    image_box.Name = name;
+                    if (cr is Item || (cr is LazyTibiaObject && (cr as LazyTibiaObject).type == TibiaObjectType.Item)) {
+                        image_box.BackgroundImage = MainForm.item_background;
+                    }
+                    controls.Add(image_box);
+                    if (createdControls != null) createdControls.Add(image_box);
+                    image_box.Image = image;
+                    if (tooltip_function == null) {
+                        value_tooltip.SetToolTip(image_box, System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(name));
+                    } else {
+                        value_tooltip.SetToolTip(image_box, tooltip_function(cr));
+                    }
                 }
 
-                x = x + (int)(image.Width * magnification) + spacing;
+                x = x + (int)(imageWidth * magnification) + spacing;
             }
             x = 0;
             y = y + height;
@@ -998,7 +1049,7 @@ namespace Tibialyzer {
             this.SuspendLayout();
             this.creaturePanel.Controls.Clear();
             int count = 0;
-            DisplayCreatureList(this.creaturePanel.Controls, MainForm.searchCreature(creature, 50), 10, 10, this.creaturePanel.Width - 20, 4, false);
+            DisplayCreatureList(this.creaturePanel.Controls, MainForm.searchCreature(creature), 10, 10, this.creaturePanel.Width - 20, 4, false);
             foreach (Control c in creaturePanel.Controls) {
                 if (c is PictureBox) {
                     c.Click += ShowCreatureInformation;
@@ -1010,7 +1061,7 @@ namespace Tibialyzer {
             string item = (sender as TextBox).Text;
             this.SuspendLayout();
             this.itemPanel.Controls.Clear();
-            DisplayCreatureList(this.itemPanel.Controls, MainForm.searchItem(item, 50), 10, 10, this.itemPanel.Width - 20, 4, false);
+            DisplayCreatureList(this.itemPanel.Controls, MainForm.searchItem(item), 10, 10, this.itemPanel.Width - 20, 4, false);
             foreach (Control c in itemPanel.Controls) {
                 if (c is PictureBox) {
                     c.Click += ShowItemInformation;
@@ -1188,7 +1239,9 @@ namespace Tibialyzer {
         }
         private Hunt getSelectedHunt() {
             if (huntBox.SelectedIndex < 0) return null;
-            return hunts[huntBox.SelectedIndex];
+            lock (hunts) {
+                return hunts[huntBox.SelectedIndex];
+            }
         }
 
         bool nameExists(string str) {

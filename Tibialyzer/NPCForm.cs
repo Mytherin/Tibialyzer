@@ -19,7 +19,7 @@ namespace Tibialyzer {
 
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NPCForm));
-            this.mapBox = new MapPictureBox();
+            this.mapBox = new Tibialyzer.MapPictureBox();
             this.npcImage = new System.Windows.Forms.PictureBox();
             this.creatureName = new System.Windows.Forms.Label();
             this.mapUpLevel = new System.Windows.Forms.PictureBox();
@@ -51,15 +51,16 @@ namespace Tibialyzer {
             // 
             // creatureName
             // 
-            this.creatureName.AutoSize = true;
             this.creatureName.BackColor = System.Drawing.Color.Transparent;
             this.creatureName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.creatureName.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.creatureName.Location = new System.Drawing.Point(34, 146);
+            this.creatureName.Location = new System.Drawing.Point(11, 146);
+            this.creatureName.MaximumSize = new System.Drawing.Size(100, 28);
             this.creatureName.Name = "creatureName";
-            this.creatureName.Size = new System.Drawing.Size(57, 16);
+            this.creatureName.Size = new System.Drawing.Size(100, 28);
             this.creatureName.TabIndex = 2;
             this.creatureName.Text = "Rashid";
+            this.creatureName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // mapUpLevel
             // 
@@ -94,7 +95,6 @@ namespace Tibialyzer {
             ((System.ComponentModel.ISupportInitialize)(this.mapUpLevel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapDownLevel)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -112,7 +112,7 @@ namespace Tibialyzer {
         private string TooltipFunction(TibiaObject obj) {
             if (obj is Item) {
                 Item item = obj as Item;
-                return String.Format("{0} {1} for {2} gold.", prefix, item.name, prefix == "Sells" ? sellItems[item] : buyItems[item]);
+                return String.Format("{0} {1} for {2} gold.", prefix, item.displayname, prefix == "Sells" ? sellItems[item] : buyItems[item]);
             } else if (obj is Spell) {
                 Spell spell = obj as Spell;
                 return String.Format("{0} {1} for {2} gold.", prefix, spell.name, spell.goldcost);
@@ -137,8 +137,8 @@ namespace Tibialyzer {
 
             Target t = new Target();
             t.coordinate = new Coordinate(npc.pos);
-            t.image = MainForm.cross_image;
-            t.size = 8;
+            t.image = npc.image;
+            t.size = 20;
 
             mapBox.targets.Add(t);
             mapBox.sourceWidth = mapBox.Width;

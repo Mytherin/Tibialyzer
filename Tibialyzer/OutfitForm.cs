@@ -200,6 +200,8 @@ namespace Tibialyzer {
                 this.obtainedLabel.Text = "Rewarded by " + quest.name;
                 obtainedCommand = "quest" + MainForm.commandSymbol + quest.name;
                 this.obtainedLabel.Click += ObtainedLabel_Click;
+            } else if (outfit.tibiastore) {
+                this.obtainedLabel.Text = "Purchased from the Tibia Store.";
             } else {
                 this.obtainedLabel.Visible = false;
             }

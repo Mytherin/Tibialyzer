@@ -33,7 +33,7 @@ namespace Tibialyzer {
                 if (cr != null) {
                     ShowCreatureDrops(cr, command);
                 } else {
-                    List<TibiaObject> creatures = searchCreature(parameter, 50);
+                    List<TibiaObject> creatures = searchCreature(parameter);
                     if (creatures.Count == 1) {
                         ShowCreatureDrops(creatures[0] as Creature, command);
                     } else if (creatures.Count > 1) {
@@ -110,9 +110,11 @@ namespace Tibialyzer {
                 } else {
                     // find creature with highest killcount with a skin and skin that
                     int kills = -1;
-                    foreach (KeyValuePair<Creature, int> kvp in activeHunt.loot.killCount) {
-                        if (kvp.Value > kills && kvp.Key.skin != null) {
-                            cr = kvp.Key;
+                    lock (hunts) {
+                        foreach (KeyValuePair<Creature, int> kvp in activeHunt.loot.killCount) {
+                            if (kvp.Value > kills && kvp.Key.skin != null) {
+                                cr = kvp.Key;
+                            }
                         }
                     }
                     if (cr != null) {
@@ -153,111 +155,129 @@ namespace Tibialyzer {
                     screenshot_path = splits[2];
                 }
 
-                bool raw = parameter == "raw"; // raw mode means 'display everything and don't convert anything to gold'
-                bool all = parameter == "all" || raw; //all mode means 'display everything'
+                bool raw = false; // raw mode means 'display everything and don't convert anything to gold'
+                bool all = false; //all mode means 'display everything' (i.e. ignore discard flag on items)
+                if (parameter == "raw") {
+                    raw = true;
+                    all = true;
+                    parameter = "";
+                }
+                if (parameter == "all") {
+                    all = true;
+                    parameter = "";
+                }
 
                 // first handle creature kills
-                string[] creatures = activeHunt.trackedCreatures.Split('\n');
-                for (int i = 0; i < creatures.Length; i++) {
-                    creatures[i] = creatures[i].ToLower();
-                }
-
-                Dictionary<Creature, int> creatureKills;
-                Creature lootCreature = getCreature(parameter);
-                if (lootCreature != null) {
-                    //the command is loot@<creature>, so we only display the kills and loot from the specified creature
-                    creatureKills = new Dictionary<Creature, int>();
-                    if (activeHunt.loot.killCount.ContainsKey(lootCreature)) {
-                        creatureKills.Add(lootCreature, activeHunt.loot.killCount[lootCreature]);
-                    } else {
-                        return true; // if there are no kills of the specified creature, just skip the command
-                    }
-                } else if (activeHunt.trackAllCreatures || activeHunt.trackedCreatures.Length == 0) {
-                    creatureKills = activeHunt.loot.killCount; //display all creatures
-                } else {
-                    // only display tracked creatures
-                    creatureKills = new Dictionary<Creature, int>();
-                    foreach (string creature in creatures) {
-                        Creature cr = getCreature(creature.ToLower());
-                        if (cr == null) continue;
-                        if (!activeHunt.loot.killCount.ContainsKey(cr)) continue;
-
-                        creatureKills.Add(cr, activeHunt.loot.killCount[cr]);
-                    }
-
-                }
-
-                // now handle item drops, gather a count for every item
-                List<Tuple<Item, int>> itemDrops = new List<Tuple<Item, int>>();
-                Dictionary<Item, int> itemCounts = new Dictionary<Item, int>();
-                foreach (KeyValuePair<Creature, Dictionary<Item, int>> kvp in activeHunt.loot.creatureLoot) {
-                    if (lootCreature != null && kvp.Key != lootCreature) continue; // if lootCreature is specified, only consider loot from the specified creature
-                    if (!activeHunt.trackAllCreatures && activeHunt.trackedCreatures.Length > 0 && !creatures.Contains(kvp.Key.name.ToLower())) continue;
-                    foreach (KeyValuePair<Item, int> kvp2 in kvp.Value) {
-                        Item item = kvp2.Key;
-                        int value = kvp2.Value;
-                        if (!itemCounts.ContainsKey(item)) itemCounts.Add(item, value);
-                        else itemCounts[item] += value;
-                    }
-                }
-                // now we do item conversion
-                int extraGold = 0;
-                foreach (KeyValuePair<Item, int> kvp in itemCounts) {
-                    Item item = kvp.Key;
-                    int count = kvp.Value;
-                    // discard items that are set to be discarded (as long as all/raw mode is not enabled)
-                    if (item.discard && !all) continue;
-                    // convert items to gold (as long as raw mode is not enabled), always gather up all the gold coins found
-                    if ((!raw && item.convert_to_gold) || item.name == "gold coin" || item.name == "platinum coin" || item.name == "crystal coin") {
-                        extraGold += Math.Max(item.actual_value, item.vendor_value) * count;
-                    } else {
-                        itemDrops.Add(new Tuple<Item, int>(item, count));
-                    }
-                }
-
-                // handle coin drops, we always convert the gold to the highest possible denomination (so if gold = 10K, we display a crystal coin)
-                int currentGold = extraGold;
-                if (currentGold > 10000) {
-                    itemDrops.Add(new Tuple<Item, int>(getItem("crystal coin"), currentGold / 10000));
-                    currentGold = currentGold % 10000;
-                }
-                if (currentGold > 100) {
-                    itemDrops.Add(new Tuple<Item, int>(getItem("platinum coin"), currentGold / 100));
-                    currentGold = currentGold % 100;
-                }
-                if (currentGold > 0) {
-                    itemDrops.Add(new Tuple<Item, int>(getItem("gold coin"), currentGold));
-                }
-
-                // now order by value so most valuable items are placed first
-                // we use a special value for the gold coins so the gold is placed together in the order crystal > platinum > gold
-                // gold coins = <gold total> - 2, platinum coins = <gold total> - 1, crystal coins = <gold total>
-                itemDrops = itemDrops.OrderByDescending(o => o.Item1.name == "gold coin" ? extraGold - 2 : (o.Item1.name == "platinum coin" ? extraGold - 1 : (o.Item1.name == "crystal coin" ? extraGold : Math.Max(o.Item1.actual_value, o.Item1.vendor_value) * o.Item2))).ToList();
-
-                if (clipboard) {
-                    // Copy loot message to the clipboard
-                    // clipboard@<creature> copies the loot of a specific creature to the clipboard
-                    // clipboard@ copies all loot to the clipboard
-                    string lootString = "";
-                    if (creatureKills.Count == 1) {
-                        foreach (KeyValuePair<Creature, int> kvp in creatureKills) {
-                            lootString = "Total Loot of " + kvp.Value.ToString() + " " + kvp.Key.name + (kvp.Value > 1 ? "s" : "") + ": ";
+                lock (hunts) {
+                    Hunt currentHunt = activeHunt;
+                    Dictionary<Creature, int> creatureKills;
+                    Creature lootCreature = null;
+                    if (parameter != "") {
+                        lootCreature = getCreature(parameter);
+                        if (lootCreature == null) {
+                            foreach(Hunt h in hunts) {
+                                if (h.name.ToLower().Contains(parameter.ToLower())) {
+                                    currentHunt = h;
+                                    break;
+                                }
+                            }
                         }
-                    } else {
-                        int totalKills = 0;
-                        foreach (KeyValuePair<Creature, int> kvp in creatureKills) {
-                            totalKills += kvp.Value;
+                    }
+                    if (lootCreature != null) {
+                        //the command is loot@<creature>, so we only display the kills and loot from the specified creature
+                        creatureKills = new Dictionary<Creature, int>();
+                        if (currentHunt.loot.killCount.ContainsKey(lootCreature)) {
+                            creatureKills.Add(lootCreature, currentHunt.loot.killCount[lootCreature]);
+                        } else {
+                            return true; // if there are no kills of the specified creature, just skip the command
                         }
-                        lootString = "Total Loot of " + totalKills + " Kills: ";
+                    } else if (currentHunt.trackAllCreatures || currentHunt.trackedCreatures.Length == 0) {
+                        creatureKills = currentHunt.loot.killCount; //display all creatures
+                    } else {
+                        // only display tracked creatures
+                        creatureKills = new Dictionary<Creature, int>();
+                        foreach (string creature in currentHunt.lootCreatures) {
+                            Creature cr = getCreature(creature.ToLower());
+                            if (cr == null) continue;
+                            if (!currentHunt.loot.killCount.ContainsKey(cr)) continue;
+
+                            creatureKills.Add(cr, currentHunt.loot.killCount[cr]);
+                        }
+
                     }
-                    foreach (Tuple<Item, int> kvp in itemDrops) {
-                        lootString += kvp.Item2 + " " + kvp.Item1.name + (kvp.Item2 > 1 ? "s" : "") + ", ";
+
+                    // now handle item drops, gather a count for every item
+                    List<Tuple<Item, int>> itemDrops = new List<Tuple<Item, int>>();
+                    Dictionary<Item, int> itemCounts = new Dictionary<Item, int>();
+                    foreach (KeyValuePair<Creature, Dictionary<Item, int>> kvp in currentHunt.loot.creatureLoot) {
+                        if (lootCreature != null && kvp.Key != lootCreature) continue; // if lootCreature is specified, only consider loot from the specified creature
+                        if (!currentHunt.trackAllCreatures && currentHunt.trackedCreatures.Length > 0 && !currentHunt.lootCreatures.Contains(kvp.Key.GetName().ToLower())) continue;
+                        foreach (KeyValuePair<Item, int> kvp2 in kvp.Value) {
+                            Item item = kvp2.Key;
+                            int value = kvp2.Value;
+                            if (!itemCounts.ContainsKey(item)) itemCounts.Add(item, value);
+                            else itemCounts[item] += value;
+                        }
                     }
-                    lootString = lootString.Substring(0, lootString.Length - 2) + ".";
-                    Clipboard.SetText(lootString);
-                } else {
-                    // display loot notification
-                    ShowLootDrops(creatureKills, itemDrops, command, screenshot_path);
+                    // now we do item conversion
+                    long extraGold = 0;
+                    foreach (KeyValuePair<Item, int> kvp in itemCounts) {
+                        Item item = kvp.Key;
+                        int count = kvp.Value;
+                        // discard items that are set to be discarded (as long as all/raw mode is not enabled)
+                        if (item.discard && !all) continue;
+                        // convert items to gold (as long as raw mode is not enabled), always gather up all the gold coins found
+                        if ((!raw && item.convert_to_gold) || item.displayname == "gold coin" || item.displayname == "platinum coin" || item.displayname == "crystal coin") {
+                            extraGold += Math.Max(item.actual_value, item.vendor_value) * count;
+                        } else {
+                            itemDrops.Add(new Tuple<Item, int>(item, count));
+                        }
+                    }
+
+                    // handle coin drops, we always convert the gold to the highest possible denomination (so if gold = 10K, we display a crystal coin)
+                    long currentGold = extraGold;
+                    if (currentGold > 10000) {
+                        itemDrops.Add(new Tuple<Item, int>(getItem("crystal coin"), (int)(currentGold / 10000)));
+                        currentGold = currentGold % 10000;
+                    }
+                    if (currentGold > 100) {
+                        itemDrops.Add(new Tuple<Item, int>(getItem("platinum coin"), (int)(currentGold / 100)));
+                        currentGold = currentGold % 100;
+                    }
+                    if (currentGold > 0) {
+                        itemDrops.Add(new Tuple<Item, int>(getItem("gold coin"), (int)(currentGold)));
+                    }
+
+                    // now order by value so most valuable items are placed first
+                    // we use a special value for the gold coins so the gold is placed together in the order crystal > platinum > gold
+                    // gold coins = <gold total> - 2, platinum coins = <gold total> - 1, crystal coins = <gold total>
+                    itemDrops = itemDrops.OrderByDescending(o => o.Item1.displayname == "gold coin" ? extraGold - 2 : (o.Item1.displayname == "platinum coin" ? extraGold - 1 : (o.Item1.displayname == "crystal coin" ? extraGold : Math.Max(o.Item1.actual_value, o.Item1.vendor_value) * o.Item2))).ToList();
+
+                    if (clipboard) {
+                        // Copy loot message to the clipboard
+                        // clipboard@<creature> copies the loot of a specific creature to the clipboard
+                        // clipboard@ copies all loot to the clipboard
+                        string lootString = "";
+                        if (creatureKills.Count == 1) {
+                            foreach (KeyValuePair<Creature, int> kvp in creatureKills) {
+                                lootString = "Total Loot of " + kvp.Value.ToString() + " " + kvp.Key.GetName() + (kvp.Value > 1 ? "s" : "") + ": ";
+                            }
+                        } else {
+                            int totalKills = 0;
+                            foreach (KeyValuePair<Creature, int> kvp in creatureKills) {
+                                totalKills += kvp.Value;
+                            }
+                            lootString = "Total Loot of " + totalKills + " Kills: ";
+                        }
+                        foreach (Tuple<Item, int> kvp in itemDrops) {
+                            lootString += kvp.Item2 + " " + kvp.Item1.displayname + (kvp.Item2 > 1 ? "s" : "") + ", ";
+                        }
+                        lootString = lootString.Substring(0, lootString.Length - 2) + ".";
+                        Clipboard.SetText(lootString);
+                    } else {
+                        // display loot notification
+                        ShowLootDrops(creatureKills, itemDrops, currentHunt, command, screenshot_path);
+                    }
                 }
             } else if (comp.StartsWith("reset" + MainForm.commandSymbol)) { //reset@
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
@@ -272,6 +292,28 @@ namespace Tibialyzer {
                 }
                 refreshHunts();
                 ignoreStamp = createStamp();
+            } else if (comp.StartsWith("refresh" + MainForm.commandSymbol)) { //refresh@
+                // refresh: refresh duration on current form, or if no current form, repeat last command without removing it from stack
+                if (tooltipForm != null && !tooltipForm.IsDisposed) {
+                    try {
+                        (tooltipForm as NotificationForm).ResetTimer();
+                    } catch {
+                    }
+                } else if (command_stack.Count > 0) {
+                    MainForm.mainForm.ExecuteCommand(command_stack.Peek().command);
+                }
+            } else if (comp.StartsWith("switch" + MainForm.commandSymbol)) { //switch@
+                // switch: switch to hunt
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
+                lock(hunts) {
+                    foreach (Hunt h in hunts) {
+                        if (h.name.ToLower().Contains(parameter)) {
+                            activeHunt = h;
+                            saveHunts();
+                            break;
+                        }
+                    }
+                }
             } else if (comp.StartsWith("drop" + MainForm.commandSymbol)) { //drop@
                 //show all creatures that drop the specified item
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
@@ -294,11 +336,23 @@ namespace Tibialyzer {
             } else if (comp.StartsWith("item" + MainForm.commandSymbol)) { //item@
                 //show the item with all the NPCs that sell it
                 ShowItemNotification(command);
-            } else if (comp.StartsWith("hunt" + MainForm.commandSymbol)) { //hunt@
+            } else if (comp.StartsWith("category" + MainForm.commandSymbol)) { //category@
+                // list all items with the specified category
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
+                List<TibiaObject> items = getItemsByCategory(parameter);
+                if (items.Count == 1) {
+                    ShowItemNotification("item" + MainForm.commandSymbol + items[0].GetName().ToLower());
+                } else if (items.Count > 1) {
+                    ShowCreatureList(items, "Item List", "item" + MainForm.commandSymbol, command);
+                }
+            } else if (comp.StartsWith("hunt" + MainForm.commandSymbol)) { //hunt@
+                string[] splits = command.Split(commandSymbol);
+                string parameter = splits[1].Trim().ToLower();
+                int page = 0;
+                if (splits.Length > 2 && int.TryParse(splits[2], out page)) ;
                 if (cities.Contains(parameter)) {
                     List<HuntingPlace> huntingPlaces = getHuntsInCity(parameter);
-                    ShowHuntList(huntingPlaces, "Hunts in " + parameter, command);
+                    ShowHuntList(huntingPlaces, "Hunts in " + parameter, command, page);
                     return true;
                 }
                 HuntingPlace h = getHunt(parameter);
@@ -309,7 +363,7 @@ namespace Tibialyzer {
                 Creature cr = getCreature(parameter);
                 if (cr != null) {
                     List<HuntingPlace> huntingPlaces = getHuntsForCreature(cr.id);
-                    ShowHuntList(huntingPlaces, "Hunts containing creature " + ToTitle(parameter), command);
+                    ShowHuntList(huntingPlaces, "Hunts containing creature " + ToTitle(parameter), command, page);
                     return true;
                 }
                 int minlevel = -1, maxlevel = -1;
@@ -325,16 +379,16 @@ namespace Tibialyzer {
                 if (minlevel >= 0 && maxlevel >= 0) {
                     List<HuntingPlace> huntingPlaces = getHuntsForLevels(minlevel, maxlevel);
                     huntingPlaces = huntingPlaces.OrderBy(o => o.level).ToList();
-                    ShowHuntList(huntingPlaces, "Hunts between levels " + minlevel.ToString() + "-" + maxlevel.ToString(), command);
+                    ShowHuntList(huntingPlaces, "Hunts between levels " + minlevel.ToString() + "-" + maxlevel.ToString(), command, page);
                     return true;
                 } else {
                     string title;
                     List<HuntingPlace> huntList = searchHunt(parameter);
                     title = "Hunts Containing \"" + parameter + "\"";
                     if (huntList.Count == 1) {
-                        ShowHuntGuideNotification(huntList[0], command);
+                        ShowHuntGuideNotification(huntList[0], command, page);
                     } else if (huntList.Count > 1) {
-                        ShowHuntList(huntList, title, command);
+                        ShowHuntList(huntList, title, command, page);
                     }
                 }
             } else if (comp.StartsWith("npc" + MainForm.commandSymbol)) {
@@ -346,7 +400,7 @@ namespace Tibialyzer {
                     ShowCreatureList(getNPCWithCity(parameter), "NPC List", "npc@", command);
                 } else {
                     int count = 0;
-                    ShowCreatureList(searchNPC(parameter, 50), "NPC List", "npc@", command);
+                    ShowCreatureList(searchNPC(parameter), "NPC List", "npc@", command);
                 }
             } else if (comp.StartsWith("savelog" + MainForm.commandSymbol)) {
                 saveLog(activeHunt, command.Split(commandSymbol)[1].Trim().Replace("'", "\\'"));
@@ -420,11 +474,13 @@ namespace Tibialyzer {
                         title = ToTitle(parameter) + " Spells";
                     } else {
                         spellList = searchSpell(parameter);
+                        if (spellList.Count == 0) {
+                            spellList = searchSpellWords(parameter);
+                        }
                         title = "Spells Containing \"" + parameter + "\"";
                     }
-                    spellList = spellList.OrderBy(o => (o as Spell).levelrequired).ToList<TibiaObject>();
                     if (spellList.Count == 1) {
-                        ShowSpellNotification(spellList[0] as Spell, command);
+                        ShowSpellNotification((spellList[0] as LazyTibiaObject).getTibiaObject() as Spell, command);
                     } else if (spellList.Count > 1) {
                         ShowCreatureList(spellList, title, "spell" + MainForm.commandSymbol, command);
                     }
@@ -439,17 +495,20 @@ namespace Tibialyzer {
                     List<TibiaObject> outfitList = searchOutfit(parameter);
                     title = "Outfits Containing \"" + parameter + "\"";
                     if (outfitList.Count == 1) {
-                        ShowOutfitNotification(outfitList[0] as Outfit, command);
+                        ShowOutfitNotification((outfitList[0] as LazyTibiaObject).getTibiaObject() as Outfit, command);
                     } else if (outfitList.Count > 1) {
                         ShowCreatureList(outfitList, title, "outfit" + MainForm.commandSymbol, command);
                     }
                 }
             } else if (comp.StartsWith("quest" + MainForm.commandSymbol)) { // quest@
-                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
+                string[] splits = command.Split(commandSymbol);
+                string parameter = splits[1].Trim().ToLower();
+                int page = 0;
+                if (splits.Length > 2 && int.TryParse(splits[2], out page)) ;
                 List<Quest> questList = new List<Quest>();
                 if (questNameMap.ContainsKey(parameter)) {
                     ShowQuestNotification(questNameMap[parameter], command);
-                } else  {
+                } else {
                     string title;
                     if (cities.Contains(parameter)) {
                         title = "Quests In " + parameter;
@@ -477,14 +536,19 @@ namespace Tibialyzer {
                     if (questList.Count == 1) {
                         ShowQuestNotification(questList[0], command);
                     } else if (questList.Count > 1) {
-                        ShowQuestList(questList, title, command);
+                        ShowQuestList(questList, title, command, page);
                     }
                 }
             } else if (comp.StartsWith("guide" + MainForm.commandSymbol)) { // guide@
-                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
+                string[] splits = command.Split(commandSymbol);
+                string parameter = splits[1].Trim().ToLower();
+                int page = 0;
+                string mission = "";
+                if (splits.Length > 2 && int.TryParse(splits[2], out page)) ;
+                if (splits.Length > 3) { mission = splits[3]; }
                 List<Quest> questList = new List<Quest>();
                 if (questNameMap.ContainsKey(parameter)) {
-                    ShowQuestGuideNotification(questNameMap[parameter], command);
+                    ShowQuestGuideNotification(questNameMap[parameter], command, page, mission);
                 } else {
                     string title;
                     foreach (Quest quest in questIdMap.Values) {
@@ -494,25 +558,28 @@ namespace Tibialyzer {
                     }
                     title = "Quests Containing \"" + parameter + "\"";
                     if (questList.Count == 1) {
-                        ShowQuestGuideNotification(questList[0], command);
+                        ShowQuestGuideNotification(questList[0], command, page, mission);
                     } else if (questList.Count > 1) {
-                        ShowQuestList(questList, title, command);
+                        ShowQuestList(questList, title, command, page);
                     }
                 }
             } else if (comp.StartsWith("direction" + MainForm.commandSymbol)) { // direction@
-                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
+                string[] splits = command.Split(commandSymbol);
+                string parameter = splits[1].Trim().ToLower();
+                int page = 0;
+                if (splits.Length > 2 && int.TryParse(splits[2], out page)) ;
                 List<HuntingPlace> huntList = new List<HuntingPlace>();
                 HuntingPlace h = getHunt(parameter);
                 if (h != null) {
-                    ShowHuntGuideNotification(h, command);
+                    ShowHuntGuideNotification(h, command, page);
                 } else {
                     string title;
                     huntList = searchHunt(parameter);
                     title = "Hunts Containing \"" + parameter + "\"";
                     if (huntList.Count == 1) {
-                        ShowHuntGuideNotification(huntList[0], command);
+                        ShowHuntGuideNotification(huntList[0], command, page);
                     } else if (huntList.Count > 1) {
-                        ShowHuntList(huntList, title, command);
+                        ShowHuntList(huntList, title, command, page);
                     }
                 }
             } else if (comp.StartsWith("mount" + MainForm.commandSymbol)) { // mount@
@@ -525,7 +592,7 @@ namespace Tibialyzer {
                     List<TibiaObject> mountList = searchMount(parameter);
                     title = "Mounts Containing \"" + parameter + "\"";
                     if (mountList.Count == 1) {
-                        ShowMountNotification(mountList[0] as Mount, command);
+                        ShowMountNotification((mountList[0] as LazyTibiaObject).getTibiaObject() as Mount, command);
                     } else if (mountList.Count > 1) {
                         ShowCreatureList(mountList, title, "mount" + MainForm.commandSymbol, command);
                     }
@@ -533,7 +600,7 @@ namespace Tibialyzer {
             } else if (comp.StartsWith("pickup" + MainForm.commandSymbol)) {
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                 Item item = getItem(parameter);
-                if (item != null) { 
+                if (item != null) {
                     setItemDiscard(item, false);
                 }
             } else if (comp.StartsWith("nopickup" + MainForm.commandSymbol)) {
@@ -559,9 +626,9 @@ namespace Tibialyzer {
                 if (!parameter.Contains('=')) return true;
                 string[] split = parameter.Split('=');
                 string item = split[0].Trim().ToLower().Replace("'", "\\'");
-                int value = 0;
-                if (int.TryParse(split[1].Trim(), out value)) {
-                    Item it = getItem(parameter);
+                long value = 0;
+                if (long.TryParse(split[1].Trim(), out value)) {
+                    Item it = getItem(split[0]);
                     if (it != null) {
                         setItemValue(it, value);
                     }
@@ -631,6 +698,23 @@ namespace Tibialyzer {
                 parseMemoryResults.death = false;
             }
 
+            if (true && parseMemoryResults != null) {
+                if (parseMemoryResults.newEventMessages.Count > 0) {
+                    foreach(Tuple<Event, string> tpl in parseMemoryResults.newEventMessages) {
+                        Event ev = tpl.Item1;
+                        Creature cr = getCreature(ev.creatureid);
+                        this.Invoke((MethodInvoker)delegate {
+                            if (!lootNotificationRich) {
+                                ShowSimpleNotification("Event in " + ev.location, tpl.Item2, cr.image);
+                            } else {
+                                ShowSimpleNotification(new SimpleTextNotification(cr.image, "Event in " + ev.location, tpl.Item2));
+                            }
+                        });
+                    }
+                    parseMemoryResults.newEventMessages.Clear();
+                }
+            }
+
             if (getSettingBool("LookMode") && readMemoryResults != null) {
                 foreach (string msg in parseMemoryResults.newLooks) {
                     string itemName = parseLookItem(msg).ToLower();
@@ -662,7 +746,11 @@ namespace Tibialyzer {
             foreach (string command in commands) {
                 this.Invoke((MethodInvoker)delegate {
                     if (!ExecuteCommand(command, parseMemoryResults)) {
-                        ShowSimpleNotification("Unrecognized command", "Unrecognized command: " + command, tibia_image);
+                        if (!lootNotificationRich) {
+                            ShowSimpleNotification("Unrecognized command", "Unrecognized command: " + command, tibia_image);
+                        } else {
+                            ShowSimpleNotification(new SimpleTextNotification(null, "Unrecognized command", "Unrecognized command: " + command));
+                        }
                     }
                 });
             }
@@ -688,7 +776,7 @@ namespace Tibialyzer {
 
                     foreach (Tuple<Item, int> tpl2 in items) {
                         Item item = tpl2.Item1;
-                        if ((Math.Max(item.actual_value, item.vendor_value) >= notification_value && showNotificationsValue) || (showNotificationsSpecific && settings["NotificationItems"].Contains(item.name.ToLower()))) {
+                        if ((Math.Max(item.actual_value, item.vendor_value) >= notification_value && showNotificationsValue) || (showNotificationsSpecific && settings["NotificationItems"].Contains(item.displayname.ToLower()))) {
                             showNotification = true;
                             if (getSettingBool("AutoScreenshotItemDrop")) {
                                 // Take a screenshot if Tibialyzer is set to take screenshots of valuable loot
@@ -698,13 +786,15 @@ namespace Tibialyzer {
                                 SimpleLootNotification screenshotNotification = new SimpleLootNotification(cr, items);
                                 Bitmap notification = new Bitmap(screenshotNotification.Width, screenshotNotification.Height);
                                 screenshotNotification.DrawToBitmap(notification, new Rectangle(0, 0, screenshotNotification.Width, screenshotNotification.Height));
-                                foreach(Control c in screenshotNotification.Controls) {
+                                foreach (Control c in screenshotNotification.Controls) {
                                     c.DrawToBitmap(notification, new Rectangle(c.Location, c.Size));
                                 }
                                 screenshotNotification.Dispose();
-                                if (screenshot.Width > notification.Width && screenshot.Height > notification.Height) {
-                                    using(Graphics gr = Graphics.FromImage(screenshot)) {
-                                        gr.DrawImage(notification, new Point(screenshot.Width - notification.Width, screenshot.Height - notification.Height));
+                                int widthOffset = notification.Width + 10;
+                                int heightOffset = notification.Height + 10;
+                                if (screenshot.Width > widthOffset && screenshot.Height > heightOffset) {
+                                    using (Graphics gr = Graphics.FromImage(screenshot)) {
+                                        gr.DrawImage(notification, new Point(screenshot.Width - widthOffset, screenshot.Height - heightOffset));
                                     }
                                 }
                                 notification.Dispose();
@@ -732,11 +822,11 @@ namespace Tibialyzer {
             Item item = getItem(parameter);
             if (item == null) {
                 int count = 0;
-                List<TibiaObject> items = searchItem(parameter, 100);
+                List<TibiaObject> items = searchItem(parameter);
                 if (items.Count == 0) {
                     return;
                 } else if (items.Count > 1) {
-                    ShowCreatureList(items, "Item List", "item@", command);
+                    ShowCreatureList(items, "Item List", "item" + MainForm.commandSymbol, command);
                     return;
                 } else {
                     item = items[0] as Item;

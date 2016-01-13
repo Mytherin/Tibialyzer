@@ -152,7 +152,7 @@ namespace Tibialyzer {
             }
         }
 
-        protected void ResetTimer() {
+        public void ResetTimer() {
             this.closeTimer.Stop();
             this.closeTimer.Start();
         }

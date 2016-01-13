@@ -118,17 +118,37 @@ namespace Tibialyzer {
                 this.TransparencyKey = MainForm.background_color;
                 this.Opacity = 1;
             }
-            this.nameLabel.Text = MainForm.ToTitle(this.creature.name);
-            Font f = this.nameLabel.Font;
-            while (TextRenderer.MeasureText(this.creature.name, f).Width < this.mainImage.Size.Width && TextRenderer.MeasureText(this.creature.name, f).Height < 26) {
-                f.Dispose();
-                f = new Font(f.FontFamily, f.Size + 1.0f);
-            }
-            while (TextRenderer.MeasureText(this.creature.name, f).Width > this.mainImage.Size.Width && f.Size > 1) {
-                f.Dispose();
-                f = new Font(f.FontFamily, f.Size - 1.0f);
+            this.nameLabel.Text = MainForm.ToTitle(this.creature.displayname);
+            Font f = MainForm.fontList[0];
+            Font prevFont = f;
+            for (int i = 0; i < MainForm.fontList.Count; i++) {
+                Font font = MainForm.fontList[i];
+                int width = TextRenderer.MeasureText(this.nameLabel.Text, font).Width;
+                if (width < this.mainImage.Size.Width) {
+                    f = prevFont;
+                } else {
+                    break;
+                }
+                prevFont = font;
             }
 
+            string goldstring = "";
+            double averageGold = 0;
+            foreach(ItemDrop itemDrop in creature.itemdrops) {
+                if (itemDrop.percentage > 0) {
+                    Item item = MainForm.getItem(itemDrop.itemid);
+                    averageGold += itemDrop.percentage * item.GetMaxValue() / 100;
+                }
+            }
+            if (averageGold < 10000) {
+                goldstring = ((long)averageGold).ToString();
+            } else if (averageGold < 1000000) {
+                goldstring = ((long)averageGold / 1000).ToString() + "K";
+            } else {
+                goldstring = ((long)averageGold / 1000000).ToString() + "M";
+            }
+            this.averageGoldLabel.Text = "Average Gold: " + goldstring;
+            
             this.maxDamageLabel.Text = "Max Damage: " + (this.creature.maxdamage >= 0 ? this.creature.maxdamage.ToString() : "-");
             this.abilitiesLabel.Text = RemoveTextInBrackets(this.creature.abilities.Replace(", ", "\n"));
             this.abilitiesLabel.BorderStyle = BorderStyle.FixedSingle;

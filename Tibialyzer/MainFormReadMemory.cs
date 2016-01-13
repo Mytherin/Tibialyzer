@@ -117,6 +117,8 @@ namespace Tibialyzer {
                             // if any timestamp strings were found, scan the chunk for any messages
                             SearchChunk(strings, results);
                         }
+                        // Todo: performance throttling sleep 0-2 ms after every scan
+                        //Thread.Sleep(1);
                     }
 
                     // move to the next memory chunk
@@ -125,6 +127,7 @@ namespace Tibialyzer {
             } catch {
                 return null;
             }
+
             process.Dispose();
             return results;
         }
@@ -319,23 +322,25 @@ namespace Tibialyzer {
         }
 
         private void deleteCreatureFromLog(Creature cr) {
-            if (activeHunt.loot.killCount.ContainsKey(cr)) {
-                activeHunt.loot.killCount.Remove(cr);
-            }
-            if (activeHunt.loot.creatureLoot.ContainsKey(cr)) {
-                activeHunt.loot.creatureLoot.Remove(cr);
-            }
-            using (var transaction = conn.BeginTransaction()) {
-                SQLiteCommand command;
-                foreach (KeyValuePair<string, List<string>> kvp in activeHunt.loot.logMessages) {
-                    foreach (string msg in kvp.Value) {
-                        if (ParseCreatureFromLootMessage(msg) == cr) {
-                            command = new SQLiteCommand(String.Format("DELETE FROM \"{0}\" WHERE message=\"{1}\"", activeHunt.name.ToLower(), msg.Replace("\"", "\\\"")), conn, transaction);
-                            command.ExecuteNonQuery();
+            lock(hunts) {
+                if (activeHunt.loot.killCount.ContainsKey(cr)) {
+                    activeHunt.loot.killCount.Remove(cr);
+                }
+                if (activeHunt.loot.creatureLoot.ContainsKey(cr)) {
+                    activeHunt.loot.creatureLoot.Remove(cr);
+                }
+                using (var transaction = lootConn.BeginTransaction()) {
+                    SQLiteCommand command;
+                    foreach (KeyValuePair<string, List<string>> kvp in activeHunt.loot.logMessages) {
+                        foreach (string msg in kvp.Value) {
+                            if (ParseCreatureFromLootMessage(msg) == cr) {
+                                command = new SQLiteCommand(String.Format("DELETE FROM \"{0}\" WHERE message=\"{1}\"", activeHunt.GetTableName(), msg.Replace("\"", "\\\"")), lootConn, transaction);
+                                command.ExecuteNonQuery();
+                            }
                         }
                     }
+                    transaction.Commit();
                 }
-                transaction.Commit();
             }
         }
 
@@ -452,7 +457,7 @@ namespace Tibialyzer {
             command.ExecuteNonQuery();
         }
 
-        void setItemValue(Item item, int value) {
+        void setItemValue(Item item, long value) {
             item.actual_value = value;
             SQLiteCommand command = new SQLiteCommand(String.Format("UPDATE Items SET actual_value={0} WHERE id={1}", value, item.id), conn);
             command.ExecuteNonQuery();

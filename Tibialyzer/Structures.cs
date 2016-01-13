@@ -75,6 +75,7 @@ namespace Tibialyzer {
         public string title;
         public string name;
         public bool premium;
+        public bool tibiastore;
         public Image[] maleImages = new Image[4];
         public Image[] femaleImages = new Image[4];
         public int questid;
@@ -239,19 +240,14 @@ namespace Tibialyzer {
             pos = new Coordinate();
             image = null;
         }
-
-        public override void Dispose() {
-            if (permanent) return;
-            if (image != null) image.Dispose();
-        }
     }
 
     public class Item : TibiaObject {
         public int id;
-        public string name;
+        public string displayname;
         public string title;
-        public int vendor_value;
-        public int actual_value;
+        public long vendor_value;
+        public long actual_value;
         public float capacity;
         public bool stackable;
         public Image image;
@@ -355,17 +351,53 @@ namespace Tibialyzer {
         public Skin skin;
 
         public Creature() {
-            name = "Unknown";
+            displayname = "Unknown";
             image = null;
             skin = null;
             itemdrops = new List<ItemDrop>();
         }
 
-        public override string GetName() { return name; }
+        public override string GetName() { return title; }
         public override Image GetImage() { return image; }
-        public override void Dispose() {
-            if (permanent) return;
-            if (image != null) image.Dispose();
+    }
+
+    enum TibiaObjectType { Creature, Item, NPC, Outfit, Mount, Spell };
+
+    class LazyTibiaObject : TibiaObject {
+        public int id;
+        public TibiaObjectType type;
+        private TibiaObject tibiaObject = null;
+        public TibiaObject getTibiaObject() {
+            if (tibiaObject == null) {
+                switch(type) {
+                    case TibiaObjectType.Creature:
+                        tibiaObject = MainForm.getCreature(id);
+                        break;
+                    case TibiaObjectType.Item:
+                        tibiaObject = MainForm.getItem(id);
+                        break;
+                    case TibiaObjectType.NPC:
+                        tibiaObject = MainForm.getNPC(id);
+                        break;
+                    case TibiaObjectType.Mount:
+                        tibiaObject = MainForm.getMount(id);
+                        break;
+                    case TibiaObjectType.Outfit:
+                        tibiaObject = MainForm.getOutfit(id);
+                        break;
+                    case TibiaObjectType.Spell:
+                        tibiaObject = MainForm.getSpell(id);
+                        break;
+                }
+            }
+            return tibiaObject;
         }
+        public override Image GetImage() {
+            return getTibiaObject().GetImage();
+        }
+        public override string GetName() {
+            return getTibiaObject().GetName();
+        }
+
     }
 }

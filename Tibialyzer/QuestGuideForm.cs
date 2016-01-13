@@ -19,6 +19,9 @@ namespace Tibialyzer {
         public Directions direction;
         public Quest quest;
         public QuestInstruction questInstruction;
+        public int initialPage;
+        public string initialMission;
+        public int currentPage = 0;
         public int instructionIndex = 0;
         public int minInstructions = 0;
         public int maxInstructions = 0;
@@ -225,11 +228,10 @@ namespace Tibialyzer {
                             control.Click += itemClick;
                             int itemCount = rewards[itemnr].Item1;
                             Item item = rewards[itemnr].Item2;
-                            
+
                             Bitmap image;
                             if (item.stackable) {
-                                Image[] stacks = LootDropForm.GetFrames(item.image);
-                                image = new Bitmap(LootDropForm.GetStackImage(stacks, itemCount, item));
+                                image = new Bitmap(LootDropForm.GetStackImage(item.image, itemCount, item));
                             } else {
                                 image = new Bitmap(item.image);
                             }
@@ -279,7 +281,7 @@ namespace Tibialyzer {
                     // Draw mission buttons
                     y += 5;
                     int x = 10;
-                    foreach(string missionName in quest.questInstructions.Keys) {
+                    foreach (string missionName in quest.questInstructions.Keys) {
                         if (x + 100 >= this.Size.Width) {
                             x = 10;
                             y += 25;
@@ -417,7 +419,7 @@ namespace Tibialyzer {
             selectMission((sender as Control).Name);
         }
 
-        private void selectMission(string mission) {
+        private void select(string mission) {
             missionName = mission;
             questInstructionList = quest.questInstructions[mission];
             maxInstructions = questInstructionList.Count - 1;
@@ -432,12 +434,17 @@ namespace Tibialyzer {
             }
             questInstruction = questInstructionList[0];
             instructionIndex = 1;
-            this.SuspendLayout();
+        }
+
+        private void selectMission(string mission) {
+            select(mission);
+            updateCommand();
+            this.SuspendForm();
             setupGuide();
-            this.ResumeLayout(true);
+            this.ResumeForm();
             this.Refresh();
         }
-        
+
 
         private int drawDirections(Coordinate begin, Coordinate end, string settings, string description, int start_x, int y, bool variableSize, int imageCount, bool noText, out int width) {
             int mapSize = this.Size.Width / 2;
@@ -450,7 +457,7 @@ namespace Tibialyzer {
                 string[] splits = settings.ToLower().Split('@');
                 foreach (string split in splits) {
                     string[] setting = split.Split('=');
-                    switch(setting[0]) {
+                    switch (setting[0]) {
                         case "walkablecolor":
                             string[] rgb = setting[1].Split(',');
                             additionalWalkableColors.Add(Color.FromArgb(int.Parse(rgb[0]), int.Parse(rgb[1]), int.Parse(rgb[2])));
@@ -465,7 +472,7 @@ namespace Tibialyzer {
                             break;
                         case "markicon":
                             Image image = null;
-                            switch(setting[1].ToLower()) {
+                            switch (setting[1].ToLower()) {
                                 case "item":
                                     image = MainForm.getItem(setting[2]).image;
                                     break;
@@ -608,7 +615,7 @@ namespace Tibialyzer {
             }
             return y;
         }
-        
+
         private string CreateLinks(Control label, string linkText) {
             if (linkText.Contains('{') && linkText.Contains('}')) {
                 int startLink = linkText.IndexOf('{');
@@ -632,11 +639,17 @@ namespace Tibialyzer {
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("item" + MainForm.commandSymbol + (sender as Control).Name);
         }
+
         private void QuestTitle_Click(object sender, EventArgs e) {
             if (clicked) return;
             clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand((sender as Control).Name);
+        }
+
+        void updateCommand() {
+            string[] split = command.command.Split(MainForm.commandSymbol);
+            command.command = split[0] + MainForm.commandSymbol + split[1] + MainForm.commandSymbol + (currentPage + 1) + (quest != null && missionName != null ? MainForm.commandSymbol + missionName : "");
         }
 
 
@@ -654,19 +667,24 @@ namespace Tibialyzer {
             if (quest != null) {
                 this.questTitle.Text = quest.title;
                 this.questTitle.Name = "quest" + MainForm.commandSymbol + quest.name;
+                if (initialMission != "" && quest.questInstructions.ContainsKey(initialMission)) {
+                    select(initialMission);
+                }
             } else {
                 this.questTitle.Text = hunt.name;
                 this.questTitle.Name = "hunt" + MainForm.commandSymbol + hunt.name;
             }
             this.questTitle.Click += QuestTitle_Click;
+            while (--initialPage > 0 && next());
             setupGuide();
 
             base.NotificationFinalize();
             this.ResumeLayout(false);
         }
 
-        private void nextButton_Click(object sender, EventArgs e) {
+        private bool next() {
             if (maxInstructions > instructionIndex) {
+                currentPage++;
                 if (quest != null) {
                     if (questInstruction == null) {
                         this.questInstruction = this.questInstructionList[instructionIndex++];
@@ -676,16 +694,15 @@ namespace Tibialyzer {
                     }
                 } else {
                     int ordering = this.direction.ordering;
-                    while (instructionIndex < this.hunt.directions.Count &&(this.direction = this.hunt.directions[instructionIndex++]).ordering == ordering) ;
+                    while (instructionIndex < this.hunt.directions.Count && (this.direction = this.hunt.directions[instructionIndex++]).ordering == ordering) ;
                 }
-                this.SuspendLayout();
-                setupGuide();
-                this.ResumeLayout(true);
-                this.Refresh();
+                return true;
             }
+            return false;
         }
 
-        private void prevButton_Click(object sender, EventArgs e) {
+        private bool prev() {
+            currentPage--;
             if (instructionIndex > minInstructions) {
                 instructionIndex--;
                 if (instructionIndex == 0) {
@@ -707,13 +724,33 @@ namespace Tibialyzer {
                         }
                     }
                 }
+                return true;
+            }
+            return false;
+        }
+
+
+
+        private void nextButton_Click(object sender, EventArgs e) {
+            if (next()) {
+                updateCommand();
                 this.SuspendLayout();
                 setupGuide();
                 this.ResumeLayout(true);
                 this.Refresh();
             }
         }
-        
+
+        private void prevButton_Click(object sender, EventArgs e) {
+            if (prev()) {
+                updateCommand();
+                this.SuspendLayout();
+                setupGuide();
+                this.ResumeLayout(true);
+                this.Refresh();
+            }
+        }
+
         private void normalButton_Click(object sender, EventArgs e) {
             MainForm.mainForm.setSetting("GuideFormWidth", widths[0].ToString());
             this.SuspendLayout();

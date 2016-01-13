@@ -58,6 +58,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.statsButton = new System.Windows.Forms.Label();
             this.huntButton = new System.Windows.Forms.Label();
+            this.averageGoldLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.resistanceLabel7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.resistanceLabel6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.resistanceLabel5)).BeginInit();
@@ -81,9 +82,11 @@
             this.nameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.nameLabel.Location = new System.Drawing.Point(27, 97);
+            this.nameLabel.MaximumSize = new System.Drawing.Size(96, 0);
             this.nameLabel.Name = "nameLabel";
             this.nameLabel.Size = new System.Drawing.Size(0, 24);
             this.nameLabel.TabIndex = 10;
+            this.nameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // resistanceLabel7
             // 
@@ -330,15 +333,15 @@
             // 
             // maxDamageLabel
             // 
-            this.maxDamageLabel.AutoSize = true;
             this.maxDamageLabel.BackColor = System.Drawing.Color.Transparent;
             this.maxDamageLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.maxDamageLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.maxDamageLabel.Location = new System.Drawing.Point(253, 120);
+            this.maxDamageLabel.Location = new System.Drawing.Point(246, 133);
             this.maxDamageLabel.Name = "maxDamageLabel";
-            this.maxDamageLabel.Size = new System.Drawing.Size(109, 13);
+            this.maxDamageLabel.Size = new System.Drawing.Size(125, 13);
             this.maxDamageLabel.TabIndex = 24;
             this.maxDamageLabel.Text = "Max Damage: 100";
+            this.maxDamageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label7
             // 
@@ -384,11 +387,24 @@
             this.huntButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.huntButton.Click += new System.EventHandler(this.huntButton_Click);
             // 
+            // averageGoldLabel
+            // 
+            this.averageGoldLabel.BackColor = System.Drawing.Color.Transparent;
+            this.averageGoldLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.averageGoldLabel.ForeColor = System.Drawing.Color.Gold;
+            this.averageGoldLabel.Location = new System.Drawing.Point(246, 117);
+            this.averageGoldLabel.Name = "averageGoldLabel";
+            this.averageGoldLabel.Size = new System.Drawing.Size(125, 13);
+            this.averageGoldLabel.TabIndex = 28;
+            this.averageGoldLabel.Text = "Average Gold: 100";
+            this.averageGoldLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // CreatureStatsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(378, 227);
+            this.Controls.Add(this.averageGoldLabel);
             this.Controls.Add(this.huntButton);
             this.Controls.Add(this.statsButton);
             this.Controls.Add(this.label7);
@@ -470,5 +486,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label statsButton;
         private System.Windows.Forms.Label huntButton;
+        private System.Windows.Forms.Label averageGoldLabel;
     }
 }

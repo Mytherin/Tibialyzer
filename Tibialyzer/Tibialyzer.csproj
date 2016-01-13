@@ -261,6 +261,7 @@
     <EmbeddedResource Include="SpellForm.resx">
       <DependentUpon>SpellForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Database\Database.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

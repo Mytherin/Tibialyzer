@@ -48,10 +48,6 @@ namespace Tibialyzer {
             foreach (Tuple<Item, int> tpl in updatedItems) {
                 Item item = tpl.Item1;
                 int count = tpl.Item2;
-                Image[] stacks = null;
-                if (item.stackable) {
-                    stacks = LootDropForm.GetFrames(item.image);
-                }
                 while (count > 0) {
                     if (x >= (max_x - item_size.Width - item_spacing)) {
                         x = 0;
@@ -63,12 +59,13 @@ namespace Tibialyzer {
 
                     PictureBox picture_box = new PictureBox();
                     picture_box.Location = new System.Drawing.Point(base_x + x, base_y + y);
-                    picture_box.Name = item.name;
+                    picture_box.Name = item.GetName();
                     picture_box.Size = new System.Drawing.Size(item_size.Width, item_size.Height);
                     picture_box.TabIndex = 1;
                     picture_box.TabStop = false;
+                    picture_box.Click += openItem_Click;
                     if (item.stackable) {
-                        Bitmap image = new Bitmap(LootDropForm.GetStackImage(stacks, mitems, item));
+                        Bitmap image = LootDropForm.GetStackImage(item.image, mitems, item);
                         Graphics gr = Graphics.FromImage(image);
                         int numbers = (int)Math.Floor(Math.Log(mitems, 10)) + 1;
                         int xoffset = 1, logamount = mitems;
@@ -86,7 +83,7 @@ namespace Tibialyzer {
 
                     picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
                     picture_box.BackgroundImage = MainForm.item_background;
-                    value_tooltip.SetToolTip(picture_box, System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(item.name) + " value: " + Math.Max(item.actual_value, item.vendor_value) * mitems);
+                    value_tooltip.SetToolTip(picture_box, System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(item.displayname) + " value: " + Math.Max(item.actual_value, item.vendor_value) * mitems);
                     this.Controls.Add(picture_box);
 
                     x += item_size.Width + item_spacing;
@@ -127,6 +124,7 @@ namespace Tibialyzer {
             this.creatureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.creatureBox.TabIndex = 1;
             this.creatureBox.TabStop = false;
+            this.creatureBox.Click += new System.EventHandler(this.creatureBox_Click);
             // 
             // SimpleLootNotification
             // 
@@ -142,6 +140,10 @@ namespace Tibialyzer {
             this.ResumeLayout(false);
             this.PerformLayout();
 
+        }
+
+        private void creatureBox_Click(object sender, EventArgs e) {
+            MainForm.mainForm.ExecuteCommand("creature" + MainForm.commandSymbol + creature.GetName());
         }
     }
 }

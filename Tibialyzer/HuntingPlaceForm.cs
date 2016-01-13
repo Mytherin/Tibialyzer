@@ -319,14 +319,15 @@ namespace Tibialyzer {
                 }
             }
 
-            Font f = this.huntingPlaceName.Font;
-            while (TextRenderer.MeasureText(this.huntingPlaceName.Text, f).Width < this.huntingPlaceName.Size.Width && TextRenderer.MeasureText(this.huntingPlaceName.Text, f).Height < 26) {
-                f.Dispose();
-                f = new Font(f.FontFamily, f.Size + 1.0f);
-            }
-            while (TextRenderer.MeasureText(this.huntingPlaceName.Text, f).Width > this.huntingPlaceName.Size.Width && f.Size > 1) {
-                f.Dispose();
-                f = new Font(f.FontFamily, f.Size - 1.0f);
+            Font f = MainForm.fontList[0];
+            for (int i = 0; i < MainForm.fontList.Count; i++) {
+                Font font = MainForm.fontList[i];
+                int width = TextRenderer.MeasureText(this.huntingPlaceName.Text, font).Width;
+                if (width < this.huntingPlaceName.Size.Width) {
+                    f = font;
+                } else {
+                    break;
+                }
             }
 
             Bitmap bitmap = new Bitmap(experienceStarBox.Size.Width, experienceStarBox.Size.Height);
