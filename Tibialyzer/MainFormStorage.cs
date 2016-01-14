@@ -53,6 +53,7 @@ namespace Tibialyzer {
         private static Dictionary<int, Quest> questIdMap = new Dictionary<int, Quest>();
         private static Dictionary<string, Quest> questNameMap = new Dictionary<string, Quest>();
         public static Dictionary<string, Image> utilityImages = new Dictionary<string, Image>();
+        public static Dictionary<int, Event> eventIdMap = new Dictionary<int, Event>();
         private static List<Map> mapFiles = new List<Map>();
         public static int mapFilesCount { get { return mapFiles.Count; } }
 

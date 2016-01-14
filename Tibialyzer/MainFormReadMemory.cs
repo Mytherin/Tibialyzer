@@ -63,6 +63,7 @@ namespace Tibialyzer {
             public Dictionary<string, List<Tuple<string, string>>> commands = new Dictionary<string, List<Tuple<string, string>>>();
             public Dictionary<string, List<Tuple<string, string>>> urls = new Dictionary<string, List<Tuple<string, string>>>();
             public List<string> newAdvances = new List<string>();
+            public List<Tuple<Event,string>> eventMessages = new List<Tuple<Event, string>>();
             public Dictionary<string, List<string>> lookMessages = new Dictionary<string, List<string>>();
             public Dictionary<string, bool> deaths = new Dictionary<string, bool>();
         }
@@ -72,6 +73,7 @@ namespace Tibialyzer {
             public List<string> newCommands = new List<string>();
             public List<string> newLooks = new List<string>();
             public List<Tuple<Creature, List<Tuple<Item, int>>>> newItems = new List<Tuple<Creature, List<Tuple<Item, int>>>>();
+            public List<Tuple<Event, string>> newEventMessages = new List<Tuple<Event, string>>();
             public int expPerHour = 0;
             public bool death = false;
         }
@@ -504,78 +506,110 @@ namespace Tibialyzer {
             string timestamp = String.Format("{0}:{1}", (hour < 10 ? "0" + hour.ToString() : hour.ToString()), (minute < 10 ? "0" + minute.ToString() : minute.ToString()));
             Item item = getItem(cr.skin.dropitemid);
             if (item == null) return;
-            string message = String.Format("{0} Loot of a {1}: {2}", timestamp, cr.name.ToLower(), item.name.ToLower());
-            SQLiteCommand command = new SQLiteCommand(String.Format("INSERT INTO \"{4}\" VALUES({0}, {1}, {2}, \"{3}\");", stamp, hour, minute, message.Replace("\"", "\\\""), activeHunt.name.ToLower()), conn);
+            string message = String.Format("{0} Loot of a {1}: {2}", timestamp, cr.displayname.ToLower(), item.displayname.ToLower());
+            SQLiteCommand command = new SQLiteCommand(String.Format("INSERT INTO \"{4}\" VALUES({0}, {1}, {2}, \"{3}\");", stamp, hour, minute, message.Replace("\"", "\\\""), activeHunt.name.ToLower()), lootConn);
             command.ExecuteNonQuery();
-            if (!activeHunt.loot.logMessages.ContainsKey(timestamp)) activeHunt.loot.logMessages.Add(timestamp, new List<string>());
-            activeHunt.loot.logMessages[timestamp].Add(message);
-            if (!activeHunt.loot.creatureLoot.ContainsKey(cr)) {
-                activeHunt.loot.creatureLoot.Add(cr, new Dictionary<Item, int>());
-            }
-            foreach(Item i in activeHunt.loot.creatureLoot[cr].Keys) {
-                if (i.id == cr.skin.dropitemid) {
-                    activeHunt.loot.creatureLoot[cr][i] += 1;
-                    item.Dispose();
-                    return;
+            lock(hunts) {
+                if (!activeHunt.loot.logMessages.ContainsKey(timestamp)) activeHunt.loot.logMessages.Add(timestamp, new List<string>());
+                activeHunt.loot.logMessages[timestamp].Add(message);
+                if (!activeHunt.loot.creatureLoot.ContainsKey(cr)) {
+                    activeHunt.loot.creatureLoot.Add(cr, new Dictionary<Item, int>());
                 }
-            }
-            activeHunt.loot.creatureLoot[cr].Add(item, 1);
-        }
-
-        private void ParseLootMessages(Hunt h, Dictionary<string, List<string>> newDrops, List<Tuple<Creature, List<Tuple<Item, int>>>> newItems, bool commit = true) {
-            int stamp = getDayStamp();
-            Dictionary<string, List<string>> itemDrops = h.loot.logMessages;
-            // now the big one: parse the log messages and check the dropped items
-            foreach (KeyValuePair<string, List<string>> kvp in newDrops) {
-                string t = kvp.Key;
-                List<string> itemList = kvp.Value;
-                if (!itemDrops.ContainsKey(t)) {
-                    itemDrops.Add(t, new List<string>());
-                }
-                if (itemList.Count > itemDrops[t].Count) {
-                    int hour = int.Parse(t.Substring(0, 2));
-                    int minute = int.Parse(t.Substring(3, 2));
-                    List<string> newMessages = new List<string>();
-                    foreach (string message in itemList) {
-                        if (!itemDrops[t].Contains(message)) {
-                            // new log message, scan it for new items
-                            Tuple<Creature, List<Tuple<Item, int>>> resultList = ParseLootMessage(message);
-                            if (resultList == null) continue;
-
-                            newMessages.Add(message);
-                            Creature cr = resultList.Item1;
-                            if (!h.loot.creatureLoot.ContainsKey(cr)) h.loot.creatureLoot.Add(cr, new Dictionary<Item, int>());
-                            foreach (Tuple<Item, int> tpl in resultList.Item2) {
-                                Item item = tpl.Item1;
-                                int count = tpl.Item2;
-                                if (!h.loot.creatureLoot[cr].ContainsKey(item)) h.loot.creatureLoot[cr].Add(item, count);
-                                else h.loot.creatureLoot[cr][item] += count;
-                            }
-                            if (newItems != null) {
-                                newItems.Add(resultList);
-                            }
-
-                            if (!h.loot.killCount.ContainsKey(cr)) h.loot.killCount.Add(cr, 1);
-                            else h.loot.killCount[cr] += 1;
-                        } else {
-                            itemDrops[t].Remove(message);
-                        }
-                    }
-                    itemDrops[t] = itemList;
-                    if (commit) {
-                        using (var transaction = conn.BeginTransaction()) {
-                            SQLiteCommand command;
-                            foreach (string msg in newMessages) {
-                                string query = String.Format("INSERT INTO \"{4}\" VALUES({0}, {1}, {2}, \"{3}\");", stamp, hour, minute, msg.Replace("\"", "\\\""), activeHunt.name.ToLower());
-                                command = new SQLiteCommand(query, conn, transaction);
-                                command.ExecuteNonQuery();
-                            }
-                            transaction.Commit();
-                        }
+                foreach (Item i in activeHunt.loot.creatureLoot[cr].Keys) {
+                    if (i.id == cr.skin.dropitemid) {
+                        activeHunt.loot.creatureLoot[cr][i] += 1;
+                        return;
                     }
                 }
+                activeHunt.loot.creatureLoot[cr].Add(item, 1);
             }
         }
+
+        public void addKillToHunt(Hunt h, Tuple<Creature, List<Tuple<Item, int>>> resultList, string t, string message, int stamp = 0, int hour = 0, int minute = 0, SQLiteTransaction transaction = null) {
+            Creature cr = resultList.Item1;
+            if (!h.loot.creatureLoot.ContainsKey(cr)) h.loot.creatureLoot.Add(cr, new Dictionary<Item, int>());
+            foreach (Tuple<Item, int> tpl in resultList.Item2) {
+                Item item = tpl.Item1;
+                int count = tpl.Item2;
+                if (!h.loot.creatureLoot[cr].ContainsKey(item)) h.loot.creatureLoot[cr].Add(item, count);
+                else h.loot.creatureLoot[cr][item] += count;
+            }
+            if (!h.loot.killCount.ContainsKey(cr)) h.loot.killCount.Add(cr, 1);
+            else h.loot.killCount[cr] += 1;
+
+            if (!h.loot.logMessages.ContainsKey(t)) h.loot.logMessages.Add(t, new List<string>());
+            h.loot.logMessages[t].Add(message);
+
+            if (transaction != null) {
+                string query = String.Format("INSERT INTO \"{4}\" VALUES({0}, {1}, {2}, \"{3}\");", stamp, hour, minute, message.Replace("\"", "\\\""), h.GetTableName());
+                SQLiteCommand command = new SQLiteCommand(query, lootConn);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        Dictionary<string, List<string>> globalMessages = new Dictionary<string, List<string>>();
+        private void ParseLootMessages(Hunt h, Dictionary<string, List<string>> newDrops, List<Tuple<Creature, List<Tuple<Item, int>>>> newItems, bool commit = true, bool switchHunt = false) {
+            lock(hunts) {
+
+                SQLiteTransaction transaction = null;
+                if (commit) {
+                    transaction = lootConn.BeginTransaction();
+                }
+
+                int stamp = getDayStamp();
+                Dictionary<string, List<string>> itemDrops = globalMessages;
+                // now the big one: parse the log messages and check the dropped items
+                foreach (KeyValuePair<string, List<string>> kvp in newDrops) {
+                    string t = kvp.Key;
+                    List<string> itemList = kvp.Value;
+                    if (!itemDrops.ContainsKey(t)) {
+                        itemDrops.Add(t, new List<string>());
+                    }
+                    if (itemList.Count > itemDrops[t].Count) {
+                        int hour = int.Parse(t.Substring(0, 2));
+                        int minute = int.Parse(t.Substring(3, 2));
+                        foreach (string message in itemList) {
+                            if (!itemDrops[t].Contains(message)) {
+                                // new log message, scan it for new items
+                                Tuple<Creature, List<Tuple<Item, int>>> resultList = ParseLootMessage(message);
+                                if (resultList == null) continue;
+                                
+                                Creature cr = resultList.Item1;
+                                
+                                if (switchHunt) {
+                                    foreach (Hunt potentialHunt in hunts) {
+                                        if (potentialHunt.lootCreatures.Contains(cr.GetName().ToLower())) {
+                                            if (potentialHunt.sideHunt) {
+                                                h = potentialHunt;
+                                                activeHunt = potentialHunt;
+                                            } else if (potentialHunt.aggregateHunt && potentialHunt != h) {
+                                                addKillToHunt(potentialHunt, resultList, t, message, stamp, hour, minute, transaction);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                addKillToHunt(h, resultList, t, message, stamp, hour, minute, transaction);
+
+                                if (newItems != null) {
+                                    newItems.Add(resultList);
+                                }
+                            } else {
+                                itemDrops[t].Remove(message);
+                            }
+                        }
+                        itemDrops[t] = itemList;
+                    }
+                }
+                if (transaction != null) {
+                    transaction.Commit();
+                }
+            }
+        }
+
+        private Stopwatch readWatch = new Stopwatch();
+
+        double ticksSinceExperience = 120;
 
         private Dictionary<string, List<string>> totalItemDrops = new Dictionary<string, List<string>>();
         private Dictionary<string, List<Tuple<string, string>>> totalCommands = new Dictionary<string, List<Tuple<string, string>>>();
@@ -583,6 +617,7 @@ namespace Tibialyzer {
         private Dictionary<string, List<Tuple<string, string>>> totalURLs = new Dictionary<string, List<Tuple<string, string>>>();
         private Dictionary<string, int> totalExperienceResults = new Dictionary<string, int>();
         private Dictionary<string, bool> totalDeaths = new Dictionary<string, bool>();
+        private HashSet<string> eventMessages = new HashSet<string>();
         private ParseMemoryResults ParseLogResults(ReadMemoryResults res) {
             if (res == null) return null;
             ParseMemoryResults o = new ParseMemoryResults();
@@ -640,6 +675,14 @@ namespace Tibialyzer {
                 if (totalExperienceResults.ContainsKey(t)) o.expPerHour += totalExperienceResults[t];
             }
             o.expPerHour *= 4;
+
+            // Parse event messages
+            foreach(Tuple<Event, string> tpl in res.eventMessages) {
+                if (!eventMessages.Contains(tpl.Item2)) {
+                    eventMessages.Add(tpl.Item2);
+                    o.newEventMessages.Add(tpl);
+                }
+            }
 
             // Update the look information
             foreach (KeyValuePair<string, List<string>> kvp in res.lookMessages) {
@@ -865,6 +908,14 @@ namespace Tibialyzer {
                         if (logMessage[logMessage.Length - 1] == '.' && !levelAdvances.Contains(logMessage)) {
                             res.newAdvances.Add(logMessage);
                             levelAdvances.Add(logMessage);
+                        }
+                    } else {
+                        foreach(Event ev in eventIdMap.Values) {
+                            foreach(string evMessage in ev.eventMessages) {
+                                if (logMessage.Length == evMessage.Length + 6 && logMessage.ToLower().Contains(evMessage.ToLower().Trim())) {
+                                    res.eventMessages.Add(new Tuple<Event,string>(ev, logMessage));
+                                }
+                            }
                         }
                     }
                 }

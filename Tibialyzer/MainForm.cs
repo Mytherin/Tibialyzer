@@ -283,6 +283,25 @@ namespace Tibialyzer {
 
                 cityIdMap[cityid].utilities.Add(utility);
             }
+            // Events
+            command = new SQLiteCommand("SELECT id, title, location, creatureid FROM Events", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                int eventid = reader.GetInt32(0);
+                Event ev = new Event();
+                ev.id = eventid;
+                ev.title = reader.GetString(1);
+                ev.location = reader.GetString(2);
+                ev.creatureid = reader.GetInt32(3);
+                eventIdMap.Add(eventid, ev);
+            }
+            // Event Messages
+            command = new SQLiteCommand("SELECT eventid,message FROM EventMessages ", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                Event ev = eventIdMap[reader.GetInt32(0)];
+                ev.eventMessages.Add(reader.GetString(1));
+            }
         }
 
         void initializePluralMap() {

@@ -260,24 +260,27 @@ namespace Tibialyzer {
         public List<ItemSold> buyItems;
         public List<ItemSold> sellItems;
 
-        public int GetMaxValue() {
+        public long GetMaxValue() {
             return Math.Max(vendor_value, actual_value);
         }
 
-        public override string GetName() { return name; }
+        public override string GetName() { return title; }
         public override Image GetImage() { return image; }
         public Item() {
-            name = "Unknown";
+            displayname = "Unknown";
             image = null;
             itemdrops = new List<ItemDrop>();
             sellItems = new List<ItemSold>();
             buyItems = new List<ItemSold>();
         }
-    
-        public override void Dispose() {
-            if (permanent) return;
-            if (image != null) image.Dispose();
-        }
+    }
+
+    public class Event {
+        public int id;
+        public string title;
+        public string location;
+        public List<string> eventMessages = new List<string>();
+        public int creatureid;
     }
 
     public class Map : TibiaObject {
