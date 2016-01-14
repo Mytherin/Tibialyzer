@@ -38,14 +38,17 @@
             this.nameTextBox = new System.Windows.Forms.RichTextBox();
             this.namesLabel = new System.Windows.Forms.Label();
             this.huntingPage = new System.Windows.Forms.TabPage();
+            this.trackAllCreaturesPanel = new System.Windows.Forms.Panel();
+            this.aggregateHuntBox = new System.Windows.Forms.CheckBox();
+            this.sideHuntBox = new System.Windows.Forms.CheckBox();
+            this.trackCreaturesBox = new System.Windows.Forms.RichTextBox();
+            this.creatureTrackLabel = new System.Windows.Forms.Label();
+            this.trackCreaturesCheckbox = new System.Windows.Forms.CheckBox();
             this.exportLogButton = new System.Windows.Forms.Button();
             this.importLogFile = new System.Windows.Forms.Button();
             this.creatureImagePanel = new System.Windows.Forms.Panel();
-            this.startupHuntCheckbox = new System.Windows.Forms.CheckBox();
+            this.clearHuntOnStartup = new System.Windows.Forms.CheckBox();
             this.activeHuntButton = new System.Windows.Forms.Button();
-            this.creatureTrackLabel = new System.Windows.Forms.Label();
-            this.trackCreaturesBox = new System.Windows.Forms.RichTextBox();
-            this.trackCreaturesCheckbox = new System.Windows.Forms.CheckBox();
             this.clearLogButton = new System.Windows.Forms.Button();
             this.deleteHuntButton = new System.Windows.Forms.Button();
             this.huntName = new System.Windows.Forms.Label();
@@ -57,18 +60,6 @@
             this.backgroundBox = new System.Windows.Forms.PictureBox();
             this.settingsTab = new System.Windows.Forms.TabPage();
             this.lookCheckBox = new System.Windows.Forms.CheckBox();
-            this.label50 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.unstackableConvertApply = new System.Windows.Forms.Button();
-            this.unstackableConvertTextBox = new System.Windows.Forms.TextBox();
-            this.label54 = new System.Windows.Forms.Label();
-            this.stackableConvertApply = new System.Windows.Forms.Button();
-            this.stackableConvertTextBox = new System.Windows.Forms.TextBox();
-            this.label53 = new System.Windows.Forms.Label();
-            this.applyRatioButton = new System.Windows.Forms.Button();
-            this.goldRatioTextBox = new System.Windows.Forms.TextBox();
-            this.label52 = new System.Windows.Forms.Label();
-            this.label51 = new System.Windows.Forms.Label();
             this.showNotificationCheckbox = new System.Windows.Forms.CheckBox();
             this.enableRichNotificationsCheckbox = new System.Windows.Forms.CheckBox();
             this.notificationPanel = new System.Windows.Forms.Panel();
@@ -84,6 +75,33 @@
             this.richNotificationsPanel = new System.Windows.Forms.Panel();
             this.notificationLengthSlider = new System.Windows.Forms.TrackBar();
             this.notificationLabel = new System.Windows.Forms.Label();
+            this.databaseTab = new System.Windows.Forms.TabPage();
+            this.label50 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label54 = new System.Windows.Forms.Label();
+            this.button12 = new System.Windows.Forms.Button();
+            this.button11 = new System.Windows.Forms.Button();
+            this.button10 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
+            this.label60 = new System.Windows.Forms.Label();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.label59 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.unstackableConvertApply = new System.Windows.Forms.Button();
+            this.unstackableConvertTextBox = new System.Windows.Forms.TextBox();
+            this.stackableConvertApply = new System.Windows.Forms.Button();
+            this.stackableConvertTextBox = new System.Windows.Forms.TextBox();
+            this.label53 = new System.Windows.Forms.Label();
+            this.applyRatioButton = new System.Windows.Forms.Button();
+            this.goldRatioTextBox = new System.Windows.Forms.TextBox();
+            this.label52 = new System.Windows.Forms.Label();
+            this.label51 = new System.Windows.Forms.Label();
             this.creatureTab = new System.Windows.Forms.TabPage();
             this.creaturePanel = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
@@ -106,6 +124,7 @@
             this.screenshotPage = new System.Windows.Forms.TabPage();
             this.enableScreenshotBox = new System.Windows.Forms.CheckBox();
             this.screenshotPanel = new System.Windows.Forms.Panel();
+            this.autoScreenshotDeath = new System.Windows.Forms.CheckBox();
             this.openInExplorer = new System.Windows.Forms.Button();
             this.screenshotDirectoryBox = new System.Windows.Forms.TextBox();
             this.label58 = new System.Windows.Forms.Label();
@@ -115,75 +134,29 @@
             this.screenshotList = new System.Windows.Forms.ListBox();
             this.screenshotBox = new System.Windows.Forms.PictureBox();
             this.commandListTab = new System.Windows.Forms.TabPage();
-            this.label44 = new System.Windows.Forms.Label();
-            this.label45 = new System.Windows.Forms.Label();
-            this.label46 = new System.Windows.Forms.Label();
-            this.label47 = new System.Windows.Forms.Label();
-            this.label42 = new System.Windows.Forms.Label();
-            this.label43 = new System.Windows.Forms.Label();
-            this.label40 = new System.Windows.Forms.Label();
-            this.label41 = new System.Windows.Forms.Label();
-            this.label38 = new System.Windows.Forms.Label();
-            this.label39 = new System.Windows.Forms.Label();
-            this.label36 = new System.Windows.Forms.Label();
-            this.label37 = new System.Windows.Forms.Label();
-            this.label35 = new System.Windows.Forms.Label();
-            this.label34 = new System.Windows.Forms.Label();
-            this.label32 = new System.Windows.Forms.Label();
-            this.label33 = new System.Windows.Forms.Label();
-            this.label30 = new System.Windows.Forms.Label();
-            this.label31 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
-            this.label29 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.label25 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.explainLabel = new System.Windows.Forms.Label();
             this.closeButton = new System.Windows.Forms.Label();
             this.minimizeButton = new System.Windows.Forms.Label();
             this.minimizeIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.loadTimerImage = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.autoScreenshotDeath = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             this.huntingPage.SuspendLayout();
+            this.trackAllCreaturesPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backgroundBox)).BeginInit();
             this.settingsTab.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.notificationPanel.SuspendLayout();
             this.richNotificationsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.notificationLengthSlider)).BeginInit();
+            this.databaseTab.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.creatureTab.SuspendLayout();
             this.itemTab.SuspendLayout();
             this.autoHotkey.SuspendLayout();
             this.screenshotPage.SuspendLayout();
             this.screenshotPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.screenshotBox)).BeginInit();
-            this.commandListTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loadTimerImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -199,6 +172,7 @@
             this.tabControl1.Controls.Add(this.mainTab);
             this.tabControl1.Controls.Add(this.huntingPage);
             this.tabControl1.Controls.Add(this.settingsTab);
+            this.tabControl1.Controls.Add(this.databaseTab);
             this.tabControl1.Controls.Add(this.creatureTab);
             this.tabControl1.Controls.Add(this.itemTab);
             this.tabControl1.Controls.Add(this.autoHotkey);
@@ -321,14 +295,12 @@
             // 
             // huntingPage
             // 
+            this.huntingPage.Controls.Add(this.trackAllCreaturesPanel);
             this.huntingPage.Controls.Add(this.exportLogButton);
             this.huntingPage.Controls.Add(this.importLogFile);
             this.huntingPage.Controls.Add(this.creatureImagePanel);
-            this.huntingPage.Controls.Add(this.startupHuntCheckbox);
+            this.huntingPage.Controls.Add(this.clearHuntOnStartup);
             this.huntingPage.Controls.Add(this.activeHuntButton);
-            this.huntingPage.Controls.Add(this.creatureTrackLabel);
-            this.huntingPage.Controls.Add(this.trackCreaturesBox);
-            this.huntingPage.Controls.Add(this.trackCreaturesCheckbox);
             this.huntingPage.Controls.Add(this.clearLogButton);
             this.huntingPage.Controls.Add(this.deleteHuntButton);
             this.huntingPage.Controls.Add(this.huntName);
@@ -345,6 +317,75 @@
             this.huntingPage.Text = "Hunting";
             this.huntingPage.UseVisualStyleBackColor = true;
             // 
+            // trackAllCreaturesPanel
+            // 
+            this.trackAllCreaturesPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.trackAllCreaturesPanel.Controls.Add(this.aggregateHuntBox);
+            this.trackAllCreaturesPanel.Controls.Add(this.sideHuntBox);
+            this.trackAllCreaturesPanel.Controls.Add(this.trackCreaturesBox);
+            this.trackAllCreaturesPanel.Controls.Add(this.creatureTrackLabel);
+            this.trackAllCreaturesPanel.Controls.Add(this.trackCreaturesCheckbox);
+            this.trackAllCreaturesPanel.Location = new System.Drawing.Point(463, 101);
+            this.trackAllCreaturesPanel.Name = "trackAllCreaturesPanel";
+            this.trackAllCreaturesPanel.Size = new System.Drawing.Size(176, 200);
+            this.trackAllCreaturesPanel.TabIndex = 18;
+            // 
+            // aggregateHuntBox
+            // 
+            this.aggregateHuntBox.Location = new System.Drawing.Point(1, 48);
+            this.aggregateHuntBox.MaximumSize = new System.Drawing.Size(176, 30);
+            this.aggregateHuntBox.Name = "aggregateHuntBox";
+            this.aggregateHuntBox.Size = new System.Drawing.Size(176, 30);
+            this.aggregateHuntBox.TabIndex = 18;
+            this.aggregateHuntBox.Text = "Add tracked creatures to this hunt, even if hunt is not active.";
+            this.aggregateHuntBox.UseVisualStyleBackColor = true;
+            this.aggregateHuntBox.CheckedChanged += new System.EventHandler(this.aggregateHuntBox_CheckedChanged);
+            // 
+            // sideHuntBox
+            // 
+            this.sideHuntBox.Location = new System.Drawing.Point(3, 21);
+            this.sideHuntBox.MaximumSize = new System.Drawing.Size(176, 30);
+            this.sideHuntBox.Name = "sideHuntBox";
+            this.sideHuntBox.Size = new System.Drawing.Size(176, 30);
+            this.sideHuntBox.TabIndex = 17;
+            this.sideHuntBox.Text = "Automatically activate this hunt if tracked creature is killed.";
+            this.sideHuntBox.UseVisualStyleBackColor = true;
+            this.sideHuntBox.CheckedChanged += new System.EventHandler(this.sideHuntBox_CheckedChanged);
+            // 
+            // trackCreaturesBox
+            // 
+            this.trackCreaturesBox.DetectUrls = false;
+            this.trackCreaturesBox.Location = new System.Drawing.Point(1, 98);
+            this.trackCreaturesBox.Name = "trackCreaturesBox";
+            this.trackCreaturesBox.Size = new System.Drawing.Size(170, 97);
+            this.trackCreaturesBox.TabIndex = 8;
+            this.trackCreaturesBox.Text = "";
+            this.trackCreaturesBox.TextChanged += new System.EventHandler(this.trackCreaturesBox_TextChanged);
+            // 
+            // creatureTrackLabel
+            // 
+            this.creatureTrackLabel.AutoSize = true;
+            this.creatureTrackLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.creatureTrackLabel.Location = new System.Drawing.Point(4, 77);
+            this.creatureTrackLabel.Name = "creatureTrackLabel";
+            this.creatureTrackLabel.Size = new System.Drawing.Size(170, 15);
+            this.creatureTrackLabel.TabIndex = 9;
+            this.creatureTrackLabel.Text = "Enter creature names to track.";
+            // 
+            // trackCreaturesCheckbox
+            // 
+            this.trackCreaturesCheckbox.AutoSize = true;
+            this.trackCreaturesCheckbox.Checked = true;
+            this.trackCreaturesCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.trackCreaturesCheckbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.trackCreaturesCheckbox.Location = new System.Drawing.Point(3, 2);
+            this.trackCreaturesCheckbox.Name = "trackCreaturesCheckbox";
+            this.trackCreaturesCheckbox.Size = new System.Drawing.Size(138, 19);
+            this.trackCreaturesCheckbox.TabIndex = 7;
+            this.trackCreaturesCheckbox.Text = "Display All Creatures";
+            this.trackCreaturesCheckbox.UseVisualStyleBackColor = true;
+            this.trackCreaturesCheckbox.CheckedChanged += new System.EventHandler(this.trackCreaturesCheckbox_CheckedChanged);
+            // 
             // exportLogButton
             // 
             this.exportLogButton.Location = new System.Drawing.Point(8, 222);
@@ -357,7 +398,7 @@
             // 
             // importLogFile
             // 
-            this.importLogFile.Location = new System.Drawing.Point(195, 222);
+            this.importLogFile.Location = new System.Drawing.Point(191, 222);
             this.importLogFile.Name = "importLogFile";
             this.importLogFile.Size = new System.Drawing.Size(86, 37);
             this.importLogFile.TabIndex = 7;
@@ -367,23 +408,21 @@
             // 
             // creatureImagePanel
             // 
-            this.creatureImagePanel.Location = new System.Drawing.Point(287, 142);
+            this.creatureImagePanel.Location = new System.Drawing.Point(287, 146);
             this.creatureImagePanel.Name = "creatureImagePanel";
-            this.creatureImagePanel.Size = new System.Drawing.Size(170, 117);
+            this.creatureImagePanel.Size = new System.Drawing.Size(170, 151);
             this.creatureImagePanel.TabIndex = 16;
             // 
-            // startupHuntCheckbox
+            // clearHuntOnStartup
             // 
-            this.startupHuntCheckbox.AutoSize = true;
-            this.startupHuntCheckbox.Checked = true;
-            this.startupHuntCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.startupHuntCheckbox.Location = new System.Drawing.Point(152, 20);
-            this.startupHuntCheckbox.Name = "startupHuntCheckbox";
-            this.startupHuntCheckbox.Size = new System.Drawing.Size(128, 17);
-            this.startupHuntCheckbox.TabIndex = 13;
-            this.startupHuntCheckbox.Text = "New Hunt On Startup";
-            this.startupHuntCheckbox.UseVisualStyleBackColor = true;
-            this.startupHuntCheckbox.CheckedChanged += new System.EventHandler(this.startupHuntCheckbox_CheckedChanged);
+            this.clearHuntOnStartup.AutoSize = true;
+            this.clearHuntOnStartup.Location = new System.Drawing.Point(287, 123);
+            this.clearHuntOnStartup.Name = "clearHuntOnStartup";
+            this.clearHuntOnStartup.Size = new System.Drawing.Size(130, 17);
+            this.clearHuntOnStartup.TabIndex = 13;
+            this.clearHuntOnStartup.Text = "Clear Hunt On Startup";
+            this.clearHuntOnStartup.UseVisualStyleBackColor = true;
+            this.clearHuntOnStartup.CheckedChanged += new System.EventHandler(this.startupHuntCheckbox_CheckedChanged);
             // 
             // activeHuntButton
             // 
@@ -395,47 +434,11 @@
             this.activeHuntButton.UseVisualStyleBackColor = true;
             this.activeHuntButton.Click += new System.EventHandler(this.activeHuntButton_Click);
             // 
-            // creatureTrackLabel
-            // 
-            this.creatureTrackLabel.AutoSize = true;
-            this.creatureTrackLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.creatureTrackLabel.Location = new System.Drawing.Point(453, 124);
-            this.creatureTrackLabel.Name = "creatureTrackLabel";
-            this.creatureTrackLabel.Size = new System.Drawing.Size(170, 15);
-            this.creatureTrackLabel.TabIndex = 9;
-            this.creatureTrackLabel.Text = "Enter creature names to track.";
-            this.creatureTrackLabel.Visible = false;
-            // 
-            // trackCreaturesBox
-            // 
-            this.trackCreaturesBox.DetectUrls = false;
-            this.trackCreaturesBox.Enabled = false;
-            this.trackCreaturesBox.Location = new System.Drawing.Point(463, 142);
-            this.trackCreaturesBox.Name = "trackCreaturesBox";
-            this.trackCreaturesBox.Size = new System.Drawing.Size(160, 117);
-            this.trackCreaturesBox.TabIndex = 8;
-            this.trackCreaturesBox.Text = "";
-            this.trackCreaturesBox.TextChanged += new System.EventHandler(this.trackCreaturesBox_TextChanged);
-            // 
-            // trackCreaturesCheckbox
-            // 
-            this.trackCreaturesCheckbox.AutoSize = true;
-            this.trackCreaturesCheckbox.Checked = true;
-            this.trackCreaturesCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.trackCreaturesCheckbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.trackCreaturesCheckbox.Location = new System.Drawing.Point(463, 106);
-            this.trackCreaturesCheckbox.Name = "trackCreaturesCheckbox";
-            this.trackCreaturesCheckbox.Size = new System.Drawing.Size(160, 20);
-            this.trackCreaturesCheckbox.TabIndex = 7;
-            this.trackCreaturesCheckbox.Text = "Track All Creatures";
-            this.trackCreaturesCheckbox.UseVisualStyleBackColor = true;
-            this.trackCreaturesCheckbox.CheckedChanged += new System.EventHandler(this.trackCreaturesCheckbox_CheckedChanged);
-            // 
             // clearLogButton
             // 
-            this.clearLogButton.Location = new System.Drawing.Point(114, 222);
+            this.clearLogButton.Location = new System.Drawing.Point(191, 264);
             this.clearLogButton.Name = "clearLogButton";
-            this.clearLogButton.Size = new System.Drawing.Size(75, 37);
+            this.clearLogButton.Size = new System.Drawing.Size(85, 37);
             this.clearLogButton.TabIndex = 6;
             this.clearLogButton.Text = "Clear Log";
             this.clearLogButton.UseVisualStyleBackColor = true;
@@ -492,11 +495,11 @@
             // 
             this.logMessageTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logMessageTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(0)))));
-            this.logMessageTextBox.Location = new System.Drawing.Point(8, 265);
+            this.logMessageTextBox.Location = new System.Drawing.Point(8, 307);
             this.logMessageTextBox.Name = "logMessageTextBox";
             this.logMessageTextBox.ReadOnly = true;
             this.logMessageTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.logMessageTextBox.Size = new System.Drawing.Size(631, 224);
+            this.logMessageTextBox.Size = new System.Drawing.Size(631, 182);
             this.logMessageTextBox.TabIndex = 15;
             this.logMessageTextBox.Text = "";
             // 
@@ -513,9 +516,9 @@
             // 
             this.backgroundBox.BackColor = System.Drawing.Color.Black;
             this.backgroundBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.backgroundBox.Location = new System.Drawing.Point(8, 265);
+            this.backgroundBox.Location = new System.Drawing.Point(8, 307);
             this.backgroundBox.Name = "backgroundBox";
-            this.backgroundBox.Size = new System.Drawing.Size(631, 224);
+            this.backgroundBox.Size = new System.Drawing.Size(631, 182);
             this.backgroundBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.backgroundBox.TabIndex = 14;
             this.backgroundBox.TabStop = false;
@@ -523,8 +526,6 @@
             // settingsTab
             // 
             this.settingsTab.Controls.Add(this.lookCheckBox);
-            this.settingsTab.Controls.Add(this.label50);
-            this.settingsTab.Controls.Add(this.panel2);
             this.settingsTab.Controls.Add(this.showNotificationCheckbox);
             this.settingsTab.Controls.Add(this.enableRichNotificationsCheckbox);
             this.settingsTab.Controls.Add(this.notificationPanel);
@@ -549,122 +550,6 @@
             this.lookCheckBox.Text = "Automatically View Looked At Items";
             this.lookCheckBox.UseVisualStyleBackColor = true;
             this.lookCheckBox.CheckedChanged += new System.EventHandler(this.lookCheckBox_CheckedChanged);
-            // 
-            // label50
-            // 
-            this.label50.AutoSize = true;
-            this.label50.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label50.Location = new System.Drawing.Point(20, 241);
-            this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(89, 15);
-            this.label50.TabIndex = 10;
-            this.label50.Text = "Modify Database";
-            // 
-            // panel2
-            // 
-            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel2.Controls.Add(this.unstackableConvertApply);
-            this.panel2.Controls.Add(this.unstackableConvertTextBox);
-            this.panel2.Controls.Add(this.label54);
-            this.panel2.Controls.Add(this.stackableConvertApply);
-            this.panel2.Controls.Add(this.stackableConvertTextBox);
-            this.panel2.Controls.Add(this.label53);
-            this.panel2.Controls.Add(this.applyRatioButton);
-            this.panel2.Controls.Add(this.goldRatioTextBox);
-            this.panel2.Controls.Add(this.label52);
-            this.panel2.Controls.Add(this.label51);
-            this.panel2.Location = new System.Drawing.Point(20, 249);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(319, 239);
-            this.panel2.TabIndex = 9;
-            // 
-            // unstackableConvertApply
-            // 
-            this.unstackableConvertApply.Location = new System.Drawing.Point(263, 110);
-            this.unstackableConvertApply.Name = "unstackableConvertApply";
-            this.unstackableConvertApply.Size = new System.Drawing.Size(49, 23);
-            this.unstackableConvertApply.TabIndex = 9;
-            this.unstackableConvertApply.Text = "Apply";
-            this.unstackableConvertApply.UseVisualStyleBackColor = true;
-            this.unstackableConvertApply.Click += new System.EventHandler(this.unstackableConvertApply_Click);
-            // 
-            // unstackableConvertTextBox
-            // 
-            this.unstackableConvertTextBox.Location = new System.Drawing.Point(171, 110);
-            this.unstackableConvertTextBox.Name = "unstackableConvertTextBox";
-            this.unstackableConvertTextBox.Size = new System.Drawing.Size(86, 20);
-            this.unstackableConvertTextBox.TabIndex = 8;
-            // 
-            // label54
-            // 
-            this.label54.AutoSize = true;
-            this.label54.Location = new System.Drawing.Point(178, 94);
-            this.label54.Name = "label54";
-            this.label54.Size = new System.Drawing.Size(141, 13);
-            this.label54.TabIndex = 7;
-            this.label54.Text = "Convert unstackable items...";
-            // 
-            // stackableConvertApply
-            // 
-            this.stackableConvertApply.Location = new System.Drawing.Point(263, 67);
-            this.stackableConvertApply.Name = "stackableConvertApply";
-            this.stackableConvertApply.Size = new System.Drawing.Size(49, 23);
-            this.stackableConvertApply.TabIndex = 6;
-            this.stackableConvertApply.Text = "Apply";
-            this.stackableConvertApply.UseVisualStyleBackColor = true;
-            this.stackableConvertApply.Click += new System.EventHandler(this.stackableConvertApply_Click);
-            // 
-            // stackableConvertTextBox
-            // 
-            this.stackableConvertTextBox.Location = new System.Drawing.Point(171, 67);
-            this.stackableConvertTextBox.Name = "stackableConvertTextBox";
-            this.stackableConvertTextBox.Size = new System.Drawing.Size(86, 20);
-            this.stackableConvertTextBox.TabIndex = 5;
-            // 
-            // label53
-            // 
-            this.label53.AutoSize = true;
-            this.label53.Location = new System.Drawing.Point(188, 51);
-            this.label53.Name = "label53";
-            this.label53.Size = new System.Drawing.Size(129, 13);
-            this.label53.TabIndex = 4;
-            this.label53.Text = "Convert stackable items...";
-            // 
-            // applyRatioButton
-            // 
-            this.applyRatioButton.Location = new System.Drawing.Point(267, 25);
-            this.applyRatioButton.Name = "applyRatioButton";
-            this.applyRatioButton.Size = new System.Drawing.Size(49, 23);
-            this.applyRatioButton.TabIndex = 3;
-            this.applyRatioButton.Text = "Apply";
-            this.applyRatioButton.UseVisualStyleBackColor = true;
-            this.applyRatioButton.Click += new System.EventHandler(this.applyRatioButton_Click);
-            // 
-            // goldRatioTextBox
-            // 
-            this.goldRatioTextBox.Location = new System.Drawing.Point(175, 25);
-            this.goldRatioTextBox.Name = "goldRatioTextBox";
-            this.goldRatioTextBox.Size = new System.Drawing.Size(86, 20);
-            this.goldRatioTextBox.TabIndex = 2;
-            // 
-            // label52
-            // 
-            this.label52.AutoSize = true;
-            this.label52.Location = new System.Drawing.Point(104, 9);
-            this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(208, 13);
-            this.label52.TabIndex = 1;
-            this.label52.Text = "Discard items with a gold ratio lower than...";
-            // 
-            // label51
-            // 
-            this.label51.AutoSize = true;
-            this.label51.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label51.Location = new System.Drawing.Point(3, 95);
-            this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(154, 140);
-            this.label51.TabIndex = 0;
-            this.label51.Text = resources.GetString("label51.Text");
             // 
             // showNotificationCheckbox
             // 
@@ -839,6 +724,272 @@
             this.notificationLabel.Size = new System.Drawing.Size(225, 16);
             this.notificationLabel.TabIndex = 1;
             this.notificationLabel.Text = "Notification Length: 20 Seconds";
+            // 
+            // databaseTab
+            // 
+            this.databaseTab.Controls.Add(this.label50);
+            this.databaseTab.Controls.Add(this.panel2);
+            this.databaseTab.Location = new System.Drawing.Point(4, 22);
+            this.databaseTab.Name = "databaseTab";
+            this.databaseTab.Size = new System.Drawing.Size(642, 497);
+            this.databaseTab.TabIndex = 8;
+            this.databaseTab.Text = "Database";
+            this.databaseTab.UseVisualStyleBackColor = true;
+            // 
+            // label50
+            // 
+            this.label50.AutoSize = true;
+            this.label50.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label50.Location = new System.Drawing.Point(8, 13);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(89, 15);
+            this.label50.TabIndex = 12;
+            this.label50.Text = "Modify Database";
+            // 
+            // panel2
+            // 
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel2.Controls.Add(this.label54);
+            this.panel2.Controls.Add(this.button12);
+            this.panel2.Controls.Add(this.button11);
+            this.panel2.Controls.Add(this.button10);
+            this.panel2.Controls.Add(this.button9);
+            this.panel2.Controls.Add(this.button8);
+            this.panel2.Controls.Add(this.label60);
+            this.panel2.Controls.Add(this.button7);
+            this.panel2.Controls.Add(this.button6);
+            this.panel2.Controls.Add(this.button5);
+            this.panel2.Controls.Add(this.button4);
+            this.panel2.Controls.Add(this.button3);
+            this.panel2.Controls.Add(this.button2);
+            this.panel2.Controls.Add(this.label59);
+            this.panel2.Controls.Add(this.button1);
+            this.panel2.Controls.Add(this.unstackableConvertApply);
+            this.panel2.Controls.Add(this.unstackableConvertTextBox);
+            this.panel2.Controls.Add(this.stackableConvertApply);
+            this.panel2.Controls.Add(this.stackableConvertTextBox);
+            this.panel2.Controls.Add(this.label53);
+            this.panel2.Controls.Add(this.applyRatioButton);
+            this.panel2.Controls.Add(this.goldRatioTextBox);
+            this.panel2.Controls.Add(this.label52);
+            this.panel2.Controls.Add(this.label51);
+            this.panel2.Location = new System.Drawing.Point(8, 21);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(626, 468);
+            this.panel2.TabIndex = 11;
+            // 
+            // label54
+            // 
+            this.label54.AutoSize = true;
+            this.label54.Location = new System.Drawing.Point(378, 421);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(219, 13);
+            this.label54.TabIndex = 24;
+            this.label54.Text = "Set conversion ratio for non- stackable items.";
+            // 
+            // button12
+            // 
+            this.button12.Location = new System.Drawing.Point(12, 286);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(350, 30);
+            this.button12.TabIndex = 23;
+            this.button12.Text = "Don\'t convert any stackable items.";
+            this.button12.UseVisualStyleBackColor = true;
+            // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(12, 250);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(350, 30);
+            this.button11.TabIndex = 22;
+            this.button11.Text = "Convert all stackable items.";
+            this.button11.UseVisualStyleBackColor = true;
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(12, 354);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(350, 30);
+            this.button10.TabIndex = 21;
+            this.button10.Text = "Convert all non-stackable items.";
+            this.button10.UseVisualStyleBackColor = true;
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(12, 390);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(350, 30);
+            this.button9.TabIndex = 20;
+            this.button9.Text = "Convert non-stackable items not worth a lot. [10]";
+            this.button9.UseVisualStyleBackColor = true;
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(12, 427);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(350, 30);
+            this.button8.TabIndex = 19;
+            this.button8.Text = "Don\'t convert anything. [0]";
+            this.button8.UseVisualStyleBackColor = true;
+            // 
+            // label60
+            // 
+            this.label60.AutoSize = true;
+            this.label60.Location = new System.Drawing.Point(9, 220);
+            this.label60.Name = "label60";
+            this.label60.Size = new System.Drawing.Size(309, 13);
+            this.label60.TabIndex = 18;
+            this.label60.Text = "Modify which items you want to convert to gold when displaying.";
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(12, 175);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(350, 30);
+            this.button7.TabIndex = 17;
+            this.button7.Text = "I pick up everything. [0]";
+            this.button7.UseVisualStyleBackColor = true;
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(399, 34);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(206, 30);
+            this.button6.TabIndex = 16;
+            this.button6.Text = "I pick up creature drops.";
+            this.button6.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(399, 69);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(206, 30);
+            this.button5.TabIndex = 15;
+            this.button5.Text = "I don\'t pick up creature drops.";
+            this.button5.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(12, 69);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(350, 30);
+            this.button4.TabIndex = 14;
+            this.button4.Text = "I don\'t pick up gold coins, but I pick up knight armors. [25]";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(12, 139);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(350, 30);
+            this.button3.TabIndex = 13;
+            this.button3.Text = "I pick up items like plate armors and halberds. [3]";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(12, 104);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(350, 30);
+            this.button2.TabIndex = 12;
+            this.button2.Text = "I pick up gold coins, and anything above gold coins. [10]";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // label59
+            // 
+            this.label59.AutoSize = true;
+            this.label59.Location = new System.Drawing.Point(6, 9);
+            this.label59.Name = "label59";
+            this.label59.Size = new System.Drawing.Size(296, 13);
+            this.label59.TabIndex = 11;
+            this.label59.Text = "Modify which items you discard, and which items you pick up.";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(12, 34);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(350, 30);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "I only pick up gems, platinum coins and rare drops. [100]";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // unstackableConvertApply
+            // 
+            this.unstackableConvertApply.Location = new System.Drawing.Point(570, 437);
+            this.unstackableConvertApply.Name = "unstackableConvertApply";
+            this.unstackableConvertApply.Size = new System.Drawing.Size(49, 23);
+            this.unstackableConvertApply.TabIndex = 9;
+            this.unstackableConvertApply.Text = "Apply";
+            this.unstackableConvertApply.UseVisualStyleBackColor = true;
+            // 
+            // unstackableConvertTextBox
+            // 
+            this.unstackableConvertTextBox.Location = new System.Drawing.Point(381, 437);
+            this.unstackableConvertTextBox.Name = "unstackableConvertTextBox";
+            this.unstackableConvertTextBox.Size = new System.Drawing.Size(183, 20);
+            this.unstackableConvertTextBox.TabIndex = 8;
+            // 
+            // stackableConvertApply
+            // 
+            this.stackableConvertApply.Location = new System.Drawing.Point(568, 327);
+            this.stackableConvertApply.Name = "stackableConvertApply";
+            this.stackableConvertApply.Size = new System.Drawing.Size(49, 23);
+            this.stackableConvertApply.TabIndex = 6;
+            this.stackableConvertApply.Text = "Apply";
+            this.stackableConvertApply.UseVisualStyleBackColor = true;
+            this.stackableConvertApply.Click += new System.EventHandler(this.stackableConvertApply_Click_1);
+            // 
+            // stackableConvertTextBox
+            // 
+            this.stackableConvertTextBox.Location = new System.Drawing.Point(381, 328);
+            this.stackableConvertTextBox.Name = "stackableConvertTextBox";
+            this.stackableConvertTextBox.Size = new System.Drawing.Size(183, 20);
+            this.stackableConvertTextBox.TabIndex = 5;
+            this.stackableConvertTextBox.TextChanged += new System.EventHandler(this.stackableConvertTextBox_TextChanged);
+            // 
+            // label53
+            // 
+            this.label53.AutoSize = true;
+            this.label53.Location = new System.Drawing.Point(378, 312);
+            this.label53.Name = "label53";
+            this.label53.Size = new System.Drawing.Size(195, 13);
+            this.label53.TabIndex = 4;
+            this.label53.Text = "Set conversion ratio for stackable items.";
+            // 
+            // applyRatioButton
+            // 
+            this.applyRatioButton.Location = new System.Drawing.Point(570, 133);
+            this.applyRatioButton.Name = "applyRatioButton";
+            this.applyRatioButton.Size = new System.Drawing.Size(49, 23);
+            this.applyRatioButton.TabIndex = 3;
+            this.applyRatioButton.Text = "Apply";
+            this.applyRatioButton.UseVisualStyleBackColor = true;
+            // 
+            // goldRatioTextBox
+            // 
+            this.goldRatioTextBox.Location = new System.Drawing.Point(381, 135);
+            this.goldRatioTextBox.Name = "goldRatioTextBox";
+            this.goldRatioTextBox.Size = new System.Drawing.Size(183, 20);
+            this.goldRatioTextBox.TabIndex = 2;
+            // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(378, 116);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(224, 13);
+            this.label52.TabIndex = 1;
+            this.label52.Text = "Or pick your own gold ratio to discard items at.";
+            // 
+            // label51
+            // 
+            this.label51.AutoSize = true;
+            this.label51.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label51.Location = new System.Drawing.Point(451, 163);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(154, 140);
+            this.label51.TabIndex = 0;
+            this.label51.Text = resources.GetString("label51.Text");
             // 
             // creatureTab
             // 
@@ -1081,6 +1232,17 @@
             this.screenshotPanel.Size = new System.Drawing.Size(346, 203);
             this.screenshotPanel.TabIndex = 7;
             // 
+            // autoScreenshotDeath
+            // 
+            this.autoScreenshotDeath.AutoSize = true;
+            this.autoScreenshotDeath.Location = new System.Drawing.Point(3, 147);
+            this.autoScreenshotDeath.Name = "autoScreenshotDeath";
+            this.autoScreenshotDeath.Size = new System.Drawing.Size(245, 17);
+            this.autoScreenshotDeath.TabIndex = 8;
+            this.autoScreenshotDeath.Text = "Automatically take a screenshot when you die.";
+            this.autoScreenshotDeath.UseVisualStyleBackColor = true;
+            this.autoScreenshotDeath.CheckedChanged += new System.EventHandler(this.autoScreenshotDeath_CheckedChanged);
+            // 
             // openInExplorer
             // 
             this.openInExplorer.Location = new System.Drawing.Point(6, 68);
@@ -1160,502 +1322,12 @@
             // 
             // commandListTab
             // 
-            this.commandListTab.Controls.Add(this.label44);
-            this.commandListTab.Controls.Add(this.label45);
-            this.commandListTab.Controls.Add(this.label46);
-            this.commandListTab.Controls.Add(this.label47);
-            this.commandListTab.Controls.Add(this.label42);
-            this.commandListTab.Controls.Add(this.label43);
-            this.commandListTab.Controls.Add(this.label40);
-            this.commandListTab.Controls.Add(this.label41);
-            this.commandListTab.Controls.Add(this.label38);
-            this.commandListTab.Controls.Add(this.label39);
-            this.commandListTab.Controls.Add(this.label36);
-            this.commandListTab.Controls.Add(this.label37);
-            this.commandListTab.Controls.Add(this.label35);
-            this.commandListTab.Controls.Add(this.label34);
-            this.commandListTab.Controls.Add(this.label32);
-            this.commandListTab.Controls.Add(this.label33);
-            this.commandListTab.Controls.Add(this.label30);
-            this.commandListTab.Controls.Add(this.label31);
-            this.commandListTab.Controls.Add(this.label28);
-            this.commandListTab.Controls.Add(this.label29);
-            this.commandListTab.Controls.Add(this.label26);
-            this.commandListTab.Controls.Add(this.label27);
-            this.commandListTab.Controls.Add(this.label24);
-            this.commandListTab.Controls.Add(this.label25);
-            this.commandListTab.Controls.Add(this.label22);
-            this.commandListTab.Controls.Add(this.label23);
-            this.commandListTab.Controls.Add(this.label20);
-            this.commandListTab.Controls.Add(this.label21);
-            this.commandListTab.Controls.Add(this.label18);
-            this.commandListTab.Controls.Add(this.label19);
-            this.commandListTab.Controls.Add(this.label16);
-            this.commandListTab.Controls.Add(this.label17);
-            this.commandListTab.Controls.Add(this.label14);
-            this.commandListTab.Controls.Add(this.label15);
-            this.commandListTab.Controls.Add(this.label12);
-            this.commandListTab.Controls.Add(this.label13);
-            this.commandListTab.Controls.Add(this.label10);
-            this.commandListTab.Controls.Add(this.label11);
-            this.commandListTab.Controls.Add(this.label8);
-            this.commandListTab.Controls.Add(this.label9);
-            this.commandListTab.Controls.Add(this.label7);
-            this.commandListTab.Controls.Add(this.label6);
-            this.commandListTab.Controls.Add(this.label5);
-            this.commandListTab.Controls.Add(this.label3);
-            this.commandListTab.Controls.Add(this.label4);
-            this.commandListTab.Controls.Add(this.explainLabel);
             this.commandListTab.Location = new System.Drawing.Point(4, 22);
             this.commandListTab.Name = "commandListTab";
             this.commandListTab.Size = new System.Drawing.Size(642, 497);
             this.commandListTab.TabIndex = 4;
-            this.commandListTab.Text = "Command List";
+            this.commandListTab.Text = "Help";
             this.commandListTab.UseVisualStyleBackColor = true;
-            // 
-            // label44
-            // 
-            this.label44.AutoSize = true;
-            this.label44.Location = new System.Drawing.Point(132, 196);
-            this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(363, 13);
-            this.label44.TabIndex = 45;
-            this.label44.Text = "Deletes all loot files of creatures which you have killed less than <kill> times." +
-    "";
-            // 
-            // label45
-            // 
-            this.label45.AutoSize = true;
-            this.label45.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label45.Location = new System.Drawing.Point(21, 194);
-            this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(90, 13);
-            this.label45.TabIndex = 44;
-            this.label45.Text = "delete@<kills>";
-            // 
-            // label46
-            // 
-            this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(133, 182);
-            this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(273, 13);
-            this.label46.TabIndex = 43;
-            this.label46.Text = "Deletes all loot files involving the specified creature type.";
-            // 
-            // label47
-            // 
-            this.label47.AutoSize = true;
-            this.label47.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label47.Location = new System.Drawing.Point(20, 181);
-            this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(115, 13);
-            this.label47.TabIndex = 42;
-            this.label47.Text = "delete@<creature>";
-            // 
-            // label42
-            // 
-            this.label42.AutoSize = true;
-            this.label42.Location = new System.Drawing.Point(133, 461);
-            this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(425, 13);
-            this.label42.TabIndex = 41;
-            this.label42.Text = "Runs a line of python code and shows the output, useful for basic arithmetic (180" +
-    "+20*50)";
-            // 
-            // label43
-            // 
-            this.label43.AutoSize = true;
-            this.label43.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label43.Location = new System.Drawing.Point(25, 460);
-            this.label43.Name = "label43";
-            this.label43.Size = new System.Drawing.Size(104, 13);
-            this.label43.TabIndex = 40;
-            this.label43.Text = "run@<command>";
-            // 
-            // label40
-            // 
-            this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(132, 168);
-            this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(317, 13);
-            this.label40.TabIndex = 39;
-            this.label40.Text = "Records a successful skin of the specified creature in the loot log.";
-            // 
-            // label41
-            // 
-            this.label41.AutoSize = true;
-            this.label41.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label41.Location = new System.Drawing.Point(22, 167);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(103, 13);
-            this.label41.TabIndex = 38;
-            this.label41.Text = "skin@<creature>";
-            // 
-            // label38
-            // 
-            this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(135, 339);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(484, 13);
-            this.label38.TabIndex = 37;
-            this.label38.Text = "Shows the location of the NPC that buys or sells the specified item in the specif" +
-    "ied city (edron@arrow)";
-            // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label39.Location = new System.Drawing.Point(27, 338);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(90, 13);
-            this.label39.TabIndex = 36;
-            this.label39.Text = "<city>@<item>";
-            // 
-            // label36
-            // 
-            this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(177, 443);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(387, 13);
-            this.label36.TabIndex = 35;
-            this.label36.Text = "The specified item should be converted to gold (use noconvert@ for the reverse)";
-            // 
-            // label37
-            // 
-            this.label37.AutoSize = true;
-            this.label37.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label37.Location = new System.Drawing.Point(25, 444);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(99, 13);
-            this.label37.TabIndex = 34;
-            this.label37.Text = "convert@<item>";
-            // 
-            // label35
-            // 
-            this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(177, 428);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(347, 13);
-            this.label35.TabIndex = 33;
-            this.label35.Text = "The specified item should be picked up (use nopickup@ for the reverse)";
-            // 
-            // label34
-            // 
-            this.label34.AutoSize = true;
-            this.label34.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label34.Location = new System.Drawing.Point(25, 429);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(94, 13);
-            this.label34.TabIndex = 32;
-            this.label34.Text = "pickup@<item>";
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(178, 413);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(288, 13);
-            this.label32.TabIndex = 31;
-            this.label32.Text = "Sets the value of the specified item to the specified amount.";
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label33.Location = new System.Drawing.Point(25, 413);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(142, 13);
-            this.label33.TabIndex = 30;
-            this.label33.Text = "setval@<item>=<value>";
-            // 
-            // label30
-            // 
-            this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(137, 314);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(304, 13);
-            this.label30.TabIndex = 29;
-            this.label30.Text = "Shows your current experience per hour in a simple notification.";
-            // 
-            // label31
-            // 
-            this.label31.AutoSize = true;
-            this.label31.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label31.Location = new System.Drawing.Point(27, 313);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(39, 13);
-            this.label31.TabIndex = 28;
-            this.label31.Text = "exp@";
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(135, 291);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(304, 13);
-            this.label28.TabIndex = 27;
-            this.label28.Text = "Displays information about the NPC, as well as his/her location.";
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label29.Location = new System.Drawing.Point(25, 290);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(84, 13);
-            this.label29.TabIndex = 26;
-            this.label29.Text = "npc@<name>";
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(134, 276);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(406, 13);
-            this.label26.TabIndex = 25;
-            this.label26.Text = "Displays information about the specific item, as well as which creatures drop the" +
-    " item.";
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label27.Location = new System.Drawing.Point(24, 275);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(88, 13);
-            this.label27.TabIndex = 24;
-            this.label27.Text = "drop@<name>";
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(134, 260);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(377, 13);
-            this.label24.TabIndex = 23;
-            this.label24.Text = "Displays information about the specific item, as well as who buys/sells the item." +
-    "";
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label25.Location = new System.Drawing.Point(24, 259);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(86, 13);
-            this.label25.TabIndex = 22;
-            this.label25.Text = "item@<name>";
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(153, 233);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(310, 13);
-            this.label22.TabIndex = 21;
-            this.label22.Text = "Displays the damage dealt by creatures over the last 15 minutes.";
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.Location = new System.Drawing.Point(43, 232);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(110, 13);
-            this.label23.TabIndex = 20;
-            this.label23.Text = "damage@creature";
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(133, 220);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(343, 13);
-            this.label20.TabIndex = 19;
-            this.label20.Text = "Displays the damage of each player over the last 15 minutes in a graph.";
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(23, 219);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(63, 13);
-            this.label21.TabIndex = 18;
-            this.label21.Text = "damage@";
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(131, 155);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(251, 13);
-            this.label18.TabIndex = 17;
-            this.label18.Text = "Resets the current hunt, deleting all loot information.";
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(20, 154);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(47, 13);
-            this.label19.TabIndex = 16;
-            this.label19.Text = "reset@";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(153, 141);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(324, 13);
-            this.label16.TabIndex = 15;
-            this.label16.Text = "Shows all loot collected, without discarding or converting any items.";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(40, 141);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(53, 13);
-            this.label17.TabIndex = 14;
-            this.label17.Text = "loot@all";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(153, 128);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(485, 13);
-            this.label14.TabIndex = 13;
-            this.label14.Text = "Shows all loot collected, and does not convert any items to gold (that have conve" +
-    "rt to gold set to true)";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(40, 128);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(60, 13);
-            this.label15.TabIndex = 12;
-            this.label15.Text = "loot@raw";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(153, 115);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(253, 13);
-            this.label12.TabIndex = 11;
-            this.label12.Text = "Shows all loot dropped by the creature of that name.";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(40, 115);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(84, 13);
-            this.label13.TabIndex = 10;
-            this.label13.Text = "loot@<name>";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(130, 101);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(214, 13);
-            this.label10.TabIndex = 9;
-            this.label10.Text = "Shows all loot collected on the current hunt.";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(20, 100);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(40, 13);
-            this.label11.TabIndex = 8;
-            this.label11.Text = "loot@";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(130, 72);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(187, 13);
-            this.label8.TabIndex = 7;
-            this.label8.Text = "Shows the stats of a specific creature.";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(20, 71);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(90, 13);
-            this.label9.TabIndex = 6;
-            this.label9.Text = "stats@<name>";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(177, 55);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(453, 13);
-            this.label7.TabIndex = 5;
-            this.label7.Text = "Shows all creatures whose name is like the specified name (creature@quara% shows " +
-    "all quara)";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(53, 55);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(123, 13);
-            this.label6.TabIndex = 4;
-            this.label6.Text = "creature@<match>%";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(177, 38);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(181, 13);
-            this.label5.TabIndex = 3;
-            this.label5.Text = "Shows the loot of a random creature.";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(53, 38);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(107, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "creature@random";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(130, 23);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(212, 13);
-            this.label4.TabIndex = 1;
-            this.label4.Text = "Shows all the loot a specific creature drops.";
-            // 
-            // explainLabel
-            // 
-            this.explainLabel.AutoSize = true;
-            this.explainLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.explainLabel.Location = new System.Drawing.Point(20, 22);
-            this.explainLabel.Name = "explainLabel";
-            this.explainLabel.Size = new System.Drawing.Size(110, 13);
-            this.explainLabel.TabIndex = 0;
-            this.explainLabel.Text = "creature@<name>";
             // 
             // closeButton
             // 
@@ -1711,17 +1383,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // autoScreenshotDeath
-            // 
-            this.autoScreenshotDeath.AutoSize = true;
-            this.autoScreenshotDeath.Location = new System.Drawing.Point(3, 147);
-            this.autoScreenshotDeath.Name = "autoScreenshotDeath";
-            this.autoScreenshotDeath.Size = new System.Drawing.Size(245, 17);
-            this.autoScreenshotDeath.TabIndex = 8;
-            this.autoScreenshotDeath.Text = "Automatically take a screenshot when you die.";
-            this.autoScreenshotDeath.UseVisualStyleBackColor = true;
-            this.autoScreenshotDeath.CheckedChanged += new System.EventHandler(this.autoScreenshotDeath_CheckedChanged);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1743,16 +1404,20 @@
             this.mainTab.PerformLayout();
             this.huntingPage.ResumeLayout(false);
             this.huntingPage.PerformLayout();
+            this.trackAllCreaturesPanel.ResumeLayout(false);
+            this.trackAllCreaturesPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backgroundBox)).EndInit();
             this.settingsTab.ResumeLayout(false);
             this.settingsTab.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.notificationPanel.ResumeLayout(false);
             this.notificationPanel.PerformLayout();
             this.richNotificationsPanel.ResumeLayout(false);
             this.richNotificationsPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.notificationLengthSlider)).EndInit();
+            this.databaseTab.ResumeLayout(false);
+            this.databaseTab.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.creatureTab.ResumeLayout(false);
             this.creatureTab.PerformLayout();
             this.itemTab.ResumeLayout(false);
@@ -1764,8 +1429,6 @@
             this.screenshotPanel.ResumeLayout(false);
             this.screenshotPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.screenshotBox)).EndInit();
-            this.commandListTab.ResumeLayout(false);
-            this.commandListTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loadTimerImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1790,54 +1453,8 @@
         private System.Windows.Forms.Label namesLabel;
         private System.Windows.Forms.Button resetButton;
         private System.Windows.Forms.TabPage commandListTab;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label explainLabel;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.Label label28;
-        private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.Label label36;
-        private System.Windows.Forms.Label label37;
-        private System.Windows.Forms.Label label35;
-        private System.Windows.Forms.Label label34;
-        private System.Windows.Forms.Label label32;
-        private System.Windows.Forms.Label label33;
-        private System.Windows.Forms.Label label30;
-        private System.Windows.Forms.Label label31;
-        private System.Windows.Forms.Label label38;
-        private System.Windows.Forms.Label label39;
-        private System.Windows.Forms.Label label40;
-        private System.Windows.Forms.Label label41;
         private System.Windows.Forms.Button saveLootImage;
         private System.Windows.Forms.Button damageButton;
-        private System.Windows.Forms.Label label42;
-        private System.Windows.Forms.Label label43;
-        private System.Windows.Forms.Label label44;
-        private System.Windows.Forms.Label label45;
-        private System.Windows.Forms.Label label46;
-        private System.Windows.Forms.Label label47;
         private System.Windows.Forms.CheckBox enableSimpleNotifications;
         private System.Windows.Forms.Panel richNotificationsPanel;
         private System.Windows.Forms.TrackBar notificationLengthSlider;
@@ -1853,18 +1470,6 @@
         private System.Windows.Forms.ComboBox notificationTypeBox;
         private System.Windows.Forms.CheckBox showNotificationCheckbox;
         private System.Windows.Forms.Label label49;
-        private System.Windows.Forms.Label label50;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Button applyRatioButton;
-        private System.Windows.Forms.TextBox goldRatioTextBox;
-        private System.Windows.Forms.Label label52;
-        private System.Windows.Forms.Label label51;
-        private System.Windows.Forms.Button unstackableConvertApply;
-        private System.Windows.Forms.TextBox unstackableConvertTextBox;
-        private System.Windows.Forms.Label label54;
-        private System.Windows.Forms.Button stackableConvertApply;
-        private System.Windows.Forms.TextBox stackableConvertTextBox;
-        private System.Windows.Forms.Label label53;
         private System.Windows.Forms.Label closeButton;
         private System.Windows.Forms.Label minimizeButton;
         private System.Windows.Forms.NotifyIcon minimizeIcon;
@@ -1873,7 +1478,7 @@
         private EnterTextBox commandTextBox;
         private System.Windows.Forms.Button executeCommand;
         private System.Windows.Forms.TabPage huntingPage;
-        private System.Windows.Forms.CheckBox startupHuntCheckbox;
+        private System.Windows.Forms.CheckBox clearHuntOnStartup;
         private System.Windows.Forms.Button activeHuntButton;
         private System.Windows.Forms.Label creatureTrackLabel;
         private System.Windows.Forms.RichTextBox trackCreaturesBox;
@@ -1917,6 +1522,36 @@
         private RichTextBoxAutoHotkey autoHotkeyGridSettings;
         private System.Windows.Forms.Label autohotkeyWarningLabel;
         private System.Windows.Forms.CheckBox autoScreenshotDeath;
+        private System.Windows.Forms.CheckBox sideHuntBox;
+        private System.Windows.Forms.Panel trackAllCreaturesPanel;
+        private System.Windows.Forms.CheckBox aggregateHuntBox;
+        private System.Windows.Forms.TabPage databaseTab;
+        private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Label label60;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label59;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label51;
+        private System.Windows.Forms.Label label52;
+        private System.Windows.Forms.TextBox goldRatioTextBox;
+        private System.Windows.Forms.Button applyRatioButton;
+        private System.Windows.Forms.Label label53;
+        private System.Windows.Forms.TextBox stackableConvertTextBox;
+        private System.Windows.Forms.Button stackableConvertApply;
+        private System.Windows.Forms.TextBox unstackableConvertTextBox;
+        private System.Windows.Forms.Button unstackableConvertApply;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label label50;
+        private System.Windows.Forms.Label label54;
     }
 }
 

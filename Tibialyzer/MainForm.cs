@@ -45,6 +45,7 @@ namespace Tibialyzer {
         public static Dictionary<string, Image> vocationImages = new Dictionary<string, Image>();
         private bool keep_working = true;
         private static string databaseFile = @"Database\Database.db";
+        private static string lootDatabaseFile = @"Database\Loot.db";
         private static string settingsFile = @"Database\settings.txt";
         private static string nodeDatabase = @"Database\Nodes.db";
         private static string pluralMapFile = @"Database\pluralMap.txt";
@@ -59,9 +60,11 @@ namespace Tibialyzer {
         static HashSet<string> cities = new HashSet<string>() { "ab'dendriel", "carlin", "kazordoon", "venore", "thais", "ankrahmun", "farmine", "gray beach", "liberty bay", "port hope", "rathleton", "roshamuul", "yalahar", "svargrond", "edron", "darashia", "rookgaard", "dawnport", "gray beach" };
         public List<string> notification_items = new List<string>();
         private ToolTip scan_tooltip = new ToolTip();
-        private Stack<string> command_stack = new Stack<string>();
+        private Stack<TibialyzerCommand> command_stack = new Stack<TibialyzerCommand>();
+        public static List<Font> fontList = new List<Font>();
 
         private SQLiteConnection conn;
+        private SQLiteConnection lootConn;
         static Dictionary<string, Image> creatureImages = new Dictionary<string, Image>();
 
         enum ScanningState { Scanning, NoTibia, Stuck };
@@ -77,6 +80,9 @@ namespace Tibialyzer {
 
             conn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", databaseFile));
             conn.Open();
+
+            lootConn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", lootDatabaseFile));
+            lootConn.Open();
 
             back_image = Image.FromFile(@"Images\back.png");
             prevpage_image = Image.FromFile(@"Images\prevpage.png");
@@ -350,21 +356,32 @@ namespace Tibialyzer {
         }
 
         void initializeHunts() {
-            //"Name#Track#Creature#Creature#Creature#Creature"
+            //"Name#DBTableID#Track#Time#Exp#SideHunt#AggregateHunt#ClearOnStartup#Creature#Creature#..."
             if (!settings.ContainsKey("Hunts")) {
-                settings.Add("Hunts", new List<string>() { "New Hunt#True#" });
+                settings.Add("Hunts", new List<string>() { "New Hunt#True#0#0#False#True" });
             }
             int activeHuntIndex = 0, index = 0;
+            List<int> dbTableIds = new List<int>();
             foreach (string str in settings["Hunts"]) {
                 SQLiteCommand command; SQLiteDataReader reader;
                 Hunt hunt = new Hunt();
                 string[] splits = str.Split('#');
-                if (splits.Length >= 3) {
+                if (splits.Length >= 7) {
                     hunt.name = splits[0];
-                    hunt.trackAllCreatures = splits[1] == "True";
+                    if (!int.TryParse(splits[1].Trim(), out hunt.dbtableid)) continue;
+                    if (dbTableIds.Contains(hunt.dbtableid)) continue;
+                    dbTableIds.Add(hunt.dbtableid);
+
+                    hunt.totalTime = 0;
+                    hunt.trackAllCreatures = splits[2] == "True";
+                    double.TryParse(splits[3], out hunt.totalTime);
+                    long.TryParse(splits[4], out hunt.totalExp);
+                    hunt.sideHunt = splits[5] == "True";
+                    hunt.aggregateHunt = splits[6] == "True";
+                    hunt.clearOnStartup = splits[7] == "True";
                     hunt.temporary = false;
                     string massiveString = "";
-                    for (int i = 2; i < splits.Length; i++) {
+                    for (int i = 8; i < splits.Length; i++) {
                         if (splits[i].Length > 0) {
                             massiveString += splits[i] + "\n";
                         }
@@ -374,11 +391,18 @@ namespace Tibialyzer {
                     if (settings.ContainsKey("ActiveHunt") && settings["ActiveHunt"].Count > 0 && settings["ActiveHunt"][0] == hunt.name)
                         activeHuntIndex = index;
 
+                    refreshLootCreatures(hunt);
+
+                    if (hunt.clearOnStartup) {
+                        command = new SQLiteCommand(String.Format("DROP TABLE IF EXISTS \"{0}\"", hunt.GetTableName()), lootConn);
+                        command.ExecuteNonQuery();
+                    }
+
                     // create the hunt table if it does not exist
-                    command = new SQLiteCommand(String.Format("CREATE TABLE IF NOT EXISTS \"{0}\"(day INTEGER, hour INTEGER, minute INTEGER, message STRING);", hunt.name.ToLower()), conn);
+                    command = new SQLiteCommand(String.Format("CREATE TABLE IF NOT EXISTS \"{0}\"(day INTEGER, hour INTEGER, minute INTEGER, message STRING);", hunt.GetTableName()), lootConn);
                     command.ExecuteNonQuery();
                     // load the data for the hunt from the database
-                    command = new SQLiteCommand(String.Format("SELECT message FROM \"{0}\" ORDER BY day, hour, minute;", hunt.name.ToLower()), conn);
+                    command = new SQLiteCommand(String.Format("SELECT message FROM \"{0}\" ORDER BY day, hour, minute;", hunt.GetTableName()), lootConn);
                     reader = command.ExecuteReader();
                     while (reader.Read()) {
                         string message = reader["message"].ToString();
@@ -1255,14 +1279,27 @@ namespace Tibialyzer {
 
         private void newHuntButton_Click(object sender, EventArgs e) {
             Hunt h = new Hunt();
-            if (!nameExists("New Hunt")) {
-                h.name = "New Hunt";
-            } else {
-                int index = 1;
-                while (nameExists("New Hunt " + index)) index++;
-                h.name = "New Hunt " + index;
+            lock (hunts) {
+                SQLiteCommand command;
+                if (!nameExists("New Hunt")) {
+                    h.name = "New Hunt";
+                } else {
+                    int index = 1;
+                    while (nameExists("New Hunt " + index)) index++;
+                    h.name = "New Hunt " + index;
+                }
+
+                h.dbtableid = 1;
+                while(true) {
+                    command = new SQLiteCommand(String.Format("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='{0}';", h.GetTableName()), lootConn);
+                    int value = int.Parse(command.ExecuteScalar().ToString());
+                    if (value == 0) {
+                        break;
+                    }
+                    h.dbtableid++;
+                }
             }
-            activeHunt = h;
+            resetHunt(h);
             h.trackAllCreatures = true;
             h.trackedCreatures = "";
             hunts.Add(h);
@@ -1272,13 +1309,11 @@ namespace Tibialyzer {
         private void deleteHuntButton_Click(object sender, EventArgs e) {
             if (hunts.Count <= 1) return;
             Hunt h = getSelectedHunt();
-            hunts.Remove(h);
+            lock (hunts) {
+                hunts.Remove(h);
+            }
             saveHunts();
             refreshHunts(true);
-        }
-
-        private void startupHuntCheckbox_CheckedChanged(object sender, EventArgs e) {
-
         }
 
         bool skip_hunt_refresh = false;
@@ -1296,8 +1331,10 @@ namespace Tibialyzer {
                 activeHuntButton.Text = "Set As Active Hunt";
                 activeHuntButton.Enabled = true;
             }
-            trackCreaturesBox.Enabled = !h.trackAllCreatures;
             trackCreaturesBox.Text = h.trackedCreatures;
+            clearHuntOnStartup.Checked = h.clearOnStartup;
+            sideHuntBox.Checked = h.sideHunt;
+            aggregateHuntBox.Checked = h.aggregateHunt;
             refreshHuntImages(h);
             refreshHuntLog(h);
             switch_hunt = false;
@@ -1321,13 +1358,14 @@ namespace Tibialyzer {
             int currentHunt = 0;
             skip_hunt_refresh = true;
 
-            huntBox.Items.Clear();
-            foreach (Hunt hunt in hunts) {
-                huntBox.Items.Add(hunt.name);
-                if (hunt == h) currentHunt = huntBox.Items.Count - 1;
+            lock (hunts) {
+                huntBox.Items.Clear();
+                foreach (Hunt hunt in hunts) {
+                    huntBox.Items.Add(hunt.name);
+                    if (hunt == h) currentHunt = huntBox.Items.Count - 1;
+                }
+                huntBox.SelectedIndex = refreshSelection ? 0 : currentHunt;
             }
-            huntBox.SelectedIndex = refreshSelection ? 0 : currentHunt;
-            activeHunt = hunts[huntBox.SelectedIndex];
 
             skip_hunt_refresh = false;
             huntBox_SelectedIndexChanged(huntBox, null);
@@ -1335,26 +1373,23 @@ namespace Tibialyzer {
 
         void saveHunts() {
             List<string> huntStrings = new List<string>();
-            foreach (Hunt hunt in hunts) {
-                if (hunt.temporary) continue;
-                huntStrings.Add(hunt.ToString());
+            lock (hunts) {
+                foreach (Hunt hunt in hunts) {
+                    if (hunt.temporary) continue;
+                    huntStrings.Add(hunt.ToString());
+                }
+                settings["Hunts"] = huntStrings;
+                if (activeHunt != null) {
+                    setSetting("ActiveHunt", activeHunt.name);
+                }
+                saveSettings();
             }
-            settings["Hunts"] = huntStrings;
-            if (activeHunt != null) {
-                setSetting("ActiveHunt", activeHunt.name);
-            }
-            saveSettings();
         }
 
         private void huntNameBox_TextChanged(object sender, EventArgs e) {
             if (switch_hunt) return;
             Hunt h = getSelectedHunt();
-            string oldTable = h.name;
-            string newTable = (sender as TextBox).Text;
-            if (oldTable == newTable || newTable.Length <= 0) return;
-            h.name = newTable;
-            SQLiteCommand comm = new SQLiteCommand(String.Format("ALTER TABLE \"{0}\" RENAME TO \"{1}\";", oldTable, h.name), conn);
-            comm.ExecuteNonQuery();
+            h.name = (sender as TextBox).Text;
             saveHunts();
             refreshHunts();
         }
@@ -1362,30 +1397,52 @@ namespace Tibialyzer {
         private void activeHuntButton_Click(object sender, EventArgs e) {
             if (switch_hunt) return;
             Hunt h = getSelectedHunt();
+            lock (hunts) {
+                activeHunt = h;
+            }
             activeHuntButton.Text = "Currently Active";
             activeHuntButton.Enabled = false;
-            activeHunt = h;
             saveHunts();
         }
 
-        List<string> lootCreatures = new List<string>();
-        void refreshHuntImages(Hunt h) {
-            int spacing = 4;
+        List<TibiaObject> refreshLootCreatures(Hunt h) {
+            h.lootCreatures.Clear();
             string[] creatures = h.trackedCreatures.Split('\n');
             List<TibiaObject> creatureObjects = new List<TibiaObject>();
-            int totalWidth = spacing + spacing;
-            int maxHeight = -1;
             foreach (string cr in creatures) {
                 string name = cr.ToLower();
                 Creature cc = getCreature(name);
-                if (cc != null && !creatureObjects.Any(item => item.GetName() == name)) {
-                    totalWidth += cc.image.Width + spacing;
-                    maxHeight = Math.Max(maxHeight, cc.image.Height);
+                if (cc != null && !creatureObjects.Contains(cc)) {
                     creatureObjects.Add(cc);
-                    lootCreatures.Add(name);
+                    h.lootCreatures.Add(name);
+                } else if (cc == null) {
+                    HuntingPlace hunt = getHunt(name);
+                    if (hunt != null) {
+                        foreach (int creatureid in hunt.creatures) {
+                            cc = getCreature(creatureid);
+                            if (cc != null && !creatureObjects.Any(item => item.GetName() == name)) {
+                                creatureObjects.Add(cc);
+                                h.lootCreatures.Add(cc.GetName());
+                            }
+                        }
+                    }
                 }
             }
+            return creatureObjects;
+        }
+
+        void refreshHuntImages(Hunt h) {
+            int spacing = 4;
+            int totalWidth = spacing + spacing;
+            int maxHeight = -1;
             float magnification = 1.0f;
+            List<TibiaObject> creatureObjects = refreshLootCreatures(h);
+            foreach (TibiaObject obj in creatureObjects) {
+                Creature cc = obj as Creature;
+                totalWidth += cc.image.Width + spacing;
+                maxHeight = Math.Max(maxHeight, cc.image.Height);
+            }
+
             if (totalWidth < creatureImagePanel.Width) {
                 // fits on one line
                 magnification = ((float)creatureImagePanel.Width) / totalWidth;
@@ -1409,6 +1466,27 @@ namespace Tibialyzer {
             DisplayCreatureList(creatureImagePanel.Controls, creatureObjects, 0, 0, creatureImagePanel.Width, spacing, false, null, magnification);
         }
 
+        private void startupHuntCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (switch_hunt) return;
+            Hunt h = getSelectedHunt();
+            h.clearOnStartup = (sender as CheckBox).Checked;
+            saveHunts();
+        }
+
+        private void sideHuntBox_CheckedChanged(object sender, EventArgs e) {
+            if (switch_hunt) return;
+            Hunt h = getSelectedHunt();
+            h.sideHunt = (sender as CheckBox).Checked;
+            saveHunts();
+        }
+        
+        private void aggregateHuntBox_CheckedChanged(object sender, EventArgs e) {
+            if (switch_hunt) return;
+            Hunt h = getSelectedHunt();
+            h.aggregateHunt = (sender as CheckBox).Checked;
+            saveHunts();
+        }
+
         private void trackCreaturesBox_TextChanged(object sender, EventArgs e) {
             if (switch_hunt) return;
             Hunt h = hunts[huntBox.SelectedIndex];
@@ -1421,8 +1499,6 @@ namespace Tibialyzer {
         private void trackCreaturesCheckbox_CheckedChanged(object sender, EventArgs e) {
             if (switch_hunt) return;
             bool chk = (sender as CheckBox).Checked;
-            this.creatureTrackLabel.Visible = !chk;
-            this.trackCreaturesBox.Enabled = !chk;
 
             Hunt h = getActiveHunt();
             h.trackAllCreatures = chk;
@@ -1615,7 +1691,7 @@ namespace Tibialyzer {
             return bitmap;
 
         }
-        
+
         void saveScreenshot(string name, Bitmap bitmap) {
             if (bitmap == null) return;
             string path = getSettingString("ScreenshotPath");
@@ -1880,6 +1956,50 @@ namespace Tibialyzer {
                 }
             }
             base.WndProc(ref m);
+        }
+
+        private void stackableConvertTextBox_TextChanged(object sender, EventArgs e) {
+
+        }
+
+        private void stackableConvertApply_Click_1(object sender, EventArgs e) {
+
+        }
+    }
+
+    public class Loot {
+        public Dictionary<string, List<string>> logMessages = new Dictionary<string, List<string>>();
+        public Dictionary<Creature, Dictionary<Item, int>> creatureLoot = new Dictionary<Creature, Dictionary<Item, int>>();
+        public Dictionary<Creature, int> killCount = new Dictionary<Creature, int>();
+    };
+
+    public class Hunt {
+        public int dbtableid;
+        public string name;
+        public bool temporary = false;
+        public bool trackAllCreatures = true;
+        public bool sideHunt = false;
+        public bool aggregateHunt = false;
+        public bool clearOnStartup = false;
+        public string trackedCreatures = "";
+        public long totalExp = 0;
+        public double totalTime = 0;
+        public Loot loot = new Loot();
+        public List<string> lootCreatures = new List<string>();
+
+        public string GetTableName() {
+            return "LootMessageTable" + dbtableid.ToString();
+        }
+
+        public override string ToString() {
+            return name + "#" + dbtableid.ToString() + "#" + trackAllCreatures.ToString() + "#" + totalTime.ToString() + "#" + totalExp.ToString() + "#" + sideHunt.ToString() + "#" + aggregateHunt.ToString() + "#" + clearOnStartup.ToString() + "#" + trackedCreatures.Replace("\n", "#");
+        }
+    };
+
+    public class TibialyzerCommand {
+        public string command;
+        public TibialyzerCommand(string command) {
+            this.command = command;
         }
     }
 }

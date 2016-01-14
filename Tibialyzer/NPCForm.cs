@@ -122,12 +122,22 @@ namespace Tibialyzer {
 
         public override void LoadForm() {
             if (npc == null) return;
-            disposableObjects.Add(npc);
 
             this.SuspendLayout();
             NotificationInitialize();
             npcImage.Image = npc.image;
             creatureName.Text = MainForm.ToTitle(npc.city);
+            Font f = MainForm.fontList[0];
+            for (int i = 0; i < MainForm.fontList.Count; i++) {
+                Font font = MainForm.fontList[i];
+                Size size = TextRenderer.MeasureText(this.creatureName.Text, font);
+                if (size.Width < creatureName.MaximumSize.Width && size.Height < creatureName.MaximumSize.Height) {
+                    f = font;
+                } else {
+                    break;
+                }
+            }
+            this.creatureName.Font = f;
 
 
             Map m = MainForm.getMap(npc.pos.z);

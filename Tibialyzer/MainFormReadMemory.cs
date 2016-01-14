@@ -367,10 +367,10 @@ namespace Tibialyzer {
             h.loot.creatureLoot.Clear();
             h.loot.killCount.Clear();
             h.loot.logMessages.Clear();
-            SQLiteCommand comm = new SQLiteCommand(String.Format("DELETE FROM \"{0}\" WHERE day < {1} OR hour < {2} OR (hour == {2} AND minute < {3})", h.name.ToLower(), stamp, hour, minute), conn);
+            SQLiteCommand comm = new SQLiteCommand(String.Format("DELETE FROM \"{0}\" WHERE day < {1} OR hour < {2} OR (hour == {2} AND minute < {3})", h.GetTableName(), stamp, hour, minute), lootConn);
             comm.ExecuteNonQuery();
 
-            comm = new SQLiteCommand(String.Format("SELECT message FROM \"{0}\"", h.name.ToLower()), conn);
+            comm = new SQLiteCommand(String.Format("SELECT message FROM \"{0}\"", h.GetTableName()), lootConn);
             SQLiteDataReader reader = comm.ExecuteReader();
             Dictionary<string, List<string>> logMessages = new Dictionary<string, List<string>>();
             while (reader.Read()) {
@@ -385,13 +385,17 @@ namespace Tibialyzer {
         }
 
         void resetHunt(Hunt h) {
-            h.loot.creatureLoot.Clear();
-            h.loot.killCount.Clear();
-            h.loot.logMessages.Clear();
-            string huntTable = h.name.ToLower().Replace("\"", "\\\"");
-            SQLiteCommand comm = new SQLiteCommand(String.Format("DROP TABLE \"{0}\";", huntTable), conn);
+            lock(hunts) {
+                h.loot.creatureLoot.Clear();
+                h.loot.killCount.Clear();
+                h.loot.logMessages.Clear();
+                h.totalExp = 0;
+                h.totalTime = 0;
+            }
+            string huntTable = h.GetTableName();
+            SQLiteCommand comm = new SQLiteCommand(String.Format("DROP TABLE IF EXISTS \"{0}\";", huntTable), lootConn);
             comm.ExecuteNonQuery();
-            comm = new SQLiteCommand(String.Format("CREATE TABLE IF NOT EXISTS \"{0}\"(day INTEGER, hour INTEGER, minute INTEGER, message STRING);", huntTable), conn);
+            comm = new SQLiteCommand(String.Format("CREATE TABLE IF NOT EXISTS \"{0}\"(day INTEGER, hour INTEGER, minute INTEGER, message STRING);", huntTable), lootConn);
             comm.ExecuteNonQuery();
         }
 
@@ -399,7 +403,7 @@ namespace Tibialyzer {
             StreamWriter streamWriter = new StreamWriter(logPath);
 
             // we load the data from the database instead of from the stored dictionary so it is ordered properly
-            SQLiteCommand comm = new SQLiteCommand(String.Format("SELECT message FROM \"{0}\"", h.name.ToLower()), conn);
+            SQLiteCommand comm = new SQLiteCommand(String.Format("SELECT message FROM \"{0}\"", h.GetTableName()), lootConn);
             SQLiteDataReader reader = comm.ExecuteReader();
             while (reader.Read()) {
                 streamWriter.WriteLine(reader["message"].ToString());
@@ -617,11 +621,17 @@ namespace Tibialyzer {
 
             // similar to damage, we keep a totalExperienceResults list
             // first update it with the new information
+            int newExperience = 0;
             foreach (KeyValuePair<string, int> kvp in res.exp) {
                 string time = kvp.Key;
                 int experience = kvp.Value;
-                if (!totalExperienceResults.ContainsKey(time)) totalExperienceResults.Add(time, experience);
-                else if (totalExperienceResults[time] < experience) totalExperienceResults[time] = experience;
+                if (!totalExperienceResults.ContainsKey(time)) {
+                    totalExperienceResults.Add(time, experience);
+                    newExperience += experience;
+                } else if (totalExperienceResults[time] < experience) {
+                    newExperience += experience - totalExperienceResults[time];
+                    totalExperienceResults[time] = experience;
+                }
             }
             // now compute the experience per hour
             // we use the same formula Tibia itself does so we get the same value
@@ -698,9 +708,23 @@ namespace Tibialyzer {
                     totalURLs[t] = currentURLs;
                 }
             }
-
-
-            ParseLootMessages(activeHunt, res.itemDrops, o.newItems);
+            
+            ParseLootMessages(activeHunt, res.itemDrops, o.newItems, true, true);
+            activeHunt.totalExp += newExperience;
+            
+            readWatch.Stop();
+            if (newExperience == 0) {
+                if (ticksSinceExperience < 120) {
+                    ticksSinceExperience += readWatch.Elapsed.TotalSeconds;
+                }
+            } else {
+                ticksSinceExperience = 0;
+            }
+            if (ticksSinceExperience < 120) {
+                activeHunt.totalTime += readWatch.Elapsed.TotalSeconds;
+            }
+            readWatch.Restart();
+            saveHunts();
             return o;
         }
 
@@ -756,7 +780,7 @@ namespace Tibialyzer {
             }
             return new Tuple<Creature, List<Tuple<Item, int>>>(cr, itemList);
         }
-
+        
         private int ignoreStamp = 0;
         private void SearchChunk(List<string> chunk, ReadMemoryResults res) {
             List<int> stamps = getLatestStamps(3, ignoreStamp);
