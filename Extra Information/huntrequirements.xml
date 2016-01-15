@@ -1,0 +1,21 @@
+
+<HuntRequirements>
+	<Hunt>
+		<Name>Formorgar Mines</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Ice Islands Quest</Quest>
+				<RequirementText>Ice Islands Quest (Mission 09)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Forbidden Lands</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Ape City Quest</Quest>
+				<RequirementText>Ape City Quest (Mission 08)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+</HuntRequirements>

@@ -1,0 +1,600 @@
+
+<QuestInstructions>
+	<Quest>
+		<Name>The Desert Dungeon Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Red Apple</Item>
+				<Item Count="1">Sword</Item>
+				<Item Count="1">Crossbow</Item>
+				<Item Count="1">Spellbook</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>You must bring four people; one of every vocation (knight, druid, sorcerer, paladin).</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+		<Instructions>
+			<Instruction>
+				<BeginCoordinate>128.153,125.70,6</BeginCoordinate>
+				<EndCoordinate>128.94,125.126,6</EndCoordinate>
+				<EndImage>Object=Stairs (Down)</EndImage>
+				<Text>From Venore, head down the south-west stairs.</Text>
+			</Instruction>
+			<Instruction>
+				<BeginCoordinate>128.94,125.126,7</BeginCoordinate>
+				<EndCoordinate>127.138,125.92,7</EndCoordinate>
+				<BeginImage>Object=Stairs (White)</BeginImage>
+				<EndImage>Object=Loose Stone Pile</EndImage>
+				<Text>The Desert Dungeon is located in the desert to the west of venore.@Head to the desert quest dungeon, and down the hole.</Text>
+			</Instruction>
+			<Instruction>
+				<BeginCoordinate>127.135,125.94,12</BeginCoordinate>
+				<EndCoordinate>127.147,125.112,12</EndCoordinate>
+				<EndImage>Object=Ladder (Wood)</EndImage>
+				<Text>Traverse the dungeon, and go up the ladder.</Text>
+			</Instruction>
+			<Instruction SamePage="True">
+				<BeginCoordinate>127.146,125.112,11</BeginCoordinate>
+				<EndCoordinate>127.134,125.110,11</EndCoordinate>
+				<BeginImage>Object=Trapdoor</BeginImage>
+				<EndImage>Object=Ladder (Wood)</EndImage>
+				<Text>Go up the stairs to the left; then follow the path.</Text>
+			</Instruction>
+			<Instruction>
+				<BeginCoordinate>127.117,125.132,9</BeginCoordinate>
+				<EndCoordinate>127.158,125.99,9</EndCoordinate>
+				<BeginImage>Object=Trapdoor</BeginImage>
+				<EndImage>Object=Ladder (Wood)</EndImage>
+				<Text>Walk all the way north-east, ignore the other holes.</Text>
+			</Instruction>
+			<Instruction>
+				<Markings>
+					<Marking>
+						<MarkLocation>127.161,125.94,8</MarkLocation>
+						<MarkIcon>Item=Sword</MarkIcon>
+					</Marking>
+					<Marking>
+						<MarkLocation>127.166,125.89,8</MarkLocation>
+						<MarkIcon>Item=Spellbook</MarkIcon>
+					</Marking>
+					<Marking>
+						<MarkLocation>127.161,125.84,8</MarkLocation>
+						<MarkIcon>Item=Crossbow</MarkIcon>
+					</Marking>
+					<Marking>
+						<MarkLocation>127.156,125.89,8</MarkLocation>
+						<MarkIcon>Item=Red Apple</MarkIcon>
+					</Marking>
+				</Markings>
+				<Text>Enter the room, place the items on the basins and have the person of the specified vocation stand on the corresponding switch tiles. After positioning yourself correctly, pull the lever.@Item=Sword@Knight: Sword, South@Item=Spellbook@Sorcerer: Spellbook, East@Item=Red Apple@Druid: Red Apple, West@Item=Crossbow@Paladin: Crossbow, North</Text>
+			</Instruction>
+		</Instructions>
+	</Quest>
+	<Quest>
+		<Name>Oriental Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="100">Ape Fur</Item>
+				<Item Count="100">Fish Fin</Item>
+				<Item Count="2">Enchanted Chicken Wing</Item>
+				<Item Count="100">Blue Piece of Cloth</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>You must be ranked relic hunter or higher in the Explorer's Society.</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+		<Instructions>
+			<Mission Name="Addon 1">
+				<Instruction>
+					<Markings>
+						<Marking>
+							<MarkLocation>129.201,126.180,7</MarkLocation>
+							<MarkIcon>NPC=Habdel</MarkIcon>
+							<MarkSize>20</MarkSize>
+						</Marking>
+					</Markings>
+					<Text>NPC=Habdel@(Male) Go to Habdel and ask him about his outfit.@Item=Coral Comb@He will ask you to retrieve a Coral Comb.</Text>
+				</Instruction>
+				<Instruction SamePage="True">
+					<Markings>
+						<Marking>
+							<MarkLocation>129.208,126.167,7</MarkLocation>
+							<MarkIcon>NPC=Ishina</MarkIcon>
+							<MarkSize>20</MarkSize>
+						</Marking>
+					</Markings>
+					<Text>NPC=Ishina@(Female) Go to Ishina and ask her about her outfit.</Text>
+				</Instruction>
+				<Instruction>
+					<Markings>
+						<Marking>
+							<MarkLocation>126.67,127.19,7</MarkLocation>
+							<MarkIcon>NPC=Marina</MarkIcon>
+							<MarkSize>20</MarkSize>
+						</Marking>
+					</Markings>
+					<Text>NPC=Marina@Travel to Meriana and ask her about a comb.@You must complete the {Quest|Shattered Isles Quest|Eleonore Quest} to go there.</Text>
+				</Instruction>
+				<Instruction>
+					<Markings>
+						<Marking>
+							<MarkLocation>126.42,128.128,6</MarkLocation>
+							<MarkIcon>NPC=Captain Max</MarkIcon>
+							<MarkSize>20</MarkSize>
+						</Marking>
+					</Markings>
+					<Text>NPC=Captain Max@Go to Captain Max at Liberty Bay and travel to Calassa.@This requires relic hunter rank in the {Quest|The Explorer Society|Explorer Society}.</Text>
+				</Instruction>
+				<Instruction>
+					<BeginCoordinate>124.169,127.201,12</BeginCoordinate>
+					<EndCoordinate>125.84,127.255,12</EndCoordinate>
+					<EndImage>Object=Ladder (Wood)</EndImage>
+					<WalkableColor>51,102,153</WalkableColor>
+					<Text>CR=Massive Water Elemental@Traverse Calassa to the room containing the Coral Comb. Be prepared to encounter many Quaras.@CR=Quara Predator@CR=Quara Hydromancer@CR=Quara Pincher@CR=Quara Mantassin@@After collecting the Coral Comb, give it to the starting NPC to obtain the addon.</Text>
+				</Instruction>
+			</Mission>
+			<Mission Name="Addon 2">
+				<Instruction>
+					<Markings>
+						<Marking>
+							<MarkLocation>129.215,126.153,7</MarkLocation>
+							<MarkIcon>NPC=Razan</MarkIcon>
+							<MarkSize>20</MarkSize>
+						</Marking>
+					</Markings>
+					<RectangleSize>90</RectangleSize>
+					<Text>NPC=Razan@(Male) Go to Razan and ask him about his outfit.@After that, hand him the required items to obtain the Turban.</Text>
+				</Instruction>
+				<Instruction SamePage="True">
+					<Markings>
+						<Marking>
+							<MarkLocation>129.215,126.228,7</MarkLocation>
+							<MarkIcon>NPC=Miraia</MarkIcon>
+							<MarkSize>20</MarkSize>
+						</Marking>
+					</Markings>
+					<Text>NPC=Miraia@(Female) Go to Miraia and ask her about her outfit.@After that, hand her the required items to obtain the Turban.</Text>
+				</Instruction>
+			</Mission>
+		</Instructions>
+	</Quest>
+	<Quest>
+		<Name>The Gravedigger of Drefia Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="2">Ghoul Snack</Item>
+				<Item Count="2">Demonic Skeletal Hand</Item>
+				<Item Count="2">Half-Eaten Brain</Item>
+				<Item Count="4">Blood Tincture in a Vial</Item>
+				<Item Count="1">Pieces of Magic Chalk</Item>
+				<Item Count="1">Yellowed Bone</Item>
+			</Items>
+		</Requirements>
+		<Instructions>
+			<Mission Name="Volume 1">
+				<Instruction>
+					<Markings>
+						<Marking>
+							<MarkLocation>128.252,126.197,8</MarkLocation>
+							<MarkIcon>Object=Loose Stone Pile</MarkIcon>
+						</Marking>
+					</Markings>
+					<Text>NPC=Omrabas@Go to Omrabas by using a shovel on the loose stone pile.@Then ask him for a mission.@Item=Ghoul Snack@He asks for two ghoul snacks.@Item=Demonic Skeletal Hand@Next, Omrabas asks you for two demonic skeletal hands.</Text>
+				</Instruction>
+				<Instruction>
+					<BeginCoordinate>128.249,126.198,7</BeginCoordinate>
+					<EndCoordinate>128.221,126.136,7</EndCoordinate>
+					<BeginImage>Object=Stairs (Down)</BeginImage>
+					<EndImage>Spell=Levitate</EndImage>
+					<Text>Item=Omrabas' Heart@Go to the ruins at the northern tip of Drefia. Levitate up and go down the stairs.@@@Enter the teleporter and break the Dusty Amphoras until you find Omrabas' Heart.</Text>
+				</Instruction>
+				<Instruction>
+					<BeginCoordinate>128.249,126.198,7</BeginCoordinate>
+					<EndCoordinate>128.228,126.156,7</EndCoordinate>
+					<BeginImage>Object=Stairs (Down)</BeginImage>
+					<EndImage>Object=Stairs (Down)</EndImage>
+					<Text>Omrabas will ask for a simulated brain.@Head to the main building, and down two sets of stairs.</Text>
+				</Instruction>
+				<Instruction SamePage="True">
+					<Markings>
+						<Marking>
+							<MarkLocation>128.252,126.76,10</MarkLocation>
+							<MarkIcon>Item=Half-Eaten Brain</MarkIcon>
+						</Marking>
+						<Marking>
+							<MarkLocation>129.1,126.76,10</MarkLocation>
+							<MarkIcon>Item=Half-Eaten Brain</MarkIcon>
+						</Marking>
+					</Markings>
+					<BeginCoordinate>128.235,126.156,10</BeginCoordinate>
+					<EndCoordinate>128.254,126.81,10</EndCoordinate>
+					<BeginImage>Object=Stairs (White)</BeginImage>
+					<Text>CR=Necromancer@Head to the sacrifical altar, watch out for necromancers.@Put the two Half-Eaten Brains on the sacrificial altars and use the machine north of it. A Stimulated Brain will appear on the central altar.</Text>
+				</Instruction>
+				<Instruction>
+					<Markings>
+						<Marking>
+							<MarkLocation>129.25,126.183,5</MarkLocation>
+							<MarkIcon>CR=Snake</MarkIcon>
+						</Marking>
+					</Markings>
+					<Text>CR=Snake@Next, Omrabas will ask you to bring something to use as intestines.@@Find a live snake and use the empty vial on it.@There are a number of snakes on the hills to Drefia.@There is also a snake down the stairs in the main building.</Text>
+				</Instruction>
+			</Mission>
+			<Mission Name="Volume 2">
+				<Instruction>
+					<BeginCoordinate>128.249,126.198,7</BeginCoordinate>
+					<EndCoordinate>128.244,126.156,7</EndCoordinate>
+					<BeginImage>Object=Stairs (Down)</BeginImage>
+					<EndImage>Object=Hole (Rock)</EndImage>
+					<Text>Omrabas asks you to find three dragon tears.@@@Head to the hole to the north-east of Drefia and down the hole.</Text>
+				</Instruction>
+				<Instruction SamePage="True">
+					<BeginCoordinate>128.244,126.156,8</BeginCoordinate>
+					<EndCoordinate>129.7,126.176,8</EndCoordinate>
+					<EndImage>Object=Hole (Rock)</EndImage>
+					<Text>Head to the south and go down another hole. Then walk through the teleporter. Here you will need to dig up three dragon tears.</Text>
+				</Instruction>
+				<Instruction SamePage="True">
+					<Markings>
+						<Marking>
+							<MarkLocation>129.37,126.172,10</MarkLocation>
+							<MarkIcon>Item=Small Dragon Tear</MarkIcon>
+						</Marking>
+						<Marking>
+							<MarkLocation>129.41,126.167,10</MarkLocation>
+							<MarkIcon>Item=Small Dragon Tear</MarkIcon>
+						</Marking>
+						<Marking>
+							<MarkLocation>129.40,126.178,10</MarkLocation>
+							<MarkIcon>Item=Small Dragon Tear</MarkIcon>
+						</Marking>
+					</Markings>
+					<Text>Item=Small Dragon Tear@After going down the hole, dig up the three dragon tears using a shovel.</Text>
+				</Instruction>
+				<Instruction>
+					<BeginCoordinate>128.235,126.156,10</BeginCoordinate>
+					<EndCoordinate>129.78,126.119,10</EndCoordinate>
+					<Text></Text>
+				</Instruction>
+			</Mission>
+		</Instructions>
+	</Quest>
+	<Quest>
+		<Name>The Postman Missions Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="20">Bone</Item>
+				<Item Count="1">Crowbar</Item>
+				<Item Count="1">Mouldy Cheese</Item>
+				<Item Count="1">Banana Skin</Item>
+				<Item Count="1">Dirty Fur</Item>
+				<Item Count="12">Arrow</Item>
+				<Item Count="1">Grapes</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>You need 500 oz. of capacity for Mission 9.</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Spike Sword Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Pick</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Thais Lighthouse Quest</Name>
+		<Requirements>
+			<AdditionalRequirements>
+				<Requirement>You need two people to open the path to the teleporter.</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Annihilator Quest</Name>
+		<Requirements>
+			<AdditionalRequirements>
+				<Requirement>You need a total of four people to do this quest.</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Queen of the Banshees Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Vial Of Blood</Item>
+				<Item Count="1">Black Pearl</Item>
+				<Item Count="1">White Pearl</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Paradox Tower Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Machete</Item>
+				<Item Count="8">Skull</Item>
+				<Item Count="1">Melon</Item>
+				<Item Count="1">Banana</Item>
+				<Item Count="1">Cherry</Item>
+				<Item Count="1">Red Apple</Item>
+				<Item Count="1">Grapes</Item>
+				<Item Count="1">Coconut</Item>
+				<Item Count="1">White Knight Token</Item>
+				<Item Count="1">Black Knight Token</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Paradox Tower Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Machete</Item>
+				<Item Count="8">Skull</Item>
+				<Item Count="1">Melon</Item>
+				<Item Count="1">Banana</Item>
+				<Item Count="1">Cherry</Item>
+				<Item Count="1">Red Apple</Item>
+				<Item Count="1">Grapes</Item>
+				<Item Count="1">Coconut</Item>
+				<Item Count="1">White Knight Token</Item>
+				<Item Count="1">Black Knight Token</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Alawar's Vault Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Pick</Item>
+				<Item Count="1">Destroy Field Rune</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Noble Armor Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="10">Platinum Coin</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Draconia Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="3">Destroy Field Rune</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Deeper Fibula Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="3">Destroy Field Rune</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Devil Helmet Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Destroy Field Rune</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Mad Mage Room Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="7">Red Apple</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Behemoth Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="3">Destroy Field Rune</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Djinn War - Marid Faction</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Cheese</Item>
+				<Item Count="1">Cookbook</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Explorer Society Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Dwarven Pickaxe</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Sam's Old Backpack Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Old And Used Backpack</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Ape City Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Hydra Egg</Item>
+				<Item Count="1">Crowbar</Item>
+				<Item Count="1">Cough Syrup</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Beggar Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="50">Minotaur Leather</Item>
+				<Item Count="30">Heaven Blossom</Item>
+				<Item Count="20">Brown Piece of Cloth</Item>
+				<Item Count="10">Bat Wing</Item>
+				<Item Count="100">Ape Fur</Item>
+				<Item Count="100">Platinum Coin</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Knight Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="100">Iron Ore</Item>
+				<Item Count="1">Huge Chunk of Crude Iron</Item>
+				<Item Count="100">Perfect Behemoth Fang</Item>
+				<Item Count="1">Flask of Warrior's Sweat</Item>
+				<Item Count="1">Royal Steel</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Hunter Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="100">Lizard Leather</Item>
+				<Item Count="100">Red Dragon Leather</Item>
+				<Item Count="5">Enchanted Chicken Wing</Item>
+				<Item Count="1">Piece of Royal Steel</Item>
+				<Item Count="1">Piece of Draconian Steel</Item>
+				<Item Count="1">Piece of Hell Steel</Item>
+				<Item Count="1">Sniper Gloves</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Barbarian Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Fighting Spirit</Item>
+				<Item Count="1">Warrior's Sweat</Item>
+				<Item Count="50">Piece of Red Cloth</Item>
+				<Item Count="50">Piece of Green Cloth</Item>
+				<Item Count="10">Spool of Yarn</Item>
+				<Item Count="100">Iron Ore</Item>
+				<Item Count="1">Huge Chunk of Crude Iron</Item>
+				<Item Count="50">Lizard Leather</Item>
+				<Item Count="50">Perfect Behemoth Fang</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Wizard Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Medusa Shield</Item>
+				<Item Count="1">Dragon Scale Mail</Item>
+				<Item Count="1">Crown Legs</Item>
+				<Item Count="1">Ring of the Sky</Item>
+				<Item Count="50">Holy Orchid</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Assassin Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Machete</Item>
+				<Item Count="30">Bonelord Eye</Item>
+				<Item Count="10">Red Dragon Scale</Item>
+				<Item Count="30">Lizard Scale</Item>
+				<Item Count="20">Fish Fin</Item>
+				<Item Count="20">Vampire Dust</Item>
+				<Item Count="10">Demon Dust</Item>
+				<Item Count="1">Flask of Warrior's Sweat</Item>
+				<Item Count="50">Blue Piece of Cloth</Item>
+				<Item Count="50">Green Piece of Cloth</Item>
+				<Item Count="50">Red Piece of Cloth</Item>
+				<Item Count="50">Brown Piece of Cloth</Item>
+				<Item Count="50">Yellow Piece of Cloth</Item>
+				<Item Count="50">White Piece of Cloth</Item>
+				<Item Count="10">Spool of Yarn</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Pirate Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="100">Eye Patch</Item>
+				<Item Count="100">Peg Leg</Item>
+				<Item Count="100">Hook</Item>
+				<Item Count="1">Ron the Ripper's Sabre</Item>
+				<Item Count="1">Deadeye Devious' Eye Patch</Item>
+				<Item Count="1">The Lethal Lissy's Shirt</Item>
+				<Item Count="1">Brutus Bloodbeard's Hat</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Shaman Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="5">Pirate Voodoo Doll</Item>
+				<Item Count="5">Voodoo Doll</Item>
+				<Item Count="1">Mandrake</Item>
+				<Item Count="5">Banana Staff</Item>
+				<Item Count="5">Tribal Mask</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Citizen Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="100">Minotaur Leather</Item>
+				<Item Count="100">Chicken Feather</Item>
+				<Item Count="50">Honeycomb</Item>
+				<Item Count="1">Legion Helmet</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Mage Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<!--Female-->
+				<Item Count="1">Winning Lottery Ticket</Item>
+				<Item Count="70">Bat Wing</Item>
+				<Item Count="20">Red Piece of Cloth</Item>
+				<Item Count="40">Ape Fur</Item>
+				<Item Count="35">Holy Orchid</Item>
+				<Item Count="10">Spool of Yarn</Item>
+				<Item Count="60">Lizard Scale</Item>
+				<Item Count="40">Red Dragon Scale</Item>
+				<Item Count="15">Magic Sulphur</Item>
+				<Item Count="30">Vampire Dust</Item>
+				<!--Male-->
+				<Item Count="1">Wand of Vortex</Item>
+				<Item Count="1">Wand of Dragonbreath</Item>
+				<Item Count="1">Wand of Decay</Item>
+				<Item Count="1">Wand of Cosmic Energy</Item>
+				<Item Count="1">Wand of Inferno</Item>
+				<Item Count="1">Snakebite Rod</Item>
+				<Item Count="1">Moonlight Rod</Item>
+				<Item Count="1">Necrotic Rod</Item>
+				<Item Count="1">Terra Rod</Item>
+				<Item Count="1">Hailstorm Rod</Item>
+				<Item Count="10">Magic Sulphur</Item>
+				<Item Count="1">Soul Stone</Item>
+				<Item Count="20">Ankh</Item>
+				<Item Count="1">Ferumbras' Hat</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<!--Quest #105: Mage Outfits Quest-->
+</QuestInstructions>

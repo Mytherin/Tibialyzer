@@ -1,0 +1,884 @@
+
+<HuntDirections>
+	<Hunt>
+		<Name>Ghostlands</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>126.52,124.41,7</BeginCoordinate>
+				<EndCoordinate>125.218,124.23,7</EndCoordinate>
+				<EndImage>Object=Hole (Rock)</EndImage>
+				<Text>From Carlin, head to the hole here.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>125.218,124.23,8</BeginCoordinate>
+				<EndCoordinate>125.221,124.35,8</EndCoordinate>
+				<Text>Then head through the small cave and rope yourself up.@You are now in the Ghostlands.</Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Ulderek's Rock</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>127.171,123.204,7</BeginCoordinate>
+				<EndCoordinate>127.158,124.52,7</EndCoordinate>
+				<Text>From Ab'Dendriel, head to a bridge over a small river here.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>127.172,124.63,7</BeginCoordinate>
+				<EndCoordinate>128.11,124.86,7</EndCoordinate>
+				<Text>Then from that bridge, head to the Orc Fortress.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>128.19,124.79,7</BeginCoordinate>
+				<EndCoordinate>128.105,124.28,7</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>128.106,124.28,6</BeginCoordinate>
+				<EndCoordinate>128.127,124.28,6</EndCoordinate>
+				<Text></Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Femor Hills</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>127.171,123.204,7</BeginCoordinate>
+				<EndCoordinate>127.111,124.46,7</EndCoordinate>
+				<Text>From Ab'Dendriel, head to the south-west mountain.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>127.110,124.46,6</BeginCoordinate>
+				<EndCoordinate>127.53,124.84,6</EndCoordinate>
+				<Text>You have reached Femor Hills.</Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Folda</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>126.52,124.41,7</BeginCoordinate>
+				<EndCoordinate>125.236,123.186,7</EndCoordinate>
+				<Text>NPC=Nielson;BlockHeight@From Carlin, head to the boat to the north-west.@Ask Nielson to take you to Folda.</Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Maze of Lost Souls</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>126.52,124.41,7</BeginCoordinate>
+				<EndCoordinate>126.234,123.209,7</EndCoordinate>
+				<Text>From Carlin, head to the hole here.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>126.234,123.209,8</BeginCoordinate>
+				<EndCoordinate>126.224,123.233,8</EndCoordinate>
+				<Text>Head down the next set of holes to reach the Maze of the Lost Souls.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>126.224,123.233,9</BeginCoordinate>
+				<EndCoordinate>126.227,123.145,9</EndCoordinate>
+				<Text></Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Demona</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>126.52,124.41,7</BeginCoordinate>
+				<EndCoordinate>126.234,123.209,7</EndCoordinate>
+				<Text>From Carlin, head to the hole here.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>126.234,123.209,8</BeginCoordinate>
+				<EndCoordinate>126.224,123.233,8</EndCoordinate>
+				<Text>Head down the next set of holes to reach the Maze of the Lost Souls.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>126.224,123.233,9</BeginCoordinate>
+				<EndCoordinate>126.227,123.145,9</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>126.238,123.149,10</BeginCoordinate>
+				<EndCoordinate>126.227,123.145,10</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>126.238,123.149,11</BeginCoordinate>
+				<EndCoordinate>126.246,123.156,11</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>126.246,123.156,12</BeginCoordinate>
+				<EndCoordinate>126.250,123.174,12</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>126.250,123.174,11</BeginCoordinate>
+				<EndCoordinate>127.7,123.168,11</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>127.7,123.168,12</BeginCoordinate>
+				<EndCoordinate>127.7,123.164,12</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>127.7,123.164,13</BeginCoordinate>
+				<EndCoordinate>126.224,123.158,13</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>126.224,123.158,12</BeginCoordinate>
+				<EndCoordinate>126.214,123.180,12</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>126.214,123.180,13</BeginCoordinate>
+				<EndCoordinate>126.244,123.189,13</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>126.244,123.189,12</BeginCoordinate>
+				<EndCoordinate>127.13,123.209,12</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>127.13,123.209,11</BeginCoordinate>
+				<EndCoordinate>126.166,123.218,11</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>126.166,123.218,12</BeginCoordinate>
+				<EndCoordinate>126.163,123.211,12</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>126.163,123.211,11</BeginCoordinate>
+				<EndCoordinate>126.154,123.135,11</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>126.154,123.135,12</BeginCoordinate>
+				<EndCoordinate>126.162,123.108,12</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>126.162,123.108,11</BeginCoordinate>
+				<EndCoordinate>126.173,123.91,11</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>126.173,123.91,10</BeginCoordinate>
+				<EndCoordinate>126.230,123.200,10</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>126.230,123.200,11</BeginCoordinate>
+				<EndCoordinate>126.251,123.205,11</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>126.251,123.205,10</BeginCoordinate>
+				<EndCoordinate>127.9,123.238,10</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>127.9,123.238,11</BeginCoordinate>
+				<EndCoordinate>127.1,123.238,11</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>126.255,123.237,14</BeginCoordinate>
+				<EndCoordinate>126.255,123.233,14</EndCoordinate>
+				<Text>Head through the Level 60 door to enter Demona.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>126.255,123.233,15</BeginCoordinate>
+				<EndCoordinate>126.228,123.233,15</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>127.1,123.238,11</BeginCoordinate>
+				<EndCoordinate>127.9,123.238,11</EndCoordinate>
+				<Text>Leaving Demona.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>127.9,123.238,10</BeginCoordinate>
+				<EndCoordinate>126.251,123.205,10</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>126.251,123.205,11</BeginCoordinate>
+				<EndCoordinate>126.230,123.200,11</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>126.230,123.200,10</BeginCoordinate>
+				<EndCoordinate>126.173,123.91,10</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>126.173,123.91,11</BeginCoordinate>
+				<EndCoordinate>126.162,123.108,11</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>126.162,123.108,12</BeginCoordinate>
+				<EndCoordinate>126.154,123.135,12</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>126.154,123.135,11</BeginCoordinate>
+				<EndCoordinate>126.152,123.195,11</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>126.152,123.195,12</BeginCoordinate>
+				<EndCoordinate>126.176,123.173,12</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>126.176,123.173,11</BeginCoordinate>
+				<EndCoordinate>126.181,123.178,11</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>126.181,123.178,12</BeginCoordinate>
+				<EndCoordinate>126.220,123.188,12</EndCoordinate>
+				<Text>You have reached the Maze of the Lost Souls entrance.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>126.220,123.188,11</BeginCoordinate>
+				<EndCoordinate>126.224,123.156,11</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>126.224,123.156,10</BeginCoordinate>
+				<EndCoordinate>126.227,123.145,10</EndCoordinate>
+				<Text></Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Shadowthorn</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>128.153,125.70,6</BeginCoordinate>
+				<EndCoordinate>128.168,125.159,6</EndCoordinate>
+				<Text>From Venore, head down the south stairs.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>128.168,125.159,7</BeginCoordinate>
+				<EndCoordinate>129.75,125.84,7</EndCoordinate>
+				<Text>CR=Woodling@Head through the swamp.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>129.75,125.85,6</BeginCoordinate>
+				<EndCoordinate>129.77,125.104,6</EndCoordinate>
+				<Text>Head over the bridge and to Shadowthorn.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>129.77,125.108,6</BeginCoordinate>
+				<EndCoordinate>129.77,125.119,6</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>129.77,125.119,7</BeginCoordinate>
+				<EndCoordinate>129.75,125.134,7</EndCoordinate>
+				<Text></Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Drefia</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>129.190,126.193,7</BeginCoordinate>
+				<EndCoordinate>129.67,126.194,7</EndCoordinate>
+				<Text>Head to the cliffs west of Darashia.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>129.66,126.194,6</BeginCoordinate>
+				<EndCoordinate>129.39,126.184,6</EndCoordinate>
+				<Text>Traverse the cliffs to get into Drefia.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>129.38,126.184,5</BeginCoordinate>
+				<EndCoordinate>129.3,126.161,5</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>129.2,126.161,7</BeginCoordinate>
+				<EndCoordinate>129.3,126.164,7</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>129.3,126.164,8</BeginCoordinate>
+				<EndCoordinate>128.250,126.173,8</EndCoordinate>
+				<Text></Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Drefia Grim Reaper Dungeons</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>129.190,126.193,7</BeginCoordinate>
+				<EndCoordinate>129.67,126.194,7</EndCoordinate>
+				<Text>Head to the cliffs west of Darashia.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>129.66,126.194,6</BeginCoordinate>
+				<EndCoordinate>129.39,126.184,6</EndCoordinate>
+				<Text>Traverse the cliffs to get into Drefia.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>129.38,126.184,5</BeginCoordinate>
+				<EndCoordinate>129.3,126.161,5</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>129.2,126.161,7</BeginCoordinate>
+				<EndCoordinate>129.3,126.164,7</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>129.3,126.164,8</BeginCoordinate>
+				<EndCoordinate>128.250,126.173,8</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>128.250,126.173,7</BeginCoordinate>
+				<EndCoordinate>129.3,126.182,7</EndCoordinate>
+				<Text>Use Levitate to get past the wall, then go down the stairs.</Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Drefia Wyrm Lair</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>129.190,126.193,7</BeginCoordinate>
+				<EndCoordinate>129.67,126.194,7</EndCoordinate>
+				<Text>Head to the cliffs west of Darashia.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>129.66,126.194,6</BeginCoordinate>
+				<EndCoordinate>129.39,126.184,6</EndCoordinate>
+				<Text>Traverse the cliffs to get into Drefia.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>129.38,126.184,5</BeginCoordinate>
+				<EndCoordinate>129.3,126.161,5</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>129.2,126.161,7</BeginCoordinate>
+				<EndCoordinate>129.3,126.164,7</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>129.3,126.164,8</BeginCoordinate>
+				<EndCoordinate>128.250,126.173,8</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>128.250,126.173,7</BeginCoordinate>
+				<EndCoordinate>128.228,126.157,7</EndCoordinate>
+				<Text>Descend several floors into the tomb.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>128.228,126.156,8</BeginCoordinate>
+				<EndCoordinate>128.233,126.161,8</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>128.233,126.161,9</BeginCoordinate>
+				<EndCoordinate>128.235,126.156,9</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>128.235,126.156,10</BeginCoordinate>
+				<EndCoordinate>128.229,126.141,10</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>128.229,126.142,11</BeginCoordinate>
+				<EndCoordinate>129.7,126.141,11</EndCoordinate>
+				<Text>CR=Necromancer@Move to the {Quest|Medusa Shield Quest|Medusa Shield Quest} room, past the Level 60 door.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>129.9,126.139,10</BeginCoordinate>
+				<EndCoordinate>129.37,126.143,10</EndCoordinate>
+				<Text>CR=Vampire@Make your way through the room, watch out for the hoardes of enemies, and descend the stairs.@You have reached the Wyrm lair.</Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Hero Cave</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>129.150,124.75,7</BeginCoordinate>
+				<EndCoordinate>129.219,124.23,7</EndCoordinate>
+				<Text>From Edron, head to the Bat Cave.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>129.217,124.23,6</BeginCoordinate>
+				<EndCoordinate>129.192,124.13,6</EndCoordinate>
+				<Text>CR=Bat@Go through the Bat Cave. Watch out for the bat.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>129.192,124.12,7</BeginCoordinate>
+				<EndCoordinate>129.139,123.148,7</EndCoordinate>
+				<Text>CR=Hunter@Walk through the forest, watch out for hunters.@You have reached the hero cave.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>129.139,123.148,8</BeginCoordinate>
+				<EndCoordinate>129.137,123.136,8</EndCoordinate>
+				<Text>CR=Wild Warrior@Go down the hole.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>129.137,123.136,9</BeginCoordinate>
+				<EndCoordinate>129.112,123.105,9</EndCoordinate>
+				<Text>CR=Demon Skeleton@Watch out for demon skeletons, a stealth ring is recommended for low levels.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>129.112,123.105,10</BeginCoordinate>
+				<EndCoordinate>129.145,123.100,10</EndCoordinate>
+				<Text>CR=Hero@Continue here for most hunting places.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>129.112,123.105,10</BeginCoordinate>
+				<EndCoordinate>129.79,123.186,10</EndCoordinate>
+				<Text>CR=Grim Reaper@There is a small Grim Reaper spawn here.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>129.145,123.100,11</BeginCoordinate>
+				<EndCoordinate>129.126,123.107,11</EndCoordinate>
+				<Text>CR=Dragon@There are a small amount of dragons here.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>129.126,123.107,12</BeginCoordinate>
+				<EndCoordinate>129.120,123.101,12</EndCoordinate>
+				<Text>CR=Hero@Watch out for the single hero spawn.</Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Cyclopolis</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>129.150,124.75,7</BeginCoordinate>
+				<EndCoordinate>129.219,124.23,7</EndCoordinate>
+				<Text>From Edron, head to the Bat Cave.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>129.217,124.23,6</BeginCoordinate>
+				<EndCoordinate>129.192,124.13,6</EndCoordinate>
+				<Text>CR=Bat@Go through the Bat Cave. Watch out for the bat.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>129.192,124.12,7</BeginCoordinate>
+				<EndCoordinate>129.227,123.209,7</EndCoordinate>
+				<Text>CR=Hunter@Walk through the forest, watch out for hunters.@You have reached Cyclopolis.</Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Mintwallin</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>126.89,125.223,7</BeginCoordinate>
+				<EndCoordinate>126.100,125.170,7</EndCoordinate>
+				<Text>From Thais, head to the Ancient Temple</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>126.100,125.173,9</BeginCoordinate>
+				<EndCoordinate>126.98,125.138,9</EndCoordinate>
+				<Text>Go North after going down the stairs.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>126.99,125.138,11</BeginCoordinate>
+				<EndCoordinate>126.246,125.217,11</EndCoordinate>
+				<Text>CR=Rotworm@Make your way through the Ancient Temple, there are only weak creatures here.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>126.237,125.215,13</BeginCoordinate>
+				<EndCoordinate>127.65,125.179,13</EndCoordinate>
+				<Text>CR=Minotaur@Keep going, head down the hole and greet the two cyclops awaiting you.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>127.65,125.179,14</BeginCoordinate>
+				<EndCoordinate>127.40,125.154,14</EndCoordinate>
+				<Text>CR=Cyclops@Make your way past the cyclops and to a set of stairs.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>127.39,125.185,14</BeginCoordinate>
+				<EndCoordinate>126.228,125.101,14</EndCoordinate>
+				<Text>Continue through the maze. At the end, you have reached Mintwallin.</Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Ancient Temple</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>126.89,125.223,7</BeginCoordinate>
+				<EndCoordinate>126.100,125.170,7</EndCoordinate>
+				<Text>Ancient Temple is just north of Thais.</Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Dark Pyramid</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>129.190,126.193,7</BeginCoordinate>
+				<EndCoordinate>130.32,126.25,7</EndCoordinate>
+				<Text>Dark Pyramid is north of Darashia.</Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Outlaw Camp</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>128.153,125.70,6</BeginCoordinate>
+				<EndCoordinate>128.94,125.126,6</EndCoordinate>
+				<Text>From Venore, head down the south-west stairs.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>128.94,125.126,7</BeginCoordinate>
+				<EndCoordinate>127.143,125.210,7</EndCoordinate>
+				<Text>Head to Outlaw Camp, south of the desert.</Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Dark Cathedral</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>128.153,125.70,6</BeginCoordinate>
+				<EndCoordinate>128.94,125.126,6</EndCoordinate>
+				<Text>From Venore, head down the south-west stairs.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>128.94,125.126,7</BeginCoordinate>
+				<EndCoordinate>127.147,126.86,7</EndCoordinate>
+				<Text>CR=Giant Spider@After heading down the stairs, Dark Cathedral is in the Plains of Havoc. Be wary of Giant Spiders.</Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Banuta</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>127.115,127.238,7</BeginCoordinate>
+				<EndCoordinate>128.28,127.48,7</EndCoordinate>
+				<Text>CR=Terror Bird@Banuta is located north of port hope. You might encounter a few Terror Birds on the way there.</Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Triangle Tower</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>128.94,125.126,7</BeginCoordinate>
+				<EndCoordinate>127.62,125.122,7</EndCoordinate>
+				<Text>Head to the lever hidden in the rubble in the desert.@Use the lever to open the entrance of Triangle Tower.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>127.62,125.122,7</BeginCoordinate>
+				<EndCoordinate>127.55,125.119,7</EndCoordinate>
+				<Text>After the tower has been opened, head to the tower to the left of the desert.</Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Villa Scapula</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>128.153,125.70,6</BeginCoordinate>
+				<EndCoordinate>128.99,125.32,6</EndCoordinate>
+				<Text>From Venore, head down the north-west stairs.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>128.99,125.32,7</BeginCoordinate>
+				<EndCoordinate>128.58,124.213,7</EndCoordinate>
+				<Text>Item=Copper Key@Head to the Villa just north-west of Venore.@Note that you need Key 5010 to open the door.@This key can be obtained from a Dead Tree just to the left of the villa.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>128.58,124.213,8</BeginCoordinate>
+				<EndCoordinate>128.54,124.226,8</EndCoordinate>
+				<Text>CR=Slime@Head past the door and down the stairs.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>128.54,124.226,9</BeginCoordinate>
+				<EndCoordinate>128.57,124.224,9</EndCoordinate>
+				<Text>Move through the small sections of the dungeon.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>128.57,124.224,10</BeginCoordinate>
+				<EndCoordinate>128.65,124.235,10</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>128.65,124.235,11</BeginCoordinate>
+				<EndCoordinate>128.75,124.242,11</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>128.75,124.242,10</BeginCoordinate>
+				<EndCoordinate>128.85,124.249,10</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>128.85,124.249,11</BeginCoordinate>
+				<EndCoordinate>128.107,124.233,11</EndCoordinate>
+				<Text>CR=Bonelord@Follow the path to the stairs.@There are some beholders here.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>128.106,124.197,12</BeginCoordinate>
+				<EndCoordinate>128.107,124.233,12</EndCoordinate>
+				<Text>CR=Black Knight@Continue past the Level 50 door.@The Black Knight is through the teleport.</Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Dwacatra</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>127.132,124.173,8</BeginCoordinate>
+				<EndCoordinate>127.101,124.177,8</EndCoordinate>
+				<Text>From the depot, head to the entrance of Kazordoon.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>127.101,124.177,9</BeginCoordinate>
+				<EndCoordinate>127.93,124.176,9</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>127.93,124.176,10</BeginCoordinate>
+				<EndCoordinate>127.72,124.228,10</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>127.72,124.229,9</BeginCoordinate>
+				<EndCoordinate>127.91,124.236,9</EndCoordinate>
+				<Text>Then head down the tower.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>127.91,124.236,10</BeginCoordinate>
+				<EndCoordinate>127.89,124.234,10</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>127.89,124.234,11</BeginCoordinate>
+				<EndCoordinate>127.91,124.236,11</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>127.91,124.236,12</BeginCoordinate>
+				<EndCoordinate>127.89,124.234,12</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>127.91,124.236,14</BeginCoordinate>
+				<EndCoordinate>127.91,124.194,14</EndCoordinate>
+				<Text>Item=Copper Key@You have reached Dwacatra.@Note that you need Key 3802 to open the entrance.@This key is awarded through the {Quest|Emperor Cookies|Emperor's Cookies} Quest</Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Tiquanda Trapwood</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>127.124,128.19,7</BeginCoordinate>
+				<EndCoordinate>127.188,128.85,7</EndCoordinate>
+				<Text>CR=Terror Bird@From the South of Port Hope, head to one of the Dworc traps.@Note that you need a Melee Weapon to destroy the wooden bars of the trap you fall into.</Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Chor</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>127.124,128.19,7</BeginCoordinate>
+				<EndCoordinate>128.189,128.82,7</EndCoordinate>
+				<Text>From the South of Port Hope, walk through Tiquanda to Chor.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>128.201,128.32,7</BeginCoordinate>
+				<EndCoordinate>128.189,128.82,7</EndCoordinate>
+				<Text>NPC=Lorek;BlockHeight@Alternatively, use Lorek to go to chor.@Note that this requires Ranger rank in the Killing In The Name Of quest.</Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Fibula Dungeon</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>126.89,125.223,7</BeginCoordinate>
+				<EndCoordinate>126.5,126.128,7</EndCoordinate>
+				<Text>From Thais, head to the cave that leads to Fibula.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>126.5,126.128,8</BeginCoordinate>
+				<EndCoordinate>125.244,126.114,8</EndCoordinate>
+				<Text>Traverse the cave to reach Fibula.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>125.244,126.114,9</BeginCoordinate>
+				<EndCoordinate>125.236,126.114,9</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>125.236,126.114,10</BeginCoordinate>
+				<EndCoordinate>125.208,126.114,10</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>125.208,126.114,9</BeginCoordinate>
+				<EndCoordinate>125.198,126.111,9</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>125.198,126.111,8</BeginCoordinate>
+				<EndCoordinate>125.179,126.111,8</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>125.179,126.111,7</BeginCoordinate>
+				<EndCoordinate>125.171,126.183,7</EndCoordinate>
+				<Text>NPC=Simon The Beggar@NPC=Dermot@@After entering Fibula, head to the well.@To enter Fibula dungeon, use the well.@Note that you need Key 3940 to enter Fibula dungeon.@This key can be purchased from Simon The Beggar</Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Hellgate</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>127.170,123.198,7</BeginCoordinate>
+				<EndCoordinate>127.142,123.186,7</EndCoordinate>
+				<Text>Directions to get into Hellgate.@Note: Directions to escape from Hellgate are given after the directions to get into Hellgate.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>127.142,123.186,8</BeginCoordinate>
+				<EndCoordinate>127.142,123.182,8</EndCoordinate>
+				<Text>From Ab'Dendriel, go down into the housing area.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>127.142,123.182,9</BeginCoordinate>
+				<EndCoordinate>127.142,123.186,9</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>127.142,123.186,10</BeginCoordinate>
+				<EndCoordinate>127.163,123.158,10</EndCoordinate>
+				<Text>NPC=Elathriel;BlockHeight@Head through the teleport behind the door.@Note that you need Key 3012 to open the door. You can buy this key from Elathriel.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>127.213,123.101,11</BeginCoordinate>
+				<EndCoordinate>127.78,123.87,11</EndCoordinate>
+				<Text>Directions to Escape from Hellgate.@@After entering the teleport to Hellgate, escaping is difficult.@Follow the path to the hole.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>127.78,123.87,12</BeginCoordinate>
+				<EndCoordinate>127.152,123.83,12</EndCoordinate>
+				<Text>Keep on following the path.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>127.152,123.83,13</BeginCoordinate>
+				<EndCoordinate>127.228,123.68,13</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>127.228,123.68,12</BeginCoordinate>
+				<EndCoordinate>128.20,123.108,12</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>128.20,123.108,13</BeginCoordinate>
+				<EndCoordinate>128.30,123.123,13</EndCoordinate>
+				<Text>Don't give up yet, you're getting closer.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>128.30,123.123,12</BeginCoordinate>
+				<EndCoordinate>128.58,123.179,12</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>128.58,123.179,13</BeginCoordinate>
+				<EndCoordinate>128.57,123.214,13</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>128.57,123.214,14</BeginCoordinate>
+				<EndCoordinate>127.196,123.215,14</EndCoordinate>
+				<Text>CR=Bonelord@There are some beholders here.@CR=Elder Bonelord@If you deviate from the path too much, you can also encounter Elder Beholders.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>127.196,123.215,15</BeginCoordinate>
+				<EndCoordinate>127.149,123.157,15</EndCoordinate>
+				<Text>Head past the lava and levitate up the cliffs.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>127.147,123.150,12</BeginCoordinate>
+				<EndCoordinate>127.108,123.214,12</EndCoordinate>
+				<Text>Follow the path to the south to reach the exit.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>127.108,123.215,11</BeginCoordinate>
+				<EndCoordinate>127.114,123.212,11</EndCoordinate>
+				<Text>Just a little more. Head up the wasp caves.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>127.114,123.212,10</BeginCoordinate>
+				<EndCoordinate>127.100,123.195,10</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>127.100,123.195,9</BeginCoordinate>
+				<EndCoordinate>127.104,123.212,9</EndCoordinate>
+				<Text></Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>127.104,123.212,8</BeginCoordinate>
+				<EndCoordinate>127.91,123.216,8</EndCoordinate>
+				<Text>CR=Wasp@After going up the hole, you are back in Ab'Dendriel.</Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+	<Hunt>
+		<Name>Forbidden Lands</Name>
+		<Directions>
+			<Direction>
+				<BeginCoordinate>127.115,127.239,7</BeginCoordinate>
+				<EndCoordinate>128.251,127.92,7</EndCoordinate>
+				<Text>NPC=The Blind Prophet;BlockHeight@Make your way through Tiquanda to The Blind Prophet.@Ask him for transport.@He will only offer you transport if you have completed Mission 08 in {Quest|The Ape City Quest|The Ape City Quest}.</Text>
+			</Direction>
+			<Direction>
+				<BeginCoordinate>128.251,127.68,7</BeginCoordinate>
+				<EndCoordinate>128.244,127.52,7</EndCoordinate>
+				<Text>CR=Behemoth@After the teleport, walk to the entrance of the Behemoth lair.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>128.251,127.68,7</BeginCoordinate>
+				<EndCoordinate>128.219,127.14,7</EndCoordinate>
+				<Text>CR=Hydra@After the teleport, walk to the entrance of the Hydra lair.</Text>
+			</Direction>
+			<Direction SamePage="True">
+				<BeginCoordinate>128.251,127.68,7</BeginCoordinate>
+				<EndCoordinate>128.193,127.35,7</EndCoordinate>
+				<Text>CR=Giant Spider@After the teleport, walk to the entrance of the Giant Spider lair.</Text>
+			</Direction>
+		</Directions>
+	</Hunt>
+</HuntDirections>
