@@ -1,0 +1,180 @@
+
+
+<Skins>
+	<Creature>
+		<Name>Behemoth</Name>
+		<Knife>Obsidian Knife</Knife>
+		<Items>
+			<Item><Name>Perfect Behemoth Fang</Name><Percentage>10.0</Percentage></Item>
+		</Items>
+	</Creature>
+	<Creature>
+		<Name>Dragon</Name>
+		<Knife>Obsidian Knife</Knife>
+		<Items>
+			<Item><Name>Green Dragon Leather</Name><Percentage>5.0</Percentage></Item>
+		</Items>
+	</Creature>
+	<Creature>
+	<Name>Dragon Lord</Name>
+	<Knife>Obsidian Knife</Knife>
+	<Items>
+		<Item><Name>Red Dragon Leather</Name><Percentage>5.0</Percentage></Item>
+	</Items>
+	</Creature>
+	<Creature>
+	<Name>Bonebeast</Name>
+	<Knife>Obsidian Knife</Knife>
+	<Items>
+		<Item><Name>Hardened Bone</Name><Percentage>5.0</Percentage></Item>
+	</Items>
+	</Creature>
+	<Creature>
+	<Name>Clomp</Name>
+	<Knife>Obsidian Knife</Knife>
+	<Items>
+		<Item><Name>Raw Meat</Name><Percentage>50.0</Percentage></Item>
+	</Items>
+	</Creature>
+	<Creature>
+	<Name>Minotaur</Name>
+	<Knife>Obsidian Knife</Knife>
+	<Items>
+		<Item><Name>Minotaur Leather</Name><Percentage>5.0</Percentage></Item>
+	</Items>
+	</Creature>
+	<Creature>
+	<Name>Minotaur Archer</Name>
+	<Knife>Obsidian Knife</Knife>
+	<Items>
+		<Item><Name>Minotaur Leather</Name><Percentage>5.0</Percentage></Item>
+	</Items>
+	</Creature>
+	<Creature>
+	<Name>Minotaur Guard</Name>
+	<Knife>Obsidian Knife</Knife>
+	<Items>
+		<Item><Name>Minotaur Leather</Name><Percentage>5.0</Percentage></Item>
+	</Items>
+	</Creature>
+	<Creature>
+	<Name>Minotaur Mage</Name>
+	<Knife>Obsidian Knife</Knife>
+	<Items>
+		<Item><Name>Minotaur Leather</Name><Percentage>5.0</Percentage></Item>
+	</Items>
+	</Creature>
+	<Creature>
+	<Name>Lizard Sentinel</Name>
+	<Knife>Obsidian Knife</Knife>
+	<Items>
+		<Item><Name>Lizard Leather</Name><Percentage>5.0</Percentage></Item>
+	</Items>
+	</Creature>
+	<Creature>
+	<Name>Lizard Templar</Name>
+	<Knife>Obsidian Knife</Knife>
+	<Items>
+		<Item><Name>Lizard Leather</Name><Percentage>5.0</Percentage></Item>
+	</Items>
+	</Creature>
+	<Creature>
+	<Name>Lizard Snakecharmer</Name>
+	<Knife>Obsidian Knife</Knife>
+	<Items>
+		<Item><Name>Lizard Leather</Name><Percentage>5.0</Percentage></Item>
+	</Items>
+	</Creature>
+	<Creature>
+	<Name>Lizard High Guard</Name>
+	<Knife>Obsidian Knife</Knife>
+	<Items>
+		<Item><Name>Lizard Leather</Name><Percentage>10.0</Percentage></Item>
+	</Items>
+	</Creature>
+	<Creature>
+	<Name>Lizard Legionnaire</Name>
+	<Knife>Obsidian Knife</Knife>
+	<Items>
+		<Item><Name>Lizard Leather</Name><Percentage>10.0</Percentage></Item>
+	</Items>
+	</Creature>
+	<Creature>
+	<Name>Lizard Dragon Priest</Name>
+	<Knife>Obsidian Knife</Knife>
+	<Items>
+		<Item><Name>Lizard Leather</Name><Percentage>10.0</Percentage></Item>
+	</Items>
+	</Creature>
+	<Creature>
+	<Name>Lizard Zaogun</Name>
+	<Knife>Obsidian Knife</Knife>
+	<Items>
+		<Item><Name>Lizard Leather</Name><Percentage>10.0</Percentage></Item>
+	</Items>
+	</Creature>
+	<Creature>
+	<Name>Water Elemental</Name>
+	<Knife>Fishing Rod</Knife>
+	<Items>
+		<Item><Name>Small Emerald</Name><Percentage>15.0</Percentage></Item>
+		<Item><Name>Small Sapphire</Name><Percentage>15.0</Percentage></Item>
+		<Item><Name>White Pearl</Name><Percentage>10.0</Percentage></Item>
+		<Item><Name>Giant Shimmering Pearl</Name><Percentage>0.1</Percentage></Item>
+		<Item><Name>Leviathan's Amulet</Name><Percentage>0.0</Percentage></Item>
+	</Items>
+	</Creature>
+	<Creature>
+	<Name>Massive Water Elemental</Name>
+	<Knife>Fishing Rod</Knife>
+	<Items>
+		<Item><Name>Small Emerald</Name><Percentage>5.0</Percentage></Item>
+		<Item><Name>Small Sapphire</Name><Percentage>5.0</Percentage></Item>
+		<Item><Name>White Pearl</Name><Percentage>5.0</Percentage></Item>
+		<Item><Name>Giant Shimmering Pearl</Name><Percentage>1.0</Percentage></Item>
+		<Item><Name>Leviathan's Amulet</Name><Percentage>0.0</Percentage></Item>
+	</Items>
+	</Creature>
+	<Creature>
+	<Name>Lord of the Elements</Name>
+	<Knife>Obsidian Knife</Knife>
+	<Items>
+		<Item><Name>Neutral Matter</Name><Percentage>100.0</Percentage></Item>
+	</Items>
+	</Creature>
+	<Creature>
+	<Name>The Mutated Pumpkin</Name>
+	<Knife>Obsidian Knife</Knife>
+	<Items>
+		<Item><Name>Pumpkin</Name><Percentage>100.0</Percentage></Item>
+	</Items>
+	</Creature>
+	<Creature>
+	<Name>Vampire</Name>
+	<Knife>Blessed Wooden Stake</Knife>
+	<Items>
+		<Item><Name>Vampire Dust</Name><Percentage>5.0</Percentage></Item>
+	</Items>
+	</Creature>
+	<Creature>
+	<Name>Vampire Bride</Name>
+	<Knife>Blessed Wooden Stake</Knife>
+	<Items>
+		<Item><Name>Vampire Dust</Name><Percentage>5.0</Percentage></Item>
+	</Items>
+	</Creature>
+	<Creature>
+	<Name>Vampire Viscount</Name>
+	<Knife>Blessed Wooden Stake</Knife>
+	<Items>
+		<Item><Name>Vampire Dust</Name><Percentage>5.0</Percentage></Item>
+	</Items>
+	</Creature>
+	<Creature>
+	<Name>Demon</Name>
+	<Knife>Blessed Wooden Stake</Knife>
+	<Items>
+		<Item><Name>Demon Dust</Name><Percentage>5.0</Percentage></Item>
+	</Items>
+	</Creature>
+</Skins>
