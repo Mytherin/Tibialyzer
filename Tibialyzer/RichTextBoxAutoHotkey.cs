@@ -53,6 +53,7 @@ namespace Tibialyzer {
         bool highlighting = false;
 
         public void RefreshSyntax() {
+            highlighted = false;
             OnTextChanged(null);
         }
 

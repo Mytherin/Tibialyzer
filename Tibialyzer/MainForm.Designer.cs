@@ -59,6 +59,11 @@
             this.huntBox = new System.Windows.Forms.ListBox();
             this.backgroundBox = new System.Windows.Forms.PictureBox();
             this.settingsTab = new System.Windows.Forms.TabPage();
+            this.unlockResetSettingsButton = new System.Windows.Forms.CheckBox();
+            this.resetSettingsPanel = new System.Windows.Forms.Panel();
+            this.resetToDefaultButton = new System.Windows.Forms.Button();
+            this.unrecognizedCommandNotification = new System.Windows.Forms.CheckBox();
+            this.eventNotificationEnable = new System.Windows.Forms.CheckBox();
             this.lookCheckBox = new System.Windows.Forms.CheckBox();
             this.showNotificationCheckbox = new System.Windows.Forms.CheckBox();
             this.enableRichNotificationsCheckbox = new System.Windows.Forms.CheckBox();
@@ -146,6 +151,7 @@
             this.trackAllCreaturesPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backgroundBox)).BeginInit();
             this.settingsTab.SuspendLayout();
+            this.resetSettingsPanel.SuspendLayout();
             this.notificationPanel.SuspendLayout();
             this.richNotificationsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.notificationLengthSlider)).BeginInit();
@@ -525,6 +531,10 @@
             // 
             // settingsTab
             // 
+            this.settingsTab.Controls.Add(this.unlockResetSettingsButton);
+            this.settingsTab.Controls.Add(this.resetSettingsPanel);
+            this.settingsTab.Controls.Add(this.unrecognizedCommandNotification);
+            this.settingsTab.Controls.Add(this.eventNotificationEnable);
             this.settingsTab.Controls.Add(this.lookCheckBox);
             this.settingsTab.Controls.Add(this.showNotificationCheckbox);
             this.settingsTab.Controls.Add(this.enableRichNotificationsCheckbox);
@@ -539,6 +549,61 @@
             this.settingsTab.Text = "Settings";
             this.settingsTab.UseVisualStyleBackColor = true;
             this.settingsTab.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
+            // 
+            // unlockResetSettingsButton
+            // 
+            this.unlockResetSettingsButton.AutoSize = true;
+            this.unlockResetSettingsButton.Location = new System.Drawing.Point(17, 417);
+            this.unlockResetSettingsButton.Name = "unlockResetSettingsButton";
+            this.unlockResetSettingsButton.Size = new System.Drawing.Size(128, 17);
+            this.unlockResetSettingsButton.TabIndex = 16;
+            this.unlockResetSettingsButton.Text = "Unlock the big button";
+            this.unlockResetSettingsButton.UseVisualStyleBackColor = true;
+            this.unlockResetSettingsButton.CheckedChanged += new System.EventHandler(this.unlockResetSettingsButton_CheckedChanged);
+            // 
+            // resetSettingsPanel
+            // 
+            this.resetSettingsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.resetSettingsPanel.Controls.Add(this.resetToDefaultButton);
+            this.resetSettingsPanel.Enabled = false;
+            this.resetSettingsPanel.Location = new System.Drawing.Point(11, 425);
+            this.resetSettingsPanel.Name = "resetSettingsPanel";
+            this.resetSettingsPanel.Size = new System.Drawing.Size(341, 64);
+            this.resetSettingsPanel.TabIndex = 15;
+            // 
+            // resetToDefaultButton
+            // 
+            this.resetToDefaultButton.Location = new System.Drawing.Point(6, 22);
+            this.resetToDefaultButton.Name = "resetToDefaultButton";
+            this.resetToDefaultButton.Size = new System.Drawing.Size(332, 38);
+            this.resetToDefaultButton.TabIndex = 14;
+            this.resetToDefaultButton.Text = "Reset Settings To Default";
+            this.resetToDefaultButton.UseVisualStyleBackColor = true;
+            this.resetToDefaultButton.Click += new System.EventHandler(this.resetToDefaultButton_Click);
+            // 
+            // unrecognizedCommandNotification
+            // 
+            this.unrecognizedCommandNotification.AutoSize = true;
+            this.unrecognizedCommandNotification.Checked = true;
+            this.unrecognizedCommandNotification.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.unrecognizedCommandNotification.Location = new System.Drawing.Point(11, 239);
+            this.unrecognizedCommandNotification.Name = "unrecognizedCommandNotification";
+            this.unrecognizedCommandNotification.Size = new System.Drawing.Size(251, 17);
+            this.unrecognizedCommandNotification.TabIndex = 13;
+            this.unrecognizedCommandNotification.Text = "Enable Notification On Unrecognized Command";
+            this.unrecognizedCommandNotification.UseVisualStyleBackColor = true;
+            // 
+            // eventNotificationEnable
+            // 
+            this.eventNotificationEnable.AutoSize = true;
+            this.eventNotificationEnable.Checked = true;
+            this.eventNotificationEnable.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.eventNotificationEnable.Location = new System.Drawing.Point(11, 216);
+            this.eventNotificationEnable.Name = "eventNotificationEnable";
+            this.eventNotificationEnable.Size = new System.Drawing.Size(163, 17);
+            this.eventNotificationEnable.TabIndex = 12;
+            this.eventNotificationEnable.Text = "Enable Notification On Event";
+            this.eventNotificationEnable.UseVisualStyleBackColor = true;
             // 
             // lookCheckBox
             // 
@@ -1409,6 +1474,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.backgroundBox)).EndInit();
             this.settingsTab.ResumeLayout(false);
             this.settingsTab.PerformLayout();
+            this.resetSettingsPanel.ResumeLayout(false);
             this.notificationPanel.ResumeLayout(false);
             this.notificationPanel.PerformLayout();
             this.richNotificationsPanel.ResumeLayout(false);
@@ -1552,6 +1618,11 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label50;
         private System.Windows.Forms.Label label54;
+        private System.Windows.Forms.CheckBox unlockResetSettingsButton;
+        private System.Windows.Forms.Panel resetSettingsPanel;
+        private System.Windows.Forms.Button resetToDefaultButton;
+        private System.Windows.Forms.CheckBox unrecognizedCommandNotification;
+        private System.Windows.Forms.CheckBox eventNotificationEnable;
     }
 }
 

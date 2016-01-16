@@ -50,7 +50,6 @@ namespace Tibialyzer {
         private static string nodeDatabase = @"Database\Nodes.db";
         private static string pluralMapFile = @"Database\pluralMap.txt";
         private static string autohotkeyFile = @"Database\autohotkey.ahk";
-        private List<string> character_names = new List<string>();
         public static Color label_text_color = Color.FromArgb(191, 191, 191);
         public static int max_creatures = 50;
         public List<string> new_names = null;
@@ -74,9 +73,37 @@ namespace Tibialyzer {
         private Image loadingbarred = null;
         private Image loadingbargray = null;
 
+        public Image LoadImage(string file) {
+            Image image = null;
+            if (!File.Exists(file)) {
+                ExitWithError("Fatal Error", String.Format("Could not find image {0}", file));
+            }
+            image = Image.FromFile(file);
+            if (image == null) {
+                ExitWithError("Fatal Error", String.Format("Failed to load image {0}", file));
+            }
+            return image;
+        }
+
+        bool errorVisible = true;
+        public void ExitWithError(string title, string text, bool exit = true) {
+            MessageBox.Show(this, text, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            if (exit) {
+                System.Environment.Exit(1);
+            }
+        }
+
         public MainForm() {
             mainForm = this;
             InitializeComponent();
+
+            if (!File.Exists(databaseFile)) {
+                ExitWithError("Fatal Error", String.Format("Could not find database file {0}.", databaseFile));
+            }
+
+            if (!File.Exists(nodeDatabase)) {
+                ExitWithError("Fatal Error", String.Format("Could not find database file {0}.", nodeDatabase));
+            }
 
             conn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", databaseFile));
             conn.Open();
@@ -84,61 +111,69 @@ namespace Tibialyzer {
             lootConn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", lootDatabaseFile));
             lootConn.Open();
 
-            back_image = Image.FromFile(@"Images\back.png");
-            prevpage_image = Image.FromFile(@"Images\prevpage.png");
-            nextpage_image = Image.FromFile(@"Images\nextpage.png");
-            cross_image = Image.FromFile(@"Images\cross.png");
-            tibia_image = Image.FromFile(@"Images\tibia.png");
-            mapup_image = Image.FromFile(@"Images\mapup.png");
-            mapdown_image = Image.FromFile(@"Images\mapdown.png");
-            checkmark_no = Image.FromFile(@"Images\checkmark-no.png");
-            checkmark_yes = Image.FromFile(@"Images\checkmark-yes.png");
-            infoIcon = Image.FromFile(@"Images\defaulticon.png");
-            tibia_store_image = Image.FromFile(@"Images\tibiastore.png");
-            utilityImages.Add("offline training", Image.FromFile(@"Images\offlinetraining.png"));
+            back_image = LoadImage(@"Images\back.png");
+            prevpage_image = LoadImage(@"Images\prevpage.png");
+            nextpage_image = LoadImage(@"Images\nextpage.png");
+            cross_image = LoadImage(@"Images\cross.png");
+            tibia_image = LoadImage(@"Images\tibia.png");
+            mapup_image = LoadImage(@"Images\mapup.png");
+            mapdown_image = LoadImage(@"Images\mapdown.png");
+            checkmark_no = LoadImage(@"Images\checkmark-no.png");
+            checkmark_yes = LoadImage(@"Images\checkmark-yes.png");
+            infoIcon = LoadImage(@"Images\defaulticon.png");
+            tibia_store_image = LoadImage(@"Images\tibiastore.png");
+            utilityImages.Add("offline training", LoadImage(@"Images\offlinetraining.png"));
             utilityImages.Add("offline training melee", utilityImages["offline training"]);
-            utilityImages.Add("offline training magic", Image.FromFile(@"Images\offlinetrainingmagic.png"));
-            utilityImages.Add("offline training distance", Image.FromFile(@"Images\offlinetrainingdistance.png"));
-            utilityImages.Add("potion", Image.FromFile(@"Images\potionstore.png"));
-            utilityImages.Add("boat", Image.FromFile(@"Images\boat.png"));
-            utilityImages.Add("depot", Image.FromFile(@"Images\depot.png"));
-            utilityImages.Add("bank", Image.FromFile(@"Images\bank.png"));
-            utilityImages.Add("temple", Image.FromFile(@"Images\temple.png"));
-            utilityImages.Add("ore wagon", Image.FromFile(@"Images\orewagon.png"));
-            utilityImages.Add("whirlpool", Image.FromFile(@"Images\whirlpool.png"));
-            utilityImages.Add("post office", Image.FromFile(@"Images\postoffice.png"));
+            utilityImages.Add("offline training magic", LoadImage(@"Images\offlinetrainingmagic.png"));
+            utilityImages.Add("offline training distance", LoadImage(@"Images\offlinetrainingdistance.png"));
+            utilityImages.Add("potion", LoadImage(@"Images\potionstore.png"));
+            utilityImages.Add("boat", LoadImage(@"Images\boat.png"));
+            utilityImages.Add("depot", LoadImage(@"Images\depot.png"));
+            utilityImages.Add("bank", LoadImage(@"Images\bank.png"));
+            utilityImages.Add("temple", LoadImage(@"Images\temple.png"));
+            utilityImages.Add("ore wagon", LoadImage(@"Images\orewagon.png"));
+            utilityImages.Add("whirlpool", LoadImage(@"Images\whirlpool.png"));
+            utilityImages.Add("post office", LoadImage(@"Images\postoffice.png"));
 
-            item_background = System.Drawing.Image.FromFile(@"Images\item_background.png");
+            item_background = LoadImage(@"Images\item_background.png");
             for (int i = 0; i < 10; i++) {
-                image_numbers[i] = System.Drawing.Image.FromFile(@"Images\" + i.ToString() + ".png");
+                image_numbers[i] = LoadImage(@"Images\" + i.ToString() + ".png");
             }
 
-            vocationImages.Add("knight", Image.FromFile(@"Images\Knight.png"));
-            vocationImages.Add("paladin", Image.FromFile(@"Images\Paladin.png"));
-            vocationImages.Add("druid", Image.FromFile(@"Images\Druid.png"));
-            vocationImages.Add("sorcerer", Image.FromFile(@"Images\Sorcerer.png"));
+            vocationImages.Add("knight", LoadImage(@"Images\Knight.png"));
+            vocationImages.Add("paladin", LoadImage(@"Images\Paladin.png"));
+            vocationImages.Add("druid", LoadImage(@"Images\Druid.png"));
+            vocationImages.Add("sorcerer", LoadImage(@"Images\Sorcerer.png"));
 
             NotificationForm.Initialize();
             CreatureStatsForm.InitializeCreatureStats();
             HuntListForm.Initialize();
 
             for (int i = 0; i < 5; i++) {
-                star_image[i] = Image.FromFile(@"Images\star" + i + ".png");
-                star_image_text[i] = Image.FromFile(@"Images\star" + i + "_text.png");
+                star_image[i] = LoadImage(@"Images\star" + i + ".png");
+                star_image_text[i] = LoadImage(@"Images\star" + i + "_text.png");
             }
-            star_image[5] = Image.FromFile(@"Images\starunknown.png");
-            star_image_text[5] = Image.FromFile(@"Images\starunknown_text.png");
+            star_image[5] = LoadImage(@"Images\starunknown.png");
+            star_image_text[5] = LoadImage(@"Images\starunknown_text.png");
 
             prevent_settings_update = true;
             this.initializePluralMap();
-            this.loadDatabaseData();
+            try {
+                this.loadDatabaseData();
+            } catch {
+                ExitWithError("Fatal Error", String.Format("Corrupted database {0}.", databaseFile));
+            }
             this.loadSettings();
             MainForm.initializeFonts();
             this.initializeNames();
             this.initializeHunts();
             this.initializeSettings();
             this.initializeMaps();
-            Pathfinder.LoadFromDatabase(nodeDatabase);
+            try {
+                Pathfinder.LoadFromDatabase(nodeDatabase);
+            } catch {
+                ExitWithError("Fatal Error", String.Format("Corrupted database {0}.", nodeDatabase));
+            }
             prevent_settings_update = false;
 
             if (getSettingBool("StartAutohotkeyAutomatically")) {
@@ -160,9 +195,9 @@ namespace Tibialyzer {
             scan_tooltip.ShowAlways = true;
             scan_tooltip.UseFading = true;
 
-            this.loadingbar = new Bitmap(@"Images\scanningbar.gif");
-            this.loadingbarred = new Bitmap(@"Images\scanningbar-red.gif");
-            this.loadingbargray = new Bitmap(@"Images\scanningbar-gray.gif");
+            this.loadingbar = LoadImage(@"Images\scanningbar.gif");
+            this.loadingbarred = LoadImage(@"Images\scanningbar-red.gif");
+            this.loadingbargray = LoadImage(@"Images\scanningbar-gray.gif");
 
             this.loadTimerImage.Image = this.loadingbarred;
             this.current_state = ScanningState.NoTibia;
@@ -305,17 +340,19 @@ namespace Tibialyzer {
         }
 
         void initializePluralMap() {
-            StreamReader reader = new StreamReader(pluralMapFile);
-            string line;
-            while ((line = reader.ReadLine()) != null) {
-                if (line.Contains('=')) {
-                    string[] split = line.Split('=');
-                    if (!pluralMap.ContainsKey(split[0])) {
-                        pluralMap.Add(split[0], split[1]);
+            if (File.Exists(pluralMapFile)) {
+                using (StreamReader reader = new StreamReader(pluralMapFile)) {
+                    string line;
+                    while ((line = reader.ReadLine()) != null) {
+                        if (line.Contains('=')) {
+                            string[] split = line.Split('=');
+                            if (!pluralMap.ContainsKey(split[0])) {
+                                pluralMap.Add(split[0], split[1]);
+                            }
+                        }
                     }
                 }
             }
-            reader.Close();
         }
 
         private Hunt activeHunt = null;
@@ -334,18 +371,23 @@ namespace Tibialyzer {
             string line;
             string currentSetting = null;
 
-            StreamReader file = new StreamReader(settingsFile);
-            while ((line = file.ReadLine()) != null) {
-                if (line.Length == 0) continue;
-                if (line[0] == '@') {
-                    currentSetting = line.Substring(1, line.Length - 1);
-                    if (!settings.ContainsKey(currentSetting))
-                        settings.Add(currentSetting, new List<string>());
-                } else if (currentSetting != null) {
-                    settings[currentSetting].Add(line);
+            if (!File.Exists(settingsFile)) {
+                ResetSettingsToDefault();
+                saveSettings();
+            } else {
+                StreamReader file = new StreamReader(settingsFile);
+                while ((line = file.ReadLine()) != null) {
+                    if (line.Length == 0) continue;
+                    if (line[0] == '@') {
+                        currentSetting = line.Substring(1, line.Length - 1);
+                        if (!settings.ContainsKey(currentSetting))
+                            settings.Add(currentSetting, new List<string>());
+                    } else if (currentSetting != null) {
+                        settings[currentSetting].Add(line);
+                    }
                 }
-            }
-            file.Close();
+                file.Close();
+            } 
         }
 
         void saveSettings() {
@@ -559,7 +601,16 @@ namespace Tibialyzer {
                     circleTimer.Elapsed += circleTimer_Elapsed;
                     circleTimer.Enabled = true;
                 }
-                bool success = ScanMemory();
+                bool success = false;
+                try {
+                    success = ScanMemory();
+                } catch(Exception ex) {
+                    if (errorVisible) {
+                        errorVisible = false;
+                        ExitWithError("Database Scan Error (Non-Fatal)", ex.Message, false);
+                    }
+                    Console.WriteLine(ex.Message);
+                }
                 circleTimer.Dispose();
                 circleTimer = null;
                 if (success) {
@@ -1309,7 +1360,7 @@ namespace Tibialyzer {
                 }
 
                 h.dbtableid = 1;
-                while(true) {
+                while (true) {
                     command = new SQLiteCommand(String.Format("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='{0}';", h.GetTableName()), lootConn);
                     int value = int.Parse(command.ExecuteScalar().ToString());
                     if (value == 0) {
@@ -1498,7 +1549,7 @@ namespace Tibialyzer {
             h.sideHunt = (sender as CheckBox).Checked;
             saveHunts();
         }
-        
+
         private void aggregateHuntBox_CheckedChanged(object sender, EventArgs e) {
             if (switch_hunt) return;
             Hunt h = getSelectedHunt();
@@ -1548,6 +1599,13 @@ namespace Tibialyzer {
             if (!settings.ContainsKey(key)) settings.Add(key, new List<string>());
             settings[key].Clear();
             settings[key].Add(value);
+        }
+
+        public void setSetting(string key, int value) {
+            setSetting(key, value.ToString());
+        }
+        public void setSetting(string key, bool value) {
+            setSetting(key, value.ToString());
         }
 
         private void rareDropNotificationValueCheckbox_CheckedChanged(object sender, EventArgs e) {
@@ -1983,6 +2041,56 @@ namespace Tibialyzer {
 
         private void stackableConvertApply_Click_1(object sender, EventArgs e) {
 
+        }
+
+        private void unlockResetSettingsButton_CheckedChanged(object sender, EventArgs e) {
+            resetSettingsPanel.Enabled = (sender as CheckBox).Checked;
+        }
+
+        private string defaultWASDSettings = @"# Suspend autohotkey mode with Ctrl+Enter
+Ctrl+Enter::Suspend
+# Enable WASD Movement
+W::Up
+A::Left
+S::Down
+D::Right
+# Enable diagonal movement with QEZC
+Q::NumpadHome
+E::NumpadPgUp
+Z::NumpadEnd
+C::NumpadPgDn";
+
+        private void ResetSettingsToDefault() {
+            settings = new Dictionary<string, List<string>>();
+            setSetting("NotificationDuration", 30);
+            setSetting("EnableSimpleNotifications", true);
+            setSetting("EnableRichNotifications", true);
+            setSetting("CopyAdvances", true);
+            setSetting("ShowNotifications", true);
+            setSetting("UseRichNotificationType", true);
+            setSetting("ShowNotificationsValue", true);
+            setSetting("NotificationValue", 2000);
+            setSetting("ShowNotificationsSpecific", true);
+            setSetting("LookMode", true);
+            setSetting("AlwaysShowLoot", false);
+            setSetting("StartAutohotkeyAutomatically", false);
+            setSetting("ShutdownAutohotkeyOnExit", false);
+            setSetting("NotificationItems", "");
+            setSetting("AutoHotkeySettings", defaultWASDSettings);
+            setSetting("AutoScreenshotAdvance", false);
+            setSetting("AutoScreenshotItemDrop", false);
+            setSetting("AutoScreenshotDeath", false);
+            setSetting("EnableScreenshots", false);
+            setSetting("Names", "Mytherin");
+            
+            saveSettings();
+        }
+
+        private void resetToDefaultButton_Click(object sender, EventArgs e) {
+            ResetSettingsToDefault();
+            shutdownAutoHotkey_Click(null, null);
+            initializeSettings();
+            initializeNames();
         }
     }
 
