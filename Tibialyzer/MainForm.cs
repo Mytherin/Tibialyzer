@@ -536,6 +536,8 @@ namespace Tibialyzer {
 
             this.notificationLengthSlider.Value = notificationLength;
             this.enableSimpleNotifications.Checked = simpleNotifications;
+            this.eventNotificationEnable.Checked = getSettingBool("EnableEventNotifications");
+            this.unrecognizedCommandNotification.Checked = getSettingBool("EnableUnrecognizedNotifications");
             this.enableRichNotificationsCheckbox.Checked = richNotifications;
             this.advanceCopyCheckbox.Checked = copyAdvances;
             this.showNotificationCheckbox.Checked = showNotifications;
@@ -1699,6 +1701,20 @@ namespace Tibialyzer {
             this.simpleNotifications = (sender as CheckBox).Checked;
         }
 
+        private void eventNotificationEnable_CheckedChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("EnableEventNotifications", (sender as CheckBox).Checked.ToString());
+            saveSettings();
+        }
+
+        private void unrecognizedCommandNotification_CheckedChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("EnableUnrecognizedNotifications", (sender as CheckBox).Checked.ToString());
+            saveSettings();
+        }
+
         private void advanceCopyCheckbox_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
@@ -2064,6 +2080,8 @@ C::NumpadPgDn";
             settings = new Dictionary<string, List<string>>();
             setSetting("NotificationDuration", 30);
             setSetting("EnableSimpleNotifications", true);
+            setSetting("EnableEventNotifications", true);
+            setSetting("EnableUnrecognizedNotifications", true);
             setSetting("EnableRichNotifications", true);
             setSetting("CopyAdvances", true);
             setSetting("ShowNotifications", true);

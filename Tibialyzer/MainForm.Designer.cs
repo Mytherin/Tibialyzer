@@ -592,6 +592,7 @@
             this.unrecognizedCommandNotification.TabIndex = 13;
             this.unrecognizedCommandNotification.Text = "Enable Notification On Unrecognized Command";
             this.unrecognizedCommandNotification.UseVisualStyleBackColor = true;
+            this.unrecognizedCommandNotification.CheckedChanged += new System.EventHandler(this.unrecognizedCommandNotification_CheckedChanged);
             // 
             // eventNotificationEnable
             // 
@@ -604,6 +605,7 @@
             this.eventNotificationEnable.TabIndex = 12;
             this.eventNotificationEnable.Text = "Enable Notification On Event";
             this.eventNotificationEnable.UseVisualStyleBackColor = true;
+            this.eventNotificationEnable.CheckedChanged += new System.EventHandler(this.eventNotificationEnable_CheckedChanged);
             // 
             // lookCheckBox
             // 

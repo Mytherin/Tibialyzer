@@ -698,18 +698,20 @@ namespace Tibialyzer {
                 parseMemoryResults.death = false;
             }
 
-            if (true && parseMemoryResults != null) {
+            if (parseMemoryResults != null) {
                 if (parseMemoryResults.newEventMessages.Count > 0) {
-                    foreach(Tuple<Event, string> tpl in parseMemoryResults.newEventMessages) {
-                        Event ev = tpl.Item1;
-                        Creature cr = getCreature(ev.creatureid);
-                        this.Invoke((MethodInvoker)delegate {
-                            if (!lootNotificationRich) {
-                                ShowSimpleNotification("Event in " + ev.location, tpl.Item2, cr.image);
-                            } else {
-                                ShowSimpleNotification(new SimpleTextNotification(cr.image, "Event in " + ev.location, tpl.Item2));
-                            }
-                        });
+                    if (getSettingBool("EnableEventNotifications")) {
+                        foreach (Tuple<Event, string> tpl in parseMemoryResults.newEventMessages) {
+                            Event ev = tpl.Item1;
+                            Creature cr = getCreature(ev.creatureid);
+                            this.Invoke((MethodInvoker)delegate {
+                                if (!lootNotificationRich) {
+                                    ShowSimpleNotification("Event in " + ev.location, tpl.Item2, cr.image);
+                                } else {
+                                    ShowSimpleNotification(new SimpleTextNotification(cr.image, "Event in " + ev.location, tpl.Item2));
+                                }
+                            });
+                        }
                     }
                     parseMemoryResults.newEventMessages.Clear();
                 }
@@ -745,7 +747,7 @@ namespace Tibialyzer {
 
             foreach (string command in commands) {
                 this.Invoke((MethodInvoker)delegate {
-                    if (!ExecuteCommand(command, parseMemoryResults)) {
+                    if (!ExecuteCommand(command, parseMemoryResults) && getSettingBool("EnableUnrecognizedNotifications")) {
                         if (!lootNotificationRich) {
                             ShowSimpleNotification("Unrecognized command", "Unrecognized command: " + command, tibia_image);
                         } else {
