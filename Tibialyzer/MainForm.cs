@@ -533,7 +533,8 @@ namespace Tibialyzer {
             this.notificationPanel.Enabled = showNotifications;
             this.specificNotificationTextbox.Enabled = showNotificationsSpecific;
             this.notificationLabel.Text = "Notification Length: " + notificationLength.ToString() + " Seconds";
-
+            this.scanningSpeedTrack.Value = Math.Min(Math.Max(getSettingInt("ScanSpeed"), 0), 4);
+            this.scanSpeedDisplayLabel.Text = scanSpeedText[scanningSpeedTrack.Value];
             this.notificationLengthSlider.Value = notificationLength;
             this.enableSimpleNotifications.Checked = simpleNotifications;
             this.eventNotificationEnable.Checked = getSettingBool("EnableEventNotifications");
@@ -2100,7 +2101,8 @@ C::NumpadPgDn";
             setSetting("AutoScreenshotDeath", false);
             setSetting("EnableScreenshots", false);
             setSetting("Names", "Mytherin");
-            
+            setSetting("ScanSpeed", "0");
+
             saveSettings();
         }
 
@@ -2109,6 +2111,15 @@ C::NumpadPgDn";
             shutdownAutoHotkey_Click(null, null);
             initializeSettings();
             initializeNames();
+        }
+
+        public string[] scanSpeedText = { "Fastest", "Fast", "Medium", "Slow", "Slowest" };
+
+        private void scanningSpeedTrack_Scroll(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("ScanSpeed", scanningSpeedTrack.Value);
+            scanSpeedDisplayLabel.Text = scanSpeedText[scanningSpeedTrack.Value];
         }
     }
 

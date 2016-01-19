@@ -100,6 +100,7 @@ namespace Tibialyzer {
             IntPtr processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
             MEMORY_BASIC_INFORMATION mem_basic_info = new MEMORY_BASIC_INFORMATION();
             int bytesRead = 0;  // number of bytes read with ReadProcessMemory
+            int scanSpeed = getSettingInt("ScanSpeed");
             try {
                 results = new ReadMemoryResults();
                 while (proc_min_address_l < proc_max_address_l) {
@@ -119,8 +120,10 @@ namespace Tibialyzer {
                             // if any timestamp strings were found, scan the chunk for any messages
                             SearchChunk(strings, results);
                         }
-                        // Todo: performance throttling sleep 0-2 ms after every scan
-                        //Thread.Sleep(1);
+                        // performance throttling sleep after every scan (depending on scanSpeed setting)
+                        if (scanSpeed > 0) {
+                            Thread.Sleep(scanSpeed);
+                        }
                     }
 
                     // move to the next memory chunk

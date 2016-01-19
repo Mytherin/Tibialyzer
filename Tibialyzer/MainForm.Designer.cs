@@ -59,6 +59,9 @@
             this.huntBox = new System.Windows.Forms.ListBox();
             this.backgroundBox = new System.Windows.Forms.PictureBox();
             this.settingsTab = new System.Windows.Forms.TabPage();
+            this.scanSpeedDisplayLabel = new System.Windows.Forms.Label();
+            this.scanningSpeedLabel = new System.Windows.Forms.Label();
+            this.scanningSpeedTrack = new System.Windows.Forms.TrackBar();
             this.unlockResetSettingsButton = new System.Windows.Forms.CheckBox();
             this.resetSettingsPanel = new System.Windows.Forms.Panel();
             this.resetToDefaultButton = new System.Windows.Forms.Button();
@@ -145,12 +148,14 @@
             this.loadTimerImage = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.label3 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             this.huntingPage.SuspendLayout();
             this.trackAllCreaturesPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backgroundBox)).BeginInit();
             this.settingsTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.scanningSpeedTrack)).BeginInit();
             this.resetSettingsPanel.SuspendLayout();
             this.notificationPanel.SuspendLayout();
             this.richNotificationsPanel.SuspendLayout();
@@ -531,6 +536,10 @@
             // 
             // settingsTab
             // 
+            this.settingsTab.Controls.Add(this.label3);
+            this.settingsTab.Controls.Add(this.scanSpeedDisplayLabel);
+            this.settingsTab.Controls.Add(this.scanningSpeedLabel);
+            this.settingsTab.Controls.Add(this.scanningSpeedTrack);
             this.settingsTab.Controls.Add(this.unlockResetSettingsButton);
             this.settingsTab.Controls.Add(this.resetSettingsPanel);
             this.settingsTab.Controls.Add(this.unrecognizedCommandNotification);
@@ -549,6 +558,35 @@
             this.settingsTab.Text = "Settings";
             this.settingsTab.UseVisualStyleBackColor = true;
             this.settingsTab.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
+            // 
+            // scanSpeedDisplayLabel
+            // 
+            this.scanSpeedDisplayLabel.AutoSize = true;
+            this.scanSpeedDisplayLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.scanSpeedDisplayLabel.Location = new System.Drawing.Point(280, 296);
+            this.scanSpeedDisplayLabel.Name = "scanSpeedDisplayLabel";
+            this.scanSpeedDisplayLabel.Size = new System.Drawing.Size(59, 16);
+            this.scanSpeedDisplayLabel.TabIndex = 18;
+            this.scanSpeedDisplayLabel.Text = "Fastest";
+            // 
+            // scanningSpeedLabel
+            // 
+            this.scanningSpeedLabel.AutoSize = true;
+            this.scanningSpeedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.scanningSpeedLabel.Location = new System.Drawing.Point(8, 263);
+            this.scanningSpeedLabel.Name = "scanningSpeedLabel";
+            this.scanningSpeedLabel.Size = new System.Drawing.Size(122, 16);
+            this.scanningSpeedLabel.TabIndex = 17;
+            this.scanningSpeedLabel.Text = "Scanning Speed";
+            // 
+            // scanningSpeedTrack
+            // 
+            this.scanningSpeedTrack.Location = new System.Drawing.Point(8, 283);
+            this.scanningSpeedTrack.Maximum = 4;
+            this.scanningSpeedTrack.Name = "scanningSpeedTrack";
+            this.scanningSpeedTrack.Size = new System.Drawing.Size(263, 45);
+            this.scanningSpeedTrack.TabIndex = 2;
+            this.scanningSpeedTrack.Scroll += new System.EventHandler(this.scanningSpeedTrack_Scroll);
             // 
             // unlockResetSettingsButton
             // 
@@ -1450,6 +1488,16 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(7, 331);
+            this.label3.MaximumSize = new System.Drawing.Size(340, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(340, 52);
+            this.label3.TabIndex = 19;
+            this.label3.Text = resources.GetString("label3.Text");
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1476,6 +1524,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.backgroundBox)).EndInit();
             this.settingsTab.ResumeLayout(false);
             this.settingsTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.scanningSpeedTrack)).EndInit();
             this.resetSettingsPanel.ResumeLayout(false);
             this.notificationPanel.ResumeLayout(false);
             this.notificationPanel.PerformLayout();
@@ -1625,6 +1674,10 @@
         private System.Windows.Forms.Button resetToDefaultButton;
         private System.Windows.Forms.CheckBox unrecognizedCommandNotification;
         private System.Windows.Forms.CheckBox eventNotificationEnable;
+        private System.Windows.Forms.Label scanSpeedDisplayLabel;
+        private System.Windows.Forms.Label scanningSpeedLabel;
+        private System.Windows.Forms.TrackBar scanningSpeedTrack;
+        private System.Windows.Forms.Label label3;
     }
 }
 
