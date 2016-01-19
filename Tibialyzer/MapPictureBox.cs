@@ -74,6 +74,14 @@ namespace Tibialyzer {
                 beginCoordinate = new Coordinate(mapCoordinate);
                 beginWidth = sourceWidth;
             }
+            if (beginCoordinate.x == Coordinate.MaxWidth / 2 && beginCoordinate.y == Coordinate.MaxHeight / 2 && beginCoordinate.z == 7) {
+                if (this.Image != MainForm.nomapavailable && this.Image != null) {
+                    this.Image.Dispose();
+                }
+                this.Image = MainForm.nomapavailable;
+                this.SizeMode = PictureBoxSizeMode.Zoom;
+                return;
+            }
             if (mapCoordinate.z < 0) {
                 mapCoordinate.z = 0;
             } else if (mapCoordinate.z >= MainForm.mapFilesCount) {

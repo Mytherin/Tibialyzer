@@ -42,6 +42,7 @@ namespace Tibialyzer {
         public static Image checkmark_yes = null;
         public static Image checkmark_no = null;
         public static Image infoIcon = null;
+        public static Image nomapavailable = null;
         public static Dictionary<string, Image> vocationImages = new Dictionary<string, Image>();
         private bool keep_working = true;
         private static string databaseFile = @"Database\Database.db";
@@ -122,6 +123,7 @@ namespace Tibialyzer {
             checkmark_yes = LoadImage(@"Images\checkmark-yes.png");
             infoIcon = LoadImage(@"Images\defaulticon.png");
             tibia_store_image = LoadImage(@"Images\tibiastore.png");
+            nomapavailable = LoadImage(@"Images\nomapavailable.png");
             utilityImages.Add("offline training", LoadImage(@"Images\offlinetraining.png"));
             utilityImages.Add("offline training melee", utilityImages["offline training"]);
             utilityImages.Add("offline training magic", LoadImage(@"Images\offlinetrainingmagic.png"));
