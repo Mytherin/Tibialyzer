@@ -822,7 +822,7 @@ namespace Tibialyzer {
                         y = y + header.Size.Height;
                         this.Controls.Add(header);
 
-                        y = y + MainForm.DisplayCreatureList(this.Controls, (npc_list as IEnumerable<TibiaObject>).ToList(), base_x, base_y + y, max_x, spacing, true, TooltipFunction, 1, createdControls);
+                        y = y + MainForm.DisplayCreatureList(this.Controls, (npc_list as IEnumerable<TibiaObject>).ToList(), base_x, base_y + y, max_x, spacing, TooltipFunction, 1, createdControls);
                     }
                 }
                 command_start = "npc" + MainForm.commandSymbol;
@@ -847,7 +847,7 @@ namespace Tibialyzer {
                 y = y + header.Size.Height;
 
                 List<Control> createdControls = new List<Control>();
-                y = y + MainForm.DisplayCreatureList(this.Controls, creatureList, base_x, base_y + y, max_x, spacing, true, CreatureTooltipFunction, 1, createdControls);
+                y = y + MainForm.DisplayCreatureList(this.Controls, creatureList, base_x, base_y + y, max_x, spacing, CreatureTooltipFunction, 1, createdControls);
 
                 command_start = "creature" + MainForm.commandSymbol;
                 switch_start = "item" + MainForm.commandSymbol;

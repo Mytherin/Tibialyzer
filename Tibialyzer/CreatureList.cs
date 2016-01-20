@@ -58,10 +58,12 @@ namespace Tibialyzer {
             }
 
             int base_y = this.listTitle.Location.Y + this.listTitle.Height + 10;
+            int newWidth;
             MainForm.PageInfo pageInfo = new MainForm.PageInfo(false, false);
-            int y = MainForm.DisplayCreatureList(this.Controls, objects, 10, base_y, 344, 4, true, null, 1, createdControls, currentPage, 600, pageInfo);
-            foreach (Control control in createdControls)
-                control.Click += openItemBox;
+            //int y = MainForm.DisplayCreatureList(this.Controls, objects, 10, base_y, 344, 4, null, 1, createdControls, currentPage, 600, pageInfo);
+            int y = MainForm.DisplayCreatureAttributeList(this.Controls, objects, 10, base_y, out newWidth, null, createdControls, currentPage, 20, pageInfo);
+            //foreach (Control control in createdControls)
+            //    control.Click += openItemBox;
 
             if (pageInfo.prevPage) {
                 PictureBox prevpage = new PictureBox();
@@ -77,7 +79,7 @@ namespace Tibialyzer {
             }
             if (pageInfo.nextPage) {
                 PictureBox nextpage = new PictureBox();
-                nextpage.Location = new Point(this.Size.Width - 108, base_y + y);
+                nextpage.Location = new Point(10 + newWidth - 108, base_y + y);
                 nextpage.Size = new Size(98, 23);
                 nextpage.BackColor = Color.Transparent;
                 nextpage.Image = MainForm.nextpage_image;
@@ -89,8 +91,8 @@ namespace Tibialyzer {
             if (pageInfo.prevPage || pageInfo.nextPage) {
                 y += 23;
             }
-
-            this.Size = new Size(this.Size.Width, base_y + y + 10);
+            this.Size = new Size(10 + newWidth, base_y + y + 10);
+            this.refreshTimer();
         }
 
         private void Nextpage_Click(object sender, EventArgs e) {

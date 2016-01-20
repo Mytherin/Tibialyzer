@@ -389,7 +389,7 @@ namespace Tibialyzer {
                     }
                 }
                 file.Close();
-            } 
+            }
         }
 
         void saveSettings() {
@@ -609,7 +609,7 @@ namespace Tibialyzer {
                 bool success = false;
                 try {
                     success = ScanMemory();
-                } catch(Exception ex) {
+                } catch (Exception ex) {
                     if (errorVisible) {
                         errorVisible = false;
                         ExitWithError("Database Scan Error (Non-Fatal)", ex.Message, false);
@@ -1063,7 +1063,175 @@ namespace Tibialyzer {
             }
         }
 
-        public static int DisplayCreatureList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, int max_x, int spacing, bool transparent, Func<TibiaObject, string> tooltip_function = null, float magnification = 1.0f, List<Control> createdControls = null, int page = 0, int pageheight = 10000, PageInfo pageInfo = null) {
+        public static int DisplayCreatureAttributeList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, out int maxwidth, Func<TibiaObject, string> tooltip_function = null, List<Control> createdControls = null, int page = 0, int pageitems = 20, PageInfo pageInfo = null, string extraAttribute = null, Func<TibiaObject, Attribute> attributeFunction = null) {
+            const int size = 24;
+            const int imageSize = size - 4;
+            // add a tooltip that displays the creature names
+            ToolTip value_tooltip = new ToolTip();
+            value_tooltip.AutoPopDelay = 60000;
+            value_tooltip.InitialDelay = 500;
+            value_tooltip.ReshowDelay = 0;
+            value_tooltip.ShowAlways = true;
+            value_tooltip.UseFading = true;
+            int currentPage = 0;
+            if (pageInfo != null) {
+                pageInfo.prevPage = page > 0;
+            }
+            int offset = 0;
+            List<TibiaObject> pageItems = new List<TibiaObject>();
+            foreach (TibiaObject cr in l) {
+                if (offset > pageitems) {
+                    if (page > currentPage) {
+                        offset = 0;
+                        currentPage += 1;
+                    } else {
+                        if (pageInfo != null) {
+                            pageInfo.nextPage = true;
+                        }
+                        break;
+                    }
+                }
+                if (currentPage == page) {
+                    pageItems.Add(cr);
+                }
+                offset++;
+            }
+            Dictionary<string, int> totalAttributes = new Dictionary<string, int>();
+            foreach (TibiaObject obj in pageItems) {
+                List<string> headers = obj.GetAttributeHeaders();
+                List<Attribute> attributes = obj.GetAttributes();
+                if (extraAttribute != null) {
+                    headers.Add(extraAttribute);
+                    attributes.Add(attributeFunction(obj));
+                }
+                for (int i = 0; i < headers.Count; i++) {
+                    string header = headers[i];
+                    Attribute attribute = attributes[i];
+                    int width = -1;
+                    if (attribute is StringAttribute) {
+                        width = TextRenderer.MeasureText((attribute as StringAttribute).value, HuntListForm.text_font).Width;
+                    } else if (attribute is ImageAttribute) {
+                        width = (attribute as ImageAttribute).value.Width;
+                    } else if (attribute is BooleanAttribute) {
+                        width = 20;
+                    } else {
+                        throw new Exception("Unrecognized attribute.");
+                    }
+                    width = Math.Min(width, attribute.MaxWidth);
+                    if (!totalAttributes.ContainsKey(header)) {
+                        int headerWidth = TextRenderer.MeasureText(header, HuntListForm.text_font).Width;
+                        totalAttributes.Add(header, Math.Max(headerWidth, width));
+                    } else if (totalAttributes[header] < width) {
+                        totalAttributes[header] = width;
+                    }
+                }
+            }
+            base_x += 24;
+            maxwidth = base_x;
+            // create header information
+            int x = base_x;
+            foreach (KeyValuePair<string, int> kvp in totalAttributes) {
+                Label label = new Label();
+                label.Text = kvp.Key;
+                label.Location = new Point(x, base_y);
+                label.ForeColor = MainForm.label_text_color;
+                label.Size = new Size(kvp.Value, size);
+                label.Font = HuntListForm.text_font;
+                label.BackColor = Color.Transparent;
+                controls.Add(label);
+                if (createdControls != null) {
+                    createdControls.Add(label);
+                }
+                x += kvp.Value;
+                maxwidth += kvp.Value;
+            }
+            offset = 0;
+            // create object information
+            foreach (TibiaObject obj in pageItems) {
+                List<string> headers = obj.GetAttributeHeaders();
+                List<Attribute> attributes = obj.GetAttributes();
+                if (extraAttribute != null) {
+                    headers.Add(extraAttribute);
+                    attributes.Add(attributeFunction(obj));
+                }
+                string command = obj.GetCommand();
+                x = base_x;
+                int y = size * (offset + 1) + base_y;
+                // create main image
+                PictureBox picture = new PictureBox();
+                picture.Image = obj.GetImage();
+                picture.Size = new Size(size, size);
+                picture.SizeMode = PictureBoxSizeMode.Zoom;
+                picture.Location = new Point(base_x - 24, y);
+                picture.Click += executeNameCommand;
+                picture.BackColor = Color.Transparent;
+                picture.Name = command;
+                if (obj is Item || (obj is LazyTibiaObject && (obj as LazyTibiaObject).type == TibiaObjectType.Item)) {
+                    picture.BackgroundImage = MainForm.item_background;
+                }
+                controls.Add(picture);
+                if (createdControls != null) {
+                    createdControls.Add(picture);
+                }
+                // iterate over all attributes
+                foreach (KeyValuePair<string, int> kvp in totalAttributes) {
+                    int index = headers.IndexOf(kvp.Key);
+                    Attribute attribute = attributes[index];
+                    Control c;
+                    if (attribute is StringAttribute) {
+                        // create label
+                        Label label = new Label();
+                        label.Text = (attribute as StringAttribute).value;
+                        label.Location = new Point(x, y);
+                        label.ForeColor = (attribute as StringAttribute).color;
+                        label.Size = new Size(kvp.Value, size);
+                        label.Font = HuntListForm.text_font;
+                        label.Click += executeNameCommand;
+                        label.Name = command;
+                        label.BackColor = Color.Transparent;
+                        controls.Add(label);
+                        if (createdControls != null) {
+                            createdControls.Add(label);
+                        }
+                        c = label;
+                    } else if (attribute is ImageAttribute || attribute is BooleanAttribute) {
+                        // create picturebox
+                        picture = new PictureBox();
+                        picture.Image = (attribute is ImageAttribute) ? (attribute as ImageAttribute).value : ((attribute as BooleanAttribute).value ? MainForm.checkmark_yes : MainForm.checkmark_no);
+                        picture.Size = new Size(imageSize, imageSize);
+                        picture.SizeMode = PictureBoxSizeMode.Zoom;
+                        picture.Location = new Point(x + (kvp.Value - imageSize) / 2, y);
+                        picture.Click += executeNameCommand;
+                        picture.BackColor = Color.Transparent;
+                        picture.Name = command;
+                        controls.Add(picture);
+                        if (createdControls != null) {
+                            createdControls.Add(picture);
+                        }
+                        c = picture;
+                    } else {
+                        throw new Exception("Unrecognized attribute.");
+                    }
+                    if (tooltip_function == null) {
+                        value_tooltip.SetToolTip(c, obj.GetName());
+                    } else {
+                        value_tooltip.SetToolTip(c, tooltip_function(obj));
+                    }
+                    x += kvp.Value;
+                }
+                offset++;
+            }
+            clicked = false;
+            return (offset + 1) * size;
+        }
+
+        private static bool clicked = false;
+        private static void executeNameCommand(object sender, EventArgs e) {
+            if (clicked) return;
+            mainForm.ExecuteCommand((sender as Control).Name);
+        }
+
+        public static int DisplayCreatureList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, int max_x, int spacing, Func<TibiaObject, string> tooltip_function = null, float magnification = 1.0f, List<Control> createdControls = null, int page = 0, int pageheight = 10000, PageInfo pageInfo = null) {
             int x = 0, y = 0;
 
             int height = 0;
@@ -1148,12 +1316,13 @@ namespace Tibialyzer {
             return y;
         }
 
+
         private void creatureSearch_TextChanged(object sender, EventArgs e) {
             string creature = (sender as TextBox).Text.ToLower();
             this.SuspendLayout();
             this.creaturePanel.Controls.Clear();
             int count = 0;
-            DisplayCreatureList(this.creaturePanel.Controls, MainForm.searchCreature(creature), 10, 10, this.creaturePanel.Width - 20, 4, false);
+            DisplayCreatureList(this.creaturePanel.Controls, MainForm.searchCreature(creature), 10, 10, this.creaturePanel.Width - 20, 4);
             foreach (Control c in creaturePanel.Controls) {
                 if (c is PictureBox) {
                     c.Click += ShowCreatureInformation;
@@ -1165,7 +1334,7 @@ namespace Tibialyzer {
             string item = (sender as TextBox).Text;
             this.SuspendLayout();
             this.itemPanel.Controls.Clear();
-            DisplayCreatureList(this.itemPanel.Controls, MainForm.searchItem(item), 10, 10, this.itemPanel.Width - 20, 4, false);
+            DisplayCreatureList(this.itemPanel.Controls, MainForm.searchItem(item), 10, 10, this.itemPanel.Width - 20, 4);
             foreach (Control c in itemPanel.Controls) {
                 if (c is PictureBox) {
                     c.Click += ShowItemInformation;
@@ -1543,7 +1712,7 @@ namespace Tibialyzer {
                 if (magnification > maxMagnification) magnification = maxMagnification;
             }
             creatureImagePanel.Controls.Clear();
-            DisplayCreatureList(creatureImagePanel.Controls, creatureObjects, 0, 0, creatureImagePanel.Width, spacing, false, null, magnification);
+            DisplayCreatureList(creatureImagePanel.Controls, creatureObjects, 0, 0, creatureImagePanel.Width, spacing, null, magnification);
         }
 
         private void startupHuntCheckbox_CheckedChanged(object sender, EventArgs e) {

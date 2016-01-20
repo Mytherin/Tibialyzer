@@ -55,7 +55,7 @@ namespace Tibialyzer {
             resistance_colors.Add("Energy", Color.MidnightBlue);
             //and images
             foreach (string str in resistance_colors.Keys) {
-                resistance_images.Add(str, System.Drawing.Image.FromFile(@"Images/" + str.ToLower() + ".png"));
+                resistance_images.Add(str, MainForm.mainForm.LoadImage(@"Images/" + str.ToLower() + ".png"));
             }
         }
 

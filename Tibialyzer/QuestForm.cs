@@ -201,7 +201,7 @@ namespace Tibialyzer {
                 y += 25;
                 if (rewards.Count > 0) {
                     List<Control> itemControls = new List<Control>();
-                    y = y + MainForm.DisplayCreatureList(this.Controls, rewards, 10, y, this.Size.Width - 10, 1, false, null, 1, itemControls);
+                    y = y + MainForm.DisplayCreatureList(this.Controls, rewards, 10, y, this.Size.Width - 10, 1, null, 1, itemControls);
                     foreach (Control control in itemControls) {
                         control.BackgroundImage = MainForm.item_background;
                         control.Click += itemClick;
@@ -216,7 +216,7 @@ namespace Tibialyzer {
                         rewardOutfits.Add(outfit);
                     }
 
-                    y = y + MainForm.DisplayCreatureList(this.Controls, rewardOutfits, 10, y, this.Size.Width - 10, 4, false, null, 1, outfitControls);
+                    y = y + MainForm.DisplayCreatureList(this.Controls, rewardOutfits, 10, y, this.Size.Width - 10, 4, null, 1, outfitControls);
                     foreach (Control control in outfitControls) {
                         control.Click += outfitClick;
                     }

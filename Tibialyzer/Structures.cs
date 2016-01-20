@@ -10,11 +10,48 @@ namespace Tibialyzer {
         public bool permanent;
         public abstract string GetName();
         public abstract Image GetImage();
+        public abstract List<string> GetAttributeHeaders();
+        public abstract List<Attribute> GetAttributes();
+        public abstract string GetCommand();
     }
 
     public class Command {
         public string player;
         public string command;
+    }
+
+    public abstract class Attribute {
+        public int MaxWidth;
+    };
+
+    public class StringAttribute : Attribute {
+        public string value;
+        public Color color;
+        public StringAttribute(string value, int MaxWidth) {
+            this.value = value;
+            this.MaxWidth = MaxWidth;
+            this.color = MainForm.label_text_color;
+        }
+        public StringAttribute(string value, int MaxWidth, Color color) {
+            this.value = value;
+            this.MaxWidth = MaxWidth;
+            this.color = color;
+        }
+    }
+
+    public class ImageAttribute : Attribute {
+        public Image value;
+        public ImageAttribute(Image value, int MaxWidth = 100) {
+            this.value = value;
+            this.MaxWidth = MaxWidth;
+        }
+    }
+    public class BooleanAttribute : Attribute {
+        public bool value;
+        public BooleanAttribute(bool value, int MaxWidth = 100) {
+            this.value = value;
+            this.MaxWidth = MaxWidth;
+        }
     }
 
     public class Coordinate {
@@ -68,6 +105,15 @@ namespace Tibialyzer {
 
         public override string GetName() { return name; }
         public override Image GetImage() { return image; }
+        public override List<string> GetAttributeHeaders() {
+            return new List<string> { "Name" };
+        }
+        public override List<Attribute> GetAttributes() {
+            return new List<Attribute> { new StringAttribute(name, 120) };
+        }
+        public override string GetCommand() {
+            return "worldobject" + MainForm.commandSymbol + name;
+        }
     }
 
     public class Outfit : TibiaObject {
@@ -88,6 +134,16 @@ namespace Tibialyzer {
             }
             throw new Exception("Outfit without image");
         }
+        public override List<string> GetAttributeHeaders() {
+            return new List<string> { "Name", "Prem", "Store", "Quest Name" };
+        }
+        public override List<Attribute> GetAttributes() {
+            Quest q = MainForm.getQuest(questid);
+            return new List<Attribute> { new StringAttribute(name, 140), new BooleanAttribute(premium), new BooleanAttribute(tibiastore), new StringAttribute(q == null ? "-" : q.name, 100) };
+        }
+        public override string GetCommand() {
+            return "outfit" + MainForm.commandSymbol + title;
+        }
     }
 
     public class Mount : TibiaObject {
@@ -105,6 +161,19 @@ namespace Tibialyzer {
 
         public override string GetName() { return name; }
         public override Image GetImage() { return image; }
+        public override List<string> GetAttributeHeaders() {
+            return new List<string> { "Name", "Tame", "Creature", "Store" };
+        }
+        public override List<Attribute> GetAttributes() {
+            Item i = MainForm.getItem(tameitemid);
+            Creature cr = MainForm.getCreature(tamecreatureid);
+            string itemName = i == null ? "-" : MainForm.ToTitle(i.displayname);
+            string creatureName = cr == null ? "-" : MainForm.ToTitle(cr.displayname);
+            return new List<Attribute> { new StringAttribute(name, 120), new StringAttribute(itemName, 60), new StringAttribute(creatureName, 60), new BooleanAttribute(tibiastore) };
+        }
+        public override string GetCommand() {
+            return "mount" + MainForm.commandSymbol + title;
+        }
     }
 
     public class QuestInstruction {
@@ -173,9 +242,20 @@ namespace Tibialyzer {
         public bool druid;
         public Image image;
 
+        private static Color ManaCostColor = Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(180)))), ((int)(((byte)(176)))));
+
         public List<SpellTaught> teachNPCs = new List<SpellTaught>();
         public override string GetName() { return name; }
         public override Image GetImage() { return image; }
+        public override List<string> GetAttributeHeaders() {
+            return new List<string> { "Name", "Words", "Mana", "Level" };
+        }
+        public override List<Attribute> GetAttributes() {
+            return new List<Attribute> { new StringAttribute(name, 140), new StringAttribute(words, 100), new StringAttribute(manacost >= 0 ? manacost.ToString() : "-", 40, ManaCostColor), new StringAttribute(levelrequired > 0 ? levelrequired.ToString() : "-", 50) };
+        }
+        public override string GetCommand() {
+            return "spell" + MainForm.commandSymbol + name;
+        }
     }
 
     public class Directions {
@@ -216,6 +296,17 @@ namespace Tibialyzer {
             this.requirements = new List<Requirements>();
             this.image = null;
         }
+        public override List<string> GetAttributeHeaders() {
+            return new List<string> { "Name", "Level", "Exp", "Loot", "City" };
+        }
+        public override List<Attribute> GetAttributes() {
+            return new List<Attribute> { new StringAttribute(name, 120), new StringAttribute(level < 0 ? "-" : level.ToString(), 40),
+                new ImageAttribute(MainForm.star_image_text[exp_quality]), new ImageAttribute(MainForm.star_image_text[loot_quality]),
+                new StringAttribute(city, 60) };
+        }
+        public override string GetCommand() {
+            return "hunt" + MainForm.commandSymbol + name;
+        }
     }
 
     public class NPC : TibiaObject {
@@ -229,16 +320,26 @@ namespace Tibialyzer {
         public List<ItemSold> buyItems;
         public List<ItemSold> sellItems;
         public List<SpellTaught> spellsTaught;
-
-        public override string GetName() { return name; }
-        public override Image GetImage() { return image; }
-
+        
         public NPC() {
             sellItems = new List<ItemSold>();
             buyItems = new List<ItemSold>();
             spellsTaught = new List<SpellTaught>();
             pos = new Coordinate();
             image = null;
+        }
+        public override string GetName() { return name; }
+        public override Image GetImage() { return image; }
+        public override List<string> GetAttributeHeaders() {
+            return new List<string> { "Name", "Items", "Spells", "City" };
+        }
+        public override List<Attribute> GetAttributes() {
+            return new List<Attribute> { new StringAttribute(name, 120),
+                new BooleanAttribute(sellItems.Count > 0 || buyItems.Count > 0), new BooleanAttribute(spellsTaught.Count > 0),
+                new StringAttribute(MainForm.ToTitle(city), 80) };
+        }
+        public override string GetCommand() {
+            return "npc" + MainForm.commandSymbol + name;
         }
     }
 
@@ -264,6 +365,7 @@ namespace Tibialyzer {
             return Math.Max(vendor_value, actual_value);
         }
 
+        public static Color GoldColor = Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(226)))), ((int)(((byte)(24)))));
         public override string GetName() { return title; }
         public override Image GetImage() { return image; }
         public Item() {
@@ -272,6 +374,16 @@ namespace Tibialyzer {
             itemdrops = new List<ItemDrop>();
             sellItems = new List<ItemSold>();
             buyItems = new List<ItemSold>();
+        }
+        public override List<string> GetAttributeHeaders() {
+            return new List<string> { "Name", "Val", "Cap" };
+        }
+        public override List<Attribute> GetAttributes() {
+            return new List<Attribute> { new StringAttribute(title, 120),
+                new StringAttribute(GetMaxValue() > 0 ? GetMaxValue().ToString() : "-", 40, GoldColor), new StringAttribute(capacity > 0 ? String.Format("{0:0.0} oz.", capacity) : "-", 70) };
+        }
+        public override string GetCommand() {
+            return "item" + MainForm.commandSymbol + title;
         }
     }
 
@@ -303,6 +415,15 @@ namespace Tibialyzer {
                 image.Dispose();
                 image = null;
             }
+        }
+        public override List<string> GetAttributeHeaders() {
+            return null;
+        }
+        public override List<Attribute> GetAttributes() {
+            return null;
+        }
+        public override string GetCommand() {
+            return null;
         }
     }
 
@@ -360,8 +481,83 @@ namespace Tibialyzer {
             itemdrops = new List<ItemDrop>();
         }
 
+        private static Color HealthColor = Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(179)))), ((int)(((byte)(60)))));
+
+        public int GetResistance(int index) {
+            if (index == 0) {
+                return res_phys;
+            }
+            if (index == 1) {
+                return res_holy;
+            }
+            if (index == 2) {
+                return res_death;
+            }
+            if (index == 3) {
+                return res_fire;
+            }
+            if (index == 4) {
+                return res_energy;
+            }
+            if (index == 5) {
+                return res_ice;
+            }
+            if (index == 6) {
+                return res_earth;
+            }
+            throw new Exception("Index out of bounds");
+        }
+
+        public static string GetResistanceType(int index) {
+            if (index == 0) {
+                return "Phys";
+            }
+            if (index == 1) {
+                return "Holy";
+            }
+            if (index == 2) {
+                return "Death";
+            }
+            if (index == 3) {
+                return "Fire";
+            }
+            if (index == 4) {
+                return "Energy";
+            }
+            if (index == 5) {
+                return "Ice";
+            }
+            if (index == 6) {
+                return "Earth";
+            }
+            throw new Exception("Index out of bounds");
+
+        }
+
+        public string GetWeakness() {
+            string weakness = "";
+            int maxDamage = int.MinValue;
+            for(int i = 0; i <= 6; i++) {
+                if (GetResistance(i) > maxDamage) {
+                    maxDamage = GetResistance(i);
+                    weakness = GetResistanceType(i);
+                }
+            }
+            return weakness;
+        }
+
         public override string GetName() { return title; }
         public override Image GetImage() { return image; }
+        public override List<string> GetAttributeHeaders() {
+            return new List<string> { "Name", "Exp", "HP", "Max", "Weak" };
+        }
+        public override List<Attribute> GetAttributes() {
+            return new List<Attribute> { new StringAttribute(title, 120), new StringAttribute(experience > 0 ? experience.ToString() : "-", 40), new StringAttribute(health > 0 ? health.ToString() : "-", 40, HealthColor),
+            new StringAttribute(maxdamage > 0 ? maxdamage.ToString() : "-", 40), new StringAttribute(GetWeakness(), 60, CreatureStatsForm.resistance_colors[GetWeakness()]) };
+        }
+        public override string GetCommand() {
+            return "creature" + MainForm.commandSymbol + title;
+        }
     }
 
     enum TibiaObjectType { Creature, Item, NPC, Outfit, Mount, Spell };
@@ -400,6 +596,15 @@ namespace Tibialyzer {
         }
         public override string GetName() {
             return getTibiaObject().GetName();
+        }
+        public override List<string> GetAttributeHeaders() {
+            return getTibiaObject().GetAttributeHeaders();
+        }
+        public override List<Attribute> GetAttributes() {
+            return getTibiaObject().GetAttributes();
+        }
+        public override string GetCommand() {
+            return getTibiaObject().GetCommand();
         }
 
     }

@@ -355,6 +355,7 @@ namespace Tibialyzer {
                 }
             }
 
+            int newwidth = 0;
             int y = this.Height - 20;
             for (int i = 0; i < 4; i++) {
                 if (npcList[i].Count > 0) {
@@ -367,16 +368,20 @@ namespace Tibialyzer {
                     this.Controls.Add(label);
                     y += 25;
 
-                    y = y + MainForm.DisplayCreatureList(this.Controls, npcList[i], 10, y, this.Size.Width - 10, 4, false);
+                    y = y + MainForm.DisplayCreatureAttributeList(this.Controls, npcList[i], 10, y, out newwidth, null, null, 0, 8, null, "Cost", goldCostFunction);
                 }
             }
             foreach (Control control in this.Controls)
                 if (control is PictureBox)
                     control.Click += npcClick;
 
-            this.Size = new Size(this.Size.Width, y + 20);
+            this.Size = new Size(Math.Max(this.Size.Width, newwidth), y + 20);
             base.NotificationFinalize();
             this.ResumeLayout(false);
+        }
+
+        private Attribute goldCostFunction(TibiaObject obj) {
+            return new StringAttribute(spell.goldcost.ToString(), 50, Item.GoldColor);
         }
 
         private string command_start = "npc" + MainForm.commandSymbol;

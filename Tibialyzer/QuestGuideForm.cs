@@ -220,7 +220,7 @@ namespace Tibialyzer {
                         List<TibiaObject> itemList = rewards.Select(o => o.Item2).ToList<TibiaObject>();
 
                         List<Control> itemControls = new List<Control>();
-                        y = y + MainForm.DisplayCreatureList(this.Controls, itemList, 10, y, this.Size.Width - 10, 1, false, null, 1, itemControls);
+                        y = y + MainForm.DisplayCreatureList(this.Controls, itemList, 10, y, this.Size.Width - 10, 1, null, 1, itemControls);
                         int itemnr = 0;
                         foreach (Control control in itemControls) {
                             addedControls.Add(control);

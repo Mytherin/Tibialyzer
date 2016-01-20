@@ -18,7 +18,7 @@ namespace Tibialyzer {
         public List<HuntingPlace> hunting_places;
         public List<Quest> quests;
 
-        private static Font text_font = new Font(FontFamily.GenericSansSerif, 9, FontStyle.Bold);
+        public static Font text_font = new Font(FontFamily.GenericSansSerif, 9, FontStyle.Bold);
         private Label headerLabel;
         public static Dictionary<int, Color> rating_colors;
 

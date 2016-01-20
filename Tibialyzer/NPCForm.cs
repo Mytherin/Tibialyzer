@@ -192,7 +192,7 @@ namespace Tibialyzer {
                     list.Add(item);
                 }
 
-                y = y + MainForm.DisplayCreatureList(this.Controls, list, 10, y, this.Size.Width - 10, 4, false, TooltipFunction, scale);
+                y = y + MainForm.DisplayCreatureList(this.Controls, list, 10, y, this.Size.Width - 10, 4, TooltipFunction, scale);
             }
             if (npc.sellItems.Count > 0) {
                 prefix = "Buys";
@@ -212,7 +212,7 @@ namespace Tibialyzer {
                     list.Add(item);
                 }
 
-                y = y + MainForm.DisplayCreatureList(this.Controls, list, 10, y, this.Size.Width - 10, 4, false, TooltipFunction, scale);
+                y = y + MainForm.DisplayCreatureList(this.Controls, list, 10, y, this.Size.Width - 10, 4, TooltipFunction, scale);
             }
             foreach (Control control in this.Controls)
                 if (control is PictureBox)
@@ -236,7 +236,7 @@ namespace Tibialyzer {
                 }
                 list = list.OrderBy(o => (o as Spell).levelrequired).ToList();
                 
-                y = y + MainForm.DisplayCreatureList(this.Controls, list, 10, y, this.Size.Width - 10, 4, false, TooltipFunction, 1, spellControls);
+                y = y + MainForm.DisplayCreatureList(this.Controls, list, 10, y, this.Size.Width - 10, 4, TooltipFunction, 1, spellControls);
                 foreach (Control control in spellControls) {
                     control.Click += openSpellBox;
                 }
