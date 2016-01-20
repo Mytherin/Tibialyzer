@@ -407,6 +407,7 @@ namespace Tibialyzer {
             updateCommand();
             foreach (Control c in npcControls) {
                 this.Controls.Remove(c);
+                c.Dispose();
             }
             npcControls.Clear();
             for (int i = 0; i < 4; i++) {

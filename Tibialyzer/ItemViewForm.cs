@@ -20,12 +20,8 @@ namespace Tibialyzer {
         private System.Windows.Forms.PictureBox itemPictureBox;
 
         public Item item;
-        public Dictionary<NPC, int> buyNPCs = null;
-        public Dictionary<NPC, int> sellNPCs = null;
         private System.Windows.Forms.CheckBox pickupBox;
         private System.Windows.Forms.CheckBox convertBox;
-        public Dictionary<Creature, float> creatures = null;
-        private Label statsButton;
         private PictureBox increaseValue1;
         private PictureBox decreaseValue1;
         private Label valueDigit1;
@@ -59,7 +55,6 @@ namespace Tibialyzer {
         private Label valueDigit10000000000;
         private PictureBox decreaseValue10000000000;
         private PictureBox increaseValue10000000000;
-        private string previous_value;
 
         private List<PictureBox> increaseBoxes = new List<PictureBox>();
         private List<PictureBox> decreaseBoxes = new List<PictureBox>();
@@ -178,7 +173,6 @@ namespace Tibialyzer {
             this.valueDigit1 = new System.Windows.Forms.Label();
             this.decreaseValue1 = new System.Windows.Forms.PictureBox();
             this.increaseValue1 = new System.Windows.Forms.PictureBox();
-            this.statsButton = new System.Windows.Forms.Label();
             this.convertBox = new System.Windows.Forms.CheckBox();
             this.pickupBox = new System.Windows.Forms.CheckBox();
             this.lookText = new System.Windows.Forms.Label();
@@ -562,21 +556,6 @@ namespace Tibialyzer {
             this.increaseValue1.TabIndex = 28;
             this.increaseValue1.TabStop = false;
             // 
-            // statsButton
-            // 
-            this.statsButton.BackColor = System.Drawing.Color.Transparent;
-            this.statsButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.statsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.statsButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.statsButton.Location = new System.Drawing.Point(34, 120);
-            this.statsButton.Name = "statsButton";
-            this.statsButton.Padding = new System.Windows.Forms.Padding(2);
-            this.statsButton.Size = new System.Drawing.Size(96, 21);
-            this.statsButton.TabIndex = 27;
-            this.statsButton.Text = "Drops";
-            this.statsButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.statsButton.Click += new System.EventHandler(this.statsButton_Click);
-            // 
             // convertBox
             // 
             this.convertBox.AutoSize = true;
@@ -653,7 +632,7 @@ namespace Tibialyzer {
             // 
             // ItemViewForm
             // 
-            this.ClientSize = new System.Drawing.Size(378, 151);
+            this.ClientSize = new System.Drawing.Size(378, 137);
             this.Controls.Add(this.valueDigit10000000000);
             this.Controls.Add(this.decreaseValue10000000000);
             this.Controls.Add(this.increaseValue10000000000);
@@ -687,7 +666,6 @@ namespace Tibialyzer {
             this.Controls.Add(this.valueDigit1);
             this.Controls.Add(this.decreaseValue1);
             this.Controls.Add(this.increaseValue1);
-            this.Controls.Add(this.statsButton);
             this.Controls.Add(this.convertBox);
             this.Controls.Add(this.pickupBox);
             this.Controls.Add(this.lookText);
@@ -729,19 +707,13 @@ namespace Tibialyzer {
         private void DestroyForm() {
 
         }
-
-        string prefix;
-        private string TooltipFunction(TibiaObject obj) {
-            NPC npc = obj as NPC;
-            return String.Format("{0} {1} for {2} gold.", prefix, item.displayname, prefix == "Sells" ? buyNPCs[npc] : sellNPCs[npc]);
-        }
-
-        private string CreatureTooltipFunction(TibiaObject obj) {
-            Creature cr = obj as Creature;
-            float percentage = creatures[cr];
-            return String.Format("{0}: {1}%", cr.displayname, percentage < 0 ? "Unknown" : percentage.ToString());
-        }
-
+        
+        private List<TibiaObject>[] objectList = new List<TibiaObject>[3];
+        private Control[] objectControls = new Control[3];
+        private int currentControlList = -1;
+        private int base_y;
+        private string[] extraAttributes = new string[3];
+        private Func<TibiaObject, Attribute>[] attributeFunctions = new Func<TibiaObject, Attribute>[3];
         public override void LoadForm() {
             skip_event = true;
             this.SuspendForm();
@@ -787,12 +759,7 @@ namespace Tibialyzer {
             this.convertBox.Checked = item.convert_to_gold;
             this.itemPictureBox.Image = item.image;
             this.updateValue();
-
-            int base_x = 20, base_y = this.statsButton.Location.Y + this.statsButton.Height + 5;
-            int x = 0, y = 0;
-            int max_x = 344;
-            int spacing = 4;
-
+            
             // add a tooltip that displays the actual droprate when you mouseover
             ToolTip value_tooltip = new ToolTip();
             value_tooltip.AutoPopDelay = 60000;
@@ -801,65 +768,130 @@ namespace Tibialyzer {
             value_tooltip.ShowAlways = true;
             value_tooltip.UseFading = true;
 
-            if (creatures == null) {
-                List<NPC> buyNPCList = buyNPCs.Keys.ToList().OrderBy(o => buyNPCs[o]).ToList();
-                List<NPC> sellNPCList = sellNPCs.Keys.ToList().OrderBy(o => sellNPCs[o]).ToList();
-                List<List<NPC>> npc_lists = new List<List<NPC>>();
-                npc_lists.Add(buyNPCList); npc_lists.Add(sellNPCList);
-                string[] header_string = { "Buy From:", "Sell To:" };
-                string[] info_string = { "Sells", "Buys" };
-                List<Control> createdControls = new List<Control>();
-                for (int i = 0; i < npc_lists.Count; i++) {
-                    prefix = info_string[i];
-                    List<NPC> npc_list = npc_lists[i];
-                    if (npc_list != null && npc_list.Count > 0) {
-                        Label header = new Label();
-                        header.ForeColor = MainForm.label_text_color;
-                        header.BackColor = Color.Transparent;
-                        header.Text = header_string[i];
-                        header.Font = MainForm.fontList[5];
-                        header.Location = new Point(base_x + x, base_y + y);
-                        y = y + header.Size.Height;
-                        this.Controls.Add(header);
-
-                        y = y + MainForm.DisplayCreatureList(this.Controls, (npc_list as IEnumerable<TibiaObject>).ToList(), base_x, base_y + y, max_x, spacing, TooltipFunction, 1, createdControls);
-                    }
-                }
-                command_start = "npc" + MainForm.commandSymbol;
-                switch_start = "drop" + MainForm.commandSymbol;
-                statsButton.Text = "Dropped By";
-                statsButton.Name = item.GetName().ToLower();
-                foreach (Control control in createdControls)
-                    if (control is PictureBox)
-                        control.Click += openItemBox;
-            } else {
-                List<TibiaObject> creatureList = new List<TibiaObject>();
-                foreach (Creature cr in creatures.Keys) {
-                    creatureList.Add(cr);
-                }
-
-                Label header = new Label();
-                header.ForeColor = MainForm.label_text_color;
-                header.BackColor = Color.Transparent;
-                header.Text = "Dropped By";
-                header.Font = MainForm.fontList[5];
-                header.Location = new Point(base_x + x, base_y + y);
-                y = y + header.Size.Height;
-
-                List<Control> createdControls = new List<Control>();
-                y = y + MainForm.DisplayCreatureList(this.Controls, creatureList, base_x, base_y + y, max_x, spacing, CreatureTooltipFunction, 1, createdControls);
-
-                command_start = "creature" + MainForm.commandSymbol;
-                switch_start = "item" + MainForm.commandSymbol;
-                statsButton.Text = "Sold By";
-                statsButton.Name = item.GetName().ToLower();
-                foreach (Control control in createdControls)
-                    control.Click += openItemBox;
+            string[] headers = { "Dropped", "Sell To", "Buy From" };
+            for (int i = 0; i < 3; i++) {
+                objectList[i] = new List<TibiaObject>();
             }
-            this.Size = new Size(this.Size.Width, base_y + y + 20);
+            extraAttributes[0] = "Drop";
+            attributeFunctions[0] = DropChance;
+            foreach (ItemDrop itemDrop in item.itemdrops) {
+                objectList[0].Add(new LazyTibiaObject { id = itemDrop.creatureid, type = TibiaObjectType.Creature });
+            }
+            extraAttributes[1] = "Value";
+            attributeFunctions[1] = SellPrice;
+            foreach (ItemSold sold in item.sellItems) {
+                objectList[1].Add(new LazyTibiaObject { id = sold.npcid, type = TibiaObjectType.NPC });
+            }
+            extraAttributes[2] = "Price";
+            attributeFunctions[2] = BuyPrice;
+            foreach (ItemSold sold in item.buyItems) {
+                objectList[2].Add(new LazyTibiaObject { id = sold.npcid, type = TibiaObjectType.NPC });
+            }
+            int x = 5;
+            base_y = this.Size.Height;
+            for (int i = 0; i < 3; i++) {
+                if (objectList[i].Count > 0) {
+                    Label label = new Label();
+                    label.Text = headers[i];
+                    label.Location = new Point(x, base_y);
+                    label.ForeColor = MainForm.label_text_color;
+                    label.BackColor = Color.Transparent;
+                    label.Font = HuntListForm.text_font;
+                    label.Size = new Size(100, 25);
+                    label.TextAlign = ContentAlignment.MiddleCenter;
+                    label.BorderStyle = BorderStyle.FixedSingle;
+                    label.Name = i.ToString();
+                    label.Click += toggleObjectDisplay; ;
+                    objectControls[i] = label;
+                    this.Controls.Add(label);
+                    if (currentControlList < 0 || currentControlList > 2) {
+                        currentControlList = i;
+                    }
+                    x += 100;
+                } else {
+                    objectControls[i] = null;
+                }
+            }
+            base_y += 25;
+
+            refreshObjectList();
             base.NotificationFinalize();
             this.ResumeForm();
             skip_event = false;
+        }
+
+        private Attribute DropChance(TibiaObject obj) {
+            float percentage = item.itemdrops.Find(o => o.creatureid == (obj as LazyTibiaObject).id).percentage;
+            return new StringAttribute(percentage > 0 ? String.Format("{0:0.0}%", percentage) : "-", 60);
+        }
+        private Attribute SellPrice(TibiaObject obj) {
+            return new StringAttribute(String.Format("{0}", item.sellItems.Find(o => o.npcid == (obj as LazyTibiaObject).id).price), 60, Item.GoldColor);
+        }
+        private Attribute BuyPrice(TibiaObject obj) {
+            return new StringAttribute(String.Format("{0}", item.buyItems.Find(o => o.npcid == (obj as LazyTibiaObject).id).price), 60, Item.GoldColor);
+        }
+
+        private void toggleObjectDisplay(object sender, EventArgs e) {
+            this.currentControlList = int.Parse((sender as Control).Name);
+            currentPage = 0;
+            this.SuspendForm();
+            refreshObjectList();
+            this.ResumeForm();
+        }
+
+        private int currentPage = 0;
+        private List<Control> controlList = new List<Control>();
+        private void refreshObjectList() {
+            foreach(Control c in controlList) {
+                this.Controls.Remove(c);
+                c.Dispose();
+            }
+            controlList.Clear();
+            int newwidth;
+            MainForm.PageInfo pageInfo = new MainForm.PageInfo(false, false);
+            int y = base_y + MainForm.DisplayCreatureAttributeList(this.Controls, objectList[currentControlList], 10, base_y, out newwidth, null, controlList, currentPage, 20, pageInfo, extraAttributes[currentControlList], attributeFunctions[currentControlList]);
+            newwidth = Math.Max(newwidth, this.Size.Width);
+            if (pageInfo.prevPage || pageInfo.nextPage) {
+                if (pageInfo.prevPage) {
+                    PictureBox prevpage = new PictureBox();
+                    prevpage.Location = new Point(10, y);
+                    prevpage.Size = new Size(97, 23);
+                    prevpage.Image = MainForm.prevpage_image;
+                    prevpage.BackColor = Color.Transparent;
+                    prevpage.SizeMode = PictureBoxSizeMode.Zoom;
+                    prevpage.Click += Prevpage_Click; ;
+                    this.Controls.Add(prevpage);
+                    controlList.Add(prevpage);
+
+                }
+                if (pageInfo.nextPage) {
+                    PictureBox nextpage = new PictureBox();
+                    nextpage.Location = new Point(newwidth - 108, y);
+                    nextpage.Size = new Size(98, 23);
+                    nextpage.BackColor = Color.Transparent;
+                    nextpage.Image = MainForm.nextpage_image;
+                    nextpage.SizeMode = PictureBoxSizeMode.Zoom;
+                    nextpage.Click += Nextpage_Click; ;
+                    this.Controls.Add(nextpage);
+                    controlList.Add(nextpage);
+                }
+                y += 25;
+            }
+            this.Size = new Size(newwidth, y + 10);
+        }
+
+        private void Nextpage_Click(object sender, EventArgs e) {
+            currentPage++;
+            this.SuspendForm();
+            refreshObjectList();
+            this.ResumeForm();
+        }
+
+        private void Prevpage_Click(object sender, EventArgs e) {
+            currentPage--;
+            this.SuspendForm();
+            refreshObjectList();
+            this.ResumeForm();
         }
 
         private string command_start = "npc" + MainForm.commandSymbol;

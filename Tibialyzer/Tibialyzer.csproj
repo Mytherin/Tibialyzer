@@ -287,9 +287,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Database\settings.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Database\pluralMap.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

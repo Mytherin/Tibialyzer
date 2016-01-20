@@ -818,13 +818,10 @@ namespace Tibialyzer {
             ShowNotification(f, comm);
         }
 
-        private void ShowItemView(Item i, Dictionary<NPC, int> BuyNPCs, Dictionary<NPC, int> SellNPCs, Dictionary<Creature, float> creatures, string comm) {
+        private void ShowItemView(Item i, string comm) {
             if (i == null) return;
             ItemViewForm f = new ItemViewForm();
             f.item = i;
-            f.buyNPCs = BuyNPCs;
-            f.sellNPCs = SellNPCs;
-            f.creatures = creatures;
 
             ShowNotification(f, comm);
         }

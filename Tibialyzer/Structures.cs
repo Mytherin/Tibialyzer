@@ -316,7 +316,6 @@ namespace Tibialyzer {
         public string job;
         public Coordinate pos;
         public Image image;
-        public int value;
         public List<ItemSold> buyItems;
         public List<ItemSold> sellItems;
         public List<SpellTaught> spellsTaught;
@@ -331,11 +330,10 @@ namespace Tibialyzer {
         public override string GetName() { return name; }
         public override Image GetImage() { return image; }
         public override List<string> GetAttributeHeaders() {
-            return new List<string> { "Name", "Items", "Spells", "City" };
+            return new List<string> { "Name", "City" };
         }
         public override List<Attribute> GetAttributes() {
             return new List<Attribute> { new StringAttribute(name, 120),
-                new BooleanAttribute(sellItems.Count > 0 || buyItems.Count > 0), new BooleanAttribute(spellsTaught.Count > 0),
                 new StringAttribute(MainForm.ToTitle(city), 80) };
         }
         public override string GetCommand() {
@@ -549,11 +547,11 @@ namespace Tibialyzer {
         public override string GetName() { return title; }
         public override Image GetImage() { return image; }
         public override List<string> GetAttributeHeaders() {
-            return new List<string> { "Name", "Exp", "HP", "Max", "Weak" };
+            return new List<string> { "Name", "Exp", "HP", "Weak" };
         }
         public override List<Attribute> GetAttributes() {
-            return new List<Attribute> { new StringAttribute(title, 120), new StringAttribute(experience > 0 ? experience.ToString() : "-", 40), new StringAttribute(health > 0 ? health.ToString() : "-", 40, HealthColor),
-            new StringAttribute(maxdamage > 0 ? maxdamage.ToString() : "-", 40), new StringAttribute(GetWeakness(), 60, CreatureStatsForm.resistance_colors[GetWeakness()]) };
+            return new List<Attribute> { new StringAttribute(title, 120), new StringAttribute(experience > 0 ? experience.ToString() : "-", 60), new StringAttribute(health > 0 ? health.ToString() : "-", 60, HealthColor),
+            new StringAttribute(GetWeakness(), 60, CreatureStatsForm.resistance_colors[GetWeakness()]) };
         }
         public override string GetCommand() {
             return "creature" + MainForm.commandSymbol + title;

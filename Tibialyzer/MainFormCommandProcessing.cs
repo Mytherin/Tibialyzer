@@ -319,20 +319,7 @@ namespace Tibialyzer {
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                 Item item = getItem(parameter);
                 if (item == null) return true;
-
-                List<ItemDrop> itemDrops = new List<ItemDrop>();
-                foreach (ItemDrop itemDrop in item.itemdrops) {
-                    itemDrops.Add(itemDrop);
-                }
-
-                itemDrops.OrderByDescending(o => o.percentage);
-
-                Dictionary<Creature, float> creatures = new Dictionary<Creature, float>();
-                foreach (ItemDrop itemDrop in itemDrops) {
-                    creatures.Add(getCreature(itemDrop.creatureid), itemDrop.percentage);
-                }
-
-                ShowItemView(item, null, null, creatures, command);
+                ShowItemView(item, command);
             } else if (comp.StartsWith("item" + MainForm.commandSymbol)) { //item@
                 //show the item with all the NPCs that sell it
                 ShowItemNotification(command);
@@ -826,7 +813,6 @@ namespace Tibialyzer {
             string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
             Item item = getItem(parameter);
             if (item == null) {
-                int count = 0;
                 List<TibiaObject> items = searchItem(parameter);
                 if (items.Count == 0) {
                     return;
@@ -834,23 +820,11 @@ namespace Tibialyzer {
                     ShowCreatureList(items, "Item List", "item" + MainForm.commandSymbol, command);
                     return;
                 } else {
-                    item = items[0] as Item;
+                    ShowItemView(items[0] as Item, command);
                 }
+            } else {
+                ShowItemView(item, command);
             }
-
-            Dictionary<NPC, int> sellNPCs = new Dictionary<NPC, int>();
-            Dictionary<NPC, int> buyNPCs = new Dictionary<NPC, int>();
-
-            foreach (ItemSold itemSold in item.buyItems) {
-                NPC npc = getNPC(itemSold.npcid);
-                buyNPCs.Add(npc, itemSold.price);
-            }
-            foreach (ItemSold itemSold in item.sellItems) {
-                NPC npc = getNPC(itemSold.npcid);
-                sellNPCs.Add(npc, itemSold.price);
-            }
-
-            ShowItemView(item, buyNPCs, sellNPCs, null, command);
         }
     }
 }
