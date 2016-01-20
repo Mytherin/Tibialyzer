@@ -107,6 +107,11 @@ namespace Tibialyzer {
             } else {
                 highlighted = true;
             }
+            if (end <= start) {
+                highlighting = false;
+                this.ResumeLayout();
+                return;
+            }
 
             var initialScroll = RTBScrollPos;
             int initialCursorPosition = this.SelectionStart;
