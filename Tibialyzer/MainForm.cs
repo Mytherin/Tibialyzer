@@ -2292,6 +2292,7 @@ C::NumpadPgDn";
             if (prevent_settings_update) return;
 
             setSetting("ScanSpeed", scanningSpeedTrack.Value);
+            saveSettings();
             scanSpeedDisplayLabel.Text = scanSpeedText[scanningSpeedTrack.Value];
         }
     }
