@@ -61,6 +61,7 @@ namespace Tibialyzer {
             this.creatureName.TabIndex = 2;
             this.creatureName.Text = "Rashid";
             this.creatureName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.creatureName.Click += new System.EventHandler(this.creatureName_Click);
             // 
             // mapUpLevel
             // 
@@ -266,6 +267,11 @@ namespace Tibialyzer {
             mapBox.mapCoordinate.z++;
             mapBox.UpdateMap();
             base.ResetTimer();
+        }
+
+        private void creatureName_Click(object sender, EventArgs e) {
+            string city = npc.city;
+            MainForm.mainForm.ExecuteCommand("city" + MainForm.commandSymbol + city);
         }
     }
 }

@@ -1130,9 +1130,14 @@ namespace Tibialyzer {
                     if (createdControls != null) createdControls.Add(image_box);
                     image_box.Image = image;
                     if (tooltip_function == null) {
-                        value_tooltip.SetToolTip(image_box, System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(name));
+                        value_tooltip.SetToolTip(image_box, MainForm.ToTitle(name));
                     } else {
-                        value_tooltip.SetToolTip(image_box, tooltip_function(cr));
+                        string prefix = "";
+                        if (cr is NPC || (cr is LazyTibiaObject && (cr as LazyTibiaObject).type == TibiaObjectType.NPC)) {
+                            NPC npc = cr is NPC ? cr as NPC : (cr as LazyTibiaObject).getTibiaObject() as NPC;
+                            prefix = MainForm.ToTitle(name) + " (" + MainForm.ToTitle(npc.city) + ")\n";
+                        }
+                        value_tooltip.SetToolTip(image_box, prefix + tooltip_function(cr));
                     }
                 }
 

@@ -75,6 +75,7 @@ namespace Tibialyzer {
             this.cityLabel.TabIndex = 12;
             this.cityLabel.Text = "City";
             this.cityLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.cityLabel.Click += new System.EventHandler(this.cityLabel_Click);
             // 
             // levelLabel
             // 
@@ -409,6 +410,10 @@ namespace Tibialyzer {
             mapBox.mapCoordinate.z++;
             mapBox.UpdateMap();
             base.ResetTimer();
+        }
+        
+        private void cityLabel_Click(object sender, EventArgs e) {
+            MainForm.mainForm.ExecuteCommand("city" + MainForm.commandSymbol + this.hunting_place.city);            
         }
     }
 }
