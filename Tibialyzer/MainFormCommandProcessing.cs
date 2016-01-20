@@ -462,10 +462,13 @@ namespace Tibialyzer {
                 }
                 ShowListNotification(command_list, type, command);
             } else if (comp.StartsWith("spell" + MainForm.commandSymbol)) { // spell@
-                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
+                string[] splits = command.Split(commandSymbol);
+                string parameter = splits[1].Trim().ToLower();
+                int initialVocation = -1;
+                if (splits.Length > 2 && int.TryParse(splits[2], out initialVocation));
                 Spell spell = getSpell(parameter);
                 if (spell != null) {
-                    ShowSpellNotification(spell, command);
+                    ShowSpellNotification(spell, initialVocation, command);
                 } else {
                     List<TibiaObject> spellList = new List<TibiaObject>();
                     string title;
@@ -480,7 +483,7 @@ namespace Tibialyzer {
                         title = "Spells Containing \"" + parameter + "\"";
                     }
                     if (spellList.Count == 1) {
-                        ShowSpellNotification((spellList[0] as LazyTibiaObject).getTibiaObject() as Spell, command);
+                        ShowSpellNotification((spellList[0] as LazyTibiaObject).getTibiaObject() as Spell, initialVocation, command);
                     } else if (spellList.Count > 1) {
                         ShowCreatureList(spellList, title, "spell" + MainForm.commandSymbol, command);
                     }

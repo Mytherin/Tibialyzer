@@ -340,6 +340,15 @@ namespace Tibialyzer {
             npc.pos.z = reader.IsDBNull(5) ? DATABASE_NULL : reader.GetInt32(5);
             npc.image = Image.FromStream(reader.GetStream(6));
             npc.job = reader.IsDBNull(7) ? "" : reader.GetString(7);
+            if (npc.image.RawFormat.Guid == ImageFormat.Gif.Guid) {
+                int frames = npc.image.GetFrameCount(FrameDimension.Time);
+                if (frames == 1) {
+                    Bitmap new_bitmap = new Bitmap(npc.image);
+                    new_bitmap.MakeTransparent();
+                    npc.image.Dispose();
+                    npc.image = new_bitmap;
+                }
+            }
 
             // special case for rashid: change location based on day of the week
             if (npc != null && npc.name == "Rashid") {

@@ -871,8 +871,8 @@ namespace Tibialyzer {
             ShowNotification(f, comm);
         }
 
-        private void ShowSpellNotification(Spell spell, string comm) {
-            SpellForm f = new SpellForm(spell);
+        private void ShowSpellNotification(Spell spell, int initialVocation, string comm) {
+            SpellForm f = new SpellForm(spell, initialVocation);
 
             ShowNotification(f, comm);
         }

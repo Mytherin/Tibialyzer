@@ -169,7 +169,7 @@ namespace Tibialyzer {
             Creature cr = MainForm.getCreature(tamecreatureid);
             string itemName = i == null ? "-" : MainForm.ToTitle(i.displayname);
             string creatureName = cr == null ? "-" : MainForm.ToTitle(cr.displayname);
-            return new List<Attribute> { new StringAttribute(name, 120), new StringAttribute(itemName, 60), new StringAttribute(creatureName, 60), new BooleanAttribute(tibiastore) };
+            return new List<Attribute> { new StringAttribute(name, 120), new StringAttribute(itemName, 80), new StringAttribute(creatureName, 80), new BooleanAttribute(tibiastore) };
         }
         public override string GetCommand() {
             return "mount" + MainForm.commandSymbol + title;

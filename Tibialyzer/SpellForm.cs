@@ -29,9 +29,10 @@ namespace Tibialyzer {
         private PictureBox sorcererBox;
         public Spell spell;
 
-        public SpellForm(Spell spell) {
+        public SpellForm(Spell spell, int initialVocation) {
             this.InitializeComponent();
             this.spell = spell;
+            this.currentVocation = initialVocation;
         }
 
         private void InitializeComponent() {
@@ -309,6 +310,8 @@ namespace Tibialyzer {
 
         }
 
+        private List<TibiaObject>[] npcList = new List<TibiaObject>[4];
+        private Control[] vocationControls = new Control[4];
         public override void LoadForm() {
             if (spell == null) return;
             this.SuspendLayout();
@@ -341,43 +344,84 @@ namespace Tibialyzer {
                 this.druidBox.Image = MainForm.vocationImages["druid"];
             }
 
-            string[] titles = new string[] { "Knight Spells", "Druid Spells", "Paladin Spells", "Sorcerer Spells" };
-            List<TibiaObject>[] npcList = new List<TibiaObject>[5];
+            string[] titles = new string[] { "Knight", "Druid", "Paladin", "Sorcerer" };
             for (int i = 0; i < 4; i++) {
                 npcList[i] = new List<TibiaObject>();
             }
             for (int i = 0; i < 4; i++) {
                 foreach (SpellTaught teach in spell.teachNPCs) {
                     if (teach.GetVocation(i)) {
-                        NPC npc = MainForm.getNPC(teach.npcid);
-                        npcList[i].Add(npc);
+                        npcList[i].Add(new LazyTibiaObject { id = teach.npcid, type = TibiaObjectType.NPC });
                     }
                 }
             }
 
-            int newwidth = 0;
-            int y = this.Height - 20;
+            int y = this.Height - 10;
+            baseY = y + 35;
+            int x = 5;
             for (int i = 0; i < 4; i++) {
                 if (npcList[i].Count > 0) {
                     Label label = new Label();
                     label.Text = titles[i];
-                    label.Location = new Point(40, y);
+                    label.Location = new Point(x, y);
                     label.ForeColor = MainForm.label_text_color;
                     label.BackColor = Color.Transparent;
-                    label.Font = spellTitle.Font;
+                    label.Font = HuntListForm.text_font;
+                    label.Size = new Size(70, 25);
+                    label.TextAlign = ContentAlignment.MiddleCenter;
+                    x += 70;
+                    label.BorderStyle = BorderStyle.FixedSingle;
+                    label.Name = i.ToString();
+                    label.Click += toggleVocationSpells;
+                    vocationControls[i] = label;
                     this.Controls.Add(label);
-                    y += 25;
-
-                    y = y + MainForm.DisplayCreatureAttributeList(this.Controls, npcList[i], 10, y, out newwidth, null, null, 0, 8, null, "Cost", goldCostFunction);
+                    if (currentVocation < 0 || currentVocation > 3) {
+                        currentVocation = i;
+                    }
+                } else {
+                    vocationControls[i] = null;
                 }
             }
-            foreach (Control control in this.Controls)
-                if (control is PictureBox)
-                    control.Click += npcClick;
-
-            this.Size = new Size(Math.Max(this.Size.Width, newwidth), y + 20);
+            refreshVocationSpells();
             base.NotificationFinalize();
             this.ResumeLayout(false);
+        }
+
+        private void toggleVocationSpells(object sender, EventArgs e) {
+            this.currentVocation = int.Parse((sender as Control).Name);
+            this.SuspendForm();
+            refreshVocationSpells();
+            this.ResumeForm();
+        }
+
+        int baseY;
+        int currentVocation = 0;
+        List<Control> npcControls = new List<Control>();
+
+        void updateCommand() {
+            string[] split = command.command.Split(MainForm.commandSymbol);
+            command.command = split[0] + MainForm.commandSymbol + split[1] + MainForm.commandSymbol + currentVocation.ToString();
+        }
+
+        private void refreshVocationSpells() {
+            updateCommand();
+            foreach (Control c in npcControls) {
+                this.Controls.Remove(c);
+            }
+            npcControls.Clear();
+            for (int i = 0; i < 4; i++) {
+                if (vocationControls[i] != null) {
+                    vocationControls[i].Enabled = i != currentVocation;
+                    if (i == currentVocation) {
+                        (vocationControls[i] as Label).BorderStyle = BorderStyle.Fixed3D;
+                    } else {
+                        (vocationControls[i] as Label).BorderStyle = BorderStyle.FixedSingle;
+                    }
+                }
+            }
+            int newwidth = 0;
+            int y = baseY + MainForm.DisplayCreatureAttributeList(this.Controls, npcList[currentVocation], 10, baseY, out newwidth, null, npcControls, 0, 20, null, "Cost", goldCostFunction);
+            this.Size = new Size(Math.Max(this.Size.Width, newwidth), y + 20);
         }
 
         private Attribute goldCostFunction(TibiaObject obj) {
