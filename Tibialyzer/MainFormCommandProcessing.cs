@@ -37,7 +37,7 @@ namespace Tibialyzer {
                     if (creatures.Count == 1) {
                         ShowCreatureDrops(creatures[0] as Creature, command);
                     } else if (creatures.Count > 1) {
-                        ShowCreatureList(creatures, "Creature List", "creature" + MainForm.commandSymbol, command);
+                        ShowCreatureList(creatures, "Creature List", command);
                     }
                 }
             } else if (comp.StartsWith("look" + MainForm.commandSymbol)) { //look@
@@ -76,7 +76,7 @@ namespace Tibialyzer {
                             ShowCreatureDrops(items[0] as Creature, command);
                         }
                     } else if (items.Count > 1) {
-                        ShowCreatureList(items, "Looked At Items", "item" + MainForm.commandSymbol, command);
+                        ShowCreatureList(items, "Looked At Items", command);
                     }
                 }
             } else if (comp.StartsWith("stats" + MainForm.commandSymbol)) { //stats@
@@ -324,7 +324,7 @@ namespace Tibialyzer {
                 if (items.Count == 1) {
                     ShowItemNotification("item" + MainForm.commandSymbol + items[0].GetName().ToLower());
                 } else if (items.Count > 1) {
-                    ShowCreatureList(items, "Item List", "item" + MainForm.commandSymbol, command);
+                    ShowCreatureList(items, "Item List", command);
                 }
             } else if (comp.StartsWith("hunt" + MainForm.commandSymbol)) { //hunt@
                 string[] splits = command.Split(commandSymbol);
@@ -378,10 +378,10 @@ namespace Tibialyzer {
                 if (npc != null) {
                     ShowNPCForm(npc, command);
                 } else if (cities.Contains(parameter)) {
-                    ShowCreatureList(getNPCWithCity(parameter), "NPC List", "npc@", command);
+                    ShowCreatureList(getNPCWithCity(parameter), "NPC List", command);
                 } else {
                     int count = 0;
-                    ShowCreatureList(searchNPC(parameter), "NPC List", "npc@", command);
+                    ShowCreatureList(searchNPC(parameter), "NPC List", command);
                 }
             } else if (comp.StartsWith("savelog" + MainForm.commandSymbol)) {
                 saveLog(activeHunt, command.Split(commandSymbol)[1].Trim().Replace("'", "\\'"));
@@ -466,7 +466,7 @@ namespace Tibialyzer {
                     if (spellList.Count == 1) {
                         ShowSpellNotification((spellList[0] as LazyTibiaObject).getTibiaObject() as Spell, initialVocation, command);
                     } else if (spellList.Count > 1) {
-                        ShowCreatureList(spellList, title, "spell" + MainForm.commandSymbol, command);
+                        ShowCreatureList(spellList, title, command);
                     }
                 }
             } else if (comp.StartsWith("outfit" + MainForm.commandSymbol)) { // outfit@
@@ -481,7 +481,7 @@ namespace Tibialyzer {
                     if (outfitList.Count == 1) {
                         ShowOutfitNotification((outfitList[0] as LazyTibiaObject).getTibiaObject() as Outfit, command);
                     } else if (outfitList.Count > 1) {
-                        ShowCreatureList(outfitList, title, "outfit" + MainForm.commandSymbol, command);
+                        ShowCreatureList(outfitList, title, command);
                     }
                 }
             } else if (comp.StartsWith("quest" + MainForm.commandSymbol)) { // quest@
@@ -578,7 +578,7 @@ namespace Tibialyzer {
                     if (mountList.Count == 1) {
                         ShowMountNotification((mountList[0] as LazyTibiaObject).getTibiaObject() as Mount, command);
                     } else if (mountList.Count > 1) {
-                        ShowCreatureList(mountList, title, "mount" + MainForm.commandSymbol, command);
+                        ShowCreatureList(mountList, title, command);
                     }
                 }
             } else if (comp.StartsWith("pickup" + MainForm.commandSymbol)) {
@@ -816,7 +816,7 @@ namespace Tibialyzer {
                 if (items.Count == 0) {
                     return;
                 } else if (items.Count > 1) {
-                    ShowCreatureList(items, "Item List", "item" + MainForm.commandSymbol, command);
+                    ShowCreatureList(items, "Item List", command);
                     return;
                 } else {
                     ShowItemView(items[0] as Item, currentPage, currentDisplay, command);

@@ -13,6 +13,9 @@ namespace Tibialyzer {
         public abstract List<string> GetAttributeHeaders();
         public abstract List<Attribute> GetAttributes();
         public abstract string GetCommand();
+        public virtual IComparable GetHeaderValue(int hash) {
+            return "";
+        }
     }
 
     public class Command {
@@ -142,7 +145,26 @@ namespace Tibialyzer {
             return new List<Attribute> { new StringAttribute(name, 140), new BooleanAttribute(premium), new BooleanAttribute(tibiastore), new StringAttribute(q == null ? "-" : q.name, 100) };
         }
         public override string GetCommand() {
-            return "outfit" + MainForm.commandSymbol + title;
+            return "outfit" + MainForm.commandSymbol + name;
+        }
+        static List<string> headers = new List<string> { "Name", "Prem", "Store", "Quest Name" };
+        static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode(), headers[3].GetHashCode() };
+        public override IComparable GetHeaderValue(int hash) {
+            if (hash == hashes[0]) {
+                return name;
+            }
+            if (hash == hashes[1]) {
+                return premium;
+            }
+            if (hash == hashes[2]) {
+                return tibiastore;
+            }
+            if (hash == hashes[3]) {
+                Quest q = MainForm.getQuest(questid);
+                if (q == null) return "";
+                return q.name;
+            }
+            return base.GetHeaderValue(hash);
         }
     }
 
@@ -162,7 +184,7 @@ namespace Tibialyzer {
         public override string GetName() { return name; }
         public override Image GetImage() { return image; }
         public override List<string> GetAttributeHeaders() {
-            return new List<string> { "Name", "Tame", "Creature", "Store" };
+            return headers;
         }
         public override List<Attribute> GetAttributes() {
             Item i = MainForm.getItem(tameitemid);
@@ -173,6 +195,27 @@ namespace Tibialyzer {
         }
         public override string GetCommand() {
             return "mount" + MainForm.commandSymbol + title;
+        }
+        static List<string> headers = new List<string>{ "Name", "Tame", "Creature", "Store" };
+        static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode(), headers[3].GetHashCode() };
+        public override IComparable GetHeaderValue(int header) {
+            if (header == hashes[0]) {
+                return name;
+            }
+            if (header == hashes[1]) {
+                Item i = MainForm.getItem(tameitemid);
+                if (i == null) return "";
+                return i.displayname;
+            }
+            if (header == hashes[2]) {
+                Creature cr = MainForm.getCreature(tamecreatureid);
+                if (cr == null) return "";
+                return cr.displayname;
+            }
+            if (header == hashes[3]) {
+                return tibiastore;
+            }
+            return base.GetHeaderValue(header);
         }
     }
 
@@ -248,13 +291,30 @@ namespace Tibialyzer {
         public override string GetName() { return name; }
         public override Image GetImage() { return image; }
         public override List<string> GetAttributeHeaders() {
-            return new List<string> { "Name", "Words", "Mana", "Level" };
+            return headers;
         }
         public override List<Attribute> GetAttributes() {
             return new List<Attribute> { new StringAttribute(name, 140), new StringAttribute(words, 100), new StringAttribute(manacost >= 0 ? manacost.ToString() : "-", 40, ManaCostColor), new StringAttribute(levelrequired > 0 ? levelrequired.ToString() : "-", 50) };
         }
         public override string GetCommand() {
             return "spell" + MainForm.commandSymbol + name;
+        }
+        static List<string> headers = new List<string> { "Name", "Words", "Mana", "Level" };
+        static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode(), headers[3].GetHashCode() };
+        public override IComparable GetHeaderValue(int header) {
+            if (header == hashes[0]) {
+                return name;
+            }
+            if (header == hashes[1]) {
+                return words;
+            }
+            if (header == hashes[2]) {
+                return manacost;
+            }
+            if (header == hashes[3]) {
+                return levelrequired;
+            }
+            return base.GetHeaderValue(header);
         }
     }
 
@@ -319,7 +379,7 @@ namespace Tibialyzer {
         public List<ItemSold> buyItems;
         public List<ItemSold> sellItems;
         public List<SpellTaught> spellsTaught;
-        
+
         public NPC() {
             sellItems = new List<ItemSold>();
             buyItems = new List<ItemSold>();
@@ -338,6 +398,15 @@ namespace Tibialyzer {
         }
         public override string GetCommand() {
             return "npc" + MainForm.commandSymbol + name;
+        }
+        public override IComparable GetHeaderValue(int header) {
+            if (header == 0) {
+                return name;
+            }
+            if (header == 1) {
+                return city;
+            }
+            return base.GetHeaderValue(header);
         }
     }
 
@@ -363,9 +432,33 @@ namespace Tibialyzer {
             return Math.Max(vendor_value, actual_value);
         }
 
+        public string GetMaxValueString() {
+            long val = GetMaxValue();
+            double resval = val;
+            string denom = "";
+            if (val >= 1000) {
+                resval = val / 1000.0;
+                denom = "K";
+            }
+            if (resval >= 1000) {
+                resval = resval / 1000.0;
+                denom = "M";
+            }
+            if (resval >= 1000) {
+                resval = resval / 1000.0;
+                denom = "B";
+            }
+            return String.Format("{0:0.#}", resval) + denom;
+        }
+
         public static Color GoldColor = Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(226)))), ((int)(((byte)(24)))));
         public override string GetName() { return title; }
-        public override Image GetImage() { return image; }
+        public override Image GetImage() {
+            if (image == null) {
+                MainForm.loadItemImage(id);
+            }
+            return image;
+        }
         public Item() {
             displayname = "Unknown";
             image = null;
@@ -374,14 +467,28 @@ namespace Tibialyzer {
             buyItems = new List<ItemSold>();
         }
         public override List<string> GetAttributeHeaders() {
-            return new List<string> { "Name", "Val", "Cap" };
+            return headers;
         }
         public override List<Attribute> GetAttributes() {
-            return new List<Attribute> { new StringAttribute(title, 120),
-                new StringAttribute(GetMaxValue() > 0 ? GetMaxValue().ToString() : "-", 40, GoldColor), new StringAttribute(capacity > 0 ? String.Format("{0:0.0} oz.", capacity) : "-", 70) };
+            return new List<Attribute> { new StringAttribute(title, 170),
+                new StringAttribute(GetMaxValue() > 0 ? GetMaxValueString() : "-", 50, GoldColor), new StringAttribute(capacity > 0 ? String.Format("{0:0.0} oz.", capacity) : "-", 70) };
         }
         public override string GetCommand() {
             return "item" + MainForm.commandSymbol + title;
+        }
+        static List<string> headers = new List<string> { "Name", "Value", "Cap" };
+        static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode() };
+        public override IComparable GetHeaderValue(int header) {
+            if (header == hashes[0]) {
+                return title;
+            }
+            if (header == hashes[1]) {
+                return GetMaxValue();
+            }
+            if (header == hashes[2]) {
+                return capacity;
+            }
+            return base.GetHeaderValue(header);
         }
     }
 
@@ -397,7 +504,7 @@ namespace Tibialyzer {
         public Bitmap image;
         public int z;
         public int references = 0;
-        
+
         public Map() {
         }
 
@@ -535,7 +642,7 @@ namespace Tibialyzer {
         public string GetWeakness() {
             string weakness = "";
             int maxDamage = int.MinValue;
-            for(int i = 0; i <= 6; i++) {
+            for (int i = 0; i <= 6; i++) {
                 if (GetResistance(i) > maxDamage) {
                     maxDamage = GetResistance(i);
                     weakness = GetResistanceType(i);
@@ -545,9 +652,14 @@ namespace Tibialyzer {
         }
 
         public override string GetName() { return title; }
-        public override Image GetImage() { return image; }
+        public override Image GetImage() {
+            if (image == null) {
+                MainForm.loadCreatureImage(id);
+            }
+            return image;
+        }
         public override List<string> GetAttributeHeaders() {
-            return new List<string> { "Name", "Exp", "HP", "Weak" };
+            return headers;
         }
         public override List<Attribute> GetAttributes() {
             return new List<Attribute> { new StringAttribute(title, 120), new StringAttribute(experience > 0 ? experience.ToString() : "-", 60), new StringAttribute(health > 0 ? health.ToString() : "-", 60, HealthColor),
@@ -555,6 +667,23 @@ namespace Tibialyzer {
         }
         public override string GetCommand() {
             return "creature" + MainForm.commandSymbol + title;
+        }
+        static List<string> headers = new List<string> { "Name", "Exp", "HP", "Weak" };
+        static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode(), headers[3].GetHashCode() };
+        public override IComparable GetHeaderValue(int header) {
+            if (header == hashes[0]) {
+                return title;
+            }
+            if (header == hashes[1]) {
+                return experience;
+            }
+            if (header == hashes[2]) {
+                return health;
+            }
+            if (header == hashes[3]) {
+                return GetWeakness();
+            }
+            return base.GetHeaderValue(header);
         }
     }
 
@@ -566,12 +695,12 @@ namespace Tibialyzer {
         private TibiaObject tibiaObject = null;
         public TibiaObject getTibiaObject() {
             if (tibiaObject == null) {
-                switch(type) {
+                switch (type) {
                     case TibiaObjectType.Creature:
-                        tibiaObject = MainForm.getCreature(id);
+                        tibiaObject = MainForm.getCreature(id, false);
                         break;
                     case TibiaObjectType.Item:
-                        tibiaObject = MainForm.getItem(id);
+                        tibiaObject = MainForm.getItem(id, false);
                         break;
                     case TibiaObjectType.NPC:
                         tibiaObject = MainForm.getNPC(id);
@@ -589,6 +718,8 @@ namespace Tibialyzer {
             }
             return tibiaObject;
         }
+
+
         public override Image GetImage() {
             return getTibiaObject().GetImage();
         }
@@ -604,6 +735,8 @@ namespace Tibialyzer {
         public override string GetCommand() {
             return getTibiaObject().GetCommand();
         }
-
+        public override IComparable GetHeaderValue(int header) {
+            return getTibiaObject().GetHeaderValue(header);
+        }
     }
 }

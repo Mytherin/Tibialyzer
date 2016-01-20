@@ -808,12 +808,11 @@ namespace Tibialyzer {
 
             ShowNotification(f, comm);
         }
-        private void ShowCreatureList(List<TibiaObject> c, string title, string prefix, string comm) {
+        private void ShowCreatureList(List<TibiaObject> c, string title, string comm) {
             if (c == null) return;
             CreatureList f = new CreatureList();
             f.objects = c;
             f.title = title;
-            f.prefix = prefix;
 
             ShowNotification(f, comm);
         }
@@ -1060,7 +1059,7 @@ namespace Tibialyzer {
             }
         }
 
-        public static int DisplayCreatureAttributeList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, out int maxwidth, Func<TibiaObject, string> tooltip_function = null, List<Control> createdControls = null, int page = 0, int pageitems = 20, PageInfo pageInfo = null, string extraAttribute = null, Func<TibiaObject, Attribute> attributeFunction = null) {
+        public static int DisplayCreatureAttributeList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, out int maxwidth, Func<TibiaObject, string> tooltip_function = null, List<Control> createdControls = null, int page = 0, int pageitems = 20, PageInfo pageInfo = null, string extraAttribute = null, Func<TibiaObject, Attribute> attributeFunction = null, EventHandler headerSortFunction = null, string sortedHeader = null, bool desc = false, Func<TibiaObject, IComparable> extraSort = null) {
             const int size = 24;
             const int imageSize = size - 4;
             // add a tooltip that displays the creature names
@@ -1075,6 +1074,23 @@ namespace Tibialyzer {
                 pageInfo.prevPage = page > 0;
             }
             int offset = 0;
+            if (sortedHeader != "" && sortedHeader != null) {
+                if (desc) {
+                    if (sortedHeader == extraAttribute) {
+                        l = l.OrderByDescending(o => extraSort(o)).ToList();
+                    } else {
+                        int hash = sortedHeader.GetHashCode();
+                        l = l.OrderByDescending(o => o.GetHeaderValue(hash)).ToList();
+                    }
+                } else {
+                    if (sortedHeader == extraAttribute) {
+                        l = l.OrderBy(o => extraSort(o)).ToList();
+                    } else {
+                        int hash = sortedHeader.GetHashCode();
+                        l = l.OrderBy(o => o.GetHeaderValue(hash)).ToList();
+                    }
+                }
+            }
             List<TibiaObject> pageItems = new List<TibiaObject>();
             foreach (TibiaObject cr in l) {
                 if (offset > pageitems) {
@@ -1095,7 +1111,7 @@ namespace Tibialyzer {
             }
             Dictionary<string, int> totalAttributes = new Dictionary<string, int>();
             foreach (TibiaObject obj in pageItems) {
-                List<string> headers = obj.GetAttributeHeaders();
+                List<string> headers = new List<string>(obj.GetAttributeHeaders());
                 List<Attribute> attributes = obj.GetAttributes();
                 if (extraAttribute != null) {
                     headers.Add(extraAttribute);
@@ -1129,12 +1145,15 @@ namespace Tibialyzer {
             int x = base_x;
             foreach (KeyValuePair<string, int> kvp in totalAttributes) {
                 Label label = new Label();
+                label.Name = kvp.Key;
                 label.Text = kvp.Key;
                 label.Location = new Point(x, base_y);
                 label.ForeColor = MainForm.label_text_color;
                 label.Size = new Size(kvp.Value, size);
                 label.Font = HuntListForm.text_font;
                 label.BackColor = Color.Transparent;
+                if (headerSortFunction != null)
+                    label.Click += headerSortFunction;
                 controls.Add(label);
                 if (createdControls != null) {
                     createdControls.Add(label);
@@ -1145,7 +1164,7 @@ namespace Tibialyzer {
             offset = 0;
             // create object information
             foreach (TibiaObject obj in pageItems) {
-                List<string> headers = obj.GetAttributeHeaders();
+                List<string> headers = new List<string>(obj.GetAttributeHeaders());
                 List<Attribute> attributes = obj.GetAttributes();
                 if (extraAttribute != null) {
                     headers.Add(extraAttribute);
@@ -1221,7 +1240,7 @@ namespace Tibialyzer {
             clicked = false;
             return (offset + 1) * size;
         }
-
+        
         private static bool clicked = false;
         private static void executeNameCommand(object sender, EventArgs e) {
             if (clicked) return;

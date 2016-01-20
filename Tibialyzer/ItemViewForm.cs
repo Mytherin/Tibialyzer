@@ -716,6 +716,7 @@ namespace Tibialyzer {
         private int base_y;
         private string[] extraAttributes = new string[3];
         private Func<TibiaObject, Attribute>[] attributeFunctions = new Func<TibiaObject, Attribute>[3];
+        private Func<TibiaObject, IComparable>[] attributeSortFunctions = new Func<TibiaObject, IComparable>[3];
         public override void LoadForm() {
             skip_event = true;
             this.SuspendForm();
@@ -776,22 +777,29 @@ namespace Tibialyzer {
             }
             extraAttributes[0] = "Drop";
             attributeFunctions[0] = DropChance;
+            attributeSortFunctions[0] = DropSort;
             foreach (ItemDrop itemDrop in item.itemdrops) {
                 objectList[0].Add(new LazyTibiaObject { id = itemDrop.creatureid, type = TibiaObjectType.Creature });
             }
             extraAttributes[1] = "Value";
             attributeFunctions[1] = SellPrice;
+            attributeSortFunctions[1] = SellSort;
             foreach (ItemSold sold in item.sellItems) {
                 objectList[1].Add(new LazyTibiaObject { id = sold.npcid, type = TibiaObjectType.NPC });
             }
             extraAttributes[2] = "Price";
             attributeFunctions[2] = BuyPrice;
+            attributeSortFunctions[2] = BuySort;
             foreach (ItemSold sold in item.buyItems) {
                 objectList[2].Add(new LazyTibiaObject { id = sold.npcid, type = TibiaObjectType.NPC });
             }
             if (currentControlList >= 0 && objectList[currentControlList].Count == 0) currentControlList = -1;
             int x = 5;
             base_y = this.Size.Height;
+            if (item.look_text.Length > 150) {
+                base_y += 20;
+                this.Size = new Size(this.Size.Width, base_y);
+            }
             for (int i = 0; i < 3; i++) {
                 if (objectList[i].Count > 0) {
                     Label label = new Label();
@@ -833,6 +841,16 @@ namespace Tibialyzer {
         private Attribute BuyPrice(TibiaObject obj) {
             return new StringAttribute(String.Format("{0}", item.buyItems.Find(o => o.npcid == (obj as LazyTibiaObject).id).price), 60, Item.GoldColor);
         }
+        private IComparable DropSort(TibiaObject obj) {
+            float percentage = item.itemdrops.Find(o => o.creatureid == (obj as LazyTibiaObject).id).percentage;
+            return percentage;
+        }
+        private IComparable SellSort(TibiaObject obj) {
+            return item.sellItems.Find(o => o.npcid == (obj as LazyTibiaObject).id).price;
+        }
+        private IComparable BuySort(TibiaObject obj) {
+            return item.buyItems.Find(o => o.npcid == (obj as LazyTibiaObject).id).price;
+        }
 
         private void toggleObjectDisplay(object sender, EventArgs e) {
             this.currentControlList = int.Parse((sender as Control).Name);
@@ -847,12 +865,29 @@ namespace Tibialyzer {
             command.command = split[0] + MainForm.commandSymbol + split[1] + MainForm.commandSymbol + currentPage.ToString() + MainForm.commandSymbol + currentControlList.ToString();
         }
 
+        private string sortedHeader = null;
+        private bool desc = false;
+        public void sortHeader(object sender, EventArgs e) {
+            if (sortedHeader == (sender as Control).Name) {
+                desc = !desc;
+            } else {
+                sortedHeader = (sender as Control).Name;
+                desc = false;
+            }
+            this.SuspendForm();
+            refreshObjectList();
+            this.ResumeForm();
+        }
+
         private int currentPage = 0;
         private List<Control> controlList = new List<Control>();
         private void refreshObjectList() {
             foreach(Control c in controlList) {
                 this.Controls.Remove(c);
                 c.Dispose();
+            }
+            if (currentControlList == -1) {
+                return;
             }
             updateCommand();
             for (int i = 0; i < 3; i++) {
@@ -868,7 +903,7 @@ namespace Tibialyzer {
             controlList.Clear();
             int newwidth;
             MainForm.PageInfo pageInfo = new MainForm.PageInfo(false, false);
-            int y = base_y + MainForm.DisplayCreatureAttributeList(this.Controls, objectList[currentControlList], 10, base_y, out newwidth, null, controlList, currentPage, 20, pageInfo, extraAttributes[currentControlList], attributeFunctions[currentControlList]);
+            int y = base_y + MainForm.DisplayCreatureAttributeList(this.Controls, objectList[currentControlList], 10, base_y, out newwidth, null, controlList, currentPage, 20, pageInfo, extraAttributes[currentControlList], attributeFunctions[currentControlList], sortHeader, sortedHeader, desc, attributeSortFunctions[currentControlList]);
             newwidth = Math.Max(newwidth, this.Size.Width);
             if (pageInfo.prevPage || pageInfo.nextPage) {
                 if (pageInfo.prevPage) {

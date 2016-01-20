@@ -11,7 +11,6 @@ namespace Tibialyzer {
     class CreatureList : NotificationForm {
         public List<TibiaObject> objects;
         public string title = "List";
-        public string prefix = "creature" + MainForm.commandSymbol;
 
         public CreatureList(int initialPage = 0) {
             this.currentPage = initialPage;
@@ -49,6 +48,19 @@ namespace Tibialyzer {
 
         }
 
+        public void sortHeader(object sender, EventArgs e) {
+            if (sortedHeader == (sender as Control).Name) {
+                desc = !desc;
+            } else {
+                sortedHeader = (sender as Control).Name;
+                desc = false;
+            }
+            this.SuspendForm();
+            refresh();
+            this.ResumeForm();
+        }
+        private string sortedHeader = null;
+        private bool desc;
         private int currentPage = 0;
         private List<Control> createdControls = new List<Control>();
         private void refresh() {
@@ -61,7 +73,7 @@ namespace Tibialyzer {
             int newWidth;
             MainForm.PageInfo pageInfo = new MainForm.PageInfo(false, false);
             //int y = MainForm.DisplayCreatureList(this.Controls, objects, 10, base_y, 344, 4, null, 1, createdControls, currentPage, 600, pageInfo);
-            int y = MainForm.DisplayCreatureAttributeList(this.Controls, objects, 10, base_y, out newWidth, null, createdControls, currentPage, 20, pageInfo);
+            int y = MainForm.DisplayCreatureAttributeList(this.Controls, objects, 10, base_y, out newWidth, null, createdControls, currentPage, 20, pageInfo, null, null, sortHeader, sortedHeader, desc);
             //foreach (Control control in createdControls)
             //    control.Click += openItemBox;
 
@@ -124,13 +136,5 @@ namespace Tibialyzer {
         }
 
         private Label listTitle;
-
-        private bool clicked = false;
-        void openItemBox(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
-            this.ReturnFocusToTibia();
-            MainForm.mainForm.ExecuteCommand(prefix + (sender as Control).Name);
-        }
     }
 }

@@ -403,6 +403,20 @@ namespace Tibialyzer {
             command.command = split[0] + MainForm.commandSymbol + split[1] + MainForm.commandSymbol + currentVocation.ToString();
         }
 
+        private string sortedHeader = null;
+        private bool desc = false;
+        public void sortHeader(object sender, EventArgs e) {
+            if (sortedHeader == (sender as Control).Name) {
+                desc = !desc;
+            } else {
+                sortedHeader = (sender as Control).Name;
+                desc = false;
+            }
+            this.SuspendForm();
+            refreshVocationSpells();
+            this.ResumeForm();
+        }
+
         private void refreshVocationSpells() {
             updateCommand();
             foreach (Control c in npcControls) {
@@ -421,7 +435,7 @@ namespace Tibialyzer {
                 }
             }
             int newwidth = 0;
-            int y = baseY + MainForm.DisplayCreatureAttributeList(this.Controls, npcList[currentVocation], 10, baseY, out newwidth, null, npcControls, 0, 20, null, "Cost", goldCostFunction);
+            int y = baseY + MainForm.DisplayCreatureAttributeList(this.Controls, npcList[currentVocation], 10, baseY, out newwidth, null, npcControls, 0, 20, null, "Cost", goldCostFunction, sortHeader, sortedHeader, desc);
             this.Size = new Size(Math.Max(this.Size.Width, newwidth), y + 20);
         }
 
