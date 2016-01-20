@@ -87,6 +87,18 @@ namespace Tibialyzer {
             } else if (mapCoordinate.z >= MainForm.mapFilesCount) {
                 mapCoordinate.z = MainForm.mapFilesCount - 1;
             }
+            if (mapCoordinate.x - sourceWidth / 2 < 0) {
+                mapCoordinate.x = sourceWidth / 2;
+            }
+            if (mapCoordinate.x + sourceWidth / 2 > map.image.Width) {
+                mapCoordinate.x = map.image.Width - sourceWidth / 2;
+            }
+            if (mapCoordinate.y - sourceWidth / 2 < 0) {
+                mapCoordinate.y = sourceWidth / 2;
+            }
+            if (mapCoordinate.y + sourceWidth / 2 > map.image.Height) {
+                mapCoordinate.y = map.image.Height - sourceWidth / 2;
+            }
 
             sourceWidth = Math.Min(Math.Max(sourceWidth, minWidth), maxWidth);
             Rectangle sourceRectangle = new Rectangle(mapCoordinate.x - sourceWidth / 2, mapCoordinate.y - sourceWidth / 2, sourceWidth, sourceWidth);
@@ -105,16 +117,12 @@ namespace Tibialyzer {
                 foreach(TibiaPath path in paths) {
                     if (path.begin.z == mapCoordinate.z) {
                         List<Point> points = new List<Point>();
-                        int i = 0;
                         DijkstraPoint node = path.path;
                         while (node != null) {
                             points.Add(new Point(convertx(node.point.X), converty(node.point.Y)));
                             node = node.previous;
                         }
                         gr.DrawLines(MainForm.pathPen, points.ToArray());
-                        //const int circlesize = 4;
-                        //gr.DrawEllipse(MainForm.startPen, new Rectangle(convertx(path.begin.x) - circlesize, converty(path.begin.y) - circlesize, circlesize * 2, circlesize * 2));
-                        //gr.DrawEllipse(MainForm.endPen, new Rectangle(convertx(path.end.x) - circlesize, converty(path.end.y) - circlesize, circlesize * 2, circlesize * 2));
                     }
                 }
 
@@ -140,8 +148,8 @@ namespace Tibialyzer {
         }
 
         bool drag_map = false;
-        Point center_point;
         Point screen_center;
+        Point center_point;
         Point initial_position;
         protected override void OnMouseUp(MouseEventArgs e) {
             if (e.Button == System.Windows.Forms.MouseButtons.Left) {
@@ -157,25 +165,39 @@ namespace Tibialyzer {
         protected override void OnMouseDown(MouseEventArgs e) {
             if (e.Button == System.Windows.Forms.MouseButtons.Left) {
                 this.Focus();
+                drag_map = false;
                 initial_position = System.Windows.Forms.Cursor.Position;
-                screen_center = this.PointToScreen(new Point(
-                    this.Size.Width / 2,
-                    this.Size.Height / 2));
-                System.Windows.Forms.Cursor.Position = screen_center;
-                center_point = new Point(this.Size.Width / 2, this.Size.Height / 2);
+                Screen screen = Screen.FromControl(this);
+                screen_center = new Point(screen.Bounds.X + screen.Bounds.Width / 2, screen.Bounds.Y + screen.Bounds.Height / 2);
+                System.Windows.Forms.Cursor.Position = new Point(screen_center.X, screen_center.Y);
+                center_point = new Point(screen_center.X, screen_center.Y);
                 System.Windows.Forms.Cursor.Hide();
                 drag_map = true;
             }
             base.OnMouseDown(e);
         }
 
+        int counter = 0;
+        bool skipMovement = false;
         protected override void OnMouseMove(MouseEventArgs e) {
+            if (skipMovement) return;
             if (drag_map) {
-                mapCoordinate.x = (int)Math.Max(Math.Min(mapCoordinate.x + (e.X - center_point.X), Coordinate.MaxWidth), 0);
-                mapCoordinate.y = (int)Math.Max(Math.Min(mapCoordinate.y + (e.Y - center_point.Y), Coordinate.MaxHeight), 0);
+                Point screenPoint = this.PointToScreen(new Point(e.X, e.Y));
+                mapCoordinate.x = (int)Math.Max(Math.Min(mapCoordinate.x + (screenPoint.X - center_point.X), Coordinate.MaxWidth), 0);
+                mapCoordinate.y = (int)Math.Max(Math.Min(mapCoordinate.y + (screenPoint.Y - center_point.Y), Coordinate.MaxHeight), 0);
                 this.UpdateMap();
-                center_point.X = e.X;
-                center_point.Y = e.Y;
+                center_point = screenPoint;
+                if (counter++ == 10) {
+                    // we reset the position of the cursor to the center of the screen every 10 ticks
+                    // this is to prevent the cursor from hitting the edges of the monitor while moving the map
+                    // hitting the edges of the monitor prevents the user from moving the map, but the cursor is invisible so it is weird for the user
+                    // doing this every tick makes the map movement not work as smoothly, so we only do it every 10 ticks, that should be plenty anyway
+                    skipMovement = true;
+                    System.Windows.Forms.Cursor.Position = new Point(screen_center.X, screen_center.Y);
+                    center_point = new Point(screen_center.X, screen_center.Y);
+                    skipMovement = false;
+                    counter = 0;
+                }
             }
             base.OnMouseMove(e);
         }
