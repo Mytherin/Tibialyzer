@@ -314,12 +314,6 @@ namespace Tibialyzer {
                         }
                     }
                 }
-            } else if (comp.StartsWith("drop" + MainForm.commandSymbol)) { //drop@
-                //show all creatures that drop the specified item
-                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                Item item = getItem(parameter);
-                if (item == null) return true;
-                ShowItemView(item, command);
             } else if (comp.StartsWith("item" + MainForm.commandSymbol)) { //item@
                 //show the item with all the NPCs that sell it
                 ShowItemNotification(command);
@@ -810,7 +804,12 @@ namespace Tibialyzer {
         }
 
         private void ShowItemNotification(string command) {
-            string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
+            string[] splits = command.Split(commandSymbol);
+            string parameter = splits[1].Trim().ToLower();
+            int currentPage = 0;
+            if (splits.Length > 2 && int.TryParse(splits[2], out currentPage)) ;
+            int currentDisplay = -1;
+            if (splits.Length > 3 && int.TryParse(splits[3], out currentDisplay)) ;
             Item item = getItem(parameter);
             if (item == null) {
                 List<TibiaObject> items = searchItem(parameter);
@@ -820,10 +819,10 @@ namespace Tibialyzer {
                     ShowCreatureList(items, "Item List", "item" + MainForm.commandSymbol, command);
                     return;
                 } else {
-                    ShowItemView(items[0] as Item, command);
+                    ShowItemView(items[0] as Item, currentPage, currentDisplay, command);
                 }
             } else {
-                ShowItemView(item, command);
+                ShowItemView(item, currentPage, currentDisplay, command);
             }
         }
     }

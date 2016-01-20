@@ -60,10 +60,12 @@ namespace Tibialyzer {
         private List<PictureBox> decreaseBoxes = new List<PictureBox>();
         private List<Label> valueLabels = new List<Label>();
 
-        public ItemViewForm() {
+        public ItemViewForm(int currentPage, int currentDisplay) {
             skip_event = true;
             InitializeComponent();
             skip_event = false;
+            this.currentPage = Math.Max(currentPage, 0);
+            this.currentControlList = Math.Min(currentDisplay, 2);
 
             valueLabels.Add(valueDigit1);
             valueLabels.Add(valueDigit10);
@@ -787,6 +789,7 @@ namespace Tibialyzer {
             foreach (ItemSold sold in item.buyItems) {
                 objectList[2].Add(new LazyTibiaObject { id = sold.npcid, type = TibiaObjectType.NPC });
             }
+            if (currentControlList >= 0 && objectList[currentControlList].Count == 0) currentControlList = -1;
             int x = 5;
             base_y = this.Size.Height;
             for (int i = 0; i < 3; i++) {
@@ -839,12 +842,28 @@ namespace Tibialyzer {
             this.ResumeForm();
         }
 
+        void updateCommand() {
+            string[] split = command.command.Split(MainForm.commandSymbol);
+            command.command = split[0] + MainForm.commandSymbol + split[1] + MainForm.commandSymbol + currentPage.ToString() + MainForm.commandSymbol + currentControlList.ToString();
+        }
+
         private int currentPage = 0;
         private List<Control> controlList = new List<Control>();
         private void refreshObjectList() {
             foreach(Control c in controlList) {
                 this.Controls.Remove(c);
                 c.Dispose();
+            }
+            updateCommand();
+            for (int i = 0; i < 3; i++) {
+                if (objectControls[i] != null) {
+                    objectControls[i].Enabled = i != currentControlList;
+                    if (i == currentControlList) {
+                        (objectControls[i] as Label).BorderStyle = BorderStyle.Fixed3D;
+                    } else {
+                        (objectControls[i] as Label).BorderStyle = BorderStyle.FixedSingle;
+                    }
+                }
             }
             controlList.Clear();
             int newwidth;

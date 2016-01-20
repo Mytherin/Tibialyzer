@@ -818,9 +818,9 @@ namespace Tibialyzer {
             ShowNotification(f, comm);
         }
 
-        private void ShowItemView(Item i, string comm) {
+        private void ShowItemView(Item i, int currentPage, int currentDisplay, string comm) {
             if (i == null) return;
-            ItemViewForm f = new ItemViewForm();
+            ItemViewForm f = new ItemViewForm(currentPage, currentDisplay);
             f.item = i;
 
             ShowNotification(f, comm);
