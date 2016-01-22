@@ -112,6 +112,7 @@ namespace Tibialyzer {
             startDisplay = pageInfo.startDisplay;
             updateCommand();
 
+            newWidth = Math.Max(newWidth, 275);
             if (pageInfo.prevPage) {
                 PictureBox prevpage = new PictureBox();
                 prevpage.Location = new Point(10, base_y + y);
