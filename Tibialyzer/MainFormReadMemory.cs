@@ -386,7 +386,7 @@ namespace Tibialyzer {
                 if (!logMessages.ContainsKey(t)) logMessages.Add(t, new List<string>());
                 logMessages[t].Add(line);
             }
-            ParseLootMessages(h, logMessages, null, false);
+            ParseLootMessages(h, logMessages, null, false, true);
         }
 
         void resetHunt(Hunt h) {
@@ -429,7 +429,7 @@ namespace Tibialyzer {
                 if (!logMessages.ContainsKey(t)) logMessages.Add(t, new List<string>());
                 logMessages[t].Add(line);
             }
-            ParseLootMessages(h, logMessages, null);
+            ParseLootMessages(h, logMessages, null, true, true);
         }
 
         void setGoldRatio(double ratio) {
@@ -551,7 +551,7 @@ namespace Tibialyzer {
         }
 
         Dictionary<string, List<string>> globalMessages = new Dictionary<string, List<string>>();
-        private void ParseLootMessages(Hunt h, Dictionary<string, List<string>> newDrops, List<Tuple<Creature, List<Tuple<Item, int>>>> newItems, bool commit = true, bool switchHunt = false) {
+        private void ParseLootMessages(Hunt h, Dictionary<string, List<string>> newDrops, List<Tuple<Creature, List<Tuple<Item, int>>>> newItems, bool commit = true, bool switchHunt = false, bool addEverything = false) {
             lock(hunts) {
 
                 SQLiteTransaction transaction = null;
@@ -560,7 +560,7 @@ namespace Tibialyzer {
                 }
 
                 int stamp = getDayStamp();
-                Dictionary<string, List<string>> itemDrops = globalMessages;
+                Dictionary<string, List<string>> itemDrops = addEverything ? new Dictionary<string, List<string>>() : globalMessages;
                 // now the big one: parse the log messages and check the dropped items
                 foreach (KeyValuePair<string, List<string>> kvp in newDrops) {
                     string t = kvp.Key;
