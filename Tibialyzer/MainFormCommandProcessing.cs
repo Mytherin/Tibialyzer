@@ -381,7 +381,6 @@ namespace Tibialyzer {
                 } else if (cities.Contains(parameter)) {
                     ShowCreatureList(getNPCWithCity(parameter), "NPC List", command);
                 } else {
-                    int count = 0;
                     ShowCreatureList(searchNPC(parameter), "NPC List", command);
                 }
             } else if (comp.StartsWith("savelog" + MainForm.commandSymbol)) {
@@ -763,7 +762,10 @@ namespace Tibialyzer {
 
                     foreach (Tuple<Item, int> tpl2 in items) {
                         Item item = tpl2.Item1;
-                        if ((Math.Max(item.actual_value, item.vendor_value) >= notification_value && showNotificationsValue) || (showNotificationsSpecific && settings["NotificationItems"].Contains(item.displayname.ToLower()))) {
+                        bool showNotificationValue = item.GetMaxValue() >= notification_value && showNotificationsValue;
+                        bool showNotificationRatio = getSettingBool("ShowNotificationsGoldRatio") && item.GetMaxValue() / item.capacity > getSettingDouble("NotificationGoldRatio");
+                        bool showNotificationSpecific = showNotificationsSpecific && settings["NotificationItems"].Contains(item.displayname.ToLower());
+                        if (((!showNotificationsValue || showNotificationValue) && (!getSettingBool("ShowNotificationsGoldRatio") || showNotificationRatio) && (getSettingBool("ShowNotificationsGoldRatio") || showNotificationsValue)) || showNotificationSpecific) {
                             showNotification = true;
                             if (getSettingBool("AutoScreenshotItemDrop")) {
                                 // Take a screenshot if Tibialyzer is set to take screenshots of valuable loot

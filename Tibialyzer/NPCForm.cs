@@ -126,7 +126,7 @@ namespace Tibialyzer {
         public override void LoadForm() {
             if (npc == null) return;
 
-            this.SuspendLayout();
+            this.SuspendForm();
             NotificationInitialize();
             npcImage.Image = npc.image;
             creatureName.Text = MainForm.ToTitle(npc.city);
@@ -222,7 +222,7 @@ namespace Tibialyzer {
 
             refresh();
             base.NotificationFinalize();
-            this.ResumeLayout(false);
+            this.ResumeForm();
         }
         private Attribute SellPrice(TibiaObject obj) {
             return new StringAttribute(String.Format("{0}", npc.sellItems.Find(o => o.itemid == (obj as LazyTibiaObject).id).price), 60, Item.GoldColor);

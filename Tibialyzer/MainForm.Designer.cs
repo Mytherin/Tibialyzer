@@ -59,6 +59,7 @@
             this.huntBox = new System.Windows.Forms.ListBox();
             this.backgroundBox = new System.Windows.Forms.PictureBox();
             this.settingsTab = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
             this.scanSpeedDisplayLabel = new System.Windows.Forms.Label();
             this.scanningSpeedLabel = new System.Windows.Forms.Label();
             this.scanningSpeedTrack = new System.Windows.Forms.TrackBar();
@@ -148,7 +149,8 @@
             this.loadTimerImage = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.label3 = new System.Windows.Forms.Label();
+            this.goldCapRatioCheckbox = new System.Windows.Forms.CheckBox();
+            this.goldCapRatioValue = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             this.huntingPage.SuspendLayout();
@@ -559,6 +561,16 @@
             this.settingsTab.UseVisualStyleBackColor = true;
             this.settingsTab.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(7, 331);
+            this.label3.MaximumSize = new System.Drawing.Size(340, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(340, 52);
+            this.label3.TabIndex = 19;
+            this.label3.Text = resources.GetString("label3.Text");
+            // 
             // scanSpeedDisplayLabel
             // 
             this.scanSpeedDisplayLabel.AutoSize = true;
@@ -685,6 +697,8 @@
             // notificationPanel
             // 
             this.notificationPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.notificationPanel.Controls.Add(this.goldCapRatioCheckbox);
+            this.notificationPanel.Controls.Add(this.goldCapRatioValue);
             this.notificationPanel.Controls.Add(this.alwaysShowLoot);
             this.notificationPanel.Controls.Add(this.specificNotificationTextbox);
             this.notificationPanel.Controls.Add(this.specificNotificationCheckbox);
@@ -711,9 +725,9 @@
             // specificNotificationTextbox
             // 
             this.specificNotificationTextbox.Enabled = false;
-            this.specificNotificationTextbox.Location = new System.Drawing.Point(9, 140);
+            this.specificNotificationTextbox.Location = new System.Drawing.Point(9, 183);
             this.specificNotificationTextbox.Name = "specificNotificationTextbox";
-            this.specificNotificationTextbox.Size = new System.Drawing.Size(260, 316);
+            this.specificNotificationTextbox.Size = new System.Drawing.Size(260, 273);
             this.specificNotificationTextbox.TabIndex = 5;
             this.specificNotificationTextbox.Text = "";
             this.specificNotificationTextbox.TextChanged += new System.EventHandler(this.specificNotificationTextbox_TextChanged);
@@ -721,7 +735,7 @@
             // specificNotificationCheckbox
             // 
             this.specificNotificationCheckbox.AutoSize = true;
-            this.specificNotificationCheckbox.Location = new System.Drawing.Point(7, 116);
+            this.specificNotificationCheckbox.Location = new System.Drawing.Point(9, 160);
             this.specificNotificationCheckbox.Name = "specificNotificationCheckbox";
             this.specificNotificationCheckbox.Size = new System.Drawing.Size(269, 17);
             this.specificNotificationCheckbox.TabIndex = 4;
@@ -1488,15 +1502,25 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // label3
+            // goldCapRatioCheckbox
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 331);
-            this.label3.MaximumSize = new System.Drawing.Size(340, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(340, 52);
-            this.label3.TabIndex = 19;
-            this.label3.Text = resources.GetString("label3.Text");
+            this.goldCapRatioCheckbox.AutoSize = true;
+            this.goldCapRatioCheckbox.Location = new System.Drawing.Point(9, 107);
+            this.goldCapRatioCheckbox.Name = "goldCapRatioCheckbox";
+            this.goldCapRatioCheckbox.Size = new System.Drawing.Size(247, 17);
+            this.goldCapRatioCheckbox.TabIndex = 14;
+            this.goldCapRatioCheckbox.Text = "Show Notifications for items with gold/cap ratio";
+            this.goldCapRatioCheckbox.UseVisualStyleBackColor = true;
+            this.goldCapRatioCheckbox.CheckedChanged += new System.EventHandler(this.goldCapRatioCheckbox_CheckedChanged);
+            // 
+            // goldCapRatioValue
+            // 
+            this.goldCapRatioValue.Location = new System.Drawing.Point(74, 129);
+            this.goldCapRatioValue.Name = "goldCapRatioValue";
+            this.goldCapRatioValue.Size = new System.Drawing.Size(167, 20);
+            this.goldCapRatioValue.TabIndex = 13;
+            this.goldCapRatioValue.Text = "40.0";
+            this.goldCapRatioValue.TextChanged += new System.EventHandler(this.goldCapRatioValue_TextChanged);
             // 
             // MainForm
             // 
@@ -1678,6 +1702,8 @@
         private System.Windows.Forms.Label scanningSpeedLabel;
         private System.Windows.Forms.TrackBar scanningSpeedTrack;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox goldCapRatioCheckbox;
+        private System.Windows.Forms.TextBox goldCapRatioValue;
     }
 }
 

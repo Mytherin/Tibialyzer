@@ -16,6 +16,7 @@ using System.Threading;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Data.SQLite;
+using System.Globalization;
 
 namespace Tibialyzer {
     public partial class MainForm : Form {
@@ -57,6 +58,7 @@ namespace Tibialyzer {
         private bool prevent_settings_update = false;
         private bool minimize_notification = true;
         public int notification_value = 2000;
+        public double notification_goldratio = 40.0;
         static HashSet<string> cities = new HashSet<string>() { "ab'dendriel", "carlin", "kazordoon", "venore", "thais", "ankrahmun", "farmine", "gray beach", "liberty bay", "port hope", "rathleton", "roshamuul", "yalahar", "svargrond", "edron", "darashia", "rookgaard", "dawnport", "gray beach" };
         public List<string> notification_items = new List<string>();
         private ToolTip scan_tooltip = new ToolTip();
@@ -529,10 +531,13 @@ namespace Tibialyzer {
             this.lootNotificationRich = getSettingBool("UseRichNotificationType");
             this.showNotificationsValue = getSettingBool("ShowNotificationsValue");
             this.notification_value = getSettingInt("NotificationValue") < 0 ? notification_value : getSettingInt("NotificationValue");
+            this.notification_goldratio = getSettingDouble("NotificationGoldRatio") < 0 ? notification_goldratio : getSettingDouble("NotificationGoldRatio");
             this.showNotificationsSpecific = getSettingBool("ShowNotificationsSpecific");
 
             this.richNotificationsPanel.Enabled = richNotifications;
             this.notificationPanel.Enabled = showNotifications;
+            this.goldCapRatioValue.Text = notification_goldratio.ToString(CultureInfo.InvariantCulture);
+            this.goldCapRatioCheckbox.Checked = getSettingBool("ShowNotificationsGoldRatio");
             this.specificNotificationTextbox.Enabled = showNotificationsSpecific;
             this.notificationLabel.Text = "Notification Length: " + notificationLength.ToString() + " Seconds";
             this.scanningSpeedTrack.Value = Math.Min(Math.Max(getSettingInt("ScanSpeed"), 0), 4);
@@ -1466,21 +1471,21 @@ namespace Tibialyzer {
 
         private void applyRatioButton_Click(object sender, EventArgs e) {
             double val = 0;
-            if (double.TryParse(goldRatioTextBox.Text, out val)) {
+            if (double.TryParse(goldRatioTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out val)) {
                 this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + goldRatioTextBox.Text);
             }
         }
 
         private void stackableConvertApply_Click(object sender, EventArgs e) {
             double val = 0;
-            if (double.TryParse(stackableConvertTextBox.Text, out val)) {
+            if (double.TryParse(stackableConvertTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out val)) {
                 this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "1-" + stackableConvertTextBox.Text);
             }
         }
 
         private void unstackableConvertApply_Click(object sender, EventArgs e) {
             double val = 0;
-            if (double.TryParse(unstackableConvertTextBox.Text, out val)) {
+            if (double.TryParse(unstackableConvertTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out val)) {
                 this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "0-" + unstackableConvertTextBox.Text);
             }
         }
@@ -1812,6 +1817,14 @@ namespace Tibialyzer {
             }
             return -1;
         }
+        public double getSettingDouble(string key) {
+            if (!settings.ContainsKey(key) || settings[key].Count == 0) return -1;
+            double v;
+            if (double.TryParse(settings[key][0], NumberStyles.Any, CultureInfo.InvariantCulture, out v)) {
+                return v;
+            }
+            return -1;
+        }
 
         public string getSettingString(string key) {
             if (!settings.ContainsKey(key) || settings[key].Count == 0) return null;
@@ -1846,6 +1859,23 @@ namespace Tibialyzer {
             if (int.TryParse((sender as TextBox).Text, out value)) {
                 this.notification_value = value;
                 setSetting("NotificationValue", notification_value.ToString());
+                saveSettings();
+            }
+        }
+        
+        private void goldCapRatioCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("ShowNotificationsGoldRatio", (sender as CheckBox).Checked.ToString());
+            saveSettings();
+        }
+
+        private void goldCapRatioValue_TextChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+            double value;
+            if (double.TryParse((sender as TextBox).Text, NumberStyles.Any, CultureInfo.InvariantCulture, out value)) {
+                this.notification_goldratio = value;
+                setSetting("NotificationGoldRatio", notification_goldratio.ToString(CultureInfo.InvariantCulture));
                 saveSettings();
             }
         }
