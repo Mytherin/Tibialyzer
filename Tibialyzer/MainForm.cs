@@ -819,9 +819,14 @@ namespace Tibialyzer {
             string parameter = split[1].Trim().ToLower();
             int page = 0;
             int displayType = 0;
+            bool desc = false;
+            string sortedHeader = null;
+
             if (split.Length > 2 && int.TryParse(split[2], out page)) { }
             if (split.Length > 3 && int.TryParse(split[3], out displayType)) { }
-            CreatureList f = new CreatureList(page, displayType == 1 ? DisplayType.Images : DisplayType.Details);
+            if (split.Length > 4) { desc = split[4] == "1"; }
+            if (split.Length > 5) { sortedHeader = split[5]; }
+            CreatureList f = new CreatureList(page, displayType == 1 ? DisplayType.Images : DisplayType.Details, sortedHeader, desc);
             f.objects = c;
             f.title = title;
 

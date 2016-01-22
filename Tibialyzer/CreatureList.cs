@@ -14,16 +14,20 @@ namespace Tibialyzer {
         public string title = "List";
         private Label toggleButton;
         public DisplayType displayType = DisplayType.Details;
+        private string sortedHeader = null;
+        private bool desc;
 
-        public CreatureList(int initialPage, DisplayType displayType) {
+        public CreatureList(int initialPage, DisplayType displayType, string sortedHeader, bool desc) {
             this.currentPage = initialPage;
             this.displayType = displayType;
+            this.sortedHeader = sortedHeader;
+            this.desc = desc;
             objects = null;
             InitializeComponent();
         }
         void updateCommand() {
             string[] split = command.command.Split(MainForm.commandSymbol);
-            command.command = split[0] + MainForm.commandSymbol + split[1] + MainForm.commandSymbol + currentPage.ToString() + MainForm.commandSymbol + ((int)displayType).ToString();
+            command.command = split[0] + MainForm.commandSymbol + split[1] + MainForm.commandSymbol + currentPage.ToString() + MainForm.commandSymbol + ((int)displayType).ToString() + MainForm.commandSymbol + (desc ? 1 : 0) + (sortedHeader != null ? MainForm.commandSymbol + sortedHeader : "");
         }
 
         private void InitializeComponent() {
@@ -84,8 +88,6 @@ namespace Tibialyzer {
             refresh();
             this.ResumeForm();
         }
-        private string sortedHeader = null;
-        private bool desc;
         private int currentPage = 0;
         private List<Control> createdControls = new List<Control>();
         private int startDisplay = 0;
