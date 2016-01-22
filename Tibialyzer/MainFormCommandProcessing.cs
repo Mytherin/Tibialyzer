@@ -706,19 +706,19 @@ namespace Tibialyzer {
                     string itemName = parseLookItem(msg).ToLower();
                     if (itemExists(itemName)) {
                         this.Invoke((MethodInvoker)delegate {
-                            ShowItemNotification("item@" + itemName);
+                            this.ExecuteCommand("item@" + itemName);
                         });
                     } else if (creatureExists(itemName) ||
                         (itemName.Contains("dead ") && (itemName = itemName.Replace("dead ", "")) != null && creatureExists(itemName)) ||
                         (itemName.Contains("slain ") && (itemName = itemName.Replace("slain ", "")) != null && creatureExists(itemName))) {
                         this.Invoke((MethodInvoker)delegate {
-                            ShowCreatureDrops(getCreature(itemName), "");
+                            this.ExecuteCommand("creature@" + itemName);
                         });
                     } else {
                         NPC npc = getNPC(itemName);
                         if (npc != null) {
                             this.Invoke((MethodInvoker)delegate {
-                                ShowNPCForm(npc, "");
+                                this.ExecuteCommand("npc@" + itemName);
                             });
                         }
                     }
