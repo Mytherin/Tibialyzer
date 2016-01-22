@@ -237,25 +237,8 @@ namespace Tibialyzer {
                 foreach (Quest q in quests) {
                     if (++current_index < start_index) continue;
                     if (current_index > start_index + max_hunts) break;
-                    Image image = null;
-                    if (q.rewardOutfits.Count > 0) {
-                        Outfit o = MainForm.getOutfit(q.rewardOutfits[0]);
-                        image = o.GetImage();
-                    } else if (q.rewardItems.Count > 0) {
-                        List<Item> items = new List<Item>();
-                        foreach(int i in q.rewardItems) {
-                            Item item = MainForm.getItem(i);
-                            items.Add(item);
-                        }
-                        image = items.OrderByDescending(o => o.GetMaxValue()).First().image;
-                    } else if (q.questDangers.Count > 0) {
-                        List<Creature> creatures = new List<Creature>();
-                        foreach(int i in q.questDangers) {
-                            Creature cr = MainForm.getCreature(i);
-                            creatures.Add(cr);
-                        }
-                        image = creatures.OrderByDescending(o => o.experience).First().image;
-                    }
+                    Image image = q.GetImage();
+                    
 
                     if (image != null) {
                         PictureBox picture = new PictureBox();

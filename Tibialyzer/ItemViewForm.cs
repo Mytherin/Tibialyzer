@@ -60,12 +60,13 @@ namespace Tibialyzer {
         private List<PictureBox> decreaseBoxes = new List<PictureBox>();
         private List<Label> valueLabels = new List<Label>();
 
+        private string[] headers = { "Dropped", "Sell To", "Buy From", "Rewarded" };
         public ItemViewForm(int currentPage, int currentDisplay) {
             skip_event = true;
             InitializeComponent();
             skip_event = false;
             this.currentPage = Math.Max(currentPage, 0);
-            this.currentControlList = Math.Min(currentDisplay, 2);
+            this.currentControlList = Math.Min(currentDisplay, headers.Length);
 
             valueLabels.Add(valueDigit1);
             valueLabels.Add(valueDigit10);
@@ -710,13 +711,13 @@ namespace Tibialyzer {
 
         }
         
-        private List<TibiaObject>[] objectList = new List<TibiaObject>[3];
-        private Control[] objectControls = new Control[3];
+        private List<TibiaObject>[] objectList = new List<TibiaObject>[4];
+        private Control[] objectControls = new Control[4];
         private int currentControlList = -1;
         private int base_y;
-        private string[] extraAttributes = new string[3];
-        private Func<TibiaObject, Attribute>[] attributeFunctions = new Func<TibiaObject, Attribute>[3];
-        private Func<TibiaObject, IComparable>[] attributeSortFunctions = new Func<TibiaObject, IComparable>[3];
+        private string[] extraAttributes = new string[4];
+        private Func<TibiaObject, Attribute>[] attributeFunctions = new Func<TibiaObject, Attribute>[4];
+        private Func<TibiaObject, IComparable>[] attributeSortFunctions = new Func<TibiaObject, IComparable>[4];
         public override void LoadForm() {
             skip_event = true;
             this.SuspendForm();
@@ -771,8 +772,7 @@ namespace Tibialyzer {
             value_tooltip.ShowAlways = true;
             value_tooltip.UseFading = true;
 
-            string[] headers = { "Dropped", "Sell To", "Buy From" };
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < headers.Length; i++) {
                 objectList[i] = new List<TibiaObject>();
             }
             extraAttributes[0] = "Drop";
@@ -793,6 +793,12 @@ namespace Tibialyzer {
             foreach (ItemSold sold in item.buyItems) {
                 objectList[2].Add(new LazyTibiaObject { id = sold.npcid, type = TibiaObjectType.NPC });
             }
+            extraAttributes[3] = null;
+            attributeFunctions[3] = null;
+            attributeSortFunctions[3] = null;
+            foreach (Quest q in item.rewardedBy) {
+                objectList[3].Add(q);
+            }
             if (currentControlList >= 0 && objectList[currentControlList].Count == 0) currentControlList = -1;
             int x = 5;
             base_y = this.Size.Height;
@@ -800,7 +806,7 @@ namespace Tibialyzer {
                 base_y += 20;
                 this.Size = new Size(this.Size.Width, base_y);
             }
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < headers.Length; i++) {
                 if (objectList[i].Count > 0) {
                     Label label = new Label();
                     label.Text = headers[i];
@@ -808,17 +814,17 @@ namespace Tibialyzer {
                     label.ForeColor = MainForm.label_text_color;
                     label.BackColor = Color.Transparent;
                     label.Font = HuntListForm.text_font;
-                    label.Size = new Size(100, 25);
+                    label.Size = new Size(90, 25);
                     label.TextAlign = ContentAlignment.MiddleCenter;
                     label.BorderStyle = BorderStyle.FixedSingle;
                     label.Name = i.ToString();
                     label.Click += toggleObjectDisplay; ;
                     objectControls[i] = label;
                     this.Controls.Add(label);
-                    if (currentControlList < 0 || currentControlList > 2) {
+                    if (currentControlList < 0 || currentControlList > headers.Length) {
                         currentControlList = i;
                     }
-                    x += 100;
+                    x += 90;
                 } else {
                     objectControls[i] = null;
                 }
@@ -890,7 +896,7 @@ namespace Tibialyzer {
                 return;
             }
             updateCommand();
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < headers.Length; i++) {
                 if (objectControls[i] != null) {
                     objectControls[i].Enabled = i != currentControlList;
                     if (i == currentControlList) {

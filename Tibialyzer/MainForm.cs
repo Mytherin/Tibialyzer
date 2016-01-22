@@ -228,7 +228,7 @@ namespace Tibialyzer {
                 quest.name = reader.GetString(2);
                 quest.minlevel = reader.GetInt32(3);
                 quest.premium = reader.GetBoolean(4);
-                quest.city = reader.IsDBNull(5) ? "Unknown" : reader.GetString(5);
+                quest.city = reader.IsDBNull(5) ? "-" : reader.GetString(5);
                 quest.legend = reader.IsDBNull(6) ? "No legend available." : reader.GetString(6);
                 if (quest.legend == "..." || quest.legend == "")
                     quest.legend = "No legend available.";

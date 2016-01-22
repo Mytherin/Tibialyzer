@@ -196,7 +196,7 @@ namespace Tibialyzer {
         public override string GetCommand() {
             return "mount" + MainForm.commandSymbol + title;
         }
-        static List<string> headers = new List<string>{ "Name", "Tame", "Creature", "Store" };
+        static List<string> headers = new List<string> { "Name", "Tame", "Creature", "Store" };
         static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode(), headers[3].GetHashCode() };
         public override IComparable GetHeaderValue(int header) {
             if (header == hashes[0]) {
@@ -243,7 +243,7 @@ namespace Tibialyzer {
         }
     }
 
-    public class Quest {
+    public class Quest : TibiaObject {
         public int id;
         public string title;
         public string name;
@@ -265,6 +265,81 @@ namespace Tibialyzer {
             questRequirements = new List<Tuple<int, int>>();
             additionalRequirements = new List<string>();
             questInstructions = new Dictionary<string, List<QuestInstruction>>();
+        }
+
+        public Item GetRewardItem() {
+            if (this.rewardItems.Count > 0) {
+                List<Item> items = new List<Item>();
+                foreach (int i in this.rewardItems) {
+                    Item item = MainForm.getItem(i, false);
+                    items.Add(item);
+                }
+                return items.OrderByDescending(o => o.GetMaxValue()).First();
+            }
+            return null;
+        }
+
+        public Image GetRewardImage() {
+            if (this.rewardOutfits.Count > 0) {
+                Outfit o = MainForm.getOutfit(this.rewardOutfits[0]);
+                return o.GetImage();
+            } else if (this.rewardItems.Count > 0) {
+                Item it = GetRewardItem();
+                return it.GetImage();
+            }
+            return null;
+        }
+
+        public Creature GetDangerCreature() {
+            if (this.questDangers.Count > 0) {
+                List<Creature> creatures = new List<Creature>();
+                foreach (int i in this.questDangers) {
+                    Creature cr = MainForm.getCreature(i, false);
+                    creatures.Add(cr);
+                }
+                return creatures.OrderByDescending(o => o.experience).First();
+            }
+            return null;
+        }
+
+        public Image GetDangerImage() {
+            Creature cr = GetDangerCreature();
+            if (cr != null) return cr.GetImage();
+            return null;
+        }
+
+        public override string GetName() { return name; }
+        public override Image GetImage() {
+            Image image = GetRewardImage();
+            if (image == null) image = GetDangerImage();
+            return image;
+        }
+        public override List<string> GetAttributeHeaders() {
+            return headers;
+        }
+        public override List<Attribute> GetAttributes() {
+            return new List<Attribute> { new StringAttribute(name, 160), new StringAttribute(minlevel.ToString(), 40), new StringAttribute(MainForm.ToTitle(city), 100), new ImageAttribute(GetDangerImage()) };
+        }
+        public override string GetCommand() {
+            return "quest" + MainForm.commandSymbol + name;
+        }
+        static List<string> headers = new List<string> { "Name", "Level", "City", "Danger" };
+        static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode(), headers[3].GetHashCode() };
+        public override IComparable GetHeaderValue(int header) {
+            if (header == hashes[0]) {
+                return name;
+            }
+            if (header == hashes[1]) {
+                return minlevel;
+            }
+            if (header == hashes[2]) {
+                return city;
+            }
+            if (header == hashes[3]) {
+                Creature cr = GetDangerCreature();
+                return cr == null ? 0 : cr.experience;
+            }
+            return base.GetHeaderValue(header);
         }
     }
 
@@ -429,6 +504,7 @@ namespace Tibialyzer {
         public List<ItemDrop> itemdrops;
         public List<ItemSold> buyItems;
         public List<ItemSold> sellItems;
+        public List<Quest> rewardedBy;
 
         public long GetMaxValue() {
             return Math.Max(vendor_value, actual_value);
@@ -467,6 +543,7 @@ namespace Tibialyzer {
             itemdrops = new List<ItemDrop>();
             sellItems = new List<ItemSold>();
             buyItems = new List<ItemSold>();
+            rewardedBy = new List<Quest>();
         }
         public override List<string> GetAttributeHeaders() {
             return headers;

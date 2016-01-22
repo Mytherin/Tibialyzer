@@ -177,6 +177,12 @@ namespace Tibialyzer {
 
                 item.itemdrops.Add(itemDrop);
             }
+            command = new SQLiteCommand(String.Format("SELECT questid FROM QuestRewards WHERE itemid={0}", item.id), mainForm.conn);
+            reader = command.ExecuteReader();
+            while(reader.Read()) {
+                item.rewardedBy.Add(getQuest(reader.GetInt32(0)));
+            }
+
             return item;
         }
         public static void loadItemImage(int id) {

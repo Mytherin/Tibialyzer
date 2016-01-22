@@ -17,7 +17,7 @@ namespace Tibialyzer {
             public int damage;
         };
         public string filter = "";
-        
+
         public DamageChart() {
             InitializeComponent();
             NotificationInitialize();
@@ -86,7 +86,7 @@ namespace Tibialyzer {
                 if (filter != "all" && filter != "creature" && char.IsLower(kvp.Key[0])) continue;
                 if (filter == "creature" && char.IsUpper(kvp.Key[0])) continue;
                 Player p = new Player();
-                p.name = kvp.Key;
+                p.name = kvp.Key.Replace(".", "");
                 p.damage = kvp.Value;
                 players.Add(p);
             }
