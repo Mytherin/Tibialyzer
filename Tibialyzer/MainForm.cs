@@ -1068,7 +1068,7 @@ namespace Tibialyzer {
             }
         }
 
-        public static int DisplayCreatureAttributeList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, out int maxwidth, Func<TibiaObject, string> tooltip_function = null, List<Control> createdControls = null, int page = 0, int pageitems = 20, PageInfo pageInfo = null, string extraAttribute = null, Func<TibiaObject, Attribute> attributeFunction = null, EventHandler headerSortFunction = null, string sortedHeader = null, bool desc = false, Func<TibiaObject, IComparable> extraSort = null) {
+        public static int DisplayCreatureAttributeList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, out int maxwidth, Func<TibiaObject, string> tooltip_function = null, List<Control> createdControls = null, int page = 0, int pageitems = 20, PageInfo pageInfo = null, string extraAttribute = null, Func<TibiaObject, Attribute> attributeFunction = null, EventHandler headerSortFunction = null, string sortedHeader = null, bool desc = false, Func<TibiaObject, IComparable> extraSort = null, List<string> removedAttributes = null) {
             const int size = 24;
             const int imageSize = size - 4;
             // add a tooltip that displays the creature names
@@ -1136,6 +1136,7 @@ namespace Tibialyzer {
                 for (int i = 0; i < headers.Count; i++) {
                     string header = headers[i];
                     Attribute attribute = attributes[i];
+                    if (removedAttributes != null && removedAttributes.Contains(header)) continue;
                     int width = -1;
                     if (attribute is StringAttribute) {
                         width = TextRenderer.MeasureText((attribute as StringAttribute).value, HuntListForm.text_font).Width;

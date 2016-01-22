@@ -13,10 +13,16 @@ namespace Tibialyzer {
         private System.Windows.Forms.PictureBox mapUpLevel;
         private System.Windows.Forms.PictureBox mapDownLevel;
         private static Font text_font = new Font(FontFamily.GenericSansSerif, 11, FontStyle.Bold);
-        public NPCForm() {
+
+
+        public NPCForm(int currentPage = 0, int currentDisplay = -1) {
             InitializeComponent();
+            this.currentPage = Math.Max(currentPage, 0);
+            this.currentControlList = Math.Min(currentDisplay, headers.Length);
         }
 
+        private const int headerLength = 5;
+        private string[] headers = { "Sell To", "Buy From", "Spells", "Travels", "Quests" };
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NPCForm));
             this.mapBox = new Tibialyzer.MapPictureBox();
@@ -81,7 +87,7 @@ namespace Tibialyzer {
             // 
             // NPCForm
             // 
-            this.ClientSize = new System.Drawing.Size(328, 259);
+            this.ClientSize = new System.Drawing.Size(328, 209);
             this.Controls.Add(this.mapDownLevel);
             this.Controls.Add(this.mapUpLevel);
             this.Controls.Add(this.creatureName);
@@ -107,19 +113,15 @@ namespace Tibialyzer {
             get { return true; }
         }
 
-        private Dictionary<Item, int> sellItems = new Dictionary<Item, int>();
-        private Dictionary<Item, int> buyItems = new Dictionary<Item, int>();
-        string prefix;
-        private string TooltipFunction(TibiaObject obj) {
-            if (obj is Item) {
-                Item item = obj as Item;
-                return String.Format("{0} {1} for {2} gold.", prefix, item.displayname, prefix == "Sells" ? sellItems[item] : buyItems[item]);
-            } else if (obj is Spell) {
-                Spell spell = obj as Spell;
-                return String.Format("{0} {1} for {2} gold.", prefix, spell.name, spell.goldcost);
-            }
-            return "";
-        }
+        private List<string>[] removedLists = new List<string>[headerLength];
+        private List<TibiaObject>[] objectList = new List<TibiaObject>[headerLength];
+        private Control[] objectControls = new Control[headerLength];
+        private int currentControlList = -1;
+        private int base_y;
+        private int currentPage;
+        private string[] extraAttributes = new string[headerLength];
+        private Func<TibiaObject, Attribute>[] attributeFunctions = new Func<TibiaObject, Attribute>[headerLength];
+        private Func<TibiaObject, IComparable>[] attributeSortFunctions = new Func<TibiaObject, IComparable>[headerLength];
 
         public override void LoadForm() {
             if (npc == null) return;
@@ -140,6 +142,58 @@ namespace Tibialyzer {
             }
             this.creatureName.Font = f;
 
+            for (int i = 0; i < headers.Length; i++) {
+                objectList[i] = new List<TibiaObject>();
+            }
+            extraAttributes[0] = "Sell Price";
+            attributeFunctions[0] = SellPrice;
+            attributeSortFunctions[0] = SellSort;
+            removedLists[0] = new List<string> { "Value" };
+            foreach (ItemSold itemSold in npc.sellItems) {
+                objectList[0].Add(new LazyTibiaObject { id = itemSold.itemid, type = TibiaObjectType.Item });
+            }
+            extraAttributes[1] = "Buy Price";
+            attributeFunctions[1] = BuyPrice;
+            attributeSortFunctions[1] = BuySort;
+            removedLists[1] = new List<string> { "Value" };
+            foreach (ItemSold itemSold in npc.buyItems) {
+                objectList[1].Add(new LazyTibiaObject { id = itemSold.itemid, type = TibiaObjectType.Item });
+            }
+            extraAttributes[2] = "Vocation";
+            attributeFunctions[2] = SpellVoc;
+            attributeSortFunctions[2] = SpellSort;
+            removedLists[2] = new List<string> { "Words" };
+            foreach (SpellTaught spellTaught in npc.spellsTaught) {
+                objectList[2].Add(new LazyTibiaObject { id = spellTaught.spellid, type = TibiaObjectType.Spell });
+            }
+            // todo: travel and quests
+
+            base_y = this.Size.Height;
+            int x = 5;
+            for (int i = 0; i < headers.Length; i++) {
+                if (objectList[i].Count > 0) {
+                    Label label = new Label();
+                    label.Text = headers[i];
+                    label.Location = new Point(x, base_y);
+                    label.ForeColor = MainForm.label_text_color;
+                    label.BackColor = Color.Transparent;
+                    label.Font = HuntListForm.text_font;
+                    label.Size = new Size(90, 25);
+                    label.TextAlign = ContentAlignment.MiddleCenter;
+                    label.BorderStyle = BorderStyle.FixedSingle;
+                    label.Name = i.ToString();
+                    label.Click += toggleObjectDisplay;
+                    objectControls[i] = label;
+                    this.Controls.Add(label);
+                    if (currentControlList < 0 || currentControlList > headers.Length) {
+                        currentControlList = i;
+                    }
+                    x += 90;
+                } else {
+                    objectControls[i] = null;
+                }
+            }
+            base_y += 25;
 
             Map m = MainForm.getMap(npc.pos.z);
 
@@ -166,89 +220,128 @@ namespace Tibialyzer {
             this.mapDownLevel.Click -= c_Click;
             this.mapDownLevel.Click += mapDownLevel_Click;
 
-            float scale = 1.0f;
-            if (npc.buyItems.Count + npc.sellItems.Count > 200) {
-                scale = 0.6f;
-            } else if (npc.buyItems.Count + npc.sellItems.Count > 80) {
-                scale = 0.75f;
-            }
-
-            int y = mapBox.Location.Y + mapBox.Size.Height + 20;
-            if (npc.buyItems.Count > 0) {
-                prefix = "Sells";
-                Label label = new Label();
-                label.Text = "Sells";
-                label.Location = new Point(40, y);
-                label.ForeColor = MainForm.label_text_color;
-                label.BackColor = Color.Transparent;
-                label.Font = text_font;
-                this.Controls.Add(label);
-                y += 25;
-
-                List<TibiaObject> list = new List<TibiaObject>();
-                foreach(ItemSold itemSold in npc.buyItems) {
-                    Item item = MainForm.getItem(itemSold.itemid);
-                    sellItems.Add(item, itemSold.price);
-                    list.Add(item);
-                }
-
-                y = y + MainForm.DisplayCreatureList(this.Controls, list, 10, y, this.Size.Width - 10, 4, TooltipFunction, scale);
-            }
-            if (npc.sellItems.Count > 0) {
-                prefix = "Buys";
-                Label label = new Label();
-                label.Text = "Buys";
-                label.Location = new Point(40, y);
-                label.ForeColor = MainForm.label_text_color;
-                label.BackColor = Color.Transparent;
-                label.Font = text_font;
-                this.Controls.Add(label);
-                y += 25;
-
-                List<TibiaObject> list = new List<TibiaObject>();
-                foreach (ItemSold itemSold in npc.sellItems) {
-                    Item item = MainForm.getItem(itemSold.itemid);
-                    buyItems.Add(item, itemSold.price);
-                    list.Add(item);
-                }
-
-                y = y + MainForm.DisplayCreatureList(this.Controls, list, 10, y, this.Size.Width - 10, 4, TooltipFunction, scale);
-            }
-            if (npc.spellsTaught.Count > 0) {
-                prefix = "Teaches";
-                Label label = new Label();
-                label.Text = "Teaches";
-                label.Location = new Point(40, y);
-                label.ForeColor = MainForm.label_text_color;
-                label.BackColor = Color.Transparent;
-                label.Font = text_font;
-                this.Controls.Add(label);
-                y += 25;
-                List<Control> spellControls = new List<Control>();
-
-                List<TibiaObject> list = new List<TibiaObject>();
-                foreach (SpellTaught teach in npc.spellsTaught) {
-                    Spell spell = MainForm.getSpell(teach.spellid);
-                    list.Add(spell);
-                }
-                list = list.OrderBy(o => (o as Spell).levelrequired).ToList();
-                
-                y = y + MainForm.DisplayCreatureList(this.Controls, list, 10, y, this.Size.Width - 10, 4, TooltipFunction, 1, spellControls);
-            }
-            this.Size = new Size(this.Size.Width, y + 20);
+            refresh();
             base.NotificationFinalize();
             this.ResumeLayout(false);
         }
-
-        private string command_start = "item" + MainForm.commandSymbol;
-        void openItemBox(object sender, EventArgs e) {
-            this.ReturnFocusToTibia();
-            MainForm.mainForm.ExecuteCommand(command_start + (sender as Control).Name);
+        private Attribute SellPrice(TibiaObject obj) {
+            return new StringAttribute(String.Format("{0}", npc.sellItems.Find(o => o.itemid == (obj as LazyTibiaObject).id).price), 60, Item.GoldColor);
         }
-        private string spell_start = "spell" + MainForm.commandSymbol;
-        void openSpellBox(object sender, EventArgs e) {
-            this.ReturnFocusToTibia();
-            MainForm.mainForm.ExecuteCommand(spell_start + (sender as Control).Name);
+        private IComparable SellSort(TibiaObject obj) {
+            return npc.sellItems.Find(o => o.itemid == (obj as LazyTibiaObject).id).price;
+        }
+        private Attribute BuyPrice(TibiaObject obj) {
+            return new StringAttribute(String.Format("{0}", npc.buyItems.Find(o => o.itemid == (obj as LazyTibiaObject).id).price), 60, Item.GoldColor);
+        }
+        private IComparable BuySort(TibiaObject obj) {
+            return npc.buyItems.Find(o => o.itemid == (obj as LazyTibiaObject).id).price;
+        }
+        private Attribute SpellVoc(TibiaObject obj) {
+            SpellTaught spell = npc.spellsTaught.Find(o => o.spellid == (obj as LazyTibiaObject).id);
+            string voc = (spell.knight ? "Kn+" : "") + (spell.paladin ? "Pa+" : "") + (spell.druid ? "Dr+" : "") + (spell.sorcerer ? "So+" : "");
+            if (voc.Length == 3) {
+                voc = (spell.knight ? "Knight" : "") + (spell.paladin ? "Paladin" : "") + (spell.druid ? "Druid" : "") + (spell.sorcerer ? "Sorcerer" : "");
+            } else {
+                voc = voc.Substring(0, voc.Length - 1);
+            }
+            return new StringAttribute(voc, 80, Item.GoldColor);
+        }
+        private IComparable SpellSort(TibiaObject obj) {
+            return (SpellVoc(obj) as StringAttribute).value;
+        }
+
+        void updateCommand() {
+            string[] split = command.command.Split(MainForm.commandSymbol);
+            command.command = split[0] + MainForm.commandSymbol + split[1] + MainForm.commandSymbol + currentPage.ToString() + MainForm.commandSymbol + currentControlList.ToString();
+        }
+
+        private List<Control> controlList = new List<Control>();
+        private void refresh() {
+            foreach (Control c in controlList) {
+                this.Controls.Remove(c);
+                c.Dispose();
+            }
+            if (currentControlList == -1) {
+                return;
+            }
+            updateCommand();
+            for (int i = 0; i < headers.Length; i++) {
+                if (objectControls[i] != null) {
+                    objectControls[i].Enabled = i != currentControlList;
+                    if (i == currentControlList) {
+                        (objectControls[i] as Label).BorderStyle = BorderStyle.Fixed3D;
+                    } else {
+                        (objectControls[i] as Label).BorderStyle = BorderStyle.FixedSingle;
+                    }
+                }
+            }
+            controlList.Clear();
+            int newwidth;
+            MainForm.PageInfo pageInfo = new MainForm.PageInfo(false, false);
+            int y = base_y + MainForm.DisplayCreatureAttributeList(this.Controls, objectList[currentControlList], 10, base_y, out newwidth, null, controlList, currentPage, 20, pageInfo, extraAttributes[currentControlList], attributeFunctions[currentControlList], sortHeader, sortedHeader, desc, attributeSortFunctions[currentControlList], removedLists[currentControlList]);
+            newwidth = Math.Max(newwidth, this.Size.Width);
+            if (pageInfo.prevPage || pageInfo.nextPage) {
+                if (pageInfo.prevPage) {
+                    PictureBox prevpage = new PictureBox();
+                    prevpage.Location = new Point(10, y);
+                    prevpage.Size = new Size(97, 23);
+                    prevpage.Image = MainForm.prevpage_image;
+                    prevpage.BackColor = Color.Transparent;
+                    prevpage.SizeMode = PictureBoxSizeMode.Zoom;
+                    prevpage.Click += Prevpage_Click; ;
+                    this.Controls.Add(prevpage);
+                    controlList.Add(prevpage);
+
+                }
+                if (pageInfo.nextPage) {
+                    PictureBox nextpage = new PictureBox();
+                    nextpage.Location = new Point(newwidth - 108, y);
+                    nextpage.Size = new Size(98, 23);
+                    nextpage.BackColor = Color.Transparent;
+                    nextpage.Image = MainForm.nextpage_image;
+                    nextpage.SizeMode = PictureBoxSizeMode.Zoom;
+                    nextpage.Click += Nextpage_Click; ;
+                    this.Controls.Add(nextpage);
+                    controlList.Add(nextpage);
+                }
+                y += 25;
+            }
+            this.Size = new Size(newwidth, y + 10);
+        }
+
+        private void Nextpage_Click(object sender, EventArgs e) {
+            currentPage++;
+            this.SuspendForm();
+            refresh();
+            this.ResumeForm();
+        }
+
+        private void Prevpage_Click(object sender, EventArgs e) {
+            currentPage--;
+            this.SuspendForm();
+            refresh();
+            this.ResumeForm();
+        }
+        private void toggleObjectDisplay(object sender, EventArgs e) {
+            this.currentControlList = int.Parse((sender as Control).Name);
+            currentPage = 0;
+            this.SuspendForm();
+            refresh();
+            this.ResumeForm();
+        }
+
+        private string sortedHeader = null;
+        private bool desc = false;
+        public void sortHeader(object sender, EventArgs e) {
+            if (sortedHeader == (sender as Control).Name) {
+                desc = !desc;
+            } else {
+                sortedHeader = (sender as Control).Name;
+                desc = false;
+            }
+            this.SuspendForm();
+            refresh();
+            this.ResumeForm();
         }
 
         void mapUpLevel_Click(object sender, EventArgs e) {
