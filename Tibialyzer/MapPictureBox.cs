@@ -187,7 +187,7 @@ namespace Tibialyzer {
                 mapCoordinate.y = (int)Math.Max(Math.Min(mapCoordinate.y + (screenPoint.Y - center_point.Y), Coordinate.MaxHeight), 0);
                 this.UpdateMap();
                 center_point = screenPoint;
-                if (counter++ == 10) {
+                if (counter++ > 10) {
                     // we reset the position of the cursor to the center of the screen every 10 ticks
                     // this is to prevent the cursor from hitting the edges of the monitor while moving the map
                     // hitting the edges of the monitor prevents the user from moving the map, but the cursor is invisible so it is weird for the user

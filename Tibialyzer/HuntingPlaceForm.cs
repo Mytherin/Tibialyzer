@@ -314,11 +314,6 @@ namespace Tibialyzer {
             }
 
             y = MainForm.DisplayCreatureList(this.Controls, creatures, 10, base_y, this.Size.Width, 4, null, 0.8f);
-            foreach (Control c in this.Controls) {
-                if (c is PictureBox) {
-                    c.Click += openCreatureMenu;
-                }
-            }
 
             Font f = MainForm.fontList[0];
             for (int i = 0; i < MainForm.fontList.Count; i++) {

@@ -214,9 +214,6 @@ namespace Tibialyzer {
 
                 y = y + MainForm.DisplayCreatureList(this.Controls, list, 10, y, this.Size.Width - 10, 4, TooltipFunction, scale);
             }
-            foreach (Control control in this.Controls)
-                if (control is PictureBox)
-                    control.Click += openItemBox;
             if (npc.spellsTaught.Count > 0) {
                 prefix = "Teaches";
                 Label label = new Label();
@@ -237,9 +234,6 @@ namespace Tibialyzer {
                 list = list.OrderBy(o => (o as Spell).levelrequired).ToList();
                 
                 y = y + MainForm.DisplayCreatureList(this.Controls, list, 10, y, this.Size.Width - 10, 4, TooltipFunction, 1, spellControls);
-                foreach (Control control in spellControls) {
-                    control.Click += openSpellBox;
-                }
             }
             this.Size = new Size(this.Size.Width, y + 20);
             base.NotificationFinalize();

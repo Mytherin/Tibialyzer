@@ -225,7 +225,6 @@ namespace Tibialyzer {
                         foreach (Control control in itemControls) {
                             addedControls.Add(control);
                             control.BackgroundImage = MainForm.item_background;
-                            control.Click += itemClick;
                             int itemCount = rewards[itemnr].Item1;
                             Item item = rewards[itemnr].Item2;
 

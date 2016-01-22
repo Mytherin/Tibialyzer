@@ -8,19 +8,28 @@ using System.Drawing.Imaging;
 using System.Windows.Forms;
 
 namespace Tibialyzer {
+    public enum DisplayType { Details = 0, Images = 1 }
     class CreatureList : NotificationForm {
         public List<TibiaObject> objects;
         public string title = "List";
+        private Label toggleButton;
+        public DisplayType displayType = DisplayType.Details;
 
-        public CreatureList(int initialPage = 0) {
+        public CreatureList(int initialPage, DisplayType displayType) {
             this.currentPage = initialPage;
+            this.displayType = displayType;
             objects = null;
             InitializeComponent();
+        }
+        void updateCommand() {
+            string[] split = command.command.Split(MainForm.commandSymbol);
+            command.command = split[0] + MainForm.commandSymbol + split[1] + MainForm.commandSymbol + currentPage.ToString() + MainForm.commandSymbol + ((int)displayType).ToString();
         }
 
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreatureList));
             this.listTitle = new System.Windows.Forms.Label();
+            this.toggleButton = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // listTitle
@@ -35,9 +44,25 @@ namespace Tibialyzer {
             this.listTitle.TabIndex = 14;
             this.listTitle.Text = "List";
             // 
+            // toggleButton
+            // 
+            this.toggleButton.BackColor = System.Drawing.Color.Transparent;
+            this.toggleButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.toggleButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toggleButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.toggleButton.Location = new System.Drawing.Point(244, 7);
+            this.toggleButton.Name = "toggleButton";
+            this.toggleButton.Padding = new System.Windows.Forms.Padding(2);
+            this.toggleButton.Size = new System.Drawing.Size(96, 21);
+            this.toggleButton.TabIndex = 15;
+            this.toggleButton.Text = "Icons";
+            this.toggleButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toggleButton.Click += new System.EventHandler(this.toggleButton_Click);
+            // 
             // CreatureList
             // 
             this.ClientSize = new System.Drawing.Size(352, 76);
+            this.Controls.Add(this.toggleButton);
             this.Controls.Add(this.listTitle);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -63,19 +88,29 @@ namespace Tibialyzer {
         private bool desc;
         private int currentPage = 0;
         private List<Control> createdControls = new List<Control>();
+        private int startDisplay = 0;
+        private int currentDisplay = -1;
         private void refresh() {
             foreach(Control c in createdControls) {
                 this.Controls.Remove(c);
                 c.Dispose();
             }
-
             int base_y = this.listTitle.Location.Y + this.listTitle.Height + 10;
-            int newWidth;
+            int newWidth = 352;
             MainForm.PageInfo pageInfo = new MainForm.PageInfo(false, false);
-            //int y = MainForm.DisplayCreatureList(this.Controls, objects, 10, base_y, 344, 4, null, 1, createdControls, currentPage, 600, pageInfo);
-            int y = MainForm.DisplayCreatureAttributeList(this.Controls, objects, 10, base_y, out newWidth, null, createdControls, currentPage, 20, pageInfo, null, null, sortHeader, sortedHeader, desc);
-            //foreach (Control control in createdControls)
-            //    control.Click += openItemBox;
+
+            int y;
+            if (displayType == DisplayType.Details) {
+                y = MainForm.DisplayCreatureAttributeList(this.Controls, objects, 10, base_y, out newWidth, null, createdControls, currentPage, 20, pageInfo, null, null, sortHeader, sortedHeader, desc);
+            } else {
+                y = MainForm.DisplayCreatureList(this.Controls, objects, 10, base_y, 344, 4, null, 1, createdControls, currentPage, 600, pageInfo, currentDisplay);
+                if (currentDisplay >= 0) {
+                    currentDisplay = -1;
+                    currentPage = pageInfo.currentPage;
+                }
+            }
+            startDisplay = pageInfo.startDisplay;
+            updateCommand();
 
             if (pageInfo.prevPage) {
                 PictureBox prevpage = new PictureBox();
@@ -100,6 +135,7 @@ namespace Tibialyzer {
                 this.Controls.Add(nextpage);
                 createdControls.Add(nextpage);
             }
+            toggleButton.Location = new Point(newWidth - toggleButton.Size.Width, toggleButton.Location.Y);
             if (pageInfo.prevPage || pageInfo.nextPage) {
                 y += 23;
             }
@@ -125,6 +161,7 @@ namespace Tibialyzer {
             this.SuspendForm();
 
             this.NotificationInitialize();
+            toggleButton.Click -= c_Click;
 
             refresh();
 
@@ -136,5 +173,21 @@ namespace Tibialyzer {
         }
 
         private Label listTitle;
+
+        private void toggleButton_Click(object sender, EventArgs e) {
+            if (displayType == DisplayType.Details) {
+                displayType = DisplayType.Images;
+                (sender as Label).Text = "Details";
+                currentDisplay = startDisplay;
+            } else {
+                displayType = DisplayType.Details;
+                (sender as Label).Text = "Icons";
+                currentPage = (int)Math.Floor(startDisplay / 20.0);
+            }
+            this.SuspendForm();
+            refresh();
+            this.ResumeForm();
+            currentDisplay = -1;
+        }
     }
 }

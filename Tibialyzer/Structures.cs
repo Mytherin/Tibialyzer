@@ -399,11 +399,13 @@ namespace Tibialyzer {
         public override string GetCommand() {
             return "npc" + MainForm.commandSymbol + name;
         }
+        static List<string> headers = new List<string> { "Name", "City" };
+        static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode() };
         public override IComparable GetHeaderValue(int header) {
-            if (header == 0) {
+            if (header == hashes[0]) {
                 return name;
             }
-            if (header == 1) {
+            if (header == hashes[1]) {
                 return city;
             }
             return base.GetHeaderValue(header);

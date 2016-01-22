@@ -808,13 +808,19 @@ namespace Tibialyzer {
 
             ShowNotification(f, comm);
         }
-        private void ShowCreatureList(List<TibiaObject> c, string title, string comm) {
+        private void ShowCreatureList(List<TibiaObject> c, string title, string command) {
             if (c == null) return;
-            CreatureList f = new CreatureList();
+            string[] split = command.Split(commandSymbol);
+            string parameter = split[1].Trim().ToLower();
+            int page = 0;
+            int displayType = 0;
+            if (split.Length > 2 && int.TryParse(split[2], out page)) { }
+            if (split.Length > 3 && int.TryParse(split[3], out displayType)) { }
+            CreatureList f = new CreatureList(page, displayType == 1 ? DisplayType.Images : DisplayType.Details);
             f.objects = c;
             f.title = title;
 
-            ShowNotification(f, comm);
+            ShowNotification(f, command);
         }
 
         private void ShowItemView(Item i, int currentPage, int currentDisplay, string comm) {
@@ -1053,6 +1059,9 @@ namespace Tibialyzer {
         public class PageInfo {
             public bool prevPage = false;
             public bool nextPage = false;
+            public int startDisplay = 0;
+            public int endDisplay = 0;
+            public int currentPage = 0;
             public PageInfo(bool prevPage, bool nextPage) {
                 this.prevPage = prevPage;
                 this.nextPage = nextPage;
@@ -1091,6 +1100,7 @@ namespace Tibialyzer {
                     }
                 }
             }
+            int start = 0;
             List<TibiaObject> pageItems = new List<TibiaObject>();
             foreach (TibiaObject cr in l) {
                 if (offset > pageitems) {
@@ -1106,8 +1116,14 @@ namespace Tibialyzer {
                 }
                 if (currentPage == page) {
                     pageItems.Add(cr);
+                } else {
+                    start++;
                 }
                 offset++;
+            }
+            if (pageInfo != null) {
+                pageInfo.startDisplay = start;
+                pageInfo.endDisplay = start + pageItems.Count;
             }
             Dictionary<string, int> totalAttributes = new Dictionary<string, int>();
             foreach (TibiaObject obj in pageItems) {
@@ -1237,19 +1253,15 @@ namespace Tibialyzer {
                 }
                 offset++;
             }
-            clicked = false;
             return (offset + 1) * size;
         }
         
-        private static bool clicked = false;
         private static void executeNameCommand(object sender, EventArgs e) {
-            if (clicked) return;
             mainForm.ExecuteCommand((sender as Control).Name);
         }
 
-        public static int DisplayCreatureList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, int max_x, int spacing, Func<TibiaObject, string> tooltip_function = null, float magnification = 1.0f, List<Control> createdControls = null, int page = 0, int pageheight = 10000, PageInfo pageInfo = null) {
+        public static int DisplayCreatureList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, int max_x, int spacing, Func<TibiaObject, string> tooltip_function = null, float magnification = 1.0f, List<Control> createdControls = null, int page = 0, int pageheight = 10000, PageInfo pageInfo = null, int currentDisplay = -1) {
             int x = 0, y = 0;
-
             int height = 0;
             // add a tooltip that displays the creature names
             ToolTip value_tooltip = new ToolTip();
@@ -1262,7 +1274,13 @@ namespace Tibialyzer {
             if (pageInfo != null) {
                 pageInfo.prevPage = page > 0;
             }
-            foreach (TibiaObject cr in l) {
+            int start = 0, end = 0;
+            int pageStart = 0;
+            if (currentDisplay >= 0) {
+                page = int.MaxValue;
+            }
+            for (int i = 0; i < l.Count; i++) {
+                TibiaObject cr = l[i];
                 int imageWidth;
                 int imageHeight;
                 Image image = cr.GetImage();
@@ -1276,7 +1294,18 @@ namespace Tibialyzer {
                     imageWidth = image.Width;
                     imageHeight = image.Height;
                 }
-
+                
+                if (currentDisplay >= 0 && i == currentDisplay) {
+                    currentDisplay = -1;
+                    i = pageStart;
+                    start = i;
+                    page = currentPage;
+                    pageInfo.prevPage = page > 0;
+                    pageInfo.currentPage = page;
+                    x = 0;
+                    y = 0;
+                    continue;
+                }
 
                 if (max_x < (x + base_x + (int)(imageWidth * magnification) + spacing)) {
                     x = 0;
@@ -1286,6 +1315,7 @@ namespace Tibialyzer {
                         if (page > currentPage) {
                             y = 0;
                             currentPage += 1;
+                            pageStart = start;
                         } else {
                             if (pageInfo != null) {
                                 pageInfo.nextPage = true;
@@ -1306,7 +1336,8 @@ namespace Tibialyzer {
                     image_box.Size = new Size((int)(imageWidth * magnification), height);
                     image_box.Location = new Point(base_x + x, base_y + y);
                     image_box.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-                    image_box.Name = name;
+                    image_box.Name = cr.GetCommand();
+                    image_box.Click += executeNameCommand;
                     if (cr is Item || (cr is LazyTibiaObject && (cr as LazyTibiaObject).type == TibiaObjectType.Item)) {
                         image_box.BackgroundImage = MainForm.item_background;
                     }
@@ -1323,9 +1354,16 @@ namespace Tibialyzer {
                         }
                         value_tooltip.SetToolTip(image_box, prefix + tooltip_function(cr));
                     }
+                    end++;
+                } else {
+                    start++;
                 }
 
                 x = x + (int)(imageWidth * magnification) + spacing;
+            }
+            if (pageInfo != null) {
+                pageInfo.startDisplay = start;
+                pageInfo.endDisplay = start + end;
             }
             x = 0;
             y = y + height;
@@ -1337,13 +1375,7 @@ namespace Tibialyzer {
             string creature = (sender as TextBox).Text.ToLower();
             this.SuspendLayout();
             this.creaturePanel.Controls.Clear();
-            int count = 0;
             DisplayCreatureList(this.creaturePanel.Controls, MainForm.searchCreature(creature), 10, 10, this.creaturePanel.Width - 20, 4);
-            foreach (Control c in creaturePanel.Controls) {
-                if (c is PictureBox) {
-                    c.Click += ShowCreatureInformation;
-                }
-            }
             this.ResumeLayout(false);
         }
         private void itemSearchBox_TextChanged(object sender, EventArgs e) {
@@ -1351,11 +1383,6 @@ namespace Tibialyzer {
             this.SuspendLayout();
             this.itemPanel.Controls.Clear();
             DisplayCreatureList(this.itemPanel.Controls, MainForm.searchItem(item), 10, 10, this.itemPanel.Width - 20, 4);
-            foreach (Control c in itemPanel.Controls) {
-                if (c is PictureBox) {
-                    c.Click += ShowItemInformation;
-                }
-            }
             this.ResumeLayout(false);
         }
 

@@ -28,7 +28,8 @@ namespace Tibialyzer {
             string comp = command.Trim().ToLower();
             Console.WriteLine(command);
             if (comp.StartsWith("creature" + MainForm.commandSymbol)) { //creature@
-                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
+                string[] split = command.Split(commandSymbol);
+                string parameter = split[1].Trim().ToLower();
                 Creature cr = getCreature(parameter);
                 if (cr != null) {
                     ShowCreatureDrops(cr, command);
