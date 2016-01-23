@@ -81,7 +81,7 @@ def getURL(url, decode=False):
     return result
 
 
-skipLoading = False
+skipLoading = True
 if not skipLoading:
     import os
     try: os.remove(database_file)
