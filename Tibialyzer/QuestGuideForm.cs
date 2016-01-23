@@ -23,7 +23,7 @@ using System.Windows.Forms;
 namespace Tibialyzer {
     class QuestGuideForm : NotificationForm {
         private Label questTitle;
-        private static Font requirementFont = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        public static Font requirementFont = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 
         private readonly int[] widths = { 392, 542, 692 };
         private readonly int minwidth = 392;
