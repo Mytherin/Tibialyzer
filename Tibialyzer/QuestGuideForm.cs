@@ -12,7 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -53,6 +53,8 @@ namespace Tibialyzer {
             this.hunt = null;
             this.direction = null;
             this.missionName = null;
+            minInstructions = 1;
+            instructionIndex = 1;
             this.InitializeComponent();
         }
         public QuestGuideForm(HuntingPlace h) {
@@ -206,203 +208,91 @@ namespace Tibialyzer {
             }
             int sizeWidth = 392;
             int y = this.questTitle.Location.Y + 40;
-            if (questInstruction == null && hunt == null) {
-                this.largestButton.Visible = false;
-                this.largeButton.Visible = false;
-                this.normalButton.Visible = false;
-                if (this.quest.additionalRequirements.Count > 0 || this.quest.questRequirements.Count > 0) {
+
+            int suggestedWidth = MainForm.mainForm.getSettingInt("GuideFormWidth");
+            if (suggestedWidth > minwidth && suggestedWidth < maxwidth) {
+                sizeWidth = suggestedWidth;
+            }
+            this.Size = new Size(sizeWidth, Size.Height);
+            this.largestButton.Visible = true;
+            this.largeButton.Visible = true;
+            this.normalButton.Visible = true;
+            this.largestButton.Location = new Point(this.Size.Width - largestButton.Width - 4, 4);
+            this.largeButton.Location = new Point(this.Size.Width - largestButton.Width * 2 - 4, 4);
+            this.normalButton.Location = new Point(this.Size.Width - largestButton.Width * 3 - 4, 4);
+            List<Coordinate> begin = new List<Coordinate>();
+            List<Coordinate> end = new List<Coordinate>();
+            List<string> description = new List<string>();
+            List<string> settings = new List<string>();
+            if (questInstruction != null) {
+                int ordering = questInstruction.ordering;
+                int currentIndex = instructionIndex - 1;
+                while (currentIndex < questInstructionList.Count && questInstructionList[currentIndex].ordering == ordering) {
+                    begin.Add(questInstructionList[currentIndex].begin);
+                    end.Add(questInstructionList[currentIndex].end);
+                    description.Add(questInstructionList[currentIndex].description);
+                    settings.Add(questInstructionList[currentIndex].settings);
+                    currentIndex++;
+                }
+            } else {
+                int ordering = direction.ordering;
+                int currentIndex = instructionIndex - 1;
+                while (currentIndex < hunt.directions.Count && hunt.directions[currentIndex].ordering == ordering) {
+                    begin.Add(hunt.directions[currentIndex].begin);
+                    end.Add(hunt.directions[currentIndex].end);
+                    description.Add(hunt.directions[currentIndex].description);
+                    settings.Add(hunt.directions[currentIndex].settings);
+                    currentIndex++;
+                }
+            }
+            bool noText = true;
+            if (description.Count > 1) {
+                for (int i = 1; i < description.Count; i++) {
+                    string str = description[i];
+                    if (str != "") {
+                        noText = false;
+                        continue;
+                    }
+                }
+                if (noText && description[0] != "") {
                     Label label = new Label();
-                    label.Text = "Requirements";
+                    label.Text = description[0];
                     label.Location = new Point(5, y);
                     label.ForeColor = MainForm.label_text_color;
                     label.BackColor = Color.Transparent;
-                    label.Font = questTitle.Font;
-                    label.Size = new Size(this.Size.Width - 10, label.Height);
+                    label.Font = requirementFont;
+                    label.AutoSize = true;
+                    label.MaximumSize = new Size(this.Size.Width - 10, 0);
+                    int labelHeight = 0;
+                    using (Graphics gr = Graphics.FromHwnd(label.Handle)) {
+                        labelHeight = (int)(gr.MeasureString(label.Text, label.Font, this.Size.Width - 10).Height * 1.2);
+                    }
                     addedControls.Add(label);
                     this.Controls.Add(label);
-                    y += 25;
-
-                    // Item requirements
-                    if (this.quest.questRequirements.Count > 0) {
-
-                        List<Tuple<int, Item>> rewards = new List<Tuple<int, Item>>();
-                        foreach (Tuple<int, int> tpl in quest.questRequirements) {
-                            Item item = MainForm.getItem(tpl.Item2);
-                            rewards.Add(new Tuple<int, Item>(tpl.Item1, item));
-                        }
-                        rewards = rewards.OrderBy(o => o.Item1 * o.Item2.GetMaxValue()).ToList();
-                        List<TibiaObject> itemList = rewards.Select(o => o.Item2).ToList<TibiaObject>();
-
-                        List<Control> itemControls = new List<Control>();
-                        y = y + MainForm.DisplayCreatureList(this.Controls, itemList, 10, y, this.Size.Width - 10, 1, null, 1, itemControls);
-                        int itemnr = 0;
-                        foreach (Control control in itemControls) {
-                            addedControls.Add(control);
-                            control.BackgroundImage = MainForm.item_background;
-                            int itemCount = rewards[itemnr].Item1;
-                            Item item = rewards[itemnr].Item2;
-
-                            Bitmap image;
-                            if (item.stackable) {
-                                image = new Bitmap(LootDropForm.GetStackImage(item.image, itemCount, item));
-                            } else {
-                                image = new Bitmap(item.image);
-                            }
-
-                            using (Graphics gr = Graphics.FromImage(image)) {
-                                int numbers = (int)Math.Floor(Math.Log(itemCount, 10)) + 1;
-                                int xoffset = 1, logamount = itemCount;
-                                for (int i = 0; i < numbers; i++) {
-                                    int imagenr = logamount % 10;
-                                    xoffset = xoffset + MainForm.image_numbers[imagenr].Width + 1;
-                                    gr.DrawImage(MainForm.image_numbers[imagenr],
-                                        new Point(image.Width - xoffset, image.Height - MainForm.image_numbers[imagenr].Height - 3));
-                                    logamount /= 10;
-                                }
-                            }
-                            (control as PictureBox).Image = image;
-
-                            itemnr++;
-                        }
-                    }
-
-                    // Text requirements
-                    if (this.quest.additionalRequirements.Count > 0) {
-                        List<string> requirementStrings = this.quest.additionalRequirements.ToArray().ToList();
-                        if (this.quest.minlevel > 0) {
-                            requirementStrings.Add(String.Format("You must be at least level {0}.", this.quest.minlevel));
-                        }
-
-                        y += 5;
-                        foreach (string text in requirementStrings) {
-                            label = new Label();
-                            label.Text = text == "" ? "" : "- " + text;
-                            label.Location = new Point(5, y);
-                            label.ForeColor = MainForm.label_text_color;
-                            label.BackColor = Color.Transparent;
-                            label.Font = requirementFont;
-                            Size size;
-                            using (Graphics gr = Graphics.FromHwnd(label.Handle)) {
-                                size = gr.MeasureString(label.Text, label.Font, this.Size.Width - 50).ToSize();
-                                label.Size = new Size(this.Size.Width - 10, (int)(size.Height * 1.2));
-                            }
-                            addedControls.Add(label);
-                            this.Controls.Add(label);
-                            y += label.Size.Height;
-                        }
-                    }
-                    // Draw mission buttons
-                    y += 5;
-                    int x = 10;
-                    foreach (string missionName in quest.questInstructions.Keys) {
-                        if (x + 100 >= this.Size.Width) {
-                            x = 10;
-                            y += 25;
-                        }
-                        Label missionButton = new Label();
-                        missionButton.BackColor = System.Drawing.Color.Transparent;
-                        missionButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-                        missionButton.Font = nextButton.Font;
-                        missionButton.ForeColor = MainForm.label_text_color;
-                        missionButton.Location = new System.Drawing.Point(x, y);
-                        missionButton.Name = missionName;
-                        missionButton.Padding = new System.Windows.Forms.Padding(2);
-                        missionButton.Text = missionName;
-                        missionButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-                        missionButton.Click += MissionButton_Click;
-                        missionButton.Size = new Size(100, 21);
-                        addedControls.Add(missionButton);
-                        this.Controls.Add(missionButton);
-                        x += missionButton.Width + 5;
-                    }
-                    y += 20;
+                    y += labelHeight;
                 }
             } else {
-                int suggestedWidth = MainForm.mainForm.getSettingInt("GuideFormWidth");
-                if (suggestedWidth > minwidth && suggestedWidth < maxwidth) {
-                    sizeWidth = suggestedWidth;
-                }
-                this.Size = new Size(sizeWidth, Size.Height);
-                this.largestButton.Visible = true;
-                this.largeButton.Visible = true;
-                this.normalButton.Visible = true;
-                this.largestButton.Location = new Point(this.Size.Width - largestButton.Width - 4, 4);
-                this.largeButton.Location = new Point(this.Size.Width - largestButton.Width * 2 - 4, 4);
-                this.normalButton.Location = new Point(this.Size.Width - largestButton.Width * 3 - 4, 4);
-                List<Coordinate> begin = new List<Coordinate>();
-                List<Coordinate> end = new List<Coordinate>();
-                List<string> description = new List<string>();
-                List<string> settings = new List<string>();
-                if (questInstruction != null) {
-                    int ordering = questInstruction.ordering;
-                    int currentIndex = instructionIndex - 1;
-                    while (currentIndex < questInstructionList.Count && questInstructionList[currentIndex].ordering == ordering) {
-                        begin.Add(questInstructionList[currentIndex].begin);
-                        end.Add(questInstructionList[currentIndex].end);
-                        description.Add(questInstructionList[currentIndex].description);
-                        settings.Add(questInstructionList[currentIndex].settings);
-                        currentIndex++;
+                noText = false;
+            }
+            int startX = 5;
+            int maxY = 0;
+            for (int i = 0; i < begin.Count; i++) {
+                int xOffset;
+                int newY = drawDirections(begin[i], end[i], settings[i], description[i], startX, y, begin.Count > 1, begin.Count, noText, out xOffset);
+                if (noText) {
+                    startX += xOffset;
+                    if (newY > maxY) {
+                        maxY = newY;
+                    }
+                    if (startX + 120 > this.Size.Width) {
+                        startX = 5;
+                        y = maxY;
+                    }
+                    if (i == begin.Count - 1) {
+                        y = maxY;
                     }
                 } else {
-                    int ordering = direction.ordering;
-                    int currentIndex = instructionIndex - 1;
-                    while (currentIndex < hunt.directions.Count && hunt.directions[currentIndex].ordering == ordering) {
-                        begin.Add(hunt.directions[currentIndex].begin);
-                        end.Add(hunt.directions[currentIndex].end);
-                        description.Add(hunt.directions[currentIndex].description);
-                        settings.Add(hunt.directions[currentIndex].settings);
-                        currentIndex++;
-                    }
-                }
-                bool noText = true;
-                if (description.Count > 1) {
-                    for (int i = 1; i < description.Count; i++) {
-                        string str = description[i];
-                        if (str != "") {
-                            noText = false;
-                            continue;
-                        }
-                    }
-                    if (noText && description[0] != "") {
-                        Label label = new Label();
-                        label.Text = description[0];
-                        label.Location = new Point(5, y);
-                        label.ForeColor = MainForm.label_text_color;
-                        label.BackColor = Color.Transparent;
-                        label.Font = requirementFont;
-                        label.AutoSize = true;
-                        label.MaximumSize = new Size(this.Size.Width - 10, 0);
-                        int labelHeight = 0;
-                        using (Graphics gr = Graphics.FromHwnd(label.Handle)) {
-                            labelHeight = (int)(gr.MeasureString(label.Text, label.Font, this.Size.Width - 10).Height * 1.2);
-                        }
-                        addedControls.Add(label);
-                        this.Controls.Add(label);
-                        y += labelHeight;
-                    }
-                } else {
-                    noText = false;
-                }
-                int startX = 5;
-                int maxY = 0;
-                for (int i = 0; i < begin.Count; i++) {
-                    int xOffset;
-                    int newY = drawDirections(begin[i], end[i], settings[i], description[i], startX, y, begin.Count > 1, begin.Count, noText, out xOffset);
-                    if (noText) {
-                        startX += xOffset;
-                        if (newY > maxY) {
-                            maxY = newY;
-                        }
-                        if (startX + 120 > this.Size.Width) {
-                            startX = 5;
-                            y = maxY;
-                        }
-                        if (i == begin.Count - 1) {
-                            y = maxY;
-                        }
-                    } else {
-                        y = newY;
-                    }
+                    y = newY;
                 }
             }
 
@@ -427,11 +317,7 @@ namespace Tibialyzer {
 
             refreshTimer();
         }
-
-        private void MissionButton_Click(object sender, EventArgs e) {
-            selectMission((sender as Control).Name);
-        }
-
+        
         private void select(string mission) {
             missionName = mission;
             questInstructionList = quest.questInstructions[mission];
@@ -448,16 +334,6 @@ namespace Tibialyzer {
             questInstruction = questInstructionList[0];
             instructionIndex = 1;
         }
-
-        private void selectMission(string mission) {
-            select(mission);
-            updateCommand();
-            this.SuspendForm();
-            setupGuide();
-            this.ResumeForm();
-            this.Refresh();
-        }
-
 
         private int drawDirections(Coordinate begin, Coordinate end, string settings, string description, int start_x, int y, bool variableSize, int imageCount, bool noText, out int width) {
             int mapSize = this.Size.Width / 2;
@@ -668,8 +544,10 @@ namespace Tibialyzer {
 
         private void QuestGuideForm_Load(object sender, EventArgs e) {
             if (quest == null && hunt == null) return;
+            if (quest != null && quest.questInstructions.Count == 0) return;
             this.SuspendLayout();
             NotificationInitialize();
+            
 
             this.nextButton.Click -= c_Click;
             this.prevButton.Click -= c_Click;
@@ -682,13 +560,15 @@ namespace Tibialyzer {
                 this.questTitle.Name = "quest" + MainForm.commandSymbol + quest.name;
                 if (initialMission != "" && quest.questInstructions.ContainsKey(initialMission)) {
                     select(initialMission);
+                } else {
+                    select(quest.questInstructions.Keys.ToList()[0]);
                 }
             } else {
                 this.questTitle.Text = hunt.name;
                 this.questTitle.Name = "hunt" + MainForm.commandSymbol + hunt.name;
             }
             this.questTitle.Click += QuestTitle_Click;
-            while (--initialPage > 0 && next());
+            while (--initialPage > 0 && next()) ;
             setupGuide();
 
             base.NotificationFinalize();
@@ -719,22 +599,22 @@ namespace Tibialyzer {
             if (instructionIndex > minInstructions) {
                 instructionIndex--;
                 if (instructionIndex == 0) {
-                    this.questInstruction = null;
-                } else {
-                    if (this.quest != null) {
+                    instructionIndex = 1;
+                } 
+
+                if (this.quest != null) {
+                    this.questInstruction = this.questInstructionList[instructionIndex - 1];
+                    int ordering = questInstruction.ordering;
+                    while (instructionIndex - 2 >= 0 && this.questInstructionList[instructionIndex - 2].ordering == ordering) {
+                        instructionIndex--;
                         this.questInstruction = this.questInstructionList[instructionIndex - 1];
-                        int ordering = questInstruction.ordering;
-                        while (instructionIndex - 2 >= 0 && this.questInstructionList[instructionIndex - 2].ordering == ordering) {
-                            instructionIndex--;
-                            this.questInstruction = this.questInstructionList[instructionIndex - 1];
-                        }
-                    } else {
-                        this.direction = this.hunt.directions[instructionIndex - 1];
-                        int ordering = direction.ordering;
-                        while (instructionIndex - 2 >= 0 && this.hunt.directions[instructionIndex - 2].ordering == ordering) {
-                            instructionIndex--;
-                            direction = this.hunt.directions[instructionIndex - 1];
-                        }
+                    }
+                } else {
+                    this.direction = this.hunt.directions[instructionIndex - 1];
+                    int ordering = direction.ordering;
+                    while (instructionIndex - 2 >= 0 && this.hunt.directions[instructionIndex - 2].ordering == ordering) {
+                        instructionIndex--;
+                        direction = this.hunt.directions[instructionIndex - 1];
                     }
                 }
                 return true;

@@ -933,6 +933,7 @@ namespace Tibialyzer {
         }
 
         private void ShowQuestGuideNotification(Quest quest, string comm, int page, string mission) {
+            if (quest.questInstructions.Count == 0) return;
             QuestGuideForm f = new QuestGuideForm(quest);
             f.initialPage = page;
             f.initialMission = mission;
