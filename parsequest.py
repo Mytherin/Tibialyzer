@@ -3,6 +3,8 @@ cities = ["ab'dendriel", "ankrahmun", "carlin", "darashia", "edron", "kazordoon"
 
 import re
 
+from format import formatTitle
+
 #.replace('&quot;','"')
 bracketRegex = re.compile('\\[\\[([^]]+)\\]\\]')
 numberRegex = re.compile('([0-9]+[,.]?[0-9]*[,.]?[0-9]*[,.]?[0-9]*[,.]?[0-9]*)')
@@ -11,7 +13,7 @@ numberRegex = re.compile('([0-9]+[,.]?[0-9]*[,.]?[0-9]*[,.]?[0-9]*[,.]?[0-9]*)')
 def parseQuest(title, attributes, c, rewardItems, questDangers, getURL):
     name = title
     if 'name' in attributes:
-        name = attributes['name']
+        name = formatTitle(attributes['name'])
     lvl = 0
     if 'lvl' in attributes:
         try: lvl = int(numberRegex.search(attributes['lvl']).groups()[0])

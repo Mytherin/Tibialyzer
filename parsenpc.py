@@ -49,4 +49,24 @@ def parseNPC(title, attributes, c, spells, getURL):
     npcid = c.lastrowid
     if 'sells' in attributes and 'teaches' in attributes['sells'].lower():
         spells[npcid] = parseSpells(attributes['sells'])
+    if 'notes' in attributes:
+        match = re.search('{{Transport([^}]+)', attributes['notes'])
+        if match != None:
+            splits = match.groups()[0].split('|')
+            for spl in splits:
+                spl = spl.strip()
+                if ',' in spl:
+                    splits2 = spl.split(',')
+                    dest = splits2[0].strip()
+                    notes = ""
+                    if ';' in splits2[1]:
+                        splits3 = splits2[1].split(';')
+                        splits2[1] = splits3[0]
+                        notes = splits3[1].replace('[', '').replace(']', '')
+                    try: cost = int(splits2[1].strip())
+                    except: continue
+                    c.execute('INSERT INTO NPCDestinations(npcid, destination, cost, notes) VALUES (?,?,?,?)', (npcid, dest, cost, notes))
+                        
+
+
     return True
