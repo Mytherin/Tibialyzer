@@ -12,7 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -1091,10 +1091,7 @@ namespace Tibialyzer {
                 this.nextPage = nextPage;
             }
         }
-
-        const int textscaling = 2;
-        static Font text_font = new Font(FontFamily.GenericSansSerif, 10 * textscaling, FontStyle.Bold);
-        static StringFormat format = new StringFormat(StringFormatFlags.LineLimit | StringFormatFlags.NoWrap, 1003) { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near };
+        
         public static int DisplayCreatureAttributeList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, out int maxwidth, Func<TibiaObject, string> tooltip_function = null, List<Control> createdControls = null, int page = 0, int pageitems = 20, PageInfo pageInfo = null, string extraAttribute = null, Func<TibiaObject, Attribute> attributeFunction = null, EventHandler headerSortFunction = null, string sortedHeader = null, bool desc = false, Func<TibiaObject, IComparable> extraSort = null, List<string> removedAttributes = null) {
             const int size = 24;
             const int imageSize = size - 4;
@@ -1168,7 +1165,7 @@ namespace Tibialyzer {
                     if (attribute is StringAttribute) {
                         width = Math.Max(TextRenderer.MeasureText((attribute as StringAttribute).value, HuntListForm.text_font).Width, width);
                     } else if (attribute is ImageAttribute) {
-                        width = Math.Max((attribute as ImageAttribute).value.Width, width);
+                        width = Math.Max((attribute as ImageAttribute).value == null ? 0 : (attribute as ImageAttribute).value.Width, width);
                     } else if (attribute is BooleanAttribute) {
                         width = Math.Max(20, width);
                     } else {
@@ -1220,68 +1217,68 @@ namespace Tibialyzer {
                 string command = obj.GetCommand();
 
                 // Every row is rendered on a single picture box for performance reasons
-
-                // Create the picture box for this row
-                PictureBox picture = new PictureBox();
-                picture.Size = new Size(maxwidth, size);
+                PictureBox picture;
+                picture = new PictureBox();
+                picture.Image = obj.GetImage();
+                picture.Size = new Size(imageSize, imageSize);
                 picture.SizeMode = PictureBoxSizeMode.Zoom;
                 picture.Location = new Point(base_x - 24, size * (offset + 1) + base_y);
-                picture.Click += executeNameCommand;
                 picture.BackColor = Color.Transparent;
-                picture.Name = command;
-
-                // Now create the image for this row
-                // We scale up the image for anti-aliasing purposes (at scale = 1 the text looks blurry)
-                int tempsize = size * textscaling;
-                int imgsize = imageSize * textscaling;
-                Bitmap bitmap = new Bitmap(maxwidth * textscaling, tempsize);
-                using (Graphics gr = Graphics.FromImage(bitmap)) {
-                    gr.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-                    x = base_x * textscaling;
-                    // First render the 'main image' (the image that is at the left of the text)
-                    Image image = obj.GetImage();
-                    if (obj is Item || (obj is LazyTibiaObject && (obj as LazyTibiaObject).type == TibiaObjectType.Item)) {
-                        // Items get an 'item background'
-                        gr.DrawImage(MainForm.item_background, new Rectangle(0, 0, tempsize, tempsize), new Rectangle(0, 0, MainForm.item_background.Width, MainForm.item_background.Height), GraphicsUnit.Pixel);
-                    }
-                    // we perform some scaling so the aspect ratio is maintained
-                    int width = tempsize, height = tempsize;
-                    if (image.Width > image.Height) {
-                        height = (int)(tempsize * ((double)image.Height / (double)image.Width));
-                    } else if (image.Height > image.Width) {
-                        width = (int)(tempsize * ((double)image.Width / (double)image.Height));
-                    }
-                    gr.DrawImage(image, new Rectangle((tempsize - width) / 2, (tempsize - height) / 2, width, height), new Rectangle(0, 0, image.Width, image.Height), GraphicsUnit.Pixel);
-                    // iterate over all attributes and draw them on the picture box
-                    foreach (KeyValuePair<string, int> kvp in totalAttributes) {
-                        int index = headers.IndexOf(kvp.Key);
-                        Attribute attribute = attributes[index];
-                        if (attribute is StringAttribute) {
-                            // draw text in the specified color
-                            using (Brush brush = new SolidBrush((attribute as StringAttribute).color)) {
-                                gr.DrawString((attribute as StringAttribute).value, text_font, brush, new RectangleF(x, 0, kvp.Value * textscaling, tempsize), format);
-                            }
-                        } else if (attribute is ImageAttribute || attribute is BooleanAttribute) {
-                            // draw the image if it is an image, otherwise draw a checkmark
-                            Image smallImage = (attribute is ImageAttribute) ? (attribute as ImageAttribute).value : ((attribute as BooleanAttribute).value ? MainForm.checkmark_yes : MainForm.checkmark_no);
-                            gr.DrawImage(smallImage, new Rectangle(x + (kvp.Value * textscaling - imgsize) / 2, 0, imgsize, imgsize), new Rectangle(0, 0, smallImage.Width, smallImage.Height), GraphicsUnit.Pixel);
-                        } else {
-                            throw new Exception("Unrecognized attribute.");
-                        }
-                        x += kvp.Value * textscaling;
-                    }
-                    picture.Image = bitmap;
-                    controls.Add(picture);
-                    if (createdControls != null) {
-                        createdControls.Add(picture);
-                    }
-                    if (tooltip_function == null) {
-                        value_tooltip.SetToolTip(picture, obj.GetName());
-                    } else {
-                        value_tooltip.SetToolTip(picture, tooltip_function(obj));
-                    }
-                    offset++;
+                if (obj is Item || (obj is LazyTibiaObject && (obj as LazyTibiaObject).type == TibiaObjectType.Item)) {
+                    picture.BackgroundImage = MainForm.item_background;
                 }
+                if (createdControls != null) {
+                    createdControls.Add(picture);
+                }
+                controls.Add(picture);
+                x = base_x;
+                //Bitmap bitmap = new Bitmap(maxwidth * textscaling, size);
+                foreach (KeyValuePair<string, int> kvp in totalAttributes) {
+                    int index = headers.IndexOf(kvp.Key);
+                    Attribute attribute = attributes[index];
+                    Control c;
+                    if (attribute is StringAttribute) {
+                        // create label
+                        Label label = new Label();
+                        label.Text = (attribute as StringAttribute).value;
+                        label.ForeColor = (attribute as StringAttribute).color;
+                        label.Size = new Size(kvp.Value, size);
+                        label.Font = HuntListForm.text_font;
+                        label.Location = new Point(x, size * (offset + 1) + base_y);
+                        label.BackColor = Color.Transparent;
+                        //label.DrawToBitmap(bitmap, new Rectangle(x, 0, kvp.Value, size));
+                        if (createdControls != null) {
+                            createdControls.Add(label);
+                        }
+                        controls.Add(label);
+                        c = label;
+                    } else if (attribute is ImageAttribute || attribute is BooleanAttribute) {
+                        // create picturebox
+                        picture = new PictureBox();
+                        picture.Image = (attribute is ImageAttribute) ? (attribute as ImageAttribute).value : ((attribute as BooleanAttribute).value ? MainForm.checkmark_yes : MainForm.checkmark_no);
+                        picture.Size = new Size(imageSize, imageSize);
+                        picture.SizeMode = PictureBoxSizeMode.Zoom;
+                        picture.Location = new Point(x + (kvp.Value - imageSize) / 2, size * (offset + 1) + base_y);
+                        picture.BackColor = Color.Transparent;
+                        if (createdControls != null) {
+                            createdControls.Add(picture);
+                        }
+                        controls.Add(picture);
+                        c = picture;
+                    } else {
+                        throw new Exception("Unrecognized attribute.");
+                    }
+                    c.Name = obj.GetCommand();
+                    c.Click += executeNameCommand;
+                    if (tooltip_function == null) {
+                        value_tooltip.SetToolTip(c, obj.GetName());
+                    } else {
+                        value_tooltip.SetToolTip(c, tooltip_function(obj));
+                    }
+                    x += kvp.Value;
+                }
+
+                offset++;
             }
             return (offset + 1) * size;
         }

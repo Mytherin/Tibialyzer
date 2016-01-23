@@ -30,7 +30,6 @@ namespace Tibialyzer {
         private Label cityLabel;
         private Label label3;
         private Label legendLabel;
-        private Label guideButton;
         private Label questTitle;
         private Label wikiButton;
         public Quest quest;
@@ -43,7 +42,6 @@ namespace Tibialyzer {
 
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(QuestForm));
-            this.guideButton = new System.Windows.Forms.Label();
             this.legendLabel = new System.Windows.Forms.Label();
             this.cityLabel = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -55,21 +53,6 @@ namespace Tibialyzer {
             this.wikiButton = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.premiumBox)).BeginInit();
             this.SuspendLayout();
-            // 
-            // guideButton
-            // 
-            this.guideButton.BackColor = System.Drawing.Color.Transparent;
-            this.guideButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.guideButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.guideButton.Location = new System.Drawing.Point(11, 77);
-            this.guideButton.Name = "guideButton";
-            this.guideButton.Padding = new System.Windows.Forms.Padding(2);
-            this.guideButton.Size = new System.Drawing.Size(96, 21);
-            this.guideButton.TabIndex = 30;
-            this.guideButton.Text = "Guide";
-            this.guideButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.guideButton.Click += new System.EventHandler(this.guideButton_Click);
             // 
             // legendLabel
             // 
@@ -169,7 +152,7 @@ namespace Tibialyzer {
             this.wikiButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.wikiButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.wikiButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.wikiButton.Location = new System.Drawing.Point(112, 77);
+            this.wikiButton.Location = new System.Drawing.Point(11, 53);
             this.wikiButton.Name = "wikiButton";
             this.wikiButton.Padding = new System.Windows.Forms.Padding(2);
             this.wikiButton.Size = new System.Drawing.Size(96, 21);
@@ -182,7 +165,6 @@ namespace Tibialyzer {
             // 
             this.ClientSize = new System.Drawing.Size(318, 153);
             this.Controls.Add(this.wikiButton);
-            this.Controls.Add(this.guideButton);
             this.Controls.Add(this.legendLabel);
             this.Controls.Add(this.cityLabel);
             this.Controls.Add(this.label3);
@@ -219,9 +201,32 @@ namespace Tibialyzer {
                 rewards.Add(item);
             }
             rewards = rewards.OrderByDescending(o => (o as Item).GetMaxValue()).ToList<TibiaObject>();
-            int y = -1;
+            int x = 11;
+            int y = 77;
+            foreach (string missionName in quest.questInstructions.Keys) {
+                if (x + 100 >= this.Size.Width) {
+                    x = 10;
+                    y += 25;
+                }
+                Label missionButton = new Label();
+                missionButton.BackColor = System.Drawing.Color.Transparent;
+                missionButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+                missionButton.Font = wikiButton.Font;
+                missionButton.ForeColor = MainForm.label_text_color;
+                missionButton.Location = new System.Drawing.Point(x, y);
+                missionButton.Name = missionName;
+                missionButton.Padding = new System.Windows.Forms.Padding(2);
+                missionButton.Text = missionName;
+                missionButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+                missionButton.Click += MissionButton_Click;
+                missionButton.Size = new Size(100, 21);
+                this.Controls.Add(missionButton);
+                x += missionButton.Width + 5;
+            }
+            y += 25;
             using (Graphics gr = Graphics.FromHwnd(legendLabel.Handle)) {
-                y = this.legendLabel.Location.Y + (int)gr.MeasureString(this.legendLabel.Text, this.legendLabel.Font, this.legendLabel.MaximumSize.Width).Height + 20;
+                this.legendLabel.Location = new Point(legendLabel.Location.X, y);
+                y += (int)gr.MeasureString(this.legendLabel.Text, this.legendLabel.Font, this.legendLabel.MaximumSize.Width).Height + 20;
             }
 
             if (this.quest.additionalRequirements.Count > 0 || this.quest.questRequirements.Count > 0) {
@@ -334,7 +339,7 @@ namespace Tibialyzer {
             base.NotificationFinalize();
             this.ResumeLayout(false);
         }
-
+        
         private bool clicked = false;
         private void outfitClick(object sender, EventArgs e) {
             if (clicked) return;
@@ -349,12 +354,8 @@ namespace Tibialyzer {
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("item" + MainForm.commandSymbol + (sender as Control).Name);
         }
-
-        private void guideButton_Click(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
-            this.ReturnFocusToTibia();
-            MainForm.mainForm.ExecuteCommand("guide" + MainForm.commandSymbol + quest.name.ToLower());
+        private void MissionButton_Click(object sender, EventArgs e) {
+            MainForm.mainForm.ExecuteCommand("guide" + MainForm.commandSymbol + quest.name.ToLower() + MainForm.commandSymbol + "1" + MainForm.commandSymbol + (sender as Control).Name);
         }
 
         private void wikiButton_Click(object sender, EventArgs e) {
