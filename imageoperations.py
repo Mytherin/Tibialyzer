@@ -46,7 +46,9 @@ def crop_image_gif(path):
         if y < miny: miny = y
         if x + width > maxx: maxx = x + width
         if y + height > maxy: maxy = y + height
-    os.system('gifsicle --crop %s,%s-%s,%s --output /tmp/cropped_image.gif %s' % (minx,miny,min(maxx, imgsize[0]),min(maxy, imgsize[1]), path))
+    os.system('convert %s -background transparent -crop %sx%s+%s+%s +repage /tmp/cropped_image.gif' % 
+        (path, min(maxx, imgsize[0]) - minx,min(maxy, imgsize[1]) - miny, minx, miny))
+    #os.system('gifsicle --crop %s,%s-%s,%s --output /tmp/cropped_image.gif %s' % (minx,miny,min(maxx, imgsize[0]),min(maxy, imgsize[1]), path))
     f = open('/tmp/cropped_image.gif', 'rb')
     img = f.read()
     f.close()
@@ -79,12 +81,16 @@ def properly_crop_item(image_binary):
         centerx, centery = (int(x + width / 2), int(y + height / 2))
         minx, miny = (max(centerx - 16, 0), max(centery - 16, 0))
         maxx, maxy = (minx + 32, miny + 32)
-        os.system('gifsicle --crop %d,%d-%d,%d --output /tmp/cropped_image_item /tmp/uncropped_item.gif' % (minx,miny,maxx,maxy))
+        os.system('convert /tmp/uncropped_item.gif -background transparent -crop %sx%s+%s+%s +repage /tmp/cropped_image.gif' % 
+            (maxx - minx, maxy - miny, minx, miny)) 
+        #os.system('gifsicle --crop %d,%d-%d,%d --output /tmp/cropped_image_item /tmp/uncropped_item.gif' % (minx,miny,maxx,maxy))
     elif imgsize[0] < 32 or imgsize[1] < 32:
         os.system('convert /tmp/uncropped_item.gif -background transparent -gravity center -extent 32x32 /tmp/cropped_image_item')
     else: 
         minx,miny,maxx,maxy = (0,0,32,32)
-        os.system('gifsicle --crop %d,%d-%d,%d --output /tmp/cropped_image_item /tmp/uncropped_item.gif' % (minx,miny,maxx,maxy))
+        os.system('convert /tmp/uncropped_item.gif -background transparent -crop %sx%s+%s+%s +repage /tmp/cropped_image.gif' % 
+            (maxx - minx, maxy - miny, minx, miny)) 
+        #os.system('gifsicle --crop %d,%d-%d,%d --output /tmp/cropped_image_item /tmp/uncropped_item.gif' % (minx,miny,maxx,maxy))
 
     newsize = image_get_size('/tmp/cropped_image_item')
     if newsize[0] != 32 or newsize[1] != 32:
