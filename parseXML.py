@@ -72,6 +72,10 @@ if not skipLoading:
     import os
     try: os.remove(database_file)
     except: pass
+    try: os.remove('pluralMap.txt')
+    except: pass
+    f = open('pluralMap.txt', 'w')
+    f.close()
 
 conn = sqlite3.connect(database_file)
 c = conn.cursor()
@@ -80,11 +84,13 @@ c = conn.cursor()
 if not skipLoading:
     root = xml.etree.ElementTree.parse(tibia_xml_file).getroot()
     c.execute('CREATE TABLE Items(id INTEGER PRIMARY KEY AUTOINCREMENT, title STRING, name STRING, vendor_value BIGINT, actual_value BIGINT, capacity FLOAT, stackable BOOLEAN, image BLOB, category STRING, discard BOOLEAN, convert_to_gold BOOLEAN, look_text STRING, currency INTEGER)')
+    c.execute('CREATE TABLE ItemProperties(itemid INTEGER, property STRING, value STRING)')
     c.execute('CREATE TABLE NPCs(id INTEGER PRIMARY KEY AUTOINCREMENT, title STRING, name STRING, city STRING, job STRING, x INTEGER, y INTEGER, z INTEGER, image BLOB)')
+    c.execute('CREATE TABLE NPCDestinations(npcid INTEGER, destination STRING, cost INTEGER, notes STRING)')
     c.execute('CREATE TABLE SellItems(itemid INTEGER, vendorid INTEGER, value INTEGER)')
     c.execute('CREATE TABLE BuyItems(itemid INTEGER, vendorid INTEGER, value INTEGER)')
     c.execute('CREATE TABLE Creatures(id INTEGER PRIMARY KEY AUTOINCREMENT, title STRING, name STRING, health INTEGER, experience INTEGER, maxdamage INTEGER, summon INTEGER, illusionable BOOLEAN, pushable BOOLEAN, pushes BOOLEAN, physical INTEGER, holy INTEGER, death INTEGER, fire INTEGER, energy INTEGER, ice INTEGER, earth INTEGER, drown INTEGER, lifedrain INTEGER, paralysable BOOLEAN, senseinvis BOOLEAN, image BLOB, abilities STRING, speed INTEGER, armor INTEGER)')
-    c.execute('CREATE TABLE CreatureDrops(creatureid INTEGER, itemid INTEGER, percentage FLOAT)')
+    c.execute('CREATE TABLE CreatureDrops(creatureid INTEGER, itemid INTEGER, percentage FLOAT, min INTEGER, max INTEGER)')
     c.execute('CREATE TABLE HuntingPlaces(id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, level INTEGER, exprating INTEGER, lootrating INTEGER, image STRING, city STRING)')
     c.execute('CREATE TABLE HuntingPlaceCoordinates(huntingplaceid INTEGER, x INTEGER, y INTEGER, z INTEGER)')
     c.execute('CREATE TABLE HuntingPlaceCreatures(huntingplaceid INTEGER, creatureid INTEGER)')  
@@ -94,6 +100,7 @@ if not skipLoading:
     c.execute('CREATE TABLE QuestRewards(questid INT, itemid INT)')
     c.execute('CREATE TABLE QuestOutfits(questid INT, outfitid INT)')
     c.execute('CREATE TABLE QuestDangers(questid INT, creatureid INT)')
+    c.execute('CREATE TABLE QuestNPCs(questid INTEGER, npcid INTEGER)')
     c.execute('CREATE TABLE Outfits(id INTEGER PRIMARY KEY AUTOINCREMENT, title STRING, name STRING, premium BOOLEAN, tibiastore BOOLEAN)')
     c.execute('CREATE TABLE OutfitImages(outfitid INTEGER, male BOOLEAN, addon INTEGER, image BLOB)')
     c.execute('CREATE TABLE Mounts(id INTEGER PRIMARY KEY AUTOINCREMENT, title STRING, name STRING, tameitemid INTEGER, tamecreatureid INTEGER, speed INTEGER, tibiastore BOOLEAN, image BLOB)')
@@ -109,7 +116,7 @@ creaturedrops = dict()
 rewardItems = dict()
 questDangers = dict()
 mountStuff = dict()
-
+questNPCs = dict()
 
 import re
 def wordCount(input_string, word):
@@ -131,7 +138,10 @@ if not skipLoading:
         if content == None: continue
         attributes = parseAttributes(content)
         lcontent = content.lower()
-        if wordCount(lcontent, 'infobox hunt') == 1 or wordCount(lcontent, 'infobox_hunt') == 1:
+        if '/Spoiler' in title:
+            quest = title.replace('/Spoiler', '')
+            questNPCs[quest] = re.findall('\[\[([^]|]+)(?:|[^]]+)?\]\]', lcontent)
+        elif wordCount(lcontent, 'infobox hunt') == 1 or wordCount(lcontent, 'infobox_hunt') == 1:
             #print('Hunt', title)
             if not parseHunt(title, attributes, c, content, huntcreatures, getURL):
                 print('Hunt failed', title)
@@ -181,6 +191,7 @@ if not skipLoading:
     d['rewardItems'] = rewardItems
     d['questDangers'] = questDangers
     d['mountStuff'] = mountStuff
+    d['questNPCs'] = questNPCs
 
     f = open('valuedict', 'wb')
     pickle.dump(d, f)
@@ -200,6 +211,7 @@ creaturedrops = d['creaturedrops']
 rewardItems = d['rewardItems'] 
 questDangers = d['questDangers'] 
 mountStuff = d['mountStuff'] 
+questNPCs = d['questNPCs'] 
 
 for itemid, npclist in iter(buyitems.items()):
     for npc,value in iter(npclist.items()):
@@ -230,6 +242,22 @@ for itemid,currency in iter(currencymap.items()):
         c.execute('UPDATE Items SET currency=? WHERE id=?', (currencyid,itemid))
     else:
         pass#print("Unrecognized Item", currency)
+
+for questname, npcs in iter(questNPCs.items()):
+    questname = questname.strip().lower()
+    c.execute('SELECT id FROM Quests WHERE LOWER(name)=? OR LOWER(title)=?', (questname, questname))
+    results = c.fetchall()
+    if len(results) > 0:
+        questid = results[0][0]
+        for npc in npcs:
+            npc = npc.strip().lower()
+            c.execute('SELECT id FROM NPCs WHERE LOWER(name)=? OR LOWER(title)=?', (npc,npc))
+            results2 = c.fetchall()
+            if len(results2) > 0:
+                npcid = results2[0][0]
+                c.execute('INSERT INTO QuestNPCs (questid, npcid) VALUES (?,?)', (questid, npcid))
+    else:
+        print("Unrecognized Quest", questname)
 
 
 #fix typos in spells
@@ -314,7 +342,7 @@ itemMap = {'jalape%c3%92o pepper': 'jalapeño pepper', 'jalapeno pepper':'jalape
   'platinum coins':'platinum coin', 'gold': 'gold coin', 'elephant tusk': 'tusk', 'present box': 'present', 'rust remover':'flask of rust remover'}
 
 for creatureid,drops in iter(creaturedrops.items()):
-    for itemname,percentage in iter(drops.items()):
+    for itemname,dropinfo in iter(drops.items()):
         _item = itemname.strip().lower()
         if _item in itemMap:
             _item = itemMap[_item]
@@ -322,7 +350,7 @@ for creatureid,drops in iter(creaturedrops.items()):
         results = c.fetchall()
         if len(results) > 0:
             itemid = results[0][0]
-            c.execute('INSERT INTO CreatureDrops(creatureid, itemid, percentage) VALUES (?,?,?)', (creatureid, itemid, percentage))
+            c.execute('INSERT INTO CreatureDrops(creatureid, itemid, percentage, min, max) VALUES (?,?,?,?,?)', (creatureid, itemid, dropinfo[0], dropinfo[1], dropinfo[2]))
         else:
             pass#print("Unrecognized Item", itemname)
 
