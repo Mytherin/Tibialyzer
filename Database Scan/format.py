@@ -1,4 +1,4 @@
 
 
 def formatTitle(title):
-	return title.replace('#39;', "'").replace('<br>', ' ').replace('<Br>', ' ').replace('<BR>', ' ')
+	return title.replace('&#39;', "'").replace('#39;', "'").replace('<br>', ' ').replace('<Br>', ' ').replace('<BR>', ' ')
