@@ -9,6 +9,7 @@ import time
 from imageoperations import crop_image, gif_is_animated, convert_to_png
 from urlhelpers import getImage
 from parseattribs import parseLoot
+from format import formatTitle
 
 numberRegex = re.compile('([0-9]+[,.]?[0-9]*[,.]?[0-9]*[,.]?[0-9]*[,.]?[0-9]*)')
 imageRegex = re.compile('<a href="([^"]*)"[ \t\n]*class="image image-thumbnail"')
@@ -27,6 +28,17 @@ def getInteger(attributes, attrib):
         return int(match.groups()[0].replace(',','').replace('.',''))
     return None
 
+
+def getMaxInteger(attributes, attrib):
+    if attrib not in attributes:
+        return None
+    maxint = None
+    for integers in numberRegex.findall(attributes[attrib]):
+        val = int(integers.replace(',','').replace('.',''))
+        if maxint == None or val > maxint:
+            maxint = val
+    return maxint
+
 itemmap = dict()
 itemmap['sais'] = 'sai'
 itemmap['gold coins'] = 'gold coin'
@@ -43,6 +55,7 @@ wikiURLRegex = re.compile('<td><a href="/wiki/([^"]+)"')
 questionMarkRegex = re.compile('([^?]*)')
 lootChanceRegex = re.compile('([0-9]+(?:[.][0-9]+)?)[%]')
 abilityRegex = re.compile('<[^>]*>')
+lootCountRegex = re.compile('<td class="loot_list_no_border">([0-9]+)[-]([0-9]+)</td>')
 
 def filterItemName(item_name):
     item_name = item_name.lstrip('/wiki/').replace('_', ' ').replace('%27', '\'').replace('%C3%B1', 'n').lower()
@@ -60,9 +73,9 @@ def parseCreature(title, attributes, c, creaturedrops, getURL):
         return False
     name = title
     if 'actualname' in attributes and len(attributes['actualname']) > 0:
-        name = attributes['actualname']
+        name = formatTitle(attributes['actualname'])
     elif 'name' in attributes and len(attributes['name']) > 0:
-        name = attributes['name']
+        name = formatTitle(attributes['name'])
     hp = getInteger(attributes, 'hp')
     exp = None
     if 'exp' in attributes:
@@ -78,7 +91,7 @@ def parseCreature(title, attributes, c, creaturedrops, getURL):
     paralysable = getBoolean(attributes,'paraimmune')
     senseinvis = getBoolean(attributes,'senseinvis')
     armor = getInteger(attributes,'armor')
-    maxdmg = getInteger(attributes,'maxdmg')
+    maxdmg = getMaxInteger(attributes,'maxdmg')
     physical = getInteger(attributes,'physicalDmgMod')
     holy = getInteger(attributes,'holyDmgMod')
     death = getInteger(attributes,'deathDmgMod')
@@ -91,7 +104,18 @@ def parseCreature(title, attributes, c, creaturedrops, getURL):
     speed = getInteger(attributes,'speed')
     abilities = None
     if 'abilities' in attributes:
-        abilities = re.sub('\\[[^|\\]]+\\|([^|\\]]+)\]\]', '\g<1>', attributes['abilities'].strip()).replace('[','').replace(']','')
+        # first take care of [[Fire Rune||Great Fireball]] => Great Fireball
+        b = re.sub(r'\[\[[^]|]+\|([^]]+)\]\]', '\g<1>', attributes['abilities'])
+        # then take care of [[Fire Rune]] => Fire Rune
+        b = re.sub(r'\[\[([^]]+)\]\]', '\g<1>', b)
+        # sometimes there are links in single brackets [http:www.link.com] => remove htem
+        b = re.sub(r'\[[^]]+\]', '', b)
+        # if there are brackets without numbers, remove them (maybe not necessary)
+        b = re.sub(r'\(([^0-9]+)\)', '', b)
+        # replace double spaces with single spaces
+        b = b.replace('  ', ' ')
+        # if there are commas in brackets (300-500, Fire Damage) => replace the comma with a semicolon (for later splitting purposes)
+        abilities = re.sub(r'(\([^,)]+)\,([^)]+\))', '\g<1>;\g<2>', b)
     url = "http://tibia.wikia.com/wiki/%s" % (title.replace(' ', '_'))
     image = getImage(url, getURL, imageRegex, crop_image)
     if image == None or image == False:
@@ -128,27 +152,39 @@ def parseCreature(title, attributes, c, creaturedrops, getURL):
             if match != None: kill_count = int(match.groups()[0])
             list.append(loot_stats, [current_index + index, current_index + endindex, kill_count])
             current_index = current_index + endindex
-        if len(loot_stats) > 0:
-            loot_stats.sort(key=lambda x: x[2], reverse=True)
-            index = loot_stats[0][0]
-            endindex = loot_stats[0][1]
+        lootdrops = dict()
+        for i in range(len(loot_stats)):
+            index = loot_stats[i][0]
+            endindex = loot_stats[i][1]
+            lootdrops[i] = dict()
             while True:
                 match = wikiURLRegex.search(stats[index:endindex])
                 if match == None: break
                 item_name = filterItemName(match.groups()[0]).lower()
+                startindex = index
                 index = index + match.end()
                 if index > endindex or item_name == "loot": break
+                match = lootCountRegex.search(stats[startindex:index])
+                if match == None:
+                    mindrop = 1
+                    maxdrop = 1
+                else:
+                    mindrop = int(match.groups()[0])
+                    maxdrop = int(match.groups()[1])
                 match = lootChanceRegex.search(stats[index:])
                 if match == None: break
                 percentage = float(match.groups()[0])
                 index = index + match.end()
-                creaturedrops[creatureid][item_name] = percentage
-        else:
-            print("Warning: found loot statistics page but no loot statistics for creature", name)
+                lootdrops[i][item_name] = (percentage, mindrop, maxdrop)
+        maxdict = dict()
+        for key in lootdrops.keys():
+            if len(lootdrops[key]) > len(maxdict):
+                maxdict = lootdrops[key]
+        creaturedrops[creatureid] = maxdict
     # read the dropped items from the 'loot' attribute
     if 'loot' in attributes:
         lootItems = [filterItemName(x).lower() for x in parseLoot(attributes['loot'])]
         for item in lootItems:
             if item not in creaturedrops[creatureid]:
-                creaturedrops[creatureid][item] = None
+                creaturedrops[creatureid][item] = (None, 1, 1)
     return True

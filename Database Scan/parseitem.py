@@ -121,4 +121,72 @@ def parseItem(title, attributes, c, buyitems, sellitems, currencymap, getURL):
                 npc = npc.split(':')[0]
             if value == None: continue
             sellitems[itemid][npc.strip()] = value
+    if 'vocrequired' in attributes and len(attributes['vocrequired'].strip()) > 1:
+        c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Vocation', attributes['vocrequired'].strip()))
+    if 'plural' in attributes:
+        plural = attributes['plural'].strip().lower()
+        if len(plural) > 2:
+            f = open('pluralMap.txt', 'a')
+            f.write('%s=%s\n' % (plural, name.strip().lower()))
+            f.close()
+    if 'flavortext' in attributes and len(attributes['flavortext'].strip()) > 1:
+        c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Flavor', attributes['flavortext'].strip()))
+    if 'attrib' in attributes and len(attributes['attrib'].strip()) > 1:
+        c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Attrib', attributes['attrib'].strip()))
+    if 'armor' in attributes and len(attributes['armor'].strip()) > 0:
+        try: 
+            armor = int(attributes['armor'].strip())
+            c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Armor', str(armor)))
+        except: 
+            print(name)
+            print(attributes['armor'])
+            exit(1)
+            pass
+    if 'attack' in attributes and len(attributes['attack'].strip()) > 0:
+        try: 
+            attack = int(attributes['attack'].strip())
+            c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Attack', str(attack)))
+        except: 
+            attack = 0
+            for atk in re.findall('[0-9]+', attributes['attack']):
+                attack += int(atk)
+            if attack == 0:
+                print(name)
+                print(attributes['attack'])
+                exit(1)
+                pass
+            else: 
+                print(name)
+                print(attack)
+                c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Attack', str(attack)))
+    if 'defense' in attributes and len(attributes['defense'].strip()) > 0:
+        try: 
+            defense = int(attributes['defense'].strip())
+            if 'defensemod' in attributes and len(attributes['defensemod'].strip()) > 1: 
+                defense = str(defense) + ' (' + attributes['defensemod'].strip() + ')'
+            c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Defense', str(defense)))
+        except: 
+            print(name)
+            print(attributes['defense'])
+            exit(1)
+            pass
+    if 'levelrequired' in attributes and len(attributes['levelrequired'].strip()) > 0:
+        try: 
+            levelrequired = int(attributes['levelrequired'].strip())
+            c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Level', str(levelrequired)))
+        except: 
+            print(name)
+            print(attributes['levelrequired'])
+            exit(1)
+            pass
+    if 'mlrequired' in attributes and len(attributes['mlrequired'].strip()) > 0:
+        try: 
+            mlrequired = int(attributes['mlrequired'].strip())
+            c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Mlevel', str(mlrequired)))
+        except: 
+            print(name)
+            print(attributes['mlrequired'])
+            exit(1)
+            pass
+
     return True
