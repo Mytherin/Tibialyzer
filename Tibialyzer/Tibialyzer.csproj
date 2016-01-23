@@ -126,9 +126,6 @@
     <Compile Include="EnterTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="HuntListForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="CreatureList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -193,9 +190,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DamageChart.resx">
       <DependentUpon>DamageChart.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="HuntListForm.resx">
-      <DependentUpon>HuntListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CreatureList.resx">
       <DependentUpon>CreatureList.cs</DependentUpon>

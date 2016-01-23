@@ -332,12 +332,12 @@ namespace Tibialyzer {
             return headers;
         }
         public override List<Attribute> GetAttributes() {
-            return new List<Attribute> { new StringAttribute(name, 160), new StringAttribute(minlevel.ToString(), 50), new StringAttribute(MainForm.ToTitle(city), 100), new ImageAttribute(GetDangerImage()) };
+            return new List<Attribute> { new StringAttribute(name, 140), new StringAttribute(minlevel.ToString(), 50), new StringAttribute(premium ? "Yes" : "No", 50, premium ? Color.SeaGreen : Color.RoyalBlue), new StringAttribute(MainForm.ToTitle(city), 100) };
         }
         public override string GetCommand() {
             return "quest" + MainForm.commandSymbol + name;
         }
-        static List<string> headers = new List<string> { "Name", "Level", "City", "Mon" };
+        static List<string> headers = new List<string> { "Name", "Level", "Prem", "City" };
         static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode(), headers[3].GetHashCode() };
         public override IComparable GetHeaderValue(int header) {
             if (header == hashes[0]) {
@@ -350,8 +350,7 @@ namespace Tibialyzer {
                 return city;
             }
             if (header == hashes[3]) {
-                Creature cr = GetDangerCreature();
-                return cr == null ? 0 : cr.experience;
+                return city;
             }
             return base.GetHeaderValue(header);
         }
@@ -446,15 +445,35 @@ namespace Tibialyzer {
             this.image = null;
         }
         public override List<string> GetAttributeHeaders() {
-            return new List<string> { "Name", "Level", "Exp", "Loot", "City" };
+            return headers;
         }
         public override List<Attribute> GetAttributes() {
-            return new List<Attribute> { new StringAttribute(name, 120), new StringAttribute(level < 0 ? "-" : level.ToString(), 40),
-                new ImageAttribute(MainForm.star_image_text[exp_quality]), new ImageAttribute(MainForm.star_image_text[loot_quality]),
-                new StringAttribute(city, 60) };
+            return new List<Attribute> { new StringAttribute(name, 120), new StringAttribute(level < 0 ? "-" : level.ToString(), 50),
+                new ImageAttribute(MainForm.star_image_text[exp_quality < 0 ? 5 : exp_quality - 1]), new ImageAttribute(MainForm.star_image_text[loot_quality < 0 ? 5 : loot_quality - 1]),
+                new StringAttribute(city, 100) };
         }
         public override string GetCommand() {
             return "hunt" + MainForm.commandSymbol + name;
+        }
+        static List<string> headers = new List<string> { "Name", "Level", "Exp", "Loot", "City" };
+        static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode(), headers[3].GetHashCode(), headers[4].GetHashCode() };
+        public override IComparable GetHeaderValue(int header) {
+            if (header == hashes[0]) {
+                return name;
+            }
+            if (header == hashes[1]) {
+                return level;
+            }
+            if (header == hashes[2]) {
+                return exp_quality;
+            }
+            if (header == hashes[3]) {
+                return loot_quality;
+            }
+            if (header == hashes[4]) {
+                return city;
+            }
+            return base.GetHeaderValue(header);
         }
     }
 

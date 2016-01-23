@@ -827,7 +827,7 @@ namespace Tibialyzer {
                     label.Location = new Point(x, base_y);
                     label.ForeColor = MainForm.label_text_color;
                     label.BackColor = Color.Transparent;
-                    label.Font = HuntListForm.text_font;
+                    label.Font = MainForm.text_font;
                     label.Size = new Size(90, 25);
                     label.TextAlign = ContentAlignment.MiddleCenter;
                     label.BorderStyle = BorderStyle.FixedSingle;

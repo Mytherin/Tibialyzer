@@ -79,6 +79,8 @@ namespace Tibialyzer {
         private Stack<TibialyzerCommand> command_stack = new Stack<TibialyzerCommand>();
         public static List<Font> fontList = new List<Font>();
 
+        public static Font text_font = new Font(FontFamily.GenericSansSerif, 9, FontStyle.Bold);
+
         private SQLiteConnection conn;
         private SQLiteConnection lootConn;
         static Dictionary<string, Image> creatureImages = new Dictionary<string, Image>();
@@ -165,7 +167,6 @@ namespace Tibialyzer {
 
             NotificationForm.Initialize();
             CreatureStatsForm.InitializeCreatureStats();
-            HuntListForm.Initialize();
 
             for (int i = 0; i < 5; i++) {
                 star_image[i] = LoadImage(@"Images\star" + i + ".png");
@@ -879,17 +880,7 @@ namespace Tibialyzer {
 
             ShowNotification(ldf, comm, screenshot_path);
         }
-
-        private void ShowHuntList(List<HuntingPlace> h, string header, string comm, int page) {
-            if (h != null) h = h.OrderBy(o => o.level).ToList();
-            HuntListForm f = new HuntListForm();
-            f.hunting_places = h;
-            f.header = header;
-            f.initialPage = page;
-
-            ShowNotification(f, comm);
-        }
-
+        
         private void ShowHuntingPlace(HuntingPlace h, string comm) {
             HuntingPlaceForm f = new HuntingPlaceForm();
             f.hunting_place = h;
@@ -913,17 +904,7 @@ namespace Tibialyzer {
 
             ShowNotification(f, comm);
         }
-
-        private void ShowQuestList(List<Quest> questList, string header, string comm, int page) {
-            if (questList != null) questList = questList.OrderBy(o => o.minlevel).ToList();
-            HuntListForm f = new HuntListForm();
-            f.quests = questList;
-            f.header = header;
-            f.initialPage = page;
-
-            ShowNotification(f, comm);
-        }
-
+        
         private void ShowHuntGuideNotification(HuntingPlace hunt, string comm, int page) {
             if (hunt.directions.Count == 0) return;
             QuestGuideForm f = new QuestGuideForm(hunt);
@@ -1162,9 +1143,9 @@ namespace Tibialyzer {
                     string header = headers[i];
                     Attribute attribute = attributes[i];
                     if (removedAttributes != null && removedAttributes.Contains(header)) continue;
-                    int width = TextRenderer.MeasureText(header, HuntListForm.text_font).Width + 10;
+                    int width = TextRenderer.MeasureText(header, MainForm.text_font).Width + 10;
                     if (attribute is StringAttribute) {
-                        width = Math.Max(TextRenderer.MeasureText((attribute as StringAttribute).value, HuntListForm.text_font).Width, width);
+                        width = Math.Max(TextRenderer.MeasureText((attribute as StringAttribute).value, MainForm.text_font).Width, width);
                     } else if (attribute is ImageAttribute) {
                         width = Math.Max((attribute as ImageAttribute).value == null ? 0 : (attribute as ImageAttribute).value.Width, width);
                     } else if (attribute is BooleanAttribute) {
@@ -1174,7 +1155,7 @@ namespace Tibialyzer {
                     }
                     width = Math.Min(width, attribute.MaxWidth);
                     if (!totalAttributes.ContainsKey(header)) {
-                        int headerWidth = TextRenderer.MeasureText(header, HuntListForm.text_font).Width;
+                        int headerWidth = TextRenderer.MeasureText(header, MainForm.text_font).Width;
                         totalAttributes.Add(header, Math.Max(headerWidth, width));
                     } else if (totalAttributes[header] < width) {
                         totalAttributes[header] = width;
@@ -1192,7 +1173,7 @@ namespace Tibialyzer {
                 label.Location = new Point(x, base_y);
                 label.ForeColor = MainForm.label_text_color;
                 label.Size = new Size(kvp.Value, size);
-                label.Font = HuntListForm.text_font;
+                label.Font = MainForm.text_font;
                 label.BackColor = Color.Transparent;
                 label.TextAlign = ContentAlignment.MiddleCenter;
                 label.BorderStyle = BorderStyle.FixedSingle;
@@ -1244,7 +1225,7 @@ namespace Tibialyzer {
                         label.Text = (attribute as StringAttribute).value;
                         label.ForeColor = (attribute as StringAttribute).color;
                         label.Size = new Size(kvp.Value, size);
-                        label.Font = HuntListForm.text_font;
+                        label.Font = MainForm.text_font;
                         label.Location = new Point(x, size * (offset + 1) + base_y);
                         label.BackColor = Color.Transparent;
                         //label.DrawToBitmap(bitmap, new Rectangle(x, 0, kvp.Value, size));

@@ -348,7 +348,7 @@ namespace Tibialyzer {
                 if (splits.Length > 2 && int.TryParse(splits[2], out page)) ;
                 if (cities.Contains(parameter)) {
                     List<HuntingPlace> huntingPlaces = getHuntsInCity(parameter);
-                    ShowHuntList(huntingPlaces, "Hunts in " + parameter, command, page);
+                    ShowCreatureList(huntingPlaces.ToList<TibiaObject>(), "Hunts in " + parameter, command);
                     return true;
                 }
                 HuntingPlace h = getHunt(parameter);
@@ -359,7 +359,7 @@ namespace Tibialyzer {
                 Creature cr = getCreature(parameter);
                 if (cr != null) {
                     List<HuntingPlace> huntingPlaces = getHuntsForCreature(cr.id);
-                    ShowHuntList(huntingPlaces, "Hunts containing creature " + ToTitle(parameter), command, page);
+                    ShowCreatureList(huntingPlaces.ToList<TibiaObject>(), "Hunts containing creature " + ToTitle(parameter), command);
                     return true;
                 }
                 int minlevel = -1, maxlevel = -1;
@@ -375,7 +375,7 @@ namespace Tibialyzer {
                 if (minlevel >= 0 && maxlevel >= 0) {
                     List<HuntingPlace> huntingPlaces = getHuntsForLevels(minlevel, maxlevel);
                     huntingPlaces = huntingPlaces.OrderBy(o => o.level).ToList();
-                    ShowHuntList(huntingPlaces, "Hunts between levels " + minlevel.ToString() + "-" + maxlevel.ToString(), command, page);
+                    ShowCreatureList(huntingPlaces.ToList<TibiaObject>(), "Hunts between levels " + minlevel.ToString() + "-" + maxlevel.ToString(), command);
                     return true;
                 } else {
                     string title;
@@ -384,7 +384,7 @@ namespace Tibialyzer {
                     if (huntList.Count == 1) {
                         ShowHuntGuideNotification(huntList[0], command, page);
                     } else if (huntList.Count > 1) {
-                        ShowHuntList(huntList, title, command, page);
+                        ShowCreatureList(huntList.ToList<TibiaObject>(), title, command);
                     }
                 }
             } else if (comp.StartsWith("npc" + MainForm.commandSymbol)) {
@@ -534,7 +534,8 @@ namespace Tibialyzer {
                     if (questList.Count == 1) {
                         ShowQuestNotification(questList[0], command);
                     } else if (questList.Count > 1) {
-                        ShowQuestList(questList, title, command, page);
+                        ShowCreatureList(questList.ToList<TibiaObject>(), title, command);
+                        //ShowQuestList(questList, title, command, page);
                     }
                 }
             } else if (comp.StartsWith("guide" + MainForm.commandSymbol)) { // guide@
@@ -558,7 +559,7 @@ namespace Tibialyzer {
                     if (questList.Count == 1) {
                         ShowQuestGuideNotification(questList[0], command, page, mission);
                     } else if (questList.Count > 1) {
-                        ShowQuestList(questList, title, command, page);
+                        ShowCreatureList(questList.ToList<TibiaObject>(), title, command);
                     }
                 }
             } else if (comp.StartsWith("direction" + MainForm.commandSymbol)) { // direction@
@@ -577,7 +578,7 @@ namespace Tibialyzer {
                     if (huntList.Count == 1) {
                         ShowHuntGuideNotification(huntList[0], command, page);
                     } else if (huntList.Count > 1) {
-                        ShowHuntList(huntList, title, command, page);
+                        ShowCreatureList(huntList.ToList<TibiaObject>(), title, command);
                     }
                 }
             } else if (comp.StartsWith("mount" + MainForm.commandSymbol)) { // mount@
