@@ -10,8 +10,10 @@ c = conn.cursor()
 
 c.execute('DROP TABLE IF EXISTS Events')
 c.execute('DROP TABLE IF EXISTS EventMessages')
+c.execute('DROP TABLE IF EXISTS EventCreatures')
 c.execute('CREATE TABLE Events(id INTEGER PRIMARY KEY AUTOINCREMENT, title STRING, location STRING, creatureid INTEGER)')
 c.execute('CREATE TABLE EventMessages(eventid STRING, message STRING)')
+c.execute('CREATE TABLE EventCreatures(eventid INTEGER, creatureid INTEGER)')
 
 headerRegex = re.compile('<h3><span class="mw-headline" id="([^"]+)">([^<]+)')
 imageRegex = re.compile('<a href="(/wiki/[^"]+)"')
@@ -31,7 +33,7 @@ additionalCreatures = {'Djinn Raids near Ankrahmun': '/wiki/Efreet'}
 for url in raidurls:
     response = urllib.request.urlopen(url)
     a = response.read().decode('utf-8')
-    location = url.split('/')[-1].split('_Raids')[0]
+    location = url.split('/')[-1].split('_Raids')[0].replace('_', ' ')
     print("----")
     print(location)
     print("----")
@@ -60,6 +62,9 @@ for url in raidurls:
                 creatureid = creatures[0][0]
                 c.execute('INSERT INTO Events(title, location, creatureid) VALUES (?,?,?)', (title, location, creatureid))
                 eventid = c.lastrowid
+                for cr in creatures:
+                    crid = cr[0]
+                    c.execute('INSERT INTO EventCreatures(eventid, creatureid) VALUES (?,?)', (eventid, creatureid))
                 for message in messages:
                     c.execute('INSERT INTO EventMessages(eventid, message) VALUES (?,?)', (eventid, message))
         prevIndex = index
