@@ -339,7 +339,7 @@ namespace Tibialyzer {
                 if (items.Count == 1) {
                     ShowItemNotification("item" + MainForm.commandSymbol + items[0].GetName().ToLower());
                 } else if (items.Count > 1) {
-                    ShowCreatureList(items, "Item List", command);
+                    ShowCreatureList(items, "Item List", command, true);
                 }
             } else if (comp.StartsWith("hunt" + MainForm.commandSymbol)) { //hunt@
                 string[] splits = command.Split(commandSymbol);

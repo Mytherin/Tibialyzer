@@ -196,6 +196,37 @@ namespace Tibialyzer {
             while (reader.Read()) {
                 item.rewardedBy.Add(getQuest(reader.GetInt32(0)));
             }
+            command = new SQLiteCommand(String.Format("SELECT property, value FROM ItemProperties WHERE itemid={0}", item.id), mainForm.conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                string property = reader.GetString(0);
+                switch(property) {
+                    case "Vocation":
+                        item.vocation = reader.GetString(1);
+                        break;
+                    case "Level":
+                        item.level = reader.GetInt32(1);
+                        break;
+                    case "Flavor":
+                        item.flavor = reader.GetString(1);
+                        break;
+                    case "Defense":
+                        item.defensestr = reader["value"].ToString();
+                        if (!int.TryParse(item.defensestr, out item.defense)) {
+                            item.defense = int.Parse(item.defensestr.Split(' ')[0]);
+                        }
+                        break;
+                    case "Attrib":
+                        item.attrib = reader.GetString(1);
+                        break;
+                    case "Attack":
+                        item.attack = reader.GetInt32(1);
+                        break;
+                    case "Armor":
+                        item.armor = reader.GetInt32(1);
+                        break;
+                }
+            }
 
             return item;
         }
@@ -1137,16 +1168,25 @@ namespace Tibialyzer {
                 return _outfitIdMap.Values.Where(o => o.name.ToLower().Contains(str)).ToList<TibiaObject>();
             }
         }
+        
         public static List<TibiaObject> getItemsByCategory(string str) {
             str = str.ToLower();
             if (!itemsLoaded) {
                 List<TibiaObject> result = new List<TibiaObject>();
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Items WHERE LOWER(category)='{0}';", str), mainForm.conn);
-                SQLiteDataReader reader = command.ExecuteReader();
-                while (reader.Read()) {
-                    result.Add(new LazyTibiaObject { id = reader.GetInt32(0), type = TibiaObjectType.Item });
+                SQLiteCommand command;
+                SQLiteDataReader reader;
+                command = new SQLiteCommand(String.Format("SELECT category FROM Items WHERE LOWER(category) LIKE '%{0}%' LIMIT 1", str), mainForm.conn);
+                reader = command.ExecuteReader();
+                if (reader.Read()) {
+                    string category = reader.GetString(0).ToLower();
+                    command = new SQLiteCommand(String.Format("SELECT id FROM Items WHERE LOWER(category)='{0}';", category), mainForm.conn);
+                    reader = command.ExecuteReader();
+                    while (reader.Read()) {
+                        result.Add(new LazyTibiaObject { id = reader.GetInt32(0), type = TibiaObjectType.Item });
+                    }
+                    return result;
                 }
-                return result;
+                return new List<TibiaObject>();
             } else {
                 return _itemIdMap.Values.Where(o => o.category.ToLower().Contains(str)).ToList<TibiaObject>();
             }

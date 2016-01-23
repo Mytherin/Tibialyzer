@@ -12,7 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,6 +30,12 @@ namespace Tibialyzer {
         public virtual IComparable GetHeaderValue(int hash) {
             return "";
         }
+        public virtual List<string> GetConditionalHeaders() { return GetAttributeHeaders(); }
+        public virtual IComparable GetConditionalHeaderValue(string header) {
+            List<string> headers = GetAttributeHeaders();
+            return GetHeaderValue(headers.IndexOf(header));
+        }
+        public virtual List<Attribute> GetConditionalAttributes() { return GetAttributes(); }
     }
 
     public class Command {
@@ -575,6 +581,15 @@ namespace Tibialyzer {
         public List<ItemSold> buyItems;
         public List<ItemSold> sellItems;
         public List<Quest> rewardedBy;
+        public int armor = -1;
+        public int attack = -1;
+        public int defense = -1;
+        public string defensestr = "";
+        public string flavor = "";
+        public int level = -1;
+        public string vocation = "";
+        public string attrib = "";
+
 
         public long GetMaxValue() {
             return Math.Max(vendor_value, actual_value);
@@ -615,12 +630,55 @@ namespace Tibialyzer {
             buyItems = new List<ItemSold>();
             rewardedBy = new List<Quest>();
         }
+        public override List<string> GetConditionalHeaders() {
+            List<string> newHeaders = new List<string>();
+            newHeaders.Add(headers[0]);
+            if (armor >= 0) newHeaders.Add("Armor");
+            if (attack >= 0) newHeaders.Add("Attack");
+            if (defense >= 0) newHeaders.Add("Def");
+            if (level >= 0) newHeaders.Add("Level");
+            if (vocation != "") newHeaders.Add("Vocation");
+            if (attrib != "") newHeaders.Add("Attrib");
+            newHeaders.Add(headers[1]);
+            newHeaders.Add(headers[2]);
+            return newHeaders;
+        } 
+
+        public override IComparable GetConditionalHeaderValue(string header) {
+            if (header == "Armor") return armor;
+            if (header == "Attack") return attack;
+            if (header == "Def") return defense;
+            if (header == "Level") return level;
+            if (header == "Vocation") return vocation;
+            if (header == "Attrib") return attrib;
+            if (header == "Name") return title;
+            if (header == "Value") return GetMaxValue();
+            if (header == "Cap") return capacity;
+            return "";
+        }
+
+        public override List<Attribute> GetConditionalAttributes() {
+            List<Attribute> att = new List<Attribute>();
+            List<Attribute> regularAttributes = GetAttributes();
+            att.Add(new StringAttribute(title, 120));
+            if (armor >= 0) att.Add(new StringAttribute(armor.ToString(), 50));
+            if (attack >= 0) att.Add(new StringAttribute(attack.ToString(), 50));
+            if (defense >= 0) att.Add(new StringAttribute(defensestr, 50));
+            if (level >= 0) att.Add(new StringAttribute(level.ToString(), 50));
+            if (vocation != "") att.Add(new StringAttribute(vocation, 100));
+            if (attrib != "") att.Add(new StringAttribute(attrib, 120));
+            att.Add(regularAttributes[1]);
+            att.Add(regularAttributes[2]);
+            return att;
+        }
+
         public override List<string> GetAttributeHeaders() {
             return headers;
         }
         public override List<Attribute> GetAttributes() {
-            return new List<Attribute> { new StringAttribute(title, 170),
+            List<Attribute> attributeList = new List<Attribute> { new StringAttribute(title, 170),
                 new StringAttribute(GetMaxValue() > 0 ? GetMaxValueString() : "-", 50, GoldColor), new StringAttribute(capacity > 0 ? String.Format("{0:0.0} oz.", capacity) : "-", 70) };
+            return attributeList;
         }
         public override string GetCommand() {
             return "item" + MainForm.commandSymbol + title;
@@ -886,6 +944,16 @@ namespace Tibialyzer {
         }
         public override IComparable GetHeaderValue(int header) {
             return getTibiaObject().GetHeaderValue(header);
+        }
+
+        public override List<string> GetConditionalHeaders() {
+            return getTibiaObject().GetConditionalHeaders();
+        }
+        public override IComparable GetConditionalHeaderValue(string header) {
+            return getTibiaObject().GetConditionalHeaderValue(header);
+        }
+        public override List<Attribute> GetConditionalAttributes() {
+            return getTibiaObject().GetConditionalAttributes();
         }
     }
 }

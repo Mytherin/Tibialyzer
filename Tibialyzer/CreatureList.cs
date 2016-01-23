@@ -28,6 +28,7 @@ namespace Tibialyzer {
         public string title = "List";
         private Label toggleButton;
         public DisplayType displayType = DisplayType.Details;
+        public bool addConditionalAttributes = false;
         private string sortedHeader = null;
         private bool desc;
 
@@ -117,7 +118,7 @@ namespace Tibialyzer {
 
             int y;
             if (displayType == DisplayType.Details) {
-                y = MainForm.DisplayCreatureAttributeList(this.Controls, objects, 10, base_y, out newWidth, null, createdControls, currentPage, 20, pageInfo, null, null, sortHeader, sortedHeader, desc);
+                y = MainForm.DisplayCreatureAttributeList(this.Controls, objects, 10, base_y, out newWidth, null, createdControls, currentPage, 20, pageInfo, null, null, sortHeader, sortedHeader, desc, null, null, addConditionalAttributes);
             } else {
                 y = MainForm.DisplayCreatureList(this.Controls, objects, 10, base_y, 344, 4, null, 1, createdControls, currentPage, 600, pageInfo, currentDisplay);
                 if (currentDisplay >= 0) {

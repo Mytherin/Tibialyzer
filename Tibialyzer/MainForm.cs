@@ -828,7 +828,7 @@ namespace Tibialyzer {
 
             ShowNotification(f, comm);
         }
-        private void ShowCreatureList(List<TibiaObject> c, string title, string command) {
+        private void ShowCreatureList(List<TibiaObject> c, string title, string command, bool conditionalAttributes = false) {
             if (c == null) return;
             string[] split = command.Split(commandSymbol);
             string parameter = split[1].Trim().ToLower();
@@ -842,6 +842,7 @@ namespace Tibialyzer {
             if (split.Length > 4) { desc = split[4] == "1"; }
             if (split.Length > 5) { sortedHeader = split[5]; }
             CreatureList f = new CreatureList(page, displayType == 1 ? DisplayType.Images : DisplayType.Details, sortedHeader, desc);
+            f.addConditionalAttributes = conditionalAttributes;
             f.objects = c;
             f.title = title;
 
@@ -1074,7 +1075,7 @@ namespace Tibialyzer {
             }
         }
         
-        public static int DisplayCreatureAttributeList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, out int maxwidth, Func<TibiaObject, string> tooltip_function = null, List<Control> createdControls = null, int page = 0, int pageitems = 20, PageInfo pageInfo = null, string extraAttribute = null, Func<TibiaObject, Attribute> attributeFunction = null, EventHandler headerSortFunction = null, string sortedHeader = null, bool desc = false, Func<TibiaObject, IComparable> extraSort = null, List<string> removedAttributes = null) {
+        public static int DisplayCreatureAttributeList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, out int maxwidth, Func<TibiaObject, string> tooltip_function = null, List<Control> createdControls = null, int page = 0, int pageitems = 20, PageInfo pageInfo = null, string extraAttribute = null, Func<TibiaObject, Attribute> attributeFunction = null, EventHandler headerSortFunction = null, string sortedHeader = null, bool desc = false, Func<TibiaObject, IComparable> extraSort = null, List<string> removedAttributes = null, bool conditional = false) {
             const int size = 24;
             const int imageSize = size - 4;
             // add a tooltip that displays the creature names
@@ -1095,19 +1096,20 @@ namespace Tibialyzer {
                         l = l.OrderByDescending(o => extraSort(o)).ToList();
                     } else {
                         int hash = sortedHeader.GetHashCode();
-                        l = l.OrderByDescending(o => o.GetHeaderValue(hash)).ToList();
+                        l = l.OrderByDescending(o => conditional ? o.GetConditionalHeaderValue(sortedHeader) : o.GetHeaderValue(hash)).ToList();
                     }
                 } else {
                     if (sortedHeader == extraAttribute) {
                         l = l.OrderBy(o => extraSort(o)).ToList();
                     } else {
                         int hash = sortedHeader.GetHashCode();
-                        l = l.OrderBy(o => o.GetHeaderValue(hash)).ToList();
+                        l = l.OrderBy(o => conditional ? o.GetConditionalHeaderValue(sortedHeader) : o.GetHeaderValue(hash)).ToList();
                     }
                 }
             }
             int start = 0;
             List<TibiaObject> pageItems = new List<TibiaObject>();
+            Dictionary<string, int> totalAttributes = new Dictionary<string, int>();
             foreach (TibiaObject cr in l) {
                 if (offset > pageitems) {
                     if (page > currentPage) {
@@ -1131,10 +1133,11 @@ namespace Tibialyzer {
                 pageInfo.startDisplay = start;
                 pageInfo.endDisplay = start + pageItems.Count;
             }
-            Dictionary<string, int> totalAttributes = new Dictionary<string, int>();
-            foreach (TibiaObject obj in pageItems) {
-                List<string> headers = new List<string>(obj.GetAttributeHeaders());
-                List<Attribute> attributes = obj.GetAttributes();
+            Dictionary<string, double> sortValues = new Dictionary<string, double>();
+            Dictionary<string, double> countValues = new Dictionary<string, double>();
+            foreach (TibiaObject obj in conditional ? l : pageItems) {
+                List<string> headers = conditional ? obj.GetConditionalHeaders() : new List<string>(obj.GetAttributeHeaders());
+                List<Attribute> attributes = conditional ? obj.GetConditionalAttributes() : obj.GetAttributes();
                 if (extraAttribute != null) {
                     headers.Add(extraAttribute);
                     attributes.Add(attributeFunction(obj));
@@ -1142,6 +1145,13 @@ namespace Tibialyzer {
                 for (int i = 0; i < headers.Count; i++) {
                     string header = headers[i];
                     Attribute attribute = attributes[i];
+                    if (!sortValues.ContainsKey(header)) {
+                        sortValues.Add(header, i);
+                        countValues.Add(header, 1);
+                    } else {
+                        sortValues[header] += i;
+                        countValues[header] += 1;
+                    }
                     if (removedAttributes != null && removedAttributes.Contains(header)) continue;
                     int width = TextRenderer.MeasureText(header, MainForm.text_font).Width + 10;
                     if (attribute is StringAttribute) {
@@ -1164,15 +1174,20 @@ namespace Tibialyzer {
             }
             base_x += 24;
             maxwidth = base_x;
+            List<string> keys = totalAttributes.Keys.ToList();
+            if (conditional) {
+                keys = keys.OrderBy(o => sortValues[o] / countValues[o]).ToList();
+            }
             // create header information
             int x = base_x;
-            foreach (KeyValuePair<string, int> kvp in totalAttributes) {
+            foreach(string k in keys) {
+                int val = totalAttributes[k];
                 Label label = new Label();
-                label.Name = kvp.Key;
-                label.Text = kvp.Key;
+                label.Name = k;
+                label.Text = k;
                 label.Location = new Point(x, base_y);
                 label.ForeColor = MainForm.label_text_color;
-                label.Size = new Size(kvp.Value, size);
+                label.Size = new Size(val, size);
                 label.Font = MainForm.text_font;
                 label.BackColor = Color.Transparent;
                 label.TextAlign = ContentAlignment.MiddleCenter;
@@ -1183,16 +1198,16 @@ namespace Tibialyzer {
                 if (createdControls != null) {
                     createdControls.Add(label);
                 }
-                x += kvp.Value;
-                maxwidth += kvp.Value;
+                x += val;
+                maxwidth += val;
             }
             maxwidth += 10;
             offset = 0;
 
             // create object information
             foreach (TibiaObject obj in pageItems) {
-                List<string> headers = new List<string>(obj.GetAttributeHeaders());
-                List<Attribute> attributes = obj.GetAttributes();
+                List<string> headers = conditional ? obj.GetConditionalHeaders() : new List<string>(obj.GetAttributeHeaders());
+                List<Attribute> attributes = conditional ? obj.GetConditionalAttributes() : obj.GetAttributes();
                 if (extraAttribute != null) {
                     headers.Add(extraAttribute);
                     attributes.Add(attributeFunction(obj));
@@ -1216,8 +1231,13 @@ namespace Tibialyzer {
                 controls.Add(picture);
                 x = base_x;
                 //Bitmap bitmap = new Bitmap(maxwidth * textscaling, size);
-                foreach (KeyValuePair<string, int> kvp in totalAttributes) {
-                    int index = headers.IndexOf(kvp.Key);
+                foreach (string k in keys) {
+                    int val = totalAttributes[k];
+                    int index = headers.IndexOf(k);
+                    if (index < 0) {
+                        x += val;
+                        continue;
+                    }
                     Attribute attribute = attributes[index];
                     Control c;
                     if (attribute is StringAttribute) {
@@ -1225,7 +1245,7 @@ namespace Tibialyzer {
                         Label label = new Label();
                         label.Text = (attribute as StringAttribute).value;
                         label.ForeColor = (attribute as StringAttribute).color;
-                        label.Size = new Size(kvp.Value, size);
+                        label.Size = new Size(val, size);
                         label.Font = MainForm.text_font;
                         label.Location = new Point(x, size * (offset + 1) + base_y);
                         label.BackColor = Color.Transparent;
@@ -1241,7 +1261,7 @@ namespace Tibialyzer {
                         picture.Image = (attribute is ImageAttribute) ? (attribute as ImageAttribute).value : ((attribute as BooleanAttribute).value ? MainForm.checkmark_yes : MainForm.checkmark_no);
                         picture.Size = new Size(imageSize, imageSize);
                         picture.SizeMode = PictureBoxSizeMode.Zoom;
-                        picture.Location = new Point(x + (kvp.Value - imageSize) / 2, size * (offset + 1) + base_y);
+                        picture.Location = new Point(x + (val - imageSize) / 2, size * (offset + 1) + base_y);
                         picture.BackColor = Color.Transparent;
                         if (createdControls != null) {
                             createdControls.Add(picture);
@@ -1254,11 +1274,15 @@ namespace Tibialyzer {
                     c.Name = obj.GetCommand();
                     c.Click += executeNameCommand;
                     if (tooltip_function == null) {
-                        value_tooltip.SetToolTip(c, obj.GetName());
+                        if (attribute is StringAttribute) {
+                            value_tooltip.SetToolTip(c, (attribute as StringAttribute).value);
+                        } else {
+                            value_tooltip.SetToolTip(c, obj.GetName());
+                        }
                     } else {
                         value_tooltip.SetToolTip(c, tooltip_function(obj));
                     }
-                    x += kvp.Value;
+                    x += val;
                 }
 
                 offset++;
