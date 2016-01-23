@@ -433,7 +433,7 @@
 			<Items>
 				<Item Count="1">Hydra Egg</Item>
 				<Item Count="1">Crowbar</Item>
-				<Item Count="1">Cough Syrup</Item>
+				<Item Count="1">Flask of Cough Syrup</Item>
 			</Items>
 		</Requirements>
 	</Quest>
@@ -458,7 +458,7 @@
 				<Item Count="1">Huge Chunk of Crude Iron</Item>
 				<Item Count="100">Perfect Behemoth Fang</Item>
 				<Item Count="1">Flask of Warrior's Sweat</Item>
-				<Item Count="1">Royal Steel</Item>
+				<Item Count="1">Piece of Royal Steel</Item>
 			</Items>
 		</Requirements>
 	</Quest>
@@ -480,10 +480,10 @@
 		<Name>Barbarian Outfits Quest</Name>
 		<Requirements>
 			<Items>
-				<Item Count="1">Fighting Spirit</Item>
-				<Item Count="1">Warrior's Sweat</Item>
-				<Item Count="50">Piece of Red Cloth</Item>
-				<Item Count="50">Piece of Green Cloth</Item>
+				<Item Count="1">Spirit Container</Item>
+				<Item Count="1">Flask of Warrior's Sweat</Item>
+				<Item Count="50">Red Piece of Cloth</Item>
+				<Item Count="50">Green Piece of Cloth</Item>
 				<Item Count="10">Spool of Yarn</Item>
 				<Item Count="100">Iron Ore</Item>
 				<Item Count="1">Huge Chunk of Crude Iron</Item>
@@ -564,20 +564,20 @@
 		</Requirements>
 	</Quest>
 	<Quest>
+		<Name>Citizen Outfits Quest On Rook</Name>
+		<Requirements>
+			<Items>
+				<Item Count="100">Minotaur Leather</Item>
+				<Item Count="100">Chicken Feather</Item>
+				<Item Count="50">Honeycomb</Item>
+				<Item Count="1">Legion Helmet</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
 		<Name>Mage Outfits Quest</Name>
 		<Requirements>
 			<Items>
-				<!--Female-->
-				<Item Count="1">Winning Lottery Ticket</Item>
-				<Item Count="70">Bat Wing</Item>
-				<Item Count="20">Red Piece of Cloth</Item>
-				<Item Count="40">Ape Fur</Item>
-				<Item Count="35">Holy Orchid</Item>
-				<Item Count="10">Spool of Yarn</Item>
-				<Item Count="60">Lizard Scale</Item>
-				<Item Count="40">Red Dragon Scale</Item>
-				<Item Count="15">Magic Sulphur</Item>
-				<Item Count="30">Vampire Dust</Item>
 				<!--Male-->
 				<Item Count="1">Wand of Vortex</Item>
 				<Item Count="1">Wand of Dragonbreath</Item>
@@ -593,7 +593,1130 @@
 				<Item Count="1">Soul Stone</Item>
 				<Item Count="20">Ankh</Item>
 				<Item Count="1">Ferumbras' Hat</Item>
+				<!--Female Requirements are swapped with Summoner Outfits Quest-->
 			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Nobleman Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="30">Crystal Coin</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Summoner Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<!--Male-->
+				<Item Count="1">Winning Lottery Ticket</Item>
+				<Item Count="70">Bat Wing</Item>
+				<Item Count="20">Red Piece of Cloth</Item>
+				<Item Count="40">Ape Fur</Item>
+				<Item Count="35">Holy Orchid</Item>
+				<Item Count="10">Spool of Yarn</Item>
+				<Item Count="60">Lizard Scale</Item>
+				<Item Count="40">Red Dragon Scale</Item>
+				<Item Count="15">Magic Sulphur</Item>
+				<Item Count="30">Vampire Dust</Item>
+				<!--Female Requirements are swapped with Mage Outfits Quest-->
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Warrior Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="100">Hardened Bone</Item>
+				<Item Count="100">Turtle Shell</Item>
+				<Item Count="1">Spirit Container</Item>
+				<Item Count="1">Dragon Claw</Item>
+				<Item Count="100">Iron Ore</Item>
+				<Item Count="1">Piece of Royal Steel</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Druid Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="50">Bear Paw</Item>
+				<Item Count="50">Wolf Paw</Item>
+				<Item Count="100">Demon Dust</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Druid Outfits Quest On Rook</Name>
+		<Requirements>
+			<Items>
+				<Item Count="50">Bear Paw</Item>
+				<Item Count="50">Wolf Paw</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Meriana Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="100">Bread</Item>
+				<Item Count="1">Atlas</Item>
+				<Item Count="5">Pirate Voodoo Doll</Item>
+				<Item Count="1">Bottle Of Whisper Beer</Item>
+				<Item Count="1">Fire Bug</Item>
+				<Item Count="1">Pirate Hat</Item>
+				<Item Count="1">Pirate Shirt</Item>
+				<Item Count="1">Pirate Knee Breeches</Item>
+				<Item Count="1">Pirate Boots</Item>
+			</Items>
+
+			<AdditionalRequirements>
+				<Requirement>You must have completed [The Shattered Isles Quest] (Eleonore Part).</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Shattered Isles Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="30">Wood</Item>
+				<Item Count="1">Rake</Item>
+				<Item Count="1">Poem Scroll</Item>
+				<Item Count="1">Brown Mushroom</Item>
+				<Item Count="1">White Mushroom</Item>
+				<Item Count="1">Green Mushroom</Item>
+				<Item Count="1">Dark Mushroom</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Obsidian Knife Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Obsidian Lance</Item>
+				<Item Count="1">Dragon Shield</Item>
+				<Item Count="1">Scythe</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>You must have completed [The Sweaty Cyclops Quest].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Treasure Island Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Treasure Map (Pirate)</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Pits of Inferno Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Pick</Item>
+				<Item Count="1">The Holy Tible</Item>
+				<Item Count="1">Blood</Item>
+				<Item Count="1">Oil</Item>
+				<Item Count="1">Destroy Field Rune</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>You must bring four people; one of every vocation (knight, druid, sorcerer, paladin).</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Dreamer's Challenge Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Pick</Item>
+				<Item Count="1">Life Ring</Item>
+				<Item Count="2">Death Ring</Item>
+				<Item Count="3">Water (Liquid)</Item>
+				<Item Count="2">Fire Field Rune</Item>
+				<Item Count="1">Fire Bug</Item>
+				<Item Count="1">Carrot</Item>
+				<Item Count="3000">Demonic Essence</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>You only need the demonic essence to unlock the first and second addons of the outfit.</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Ice Islands Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Meat</Item>
+				<Item Count="1">Pick</Item>
+				<Item Count="5">Bat Wing</Item>
+				<Item Count="4">Bear Paw</Item>
+				<Item Count="3">Bonelord Eye</Item>
+				<Item Count="2">Fish Fin</Item>
+				<Item Count="1">Green Dragon Scale</Item>
+				<Item Count="1">Spoon</Item>
+				<Item Count="1">Kitchen Knife</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>You must have completed the [Barbarian Test Quest].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Barbarian Test Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="10">Honeycomb</Item>
+				<Item Count="3">Mead</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Barbarian Test Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="100">Platinum Coin</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>You must have completed the [Barbarian Test Quest].</Requirement>
+				<Requirement>There are three different arena tiers.</Requirement>
+				<Requirement>Greenhorn: 1000 gold.</Requirement>
+				<Requirement>Scrapper: 5000 gold.</Requirement>
+				<Requirement>Warlord: 10000 gold.</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Norseman Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="15">Shard</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>You must have completed [The Ice Islands Quest].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Frost Dragon Quest</Name>
+		<Requirements>
+			<AdditionalRequirements>
+				<Requirement>You must have completed the [Barbarian Test Quest].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Berserk Potion Quest</Name>
+		<Requirements>
+			<AdditionalRequirements>
+				<Requirement>You must have completed the [Barbarian Test Quest].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Lion Trophy Quest</Name>
+		<Requirements>
+			<AdditionalRequirements>
+				<Requirement>You must have completed [The Ice Islands Quest].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Formorgar Mines Hoist Quest</Name>
+		<Requirements>
+			<AdditionalRequirements>
+				<Requirement>You must have completed [The Ice Islands Quest] until Formorgar Mines 1.</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Brotherhood Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Document of the Follower</Item>
+				<Item Count="1">Document of the Officer</Item>
+				<Item Count="1">Document of the Leader</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>You must have completed [Dreamer's Challenge Quest] Mission 4 for the outfit.</Requirement>
+				<Requirement>You must have completed [Dreamer's Challenge Quest] Mission 5 for Addon 1 (hand in 500 demonic essence).</Requirement>
+				<Requirement>You must have completed [Dreamer's Challenge Quest] Mission 6 for Addon 2 (hand in 1500 demonic essence).</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Nightmare Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Document of the Follower</Item>
+				<Item Count="1">Document of the Officer</Item>
+				<Item Count="1">Document of the Leader</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>You must have completed [Dreamer's Challenge Quest] Mission 4 for the outfit.</Requirement>
+				<Requirement>You must have completed [Dreamer's Challenge Quest] Mission 5 for Addon 1 (hand in 500 demonic essence).</Requirement>
+				<Requirement>You must have completed [Dreamer's Challenge Quest] Mission 6 for Addon 2 (hand in 1500 demonic essence).</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>What a Foolish Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="2">Kitchen Knife</Item>
+				<Item Count="1">Spoon</Item>
+				<Item Count="18">Wine</Item>
+				<Item Count="24">Flour</Item>
+				<Item Count="1">Red Piece of Cloth</Item>
+				<Item Count="1">Blue Piece of Cloth</Item>
+				<Item Count="1">Yellow Piece of Cloth</Item>
+				<Item Count="1">Green Piece of Cloth</Item>
+				<Item Count="1">Spider Silk</Item>
+				<Item Count="4">Minotaur Leather</Item>
+				<Item Count="5">White Piece of Cloth</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Secret Service Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Fire Bug</Item>
+				<Item Count="1">Crowbar</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Nomads Land Quest</Name>
+		<Requirements>
+			<AdditionalRequirements>
+				<Requirement>You need to have finished [Arito's Task Quest].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>To Appease the Mighty Quest</Name>
+		<Requirements>
+			<AdditionalRequirements>
+				<Requirement>You cannot do this quest if you have started or completed the [The Djinn War - Marid Faction].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>To Blind The Enemy Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Destroy Field Rune</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Rest in Hallowed Ground Quest</Name>
+		<Requirements>
+			<AdditionalRequirements>
+				<Requirement>You must have completed [The White Raven Monastery Quest].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Tower Defence Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Fire Bug</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Travelling Trader Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Deer Trophy</Item>
+				<Item Count="3">Iron Ore</Item>
+				<Item Count="1">Goldfish Bowl</Item>
+				<Item Count="15">Platinum Coin</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Kissing a Pig Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Machete</Item>
+				<Item Count="1">Inkwell</Item>
+				<Item Count="5">Pick</Item>
+				<Item Count="1">Fire Bug</Item>
+				<Item Count="3">Beer</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>You must have completed [The Queen of the Banshees Quest].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Arito's Task Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Nomad Parchment</Item>
+				<Item Count="1">Scimitar</Item>
+				<Item Count="1">Water (Liquid)</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Koshei The Deathless Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="50">Platinum Coin</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Marlin Trophy Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Marlin</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Inquisition Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="20">Vampire Dust</Item>
+				<Item Count="20">Demonic Essence</Item>
+				<Item Count="3">Garlic Necklace</Item>
+				<Item Count="1">Machete</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Thieves Guild Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="10">Tusk</Item>
+				<Item Count="80">Platinum Coin</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Hunt for the Sea Serpent Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="5">Fish</Item>
+				<Item Count="5">Green Perch</Item>
+				<Item Count="5">Northern Pike</Item>
+				<Item Count="5">Rainbow Trout</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Elemental Spheres Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="20">Small Enchanted Ruby</Item>
+				<Item Count="20">Small Enchanted Emerald</Item>
+				<Item Count="20">Small Enchanted Amethyst</Item>
+				<Item Count="20">Small Enchanted Sapphire</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>You must bring four people; one of every vocation (knight, druid, sorcerer, paladin).</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Machinery of War Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="44">Bricklayers' Kit</Item>
+				<Item Count="1">Fire Bug</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Troll Sabotage Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Boots of Haste</Item>
+				<Item Count="1">Helmet of the Deep</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>Note: the required items will not be consumed.</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Demon Oak Quest</Name>
+		<Requirements>
+			<AdditionalRequirements>
+				<Requirement>You must have killed 6666 Demons in the [Killing in the Name of... Quest].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Vampire Hunter Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="100">Vampire Lord Token</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Sweaty Cyclops Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="3">Bast Skirt</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Mermaid Marina Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="10">Spider Silk</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Blessed Stake Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="50">Platinum Coin</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>In Service of Yalahar Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Crowbar</Item>
+				<Item Count="1">Helmet of the Deep</Item>
+				<Item Count="1">Piece of Royal Satin</Item>
+				<Item Count="1">Sample of Venorean Spice</Item>
+				<Item Count="1">Bottle of Bug Milk</Item>
+				<Item Count="1">Bowl of Evergreen Flowers</Item>
+				<Item Count="1">Tusk</Item>
+				<Item Count="1">Rum Flask</Item>
+				<Item Count="1">Sample of Sand Wasp Honey</Item>
+				<Item Count="1">Jug of Embalming Fluid</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Blood Brothers Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Special Flask (Holy Water)</Item>
+				<Item Count="1">Bulb of Garlic</Item>
+				<Item Count="1">Flour</Item>
+				<Item Count="1">Baking Tray</Item>
+				<Item Count="1">Blessed Wooden Stake</Item>
+				<Item Count="1">Fire Bug</Item>
+				<Item Count="1">Blood</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>You must have completed Mission 3 of [The Inquisition Quest].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Hidden City of Beregar Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Pick</Item>
+				<Item Count="3">Gear Wheel</Item>
+				<Item Count="1">Chocolate Cake</Item>
+				<Item Count="6">Nail</Item>
+				<Item Count="4">Wood</Item>
+				<Item Count="1">Saw</Item>
+				<Item Count="1">Wooden Ties</Item>
+				<Item Count="1">Fire Bug</Item>
+				<Item Count="1">Hammer</Item>
+				<Item Count="2">Metal Fitting</Item>
+				<Item Count="1">Bricklayers' Kit</Item>
+				<Item Count="1">Cask of Brown Ale</Item>
+				<Item Count="1">Golden Mug</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>You must have completed [The Ultimate Booze Quest].</Requirement>
+				<Requirement>You must have completed [The Queen of the Banshees Quest].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Top of the City Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Pick</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Isle of Evil Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="10">Rum</Item>
+				<Item Count="1">Fruit Juice</Item>
+				<Item Count="30">Nail</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Scatterbrained Sorcerer Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Broom</Item>
+				<Item Count="1">Flour</Item>
+				<Item Count="1">Worm</Item>
+				<Item Count="1">White Mushroom</Item>
+				<Item Count="1">Egg</Item>
+				<Item Count="1">Sling Herb</Item>
+				<Item Count="1">Honeycomb</Item>
+				<Item Count="1">Grave Flower</Item>
+				<Item Count="1">Oil</Item>
+				<Item Count="1">Skull</Item>
+				<Item Count="1">Red Apple</Item>
+				<Item Count="1">Wolf Paw</Item>
+				<Item Count="1">Wooden Hammer</Item>
+				<Item Count="1">Lyre</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Hot Cuisine Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="2">Meat</Item>
+				<Item Count="20">Potato</Item>
+				<Item Count="1">Onion</Item>
+				<Item Count="1">Bulb of Garlic</Item>
+				<Item Count="5">Flour</Item>
+				<Item Count="2">Beer</Item>
+				<Item Count="2">Hydra Tongue</Item>
+				<Item Count="2">Tomato</Item>
+				<Item Count="1">Cucumber</Item>
+				<Item Count="2">Egg</Item>
+				<Item Count="1">Troll Green</Item>
+				<Item Count="1">Wine</Item>
+				<Item Count="3">Jalapeño Pepper</Item>
+				<Item Count="5">Brown Bread</Item>
+				<Item Count="2">Egg</Item>
+				<Item Count="1">Powder Herb</Item>
+				<Item Count="5">Red Mushroom</Item>
+				<Item Count="2">Lemon</Item>
+				<Item Count="2">Orange</Item>
+				<Item Count="2">Mango</Item>
+				<Item Count="2">Coconut Milk</Item>
+				<Item Count="1">Stone Herb</Item>
+				<Item Count="1">Bar of Chocolate</Item>
+				<Item Count="1">Cream Cake</Item>
+				<Item Count="2">Banana</Item>
+				<Item Count="2">Milk</Item>
+				<Item Count="1">Sling Herb</Item>
+				<Item Count="1">Star Herb</Item>
+				<Item Count="2">Carrot</Item>
+				<Item Count="2">Tomato</Item>
+				<Item Count="2">Corncob</Item>
+				<Item Count="2">Cucumber</Item>
+				<Item Count="1">Onion</Item>
+				<Item Count="1">Bulb of Garlic</Item>
+				<Item Count="1">Cheese</Item>
+				<Item Count="20">White Mushroom</Item>
+				<Item Count="5">Brown Mushroom</Item>
+				<Item Count="10">Jalapeño Pepper</Item>
+				<Item Count="2">Cheese</Item>
+				<Item Count="1">Troll Green</Item>
+				<Item Count="1">Shadow Herb</Item>
+				<Item Count="1">Mead</Item>
+				<Item Count="2">Egg</Item>
+				<Item Count="1">Ham</Item>
+				<Item Count="5">Plum</Item>
+				<Item Count="1">Onion</Item>
+				<Item Count="2">Beetroot</Item>
+				<Item Count="1">Pumpkin</Item>
+				<Item Count="2">Jalapeño Pepper</Item>
+				<Item Count="1">Northern Pike</Item>
+				<Item Count="1">Rainbow Trout</Item>
+				<Item Count="1">Green Perch</Item>
+				<Item Count="5">Shrimp</Item>
+				<Item Count="2">Roll</Item>
+				<Item Count="1">Fern</Item>
+				<Item Count="5">Carrot</Item>
+				<Item Count="1">Milk</Item>
+				<Item Count="1">Lemon</Item>
+				<Item Count="10">Flour</Item>
+				<Item Count="2">Egg</Item>
+				<Item Count="10">Cookie</Item>
+				<Item Count="2">Peanut</Item>
+				<Item Count="5">Coconut Milk</Item>
+				<Item Count="5">Brown Mushroom</Item>
+				<Item Count="5">Red Mushroom</Item>
+				<Item Count="10">Rice Ball</Item>
+				<Item Count="10">Shrimp</Item>
+				<Item Count="5">Sandcrawler Shell</Item>
+				<Item Count="2">Water (Liquid)</Item>
+				<Item Count="20">Carrot</Item>
+				<Item Count="10">Potato</Item>
+				<Item Count="3">Jalapeño Pepper</Item>
+				<Item Count="3">Candy</Item>
+				<Item Count="3">Candy Cane</Item>
+				<Item Count="2">Bar of Chocolate</Item>
+				<Item Count="15">Gingerbreadman</Item>
+				<Item Count="1">Concentrated Demonic Blood</Item>
+				<Item Count="40">Egg</Item>
+				<Item Count="20">Mango</Item>
+				<Item Count="10">Honeycomb</Item>
+				<Item Count="1">Bottle of Bug Milk</Item>
+				<Item Count="1">Blessed Wooden Stake</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>This quest can only be completed in the month of August.</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Treasure Hunt Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Very Old Piece of Paper</Item>
+				<Item Count="1">Fire Bug</Item>
+				<Item Count="1">Voodoo Doll</Item>
+				<Item Count="1">Crowbar</Item>
+				<Item Count="50">Platinum Coin</Item>
+				<Item Count="3">Rum</Item>
+				<Item Count="2">Cookie</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Shadows of Yalahar Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="2">Mago Mechanic Core</Item>
+				<Item Count="10">Elemental Crystal</Item>
+				<Item Count="1">Golem Blueprint</Item>
+				<Item Count="1">Old Power Core</Item>
+				<Item Count="1">Stabilizer</Item>
+				<Item Count="10">Headache Pill</Item>
+				<Item Count="1">Golem Head</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Sea of Light Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Pick</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Children of the Revolution Quest</Name>
+		<Requirements>
+			<AdditionalRequirements>
+				<Requirement>Must have completed [The New Frontier Quest] (Mission 08).</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Unnatural Selection Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="5">Orc Tooth</Item>
+				<Item Count="5">Lizard Leather</Item>
+				<Item Count="5">Minotaur Leather</Item>
+				<Item Count="1">Beer</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>An Uneasy Alliance Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Milk</Item>
+				<Item Count="1">Obsidian Knife</Item>
+				<Item Count="1">Wooden Flute</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Warmaster Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Serpent Crest</Item>
+				<Item Count="1">Tribal Crest</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>Must have completed [The New Frontier Quest].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Wayfarer Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Old Cape</Item>
+				<Item Count="1">Sedge Hat</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>Must have completed [Wrath of the Emperor Quest].</Requirement>
+				<Requirement>Must have completed [The Spirit Will Get You Quest].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>A Father's Burden Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Pick</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>Must have completed [Barbarian Test Quest].</Requirement>
+				<Requirement>Must have completed [The White Raven Monastery Quest] (Mission 01).</Requirement>
+				<Requirement>Must have completed [The New Frontier Quest] (Mission 01).</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Wrath of the Emperor Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Pick</Item>
+				<Item Count="1">Obsidian Knife</Item>
+				<Item Count="150">Platinum Coin</Item>
+				<Item Count="3">Nail</Item>
+				<Item Count="1">Wood</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>Must have completed [Children of the Revolution Quest].</Requirement>
+				<Requirement>Must have completed [The New Frontier Quest] (Mission 09).</Requirement>
+				<Requirement>Must have completed [The Ape City Quest] (Mission 09).</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>An Interest In Botany Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Obsidian Knife</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Rise of Devovorga</Name>
+		<Requirements>
+			<AdditionalRequirements>
+				<Requirement>This quest can only be completed in the month of September.</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Rottin Wood and the Married Men Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Obsidian Knife</Item>
+				<Item Count="1">Hammer</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Jack to the Future Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Pick</Item>
+				<Item Count="1">Red Cushioned Chair Kit</Item>
+				<Item Count="1">Globe Kit</Item>
+				<Item Count="1">Telescope Kit</Item>
+				<Item Count="1">Large Amphora Kit</Item>
+				<Item Count="1">Rocking Horse Kit</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>Must have completed [Sea of Light Quest].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Research and Development Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Pick</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>Must have completed [Sea of Light Quest].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Spirithunters Quest</Name>
+		<Requirements>
+			<AdditionalRequirements>
+				<Requirement>Must have completed [Research and Development Quest].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Lightbearer</Name>
+		<Requirements>
+			<AdditionalRequirements>
+				<Requirement>The Lightbearer Event occurs in the month of November.</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Bewitched</Name>
+		<Requirements>
+			<AdditionalRequirements>
+				<Requirement>The Bewitched Event occurs in the month of January.</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>A Piece of Cake</Name>
+		<Requirements>
+			<AdditionalRequirements>
+				<Requirement>A Piece of Cake starts on February 21st.</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Colours of Magic</Name>
+		<Requirements>
+			<AdditionalRequirements>
+				<Requirement>The Colours of Magic starts on March 15th and on September 15th.</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Demon's Lullaby</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Mouldy Cheese</Item>
+				<Item Count="1">Dragon Ham</Item>
+				<Item Count="1">Worm</Item>
+				<Item Count="1">Fishing Rod</Item>
+				<Item Count="1">War Drum</Item>
+				<Item Count="1">Hammer</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>The Demon's Lullaby starts on May 7th.</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Annual Autumn Vintage</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Bunch of Winterberries</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>Annual Autumn Vintage starts on October 1st and October 17th.</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>A Pirate's Death to Me</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Scum Bag</Item>
+				<Item Count="1">Ghost Duster</Item>
+				<Item Count="1">Emergency Kit</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>A Pirate's Death to Me occurs on the 18th-23th of each month.</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Last Creep Standing</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Shapechanger</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>Last Creep Standing occurs on the 20th of each month.</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Liquid Black Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Pick</Item>
+				<Item Count="1">Soul Net</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Crystal Warlord Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Gnomish Voucher Type CB</Item>
+				<Item Count="1">Gnomish Voucher Type CA1</Item>
+				<Item Count="1">Gnomish Voucher Type CA2</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Soil Guardian Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Gnomish Voucher Type MB</Item>
+				<Item Count="1">Gnomish Voucher Type MA1</Item>
+				<Item Count="1">Gnomish Voucher Type MA2</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Realm of Dreams Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Chayenne's Magical Key</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Demon Outfits Quest</Name>
+		<Requirements>
+			<AdditionalRequirements>
+				<Requirement>Must have completed [The Annihilator Quest].</Requirement>
+				<Requirement>Must have completed [Demon Helmet Quest].</Requirement>
+				<Requirement>Must have completed [The Demon Oak Quest].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Cave Explorer Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="60">Platinum Coin</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>Must have 100 fame points awarded by the [Spike Tasks Quest].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Dream Warden Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Dream Warden Mask</Item>
+				<Item Count="1">Dream Warden Claw</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>Must have completed a few missions of the [Roshamuul Quest].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Glooth Engineer Outfits Quest</Name>
+		<Requirements>
+			<AdditionalRequirements>
+				<Requirement>Must have completed the [Dark Trails Quest].</Requirement>
+				<Requirement>Must have cast 150 votes (earned in [Oramond Quest]).</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Lion's Rock Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Lion's Mane Flower</Item>
+				<Item Count="1">Ewer with Holy Water</Item>
+				<Item Count="1">Cobra Tongue</Item>
+				<Item Count="1">Small Ruby</Item>
+				<Item Count="1">Small Sapphire</Item>
+				<Item Count="1">Small Amethyst</Item>
+				<Item Count="1">Small Topaz</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Cursed Crystal Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Green Crystal Splinter</Item>
+				<Item Count="1">Flask of Embalming Fluid</Item>
+				<Item Count="1">Molten Wax</Item>
+				<Item Count="1">Petrified Scream</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Glooth Factory Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Lyre</Item>
+				<Item Count="1">Special Flask (Holy Water)</Item>
+				<Item Count="20">Piece of Crocodile Leather</Item>
+				<Item Count="10">Shrimp</Item>
+				<Item Count="10">Glooth Capsule</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Twenty Miles Beneath the Sea Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Helmet of the Deep</Item>
+				<Item Count="2">Seacrest Pearl</Item>
+				<Item Count="1">Mind Stone</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>The Tainted Souls Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Antlers</Item>
+				<Item Count="1">Special Flask (Holy Water)</Item>
+				<Item Count="1">Star Herb</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Ferumbras' Ascendant Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="30">Demonic Essence</Item>
+				<Item Count="1">Dwarven Ring</Item>
+				<Item Count="1">Pick</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Krailos Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="1">Helmet of the Deep</Item>
+				<Item Count="1">Decorated Cake</Item>
+				<Item Count="10">Roasted Meat</Item>
+				<Item Count="5">Fruit Juice</Item>
+				<Item Count="12">Cookie</Item>
+				<Item Count="1">Hoe</Item>
+				<Item Count="1">Obsidian Knife</Item>
+			</Items>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Rift Warrior Outfits Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="200">Silver Token</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>Must have completed the [Ferumbras' Ascendant Quest].</Requirement>
+			</AdditionalRequirements>
+		</Requirements>
+	</Quest>
+	<Quest>
+		<Name>Sinatuki Quest</Name>
+		<Requirements>
+			<Items>
+				<Item Count="100">Green Perch</Item>
+			</Items>
+			<AdditionalRequirements>
+				<Requirement>Must have completed the [Barbarian Test Quest].</Requirement>
+			</AdditionalRequirements>
 		</Requirements>
 	</Quest>
 	<!--Quest #105: Mage Outfits Quest-->

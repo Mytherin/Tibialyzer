@@ -44,7 +44,8 @@ def loadCache():
     f.close()
     return cache
 
-webcache = loadCache()
+try: webcache = loadCache()
+except: pass
 
 def getURL(url, decode=False):
     url = url.replace('ñ', '%C3%B1')

@@ -1,7 +1,7 @@
 # This file contains various operations to perform on images
 # Note that the operations aren't very cleanly implemented; they just call the imagemagick library on the shell in the tmp directory 
-# (and as such these only work on a UNIX system with imagemagick/gifsicle installed)
-
+# (and as such these only work on a system with imagemagick installed). These files are normally run on Ubuntu 15.04, but will likely work
+# on any Linux OS with imagemagick installed. 
 
 def crop_image(image_binary):
     path = '/tmp/uncropped_image'

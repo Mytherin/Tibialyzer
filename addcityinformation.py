@@ -10,7 +10,7 @@ from coordinates import convert_x, convert_y
 conn = sqlite3.connect(database_file)
 c = conn.cursor()
 
-# parsel id
+# parcel id
 c.execute('SELECT id FROM Items WHERE LOWER(name)="parcel"')
 parcelid = c.fetchall()[0][0]
 
