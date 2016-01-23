@@ -1,0 +1,319 @@
+
+<KillingInTheNameOf>
+	<TaskBracket>
+		<Name>Level 6-49 Tasks</Name>
+		<Tasks>
+			<Task>
+				<Creature>Crocodile</Creature>
+				<Count>300</Count>
+				<Points>1</Points>
+				<Boss>The Snapper</Boss>
+				<BossLocation>127.96,127.202,8</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Badger</Creature>
+				<Count>300</Count>
+				<Points>1</Points>
+			</Task>
+			<Task>
+				<Creature>Tarantula</Creature>
+				<Count>300</Count>
+				<Points>2</Points>
+				<Boss>Hide</Boss>
+				<BossLocation>128.54,127.181,8</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Carniphila</Creature>
+				<Count>150</Count>
+				<Points>3</Points>
+				<Boss>Deathbine</Boss>
+				<BossLocation>127.210,127.250,8</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Stone Golem</Creature>
+				<Count>200</Count>
+				<Points>3</Points>
+			</Task>
+			<Task>
+				<Creature>Mammoth</Creature>
+				<Count>300</Count>
+				<Points>3</Points>
+				<Boss>The Bloodtusk</Boss>
+				<BossLocation>125.104,121.140,2</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Gnarlhound</Creature>
+				<Count>300</Count>
+				<Points>2</Points>
+			</Task>
+			<Task>
+				<Creature>Terramite</Creature>
+				<Count>300</Count>
+				<Points>2</Points>
+			</Task>
+			<Task>
+				<Creature>Kongra;Sibang;Merlkin</Creature>
+				<Count>300</Count>
+				<Points>2</Points>
+			</Task>
+			<Task>
+				<Creature>Thornback Tortoise</Creature>
+				<Count>300</Count>
+				<Points>2</Points>
+			</Task>
+			<Task>
+				<Creature>Gargoyle</Creature>
+				<Count>200</Count>
+				<Points>2</Points>
+			</Task>
+		</Tasks>
+	</TaskBracket>	
+	<TaskBracket>
+		<Name>Level 50-79 Tasks</Name>
+		<Tasks>
+			<Task>
+				<Creature>Ice Golem</Creature>
+				<Count>300</Count>
+				<Points>2</Points>
+				<Boss>Shardhead</Boss>
+				<BossLocation>125.141,121.168,3</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Quara Constrictor Scout;Quara Hydromancer Scout;Quara Mantassin Scout;Quara Pincher Scout;Quara Predator Scout</Creature>
+				<Count>400</Count>
+				<Points>2</Points>
+			</Task>
+			<Task>
+				<Creature>Mutated Rat</Creature>
+				<Count>400</Count>
+				<Points>2</Points>
+				<Boss>Esmeralda</Boss>
+				<BossLocation>127.246,122.13,9</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Ancient Scarab</Creature>
+				<Count>250</Count>
+				<Points>2</Points>
+				<Boss>Fleshcrawler</Boss>
+				<BossLocation>129.20,128.26,11</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Wyvern</Creature>
+				<Count>300</Count>
+				<Points>2</Points>
+			</Task>
+			<Task>
+				<Creature>Lancer Beetle</Creature>
+				<Count>300</Count>
+				<Points>2</Points>
+			</Task>
+			<Task>
+				<Creature>Wailing Widow</Creature>
+				<Count>400</Count>
+				<Points>3</Points>
+			</Task>
+			<Task>
+				<Creature>Killer Caiman</Creature>
+				<Count>250</Count>
+				<Points>2</Points>
+			</Task>
+			<Task>
+				<Creature>Bonebeast</Creature>
+				<Count>300</Count>
+				<Points>2</Points>
+				<Boss>Ribstride</Boss>
+				<BossLocation>129.85,128.35,13</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Crystal Spider</Creature>
+				<Count>300</Count>
+				<Points>3</Points>
+				<Boss>The Bloodweb</Boss>
+				<BossLocation>125.122,121.209,4</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Mutated Tiger</Creature>
+				<Count>250</Count>
+				<Points>3</Points>
+			</Task>
+		</Tasks>
+	</TaskBracket>
+	<TaskBracket>
+		<Name>Level 80-129 Tasks</Name>
+		<Tasks>
+			<Task>
+				<Creature>Quara Constrictor;Quara Hydromancer;Quara Mantassin;Quara Pincher;Quara Predator</Creature>
+				<Count>600</Count>
+				<Points>3</Points>
+				<Boss>Thul</Boss>
+				<BossLocation>125.85,128.14,12</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Giant Spider</Creature>
+				<Count>500</Count>
+				<Points>3</Points>
+				<Boss>The Old Widow</Boss>
+				<BossLocation>128.46,126.24,8</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Werewolf</Creature>
+				<Count>300</Count>
+				<Points>4</Points>
+				<Boss>Hemming</Boss>
+				<BossLocation>128.224,122.211,7</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Nightmare;Nightmare Scion</Creature>
+				<Count>400</Count>
+				<Points>3</Points>
+				<Boss>Tormentor</Boss>
+				<BossLocation>125.72,122.51,10</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Hellspawn</Creature>
+				<Count>600</Count>
+				<Points>4</Points>
+				<Boss>Flameborn</Boss>
+				<BossLocation>128.48,121.50,7</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Lizard Chosen;Eternal Guardian;Lizard Dragon Priest;Lizard High Guard;Lizard Legionnaire;Lizard Magistratus;Lizard Noble;Lizard Zaogun;Souleater</Creature>
+				<Count>800</Count>
+				<Points>3</Points>
+				<Boss>Fazzrah</Boss>
+				<BossLocation>130.30,121.208,7</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Stampor</Creature>
+				<Count>600</Count>
+				<Points>3</Points>
+				<Boss>Tromphonyte</Boss>
+				<BossLocation>129.112,121.210,8</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Brimstone Bug</Creature>
+				<Count>500</Count>
+				<Points>3</Points>
+				<Boss>Sulphur Scuttler</Boss>
+				<BossLocation>130.6,121.136,8</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Mutated Bat</Creature>
+				<Count>400</Count>
+				<Points>2</Points>
+				<Boss>Bruise Payne</Boss>
+				<BossLocation>127.167,121.138,3</BossLocation>
+			</Task>
+		</Tasks>
+	</TaskBracket>
+	<TaskBracket>
+		<Name>Level 130+ Tasks</Name>
+		<Tasks>
+			<Task>
+				<Creature>Hydra</Creature>
+				<Count>650</Count>
+				<Points>3</Points>
+				<Boss>The Many</Boss>
+				<BossLocation>128.152,128.115,8</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Serpent Spawn</Creature>
+				<Count>800</Count>
+				<Points>4</Points>
+				<Boss>The Noxious Spawn</Boss>
+				<BossLocation>128.74,127.148,11</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Medusa</Creature>
+				<Count>500</Count>
+				<Points>5</Points>
+				<Boss>Gorgo</Boss>
+				<BossLocation>128.31,126.245,11</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Behemoth</Creature>
+				<Count>700</Count>
+				<Points>4</Points>
+				<Boss>Stonecracker</Boss>
+				<BossLocation>129.227,123.231,14</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Sea Serpent;Young Sea Serpent</Creature>
+				<Count>900</Count>
+				<Points>4</Points>
+				<Boss>Leviathan</Boss>
+				<BossLocation>124.182,121.95,10</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Hellhound</Creature>
+				<Count>250</Count>
+				<Points>5</Points>
+				<Boss>Kerberos</Boss>
+				<BossLocation>125.44,127.35,14</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Ghastly Dragon</Creature>
+				<Count>500</Count>
+				<Points>5</Points>
+				<Boss>Ethershreck</Boss>
+				<BossLocation>129.91,121.28,8</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Draken Abomination;Draken Elite;Draken Spellweaver;Draken Warmaster</Creature>
+				<Count>900</Count>
+				<Points>3</Points>
+				<Boss>Paiz the Pauperizer</Boss>
+				<BossLocation>129.42,121.127,2</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Destroyer</Creature>
+				<Count>650</Count>
+				<Points>4</Points>
+				<Boss>Bretzecutioner</Boss>
+				<BossLocation>125.3,121.213,10</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Undead Dragon</Creature>
+				<Count>400</Count>
+				<Points>6</Points>
+				<Boss>Zanakeph</Boss>
+				<BossLocation>129.71,121.99,12</BossLocation>
+			</Task>
+		</Tasks>
+	</TaskBracket>
+	<TaskBracket>
+		<Name>Special Tasks</Name>
+		<Tasks>
+			<Task>
+				<Creature>Pirate Marauder;Pirate Cutthroat;Pirate Buccaneer;Pirate Corsair</Creature>
+				<Count>3000</Count>
+				<Boss>Brutus Bloodbeard</Boss>
+				<BossLocation>124.233,128.85,1</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Minotaur;Minotaur Archer;Minotaur Guard;Minotaur Mage</Creature>
+				<Count>5000</Count>
+				<Boss>The Horned Fox</Boss>
+				<BossLocation>126.194,124.244,9</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Necromancer</Creature>
+				<Count>4000</Count>
+				<Boss>Necropharus</Boss>
+				<BossLocation>129.22,126.183,11</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Blue Djinn;Marid</Creature>
+				<Count>500</Count>
+				<Boss>Merikh The Slaughterer</Boss>
+				<BossLocation>128.102,121.136,4</BossLocation>
+			</Task>
+			<Task>
+				<Creature>Green Djinn;Efreet</Creature>
+				<Count>500</Count>
+				<Boss>Fahim The Wise</Boss>
+				<BossLocation>128.46,121.144,2</BossLocation>
+			</Task>
+		</Tasks>
+	</TaskBracket>
+</KillingInTheNameOf>
