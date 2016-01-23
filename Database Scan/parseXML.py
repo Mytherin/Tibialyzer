@@ -225,8 +225,71 @@ creaturedrops = d['creaturedrops']
 rewardItems = d['rewardItems'] 
 questDangers = d['questDangers'] 
 mountStuff = d['mountStuff'] 
-questNPCs = d['questNPCs'] 
+questNPCs = d['questNPCs']
 
+#fix typos in spells
+spellMap = {'desintegrate':'disintegrate', 'paralyze':'paralyse','avalanche (rune)':'avalanche'}
+
+# Druid, Paladin, Sorcerer, Knight
+npcTeachMap = { 'gundralph': (True, False, True, False),
+                'eroth': (True, True, False, False),
+                'faluae': (True, True, False, False),
+                'eremo': (True, True, True, True),
+                'ursula': (False, True, False, False),
+                'zoltan': (True, True, True, True),
+                'hjaern': (True, False, False, False),
+                'elathriel': (True, False, False, False),
+                'shalmar': (True, False, True, False),
+                'razan': (False, True, False, True),
+                'puffels': (False, False, False, True), 
+                'asrak': (False, True, False, True),
+                'maealil': (True, True, False, False),
+                'eliza': (True, True, True, True),
+                'ser tybald': (False, True, False, True),
+                'garamond': (True, False, True, False),
+                'smiley': (True, False, False, False),}
+
+c.execute('DROP TABLE SpellNPCs')
+c.execute('CREATE TABLE SpellNPCs(spellid INTEGER, npcid INTEGER, knight BOOLEAN, druid BOOLEAN, paladin BOOLEAN, sorcerer BOOLEAN)')
+for npcid,spelllist in iter(spells.items()):
+    for spell in spelllist:
+        _spell = spell.strip().lower()
+        if _spell in spellMap:
+            _spell = spellMap[_spell]
+        c.execute('SELECT id, druid, paladin, sorcerer, knight FROM Spells WHERE LOWER(name)=?', (_spell,))
+        spellresults = c.fetchall()[0]
+        if len(spellresults) > 0:
+            spellid = spellresults[0]
+            c.execute('SELECT spellid,npcid FROM SpellNPCs WHERE spellid=? AND npcid=?', (spellid, npcid))
+            if len(c.fetchall()) > 0:
+                continue
+            c.execute('SELECT name,job FROM NPCs WHERE id=?', (npcid,))
+            results = c.fetchall()[0]
+            name = results[0].lower()
+            job = results[1].lower()
+            druid = False
+            paladin = False
+            sorcerer = False
+            knight = False
+            if 'druid' in job: druid = spellresults[1]
+            elif 'sorcerer' in job: sorcerer = spellresults[3]
+            elif 'knight' in job: knight = spellresults[4]
+            elif 'paladin' in job: paladin = spellresults[2]
+
+            if name in npcTeachMap:
+                druid = npcTeachMap[name][0] and spellresults[1]
+                paladin = npcTeachMap[name][1] and spellresults[2]
+                sorcerer = npcTeachMap[name][2] and spellresults[3]
+                knight = npcTeachMap[name][3] and spellresults[4]
+
+            if druid == False and paladin == False and sorcerer == False and knight == False:
+                print('Unknown NPC spell vocation', name)
+            c.execute('INSERT INTO SpellNPCs(spellid, npcid, druid, paladin, sorcerer, knight) VALUES (?,?,?,?,?,?)', (spellid, npcid, druid, paladin, sorcerer, knight))
+        else:
+            pass#print("Unrecognized spell", spell)
+
+c.execute('DROP TABLE BuyItems')
+c.execute('CREATE TABLE BuyItems(itemid INTEGER, vendorid INTEGER, value INTEGER)')
 for itemid, npclist in iter(buyitems.items()):
     for npc,value in iter(npclist.items()):
         c.execute('SELECT id FROM NPCs WHERE LOWER(name)=? OR LOWER(title)=?', (npc.strip().lower(),npc.strip().lower()))
@@ -237,6 +300,8 @@ for itemid, npclist in iter(buyitems.items()):
         else:
             pass#print("Unrecognized NPC", npc)
 
+c.execute('DROP TABLE SellItems')
+c.execute('CREATE TABLE SellItems(itemid INTEGER, vendorid INTEGER, value INTEGER)')
 for itemid, npclist in iter(sellitems.items()):
     for npc,value in iter(npclist.items()):
         c.execute('SELECT id FROM NPCs WHERE LOWER(name)=? OR LOWER(title)=?', (npc.strip().lower(),npc.strip().lower()))
@@ -257,6 +322,9 @@ for itemid,currency in iter(currencymap.items()):
     else:
         pass#print("Unrecognized Item", currency)
 
+
+c.execute('DROP TABLE QuestNPCs')
+c.execute('CREATE TABLE QuestNPCs(questid INTEGER, npcid INTEGER)')
 for questname, npcs in iter(questNPCs.items()):
     questname = questname.strip().lower()
     c.execute('SELECT id FROM Quests WHERE LOWER(name)=? OR LOWER(title)=?', (questname, questname))
@@ -269,73 +337,19 @@ for questname, npcs in iter(questNPCs.items()):
             results2 = c.fetchall()
             if len(results2) > 0:
                 npcid = results2[0][0]
-                c.execute('INSERT INTO QuestNPCs (questid, npcid) VALUES (?,?)', (questid, npcid))
+                c.execute('SELECT questid FROM QuestNPCs WHERE questid=? AND npcid=?', (questid, npcid))
+                if len(c.fetchall()) == 0:
+                    c.execute('INSERT INTO QuestNPCs (questid, npcid) VALUES (?,?)', (questid, npcid))
     else:
         print("Unrecognized Quest", questname)
-
-
-#fix typos in spells
-spellMap = {'desintegrate':'disintegrate', 'paralyze':'paralyse','avalanche (rune)':'avalanche'}
-
-npcTeachMap = { 'gundralph': (True, False, True, False),
-                'eroth': (True, True, False, False),
-                'faluae': (True, True, False, False),
-                'eremo': (True, True, True, True),
-                'ursula': (False, True, False, False),
-                'zoltan': (True, True, True, True),
-                'hjaern': (True, False, False, False),
-                'elathriel': (True, False, False, False),
-                'shalmar': (True, False, True, False),
-                'razan': (False, True, False, True),
-                'puffels': (False, False, False, True), 
-                'asrak': (False, True, False, True),
-                'maealil': (True, True, False, False),
-                'eliza': (True, True, True, True),}
-
-c.execute('DROP TABLE SpellNPCs')
-c.execute('CREATE TABLE SpellNPCs(spellid INTEGER, npcid INTEGER, knight BOOLEAN, druid BOOLEAN, paladin BOOLEAN, sorcerer BOOLEAN)')
-for npcid,spelllist in iter(spells.items()):
-    for spell in spelllist:
-        _spell = spell.strip().lower()
-        if _spell in spellMap:
-            _spell = spellMap[_spell]
-        c.execute('SELECT id, druid, paladin, sorcerer, knight FROM Spells WHERE LOWER(name)=?', (_spell,))
-        spellresults = c.fetchall()[0]
-        if len(results) > 0:
-            spellid = spellresults[0]
-            c.execute('SELECT spellid,npcid FROM SpellNPCs WHERE spellid=? AND npcid=?', (spellid, npcid))
-            if len(c.fetchall()) > 0:
-            	continue
-            c.execute('SELECT name,job FROM NPCs WHERE id=?', (npcid,))
-            results = c.fetchall()[0]
-            name = results[0].lower()
-            job = results[1].lower()
-            druid = False
-            paladin = False
-            sorcerer = False
-            knight = False
-            if 'druid' in job: druid = True
-            elif 'sorcerer' in job: sorcerer = True
-            elif 'knight' in job: knight = True
-            elif 'paladin' in job: paladin = True
-
-            if name in npcTeachMap:
-                druid = npcTeachMap[name][0] and spellresults[1]
-                paladin = npcTeachMap[name][1] and spellresults[2]
-                sorcerer = npcTeachMap[name][2] and spellresults[3]
-                knight = npcTeachMap[name][3] and spellresults[4]
-
-            if druid == False and paladin == False and sorcerer == False and knight == False:
-                print('Unknown NPC spell vocation', name)
-            c.execute('INSERT INTO SpellNPCs(spellid, npcid, druid, paladin, sorcerer, knight) VALUES (?,?,?,?,?,?)', (spellid, npcid, druid, paladin, sorcerer, knight))
-        else:
-            pass#print("Unrecognized spell", spell)
 
 # fix typos in creatures
 creatureMap = {'bone beast':'bonebeast', 'crystal crusher':'crystalcrusher', 'carniphilia': 'carniphila', 
 'slime (creature)': 'slime', 'ghouls':'ghoul', 'orc spearmen':'orc spearman', 'monks': 'monk', 'beholder': 'bonelord', 'demon skeletons':'demon skeleton',
 'glooth glob': 'glooth blob', 'tiquanda\'s revenge':'tiquandas revenge'}
 
+c.execute('DROP TABLE HuntingPlaceCreatures')
+c.execute('CREATE TABLE HuntingPlaceCreatures(huntingplaceid INTEGER, creatureid INTEGER)')  
 for huntingplaceid,creaturelist in iter(huntcreatures.items()):
     for creature in creaturelist:
         _creature = creature.strip().lower().replace("_", " ")
@@ -355,6 +369,8 @@ itemMap = {'jalape%c3%92o pepper': 'jalapeño pepper', 'jalapeno pepper':'jalape
   'soft boots': 'pair of soft boots', 'brown bag':'bag','gp': 'gold coin','sudden death':'sudden death rune', 'power bolts':'power bolt', 'apple':'red apple', 
   'platinum coins':'platinum coin', 'gold': 'gold coin', 'elephant tusk': 'tusk', 'present box': 'present', 'rust remover':'flask of rust remover'}
 
+c.execute('DROP TABLE CreatureDrops')
+c.execute('CREATE TABLE CreatureDrops(creatureid INTEGER, itemid INTEGER, percentage FLOAT, min INTEGER, max INTEGER)')
 for creatureid,drops in iter(creaturedrops.items()):
     for itemname,dropinfo in iter(drops.items()):
         _item = itemname.strip().lower()
@@ -368,6 +384,10 @@ for creatureid,drops in iter(creaturedrops.items()):
         else:
             pass#print("Unrecognized Item", itemname)
 
+c.execute('DROP TABLE QuestOutfits')
+c.execute('DROP TABLE QuestRewards')
+c.execute('CREATE TABLE QuestRewards(questid INT, itemid INT)')
+c.execute('CREATE TABLE QuestOutfits(questid INT, outfitid INT)')
 for questid,items in iter(rewardItems.items()):
     for itemname in items:
         _item = itemname.strip().lower()
@@ -440,6 +460,8 @@ pluralMap = {
             'corym': ['corym charlatan', 'corym skirmisher', 'corym vanguard']
             }
 
+c.execute('DROP TABLE QuestDangers')
+c.execute('CREATE TABLE QuestDangers(questid INT, creatureid INT)')
 for questid,creatures in iter(questDangers.items()):
     for creature in creatures:
         _creature = creature.strip().lower().replace("_", " ")

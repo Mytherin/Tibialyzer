@@ -12,6 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 # This file contains various operations to perform on images
 # Note that the operations aren't very cleanly implemented; they just call the imagemagick library on the shell in the tmp directory 
 # (and as such these only work on a system with imagemagick installed). These files are normally run on Ubuntu 15.04, but will likely work
@@ -93,21 +94,22 @@ def properly_crop_item(image_binary):
         x = int(match.groups()[0])
         y = int(match.groups()[1])
         centerx, centery = (int(x + width / 2), int(y + height / 2))
-        minx, miny = (max(centerx - 16, 0), max(centery - 16, 0))
+        minx, miny = (min(max(centerx - 16, 0), imgsize[0] - 32), min(max(centery - 16, 0), imgsize[1] - 32))
         maxx, maxy = (minx + 32, miny + 32)
-        os.system('convert /tmp/uncropped_item.gif -background transparent -crop %sx%s+%s+%s +repage /tmp/cropped_image.gif' % 
-            (maxx - minx, maxy - miny, minx, miny)) 
+        os.system('convert /tmp/uncropped_item.gif -background transparent -gravity center -crop %sx%s+%s+%s +repage -extent 32x32 /tmp/cropped_image_item' % 
+            (32, 32, minx, miny))
         #os.system('gifsicle --crop %d,%d-%d,%d --output /tmp/cropped_image_item /tmp/uncropped_item.gif' % (minx,miny,maxx,maxy))
     elif imgsize[0] < 32 or imgsize[1] < 32:
         os.system('convert /tmp/uncropped_item.gif -background transparent -gravity center -extent 32x32 /tmp/cropped_image_item')
     else: 
         minx,miny,maxx,maxy = (0,0,32,32)
-        os.system('convert /tmp/uncropped_item.gif -background transparent -crop %sx%s+%s+%s +repage /tmp/cropped_image.gif' % 
-            (maxx - minx, maxy - miny, minx, miny)) 
+        os.system('convert /tmp/uncropped_item.gif -background transparent /tmp/cropped_image_item')
+        #os.system('convert /tmp/uncropped_item.gif -background transparent -crop %sx%s+%s+%s +repage -extent 32x32 /tmp/cropped_image_item' % (32, 32, 0, 0))
         #os.system('gifsicle --crop %d,%d-%d,%d --output /tmp/cropped_image_item /tmp/uncropped_item.gif' % (minx,miny,maxx,maxy))
 
     newsize = image_get_size('/tmp/cropped_image_item')
     if newsize[0] != 32 or newsize[1] != 32:
+        print('Incorrect conversion: Image of size', imgsize, 'was converted to an image of size', newsize, '. The resulting image must be of size (32, 32).')
         exit()
     f = open('/tmp/cropped_image_item', 'rb')
     img = f.read()

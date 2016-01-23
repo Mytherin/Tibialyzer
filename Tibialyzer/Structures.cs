@@ -332,12 +332,12 @@ namespace Tibialyzer {
             return headers;
         }
         public override List<Attribute> GetAttributes() {
-            return new List<Attribute> { new StringAttribute(name, 160), new StringAttribute(minlevel.ToString(), 40), new StringAttribute(MainForm.ToTitle(city), 100), new ImageAttribute(GetDangerImage()) };
+            return new List<Attribute> { new StringAttribute(name, 160), new StringAttribute(minlevel.ToString(), 50), new StringAttribute(MainForm.ToTitle(city), 100), new ImageAttribute(GetDangerImage()) };
         }
         public override string GetCommand() {
             return "quest" + MainForm.commandSymbol + name;
         }
-        static List<string> headers = new List<string> { "Name", "Level", "City", "Danger" };
+        static List<string> headers = new List<string> { "Name", "Level", "City", "Mon" };
         static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode(), headers[3].GetHashCode() };
         public override IComparable GetHeaderValue(int header) {
             if (header == hashes[0]) {
@@ -383,7 +383,7 @@ namespace Tibialyzer {
             return headers;
         }
         public override List<Attribute> GetAttributes() {
-            return new List<Attribute> { new StringAttribute(name, 140), new StringAttribute(words, 100), new StringAttribute(manacost >= 0 ? manacost.ToString() : "-", 40, ManaCostColor), new StringAttribute(levelrequired > 0 ? levelrequired.ToString() : "-", 50) };
+            return new List<Attribute> { new StringAttribute(name, 140), new StringAttribute(words, 100), new StringAttribute(manacost >= 0 ? manacost.ToString() : "-", 50, ManaCostColor), new StringAttribute(levelrequired > 0 ? levelrequired.ToString() : "-", 50) };
         }
         public override string GetCommand() {
             return "spell" + MainForm.commandSymbol + name;
