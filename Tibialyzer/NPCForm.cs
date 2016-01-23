@@ -36,7 +36,7 @@ namespace Tibialyzer {
         }
 
         private const int headerLength = 5;
-        private string[] headers = { "Sell To", "Buy From", "Spells", "Travels", "Quests" };
+        private string[] headers = { "Sell To", "Buy From", "Spells", "Transport", "Quests" };
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NPCForm));
             this.mapBox = new Tibialyzer.MapPictureBox();
@@ -180,7 +180,14 @@ namespace Tibialyzer {
             foreach (SpellTaught spellTaught in npc.spellsTaught) {
                 objectList[2].Add(new LazyTibiaObject { id = spellTaught.spellid, type = TibiaObjectType.Spell });
             }
-            // todo: travel and quests
+            // Transport
+            foreach (Transport transport in npc.transportOffered) {
+                objectList[3].Add(transport);
+            }
+            // Quests Involved In
+            foreach (Quest q in npc.involvedQuests) {
+                objectList[4].Add(q);
+            }
 
             base_y = this.Size.Height;
             int x = 5;

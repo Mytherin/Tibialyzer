@@ -12,7 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -193,7 +193,7 @@ namespace Tibialyzer {
             }
             command = new SQLiteCommand(String.Format("SELECT questid FROM QuestRewards WHERE itemid={0}", item.id), mainForm.conn);
             reader = command.ExecuteReader();
-            while(reader.Read()) {
+            while (reader.Read()) {
                 item.rewardedBy.Add(getQuest(reader.GetInt32(0)));
             }
 
@@ -334,7 +334,7 @@ namespace Tibialyzer {
             if (cr.image == null) {
                 SQLiteCommand command = new SQLiteCommand(String.Format("SELECT image FROM Creatures WHERE id={0};", id), mainForm.conn);
                 SQLiteDataReader reader = command.ExecuteReader();
-                while(reader.Read()) {
+                while (reader.Read()) {
                     cr.image = Image.FromStream(reader.GetStream(0));
                 }
             }
@@ -449,6 +449,23 @@ namespace Tibialyzer {
                 t.paladin = reader.GetBoolean(3);
                 t.sorcerer = reader.GetBoolean(4);
                 npc.spellsTaught.Add(t);
+            }
+
+            command = new SQLiteCommand(String.Format("SELECT DISTINCT questid FROM QuestNPCs WHERE npcid={0}", npc.id), mainForm.conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                Quest q = getQuest(reader.GetInt32(0));
+                npc.involvedQuests.Add(q);
+            }
+
+            command = new SQLiteCommand(String.Format("SELECT destination,cost,notes FROM NPCDestinations WHERE npcid={0}", npc.id), mainForm.conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                Transport t = new Transport();
+                t.destination = reader.GetString(0);
+                t.cost = reader.GetInt32(1);
+                t.notes = reader.GetString(2);
+                npc.transportOffered.Add(t);
             }
             return npc;
         }
@@ -905,7 +922,7 @@ namespace Tibialyzer {
             if (!huntsLoaded) {
                 SQLiteCommand command = new SQLiteCommand(String.Format("SELECT HuntingPlaces.id FROM HuntingPlaces INNER JOIN HuntingPlaceCreatures ON HuntingPlaces.id=HuntingPlaceCreatures.huntingplaceid AND HuntingPlaceCreatures.creatureid={0}", creatureid), mainForm.conn);
                 SQLiteDataReader reader = command.ExecuteReader();
-                while(reader.Read()) {
+                while (reader.Read()) {
                     huntingPlaces.Add(getHunt(reader.GetInt32(0)));
                 }
             } else {

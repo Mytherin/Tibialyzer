@@ -1186,6 +1186,7 @@ namespace Tibialyzer {
                 x += kvp.Value;
                 maxwidth += kvp.Value;
             }
+            maxwidth += 10;
             offset = 0;
 
             // create object information

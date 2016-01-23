@@ -477,6 +477,39 @@ namespace Tibialyzer {
         }
     }
 
+    public class Transport : TibiaObject {
+        public string destination;
+        public int cost;
+        public string notes;
+
+        public override string GetName() { return notes.Length > 0 ? notes : "Travel to " + destination + " for " + cost + " gold."; }
+        public override Image GetImage() { return null; }
+
+        public override List<string> GetAttributeHeaders() {
+            return headers;
+        }
+        public override List<Attribute> GetAttributes() {
+            return new List<Attribute> { new StringAttribute(destination, 120), new StringAttribute(cost.ToString(), 50), new StringAttribute(notes, 180) };
+        }
+        public override string GetCommand() {
+            return "city@" + destination.ToLower();
+        }
+        static List<string> headers = new List<string> { "Destination", "Cost", "Notes" };
+        static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode() };
+        public override IComparable GetHeaderValue(int header) {
+            if (header == hashes[0]) {
+                return destination;
+            }
+            if (header == hashes[1]) {
+                return cost;
+            }
+            if (header == hashes[2]) {
+                return notes;
+            }
+            return base.GetHeaderValue(header);
+        }
+    }
+
     public class NPC : TibiaObject {
         public int id;
         public string name;
@@ -487,11 +520,15 @@ namespace Tibialyzer {
         public List<ItemSold> buyItems;
         public List<ItemSold> sellItems;
         public List<SpellTaught> spellsTaught;
+        public List<Quest> involvedQuests;
+        public List<Transport> transportOffered;
 
         public NPC() {
             sellItems = new List<ItemSold>();
             buyItems = new List<ItemSold>();
             spellsTaught = new List<SpellTaught>();
+            involvedQuests = new List<Quest>();
+            transportOffered = new List<Transport>();
             pos = new Coordinate();
             image = null;
         }
