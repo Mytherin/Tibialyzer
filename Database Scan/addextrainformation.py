@@ -32,7 +32,10 @@ def getItemID(name):
     global c
     name = name.strip().lower()
     c.execute('SELECT id FROM Items WHERE LOWER(name)=? OR LOWER(title)=?', (name, name))
-    return c.fetchall()[0][0]
+    results = c.fetchall()
+    if len(results) == 0:
+        print(name)
+    return results[0][0]
 
 
 conn = sqlite3.connect(database_file)
@@ -167,6 +170,11 @@ for child in root.getchildren():
         additionalNode = requirementNode.find('AdditionalRequirements')
         if additionalNode != None:
             for req in additionalNode.getchildren():
+                import re
+                match = re.search(r'\[([^]]+)\]', req.text)
+                if match != None:
+                    qname = match.groups()[0].strip().lower()
+                    linkedqid = getQuestID(qname)
                 c.execute('INSERT INTO QuestAdditionalRequirements(questid, requirementtext) VALUES (?,?)', (questid, req.text))
     instructionsNode = child.find('Instructions')
     if instructionsNode != None:
