@@ -271,6 +271,7 @@ namespace Tibialyzer {
         public string description;
         public string settings;
         public int ordering;
+        public string specialCommand = null;
     }
 
     public class Utility {
@@ -942,6 +943,67 @@ namespace Tibialyzer {
             }
             if (header == hashes[3]) {
                 return GetWeakness();
+            }
+            return base.GetHeaderValue(header);
+        }
+    }
+
+    public class Task : TibiaObject {
+        public int id;
+        public int groupid;
+        public string name;
+        public string groupname;
+        public int count;
+        public int taskpoints;
+        public int bossid;
+        public Coordinate bossposition;
+        public List<int> creatures;
+
+        public Task() {
+            creatures = new List<int>();
+        }
+
+        public Creature GetBoss() {
+            if (bossid < 0) return null;
+            return MainForm.getCreature(bossid);
+        }
+
+        public override string GetName() {
+            return name;
+        }
+        
+        public override Image GetImage() {
+            Creature cr = MainForm.getCreature(creatures[0]);
+            return cr.GetImage();
+        }
+        public override List<string> GetAttributeHeaders() {
+            return headers;
+        }
+        public override List<Attribute> GetAttributes() {
+            return new List<Attribute> {
+                new StringAttribute(GetName(), 150),
+                new StringAttribute(count.ToString(), 60),
+                new StringAttribute(taskpoints >= 0 ? taskpoints.ToString() : "-", 60),
+                new CommandAttribute(groupname, "task" + MainForm.commandSymbol + groupname, 120),
+            };
+        }
+        public override string GetCommand() {
+            return "task" + MainForm.commandSymbol + id;
+        }
+        static List<string> headers = new List<string> { "Name", "Count", "Points", "Group" };
+        static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode(), headers[3].GetHashCode() };
+        public override IComparable GetHeaderValue(int header) {
+            if (header == hashes[0]) {
+                return GetName();
+            }
+            if (header == hashes[1]) {
+                return count;
+            }
+            if (header == hashes[2]) {
+                return taskpoints;
+            }
+            if (header == hashes[3]) {
+                return groupname;
             }
             return base.GetHeaderValue(header);
         }

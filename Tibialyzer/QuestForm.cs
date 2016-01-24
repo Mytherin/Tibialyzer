@@ -12,14 +12,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
-
+using System.Text.RegularExpressions;
 
 namespace Tibialyzer {
     class QuestForm : NotificationForm {
@@ -201,11 +201,12 @@ namespace Tibialyzer {
                 rewards.Add(item);
             }
             rewards = rewards.OrderByDescending(o => (o as Item).GetMaxValue()).ToList<TibiaObject>();
-            int x = 11;
+            int x = 5;
             int y = 77;
             foreach (string missionName in quest.questInstructions.Keys) {
-                if (x + 100 >= this.Size.Width) {
-                    x = 10;
+                if (quest.questInstructions[missionName].Count == 0) continue;
+                if (x + 150 >= this.Size.Width) {
+                    x = 5;
                     y += 25;
                 }
                 Label missionButton = new Label();
@@ -214,12 +215,12 @@ namespace Tibialyzer {
                 missionButton.Font = wikiButton.Font;
                 missionButton.ForeColor = MainForm.label_text_color;
                 missionButton.Location = new System.Drawing.Point(x, y);
-                missionButton.Name = missionName;
+                missionButton.Name = quest.questInstructions[missionName][0].specialCommand != null ? quest.questInstructions[missionName][0].specialCommand : "guide" + MainForm.commandSymbol + quest.name.ToLower() + MainForm.commandSymbol + "1" + MainForm.commandSymbol + missionName;
                 missionButton.Padding = new System.Windows.Forms.Padding(2);
                 missionButton.Text = missionName;
                 missionButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
                 missionButton.Click += MissionButton_Click;
-                missionButton.Size = new Size(100, 21);
+                missionButton.Size = new Size(150, 21);
                 this.Controls.Add(missionButton);
                 x += missionButton.Width + 5;
             }
@@ -273,11 +274,21 @@ namespace Tibialyzer {
                     }
 
                     y += 5;
+                    Regex questRegex = new Regex("\\[([^]]+)\\]");
                     foreach (string text in requirementStrings) {
                         label = new Label();
-                        label.Text = text == "" ? "" : "- " + text;
-                        label.Location = new Point(5, y);
+                        string txt = text;
+                        Match m = questRegex.Match(txt);
                         label.ForeColor = MainForm.label_text_color;
+                        if (m != null && m.Groups.Count > 1) {
+                            string quest = m.Groups[1].Value;
+                            txt = txt.Replace(m.Groups[0].Value, quest);
+                            label.Name = MainForm.getQuest(quest.ToLower()).GetCommand();
+                            label.ForeColor = Color.FromArgb(105, 105, 255);
+                            label.Click += MissionButton_Click;
+                        }
+                        label.Text = txt == "" ? "" : "- " + txt;
+                        label.Location = new Point(5, y);
                         label.BackColor = Color.Transparent;
                         label.Font = QuestGuideForm.requirementFont;
                         Size size;
@@ -337,7 +348,7 @@ namespace Tibialyzer {
             MainForm.mainForm.ExecuteCommand("item" + MainForm.commandSymbol + (sender as Control).Name);
         }
         private void MissionButton_Click(object sender, EventArgs e) {
-            MainForm.mainForm.ExecuteCommand("guide" + MainForm.commandSymbol + quest.name.ToLower() + MainForm.commandSymbol + "1" + MainForm.commandSymbol + (sender as Control).Name);
+            MainForm.mainForm.ExecuteCommand((sender as Control).Name);
         }
 
         private void wikiButton_Click(object sender, EventArgs e) {

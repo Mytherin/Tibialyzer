@@ -332,6 +332,33 @@ namespace Tibialyzer {
             } else if (comp.StartsWith("item" + MainForm.commandSymbol)) { //item@
                 //show the item with all the NPCs that sell it
                 ShowItemNotification(command);
+            } else if (comp.StartsWith("task" + MainForm.commandSymbol)) { //task@
+                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
+                if (taskList.Keys.Contains(parameter)) {
+                    ShowCreatureList(taskList[parameter].ToList<TibiaObject>(), taskList[parameter][0].groupname, command);
+                } else {
+                    int id = -1;
+                    int.TryParse(parameter, out id);
+                    List<TibiaObject> tasks = new List<TibiaObject>();
+                    foreach(KeyValuePair<string, List<Task>> kvp in taskList) {
+                        foreach(Task t in kvp.Value) {
+                            if (id >= 0 && t.id == id) {
+                                ShowTaskNotification(t, command);
+                                return true;
+                            } else {
+                                if (t.GetName().ToLower().Contains(parameter)) {
+                                    tasks.Add(t);
+                                }
+                            }
+                        }
+                    }
+                    if (tasks.Count == 1) {
+                        ShowTaskNotification(tasks[0] as Task, command);
+                    } else {
+                        ShowCreatureList(tasks, String.Format("Tasks Containing \"{0}\"", parameter), command);
+                    }
+
+                }
             } else if (comp.StartsWith("category" + MainForm.commandSymbol)) { //category@
                 // list all items with the specified category
                 string parameter = command.Split(commandSymbol)[1].Trim().ToLower();

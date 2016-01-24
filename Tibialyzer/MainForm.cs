@@ -179,8 +179,8 @@ namespace Tibialyzer {
             this.initializePluralMap();
             try {
                 this.loadDatabaseData();
-            } catch {
-                ExitWithError("Fatal Error", String.Format("Corrupted database {0}.", databaseFile));
+            } catch(Exception e) {
+                ExitWithError("Fatal Error", String.Format("Corrupted database {0}.\nMessage: {1}", databaseFile, e.Message));
             }
             this.loadSettings();
             MainForm.initializeFonts();
@@ -190,8 +190,8 @@ namespace Tibialyzer {
             this.initializeMaps();
             try {
                 Pathfinder.LoadFromDatabase(nodeDatabase);
-            } catch {
-                ExitWithError("Fatal Error", String.Format("Corrupted database {0}.", nodeDatabase));
+            } catch(Exception e) {
+                ExitWithError("Fatal Error", String.Format("Corrupted database {0}.\nMessage: ", nodeDatabase, e.Message));
             }
             prevent_settings_update = false;
 
@@ -355,6 +355,41 @@ namespace Tibialyzer {
             while (reader.Read()) {
                 Event ev = eventIdMap[reader.GetInt32(0)];
                 ev.eventMessages.Add(reader.GetString(1));
+            }
+            // Task Groups
+            command = new SQLiteCommand("SELECT id,name FROM TaskGroups", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                int id = reader.GetInt32(0);
+                string name = reader.GetString(1);
+                taskList.Add(name.ToLower(), new List<Task>());
+                taskGroups.Add(id, name);
+                questNameMap["killing in the name of... quest"].questInstructions.Add(name, new List<QuestInstruction> { new QuestInstruction { specialCommand = "task" + MainForm.commandSymbol + name } });
+            }
+            // Tasks
+            command = new SQLiteCommand("SELECT id,groupid,count,taskpoints,bossid,bossx,bossy,bossz,name FROM Tasks", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                Task task = new Task();
+                task.id = reader.GetInt32(0);
+                task.groupid = reader.GetInt32(1);
+                task.groupname = taskGroups[task.groupid];
+                task.count = reader.GetInt32(2);
+                task.taskpoints = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
+                task.bossid = reader.IsDBNull(4) ? DATABASE_NULL : reader.GetInt32(4);
+                task.bossposition = new Coordinate();
+                task.bossposition.x = reader.IsDBNull(5) ? task.bossposition.x : reader.GetInt32(5);
+                task.bossposition.y = reader.IsDBNull(6) ? task.bossposition.y : reader.GetInt32(6);
+                task.bossposition.z = reader.IsDBNull(7) ? task.bossposition.z : reader.GetInt32(7);
+                task.name = reader.GetString(8);
+
+                // Task Creatures
+                SQLiteCommand command2 = new SQLiteCommand(String.Format("SELECT creatureid FROM TaskCreatures WHERE taskid={0}", task.id), conn);
+                SQLiteDataReader reader2 = command2.ExecuteReader();
+                while (reader2.Read()) {
+                    task.creatures.Add(reader2.GetInt32(0));
+                }
+                taskList[task.groupname.ToLower()].Add(task);
             }
         }
 
@@ -886,7 +921,7 @@ namespace Tibialyzer {
 
             ShowNotification(ldf, comm, screenshot_path);
         }
-        
+
         private void ShowHuntingPlace(HuntingPlace h, string comm) {
             HuntingPlaceForm f = new HuntingPlaceForm();
             f.hunting_place = h;
@@ -910,11 +945,17 @@ namespace Tibialyzer {
 
             ShowNotification(f, comm);
         }
-        
+
         private void ShowHuntGuideNotification(HuntingPlace hunt, string comm, int page) {
             if (hunt.directions.Count == 0) return;
             QuestGuideForm f = new QuestGuideForm(hunt);
             f.initialPage = page;
+
+            ShowNotification(f, comm);
+        }
+        
+        private void ShowTaskNotification(Task task, string comm) {
+            TaskForm f =  new TaskForm(task);
 
             ShowNotification(f, comm);
         }
@@ -1079,7 +1120,7 @@ namespace Tibialyzer {
                 this.nextPage = nextPage;
             }
         }
-        
+
         public static int DisplayCreatureAttributeList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, out int maxwidth, Func<TibiaObject, string> tooltip_function = null, List<Control> createdControls = null, int page = 0, int pageitems = 20, PageInfo pageInfo = null, string extraAttribute = null, Func<TibiaObject, Attribute> attributeFunction = null, EventHandler headerSortFunction = null, string sortedHeader = null, bool desc = false, Func<TibiaObject, IComparable> extraSort = null, List<string> removedAttributes = null, bool conditional = false) {
             const int size = 24;
             const int imageSize = size - 4;
@@ -1183,7 +1224,7 @@ namespace Tibialyzer {
             }
             // create header information
             int x = base_x;
-            foreach(string k in keys) {
+            foreach (string k in keys) {
                 int val = totalAttributes[k];
                 Label label = new Label();
                 label.Name = k;
@@ -1232,8 +1273,16 @@ namespace Tibialyzer {
                     createdControls.Add(picture);
                 }
                 controls.Add(picture);
+                if (tooltip_function == null) {
+                    if (obj.AsItem() != null) {
+                        value_tooltip.SetToolTip(picture, obj.AsItem().look_text);
+                    } else {
+                        value_tooltip.SetToolTip(picture, obj.GetName());
+                    }
+                } else {
+                    value_tooltip.SetToolTip(picture, tooltip_function(obj));
+                }
                 x = base_x;
-                //Bitmap bitmap = new Bitmap(maxwidth * textscaling, size);
                 foreach (string k in keys) {
                     int val = totalAttributes[k];
                     int index = headers.IndexOf(k);
@@ -1254,7 +1303,6 @@ namespace Tibialyzer {
                         label.Font = MainForm.text_font;
                         label.Location = new Point(x, size * (offset + 1) + base_y);
                         label.BackColor = Color.Transparent;
-                        //label.DrawToBitmap(bitmap, new Rectangle(x, 0, kvp.Value, size));
                         if (createdControls != null) {
                             createdControls.Add(label);
                         }

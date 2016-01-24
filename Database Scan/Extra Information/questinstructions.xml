@@ -773,7 +773,7 @@
 		</Requirements>
 	</Quest>
 	<Quest>
-		<Name>Barbarian Test Quest</Name>
+		<Name>Barbarian Arena Quest</Name>
 		<Requirements>
 			<Items>
 				<Item Count="100">Platinum Coin</Item>

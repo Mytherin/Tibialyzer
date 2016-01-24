@@ -62,6 +62,9 @@ namespace Tibialyzer {
         private static Dictionary<string, WorldObject> _worldObjectNameMap = new Dictionary<string, WorldObject>();
         public static bool worldObjectsLoaded = false;
 
+        public static Dictionary<string, List<Task>> taskList = new Dictionary<string, List<Task>>();
+        public static Dictionary<int, string> taskGroups = new Dictionary<int, string>();
+
         public static Dictionary<int, City> cityIdMap = new Dictionary<int, City>();
         public static Dictionary<string, City> cityNameMap = new Dictionary<string, City>();
         private static Dictionary<int, Quest> questIdMap = new Dictionary<int, Quest>();

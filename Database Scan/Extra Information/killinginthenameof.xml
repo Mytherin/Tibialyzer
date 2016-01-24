@@ -52,6 +52,7 @@
 				<Points>2</Points>
 			</Task>
 			<Task>
+				<Name>Ape Task</Name>
 				<Creature>Kongra;Sibang;Merlkin</Creature>
 				<Count>300</Count>
 				<Points>2</Points>
@@ -79,6 +80,7 @@
 				<BossLocation>125.141,121.168,3</BossLocation>
 			</Task>
 			<Task>
+				<Name>Quara Scout Task</Name>
 				<Creature>Quara Constrictor Scout;Quara Hydromancer Scout;Quara Mantassin Scout;Quara Pincher Scout;Quara Predator Scout</Creature>
 				<Count>400</Count>
 				<Points>2</Points>
@@ -142,6 +144,7 @@
 		<Name>Level 80-129 Tasks</Name>
 		<Tasks>
 			<Task>
+				<Name>Quara Task</Name>
 				<Creature>Quara Constrictor;Quara Hydromancer;Quara Mantassin;Quara Pincher;Quara Predator</Creature>
 				<Count>600</Count>
 				<Points>3</Points>
@@ -163,6 +166,7 @@
 				<BossLocation>128.224,122.211,7</BossLocation>
 			</Task>
 			<Task>
+				<Name>Nightmare Task</Name>
 				<Creature>Nightmare;Nightmare Scion</Creature>
 				<Count>400</Count>
 				<Points>3</Points>
@@ -177,6 +181,7 @@
 				<BossLocation>128.48,121.50,7</BossLocation>
 			</Task>
 			<Task>
+				<Name>High Class Lizard Task</Name>
 				<Creature>Lizard Chosen;Eternal Guardian;Lizard Dragon Priest;Lizard High Guard;Lizard Legionnaire;Lizard Magistratus;Lizard Noble;Lizard Zaogun;Souleater</Creature>
 				<Count>800</Count>
 				<Points>3</Points>
@@ -259,6 +264,7 @@
 				<BossLocation>129.91,121.28,8</BossLocation>
 			</Task>
 			<Task>
+				<Name>Draken Task</Name>
 				<Creature>Draken Abomination;Draken Elite;Draken Spellweaver;Draken Warmaster</Creature>
 				<Count>900</Count>
 				<Points>3</Points>
@@ -285,30 +291,35 @@
 		<Name>Special Tasks</Name>
 		<Tasks>
 			<Task>
+				<Name>Pirate Task</Name>
 				<Creature>Pirate Marauder;Pirate Cutthroat;Pirate Buccaneer;Pirate Corsair</Creature>
 				<Count>3000</Count>
 				<Boss>Brutus Bloodbeard</Boss>
 				<BossLocation>124.233,128.85,1</BossLocation>
 			</Task>
 			<Task>
+				<Name>Minotaur Task</Name>
 				<Creature>Minotaur;Minotaur Archer;Minotaur Guard;Minotaur Mage</Creature>
 				<Count>5000</Count>
 				<Boss>The Horned Fox</Boss>
 				<BossLocation>126.194,124.244,9</BossLocation>
 			</Task>
 			<Task>
-				<Creature>Necromancer</Creature>
+				<Name>Necromancer Task</Name>
+				<Creature>Necromancer;Blood Hand;Blood Priest;Priestess;Shadow Pupil</Creature>
 				<Count>4000</Count>
 				<Boss>Necropharus</Boss>
 				<BossLocation>129.22,126.183,11</BossLocation>
 			</Task>
 			<Task>
+				<Name>Blue Djinn Task</Name>
 				<Creature>Blue Djinn;Marid</Creature>
 				<Count>500</Count>
 				<Boss>Merikh The Slaughterer</Boss>
 				<BossLocation>128.102,121.136,4</BossLocation>
 			</Task>
 			<Task>
+				<Name>Green Djinn Task</Name>
 				<Creature>Green Djinn;Efreet</Creature>
 				<Count>500</Count>
 				<Boss>Fahim The Wise</Boss>
