@@ -2460,7 +2460,17 @@ D::Right
 Q::NumpadHome
 E::NumpadPgUp
 Z::NumpadEnd
-C::NumpadPgDn";
+C::NumpadPgDn
+# Hotkey Tibialyzer commands
+# Open loot window with the [ key
+[::Command=loot@
+# Show exp with ] key 
+]::Command=exp@ 
+# Close all windows when = key is pressed
+=::Command=close@ 
+# Open last window with - key
+-::Command=refresh@ 
+";
 
         private void ResetSettingsToDefault() {
             settings = new Dictionary<string, List<string>>();
@@ -2474,6 +2484,8 @@ C::NumpadPgDn";
             setSetting("UseRichNotificationType", true);
             setSetting("ShowNotificationsValue", true);
             setSetting("NotificationValue", 2000);
+            setSetting("ShowNotificationsRatio", false);
+            setSetting("NotificationGoldRatio", 100);
             setSetting("ShowNotificationsSpecific", true);
             setSetting("LookMode", true);
             setSetting("AlwaysShowLoot", false);

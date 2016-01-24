@@ -805,7 +805,7 @@ namespace Tibialyzer {
                     foreach (Tuple<Item, int> tpl2 in items) {
                         Item item = tpl2.Item1;
                         bool showNotificationValue = item.GetMaxValue() >= notification_value && showNotificationsValue;
-                        bool showNotificationRatio = getSettingBool("ShowNotificationsGoldRatio") && item.GetMaxValue() / item.capacity > getSettingDouble("NotificationGoldRatio");
+                        bool showNotificationRatio = getSettingBool("ShowNotificationsGoldRatio") && (item.GetMaxValue() / item.capacity) >= getSettingDouble("NotificationGoldRatio");
                         bool showNotificationSpecific = showNotificationsSpecific && settings["NotificationItems"].Contains(item.displayname.ToLower());
                         if (((!showNotificationsValue || showNotificationValue) && (!getSettingBool("ShowNotificationsGoldRatio") || showNotificationRatio) && (getSettingBool("ShowNotificationsGoldRatio") || showNotificationsValue)) || showNotificationSpecific) {
                             showNotification = true;
