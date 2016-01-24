@@ -409,7 +409,7 @@ namespace Tibialyzer {
                     List<HuntingPlace> huntList = searchHunt(parameter);
                     title = "Hunts Containing \"" + parameter + "\"";
                     if (huntList.Count == 1) {
-                        ShowHuntGuideNotification(huntList[0], command, page);
+                        ShowHuntingPlace(huntList[0], command);
                     } else if (huntList.Count > 1) {
                         ShowCreatureList(huntList.ToList<TibiaObject>(), title, command);
                     }

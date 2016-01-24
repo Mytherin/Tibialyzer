@@ -252,6 +252,12 @@ namespace Tibialyzer {
             base.Dispose(disposing);
         }
 
+        private List<Control> creatureControls = new List<Control>();
+        private int currentPage = 0;
+        private string sortedHeader = "";
+        private bool desc = false;
+        private int baseY;
+
         public override void LoadForm() {
             this.SuspendForm();
             NotificationInitialize();
@@ -319,15 +325,10 @@ namespace Tibialyzer {
                 this.requirementLabel.Hide();
             }
 
-            int base_y = this.creatureLabel.Location.Y + this.creatureLabel.Height + 5;
+            baseY = this.creatureLabel.Location.Y + this.creatureLabel.Height + 5;
 
-            List<TibiaObject> creatures = new List<TibiaObject>();
-            foreach(int creatureid in hunting_place.creatures) {
-                Creature cr = MainForm.getCreature(creatureid);
-                creatures.Add(cr);
-            }
 
-            y = MainForm.DisplayCreatureList(this.Controls, creatures, 10, base_y, this.Size.Width, 4, null, 0.8f);
+            //y = MainForm.DisplayCreatureList(this.Controls, creatures, 10, base_y, this.Size.Width, 4, null, 0.8f);
 
             Font f = MainForm.fontList[0];
             for (int i = 0; i < MainForm.fontList.Count; i++) {
@@ -355,7 +356,7 @@ namespace Tibialyzer {
             lootStarBox.Image = bitmap;
 
             this.huntingPlaceName.Font = f;
-            this.Size = new Size(this.Size.Width, base_y + y + 10);
+            this.refreshCreatures();
             UpdateMap();
 
             mapBox.Click -= c_Click;
@@ -369,7 +370,80 @@ namespace Tibialyzer {
             base.NotificationFinalize();
             this.ResumeForm();
         }
-        
+
+        private void refreshCreatures() {
+            foreach(Control c in creatureControls) {
+                Controls.Remove(c);
+                c.Dispose();
+            }
+
+            List<TibiaObject> creatures = new List<TibiaObject>();
+            foreach (int creatureid in hunting_place.creatures) {
+                Creature cr = MainForm.getCreature(creatureid);
+                creatures.Add(cr);
+            }
+
+            MainForm.PageInfo pageInfo = new MainForm.PageInfo(false, false);
+            int newWidth;
+            int y = baseY + MainForm.DisplayCreatureAttributeList(this.Controls, creatures, 10, baseY, out newWidth, null, creatureControls, currentPage, 10, pageInfo, null, null, sortFunction, sortedHeader, desc);
+
+            if (pageInfo.prevPage || pageInfo.nextPage) {
+                if (pageInfo.prevPage) {
+                    PictureBox prevpage = new PictureBox();
+                    prevpage.Location = new Point(10, y);
+                    prevpage.Size = new Size(97, 23);
+                    prevpage.Image = MainForm.prevpage_image;
+                    prevpage.BackColor = Color.Transparent;
+                    prevpage.SizeMode = PictureBoxSizeMode.Zoom;
+                    prevpage.Click += Prevpage_Click;
+                    this.Controls.Add(prevpage);
+                    creatureControls.Add(prevpage);
+
+                }
+                if (pageInfo.nextPage) {
+                    PictureBox nextpage = new PictureBox();
+                    nextpage.Location = new Point(Math.Max(newWidth, this.Size.Width) - 108, y);
+                    nextpage.Size = new Size(98, 23);
+                    nextpage.BackColor = Color.Transparent;
+                    nextpage.Image = MainForm.nextpage_image;
+                    nextpage.SizeMode = PictureBoxSizeMode.Zoom;
+                    nextpage.Click += Nextpage_Click;
+                    this.Controls.Add(nextpage);
+                    creatureControls.Add(nextpage);
+                }
+                y += 25;
+            }
+            refreshTimer();
+            this.Size = new Size(Math.Max(this.Size.Width, newWidth), y + 10);
+        }
+
+        private void Nextpage_Click(object sender, EventArgs e) {
+            currentPage++;
+            this.SuspendForm();
+            refreshCreatures();
+            this.ResumeForm();
+        }
+
+        private void Prevpage_Click(object sender, EventArgs e) {
+            currentPage--;
+            this.SuspendForm();
+            refreshCreatures();
+            this.ResumeForm();
+        }
+
+        protected void sortFunction(object sender, EventArgs e) {
+            if (sortedHeader == (sender as Control).Name) {
+                desc = !desc;
+            } else {
+                sortedHeader = (sender as Control).Name;
+                desc = false;
+            }
+            this.SuspendForm();
+            refreshCreatures();
+            this.ResumeForm();
+        }
+
+
         protected void openCreatureMenu(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
             string name = (sender as Control).Name;
