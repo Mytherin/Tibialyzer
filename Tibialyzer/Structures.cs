@@ -1009,6 +1009,38 @@ namespace Tibialyzer {
         }
     }
 
+    class HelpCommand : TibiaObject {
+        public string command;
+        public string description;
+
+        public override Image GetImage() {
+            return null;
+        }
+        public override string GetName() {
+            return command;
+        }
+        public override List<string> GetAttributeHeaders() {
+            return headers;
+        }
+        static List<string> headers = new List<string> { "Command", "Description" };
+        static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode() };
+        public override List<Attribute> GetAttributes() {
+            return new List<Attribute> { new StringAttribute(command, 180), new StringAttribute(description, 420) };
+        }
+        public override string GetCommand() {
+            return "";
+        }
+        public override IComparable GetHeaderValue(int header) {
+            if (header == hashes[0]) {
+                return command;
+            }
+            if (header == hashes[1]) {
+                return description;
+            }
+            return base.GetHeaderValue(header);
+        }
+    }
+
     enum TibiaObjectType { Creature, Item, NPC, Outfit, Mount, Spell };
 
     class LazyTibiaObject : TibiaObject {

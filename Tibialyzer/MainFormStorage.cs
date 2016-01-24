@@ -72,6 +72,9 @@ namespace Tibialyzer {
         public static Dictionary<string, Image> utilityImages = new Dictionary<string, Image>();
         public static Dictionary<int, Event> eventIdMap = new Dictionary<int, Event>();
         private static List<Map> mapFiles = new List<Map>();
+
+        private static List<HelpCommand> helpCommands = new List<HelpCommand>();
+
         public static int mapFilesCount { get { return mapFiles.Count; } }
 
         public static Map getMap(int z) {

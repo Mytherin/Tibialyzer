@@ -113,6 +113,7 @@ namespace Tibialyzer {
         }
 
         public MainForm() {
+            Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
             mainForm = this;
             InitializeComponent();
 
@@ -205,7 +206,11 @@ namespace Tibialyzer {
             creatureTab.BackgroundImageLayout = ImageLayout.Tile;
             itemTab.BackgroundImage = NotificationForm.background_image;
             itemTab.BackgroundImageLayout = ImageLayout.Tile;
+            commandListTab.BackgroundImage = NotificationForm.background_image;
+            commandListTab.BackgroundImageLayout = ImageLayout.Tile;
             this.backgroundBox.Image = NotificationForm.background_image;
+
+            this.Load += MainForm_Load;
 
             BackgroundWorker bw = new BackgroundWorker();
             makeDraggable(this.Controls);
@@ -226,6 +231,10 @@ namespace Tibialyzer {
             this.current_state = ScanningState.NoTibia;
             this.loadTimerImage.Enabled = true;
             scan_tooltip.SetToolTip(this.loadTimerImage, "No Tibia Client Found...");
+        }
+
+        private void MainForm_Load(object sender, EventArgs e) {
+            HelpTimer_Elapsed(null, null);
         }
 
         protected override CreateParams CreateParams {
@@ -402,6 +411,11 @@ namespace Tibialyzer {
                     task.creatures.Add(reader2.GetInt32(0));
                 }
                 taskList[task.groupname.ToLower()].Add(task);
+            }
+            command = new SQLiteCommand("SELECT command, description FROM CommandHelp", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                helpCommands.Add(new HelpCommand { command = reader["command"].ToString(), description = reader["description"].ToString() });
             }
         }
 
@@ -1473,8 +1487,8 @@ namespace Tibialyzer {
             return y;
         }
 
-        
-        private void refreshItems(Control suspend, Control.ControlCollection controls, List<TibiaObject> tibiaObjects, string sortedHeader, bool desc, EventHandler eventHandler) {
+
+        private void refreshItems(Control suspend, Control.ControlCollection controls, List<TibiaObject> tibiaObjects, string sortedHeader, bool desc, EventHandler eventHandler, int maxItems = 20) {
             int maxWidth = 0;
 
             this.SuspendLayout();
@@ -1483,7 +1497,7 @@ namespace Tibialyzer {
                 c.Dispose();
             }
             controls.Clear();
-            DisplayCreatureAttributeList(controls, tibiaObjects, 10, 10, out maxWidth, null, null, 0, 20, null, null, null, eventHandler, sortedHeader, desc);
+            DisplayCreatureAttributeList(controls, tibiaObjects, 0, 10, out maxWidth, null, null, 0, maxItems, null, null, null, eventHandler, sortedHeader, desc);
             NotificationForm.ResumeDrawing(suspend);
             this.ResumeLayout(false);
         }
@@ -1496,7 +1510,7 @@ namespace Tibialyzer {
         object creatureLock = new object();
         System.Timers.Timer creatureTimer = null;
         protected void refreshCreatureTimer() {
-            lock(creatureLock) {
+            lock (creatureLock) {
                 if (creatureTimer != null) {
                     creatureTimer.Dispose();
                 }
@@ -1507,7 +1521,7 @@ namespace Tibialyzer {
         }
 
         private void CreatureTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
-            lock(creatureLock) {
+            lock (creatureLock) {
                 creatureTimer.Dispose();
                 creatureTimer = null;
                 mainForm.Invoke((MethodInvoker)delegate {
@@ -1577,6 +1591,55 @@ namespace Tibialyzer {
             refreshItems(itemPanel, itemPanel.Controls, itemObjects, itemSortedHeader, itemDesc, sortItems);
         }
 
+
+        object helpLock = new object();
+        System.Timers.Timer helpTimer = null;
+        protected void refreshHelpTimer() {
+            lock (helpLock) {
+                if (helpTimer != null) {
+                    helpTimer.Dispose();
+                }
+                helpTimer = new System.Timers.Timer(250);
+                helpTimer.Elapsed += HelpTimer_Elapsed;
+                helpTimer.Enabled = true;
+            }
+        }
+
+        private void HelpTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
+            lock (helpLock) {
+                if (helpTimer != null)
+                    helpTimer.Dispose();
+                helpTimer = null;
+                mainForm.Invoke((MethodInvoker)delegate {
+                    string helpText = helpSearchBox.Text.ToLower();
+                    commands.Clear();
+                    foreach (HelpCommand command in helpCommands) {
+                        if (helpText == "" || command.command.ToLower().Contains(helpText) || command.description.ToLower().Contains(helpText)) {
+                            commands.Add(command);
+                        }
+                    }
+                    refreshItems(helpPanel, helpPanel.Controls, commands, helpSortedHeader, helpDesc, sortHelp, 100);
+                });
+            }
+        }
+        List<TibiaObject> commands = new List<TibiaObject>();
+
+        private string helpSortedHeader = null;
+        private bool helpDesc = false;
+
+        private void helpSearchBox_TextChanged(object sender, EventArgs e) {
+            refreshHelpTimer();
+        }
+        private void sortHelp(object sender, EventArgs e) {
+            if (helpSortedHeader == (sender as Control).Name) {
+                helpDesc = !helpDesc;
+            } else {
+                helpSortedHeader = (sender as Control).Name;
+                helpDesc = false;
+            }
+            refreshItems(helpPanel, helpPanel.Controls, commands, helpSortedHeader, helpDesc, sortHelp, 100);
+        }
+
         void ShowCreatureInformation(object sender, EventArgs e) {
             string creature_name = (sender as Control).Name;
             this.ExecuteCommand("creature" + MainForm.commandSymbol + creature_name);
@@ -1604,7 +1667,10 @@ namespace Tibialyzer {
         }
 
         private void resetButton_Click(object sender, EventArgs e) {
-            this.ExecuteCommand("reset" + MainForm.commandSymbol);
+            Hunt h = getSelectedHunt();
+            if (h != null) {
+                ExecuteCommand("reset" + MainForm.commandSymbol + h.name);
+            }
         }
 
         private void importLogFile_Click(object sender, EventArgs e) {
@@ -1653,28 +1719,7 @@ namespace Tibialyzer {
                 this.ExecuteCommand("damage" + MainForm.commandSymbol + "screenshot" + MainForm.commandSymbol + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/"));
             }
         }
-
-        private void applyRatioButton_Click(object sender, EventArgs e) {
-            double val = 0;
-            if (double.TryParse(goldRatioTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out val)) {
-                this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + goldRatioTextBox.Text);
-            }
-        }
-
-        private void stackableConvertApply_Click(object sender, EventArgs e) {
-            double val = 0;
-            if (double.TryParse(stackableConvertTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out val)) {
-                this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "1-" + stackableConvertTextBox.Text);
-            }
-        }
-
-        private void unstackableConvertApply_Click(object sender, EventArgs e) {
-            double val = 0;
-            if (double.TryParse(unstackableConvertTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out val)) {
-                this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "0-" + unstackableConvertTextBox.Text);
-            }
-        }
-
+        
         public static void OpenUrl(string str) {
             // Weird command prompt escape characters
             str = str.Trim().Replace(" ", "%20").Replace("&", "^&").Replace("|", "^|").Replace("(", "^(").Replace(")", "^)");
@@ -1747,8 +1792,8 @@ namespace Tibialyzer {
         private Hunt getSelectedHunt() {
             if (huntBox.SelectedIndex < 0) return null;
             lock (hunts) {
-                
-                return huntBox.SelectedIndex >= hunts.Count  ? null : hunts[huntBox.SelectedIndex];
+
+                return huntBox.SelectedIndex >= hunts.Count ? null : hunts[huntBox.SelectedIndex];
             }
         }
 
@@ -1825,14 +1870,18 @@ namespace Tibialyzer {
         }
 
         void refreshHuntLog(Hunt h) {
+            const int maxLogLines = 1000;
             string massiveString = "";
             List<string> timestamps = h.loot.logMessages.Keys.OrderByDescending(o => o).ToList();
+            int count = 0;
             foreach (string t in timestamps) {
-                List<string> strings = h.loot.logMessages[t].ToArray().ToList();
+                List<string> strings = h.loot.logMessages[t].ToList();
                 strings.Reverse();
                 foreach (string str in strings) {
                     massiveString += str + "\n";
+                    if (count++ > maxLogLines) break;
                 }
+                if (count > maxLogLines) break;
             }
             this.logMessageTextBox.Text = massiveString;
         }
@@ -2569,6 +2618,99 @@ C::NumpadPgDn
             setSetting("ScanSpeed", scanningSpeedTrack.Value);
             saveSettings();
             scanSpeedDisplayLabel.Text = scanSpeedText[scanningSpeedTrack.Value];
+        }
+
+        private void showLootButton_Click(object sender, EventArgs e) {
+            Hunt h = getSelectedHunt();
+            if (h != null) {
+                ExecuteCommand("loot" + MainForm.commandSymbol + h.name);
+            }
+        }
+
+
+        private void pickupRare_Click(object sender, EventArgs e) {
+            this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + "100");
+        }
+
+        private void pickupHigh_Click(object sender, EventArgs e) {
+            this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + "25");
+
+        }
+
+        private void pickupGold_Click(object sender, EventArgs e) {
+            this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + "10");
+        }
+
+        private void pickupPlate_Click(object sender, EventArgs e) {
+            this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + "3");
+
+        }
+
+        private void pickupEverything_Click(object sender, EventArgs e) {
+            this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + "0");
+        }
+
+        private void convertAllStackable_Click(object sender, EventArgs e) {
+            this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "1-9999999999");
+        }
+
+        private void noConvertStackable_Click(object sender, EventArgs e) {
+            this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "1-0");
+        }
+
+        private void convertNonStackable_Click(object sender, EventArgs e) {
+            this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "0-9999999999");
+        }
+
+        private void convertCheapNonStackable_Click(object sender, EventArgs e) {
+            this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "0-10");
+        }
+
+        private void dontConvert_Click(object sender, EventArgs e) {
+            this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "0-0");
+        }
+
+        private void PickupCreatureDrops(bool pickup) {
+            using (var transaction = conn.BeginTransaction()) {
+                SQLiteCommand command;
+                command = new SQLiteCommand(String.Format("UPDATE Items SET discard={0} WHERE category='{1}';", !pickup ? "1" : "0", "Creature Products"), conn, transaction);
+                command.ExecuteNonQuery();
+                transaction.Commit();
+            }
+            foreach (int id in _itemIdMap.Keys.ToArray().ToList()) {
+                Item item = _itemIdMap[id];
+                if (item.category == "Creature Products") {
+                    item.discard = !pickup;
+                }
+            }
+        }
+
+        private void pickupCreature_Click(object sender, EventArgs e) {
+            PickupCreatureDrops(true);
+        }
+
+        private void nopickupCreature_Click(object sender, EventArgs e) {
+            PickupCreatureDrops(false);
+        }
+        private void applyRatioButton_Click(object sender, EventArgs e) {
+            double val = 0;
+            if (double.TryParse(goldRatioTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out val)) {
+                this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + goldRatioTextBox.Text);
+            }
+        }
+
+        private void stackableConvertApply_Click(object sender, EventArgs e) {
+            double val = 0;
+            if (double.TryParse(stackableConvertTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out val)) {
+                this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "1-" + stackableConvertTextBox.Text);
+            }
+        }
+
+        private void unstackableConvertApply_Click(object sender, EventArgs e) {
+            double val = 0;
+            if (double.TryParse(unstackableConvertTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out val)) {
+                this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "0-" + unstackableConvertTextBox.Text);
+            }
         }
     }
 

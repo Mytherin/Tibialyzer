@@ -302,6 +302,15 @@ namespace Tibialyzer {
                 } else if (int.TryParse(parameter, out time) && time > 0) {
                     clearOldLog(activeHunt, time);
                 } else {
+                    lock(hunts) {
+                        foreach(Hunt h in hunts) {
+                            if (h.name.ToLower() == parameter.ToLower()) {
+                                // reset@<hunt> resets the specified hunt
+                                resetHunt(h);
+                                return true;
+                            }
+                        }
+                    }
                     //reset@ loot deletes all loot from the currently active hunt
                     resetHunt(activeHunt);
                 }

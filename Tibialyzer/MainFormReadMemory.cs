@@ -447,24 +447,36 @@ namespace Tibialyzer {
         }
 
         void setGoldRatio(double ratio) {
+            ratio -= 0.00001;
             using (var transaction = conn.BeginTransaction()) {
                 SQLiteCommand command;
                 command = new SQLiteCommand("UPDATE Items SET discard=0;", conn, transaction);
                 command.ExecuteNonQuery();
-                command = new SQLiteCommand(String.Format("UPDATE Items SET discard=1 WHERE MAX(vendor_value, actual_value) / capacity < {0};", ratio), conn, transaction);
+                command = new SQLiteCommand(String.Format("UPDATE Items SET discard=1 WHERE (MAX(vendor_value, actual_value) / capacity) < {0};", ratio.ToString()), conn, transaction);
                 command.ExecuteNonQuery();
                 transaction.Commit();
+            }
+            foreach(int id in _itemIdMap.Keys.ToArray().ToList()) {
+                Item item = _itemIdMap[id];
+                item.discard = ((double)item.GetMaxValue() / (double)(item.capacity == 0 ? 1 : item.capacity)) < ratio;
             }
         }
 
         void setConvertRatio(double ratio, bool stackable) {
+            ratio -= 0.00001;
             using (var transaction = conn.BeginTransaction()) {
                 SQLiteCommand command;
                 command = new SQLiteCommand(String.Format("UPDATE Items SET convert_to_gold=0 WHERE stackable={0};", stackable ? 1 : 0), conn, transaction);
                 command.ExecuteNonQuery();
-                command = new SQLiteCommand(String.Format("UPDATE Items SET convert_to_gold=1 WHERE stackable={0} AND MAX(vendor_value, actual_value) / capacity < {1};", stackable ? 1 : 0, ratio), conn, transaction);
+                command = new SQLiteCommand(String.Format("UPDATE Items SET convert_to_gold=1 WHERE stackable={0} AND MAX(vendor_value, actual_value) / capacity < {1};", stackable ? 1 : 0, ratio.ToString(System.Globalization.CultureInfo.InvariantCulture)), conn, transaction);
                 command.ExecuteNonQuery();
                 transaction.Commit();
+            }
+            foreach (int id in _itemIdMap.Keys.ToArray().ToList()) {
+                Item item = _itemIdMap[id];
+                if (item.stackable == stackable) {
+                    item.convert_to_gold = ((double)item.GetMaxValue() / (double)(item.capacity == 0 ? 1 : item.capacity)) < ratio;
+                }
             }
         }
 

@@ -52,6 +52,7 @@
             this.nameTextBox = new System.Windows.Forms.RichTextBox();
             this.namesLabel = new System.Windows.Forms.Label();
             this.huntingPage = new System.Windows.Forms.TabPage();
+            this.showLootButton = new System.Windows.Forms.Button();
             this.trackAllCreaturesPanel = new System.Windows.Forms.Panel();
             this.aggregateHuntBox = new System.Windows.Forms.CheckBox();
             this.sideHuntBox = new System.Windows.Forms.CheckBox();
@@ -104,20 +105,20 @@
             this.label50 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label54 = new System.Windows.Forms.Label();
-            this.button12 = new System.Windows.Forms.Button();
-            this.button11 = new System.Windows.Forms.Button();
-            this.button10 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
+            this.noConvertStackable = new System.Windows.Forms.Button();
+            this.convertAllStackable = new System.Windows.Forms.Button();
+            this.convertNonStackable = new System.Windows.Forms.Button();
+            this.convertCheapNonStackable = new System.Windows.Forms.Button();
+            this.dontConvert = new System.Windows.Forms.Button();
             this.label60 = new System.Windows.Forms.Label();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.pickupEverything = new System.Windows.Forms.Button();
+            this.pickupCreature = new System.Windows.Forms.Button();
+            this.nopickupCreature = new System.Windows.Forms.Button();
+            this.pickupHigh = new System.Windows.Forms.Button();
+            this.pickupPlate = new System.Windows.Forms.Button();
+            this.pickupGold = new System.Windows.Forms.Button();
             this.label59 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.pickupRare = new System.Windows.Forms.Button();
             this.unstackableConvertApply = new System.Windows.Forms.Button();
             this.unstackableConvertTextBox = new System.Windows.Forms.TextBox();
             this.stackableConvertApply = new System.Windows.Forms.Button();
@@ -159,6 +160,9 @@
             this.screenshotList = new System.Windows.Forms.ListBox();
             this.screenshotBox = new System.Windows.Forms.PictureBox();
             this.commandListTab = new System.Windows.Forms.TabPage();
+            this.helpPanel = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.helpSearchBox = new System.Windows.Forms.TextBox();
             this.closeButton = new System.Windows.Forms.Label();
             this.minimizeButton = new System.Windows.Forms.Label();
             this.minimizeIcon = new System.Windows.Forms.NotifyIcon(this.components);
@@ -184,6 +188,7 @@
             this.screenshotPage.SuspendLayout();
             this.screenshotPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.screenshotBox)).BeginInit();
+            this.commandListTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loadTimerImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -322,6 +327,7 @@
             // 
             // huntingPage
             // 
+            this.huntingPage.Controls.Add(this.showLootButton);
             this.huntingPage.Controls.Add(this.trackAllCreaturesPanel);
             this.huntingPage.Controls.Add(this.exportLogButton);
             this.huntingPage.Controls.Add(this.importLogFile);
@@ -343,6 +349,16 @@
             this.huntingPage.TabIndex = 5;
             this.huntingPage.Text = "Hunting";
             this.huntingPage.UseVisualStyleBackColor = true;
+            // 
+            // showLootButton
+            // 
+            this.showLootButton.Location = new System.Drawing.Point(8, 264);
+            this.showLootButton.Name = "showLootButton";
+            this.showLootButton.Size = new System.Drawing.Size(100, 37);
+            this.showLootButton.TabIndex = 19;
+            this.showLootButton.Text = "Show Loot";
+            this.showLootButton.UseVisualStyleBackColor = true;
+            this.showLootButton.Click += new System.EventHandler(this.showLootButton_Click);
             // 
             // trackAllCreaturesPanel
             // 
@@ -903,20 +919,20 @@
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel2.Controls.Add(this.label54);
-            this.panel2.Controls.Add(this.button12);
-            this.panel2.Controls.Add(this.button11);
-            this.panel2.Controls.Add(this.button10);
-            this.panel2.Controls.Add(this.button9);
-            this.panel2.Controls.Add(this.button8);
+            this.panel2.Controls.Add(this.noConvertStackable);
+            this.panel2.Controls.Add(this.convertAllStackable);
+            this.panel2.Controls.Add(this.convertNonStackable);
+            this.panel2.Controls.Add(this.convertCheapNonStackable);
+            this.panel2.Controls.Add(this.dontConvert);
             this.panel2.Controls.Add(this.label60);
-            this.panel2.Controls.Add(this.button7);
-            this.panel2.Controls.Add(this.button6);
-            this.panel2.Controls.Add(this.button5);
-            this.panel2.Controls.Add(this.button4);
-            this.panel2.Controls.Add(this.button3);
-            this.panel2.Controls.Add(this.button2);
+            this.panel2.Controls.Add(this.pickupEverything);
+            this.panel2.Controls.Add(this.pickupCreature);
+            this.panel2.Controls.Add(this.nopickupCreature);
+            this.panel2.Controls.Add(this.pickupHigh);
+            this.panel2.Controls.Add(this.pickupPlate);
+            this.panel2.Controls.Add(this.pickupGold);
             this.panel2.Controls.Add(this.label59);
-            this.panel2.Controls.Add(this.button1);
+            this.panel2.Controls.Add(this.pickupRare);
             this.panel2.Controls.Add(this.unstackableConvertApply);
             this.panel2.Controls.Add(this.unstackableConvertTextBox);
             this.panel2.Controls.Add(this.stackableConvertApply);
@@ -940,50 +956,55 @@
             this.label54.TabIndex = 24;
             this.label54.Text = "Set conversion ratio for non- stackable items.";
             // 
-            // button12
+            // noConvertStackable
             // 
-            this.button12.Location = new System.Drawing.Point(12, 286);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(350, 30);
-            this.button12.TabIndex = 23;
-            this.button12.Text = "Don\'t convert any stackable items.";
-            this.button12.UseVisualStyleBackColor = true;
+            this.noConvertStackable.Location = new System.Drawing.Point(12, 286);
+            this.noConvertStackable.Name = "noConvertStackable";
+            this.noConvertStackable.Size = new System.Drawing.Size(350, 30);
+            this.noConvertStackable.TabIndex = 23;
+            this.noConvertStackable.Text = "Don\'t convert any stackable items.";
+            this.noConvertStackable.UseVisualStyleBackColor = true;
+            this.noConvertStackable.Click += new System.EventHandler(this.noConvertStackable_Click);
             // 
-            // button11
+            // convertAllStackable
             // 
-            this.button11.Location = new System.Drawing.Point(12, 250);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(350, 30);
-            this.button11.TabIndex = 22;
-            this.button11.Text = "Convert all stackable items.";
-            this.button11.UseVisualStyleBackColor = true;
+            this.convertAllStackable.Location = new System.Drawing.Point(12, 250);
+            this.convertAllStackable.Name = "convertAllStackable";
+            this.convertAllStackable.Size = new System.Drawing.Size(350, 30);
+            this.convertAllStackable.TabIndex = 22;
+            this.convertAllStackable.Text = "Convert all stackable items.";
+            this.convertAllStackable.UseVisualStyleBackColor = true;
+            this.convertAllStackable.Click += new System.EventHandler(this.convertAllStackable_Click);
             // 
-            // button10
+            // convertNonStackable
             // 
-            this.button10.Location = new System.Drawing.Point(12, 354);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(350, 30);
-            this.button10.TabIndex = 21;
-            this.button10.Text = "Convert all non-stackable items.";
-            this.button10.UseVisualStyleBackColor = true;
+            this.convertNonStackable.Location = new System.Drawing.Point(12, 354);
+            this.convertNonStackable.Name = "convertNonStackable";
+            this.convertNonStackable.Size = new System.Drawing.Size(350, 30);
+            this.convertNonStackable.TabIndex = 21;
+            this.convertNonStackable.Text = "Convert all non-stackable items.";
+            this.convertNonStackable.UseVisualStyleBackColor = true;
+            this.convertNonStackable.Click += new System.EventHandler(this.convertNonStackable_Click);
             // 
-            // button9
+            // convertCheapNonStackable
             // 
-            this.button9.Location = new System.Drawing.Point(12, 390);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(350, 30);
-            this.button9.TabIndex = 20;
-            this.button9.Text = "Convert non-stackable items not worth a lot. [10]";
-            this.button9.UseVisualStyleBackColor = true;
+            this.convertCheapNonStackable.Location = new System.Drawing.Point(12, 390);
+            this.convertCheapNonStackable.Name = "convertCheapNonStackable";
+            this.convertCheapNonStackable.Size = new System.Drawing.Size(350, 30);
+            this.convertCheapNonStackable.TabIndex = 20;
+            this.convertCheapNonStackable.Text = "Convert non-stackable items not worth a lot. [10]";
+            this.convertCheapNonStackable.UseVisualStyleBackColor = true;
+            this.convertCheapNonStackable.Click += new System.EventHandler(this.convertCheapNonStackable_Click);
             // 
-            // button8
+            // dontConvert
             // 
-            this.button8.Location = new System.Drawing.Point(12, 427);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(350, 30);
-            this.button8.TabIndex = 19;
-            this.button8.Text = "Don\'t convert anything. [0]";
-            this.button8.UseVisualStyleBackColor = true;
+            this.dontConvert.Location = new System.Drawing.Point(12, 427);
+            this.dontConvert.Name = "dontConvert";
+            this.dontConvert.Size = new System.Drawing.Size(350, 30);
+            this.dontConvert.TabIndex = 19;
+            this.dontConvert.Text = "Don\'t convert anything. [0]";
+            this.dontConvert.UseVisualStyleBackColor = true;
+            this.dontConvert.Click += new System.EventHandler(this.dontConvert_Click);
             // 
             // label60
             // 
@@ -994,59 +1015,65 @@
             this.label60.TabIndex = 18;
             this.label60.Text = "Modify which items you want to convert to gold when displaying.";
             // 
-            // button7
+            // pickupEverything
             // 
-            this.button7.Location = new System.Drawing.Point(12, 175);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(350, 30);
-            this.button7.TabIndex = 17;
-            this.button7.Text = "I pick up everything. [0]";
-            this.button7.UseVisualStyleBackColor = true;
+            this.pickupEverything.Location = new System.Drawing.Point(12, 175);
+            this.pickupEverything.Name = "pickupEverything";
+            this.pickupEverything.Size = new System.Drawing.Size(350, 30);
+            this.pickupEverything.TabIndex = 17;
+            this.pickupEverything.Text = "I pick up everything. [0]";
+            this.pickupEverything.UseVisualStyleBackColor = true;
+            this.pickupEverything.Click += new System.EventHandler(this.pickupEverything_Click);
             // 
-            // button6
+            // pickupCreature
             // 
-            this.button6.Location = new System.Drawing.Point(399, 34);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(206, 30);
-            this.button6.TabIndex = 16;
-            this.button6.Text = "I pick up creature drops.";
-            this.button6.UseVisualStyleBackColor = true;
+            this.pickupCreature.Location = new System.Drawing.Point(399, 34);
+            this.pickupCreature.Name = "pickupCreature";
+            this.pickupCreature.Size = new System.Drawing.Size(206, 30);
+            this.pickupCreature.TabIndex = 16;
+            this.pickupCreature.Text = "I pick up creature drops.";
+            this.pickupCreature.UseVisualStyleBackColor = true;
+            this.pickupCreature.Click += new System.EventHandler(this.pickupCreature_Click);
             // 
-            // button5
+            // nopickupCreature
             // 
-            this.button5.Location = new System.Drawing.Point(399, 69);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(206, 30);
-            this.button5.TabIndex = 15;
-            this.button5.Text = "I don\'t pick up creature drops.";
-            this.button5.UseVisualStyleBackColor = true;
+            this.nopickupCreature.Location = new System.Drawing.Point(399, 69);
+            this.nopickupCreature.Name = "nopickupCreature";
+            this.nopickupCreature.Size = new System.Drawing.Size(206, 30);
+            this.nopickupCreature.TabIndex = 15;
+            this.nopickupCreature.Text = "I don\'t pick up creature drops.";
+            this.nopickupCreature.UseVisualStyleBackColor = true;
+            this.nopickupCreature.Click += new System.EventHandler(this.nopickupCreature_Click);
             // 
-            // button4
+            // pickupHigh
             // 
-            this.button4.Location = new System.Drawing.Point(12, 69);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(350, 30);
-            this.button4.TabIndex = 14;
-            this.button4.Text = "I don\'t pick up gold coins, but I pick up knight armors. [25]";
-            this.button4.UseVisualStyleBackColor = true;
+            this.pickupHigh.Location = new System.Drawing.Point(12, 69);
+            this.pickupHigh.Name = "pickupHigh";
+            this.pickupHigh.Size = new System.Drawing.Size(350, 30);
+            this.pickupHigh.TabIndex = 14;
+            this.pickupHigh.Text = "I don\'t pick up gold coins, but I pick up knight armors. [25]";
+            this.pickupHigh.UseVisualStyleBackColor = true;
+            this.pickupHigh.Click += new System.EventHandler(this.pickupHigh_Click);
             // 
-            // button3
+            // pickupPlate
             // 
-            this.button3.Location = new System.Drawing.Point(12, 139);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(350, 30);
-            this.button3.TabIndex = 13;
-            this.button3.Text = "I pick up items like plate armors and halberds. [3]";
-            this.button3.UseVisualStyleBackColor = true;
+            this.pickupPlate.Location = new System.Drawing.Point(12, 139);
+            this.pickupPlate.Name = "pickupPlate";
+            this.pickupPlate.Size = new System.Drawing.Size(350, 30);
+            this.pickupPlate.TabIndex = 13;
+            this.pickupPlate.Text = "I pick up items like plate armors and halberds. [3]";
+            this.pickupPlate.UseVisualStyleBackColor = true;
+            this.pickupPlate.Click += new System.EventHandler(this.pickupPlate_Click);
             // 
-            // button2
+            // pickupGold
             // 
-            this.button2.Location = new System.Drawing.Point(12, 104);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(350, 30);
-            this.button2.TabIndex = 12;
-            this.button2.Text = "I pick up gold coins, and anything above gold coins. [10]";
-            this.button2.UseVisualStyleBackColor = true;
+            this.pickupGold.Location = new System.Drawing.Point(12, 104);
+            this.pickupGold.Name = "pickupGold";
+            this.pickupGold.Size = new System.Drawing.Size(350, 30);
+            this.pickupGold.TabIndex = 12;
+            this.pickupGold.Text = "I pick up gold coins, and anything above gold coins. [10]";
+            this.pickupGold.UseVisualStyleBackColor = true;
+            this.pickupGold.Click += new System.EventHandler(this.pickupGold_Click);
             // 
             // label59
             // 
@@ -1057,14 +1084,15 @@
             this.label59.TabIndex = 11;
             this.label59.Text = "Modify which items you discard, and which items you pick up.";
             // 
-            // button1
+            // pickupRare
             // 
-            this.button1.Location = new System.Drawing.Point(12, 34);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(350, 30);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "I only pick up gems, platinum coins and rare drops. [100]";
-            this.button1.UseVisualStyleBackColor = true;
+            this.pickupRare.Location = new System.Drawing.Point(12, 34);
+            this.pickupRare.Name = "pickupRare";
+            this.pickupRare.Size = new System.Drawing.Size(350, 30);
+            this.pickupRare.TabIndex = 10;
+            this.pickupRare.Text = "I only pick up gems, platinum coins and rare drops. [100]";
+            this.pickupRare.UseVisualStyleBackColor = true;
+            this.pickupRare.Click += new System.EventHandler(this.pickupRare_Click);
             // 
             // unstackableConvertApply
             // 
@@ -1074,6 +1102,7 @@
             this.unstackableConvertApply.TabIndex = 9;
             this.unstackableConvertApply.Text = "Apply";
             this.unstackableConvertApply.UseVisualStyleBackColor = true;
+            this.unstackableConvertApply.Click += new System.EventHandler(this.unstackableConvertApply_Click);
             // 
             // unstackableConvertTextBox
             // 
@@ -1090,7 +1119,7 @@
             this.stackableConvertApply.TabIndex = 6;
             this.stackableConvertApply.Text = "Apply";
             this.stackableConvertApply.UseVisualStyleBackColor = true;
-            this.stackableConvertApply.Click += new System.EventHandler(this.stackableConvertApply_Click_1);
+            this.stackableConvertApply.Click += new System.EventHandler(this.stackableConvertApply_Click);
             // 
             // stackableConvertTextBox
             // 
@@ -1117,6 +1146,7 @@
             this.applyRatioButton.TabIndex = 3;
             this.applyRatioButton.Text = "Apply";
             this.applyRatioButton.UseVisualStyleBackColor = true;
+            this.applyRatioButton.Click += new System.EventHandler(this.applyRatioButton_Click);
             // 
             // goldRatioTextBox
             // 
@@ -1477,12 +1507,42 @@
             // 
             // commandListTab
             // 
+            this.commandListTab.Controls.Add(this.helpPanel);
+            this.commandListTab.Controls.Add(this.label4);
+            this.commandListTab.Controls.Add(this.helpSearchBox);
             this.commandListTab.Location = new System.Drawing.Point(4, 22);
             this.commandListTab.Name = "commandListTab";
             this.commandListTab.Size = new System.Drawing.Size(642, 497);
             this.commandListTab.TabIndex = 4;
             this.commandListTab.Text = "Help";
             this.commandListTab.UseVisualStyleBackColor = true;
+            // 
+            // helpPanel
+            // 
+            this.helpPanel.AutoScroll = true;
+            this.helpPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.helpPanel.Location = new System.Drawing.Point(0, 36);
+            this.helpPanel.Name = "helpPanel";
+            this.helpPanel.Size = new System.Drawing.Size(642, 461);
+            this.helpPanel.TabIndex = 8;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.Color.Silver;
+            this.label4.Location = new System.Drawing.Point(8, 9);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(41, 13);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "Search";
+            // 
+            // helpSearchBox
+            // 
+            this.helpSearchBox.Location = new System.Drawing.Point(55, 6);
+            this.helpSearchBox.Name = "helpSearchBox";
+            this.helpSearchBox.Size = new System.Drawing.Size(579, 20);
+            this.helpSearchBox.TabIndex = 6;
+            this.helpSearchBox.TextChanged += new System.EventHandler(this.helpSearchBox_TextChanged);
             // 
             // closeButton
             // 
@@ -1586,6 +1646,8 @@
             this.screenshotPanel.ResumeLayout(false);
             this.screenshotPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.screenshotBox)).EndInit();
+            this.commandListTab.ResumeLayout(false);
+            this.commandListTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loadTimerImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1683,20 +1745,20 @@
         private System.Windows.Forms.Panel trackAllCreaturesPanel;
         private System.Windows.Forms.CheckBox aggregateHuntBox;
         private System.Windows.Forms.TabPage databaseTab;
-        private System.Windows.Forms.Button button12;
-        private System.Windows.Forms.Button button11;
-        private System.Windows.Forms.Button button10;
-        private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button noConvertStackable;
+        private System.Windows.Forms.Button convertAllStackable;
+        private System.Windows.Forms.Button convertNonStackable;
+        private System.Windows.Forms.Button convertCheapNonStackable;
+        private System.Windows.Forms.Button dontConvert;
         private System.Windows.Forms.Label label60;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button pickupEverything;
+        private System.Windows.Forms.Button pickupCreature;
+        private System.Windows.Forms.Button nopickupCreature;
+        private System.Windows.Forms.Button pickupHigh;
+        private System.Windows.Forms.Button pickupPlate;
+        private System.Windows.Forms.Button pickupGold;
         private System.Windows.Forms.Label label59;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button pickupRare;
         private System.Windows.Forms.Label label51;
         private System.Windows.Forms.Label label52;
         private System.Windows.Forms.TextBox goldRatioTextBox;
@@ -1720,6 +1782,10 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox goldCapRatioCheckbox;
         private System.Windows.Forms.TextBox goldCapRatioValue;
+        private System.Windows.Forms.Button showLootButton;
+        private System.Windows.Forms.Panel helpPanel;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox helpSearchBox;
     }
 }
 
