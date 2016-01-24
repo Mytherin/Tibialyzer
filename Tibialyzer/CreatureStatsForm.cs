@@ -197,6 +197,27 @@ namespace Tibialyzer {
             this.nameLabel.Font = f;
             this.nameLabel.Left = this.mainImage.Left + (mainImage.Width - this.nameLabel.Size.Width) / 2;
             base.NotificationInitialize();
+
+            List<Task> involvedTasks = new List<Task>();
+            foreach(KeyValuePair<string, List<Task>> kvp in MainForm.taskList) {
+                foreach(Task t in kvp.Value) {
+                    if (t.bossid == creature.id) {
+                        involvedTasks.Add(t);
+                    }
+                    foreach(int cr in t.creatures) {
+                        if (cr == creature.id) {
+                            involvedTasks.Add(t);
+                        }
+                    }
+                }
+            }
+            if (involvedTasks.Count > 0) {
+                int baseY = this.Size.Height;
+                int newWidth = 0;
+                int y = MainForm.DisplayCreatureAttributeList(Controls, involvedTasks.ToList<TibiaObject>(), 10, baseY, out newWidth);
+                this.Size = new Size(Math.Max(newWidth, Size.Width), baseY + y);
+            }
+
             base.NotificationFinalize();
             this.ResumeForm();
         }
