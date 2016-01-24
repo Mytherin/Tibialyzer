@@ -116,6 +116,9 @@ def parseCreature(title, attributes, c, creaturedrops, getURL):
     drown = getInteger(attributes,'drownDmgMod')
     lifedrain = getInteger(attributes,'hpDrainDmgMod')
     speed = getInteger(attributes,'speed')
+    boss = False
+    if 'isboss' in attributes and attributes['isboss'].lower().strip() == 'yes':
+        boss = True
     abilities = None
     if 'abilities' in attributes:
         # first take care of [[Fire Rune||Great Fireball]] => Great Fireball
@@ -143,8 +146,8 @@ def parseCreature(title, attributes, c, creaturedrops, getURL):
         print('pass', title)
 
     # add stuff to database
-    c.execute('INSERT INTO Creatures (title,name,health,experience,maxdamage,summon,illusionable,pushable,pushes,physical,holy,death,fire,energy,ice,earth,drown,lifedrain,paralysable,senseinvis,image,abilities,speed,armor) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-        (title,name, hp, exp, maxdmg, summon, illusionable, pushable, pushes, physical, holy, death, fire, energy, ice, earth, drown, lifedrain, paralysable, senseinvis, image, abilities, speed, armor))
+    c.execute('INSERT INTO Creatures (title,name,health,experience,maxdamage,summon,illusionable,pushable,pushes,physical,holy,death,fire,energy,ice,earth,drown,lifedrain,paralysable,senseinvis,image,abilities,speed,armor,boss) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        (title,name, hp, exp, maxdmg, summon, illusionable, pushable, pushes, physical, holy, death, fire, energy, ice, earth, drown, lifedrain, paralysable, senseinvis, image, abilities, speed, armor,boss))
     creatureid = c.lastrowid
 
     creaturedrops[creatureid] = dict()

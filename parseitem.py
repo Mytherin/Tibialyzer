@@ -136,21 +136,22 @@ def parseItem(title, attributes, c, buyitems, sellitems, currencymap, getURL):
             if value == None: continue
             sellitems[itemid][npc.strip()] = value
     if 'vocrequired' in attributes and len(attributes['vocrequired'].strip()) > 1:
-        c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Vocation', attributes['vocrequired'].strip()))
+        attributes['vocrequired'] = attributes['vocrequired'].replace('knights', 'k').replace('druids', 'd').replace('sorcerers', 's').replace('paladins', 'p').replace(' and ','+')
+        c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Voc', attributes['vocrequired'].strip()))
     if 'plural' in attributes:
         plural = attributes['plural'].strip().lower()
         if len(plural) > 2:
             f = open('pluralMap.txt', 'a')
             f.write('%s=%s\n' % (plural, name.strip().lower()))
             f.close()
-    if 'flavortext' in attributes and len(attributes['flavortext'].strip()) > 1:
-        c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Flavor', attributes['flavortext'].strip()))
+    if 'damagetype' in attributes and len(attributes['damagetype'].strip()) > 1:
+        c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Type', attributes['damagetype'].strip()))
     if 'attrib' in attributes and len(attributes['attrib'].strip()) > 1:
         c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Attrib', attributes['attrib'].strip()))
     if 'armor' in attributes and len(attributes['armor'].strip()) > 0:
         try: 
             armor = int(attributes['armor'].strip())
-            c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Armor', str(armor)))
+            c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Arm', str(armor)))
         except: 
             print(name)
             print(attributes['armor'])
@@ -159,7 +160,7 @@ def parseItem(title, attributes, c, buyitems, sellitems, currencymap, getURL):
     if 'attack' in attributes and len(attributes['attack'].strip()) > 0:
         try: 
             attack = int(attributes['attack'].strip())
-            c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Attack', str(attack)))
+            c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Atk', str(attack)))
         except: 
             attack = 0
             for atk in re.findall('[0-9]+', attributes['attack']):
@@ -170,15 +171,13 @@ def parseItem(title, attributes, c, buyitems, sellitems, currencymap, getURL):
                 exit(1)
                 pass
             else: 
-                print(name)
-                print(attack)
-                c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Attack', str(attack)))
+                c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Atk', str(attack)))
     if 'defense' in attributes and len(attributes['defense'].strip()) > 0:
         try: 
             defense = int(attributes['defense'].strip())
             if 'defensemod' in attributes and len(attributes['defensemod'].strip()) > 1: 
                 defense = str(defense) + ' (' + attributes['defensemod'].strip() + ')'
-            c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Defense', str(defense)))
+            c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Def', str(defense)))
         except: 
             print(name)
             print(attributes['defense'])
@@ -192,15 +191,21 @@ def parseItem(title, attributes, c, buyitems, sellitems, currencymap, getURL):
             print(name)
             print(attributes['levelrequired'])
             exit(1)
-            pass
-    if 'mlrequired' in attributes and len(attributes['mlrequired'].strip()) > 0:
+    if 'damage' in attributes and len(attributes['damage'].strip()) > 0:
         try: 
-            mlrequired = int(attributes['mlrequired'].strip())
-            c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Mlevel', str(mlrequired)))
+            damage = int(attributes['damage'].strip())
+            c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Atk', str(damage)))
         except: 
-            print(name)
-            print(attributes['mlrequired'])
-            exit(1)
+            try: 
+                spl = attributes['damage'].split('-')
+                damage = (int(spl[0].strip()) + int(spl[1].strip())) / 2
+                c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Atk', str(damage)))
+            except:
+                pass
+    if 'range' in attributes and len(attributes['range'].strip()) > 0:
+        try: 
+            rng = int(attributes['range'].strip())
+            c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Range', str(rng)))
+        except: 
             pass
-
     return True
