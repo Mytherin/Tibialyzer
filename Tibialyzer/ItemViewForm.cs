@@ -614,6 +614,7 @@ namespace Tibialyzer {
             // itemCategory
             // 
             this.itemCategory.BackColor = System.Drawing.Color.Transparent;
+            this.itemCategory.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.itemCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.itemCategory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.itemCategory.Location = new System.Drawing.Point(34, 23);

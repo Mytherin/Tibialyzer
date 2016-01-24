@@ -1151,8 +1151,9 @@ namespace Tibialyzer {
                     }
                     if (removedAttributes != null && removedAttributes.Contains(header)) continue;
                     int width = TextRenderer.MeasureText(header, MainForm.text_font).Width + 10;
-                    if (attribute is StringAttribute) {
-                        width = Math.Max(TextRenderer.MeasureText((attribute as StringAttribute).value, MainForm.text_font).Width, width);
+                    if (attribute is StringAttribute || attribute is CommandAttribute) {
+                        string text = attribute is StringAttribute ? (attribute as StringAttribute).value : (attribute as CommandAttribute).value;
+                        width = Math.Max(TextRenderer.MeasureText(text, MainForm.text_font).Width, width);
                     } else if (attribute is ImageAttribute) {
                         width = Math.Max((attribute as ImageAttribute).value == null ? 0 : (attribute as ImageAttribute).value.Width, width);
                     } else if (attribute is BooleanAttribute) {
@@ -1237,11 +1238,13 @@ namespace Tibialyzer {
                     }
                     Attribute attribute = attributes[index];
                     Control c;
-                    if (attribute is StringAttribute) {
+                    if (attribute is StringAttribute || attribute is CommandAttribute) {
+                        string text = attribute is StringAttribute ? (attribute as StringAttribute).value : (attribute as CommandAttribute).value;
+                        Color color = attribute is StringAttribute ? (attribute as StringAttribute).color : (attribute as CommandAttribute).color;
                         // create label
                         Label label = new Label();
-                        label.Text = (attribute as StringAttribute).value;
-                        label.ForeColor = (attribute as StringAttribute).color;
+                        label.Text = text;
+                        label.ForeColor = color;
                         label.Size = new Size(val, size);
                         label.Font = MainForm.text_font;
                         label.Location = new Point(x, size * (offset + 1) + base_y);
@@ -1268,11 +1271,16 @@ namespace Tibialyzer {
                     } else {
                         throw new Exception("Unrecognized attribute.");
                     }
-                    c.Name = obj.GetCommand();
+                    if (attribute is CommandAttribute) {
+                        c.Name = (attribute as CommandAttribute).command;
+                    } else {
+                        c.Name = obj.GetCommand();
+                    }
                     c.Click += executeNameCommand;
                     if (tooltip_function == null) {
-                        if (attribute is StringAttribute) {
-                            value_tooltip.SetToolTip(c, (attribute as StringAttribute).value);
+                        if (attribute is StringAttribute || attribute is CommandAttribute) {
+                            string text = attribute is StringAttribute ? (attribute as StringAttribute).value : (attribute as CommandAttribute).value;
+                            value_tooltip.SetToolTip(c, text);
                         } else {
                             value_tooltip.SetToolTip(c, obj.GetName());
                         }

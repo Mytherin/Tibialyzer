@@ -67,6 +67,23 @@ namespace Tibialyzer {
             this.color = color;
         }
     }
+    public class CommandAttribute : Attribute {
+        public string value;
+        public string command;
+        public Color color;
+        public CommandAttribute(string value, string command, int MaxWidth) {
+            this.value = value;
+            this.command = command;
+            this.MaxWidth = MaxWidth;
+            this.color = MainForm.label_text_color;
+        }
+        public CommandAttribute(string value, string command, int MaxWidth, Color color) {
+            this.value = value;
+            this.command = command;
+            this.MaxWidth = MaxWidth;
+            this.color = color;
+        }
+    }
 
     public class ImageAttribute : Attribute {
         public Image value;
@@ -704,14 +721,15 @@ namespace Tibialyzer {
         }
         public override List<Attribute> GetAttributes() {
             List<Attribute> attributeList = new List<Attribute> { new StringAttribute(title, 170),
-                new StringAttribute(GetMaxValue() > 0 ? GetMaxValueString() : "-", 50, GoldColor), new StringAttribute(capacity > 0 ? String.Format("{0:0.0} oz.", capacity) : "-", 70) };
+                new StringAttribute(GetMaxValue() > 0 ? GetMaxValueString() : "-", 50, GoldColor), new StringAttribute(capacity > 0 ? String.Format("{0:0.0} oz.", capacity) : "-", 70),
+                new CommandAttribute(category, "category" + MainForm.commandSymbol + category, 100)};
             return attributeList;
         }
         public override string GetCommand() {
             return "item" + MainForm.commandSymbol + title;
         }
-        static List<string> headers = new List<string> { "Name", "Value", "Cap" };
-        static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode() };
+        static List<string> headers = new List<string> { "Name", "Value", "Cap", "Category" };
+        static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode(), headers[3].GetHashCode() };
         public override IComparable GetHeaderValue(int header) {
             if (header == hashes[0]) {
                 return title;
@@ -721,6 +739,9 @@ namespace Tibialyzer {
             }
             if (header == hashes[2]) {
                 return capacity;
+            }
+            if (header == hashes[3]) {
+                return category;
             }
             return base.GetHeaderValue(header);
         }

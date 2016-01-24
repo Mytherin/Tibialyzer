@@ -820,7 +820,7 @@ namespace Tibialyzer {
             }
             return readMemoryResults != null;
         }
-
+        
         private void ShowItemNotification(string command) {
             string[] splits = command.Split(commandSymbol);
             string parameter = splits[1].Trim().ToLower();
@@ -834,7 +834,17 @@ namespace Tibialyzer {
                 if (items.Count == 0) {
                     return;
                 } else if (items.Count > 1) {
-                    ShowCreatureList(items, "Item List", command);
+                    string category = null;
+                    bool displayProperties = true;
+                    foreach (TibiaObject obj in items) {
+                        string cat = obj.AsItem().category;
+                        if (category == null) category = cat;
+                        else if (category != cat) {
+                            displayProperties = false;
+                            break;
+                        }
+                    }
+                    ShowCreatureList(items, "Item List", command, displayProperties);
                     return;
                 } else {
                     ShowItemView(items[0].AsItem(), currentPage, currentDisplay, command);
