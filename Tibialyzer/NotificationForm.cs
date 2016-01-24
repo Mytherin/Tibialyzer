@@ -84,7 +84,7 @@ namespace Tibialyzer {
         public virtual void LoadForm() {
 
         }
-
+        
         protected void refreshTimer() {
             closeTimer.Dispose();
             closeTimer = new System.Timers.Timer(1000 * MainForm.mainForm.notificationLength);

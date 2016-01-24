@@ -1491,10 +1491,35 @@ namespace Tibialyzer {
         private List<TibiaObject> creatureObjects = new List<TibiaObject>();
         private string creatureSortedHeader = null;
         private bool creatureDesc = false;
+
+
+        object creatureLock = new object();
+        System.Timers.Timer creatureTimer = null;
+        protected void refreshCreatureTimer() {
+            lock(creatureLock) {
+                if (creatureTimer != null) {
+                    creatureTimer.Dispose();
+                }
+                creatureTimer = new System.Timers.Timer(250);
+                creatureTimer.Elapsed += CreatureTimer_Elapsed;
+                creatureTimer.Enabled = true;
+            }
+        }
+
+        private void CreatureTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
+            lock(creatureLock) {
+                creatureTimer.Dispose();
+                creatureTimer = null;
+                mainForm.Invoke((MethodInvoker)delegate {
+                    string creature = creatureSearch.Text;
+                    creatureObjects = searchCreature(creature);
+                    refreshItems(creaturePanel, creaturePanel.Controls, creatureObjects, creatureSortedHeader, creatureDesc, sortCreatures);
+                });
+            }
+        }
+
         private void creatureSearch_TextChanged(object sender, EventArgs e) {
-            string creature = (sender as TextBox).Text;
-            creatureObjects = searchCreature(creature);
-            refreshItems(creaturePanel, creaturePanel.Controls, creatureObjects, creatureSortedHeader, creatureDesc, sortCreatures);
+            refreshCreatureTimer();
         }
 
         private void sortCreatures(object sender, EventArgs e) {
@@ -1507,13 +1532,39 @@ namespace Tibialyzer {
             refreshItems(creaturePanel, creaturePanel.Controls, creatureObjects, creatureSortedHeader, creatureDesc, sortCreatures);
         }
 
+
+        object itemLock = new object();
+        System.Timers.Timer itemTimer = null;
+        protected void refreshItemTimer() {
+            lock (itemLock) {
+                if (itemTimer != null) {
+                    itemTimer.Dispose();
+                }
+                itemTimer = new System.Timers.Timer(250);
+                itemTimer.Elapsed += ItemTimer_Elapsed;
+                itemTimer.Enabled = true;
+            }
+        }
+
+        private void ItemTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
+            lock (itemLock) {
+                itemTimer.Dispose();
+                itemTimer = null;
+                mainForm.Invoke((MethodInvoker)delegate {
+                    string item = itemSearchBox.Text;
+                    itemObjects = searchItem(item);
+                    refreshItems(itemPanel, itemPanel.Controls, itemObjects, itemSortedHeader, itemDesc, sortItems);
+                });
+            }
+        }
+
+
         private List<TibiaObject> itemObjects = new List<TibiaObject>();
         private string itemSortedHeader = null;
         private bool itemDesc = false;
+
         private void itemSearchBox_TextChanged(object sender, EventArgs e) {
-            string item = (sender as TextBox).Text;
-            itemObjects = searchItem(item);
-            refreshItems(itemPanel, itemPanel.Controls, itemObjects, itemSortedHeader, itemDesc, sortItems);
+            refreshItemTimer();
         }
 
         private void sortItems(object sender, EventArgs e) {
