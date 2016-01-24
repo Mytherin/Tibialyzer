@@ -50,7 +50,7 @@ namespace Tibialyzer {
                 } else {
                     List<TibiaObject> creatures = searchCreature(parameter);
                     if (creatures.Count == 1) {
-                        ShowCreatureDrops(creatures[0] as Creature, command);
+                        ShowCreatureDrops(creatures[0].AsCreature(), command);
                     } else if (creatures.Count > 1) {
                         ShowCreatureList(creatures, "Creature List", command);
                     }
@@ -88,7 +88,7 @@ namespace Tibialyzer {
                         if (items[0] is Item) {
                             ShowItemNotification("item" + MainForm.commandSymbol + items[0].GetName().ToLower());
                         } else if (items[0] is Creature) {
-                            ShowCreatureDrops(items[0] as Creature, command);
+                            ShowCreatureDrops(items[0].AsCreature(), command);
                         }
                     } else if (items.Count > 1) {
                         ShowCreatureList(items, "Looked At Items", command);
@@ -339,7 +339,7 @@ namespace Tibialyzer {
                 if (items.Count == 1) {
                     ShowItemNotification("item" + MainForm.commandSymbol + items[0].GetName().ToLower());
                 } else if (items.Count > 1) {
-                    ShowCreatureList(items, "Item List", command, true);
+                    ShowCreatureList(items, "Category: " + parameter, command, true);
                 }
             } else if (comp.StartsWith("hunt" + MainForm.commandSymbol)) { //hunt@
                 string[] splits = command.Split(commandSymbol);
@@ -478,7 +478,7 @@ namespace Tibialyzer {
                         title = "Spells Containing \"" + parameter + "\"";
                     }
                     if (spellList.Count == 1) {
-                        ShowSpellNotification((spellList[0] as LazyTibiaObject).getTibiaObject() as Spell, initialVocation, command);
+                        ShowSpellNotification(spellList[0].AsSpell(), initialVocation, command);
                     } else if (spellList.Count > 1) {
                         ShowCreatureList(spellList, title, command);
                     }
@@ -493,7 +493,7 @@ namespace Tibialyzer {
                     List<TibiaObject> outfitList = searchOutfit(parameter);
                     title = "Outfits Containing \"" + parameter + "\"";
                     if (outfitList.Count == 1) {
-                        ShowOutfitNotification((outfitList[0] as LazyTibiaObject).getTibiaObject() as Outfit, command);
+                        ShowOutfitNotification(outfitList[0].AsOutfit(), command);
                     } else if (outfitList.Count > 1) {
                         ShowCreatureList(outfitList, title, command);
                     }
@@ -591,7 +591,7 @@ namespace Tibialyzer {
                     List<TibiaObject> mountList = searchMount(parameter);
                     title = "Mounts Containing \"" + parameter + "\"";
                     if (mountList.Count == 1) {
-                        ShowMountNotification((mountList[0] as LazyTibiaObject).getTibiaObject() as Mount, command);
+                        ShowMountNotification(mountList[0].AsMount(), command);
                     } else if (mountList.Count > 1) {
                         ShowCreatureList(mountList, title, command);
                     }
@@ -837,7 +837,7 @@ namespace Tibialyzer {
                     ShowCreatureList(items, "Item List", command);
                     return;
                 } else {
-                    ShowItemView(items[0] as Item, currentPage, currentDisplay, command);
+                    ShowItemView(items[0].AsItem(), currentPage, currentDisplay, command);
                 }
             } else {
                 ShowItemView(item, currentPage, currentDisplay, command);

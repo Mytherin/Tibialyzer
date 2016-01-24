@@ -36,6 +36,12 @@ namespace Tibialyzer {
             return GetHeaderValue(headers.IndexOf(header));
         }
         public virtual List<Attribute> GetConditionalAttributes() { return GetAttributes(); }
+        public virtual Creature AsCreature() { return null; }
+        public virtual Item AsItem() { return null; }
+        public virtual NPC AsNPC() { return null; }
+        public virtual Mount AsMount() { return null; }
+        public virtual Outfit AsOutfit() { return null; }
+        public virtual Spell AsSpell() { return null; }
     }
 
     public class Command {
@@ -149,6 +155,7 @@ namespace Tibialyzer {
         public Image[] femaleImages = new Image[4];
         public int questid;
 
+        public override Outfit AsOutfit() { return this; }
         public override string GetName() { return name; }
         public override Image GetImage() {
             for (int i = 3; i >= 0; i--) {
@@ -200,6 +207,7 @@ namespace Tibialyzer {
 
         public Mount() {
         }
+        public override Mount AsMount() { return this; }
 
         public override string GetName() { return name; }
         public override Image GetImage() { return image; }
@@ -291,7 +299,7 @@ namespace Tibialyzer {
             if (this.rewardItems.Count > 0) {
                 List<Item> items = new List<Item>();
                 foreach (int i in this.rewardItems) {
-                    Item item = MainForm.getItem(i, false);
+                    Item item = MainForm.getItem(i);
                     items.Add(item);
                 }
                 return items.OrderByDescending(o => o.GetMaxValue()).First();
@@ -314,7 +322,7 @@ namespace Tibialyzer {
             if (this.questDangers.Count > 0) {
                 List<Creature> creatures = new List<Creature>();
                 foreach (int i in this.questDangers) {
-                    Creature cr = MainForm.getCreature(i, false);
+                    Creature cr = MainForm.getCreature(i);
                     creatures.Add(cr);
                 }
                 return creatures.OrderByDescending(o => o.experience).First();
@@ -378,6 +386,8 @@ namespace Tibialyzer {
         public bool sorcerer;
         public bool druid;
         public Image image;
+
+        public override Spell AsSpell() { return this; }
 
         private static Color ManaCostColor = Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(180)))), ((int)(((byte)(176)))));
 
@@ -538,6 +548,7 @@ namespace Tibialyzer {
             pos = new Coordinate();
             image = null;
         }
+        public override NPC AsNPC() { return this; }
         public override string GetName() { return name; }
         public override Image GetImage() { return image; }
         public override List<string> GetAttributeHeaders() {
@@ -589,7 +600,12 @@ namespace Tibialyzer {
         public int level = -1;
         public string vocation = "";
         public string attrib = "";
+        public int range = -1;
+        public string type = "";
+        public int atkmod = -1;
+        public int hitmod = 0;
 
+        public override Item AsItem() { return this; }
 
         public long GetMaxValue() {
             return Math.Max(vendor_value, actual_value);
@@ -630,28 +646,35 @@ namespace Tibialyzer {
             buyItems = new List<ItemSold>();
             rewardedBy = new List<Quest>();
         }
+
         public override List<string> GetConditionalHeaders() {
             List<string> newHeaders = new List<string>();
             newHeaders.Add(headers[0]);
-            if (armor >= 0) newHeaders.Add("Armor");
-            if (attack >= 0) newHeaders.Add("Attack");
-            if (defense >= 0) newHeaders.Add("Def");
+            if (armor >= 0) newHeaders.Add("Arm");
+            if (attack >= 0 || atkmod >= 0) newHeaders.Add("Atk");
+            if (defense > 0) newHeaders.Add("Def");
+            if (hitmod != 0) newHeaders.Add("Hit+");
             if (level >= 0) newHeaders.Add("Level");
-            if (vocation != "") newHeaders.Add("Vocation");
+            if (range >= 0) newHeaders.Add("Range");
+            //if (vocation != "") newHeaders.Add("Voc");
             if (attrib != "") newHeaders.Add("Attrib");
+            if (type != "") newHeaders.Add("Type");
             newHeaders.Add(headers[1]);
             newHeaders.Add(headers[2]);
             return newHeaders;
         } 
 
         public override IComparable GetConditionalHeaderValue(string header) {
-            if (header == "Armor") return armor;
-            if (header == "Attack") return attack;
+            if (header == "Arm") return armor;
+            if (header == "Atk") return attack >= 0 ? attack : atkmod;
             if (header == "Def") return defense;
+            if (header == "Hit+") return hitmod;
             if (header == "Level") return level;
-            if (header == "Vocation") return vocation;
+            //if (header == "Voc") return vocation;
             if (header == "Attrib") return attrib;
+            if (header == "Range") return range;
             if (header == "Name") return title;
+            if (header == "Type") return type;
             if (header == "Value") return GetMaxValue();
             if (header == "Cap") return capacity;
             return "";
@@ -662,11 +685,15 @@ namespace Tibialyzer {
             List<Attribute> regularAttributes = GetAttributes();
             att.Add(new StringAttribute(title, 120));
             if (armor >= 0) att.Add(new StringAttribute(armor.ToString(), 50));
-            if (attack >= 0) att.Add(new StringAttribute(attack.ToString(), 50));
-            if (defense >= 0) att.Add(new StringAttribute(defensestr, 50));
+            if (attack >= 0) att.Add(new StringAttribute(attack.ToString(), 60));
+            else if (atkmod >= 0) att.Add(new StringAttribute("+" + atkmod, 60));
+            if (defense > 0) att.Add(new StringAttribute(defensestr, 60));
+            if (hitmod != 0) att.Add(new StringAttribute(hitmod > 0 ? "+" + hitmod.ToString() : hitmod.ToString(), 50));
             if (level >= 0) att.Add(new StringAttribute(level.ToString(), 50));
-            if (vocation != "") att.Add(new StringAttribute(vocation, 100));
+            if (range >= 0) att.Add(new StringAttribute(range.ToString(), 60));
+            //if (vocation != "") att.Add(new StringAttribute(vocation, 100));
             if (attrib != "") att.Add(new StringAttribute(attrib, 120));
+            if (type != "") att.Add(new StringAttribute(type, 70, CreatureStatsForm.resistance_colors.ContainsKey(type) ? CreatureStatsForm.resistance_colors[type] : MainForm.label_text_color));
             att.Add(regularAttributes[1]);
             att.Add(regularAttributes[2]);
             return att;
@@ -749,6 +776,8 @@ namespace Tibialyzer {
         public int creatureid;
         public int itemid;
         public float percentage;
+        public int min;
+        public int max;
     }
 
     public class ItemSold {
@@ -782,6 +811,7 @@ namespace Tibialyzer {
         public string abilities;
         public int armor;
         public int speed;
+        public bool boss;
         public Image image;
         public List<ItemDrop> itemdrops;
         public Skin skin;
@@ -792,8 +822,10 @@ namespace Tibialyzer {
             skin = null;
             itemdrops = new List<ItemDrop>();
         }
+        public override Creature AsCreature() { return this; }
 
         private static Color HealthColor = Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(179)))), ((int)(((byte)(60)))));
+        private static Color BossColor = Color.FromArgb(205, 102, 102);
 
         public int GetResistance(int index) {
             if (index == 0) {
@@ -869,7 +901,7 @@ namespace Tibialyzer {
             return headers;
         }
         public override List<Attribute> GetAttributes() {
-            return new List<Attribute> { new StringAttribute(title, 120), new StringAttribute(experience > 0 ? experience.ToString() : "-", 60), new StringAttribute(health > 0 ? health.ToString() : "-", 60, HealthColor),
+            return new List<Attribute> { new StringAttribute(title, 200, boss ? BossColor : MainForm.label_text_color), new StringAttribute(experience > 0 ? experience.ToString() : "-", 60), new StringAttribute(health > 0 ? health.ToString() : "-", 60, HealthColor),
             new StringAttribute(GetWeakness(), 60, CreatureStatsForm.resistance_colors[GetWeakness()]) };
         }
         public override string GetCommand() {
@@ -904,10 +936,10 @@ namespace Tibialyzer {
             if (tibiaObject == null) {
                 switch (type) {
                     case TibiaObjectType.Creature:
-                        tibiaObject = MainForm.getCreature(id, false);
+                        tibiaObject = MainForm.getCreature(id);
                         break;
                     case TibiaObjectType.Item:
-                        tibiaObject = MainForm.getItem(id, false);
+                        tibiaObject = MainForm.getItem(id);
                         break;
                     case TibiaObjectType.NPC:
                         tibiaObject = MainForm.getNPC(id);
@@ -955,5 +987,11 @@ namespace Tibialyzer {
         public override List<Attribute> GetConditionalAttributes() {
             return getTibiaObject().GetConditionalAttributes();
         }
+        public override Creature AsCreature() { return type == TibiaObjectType.Creature ? getTibiaObject() as Creature : null; }
+        public override Item AsItem() { return type == TibiaObjectType.Item ? getTibiaObject() as Item : null; }
+        public override NPC AsNPC() { return type == TibiaObjectType.NPC ? getTibiaObject() as NPC : null; }
+        public override Mount AsMount() { return type == TibiaObjectType.Mount ? getTibiaObject() as Mount : null; }
+        public override Outfit AsOutfit() { return type == TibiaObjectType.Outfit ? getTibiaObject() as Outfit : null; }
+        public override Spell AsSpell() { return type == TibiaObjectType.Spell ? getTibiaObject() as Spell : null; }
     }
 }

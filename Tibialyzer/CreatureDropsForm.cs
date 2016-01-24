@@ -109,7 +109,7 @@ namespace Tibialyzer {
                 picture_box.Size = new System.Drawing.Size(item_size.Width, item_size.Height);
                 picture_box.TabIndex = 1;
                 picture_box.TabStop = false;
-                picture_box.Image = skinItem.image;
+                picture_box.Image = skinItem.GetImage();
                 picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
                 picture_box.BackgroundImage = MainForm.item_background;
                 picture_box.Click += openItemBox; droprate_tooltip.SetToolTip(picture_box, "You can skin this creature with the item " + skinItem.displayname + ".");
@@ -117,6 +117,8 @@ namespace Tibialyzer {
 
                 skinDrop.itemid = creature.skin.dropitemid;
                 skinDrop.percentage = creature.skin.percentage;
+                skinDrop.min = 1;
+                skinDrop.max = 1;
                 DisplayItem(skinDrop, 20 + item_size.Width + item_spacing, this.huntButton.Location.Y + this.huntButton.Size.Height + 10, 0, 0, item_size, droprate_tooltip, dropbar_height, "Skin rate of ");
                 if (y < this.huntButton.Location.Y + this.huntButton.Size.Height) y = this.huntButton.Location.Y + this.huntButton.Size.Height;
             }
@@ -139,7 +141,7 @@ namespace Tibialyzer {
             this.SuspendForm();
             base.NotificationInitialize();
             // load image from the creature
-            this.mainImage.Image = this.creature.image;
+            this.mainImage.Image = this.creature.GetImage();
             this.statsButton.Name = this.creature.GetName().ToLower();
             this.huntButton.Name = this.creature.GetName().ToLower();
             // set background of actual form to transparent

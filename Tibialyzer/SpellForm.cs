@@ -331,7 +331,7 @@ namespace Tibialyzer {
             this.SuspendLayout();
             NotificationInitialize();
 
-            this.spellImageBox.Image = spell.image;
+            this.spellImageBox.Image = spell.GetImage();
             this.spellTitle.Text = spell.name;
             this.spellWords.Text = spell.words;
             if (CreatureStatsForm.resistance_colors.ContainsKey(spell.element)) {

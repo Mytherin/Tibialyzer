@@ -147,7 +147,8 @@ def parseItem(title, attributes, c, buyitems, sellitems, currencymap, getURL):
     if 'damagetype' in attributes and len(attributes['damagetype'].strip()) > 1:
         c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Type', attributes['damagetype'].strip()))
     if 'attrib' in attributes and len(attributes['attrib'].strip()) > 1:
-        c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Attrib', attributes['attrib'].strip()))
+        attrib = attributes['attrib'].strip().replace("fighting", "").replace("level", "").replace("[","").replace("]","").replace("faster regeneration", "regen +1")
+        c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Attrib', attrib))
     if 'armor' in attributes and len(attributes['armor'].strip()) > 0:
         try: 
             armor = int(attributes['armor'].strip())
@@ -198,7 +199,7 @@ def parseItem(title, attributes, c, buyitems, sellitems, currencymap, getURL):
         except: 
             try: 
                 spl = attributes['damage'].split('-')
-                damage = (int(spl[0].strip()) + int(spl[1].strip())) / 2
+                damage = int((int(spl[0].strip()) + int(spl[1].strip())) / 2)
                 c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Atk', str(damage)))
             except:
                 pass
@@ -208,4 +209,8 @@ def parseItem(title, attributes, c, buyitems, sellitems, currencymap, getURL):
             c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Range', str(rng)))
         except: 
             pass
+    if 'atk_mod' in attributes and len(attributes['atk_mod'].strip()) > 0:
+        c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Atk+', attributes['atk_mod'].strip()))
+    if 'hit_mod' in attributes and len(attributes['atk_mod'].strip()) > 0:
+        c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Hit+', attributes['hit_mod'].strip()))
     return True

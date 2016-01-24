@@ -433,15 +433,15 @@ namespace Tibialyzer {
                             Image image = null;
                             if (splits[0].ToLower() == "cr") {
                                 Creature cr = MainForm.getCreature(imageString);
-                                image = cr.image;
+                                image = cr.GetImage();
                                 command = "creature" + MainForm.commandSymbol + cr.GetName().ToLower();
                             } else if (splits[0].ToLower() == "npc") {
                                 NPC npc = MainForm.getNPC(imageString);
-                                image = npc.image;
+                                image = npc.GetImage();
                                 command = "npc" + MainForm.commandSymbol + npc.GetName().ToLower();
                             } else if (splits[0].ToLower() == "item") {
                                 Item item = MainForm.getItem(imageString);
-                                image = item.image;
+                                image = item.GetImage();
                                 command = "item" + MainForm.commandSymbol + item.GetName().ToLower();
                             }
                             PictureBox pictureBox = new PictureBox();

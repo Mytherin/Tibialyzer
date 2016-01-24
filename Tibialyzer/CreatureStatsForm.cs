@@ -110,7 +110,7 @@ namespace Tibialyzer {
             resistances.Add(new Resistance("Energy", creature.res_energy));
             resistances.Add(new Resistance("Fire", creature.res_fire));
             // load image from the creature
-            this.mainImage.Image = creature.image;
+            this.mainImage.Image = creature.GetImage();
             // set health of creature
             this.healthLabel.Text = (health > 0 ? health.ToString() + " Health" : "Unknown");
             horizontal = 96 - healthLabel.Size.Width;

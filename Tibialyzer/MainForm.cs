@@ -1134,7 +1134,6 @@ namespace Tibialyzer {
                 pageInfo.endDisplay = start + pageItems.Count;
             }
             Dictionary<string, double> sortValues = new Dictionary<string, double>();
-            Dictionary<string, double> countValues = new Dictionary<string, double>();
             foreach (TibiaObject obj in conditional ? l : pageItems) {
                 List<string> headers = conditional ? obj.GetConditionalHeaders() : new List<string>(obj.GetAttributeHeaders());
                 List<Attribute> attributes = conditional ? obj.GetConditionalAttributes() : obj.GetAttributes();
@@ -1147,10 +1146,8 @@ namespace Tibialyzer {
                     Attribute attribute = attributes[i];
                     if (!sortValues.ContainsKey(header)) {
                         sortValues.Add(header, i);
-                        countValues.Add(header, 1);
                     } else {
-                        sortValues[header] += i;
-                        countValues[header] += 1;
+                        sortValues[header] = Math.Max(sortValues[header], i);
                     }
                     if (removedAttributes != null && removedAttributes.Contains(header)) continue;
                     int width = TextRenderer.MeasureText(header, MainForm.text_font).Width + 10;
@@ -1176,7 +1173,7 @@ namespace Tibialyzer {
             maxwidth = base_x;
             List<string> keys = totalAttributes.Keys.ToList();
             if (conditional) {
-                keys = keys.OrderBy(o => sortValues[o] / countValues[o]).ToList();
+                keys = keys.OrderBy(o => sortValues[o]).ToList();
             }
             // create header information
             int x = base_x;
@@ -1222,7 +1219,7 @@ namespace Tibialyzer {
                 picture.SizeMode = PictureBoxSizeMode.Zoom;
                 picture.Location = new Point(base_x - 24, size * (offset + 1) + base_y);
                 picture.BackColor = Color.Transparent;
-                if (obj is Item || (obj is LazyTibiaObject && (obj as LazyTibiaObject).type == TibiaObjectType.Item)) {
+                if (obj.AsItem() != null) {
                     picture.BackgroundImage = MainForm.item_background;
                 }
                 if (createdControls != null) {
@@ -1320,8 +1317,7 @@ namespace Tibialyzer {
                 Image image = cr.GetImage();
                 string name = cr.GetName();
 
-                if ((cr is Item || (cr is LazyTibiaObject && (cr as LazyTibiaObject).type == TibiaObjectType.Item)) ||
-                    (cr is Spell || (cr is LazyTibiaObject && (cr as LazyTibiaObject).type == TibiaObjectType.Spell))) {
+                if (cr.AsItem() != null || cr.AsSpell() != null) {
                     imageWidth = 32;
                     imageHeight = 32;
                 } else {
@@ -1372,7 +1368,7 @@ namespace Tibialyzer {
                     image_box.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
                     image_box.Name = cr.GetCommand();
                     image_box.Click += executeNameCommand;
-                    if (cr is Item || (cr is LazyTibiaObject && (cr as LazyTibiaObject).type == TibiaObjectType.Item)) {
+                    if (cr.AsItem() != null) {
                         image_box.BackgroundImage = MainForm.item_background;
                     }
                     controls.Add(image_box);
@@ -1382,7 +1378,7 @@ namespace Tibialyzer {
                         value_tooltip.SetToolTip(image_box, MainForm.ToTitle(name));
                     } else {
                         string prefix = "";
-                        if (cr is NPC || (cr is LazyTibiaObject && (cr as LazyTibiaObject).type == TibiaObjectType.NPC)) {
+                        if (cr.AsNPC() != null) {
                             NPC npc = cr is NPC ? cr as NPC : (cr as LazyTibiaObject).getTibiaObject() as NPC;
                             prefix = MainForm.ToTitle(name) + " (" + MainForm.ToTitle(npc.city) + ")\n";
                         }

@@ -142,7 +142,7 @@ namespace Tibialyzer {
 
             this.SuspendForm();
             NotificationInitialize();
-            npcImage.Image = npc.image;
+            npcImage.Image = npc.GetImage();
             creatureName.Text = MainForm.ToTitle(npc.city);
             Font f = MainForm.fontList[0];
             for (int i = 0; i < MainForm.fontList.Count; i++) {
@@ -223,7 +223,7 @@ namespace Tibialyzer {
 
             Target t = new Target();
             t.coordinate = new Coordinate(npc.pos);
-            t.image = npc.image;
+            t.image = npc.GetImage();
             t.size = 20;
 
             mapBox.targets.Add(t);

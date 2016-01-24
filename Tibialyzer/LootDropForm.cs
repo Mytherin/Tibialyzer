@@ -130,7 +130,7 @@ namespace Tibialyzer {
                             }
                             picture_box.Image = image;
                         } else {
-                            picture_box.Image = item.image;
+                            picture_box.Image = item.GetImage();
                         }
 
                         picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -186,8 +186,8 @@ namespace Tibialyzer {
 
             foreach (KeyValuePair<Creature, int> tpl in creatures) {
                 Creature creature = tpl.Key;
-                creature_size.Width = Math.Max(creature_size.Width, creature.image.Width);
-                creature_size.Height = Math.Max(creature_size.Height, creature.image.Height);
+                creature_size.Width = Math.Max(creature_size.Width, creature.GetImage().Width);
+                creature_size.Height = Math.Max(creature_size.Height, creature.GetImage().Height);
             }
             {
                 int i = 0;
@@ -201,8 +201,8 @@ namespace Tibialyzer {
                             break;
                         }
                     }
-                    int xoffset = (creature_size.Width - creature.image.Width) / 2;
-                    int yoffset = (creature_size.Height - creature.image.Height) / 2;
+                    int xoffset = (creature_size.Width - creature.GetImage().Width) / 2;
+                    int yoffset = (creature_size.Height - creature.GetImage().Height) / 2;
 
                     Label count = new Label();
                     count.Text = killCount.ToString() + "x";
@@ -215,20 +215,20 @@ namespace Tibialyzer {
                     count.BackColor = Color.Transparent;
 
                     int measured_size = (int)count.CreateGraphics().MeasureString(count.Text, count.Font).Width;
-                    int width = Math.Max(measured_size, creature.image.Width);
+                    int width = Math.Max(measured_size, creature.GetImage().Width);
                     PictureBox picture_box = new PictureBox();
-                    picture_box.Location = new System.Drawing.Point(base_x + x + xoffset, base_y + y + yoffset + (creature_size.Height - creature.image.Height) / 2);
+                    picture_box.Location = new System.Drawing.Point(base_x + x + xoffset, base_y + y + yoffset + (creature_size.Height - creature.GetImage().Height) / 2);
                     picture_box.Name = creature.GetName();
-                    picture_box.Size = new System.Drawing.Size(creature.image.Width, creature.image.Height);
+                    picture_box.Size = new System.Drawing.Size(creature.GetImage().Width, creature.GetImage().Height);
                     picture_box.TabIndex = 1;
                     picture_box.TabStop = false;
-                    picture_box.Image = creature.image;
+                    picture_box.Image = creature.GetImage();
                     picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
                     picture_box.Click += openCreatureDrops;
                     picture_box.BackColor = Color.Transparent;
 
-                    if (width > creature.image.Width) {
-                        picture_box.Location = new Point(picture_box.Location.X + (width - creature.image.Width) / 2, picture_box.Location.Y);
+                    if (width > creature.GetImage().Width) {
+                        picture_box.Location = new Point(picture_box.Location.X + (width - creature.GetImage().Width) / 2, picture_box.Location.Y);
                     } else {
                         count.Location = new Point(count.Location.X + (width - measured_size) / 2, count.Location.Y);
                     }

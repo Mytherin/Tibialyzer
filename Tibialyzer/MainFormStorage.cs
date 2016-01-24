@@ -98,14 +98,14 @@ namespace Tibialyzer {
             return registerItem(item);
         }
 
-        public static Item getItem(int id, bool image = true) {
+        public static Item getItem(int id) {
             if (_itemIdMap.ContainsKey(id)) {
                 return _itemIdMap[id];
             }
             if (itemsLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Items WHERE id={1};", image ? _itemProperties : _itemPropertiesBase, id), mainForm.conn);
-            Item item = createItem(command.ExecuteReader(), image);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Items WHERE id={1};", _itemProperties, id), mainForm.conn);
+            Item item = createItem(command.ExecuteReader());
             return registerItem(item);
         }
 
@@ -127,7 +127,7 @@ namespace Tibialyzer {
 
         private static string _itemPropertiesBase = "id, name, actual_value, vendor_value, stackable, capacity, category, discard, convert_to_gold, look_text, title, currency";
         private static string _itemProperties = _itemPropertiesBase + ", image";
-        private static Item createItem(SQLiteDataReader reader, bool image = true) {
+        private static Item createItem(SQLiteDataReader reader) {
             SQLiteCommand command;
 
             if (!reader.Read()) {
@@ -148,19 +148,15 @@ namespace Tibialyzer {
             item.look_text = reader.IsDBNull(9) ? String.Format("You see a {0}.", item.displayname) : reader.GetString(9);
             item.title = reader.GetString(10);
             item.currency = reader.IsDBNull(11) ? DATABASE_NULL : reader.GetInt32(11);
-            if (image) {
-                item.image = Image.FromStream(reader.GetStream(12));
-                if (item.image.RawFormat.Guid == ImageFormat.Gif.Guid) {
-                    int frames = item.image.GetFrameCount(FrameDimension.Time);
-                    if (frames == 1) {
-                        Bitmap new_bitmap = new Bitmap(item.image);
-                        new_bitmap.MakeTransparent();
-                        item.image.Dispose();
-                        item.image = new_bitmap;
-                    }
+            item.image = Image.FromStream(reader.GetStream(12));
+            if (item.image.RawFormat.Guid == ImageFormat.Gif.Guid) {
+                int frames = item.image.GetFrameCount(FrameDimension.Time);
+                if (frames == 1) {
+                    Bitmap new_bitmap = new Bitmap(item.image);
+                    new_bitmap.MakeTransparent();
+                    item.image.Dispose();
+                    item.image = new_bitmap;
                 }
-            } else {
-                item.image = null;
             }
 
             command = new SQLiteCommand(String.Format("SELECT vendorid, value FROM SellItems WHERE itemid={0}", item.id), mainForm.conn);
@@ -181,13 +177,15 @@ namespace Tibialyzer {
                 buyItem.price = reader.GetInt32(1);
                 item.buyItems.Add(buyItem);
             }
-            command = new SQLiteCommand(String.Format("SELECT creatureid, percentage FROM CreatureDrops WHERE itemid={0}", item.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT creatureid, percentage, min, max FROM CreatureDrops WHERE itemid={0}", item.id), mainForm.conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 ItemDrop itemDrop = new ItemDrop();
                 itemDrop.itemid = item.id;
                 itemDrop.creatureid = reader.GetInt32(0);
                 itemDrop.percentage = reader.IsDBNull(1) ? DATABASE_NULL : reader.GetFloat(1);
+                itemDrop.min = Math.Max(reader.GetInt32(2), 1);
+                itemDrop.max = Math.Max(reader.GetInt32(3), itemDrop.min);
 
                 item.itemdrops.Add(itemDrop);
             }
@@ -201,16 +199,13 @@ namespace Tibialyzer {
             while (reader.Read()) {
                 string property = reader.GetString(0);
                 switch(property) {
-                    case "Vocation":
+                    case "Voc":
                         item.vocation = reader.GetString(1);
                         break;
                     case "Level":
                         item.level = reader.GetInt32(1);
                         break;
-                    case "Flavor":
-                        item.flavor = reader.GetString(1);
-                        break;
-                    case "Defense":
+                    case "Def":
                         item.defensestr = reader["value"].ToString();
                         if (!int.TryParse(item.defensestr, out item.defense)) {
                             item.defense = int.Parse(item.defensestr.Split(' ')[0]);
@@ -219,11 +214,24 @@ namespace Tibialyzer {
                     case "Attrib":
                         item.attrib = reader.GetString(1);
                         break;
-                    case "Attack":
+                    case "Atk":
                         item.attack = reader.GetInt32(1);
                         break;
-                    case "Armor":
+                    case "Atk+":
+                        item.atkmod = reader.GetInt32(1);
+                        break;
+                    case "Hit+":
+                        string str = reader["value"].ToString();
+                        int.TryParse(str, out item.hitmod);
+                        break;
+                    case "Arm":
                         item.armor = reader.GetInt32(1);
+                        break;
+                    case "Range":
+                        item.range = reader.GetInt32(1);
+                        break;
+                    case "Type":
+                        item.type = reader.GetString(1);
                         break;
                 }
             }
@@ -264,14 +272,14 @@ namespace Tibialyzer {
             return registerCreature(cr);
         }
 
-        public static Creature getCreature(int id, bool image = true) {
+        public static Creature getCreature(int id) {
             if (_creatureIdMap.ContainsKey(id)) {
                 return _creatureIdMap[id];
             }
             if (creaturesLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Creatures WHERE id={1};", image ? _creatureProperties : _creaturePropertiesBase, id), mainForm.conn);
-            Creature cr = createCreature(command.ExecuteReader(), image);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Creatures WHERE id={1};", _creatureProperties, id), mainForm.conn);
+            Creature cr = createCreature(command.ExecuteReader());
             return registerCreature(cr);
         }
 
@@ -291,9 +299,9 @@ namespace Tibialyzer {
             return cr;
         }
 
-        private static string _creaturePropertiesBase = "id, name, health, experience, maxdamage, summon, illusionable, pushable, pushes, physical, holy, death, fire, energy, ice, earth, drown, lifedrain, paralysable, senseinvis, abilities, title, speed, armor";
+        private static string _creaturePropertiesBase = "id, name, health, experience, maxdamage, summon, illusionable, pushable, pushes, physical, holy, death, fire, energy, ice, earth, drown, lifedrain, paralysable, senseinvis, abilities, title, speed, armor, boss";
         private static string _creatureProperties = _creaturePropertiesBase + ", image";
-        private static Creature createCreature(SQLiteDataReader reader, bool image = true) {
+        private static Creature createCreature(SQLiteDataReader reader) {
             SQLiteCommand command;
 
             if (!reader.Read()) {
@@ -326,14 +334,11 @@ namespace Tibialyzer {
             cr.title = reader[21].ToString();
             cr.speed = reader.IsDBNull(22) ? DATABASE_NULL : reader.GetInt32(22);
             cr.armor = reader.IsDBNull(23) ? DATABASE_NULL : reader.GetInt32(23);
-            if (image) {
-                if (reader.IsDBNull(24)) {
-                    return null;
-                }
-                cr.image = Image.FromStream(reader.GetStream(24));
-            } else {
-                cr.image = null;
+            cr.boss = reader.GetInt32(24) > 0;
+            if (reader.IsDBNull(25)) {
+                return null;
             }
+            cr.image = Image.FromStream(reader.GetStream(25));
 
 
 
@@ -347,13 +352,15 @@ namespace Tibialyzer {
                 cr.skin = skin;
             }
 
-            command = new SQLiteCommand(String.Format("SELECT itemid, percentage FROM CreatureDrops WHERE creatureid={0}", cr.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT itemid, percentage, min, max FROM CreatureDrops WHERE creatureid={0}", cr.id), mainForm.conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 ItemDrop itemDrop = new ItemDrop();
                 itemDrop.creatureid = cr.id;
                 itemDrop.itemid = reader.GetInt32(0);
                 itemDrop.percentage = reader.IsDBNull(1) ? DATABASE_NULL : reader.GetFloat(1);
+                itemDrop.min = Math.Max(reader.GetInt32(2), 1);
+                itemDrop.max = Math.Max(reader.GetInt32(3), itemDrop.min);
                 cr.itemdrops.Add(itemDrop);
             }
 
@@ -560,11 +567,11 @@ namespace Tibialyzer {
             string imageName = reader.GetString(5).ToLower();
             Creature cr = getCreature(imageName);
             if (cr != null) {
-                huntingPlace.image = cr.image;
+                huntingPlace.image = cr.GetImage();
             } else {
                 NPC npc = getNPC(imageName);
                 if (npc != null) {
-                    huntingPlace.image = npc.image;
+                    huntingPlace.image = npc.GetImage();
                 } else {
                     throw new Exception("Unrecognized npc or creature image.");
                 }

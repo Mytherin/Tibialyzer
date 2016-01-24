@@ -92,7 +92,7 @@ namespace Tibialyzer {
                         }
                         picture_box.Image = image;
                     } else {
-                        picture_box.Image = item.image;
+                        picture_box.Image = item.GetImage();
                     }
 
                     picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -104,7 +104,7 @@ namespace Tibialyzer {
                 }
             }
 
-            this.creatureBox.Image = cr.image;
+            this.creatureBox.Image = cr.GetImage();
             this.creatureDropLabel.Text = String.Format("Loot of {0}.", cr.displayname);
         }
 
