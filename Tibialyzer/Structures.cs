@@ -846,7 +846,7 @@ namespace Tibialyzer {
         public override Creature AsCreature() { return this; }
 
         private static Color HealthColor = Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(179)))), ((int)(((byte)(60)))));
-        private static Color BossColor = Color.FromArgb(205, 102, 102);
+        public static Color BossColor = Color.FromArgb(205, 102, 102);
 
         public int GetResistance(int index) {
             if (index == 0) {

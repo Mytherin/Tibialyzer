@@ -857,12 +857,17 @@ namespace Tibialyzer {
             ShowNotification(f, comm);
         }
 
-        private void ShowNPCForm(NPC c, string comm) {
+        private void ShowNPCForm(NPC c, string command) {
             if (c == null) return;
-            NPCForm f = new NPCForm();
+            string[] split = command.Split(commandSymbol);
+            int page = 0;
+            int currentDisplay = 0;
+            if (split.Length > 2 && int.TryParse(split[2], out page)) { }
+            if (split.Length > 3 && int.TryParse(split[3], out currentDisplay)) { }
+            NPCForm f = new NPCForm(page, currentDisplay);
             f.npc = c;
 
-            ShowNotification(f, comm);
+            ShowNotification(f, command);
         }
 
         private void ShowDamageMeter(Dictionary<string, int> dps, string comm, string filter = "", string screenshot_path = "") {

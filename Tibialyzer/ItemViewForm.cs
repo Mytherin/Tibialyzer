@@ -74,7 +74,7 @@ namespace Tibialyzer {
         private List<PictureBox> decreaseBoxes = new List<PictureBox>();
         private List<Label> valueLabels = new List<Label>();
 
-        private string[] headers = { "Dropped", "Sell To", "Buy From", "Rewarded" };
+        private string[] headers = { "Sell To", "Buy From", "Dropped", "Rewarded" };
         public ItemViewForm(int currentPage, int currentDisplay) {
             skip_event = true;
             InitializeComponent();
@@ -790,23 +790,23 @@ namespace Tibialyzer {
             for (int i = 0; i < headers.Length; i++) {
                 objectList[i] = new List<TibiaObject>();
             }
-            extraAttributes[0] = "Drop";
-            attributeFunctions[0] = DropChance;
-            attributeSortFunctions[0] = DropSort;
-            foreach (ItemDrop itemDrop in item.itemdrops) {
-                objectList[0].Add(new LazyTibiaObject { id = itemDrop.creatureid, type = TibiaObjectType.Creature });
-            }
-            extraAttributes[1] = "Value";
-            attributeFunctions[1] = SellPrice;
-            attributeSortFunctions[1] = SellSort;
+            extraAttributes[0] = "Value";
+            attributeFunctions[0] = SellPrice;
+            attributeSortFunctions[0] = SellSort;
             foreach (ItemSold sold in item.sellItems) {
+                objectList[0].Add(new LazyTibiaObject { id = sold.npcid, type = TibiaObjectType.NPC });
+            }
+            extraAttributes[1] = "Price";
+            attributeFunctions[1] = BuyPrice;
+            attributeSortFunctions[1] = BuySort;
+            foreach (ItemSold sold in item.buyItems) {
                 objectList[1].Add(new LazyTibiaObject { id = sold.npcid, type = TibiaObjectType.NPC });
             }
-            extraAttributes[2] = "Price";
-            attributeFunctions[2] = BuyPrice;
-            attributeSortFunctions[2] = BuySort;
-            foreach (ItemSold sold in item.buyItems) {
-                objectList[2].Add(new LazyTibiaObject { id = sold.npcid, type = TibiaObjectType.NPC });
+            extraAttributes[2] = "Drop";
+            attributeFunctions[2] = DropChance;
+            attributeSortFunctions[2] = DropSort;
+            foreach (ItemDrop itemDrop in item.itemdrops) {
+                objectList[2].Add(new LazyTibiaObject { id = itemDrop.creatureid, type = TibiaObjectType.Creature });
             }
             extraAttributes[3] = null;
             attributeFunctions[3] = null;
@@ -857,7 +857,9 @@ namespace Tibialyzer {
             return new StringAttribute(percentage > 0 ? String.Format("{0:0.0}%", percentage) : "-", 60);
         }
         private Attribute SellPrice(TibiaObject obj) {
-            return new StringAttribute(String.Format("{0}", item.sellItems.Find(o => o.npcid == (obj as LazyTibiaObject).id).price), 60, Item.GoldColor);
+            int npcValue = item.sellItems.Find(o => o.npcid == (obj as LazyTibiaObject).id).price;
+
+            return new StringAttribute(String.Format("{0}", npcValue), 60, npcValue >= item.vendor_value ? Item.GoldColor : Creature.BossColor);
         }
         private Attribute BuyPrice(TibiaObject obj) {
             return new StringAttribute(String.Format("{0}", item.buyItems.Find(o => o.npcid == (obj as LazyTibiaObject).id).price), 60, Item.GoldColor);

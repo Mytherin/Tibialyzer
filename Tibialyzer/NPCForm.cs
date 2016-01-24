@@ -246,7 +246,8 @@ namespace Tibialyzer {
             this.ResumeForm();
         }
         private Attribute SellPrice(TibiaObject obj) {
-            return new StringAttribute(String.Format("{0}", npc.sellItems.Find(o => o.itemid == (obj as LazyTibiaObject).id).price), 60, Item.GoldColor);
+            int npcValue = npc.sellItems.Find(o => o.itemid == (obj as LazyTibiaObject).id).price;
+            return new StringAttribute(npcValue.ToString(), 60, npcValue >= obj.AsItem().vendor_value ? Item.GoldColor : Creature.BossColor);
         }
         private IComparable SellSort(TibiaObject obj) {
             return npc.sellItems.Find(o => o.itemid == (obj as LazyTibiaObject).id).price;
