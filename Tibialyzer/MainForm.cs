@@ -179,7 +179,7 @@ namespace Tibialyzer {
             this.initializePluralMap();
             try {
                 this.loadDatabaseData();
-            } catch(Exception e) {
+            } catch (Exception e) {
                 ExitWithError("Fatal Error", String.Format("Corrupted database {0}.\nMessage: {1}", databaseFile, e.Message));
             }
             this.loadSettings();
@@ -190,7 +190,7 @@ namespace Tibialyzer {
             this.initializeMaps();
             try {
                 Pathfinder.LoadFromDatabase(nodeDatabase);
-            } catch(Exception e) {
+            } catch (Exception e) {
                 ExitWithError("Fatal Error", String.Format("Corrupted database {0}.\nMessage: ", nodeDatabase, e.Message));
             }
             prevent_settings_update = false;
@@ -201,6 +201,10 @@ namespace Tibialyzer {
 
             ignoreStamp = createStamp();
 
+            creatureTab.BackgroundImage = NotificationForm.background_image;
+            creatureTab.BackgroundImageLayout = ImageLayout.Tile;
+            itemTab.BackgroundImage = NotificationForm.background_image;
+            itemTab.BackgroundImageLayout = ImageLayout.Tile;
             this.backgroundBox.Image = NotificationForm.background_image;
 
             BackgroundWorker bw = new BackgroundWorker();
@@ -222,6 +226,14 @@ namespace Tibialyzer {
             this.current_state = ScanningState.NoTibia;
             this.loadTimerImage.Enabled = true;
             scan_tooltip.SetToolTip(this.loadTimerImage, "No Tibia Client Found...");
+        }
+
+        protected override CreateParams CreateParams {
+            get {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;  // Turn on WS_EX_COMPOSITED
+                return cp;
+            }
         }
 
         public static void initializeFonts() {
@@ -953,9 +965,9 @@ namespace Tibialyzer {
 
             ShowNotification(f, comm);
         }
-        
+
         private void ShowTaskNotification(Task task, string comm) {
-            TaskForm f =  new TaskForm(task);
+            TaskForm f = new TaskForm(task);
 
             ShowNotification(f, comm);
         }
@@ -1461,20 +1473,57 @@ namespace Tibialyzer {
             return y;
         }
 
+        
+        private void refreshItems(Control suspend, Control.ControlCollection controls, List<TibiaObject> tibiaObjects, string sortedHeader, bool desc, EventHandler eventHandler) {
+            int maxWidth = 0;
 
-        private void creatureSearch_TextChanged(object sender, EventArgs e) {
-            string creature = (sender as TextBox).Text.ToLower();
             this.SuspendLayout();
-            this.creaturePanel.Controls.Clear();
-            DisplayCreatureList(this.creaturePanel.Controls, MainForm.searchCreature(creature), 10, 10, this.creaturePanel.Width - 20, 4);
+            NotificationForm.SuspendDrawing(suspend);
+            foreach (Control c in controls) {
+                c.Dispose();
+            }
+            controls.Clear();
+            DisplayCreatureAttributeList(controls, tibiaObjects, 10, 10, out maxWidth, null, null, 0, 20, null, null, null, eventHandler, sortedHeader, desc);
+            NotificationForm.ResumeDrawing(suspend);
             this.ResumeLayout(false);
         }
+
+        private List<TibiaObject> creatureObjects = new List<TibiaObject>();
+        private string creatureSortedHeader = null;
+        private bool creatureDesc = false;
+        private void creatureSearch_TextChanged(object sender, EventArgs e) {
+            string creature = (sender as TextBox).Text;
+            creatureObjects = searchCreature(creature);
+            refreshItems(creaturePanel, creaturePanel.Controls, creatureObjects, creatureSortedHeader, creatureDesc, sortCreatures);
+        }
+
+        private void sortCreatures(object sender, EventArgs e) {
+            if (creatureSortedHeader == (sender as Control).Name) {
+                creatureDesc = !creatureDesc;
+            } else {
+                creatureSortedHeader = (sender as Control).Name;
+                creatureDesc = false;
+            }
+            refreshItems(creaturePanel, creaturePanel.Controls, creatureObjects, creatureSortedHeader, creatureDesc, sortCreatures);
+        }
+
+        private List<TibiaObject> itemObjects = new List<TibiaObject>();
+        private string itemSortedHeader = null;
+        private bool itemDesc = false;
         private void itemSearchBox_TextChanged(object sender, EventArgs e) {
             string item = (sender as TextBox).Text;
-            this.SuspendLayout();
-            this.itemPanel.Controls.Clear();
-            DisplayCreatureList(this.itemPanel.Controls, MainForm.searchItem(item), 10, 10, this.itemPanel.Width - 20, 4);
-            this.ResumeLayout(false);
+            itemObjects = searchItem(item);
+            refreshItems(itemPanel, itemPanel.Controls, itemObjects, itemSortedHeader, itemDesc, sortItems);
+        }
+
+        private void sortItems(object sender, EventArgs e) {
+            if (itemSortedHeader == (sender as Control).Name) {
+                itemDesc = !itemDesc;
+            } else {
+                itemSortedHeader = (sender as Control).Name;
+                itemDesc = false;
+            }
+            refreshItems(itemPanel, itemPanel.Controls, itemObjects, itemSortedHeader, itemDesc, sortItems);
         }
 
         void ShowCreatureInformation(object sender, EventArgs e) {

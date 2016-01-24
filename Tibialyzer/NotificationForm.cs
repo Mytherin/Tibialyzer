@@ -46,6 +46,14 @@ namespace Tibialyzer {
             SendMessage(this.Handle, WM_SETREDRAW, true, 0);
             this.Refresh();
         }
+        public static void SuspendDrawing(Control c) {
+            SendMessage(c.Handle, WM_SETREDRAW, false, 0);
+        }
+
+        public static void ResumeDrawing(Control c) {
+            SendMessage(c.Handle, WM_SETREDRAW, true, 0);
+            c.Refresh();
+        }
 
         public void SuspendForm() {
             this.SuspendLayout();

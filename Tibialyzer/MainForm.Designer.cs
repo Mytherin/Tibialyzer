@@ -86,6 +86,8 @@
             this.showNotificationCheckbox = new System.Windows.Forms.CheckBox();
             this.enableRichNotificationsCheckbox = new System.Windows.Forms.CheckBox();
             this.notificationPanel = new System.Windows.Forms.Panel();
+            this.goldCapRatioCheckbox = new System.Windows.Forms.CheckBox();
+            this.goldCapRatioValue = new System.Windows.Forms.TextBox();
             this.alwaysShowLoot = new System.Windows.Forms.CheckBox();
             this.specificNotificationTextbox = new System.Windows.Forms.RichTextBox();
             this.specificNotificationCheckbox = new System.Windows.Forms.CheckBox();
@@ -163,8 +165,6 @@
             this.loadTimerImage = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.goldCapRatioCheckbox = new System.Windows.Forms.CheckBox();
-            this.goldCapRatioValue = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             this.huntingPage.SuspendLayout();
@@ -725,6 +725,26 @@
             this.notificationPanel.Size = new System.Drawing.Size(276, 459);
             this.notificationPanel.TabIndex = 8;
             // 
+            // goldCapRatioCheckbox
+            // 
+            this.goldCapRatioCheckbox.AutoSize = true;
+            this.goldCapRatioCheckbox.Location = new System.Drawing.Point(9, 107);
+            this.goldCapRatioCheckbox.Name = "goldCapRatioCheckbox";
+            this.goldCapRatioCheckbox.Size = new System.Drawing.Size(247, 17);
+            this.goldCapRatioCheckbox.TabIndex = 14;
+            this.goldCapRatioCheckbox.Text = "Show Notifications for items with gold/cap ratio";
+            this.goldCapRatioCheckbox.UseVisualStyleBackColor = true;
+            this.goldCapRatioCheckbox.CheckedChanged += new System.EventHandler(this.goldCapRatioCheckbox_CheckedChanged);
+            // 
+            // goldCapRatioValue
+            // 
+            this.goldCapRatioValue.Location = new System.Drawing.Point(74, 129);
+            this.goldCapRatioValue.Name = "goldCapRatioValue";
+            this.goldCapRatioValue.Size = new System.Drawing.Size(167, 20);
+            this.goldCapRatioValue.TabIndex = 13;
+            this.goldCapRatioValue.Text = "40.0";
+            this.goldCapRatioValue.TextChanged += new System.EventHandler(this.goldCapRatioValue_TextChanged);
+            // 
             // alwaysShowLoot
             // 
             this.alwaysShowLoot.AutoSize = true;
@@ -1151,6 +1171,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.Silver;
             this.label1.Location = new System.Drawing.Point(8, 15);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(41, 13);
@@ -1191,6 +1212,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.Color.Silver;
             this.label2.Location = new System.Drawing.Point(8, 15);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(41, 13);
@@ -1515,26 +1537,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // goldCapRatioCheckbox
-            // 
-            this.goldCapRatioCheckbox.AutoSize = true;
-            this.goldCapRatioCheckbox.Location = new System.Drawing.Point(9, 107);
-            this.goldCapRatioCheckbox.Name = "goldCapRatioCheckbox";
-            this.goldCapRatioCheckbox.Size = new System.Drawing.Size(247, 17);
-            this.goldCapRatioCheckbox.TabIndex = 14;
-            this.goldCapRatioCheckbox.Text = "Show Notifications for items with gold/cap ratio";
-            this.goldCapRatioCheckbox.UseVisualStyleBackColor = true;
-            this.goldCapRatioCheckbox.CheckedChanged += new System.EventHandler(this.goldCapRatioCheckbox_CheckedChanged);
-            // 
-            // goldCapRatioValue
-            // 
-            this.goldCapRatioValue.Location = new System.Drawing.Point(74, 129);
-            this.goldCapRatioValue.Name = "goldCapRatioValue";
-            this.goldCapRatioValue.Size = new System.Drawing.Size(167, 20);
-            this.goldCapRatioValue.TabIndex = 13;
-            this.goldCapRatioValue.Text = "40.0";
-            this.goldCapRatioValue.TextChanged += new System.EventHandler(this.goldCapRatioValue_TextChanged);
             // 
             // MainForm
             // 
