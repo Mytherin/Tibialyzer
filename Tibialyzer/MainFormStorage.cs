@@ -184,8 +184,14 @@ namespace Tibialyzer {
                 itemDrop.itemid = item.id;
                 itemDrop.creatureid = reader.GetInt32(0);
                 itemDrop.percentage = reader.IsDBNull(1) ? DATABASE_NULL : reader.GetFloat(1);
-                itemDrop.min = Math.Max(reader.GetInt32(2), 1);
-                itemDrop.max = Math.Max(reader.GetInt32(3), itemDrop.min);
+                if (itemDrop.percentage > 100) {
+                    itemDrop.min = 1;
+                    itemDrop.max = (int)(itemDrop.percentage / 100.0 * 2.0);
+                    itemDrop.percentage = 100;
+                } else {
+                    itemDrop.min = Math.Max(reader.GetInt32(2), 1);
+                    itemDrop.max = Math.Max(reader.GetInt32(3), itemDrop.min);
+                }
 
                 item.itemdrops.Add(itemDrop);
             }
@@ -359,8 +365,14 @@ namespace Tibialyzer {
                 itemDrop.creatureid = cr.id;
                 itemDrop.itemid = reader.GetInt32(0);
                 itemDrop.percentage = reader.IsDBNull(1) ? DATABASE_NULL : reader.GetFloat(1);
-                itemDrop.min = Math.Max(reader.GetInt32(2), 1);
-                itemDrop.max = Math.Max(reader.GetInt32(3), itemDrop.min);
+                if (itemDrop.percentage > 100) {
+                    itemDrop.min = 1;
+                    itemDrop.max = (int)(itemDrop.percentage / 100.0 * 2.0);
+                    itemDrop.percentage = 100;
+                } else {
+                    itemDrop.min = Math.Max(reader.GetInt32(2), 1);
+                    itemDrop.max = Math.Max(reader.GetInt32(3), itemDrop.min);
+                }
                 cr.itemdrops.Add(itemDrop);
             }
 

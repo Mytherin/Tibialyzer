@@ -151,7 +151,7 @@ namespace Tibialyzer {
             foreach(ItemDrop itemDrop in creature.itemdrops) {
                 if (itemDrop.percentage > 0) {
                     Item item = MainForm.getItem(itemDrop.itemid);
-                    averageGold += itemDrop.percentage * item.GetMaxValue() / 100;
+                    averageGold += ((itemDrop.max + itemDrop.min) / 2.0) * itemDrop.percentage * item.GetMaxValue() / 100;
                 }
             }
             if (averageGold < 10000) {

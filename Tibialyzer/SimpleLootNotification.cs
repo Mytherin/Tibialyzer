@@ -79,6 +79,7 @@ namespace Tibialyzer {
                     picture_box.TabStop = false;
                     picture_box.Click += openItem_Click;
                     if (item.stackable) {
+                        /*
                         Bitmap image = LootDropForm.GetStackImage(item.image, mitems, item);
                         Graphics gr = Graphics.FromImage(image);
                         int numbers = (int)Math.Floor(Math.Log(mitems, 10)) + 1;
@@ -89,8 +90,8 @@ namespace Tibialyzer {
                             gr.DrawImage(MainForm.image_numbers[imagenr],
                                 new Point(image.Width - xoffset, image.Height - MainForm.image_numbers[imagenr].Height - 3));
                             logamount /= 10;
-                        }
-                        picture_box.Image = image;
+                        }*/
+                        picture_box.Image = LootDropForm.DrawCountOnItem(item, mitems);
                     } else {
                         picture_box.Image = item.GetImage();
                     }

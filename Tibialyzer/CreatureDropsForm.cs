@@ -42,7 +42,7 @@ namespace Tibialyzer {
             picture_box.Size = new System.Drawing.Size(item_size.Width, item_size.Height);
             picture_box.TabIndex = 1;
             picture_box.TabStop = false;
-            picture_box.Image = dropItem.image;
+            picture_box.Image = drop.max > 1 ? LootDropForm.DrawCountOnItem(dropItem, drop.max) : dropItem.GetImage();
             picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
             picture_box.BackgroundImage = MainForm.item_background;
             picture_box.Click += openItemBox;

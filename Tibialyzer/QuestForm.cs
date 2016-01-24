@@ -258,26 +258,8 @@ namespace Tibialyzer {
                         control.BackgroundImage = MainForm.item_background;
                         int itemCount = requirements[itemnr].Item1;
                         Item item = requirements[itemnr].Item2;
-
-                        Bitmap image;
-                        if (item.stackable) {
-                            image = new Bitmap(LootDropForm.GetStackImage(item.image, itemCount, item));
-                        } else {
-                            image = new Bitmap(item.image);
-                        }
-
-                        using (Graphics gr = Graphics.FromImage(image)) {
-                            int numbers = (int)Math.Floor(Math.Log(itemCount, 10)) + 1;
-                            int xoffset = 1, logamount = itemCount;
-                            for (int i = 0; i < numbers; i++) {
-                                int imagenr = logamount % 10;
-                                xoffset = xoffset + MainForm.image_numbers[imagenr].Width + 1;
-                                gr.DrawImage(MainForm.image_numbers[imagenr],
-                                    new Point(image.Width - xoffset, image.Height - MainForm.image_numbers[imagenr].Height - 3));
-                                logamount /= 10;
-                            }
-                        }
-                        (control as PictureBox).Image = image;
+                        
+                        (control as PictureBox).Image = LootDropForm.DrawCountOnItem(item, itemCount);
 
                         itemnr++;
                     }

@@ -56,6 +56,28 @@ namespace Tibialyzer {
             return new Bitmap((Image)image.Clone());
         }
 
+        public static Bitmap DrawCountOnItem(Item item, int itemCount) {
+            Bitmap image;
+            if (item.stackable) {
+                image = new Bitmap(LootDropForm.GetStackImage(item.image, itemCount, item));
+            } else {
+                image = new Bitmap(item.image);
+            }
+
+            using (Graphics gr = Graphics.FromImage(image)) {
+                int numbers = (int)Math.Floor(Math.Log(itemCount, 10)) + 1;
+                int xoffset = 1, logamount = itemCount;
+                for (int i = 0; i < numbers; i++) {
+                    int imagenr = logamount % 10;
+                    xoffset = xoffset + MainForm.image_numbers[imagenr].Width + (itemCount >= 1000 ? 0 : 1);
+                    gr.DrawImage(MainForm.image_numbers[imagenr],
+                        new Point(image.Width - xoffset, image.Height - MainForm.image_numbers[imagenr].Height - 3));
+                    logamount /= 10;
+                }
+            }
+            return image;
+        }
+
         public List<Control> createdControls = new List<Control>();
         public void RefreshLoot() {
             foreach (Control c in createdControls) {
@@ -117,18 +139,7 @@ namespace Tibialyzer {
                         picture_box.TabIndex = 1;
                         picture_box.TabStop = false;
                         if (item.stackable || mitems > 1) {
-                            Bitmap image = GetStackImage(item.image, mitems, item);
-                            Graphics gr = Graphics.FromImage(image);
-                            int numbers = (int)Math.Floor(Math.Log(mitems, 10)) + 1;
-                            int xoffset = 1, logamount = mitems;
-                            for (int i = 0; i < numbers; i++) {
-                                int imagenr = logamount % 10;
-                                xoffset = xoffset + MainForm.image_numbers[imagenr].Width + 1;
-                                gr.DrawImage(MainForm.image_numbers[imagenr],
-                                    new Point(image.Width - xoffset, image.Height - MainForm.image_numbers[imagenr].Height - 3));
-                                logamount /= 10;
-                            }
-                            picture_box.Image = image;
+                            picture_box.Image = LootDropForm.DrawCountOnItem(item, mitems);
                         } else {
                             picture_box.Image = item.GetImage();
                         }
