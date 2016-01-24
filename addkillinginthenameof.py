@@ -30,7 +30,7 @@ c.execute('DROP TABLE IF EXISTS TaskGroups');
 c.execute('DROP TABLE IF EXISTS Tasks');
 c.execute('DROP TABLE IF EXISTS TaskCreatures');
 c.execute('CREATE TABLE TaskGroups(id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING)')
-c.execute('CREATE TABLE Tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, groupid INTEGER, count INTEGER, taskpoints INTEGER, bossid INTEGER, bossx INTEGER, bossy INTEGER, bossz INTEGER)')
+c.execute('CREATE TABLE Tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, groupid INTEGER, count INTEGER, taskpoints INTEGER, bossid INTEGER, bossx INTEGER, bossy INTEGER, bossz INTEGER)')
 c.execute('CREATE TABLE TaskCreatures(taskid INTEGER, creatureid INTEGER)')
 root = xml.etree.ElementTree.parse(cities_xmlfile).getroot()
 for child in root.getchildren():
@@ -39,7 +39,12 @@ for child in root.getchildren():
     bracketid = c.lastrowid
     tasks = child.find('Tasks')
     for task in tasks.getchildren():
+        name = None
         creatures = task.find('Creature').text
+        if task.find('Name') != None:
+            name = task.find('Name').text
+        else:
+            name = creatures.split(';')[0] + " Task"
         count = int(task.find('Count').text)
         taskpoints =  int(task.find('Points').text) if task.find('Points') != None else None
         boss = task.find('Boss').text.strip().lower() if task.find('Boss') != None else None
@@ -52,7 +57,7 @@ for child in root.getchildren():
             uloc[0] = convert_x(uloc[0])
             uloc[1] = convert_y(uloc[1])
             uloc[2] = int(uloc[2])
-        c.execute('INSERT INTO Tasks(groupid, count, taskpoints, bossid, bossx, bossy, bossz) VALUES (?,?,?,?,?,?,?)', (bracketid, count, taskpoints, bossid, uloc[0], uloc[1], uloc[2]))
+        c.execute('INSERT INTO Tasks(name,groupid, count, taskpoints, bossid, bossx, bossy, bossz) VALUES (?,?,?,?,?,?,?,?)', (name,bracketid, count, taskpoints, bossid, uloc[0], uloc[1], uloc[2]))
         taskid = c.lastrowid
         for creature in creatures.split(';'):
             creature = creature.strip().lower()
