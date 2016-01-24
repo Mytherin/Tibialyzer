@@ -81,7 +81,7 @@ def getURL(url, decode=False):
     return result
 
 
-skipLoading = True
+skipLoading = False
 if not skipLoading:
     import os
     try: os.remove(database_file)
@@ -103,7 +103,7 @@ if not skipLoading:
     c.execute('CREATE TABLE NPCDestinations(npcid INTEGER, destination STRING, cost INTEGER, notes STRING)')
     c.execute('CREATE TABLE SellItems(itemid INTEGER, vendorid INTEGER, value INTEGER)')
     c.execute('CREATE TABLE BuyItems(itemid INTEGER, vendorid INTEGER, value INTEGER)')
-    c.execute('CREATE TABLE Creatures(id INTEGER PRIMARY KEY AUTOINCREMENT, title STRING, name STRING, health INTEGER, experience INTEGER, maxdamage INTEGER, summon INTEGER, illusionable BOOLEAN, pushable BOOLEAN, pushes BOOLEAN, physical INTEGER, holy INTEGER, death INTEGER, fire INTEGER, energy INTEGER, ice INTEGER, earth INTEGER, drown INTEGER, lifedrain INTEGER, paralysable BOOLEAN, senseinvis BOOLEAN, image BLOB, abilities STRING, speed INTEGER, armor INTEGER)')
+    c.execute('CREATE TABLE Creatures(id INTEGER PRIMARY KEY AUTOINCREMENT, title STRING, name STRING, health INTEGER, experience INTEGER, maxdamage INTEGER, summon INTEGER, illusionable BOOLEAN, pushable BOOLEAN, pushes BOOLEAN, physical INTEGER, holy INTEGER, death INTEGER, fire INTEGER, energy INTEGER, ice INTEGER, earth INTEGER, drown INTEGER, lifedrain INTEGER, paralysable BOOLEAN, senseinvis BOOLEAN, image BLOB, abilities STRING, speed INTEGER, armor INTEGER, boss BOOLEAN)')
     c.execute('CREATE TABLE CreatureDrops(creatureid INTEGER, itemid INTEGER, percentage FLOAT, min INTEGER, max INTEGER)')
     c.execute('CREATE TABLE HuntingPlaces(id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, level INTEGER, exprating INTEGER, lootrating INTEGER, image STRING, city STRING)')
     c.execute('CREATE TABLE HuntingPlaceCoordinates(huntingplaceid INTEGER, x INTEGER, y INTEGER, z INTEGER)')

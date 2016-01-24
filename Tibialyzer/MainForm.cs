@@ -1092,14 +1092,14 @@ namespace Tibialyzer {
             int offset = 0;
             if (sortedHeader != "" && sortedHeader != null) {
                 if (desc) {
-                    if (sortedHeader == extraAttribute) {
+                    if (sortedHeader == extraAttribute && extraSort != null) {
                         l = l.OrderByDescending(o => extraSort(o)).ToList();
                     } else {
                         int hash = sortedHeader.GetHashCode();
                         l = l.OrderByDescending(o => conditional ? o.GetConditionalHeaderValue(sortedHeader) : o.GetHeaderValue(hash)).ToList();
                     }
                 } else {
-                    if (sortedHeader == extraAttribute) {
+                    if (sortedHeader == extraAttribute && extraSort != null) {
                         l = l.OrderBy(o => extraSort(o)).ToList();
                     } else {
                         int hash = sortedHeader.GetHashCode();
