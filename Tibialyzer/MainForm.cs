@@ -926,7 +926,7 @@ namespace Tibialyzer {
         }
 
         private void ShowLootDrops(Dictionary<Creature, int> creatures, List<Tuple<Item, int>> items, Hunt h, string comm, string screenshot_path) {
-            LootDropForm ldf = new LootDropForm();
+            LootDropForm ldf = new LootDropForm(comm);
             ldf.creatures = creatures;
             ldf.items = items;
             ldf.hunt = h;
@@ -1696,7 +1696,8 @@ namespace Tibialyzer {
         private Hunt getSelectedHunt() {
             if (huntBox.SelectedIndex < 0) return null;
             lock (hunts) {
-                return hunts[huntBox.SelectedIndex];
+                
+                return huntBox.SelectedIndex >= hunts.Count  ? null : hunts[huntBox.SelectedIndex];
             }
         }
 

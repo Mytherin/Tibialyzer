@@ -593,7 +593,7 @@ namespace Tibialyzer {
                                 
                                 Creature cr = resultList.Item1;
                                 
-                                if (switchHunt) {
+                                if (switchHunt && commit) {
                                     foreach (Hunt potentialHunt in hunts) {
                                         if (potentialHunt.lootCreatures.Contains(cr.GetName().ToLower())) {
                                             if (potentialHunt.sideHunt) {

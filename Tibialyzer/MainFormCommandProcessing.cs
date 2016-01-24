@@ -170,31 +170,31 @@ namespace Tibialyzer {
                     screenshot_path = splits[2];
                 }
 
+
+                Creature lootCreature = null;
+                if (splits.Length >= 3 && splits[2] != "") {
+                    lootCreature = getCreature(splits[2]);
+                }
                 bool raw = false; // raw mode means 'display everything and don't convert anything to gold'
                 bool all = false; //all mode means 'display everything' (i.e. ignore discard flag on items)
-                if (parameter == "raw") {
-                    raw = true;
-                    all = true;
-                    parameter = "";
-                }
-                if (parameter == "all") {
-                    all = true;
-                    parameter = "";
+                if (splits.Length >= 4 && splits[3] != "") {
+                    if (splits[3] == "raw") {
+                        raw = true;
+                        all = true;
+                    } else if (splits[3] == "all") {
+                        all = true;
+                    }
                 }
 
                 // first handle creature kills
                 lock (hunts) {
-                    Hunt currentHunt = activeHunt;
                     Dictionary<Creature, int> creatureKills;
-                    Creature lootCreature = null;
-                    if (parameter != "") {
-                        lootCreature = getCreature(parameter);
-                        if (lootCreature == null) {
-                            foreach(Hunt h in hunts) {
-                                if (h.name.ToLower().Contains(parameter.ToLower())) {
-                                    currentHunt = h;
-                                    break;
-                                }
+                    Hunt currentHunt = activeHunt;
+                    if (splits.Length >= 2 && splits[1] != "") {
+                        foreach (Hunt h in hunts) {
+                            if (h.name.ToLower().Contains(splits[1].ToLower())) {
+                                currentHunt = h;
+                                break;
                             }
                         }
                     }

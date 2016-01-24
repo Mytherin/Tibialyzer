@@ -34,9 +34,22 @@ namespace Tibialyzer {
         public const int pageHeight = 400;
         public const int maxCreatureHeight = 700;
         public const int minLootWidth = 275;
+        private string huntName = "";
+        private string creatureName = "";
+        private string rawName = "";
 
         public static Font loot_font = new Font(FontFamily.GenericSansSerif, 14, FontStyle.Bold);
-        public LootDropForm() {
+        public LootDropForm(string command) {
+            string[] split = command.Split('@');
+            if (split.Length >= 2) {
+                huntName = split[1];
+            }
+            if (split.Length >= 3) {
+                creatureName = split[2];
+            }
+            if (split.Length >= 4) {
+                rawName = split[3];
+            }
             InitializeComponent();
         }
 
@@ -346,7 +359,7 @@ namespace Tibialyzer {
             if (creatures.Keys.Count == 1) {
                 MainForm.mainForm.ExecuteCommand("creature" + MainForm.commandSymbol + (sender as Control).Name);
             } else {
-                MainForm.mainForm.ExecuteCommand("loot" + MainForm.commandSymbol + (sender as Control).Name);
+                MainForm.mainForm.ExecuteCommand(String.Format("loot{0}{1}{0}{2}{0}{3}", MainForm.commandSymbol, huntName, (sender as Control).Name, rawName));
             }
         }
 
@@ -355,15 +368,15 @@ namespace Tibialyzer {
         }
 
         private void rawLootButton_Click(object sender, EventArgs e) {
-            MainForm.mainForm.ExecuteCommand("loot" + MainForm.commandSymbol + "raw");
+            MainForm.mainForm.ExecuteCommand(String.Format("loot{0}{1}{0}{2}{0}{3}", MainForm.commandSymbol, huntName, creatureName, "raw"));
         }
 
         private void allLootButton_Click(object sender, EventArgs e) {
-            MainForm.mainForm.ExecuteCommand("loot" + MainForm.commandSymbol + "all");
+            MainForm.mainForm.ExecuteCommand(String.Format("loot{0}{1}{0}{2}{0}{3}", MainForm.commandSymbol, huntName, creatureName, "all"));
         }
 
         private void lootButton_Click(object sender, EventArgs e) {
-            MainForm.mainForm.ExecuteCommand("loot" + MainForm.commandSymbol);
+            MainForm.mainForm.ExecuteCommand(String.Format("loot{0}{1}{0}{2}{0}{3}", MainForm.commandSymbol, huntName, "", ""));
         }
 
         private void changeSize(int modification) {
