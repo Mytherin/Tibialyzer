@@ -1,0 +1,162 @@
+<Commands>
+	<Command>
+		<Com>loot@</Com>
+		<Desc>Displays the loot of the current hunt.</Desc>
+	</Command>
+	<Command>
+		<Com>loot@[huntname]</Com>
+		<Desc>Displays the loot of the specified hunt.</Desc>
+	</Command>
+	<Command>
+		<Com>creature@[creaturename]</Com>
+		<Desc>Displays the loot of the specified creature.</Desc>
+	</Command>
+	<Command>
+		<Com>stats@[creaturename]</Com>
+		<Desc>Displays the stats of the specified creature.</Desc>
+	</Command>
+	<Command>
+		<Com>close@</Com>
+		<Desc>Closes all open windows and notifications.</Desc>
+	</Command>
+	<Command>
+		<Com>refresh@</Com>
+		<Desc>Opens the last active notification.</Desc>
+	</Command>
+	<Command>
+		<Com>delete@[creaturename]</Com>
+		<Desc>Deletes all [creaturename] kills from the active hunt.</Desc>
+	</Command>
+	<Command>
+		<Com>delete@[#kills]</Com>
+		<Desc>Deletes all creatures with less than [#kills] from the active hunt.</Desc>
+	</Command>
+	<Command>
+		<Com>skin@[creaturename]</Com>
+		<Desc>Adds a skin item of [creatuername] to the active hunt.</Desc>
+	</Command>
+	<Command>
+		<Com>skin@</Com>
+		<Desc>skin@[creaturename]; creature is the skinnable monster with highest kills.</Desc>
+	</Command>
+	<Command>
+		<Com>city@[cityname]</Com>
+		<Desc>Displays information about the city [cityname].</Desc>
+	</Command>
+	<Command>
+		<Com>hunt@[huntname]</Com>
+		<Desc>Displays information about the hunt [huntname].</Desc>
+	</Command>
+	<Command>
+		<Com>hunt@[level]</Com>
+		<Desc>Displays all hunts in the level-range 80%-120% of level.</Desc>
+	</Command>
+	<Command>
+		<Com>hunt@[cityname]</Com>
+		<Desc>Displays all hunts in the city [cityname].</Desc>
+	</Command>
+	<Command>
+		<Com>hunt@[creaturename]</Com>
+		<Desc>Displays all hunts with [creaturename].</Desc>
+	</Command>
+	<Command>
+		<Com>npc@[npcname]</Com>
+		<Desc>Displays information about the NPC [npcname].</Desc>
+	</Command>
+	<Command>
+		<Com>exp@</Com>
+		<Desc>Displays a notification with the current experience per hour.</Desc>
+	</Command>
+	<Command>
+		<Com>damage@</Com>
+		<Desc>Displays the current damage meter for players.</Desc>
+	</Command>
+	<Command>
+		<Com>damage@creature</Com>
+		<Desc>Displays the damage meter for creatures.</Desc>
+	</Command>
+	<Command>
+		<Com>reset@</Com>
+		<Desc>Clears the currently active hunt, deleting all loot.</Desc>
+	</Command>
+	<Command>
+		<Com>reset@[huntname]</Com>
+		<Desc>Clears the hunt [huntname].</Desc>
+	</Command>
+	<Command>
+		<Com>reset@[time]</Com>
+		<Desc>Deletes all log messages older than [time] in the active hunt.</Desc>
+	</Command>
+	<Command>
+		<Com>switch@[huntname]</Com>
+		<Desc>Switches the active hunt to [huntname].</Desc>
+	</Command>
+	<Command>
+		<Com>item@[itemname]</Com>
+		<Desc>Displays information about the item [itemname].</Desc>
+	</Command>
+	<Command>
+		<Com>category@[itemcategory]</Com>
+		<Desc>Displays all items in the category [itemcategory].</Desc>
+	</Command>
+	<Command>
+		<Com>char@[charname]</Com>
+		<Desc>Opens the Tibia character page of [charname] in a browser.</Desc>
+	</Command>
+	<Command>
+		<Com>wiki@[searchterm]</Com>
+		<Desc>Searches for [searchterm] on tibia.wikia.com in a browser.</Desc>
+	</Command>
+	<Command>
+		<Com>last@</Com>
+		<Desc>Execute the last message send in chat by any player.</Desc>
+	</Command>
+	<Command>
+		<Com>recent@</Com>
+		<Desc>Displays a list of all recently send messages in chat.</Desc>
+	</Command>
+	<Command>
+		<Com>url@</Com>
+		<Desc>Displays a list of all recent urls send in chat.</Desc>
+	</Command>
+	<Command>
+		<Com>url@[charname]</Com>
+		<Desc>Opens the last url send by [charname] in a browser.</Desc>
+	</Command>
+	<Command>
+		<Com>spell@[spellname]</Com>
+		<Desc>Displays information about the spell [spellname].</Desc>
+	</Command>
+	<Command>
+		<Com>spell@[vocation]</Com>
+		<Desc>Displays all spells that can be learned by [vocation].</Desc>
+	</Command>
+	<Command>
+		<Com>outfit@[outfitname]</Com>
+		<Desc>Displays information about the outfit [outfitname].</Desc>
+	</Command>
+	<Command>
+		<Com>mount@[mountname]</Com>
+		<Desc>Displays information about the mount [mountname].</Desc>
+	</Command>
+	<Command>
+		<Com>quest@[questname]</Com>
+		<Desc>Displays information about the quest [questname].</Desc>
+	</Command>
+	<Command>
+		<Com>quest@[cityname]</Com>
+		<Desc>Displays all quests in [cityname].</Desc>
+	</Command>
+	<Command>
+		<Com>screenshot@</Com>
+		<Desc>Takes a screenshot of Tibia and saves it to the Screenshot folder.</Desc>
+	</Command>
+	<Command>
+		<Com>[cityname]@[itemname]</Com>
+		<Desc>Displays a NPC that buys/sells [itemname] in [cityname].</Desc>
+	</Command>
+	<Command>
+		<Com>[cityname]@[spellname]</Com>
+		<Desc>Displays a NPC that teaches [spellname] in [cityname].</Desc>
+	</Command>
+</Commands>
