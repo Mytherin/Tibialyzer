@@ -515,7 +515,7 @@ namespace Tibialyzer {
 
                     hunt.totalTime = 0;
                     hunt.trackAllCreatures = splits[2] == "True";
-                    double.TryParse(splits[3], out hunt.totalTime);
+                    double.TryParse(splits[3], NumberStyles.Any, CultureInfo.InvariantCulture, out hunt.totalTime);
                     long.TryParse(splits[4], out hunt.totalExp);
                     hunt.sideHunt = splits[5] == "True";
                     hunt.aggregateHunt = splits[6] == "True";
@@ -535,8 +535,7 @@ namespace Tibialyzer {
                     refreshLootCreatures(hunt);
 
                     if (hunt.clearOnStartup) {
-                        command = new SQLiteCommand(String.Format("DROP TABLE IF EXISTS \"{0}\"", hunt.GetTableName()), lootConn);
-                        command.ExecuteNonQuery();
+                        resetHunt(hunt);
                     }
 
                     // create the hunt table if it does not exist
@@ -2739,7 +2738,7 @@ C::NumpadPgDn
         }
 
         public override string ToString() {
-            return name + "#" + dbtableid.ToString() + "#" + trackAllCreatures.ToString() + "#" + totalTime.ToString() + "#" + totalExp.ToString() + "#" + sideHunt.ToString() + "#" + aggregateHunt.ToString() + "#" + clearOnStartup.ToString() + "#" + trackedCreatures.Replace("\n", "#");
+            return name + "#" + dbtableid.ToString() + "#" + trackAllCreatures.ToString() + "#" + totalTime.ToString(CultureInfo.InvariantCulture) + "#" + totalExp.ToString() + "#" + sideHunt.ToString() + "#" + aggregateHunt.ToString() + "#" + clearOnStartup.ToString() + "#" + trackedCreatures.Replace("\n", "#");
         }
     };
 
