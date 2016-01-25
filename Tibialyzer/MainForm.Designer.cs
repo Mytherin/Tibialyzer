@@ -169,6 +169,8 @@
             this.loadTimerImage = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.label5 = new System.Windows.Forms.Label();
+            this.outfitGenderBox = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             this.huntingPage.SuspendLayout();
@@ -568,7 +570,9 @@
             // 
             // settingsTab
             // 
+            this.settingsTab.Controls.Add(this.label5);
             this.settingsTab.Controls.Add(this.label3);
+            this.settingsTab.Controls.Add(this.outfitGenderBox);
             this.settingsTab.Controls.Add(this.scanSpeedDisplayLabel);
             this.settingsTab.Controls.Add(this.scanningSpeedLabel);
             this.settingsTab.Controls.Add(this.scanningSpeedTrack);
@@ -690,7 +694,7 @@
             // lookCheckBox
             // 
             this.lookCheckBox.AutoSize = true;
-            this.lookCheckBox.Location = new System.Drawing.Point(11, 20);
+            this.lookCheckBox.Location = new System.Drawing.Point(10, 20);
             this.lookCheckBox.Name = "lookCheckBox";
             this.lookCheckBox.Size = new System.Drawing.Size(194, 17);
             this.lookCheckBox.TabIndex = 11;
@@ -855,7 +859,7 @@
             this.enableSimpleNotifications.AutoSize = true;
             this.enableSimpleNotifications.Checked = true;
             this.enableSimpleNotifications.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.enableSimpleNotifications.Location = new System.Drawing.Point(11, 43);
+            this.enableSimpleNotifications.Location = new System.Drawing.Point(10, 394);
             this.enableSimpleNotifications.Name = "enableSimpleNotifications";
             this.enableSimpleNotifications.Size = new System.Drawing.Size(154, 17);
             this.enableSimpleNotifications.TabIndex = 4;
@@ -1598,6 +1602,28 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(11, 50);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(107, 13);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Default Outfit Gender";
+            // 
+            // outfitGenderBox
+            // 
+            this.outfitGenderBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.outfitGenderBox.FormattingEnabled = true;
+            this.outfitGenderBox.Items.AddRange(new object[] {
+            "Male",
+            "Female"});
+            this.outfitGenderBox.Location = new System.Drawing.Point(122, 46);
+            this.outfitGenderBox.Name = "outfitGenderBox";
+            this.outfitGenderBox.Size = new System.Drawing.Size(121, 21);
+            this.outfitGenderBox.TabIndex = 15;
+            this.outfitGenderBox.SelectedIndexChanged += new System.EventHandler(this.outfitGenderBox_SelectedIndexChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1786,6 +1812,8 @@
         private System.Windows.Forms.Panel helpPanel;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox helpSearchBox;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox outfitGenderBox;
     }
 }
 

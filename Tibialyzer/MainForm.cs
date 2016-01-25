@@ -625,6 +625,7 @@ namespace Tibialyzer {
             this.advanceCopyCheckbox.Checked = copyAdvances;
             this.showNotificationCheckbox.Checked = showNotifications;
             this.notificationTypeBox.SelectedIndex = lootNotificationRich ? 1 : 0;
+            this.outfitGenderBox.SelectedIndex = getSettingBool("OutfitGenderMale") ? 0 : 1;
             this.rareDropNotificationValueCheckbox.Checked = showNotificationsValue;
             this.notificationValue.Text = notification_value.ToString();
             this.specificNotificationCheckbox.Checked = showNotificationsSpecific;
@@ -2157,6 +2158,13 @@ namespace Tibialyzer {
             this.lootNotificationRich = (sender as ComboBox).SelectedIndex == 1;
         }
 
+        private void outfitGenderBox_SelectedIndexChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("OutfitGenderMale", ((sender as ComboBox).SelectedIndex == 0).ToString());
+            saveSettings();
+        }
+
         private void notificationLengthSlider_Scroll(object sender, EventArgs e) {
             if (prevent_settings_update) return;
             setSetting("NotificationDuration", (sender as TrackBar).Value.ToString());
@@ -2598,6 +2606,7 @@ C::NumpadPgDn
             setSetting("EnableScreenshots", false);
             setSetting("Names", "Mytherin");
             setSetting("ScanSpeed", "0");
+            setSetting("OutfitGenderMale", true);
 
             saveSettings();
         }
