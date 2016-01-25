@@ -359,7 +359,9 @@ for huntingplaceid,creaturelist in iter(huntcreatures.items()):
         results = c.fetchall()
         if len(results) > 0:
             creatureid = results[0][0]
-            c.execute('INSERT INTO HuntingPlaceCreatures(huntingplaceid,creatureid) VALUES (?,?)', (huntingplaceid,creatureid))
+            c.execute('SELECT huntingplaceid FROM HuntingPlaceCreatures WHERE huntingplaceid=? AND creatureid=?', (huntingplaceid,creatureid))
+            if len(c.fetchall()) == 0:
+                c.execute('INSERT INTO HuntingPlaceCreatures(huntingplaceid,creatureid) VALUES (?,?)', (huntingplaceid,creatureid))
         else:
             pass#print("Unrecognized Creature", creature)
 

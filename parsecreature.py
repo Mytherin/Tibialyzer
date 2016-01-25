@@ -29,9 +29,9 @@ numberRegex = re.compile('([0-9]+[,.]?[0-9]*[,.]?[0-9]*[,.]?[0-9]*[,.]?[0-9]*)')
 imageRegex = re.compile('<a href="([^"]*)"[ \t\n]*class="image image-thumbnail"')
 imageRegex2 = re.compile('src="([^"]*vignette[^"]*)"')
 
-def getBoolean(attributes, attrib):
+def getBoolean(attributes, attrib, default=False):
     if attrib not in attributes:
-        return False
+        return default
     return attributes[attrib].strip().lower() == 'yes'
 
 def getInteger(attributes, attrib):
@@ -103,7 +103,7 @@ def parseCreature(title, attributes, c, creaturedrops, getURL):
     pushable = getBoolean(attributes,'pushable')
     pushes = getBoolean(attributes,'pushes')
     paralysable = getBoolean(attributes,'paraimmune')
-    senseinvis = getBoolean(attributes,'senseinvis')
+    senseinvis = getBoolean(attributes,'senseinvis', True)
     armor = getInteger(attributes,'armor')
     maxdmg = getMaxInteger(attributes,'maxdmg')
     physical = getInteger(attributes,'physicalDmgMod')
@@ -170,14 +170,22 @@ def parseCreature(title, attributes, c, creaturedrops, getURL):
             list.append(loot_stats, [current_index + index, current_index + endindex, kill_count])
             current_index = current_index + endindex
         lootdrops = dict()
+        killcount = dict()
+        score = dict()
         for i in range(len(loot_stats)):
             index = loot_stats[i][0]
             endindex = loot_stats[i][1]
+            kills = loot_stats[i][2]
             lootdrops[i] = dict()
+            killcount[i] = kills
+            bag = False
+            highpercentage = False
             while True:
                 match = wikiURLRegex.search(stats[index:endindex])
                 if match == None: break
                 item_name = filterItemName(match.groups()[0]).lower()
+                    # creatures don't drop bags, but they used to in the past
+                    # if there is a bag in the creature kills, we know it's old
                 startindex = index
                 index = index + match.end()
                 if index > endindex or item_name == "loot": break
@@ -191,12 +199,27 @@ def parseCreature(title, attributes, c, creaturedrops, getURL):
                 match = lootChanceRegex.search(stats[index:])
                 if match == None: break
                 percentage = float(match.groups()[0])
+                if percentage > 100:
+                    highpercentage = True
                 index = index + match.end()
-                lootdrops[i][item_name] = (percentage, mindrop, maxdrop)
+                if item_name.strip() == "bag":
+                    bag = True
+                else: 
+                    lootdrops[i][item_name] = (percentage, mindrop, maxdrop)
+            score[i] = 0 if bag else (1 if highpercentage else len(lootdrops[i]))
         maxdict = dict()
+        maxkey = ""
+        killcount[maxkey] = -1
+        score[maxkey] = -1
+        # pick the loot statistics with the most items
         for key in lootdrops.keys():
-            if len(lootdrops[key]) > len(maxdict):
+            if score[key] > score[maxkey]:
                 maxdict = lootdrops[key]
+                maxkey = key
+            elif score[key] == score[maxkey] and killcount[key] > killcount[maxkey]:
+                # if the items are equal, pick the one with the highest kills
+                maxdict = lootdrops[key]
+                maxkey = key
         creaturedrops[creatureid] = maxdict
     # read the dropped items from the 'loot' attribute
     if 'loot' in attributes:

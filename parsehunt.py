@@ -24,23 +24,25 @@ ratingMap = {'very bad': 1, 'bad': 2, 'average': 3, 'good': 4, 'very good': 5}
 
 
 def parseHunt(title, attributes, c, content, huntcreatures, getURL):
-    name = title.replace('<br>', ' ')
+    name = title.replace('<br>', ' ').strip()
     if 'name' in attributes:
-        name = attributes['name'].replace('<br>', ' ')
+        name = attributes['name'].replace('<br>', ' ').strip()
     image = None
     if 'image' in attributes:
         image = attributes['image']
     expstar = None
-    if 'expstar' in attributes:
+    if 'expstar' in attributes or 'exp' in attributes:
         try: expstar = int(attributes['expstar'])
-        except: 
-            try: expstar = ratingMap[attributes['exp'].lower()]
+        except: pass
+        if expstar == None:
+            try: expstar = ratingMap[attributes['exp'].lower().strip()]
             except: pass
     lootstar = None
-    if 'lootstar' in attributes:
+    if 'lootstar' in attributes or 'loot' in attributes:
         try: lootstar = int(attributes['lootstar'])
-        except: 
-            try: lootstar = ratingMap[attributes['loot'].lower()]
+        except:pass
+        if lootstar == None:
+            try: lootstar = ratingMap[attributes['loot'].lower().strip()]
             except: pass
     level = None
     if 'lvlknights' in attributes:
