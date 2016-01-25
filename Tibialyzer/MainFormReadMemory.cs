@@ -83,7 +83,7 @@ namespace Tibialyzer {
         }
 
         public class ParseMemoryResults {
-            public Dictionary<string, int> damagePerSecond = new Dictionary<string, int>();
+            public Dictionary<string, Tuple<int, int>> damagePerSecond = new Dictionary<string, Tuple<int, int>>();
             public List<string> newCommands = new List<string>();
             public List<string> newLooks = new List<string>();
             public List<Tuple<Creature, List<Tuple<Item, int>>>> newItems = new List<Tuple<Creature, List<Tuple<Item, int>>>>();
@@ -386,6 +386,8 @@ namespace Tibialyzer {
             h.loot.creatureLoot.Clear();
             h.loot.killCount.Clear();
             h.loot.logMessages.Clear();
+            h.totalExp = 0;
+            h.totalTime = 0;
             SQLiteCommand comm = new SQLiteCommand(String.Format("DELETE FROM \"{0}\" WHERE day < {1} OR hour < {2} OR (hour == {2} AND minute < {3})", h.GetTableName(), stamp, hour, minute), lootConn);
             comm.ExecuteNonQuery();
 
@@ -673,13 +675,15 @@ namespace Tibialyzer {
             foreach (KeyValuePair<string, Dictionary<string, int>> kvp in totalDamageResults) {
                 string player = kvp.Key;
                 int damage = 0;
+                int minutes = 0;
                 foreach (string t in times) {
                     if (totalDamageResults[player].ContainsKey(t)) {
                         damage += totalDamageResults[player][t];
+                        minutes++;
                     }
                 }
                 if (damage > 0) {
-                    o.damagePerSecond.Add(player, damage);
+                    o.damagePerSecond.Add(player, new Tuple<int, int>(damage, minutes));
                 }
             }
 

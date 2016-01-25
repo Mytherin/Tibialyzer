@@ -922,7 +922,7 @@ namespace Tibialyzer {
             if (c == null) return;
             string[] split = command.Split(commandSymbol);
             int page = 0;
-            int currentDisplay = 0;
+            int currentDisplay = -1;
             if (split.Length > 2 && int.TryParse(split[2], out page)) { }
             if (split.Length > 3 && int.TryParse(split[3], out currentDisplay)) { }
             NPCForm f = new NPCForm(page, currentDisplay);
@@ -931,7 +931,7 @@ namespace Tibialyzer {
             ShowNotification(f, command);
         }
 
-        private void ShowDamageMeter(Dictionary<string, int> dps, string comm, string filter = "", string screenshot_path = "") {
+        private void ShowDamageMeter(Dictionary<string, Tuple<int, int>> dps, string comm, string filter = "", string screenshot_path = "") {
             DamageChart f = new DamageChart();
             f.dps = dps;
             f.filter = filter;

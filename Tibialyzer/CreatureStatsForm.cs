@@ -118,7 +118,7 @@ namespace Tibialyzer {
             right = horizontal - left;
             this.healthLabel.Padding = new Padding(left, 2, right, 2);
             // set exp of creature
-            this.expLabel.Text = (experience > 0 ? experience.ToString() : "Unknown") + " Exp";
+            this.expLabel.Text = (experience >= 0 ? experience.ToString() : "Unknown") + " Exp";
             horizontal = 96 - expLabel.Size.Width;
             left = horizontal / 2;
             right = horizontal - left;

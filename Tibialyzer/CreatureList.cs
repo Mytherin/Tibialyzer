@@ -91,7 +91,7 @@ namespace Tibialyzer {
             this.PerformLayout();
 
         }
-
+        
         public void sortHeader(object sender, EventArgs e) {
             if (sortedHeader == (sender as Control).Name) {
                 desc = !desc;

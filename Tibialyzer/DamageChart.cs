@@ -12,7 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,16 +25,13 @@ using System.Windows.Forms.DataVisualization.Charting;
 namespace Tibialyzer {
     class DamageChart : NotificationForm {
         private TransparentChart mChart;
-        public Dictionary<string, int> dps;
-        struct Player {
-            public string name;
-            public int damage;
-        };
+        public Dictionary<string, Tuple<int, int>> dps;
+        public bool graph = true;
+        private Label detailsButton;
         public string filter = "";
 
         public DamageChart() {
             InitializeComponent();
-            NotificationInitialize();
         }
 
         private void InitializeComponent() {
@@ -43,6 +40,7 @@ namespace Tibialyzer {
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DamageChart));
             this.mChart = new Tibialyzer.TransparentChart();
+            this.detailsButton = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.mChart)).BeginInit();
             this.SuspendLayout();
             // 
@@ -74,9 +72,25 @@ namespace Tibialyzer {
             this.mChart.TabIndex = 0;
             this.mChart.Text = "Damage Chart";
             // 
+            // detailsButton
+            // 
+            this.detailsButton.BackColor = System.Drawing.Color.Transparent;
+            this.detailsButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.detailsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.detailsButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.detailsButton.Location = new System.Drawing.Point(5, 4);
+            this.detailsButton.Name = "detailsButton";
+            this.detailsButton.Padding = new System.Windows.Forms.Padding(2);
+            this.detailsButton.Size = new System.Drawing.Size(96, 21);
+            this.detailsButton.TabIndex = 3;
+            this.detailsButton.Text = "Details";
+            this.detailsButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.detailsButton.Click += new System.EventHandler(this.detailsButton_Click);
+            // 
             // DamageChart
             // 
             this.ClientSize = new System.Drawing.Size(450, 321);
+            this.Controls.Add(this.detailsButton);
             this.Controls.Add(this.mChart);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -87,51 +101,105 @@ namespace Tibialyzer {
 
         }
 
+        private List<Control> controlList = new List<Control>();
+        public void refreshDamageChart() {
+            foreach (Control c in controlList) {
+                c.Dispose();
+                Controls.Remove(c);
+            }
+            controlList.Clear();
+            if (graph) {
+                this.mChart.Visible = true;
+                this.mChart.Series[0].Points.Clear();
+                for (int i = 0; i < damageDealt.Count; i++) {
+                    DamageObject p = damageDealt[i];
+                    double percentage = p.percentage;
+                    DataPoint point = new DataPoint();
+                    point.XValue = percentage;
+                    point.YValues = new double[1];
+                    point.YValues[0] = p.totalDamage;
+                    point.AxisLabel = p.name;
+                    point.LegendText = p.name;
+                    point.Label = Math.Round(percentage, 1).ToString() + "%";
+                    this.mChart.Series[0].Points.Add(point);
+                }
+                this.mChart.ApplyPaletteColors();
+                for (int i = 0; i < damageDealt.Count; i++) {
+                    DamageObject p = damageDealt[i];
+                    p.color = this.mChart.Series[0].Points[i].Color;
+                }
+                this.Size = new Size(startX, startY);
+            } else {
+                this.mChart.Series[0].Points.Clear();
+                this.mChart.Visible = false;
+                int newWidth = 0;
+                int y = MainForm.DisplayCreatureAttributeList(Controls, damageDealt.ToList<TibiaObject>(), 5, 25, out newWidth, null, controlList, 0, 20, null, null, null, sortFunction, sortedHeader, desc);
+
+                this.Size = new Size(Math.Max(startX, newWidth), Math.Max(startY, 25 + y));
+            }
+            refreshTimer();
+        }
+
+        private string sortedHeader = "Total Damage";
+        private bool desc = true;
+        public void sortFunction(object sender, EventArgs e) {
+            if (sortedHeader == (sender as Control).Name) {
+                desc = !desc;
+            } else {
+                sortedHeader = (sender as Control).Name;
+                desc = false;
+            }
+            this.SuspendForm();
+            refreshDamageChart();
+            this.ResumeForm();
+        }
+
+        int startX, startY;
+
+        private List<DamageObject> damageDealt = new List<DamageObject>();
+
+        private void detailsButton_Click(object sender, EventArgs e) {
+            graph = !graph;
+            if (graph) {
+                detailsButton.Text = "Details";
+            } else {
+                detailsButton.Text = "Graph";
+            }
+            this.SuspendForm();
+            refreshDamageChart();
+            this.ResumeForm();
+        }
+
         public override void LoadForm() {
             this.SuspendForm();
-            int maxdeeps = -1;
-            foreach (int deeps in dps.Values) {
-                if (deeps > maxdeeps) maxdeeps = deeps;
-            }
-
-            List<Player> players = new List<Player>();
-
-            foreach (KeyValuePair<string, int> kvp in dps) {
+            NotificationInitialize();
+            detailsButton.Click -= c_Click;
+            startX = this.Size.Width;
+            startY = this.Size.Height;
+            foreach (KeyValuePair<string, Tuple<int, int>> kvp in dps) {
                 if (filter != "all" && filter != "creature" && char.IsLower(kvp.Key[0])) continue;
                 if (filter == "creature" && char.IsUpper(kvp.Key[0])) continue;
-                Player p = new Player();
-                p.name = kvp.Key.Replace(".", "");
-                p.damage = kvp.Value;
-                players.Add(p);
+                damageDealt.Add(new DamageObject() { name = kvp.Key.Replace(".", ""), totalDamage = kvp.Value.Item1, dps = (double)kvp.Value.Item1 / (double)kvp.Value.Item2 });
             }
-            players.OrderByDescending(o => o.damage);
-            if (players.Count == 0) {
-                players.Add(new Player() { damage = 40, name = "You" });
-                players.Add(new Player() { damage = 30, name = "Mytherin" });
-                players.Add(new Player() { damage = 35, name = "Martincc" });
-                players.Add(new Player() { damage = 15, name = "Amel Cyrom" });
-                players.Add(new Player() { damage = 20, name = "Sample" });
+            damageDealt.OrderByDescending(o => o.totalDamage);
+            if (damageDealt.Count == 0) {
+                damageDealt.Add(new DamageObject() { name = "Mytherin", dps = 50, totalDamage = 501 });
+                damageDealt.Add(new DamageObject() { name = "Amel Cyrom", dps = 50, totalDamage = 250 });
+                damageDealt.Add(new DamageObject() { name = "Martincc", dps = 50, totalDamage = 499 });
+                damageDealt.Add(new DamageObject() { name = "You", dps = 50, totalDamage = 750 });
             }
 
             double total_damage = 0;
-            foreach (Player player in players) {
-                total_damage = total_damage + player.damage;
+            foreach (DamageObject player in damageDealt) {
+                total_damage = total_damage + player.totalDamage;
+            }
+            foreach (DamageObject p in damageDealt) {
+                p.percentage = p.totalDamage / total_damage * 100;
             }
 
-            int i = 0;
-            this.mChart.Series[0].Points.Clear();
-            foreach (Player p in players) {
-                double percentage = p.damage / total_damage * 100;
-                DataPoint point = new DataPoint();
-                point.XValue = percentage;
-                point.YValues = new double[1];
-                point.YValues[0] = p.damage;
-                point.AxisLabel = p.name;
-                point.LegendText = p.name;
-                point.Label = Math.Round(percentage, 1).ToString() + "%";
-                this.mChart.Series[0].Points.Add(point);
-                i++;
-            }
+            refreshDamageChart();
+            this.ResumeForm();
+            NotificationFinalize();
         }
     }
 }

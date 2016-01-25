@@ -1046,6 +1046,48 @@ namespace Tibialyzer {
         }
     }
 
+    class DamageObject : TibiaObject {
+        public string name;
+        public int totalDamage;
+        public double dps;
+        public double percentage;
+        public Color color;
+        
+        public override Image GetImage() {
+            return null;
+        }
+        public override string GetName() {
+            return name;
+        }
+        public override List<string> GetAttributeHeaders() {
+            return headers;
+        }
+        static List<string> headers = new List<string> { "Name", "Total Damage", "DPS", "Percentage" };
+        static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode(), headers[3].GetHashCode() };
+        public override List<Attribute> GetAttributes() {
+            return new List<Attribute> { new StringAttribute(name, 200, color), new StringAttribute(totalDamage.ToString(), 150),
+                new StringAttribute(dps.ToString(System.Globalization.CultureInfo.InvariantCulture), 100), new StringAttribute(percentage.ToString(System.Globalization.CultureInfo.InvariantCulture) + "%", 100) };
+        }
+        public override string GetCommand() {
+            return "";
+        }
+        public override IComparable GetHeaderValue(int header) {
+            if (header == hashes[0]) {
+                return name;
+            }
+            if (header == hashes[1]) {
+                return totalDamage;
+            }
+            if (header == hashes[1]) {
+                return dps;
+            }
+            if (header == hashes[1]) {
+                return percentage;
+            }
+            return base.GetHeaderValue(header);
+        }
+    }
+
     enum TibiaObjectType { Creature, Item, NPC, Outfit, Mount, Spell };
 
     class LazyTibiaObject : TibiaObject {
