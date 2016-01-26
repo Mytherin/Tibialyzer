@@ -608,10 +608,10 @@ namespace Tibialyzer {
             this.notification_goldratio = getSettingDouble("NotificationGoldRatio") < 0 ? notification_goldratio : getSettingDouble("NotificationGoldRatio");
             this.showNotificationsSpecific = getSettingBool("ShowNotificationsSpecific");
 
-            this.richNotificationsPanel.Enabled = richNotifications;
             this.notificationPanel.Enabled = showNotifications;
             this.goldCapRatioValue.Text = notification_goldratio.ToString(CultureInfo.InvariantCulture);
             this.goldCapRatioCheckbox.Checked = getSettingBool("ShowNotificationsGoldRatio");
+            this.enableSimpleNotificationAnimations.Checked = getSettingBool("EnableSimpleNotificationAnimation");
             this.specificNotificationTextbox.Enabled = showNotificationsSpecific;
             this.notificationLabel.Text = "Notification Length: " + notificationLength.ToString() + " Seconds";
             this.scanningSpeedTrack.Value = Math.Min(Math.Max(getSettingInt("ScanSpeed"), 0), 4);
@@ -632,6 +632,16 @@ namespace Tibialyzer {
             this.alwaysShowLoot.Checked = getSettingBool("AlwaysShowLoot");
             this.startAutohotkeyScript.Checked = getSettingBool("StartAutohotkeyAutomatically");
             this.shutdownOnExit.Checked = getSettingBool("ShutdownAutohotkeyOnExit");
+            this.richAnchor.SelectedIndex = Math.Min(Math.Max(getSettingInt("RichNotificationAnchor"), 0), 3);
+            this.richXOffset.Text = getSettingInt("RichNotificationXOffset").ToString();
+            this.richYOffset.Text = getSettingInt("RichNotificationYOffset").ToString();
+            this.simpleAnchor.SelectedIndex = Math.Min(Math.Max(getSettingInt("SimpleNotificationAnchor"), 0), 3);
+            this.simpleXOffset.Text = getSettingInt("SimpleNotificationXOffset").ToString();
+            this.simpleYOffset.Text = getSettingInt("SimpleNotificationYOffset").ToString();
+            this.suspendedAnchor.SelectedIndex = Math.Min(Math.Max(getSettingInt("SuspendedNotificationAnchor"), 0), 3);
+            this.suspendedXOffset.Text = getSettingInt("SuspendedNotificationXOffset").ToString();
+            this.suspendedYOffset.Text = getSettingInt("SuspendedNotificationYOffset").ToString();
+
             string massiveString = "";
             if (settings.ContainsKey("NotificationItems")) {
                 foreach (string str in settings["NotificationItems"]) {
@@ -774,15 +784,49 @@ namespace Tibialyzer {
                 Process tibia = tibia_process[0];
                 screen = Screen.FromHandle(tibia.MainWindowHandle);
             }
-            position_x = screen.WorkingArea.Right - f.Width - notificationSpacing;
-            int basePosition = screen.WorkingArea.Bottom;
-            foreach (SimpleNotification notification in notificationStack) {
-                basePosition -= notification.Height + notificationSpacing;
+            int xOffset = getSettingInt("SimpleNotificationXOffset") < 0 ? 30 : getSettingInt("SimpleNotificationXOffset");
+            int yOffset = getSettingInt("SimpleNotificationYOffset") < 0 ? 30 : getSettingInt("SimpleNotificationYOffset");
+            int anchor = getSettingInt("SimpleNotificationAnchor");
+            int sign = 1;
+            int basePosition = screen.WorkingArea.Bottom - yOffset;
+            int startX = 0;
+            switch (anchor) {
+                case 0:
+                case 1:
+                    // Top
+                    sign = -1;
+                    basePosition = screen.WorkingArea.Top + yOffset;
+                    break;
+                case 2:
+                default:
+                    // Bottom
+                    break;
             }
-            position_y = basePosition - (f.Height + notificationSpacing);
+            switch (anchor) {
+                case 0:
+                case 2:
+                    // Left
+                    position_x = screen.WorkingArea.Left + xOffset;
+                    startX = position_x - (f.Width + notificationSpacing);
+                    break;
+                case 1:
+                default:
+                    // Right
+                    position_x = screen.WorkingArea.Right - f.Width - notificationSpacing - xOffset;
+                    startX = position_x + f.Width + notificationSpacing;
+                    break;
+            }
+
+            foreach (SimpleNotification notification in notificationStack) {
+                basePosition -= sign * (notification.Height + notificationSpacing);
+            }
+            position_y = basePosition - sign * f.Height;
             f.StartPosition = FormStartPosition.Manual;
-            f.SetDesktopLocation(position_x + f.Width + notificationSpacing, position_y);
-            Console.WriteLine(position_y);
+            if (!getSettingBool("EnableSimpleNotificationAnimation")) {
+                startX = position_x;
+            }
+
+            f.SetDesktopLocation(startX, position_y);
             f.targetPositionX = position_x;
             f.targetPositionY = position_y;
             f.FormClosed += simpleNotificationClosed;
@@ -809,9 +853,17 @@ namespace Tibialyzer {
             if (notification == null) return;
             bool moveDown = false;
             int positionModification = 0;
+            int anchor = getSettingInt("SimpleNotificationAnchor");
+            int sign = 1;
+            switch (anchor) {
+                case 0:
+                case 1:
+                    sign = -1;
+                    break;
+            }
             foreach (SimpleNotification f in notificationStack) {
                 if (f == notification) {
-                    positionModification = f.Height + notificationSpacing;
+                    positionModification = sign * (f.Height + notificationSpacing);
                     moveDown = true;
                 } else if (moveDown) {
                     f.targetPositionY += positionModification;
@@ -853,8 +905,28 @@ namespace Tibialyzer {
                 Process tibia = tibia_process[0];
                 screen = Screen.FromHandle(tibia.MainWindowHandle);
             }
-            position_x = screen.WorkingArea.Left + 30;
-            position_y = screen.WorkingArea.Top + 30;
+            int xOffset = getSettingInt("RichNotificationXOffset") < 0 ? 30 : getSettingInt("RichNotificationXOffset");
+            int yOffset = getSettingInt("RichNotificationYOffset") < 0 ? 30 : getSettingInt("RichNotificationYOffset");
+            int anchor = getSettingInt("RichNotificationAnchor");
+            switch (anchor) {
+                case 3:
+                    position_x = screen.WorkingArea.Right - xOffset - f.Width;
+                    position_y = screen.WorkingArea.Bottom - yOffset - f.Height;
+                    break;
+                case 2:
+                    position_x = screen.WorkingArea.Left + xOffset;
+                    position_y = screen.WorkingArea.Bottom - yOffset - f.Height;
+                    break;
+                case 1:
+                    position_x = screen.WorkingArea.Right - xOffset - f.Width;
+                    position_y = screen.WorkingArea.Top + yOffset;
+                    break;
+                default:
+                    position_x = screen.WorkingArea.Left + xOffset;
+                    position_y = screen.WorkingArea.Top + yOffset;
+                    break;
+            }
+
             f.StartPosition = FormStartPosition.Manual;
             f.SetDesktopLocation(position_x, position_y);
             f.TopMost = true;
@@ -1556,7 +1628,7 @@ namespace Tibialyzer {
         private void creatureSearch_TextChanged(object sender, EventArgs e) {
             refreshCreatureTimer();
         }
-        
+
         private void browseSelectionBox_SelectedIndexChanged(object sender, EventArgs e) {
             if (creatureSearch.Text == "") {
                 return;
@@ -1573,7 +1645,7 @@ namespace Tibialyzer {
             }
             refreshItems(creaturePanel, creaturePanel.Controls, creatureObjects, creatureSortedHeader, creatureDesc, sortCreatures);
         }
-        
+
         object helpLock = new object();
         System.Timers.Timer helpTimer = null;
         protected void refreshHelpTimer() {
@@ -1701,7 +1773,7 @@ namespace Tibialyzer {
                 this.ExecuteCommand("damage" + MainForm.commandSymbol + "screenshot" + MainForm.commandSymbol + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/"));
             }
         }
-        
+
         public static void OpenUrl(string str) {
             // Weird command prompt escape characters
             str = str.Trim().Replace(" ", "%20").Replace("&", "^&").Replace("|", "^|").Replace("(", "^(").Replace(")", "^)");
@@ -2163,8 +2235,6 @@ namespace Tibialyzer {
             saveSettings();
 
             this.richNotifications = (sender as CheckBox).Checked;
-
-            richNotificationsPanel.Enabled = (sender as CheckBox).Checked;
         }
 
         private void enableSimpleNotifications_CheckedChanged(object sender, EventArgs e) {
@@ -2496,42 +2566,71 @@ namespace Tibialyzer {
                 int wParam = m.WParam.ToInt32();
                 if (wParam == 32) {
                     // 32 signifies we have entered suspended mode, so we warn the user with a popup
-                    if (window == null) {
-                        Screen screen;
-                        Process[] tibia_process = Process.GetProcessesByName("Tibia");
-                        if (tibia_process.Length == 0) {
-                            screen = Screen.FromControl(this);
-                        } else {
-                            Process tibia = tibia_process[0];
-                            screen = Screen.FromHandle(tibia.MainWindowHandle);
-                        }
-                        window = new AutoHotkeySuspendedMode();
-                        window.StartPosition = FormStartPosition.Manual;
-                        window.SetDesktopLocation(screen.WorkingArea.Right - window.Width - 10, screen.WorkingArea.Top + 10);
-                        window.TopMost = true;
-                        window.Show();
-                    }
+                    ShowSuspendedWindow();
                 } else if (wParam == 33) {
                     // 33 signifies we are not suspended, destroy the suspended window (if it exists)
-                    if (window != null && !window.IsDisposed) {
-                        try {
-                            window.Close();
-                        } catch {
-
-                        }
-                        window = null;
-                    }
+                    CloseSuspendedWindow();
                 }
             }
             base.WndProc(ref m);
         }
 
-        private void stackableConvertTextBox_TextChanged(object sender, EventArgs e) {
+        private object suspendedLock = new object();
+        private void ShowSuspendedWindow(bool alwaysShow = false) {
+            lock (suspendedLock) {
+                if (window != null) {
+                    window.Close();
+                    window = null;
+                }
+                Screen screen;
+                Process[] tibia_process = Process.GetProcessesByName("Tibia");
+                if (tibia_process.Length == 0) {
+                    screen = Screen.FromControl(this);
+                } else {
+                    Process tibia = tibia_process[0];
+                    screen = Screen.FromHandle(tibia.MainWindowHandle);
+                }
+                window = new AutoHotkeySuspendedMode(alwaysShow);
+                int position_x = 0, position_y = 0;
+                int xOffset = getSettingInt("SuspendedNotificationXOffset") < 0 ? 10 : getSettingInt("SuspendedNotificationXOffset");
+                int yOffset = getSettingInt("SuspendedNotificationYOffset") < 0 ? 10 : getSettingInt("SuspendedNotificationYOffset");
+                int anchor = getSettingInt("SuspendedNotificationAnchor");
+                switch (anchor) {
+                    case 3:
+                        position_x = screen.WorkingArea.Right - xOffset - window.Width;
+                        position_y = screen.WorkingArea.Bottom - yOffset - window.Height;
+                        break;
+                    case 2:
+                        position_x = screen.WorkingArea.Left + xOffset;
+                        position_y = screen.WorkingArea.Bottom - yOffset - window.Height;
+                        break;
+                    case 0:
+                        position_x = screen.WorkingArea.Left + xOffset;
+                        position_y = screen.WorkingArea.Top + yOffset;
+                        break;
+                    default:
+                        position_x = screen.WorkingArea.Right - xOffset - window.Width;
+                        position_y = screen.WorkingArea.Top + yOffset;
+                        break;
+                }
 
+                window.StartPosition = FormStartPosition.Manual;
+                window.SetDesktopLocation(position_x, position_y);
+                window.TopMost = true;
+                window.Show();
+            }
         }
+        private void CloseSuspendedWindow() {
+            lock (suspendedLock) {
+                if (window != null && !window.IsDisposed) {
+                    try {
+                        window.Close();
+                    } catch {
 
-        private void stackableConvertApply_Click_1(object sender, EventArgs e) {
-
+                    }
+                    window = null;
+                }
+            }
         }
 
         private void unlockResetSettingsButton_CheckedChanged(object sender, EventArgs e) {
@@ -2589,6 +2688,16 @@ C::NumpadPgDn
             setSetting("Names", "Mytherin");
             setSetting("ScanSpeed", "0");
             setSetting("OutfitGenderMale", true);
+            setSetting("RichNotificationXOffset", 30);
+            setSetting("RichNotificationYOffset", 30);
+            setSetting("RichNotificationAnchor", 0);
+            setSetting("SimpleNotificationXOffset", 5);
+            setSetting("SimpleNotificationYOffset", 10);
+            setSetting("SimpleNotificationAnchor", 3);
+            setSetting("EnableSimpleNotificationAnimation", true);
+            setSetting("SuspendedNotificationXOffset", 10);
+            setSetting("SuspendedNotificationYOffset", 10);
+            setSetting("SuspendedNotificationAnchor", 1);
 
             saveSettings();
         }
@@ -2700,6 +2809,110 @@ C::NumpadPgDn
             double val = 0;
             if (double.TryParse(unstackableConvertTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out val)) {
                 this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "0-" + unstackableConvertTextBox.Text);
+            }
+        }
+
+        private void richAnchor_SelectedIndexChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("RichNotificationAnchor", richAnchor.SelectedIndex);
+            saveSettings();
+        }
+
+        private void richXOffset_TextChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            int xOffset;
+            if (int.TryParse((sender as TextBox).Text, out xOffset)) {
+                setSetting("RichNotificationXOffset", xOffset);
+                saveSettings();
+            }
+        }
+
+        private void richYOffset_TextChanged(object sender, EventArgs e) {
+            int yOffset;
+            if (int.TryParse((sender as TextBox).Text, out yOffset)) {
+                setSetting("RichNotificationYOffset", yOffset);
+                saveSettings();
+            }
+        }
+
+        private void richTestDisplay_Click(object sender, EventArgs e) {
+            MainForm.mainForm.ExecuteCommand("creature@demon");
+        }
+
+        private void simpleAnchor_SelectedIndexChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("SimpleNotificationAnchor", simpleAnchor.SelectedIndex);
+            saveSettings();
+        }
+
+        private void simpleXOffset_TextChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            int xOffset;
+            if (int.TryParse((sender as TextBox).Text, out xOffset)) {
+                setSetting("SimpleNotificationXOffset", xOffset);
+                saveSettings();
+            }
+        }
+
+        private void simpleYOffset_TextChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            int yOffset;
+            if (int.TryParse((sender as TextBox).Text, out yOffset)) {
+                setSetting("SimpleNotificationYOffset", yOffset);
+                saveSettings();
+            }
+        }
+
+        private void simpleTestDisplay_Click(object sender, EventArgs e) {
+            MainForm.mainForm.ExecuteCommand("exp@");
+        }
+
+        private void clearNotifications_Click(object sender, EventArgs e) {
+            MainForm.mainForm.ExecuteCommand("close@");
+        }
+
+        private void enableSimpleNotificationAnimations_CheckedChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("EnableSimpleNotificationAnimation", (sender as CheckBox).Checked);
+            saveSettings();
+        }
+
+        private void suspendedTest_Click(object sender, EventArgs e) {
+            ShowSuspendedWindow(true);
+        }
+
+        private void closeSuspendedWindow_Click(object sender, EventArgs e) {
+            CloseSuspendedWindow();
+        }
+
+        private void suspendedAnchor_SelectedIndexChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            setSetting("SuspendedNotificationAnchor", suspendedAnchor.SelectedIndex);
+            saveSettings();
+        }
+
+        private void suspendedXOffset_TextChanged(object sender, EventArgs e) {
+            int xOffset;
+            if (int.TryParse((sender as TextBox).Text, out xOffset)) {
+                setSetting("SuspendedNotificationXOffset", xOffset);
+                saveSettings();
+            }
+        }
+
+        private void suspendedYOffset_TextChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            int yOffset;
+            if (int.TryParse((sender as TextBox).Text, out yOffset)) {
+                setSetting("SuspendedNotificationYOffset", yOffset);
+                saveSettings();
             }
         }
     }

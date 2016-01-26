@@ -87,7 +87,6 @@
             this.eventNotificationEnable = new System.Windows.Forms.CheckBox();
             this.lookCheckBox = new System.Windows.Forms.CheckBox();
             this.showNotificationCheckbox = new System.Windows.Forms.CheckBox();
-            this.enableRichNotificationsCheckbox = new System.Windows.Forms.CheckBox();
             this.notificationPanel = new System.Windows.Forms.Panel();
             this.goldCapRatioCheckbox = new System.Windows.Forms.CheckBox();
             this.goldCapRatioValue = new System.Windows.Forms.TextBox();
@@ -99,10 +98,37 @@
             this.label48 = new System.Windows.Forms.Label();
             this.notificationTypeBox = new System.Windows.Forms.ComboBox();
             this.advanceCopyCheckbox = new System.Windows.Forms.CheckBox();
-            this.enableSimpleNotifications = new System.Windows.Forms.CheckBox();
-            this.richNotificationsPanel = new System.Windows.Forms.Panel();
-            this.notificationLengthSlider = new System.Windows.Forms.TrackBar();
+            this.notificationSettings = new System.Windows.Forms.TabPage();
+            this.suspendedTest = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
+            this.suspendedAnchor = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.suspendedYOffset = new Tibialyzer.EnterTextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.suspendedXOffset = new Tibialyzer.EnterTextBox();
+            this.enableSimpleNotificationAnimations = new System.Windows.Forms.CheckBox();
+            this.clearNotifications = new System.Windows.Forms.Button();
+            this.simpleTestDisplay = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.simpleAnchor = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.simpleYOffset = new Tibialyzer.EnterTextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.simpleXOffset = new Tibialyzer.EnterTextBox();
+            this.richTestDisplay = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.richAnchor = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.richYOffset = new Tibialyzer.EnterTextBox();
             this.notificationLabel = new System.Windows.Forms.Label();
+            this.notificationLengthSlider = new System.Windows.Forms.TrackBar();
+            this.label6 = new System.Windows.Forms.Label();
+            this.enableRichNotificationsCheckbox = new System.Windows.Forms.CheckBox();
+            this.enableSimpleNotifications = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.richXOffset = new Tibialyzer.EnterTextBox();
             this.databaseTab = new System.Windows.Forms.TabPage();
             this.label50 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -168,6 +194,7 @@
             this.loadTimerImage = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.closeSuspendedWindow = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             this.huntingPage.SuspendLayout();
@@ -177,7 +204,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.scanningSpeedTrack)).BeginInit();
             this.resetSettingsPanel.SuspendLayout();
             this.notificationPanel.SuspendLayout();
-            this.richNotificationsPanel.SuspendLayout();
+            this.notificationSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.notificationLengthSlider)).BeginInit();
             this.databaseTab.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -202,6 +229,7 @@
             this.tabControl1.Controls.Add(this.mainTab);
             this.tabControl1.Controls.Add(this.huntingPage);
             this.tabControl1.Controls.Add(this.settingsTab);
+            this.tabControl1.Controls.Add(this.notificationSettings);
             this.tabControl1.Controls.Add(this.databaseTab);
             this.tabControl1.Controls.Add(this.browseTab);
             this.tabControl1.Controls.Add(this.autoHotkey);
@@ -577,11 +605,8 @@
             this.settingsTab.Controls.Add(this.eventNotificationEnable);
             this.settingsTab.Controls.Add(this.lookCheckBox);
             this.settingsTab.Controls.Add(this.showNotificationCheckbox);
-            this.settingsTab.Controls.Add(this.enableRichNotificationsCheckbox);
             this.settingsTab.Controls.Add(this.notificationPanel);
             this.settingsTab.Controls.Add(this.advanceCopyCheckbox);
-            this.settingsTab.Controls.Add(this.enableSimpleNotifications);
-            this.settingsTab.Controls.Add(this.richNotificationsPanel);
             this.settingsTab.Location = new System.Drawing.Point(4, 22);
             this.settingsTab.Name = "settingsTab";
             this.settingsTab.Size = new System.Drawing.Size(642, 497);
@@ -602,7 +627,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 331);
+            this.label3.Location = new System.Drawing.Point(7, 288);
             this.label3.MaximumSize = new System.Drawing.Size(340, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(340, 52);
@@ -626,7 +651,7 @@
             // 
             this.scanSpeedDisplayLabel.AutoSize = true;
             this.scanSpeedDisplayLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.scanSpeedDisplayLabel.Location = new System.Drawing.Point(280, 296);
+            this.scanSpeedDisplayLabel.Location = new System.Drawing.Point(280, 253);
             this.scanSpeedDisplayLabel.Name = "scanSpeedDisplayLabel";
             this.scanSpeedDisplayLabel.Size = new System.Drawing.Size(59, 16);
             this.scanSpeedDisplayLabel.TabIndex = 18;
@@ -636,7 +661,7 @@
             // 
             this.scanningSpeedLabel.AutoSize = true;
             this.scanningSpeedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.scanningSpeedLabel.Location = new System.Drawing.Point(8, 263);
+            this.scanningSpeedLabel.Location = new System.Drawing.Point(8, 220);
             this.scanningSpeedLabel.Name = "scanningSpeedLabel";
             this.scanningSpeedLabel.Size = new System.Drawing.Size(122, 16);
             this.scanningSpeedLabel.TabIndex = 17;
@@ -644,7 +669,7 @@
             // 
             // scanningSpeedTrack
             // 
-            this.scanningSpeedTrack.Location = new System.Drawing.Point(8, 283);
+            this.scanningSpeedTrack.Location = new System.Drawing.Point(8, 240);
             this.scanningSpeedTrack.Maximum = 4;
             this.scanningSpeedTrack.Name = "scanningSpeedTrack";
             this.scanningSpeedTrack.Size = new System.Drawing.Size(263, 45);
@@ -687,7 +712,7 @@
             this.unrecognizedCommandNotification.AutoSize = true;
             this.unrecognizedCommandNotification.Checked = true;
             this.unrecognizedCommandNotification.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.unrecognizedCommandNotification.Location = new System.Drawing.Point(11, 239);
+            this.unrecognizedCommandNotification.Location = new System.Drawing.Point(11, 129);
             this.unrecognizedCommandNotification.Name = "unrecognizedCommandNotification";
             this.unrecognizedCommandNotification.Size = new System.Drawing.Size(251, 17);
             this.unrecognizedCommandNotification.TabIndex = 13;
@@ -700,7 +725,7 @@
             this.eventNotificationEnable.AutoSize = true;
             this.eventNotificationEnable.Checked = true;
             this.eventNotificationEnable.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.eventNotificationEnable.Location = new System.Drawing.Point(11, 216);
+            this.eventNotificationEnable.Location = new System.Drawing.Point(11, 106);
             this.eventNotificationEnable.Name = "eventNotificationEnable";
             this.eventNotificationEnable.Size = new System.Drawing.Size(163, 17);
             this.eventNotificationEnable.TabIndex = 12;
@@ -731,19 +756,6 @@
             this.showNotificationCheckbox.Text = "Enable Rare Item Drop Notifications";
             this.showNotificationCheckbox.UseVisualStyleBackColor = true;
             this.showNotificationCheckbox.CheckedChanged += new System.EventHandler(this.showNotificationCheckbox_CheckedChanged);
-            // 
-            // enableRichNotificationsCheckbox
-            // 
-            this.enableRichNotificationsCheckbox.AutoSize = true;
-            this.enableRichNotificationsCheckbox.Checked = true;
-            this.enableRichNotificationsCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.enableRichNotificationsCheckbox.Location = new System.Drawing.Point(11, 80);
-            this.enableRichNotificationsCheckbox.Name = "enableRichNotificationsCheckbox";
-            this.enableRichNotificationsCheckbox.Size = new System.Drawing.Size(145, 17);
-            this.enableRichNotificationsCheckbox.TabIndex = 2;
-            this.enableRichNotificationsCheckbox.Text = "Enable Rich Notifications";
-            this.enableRichNotificationsCheckbox.UseVisualStyleBackColor = true;
-            this.enableRichNotificationsCheckbox.CheckedChanged += new System.EventHandler(this.enableRichNotificationsCheckbox_CheckedChanged);
             // 
             // notificationPanel
             // 
@@ -863,7 +875,7 @@
             this.advanceCopyCheckbox.AutoSize = true;
             this.advanceCopyCheckbox.Checked = true;
             this.advanceCopyCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.advanceCopyCheckbox.Location = new System.Drawing.Point(11, 193);
+            this.advanceCopyCheckbox.Location = new System.Drawing.Point(11, 83);
             this.advanceCopyCheckbox.Name = "advanceCopyCheckbox";
             this.advanceCopyCheckbox.Size = new System.Drawing.Size(247, 17);
             this.advanceCopyCheckbox.TabIndex = 6;
@@ -871,32 +883,289 @@
             this.advanceCopyCheckbox.UseVisualStyleBackColor = true;
             this.advanceCopyCheckbox.CheckedChanged += new System.EventHandler(this.advanceCopyCheckbox_CheckedChanged);
             // 
-            // enableSimpleNotifications
+            // notificationSettings
             // 
-            this.enableSimpleNotifications.AutoSize = true;
-            this.enableSimpleNotifications.Checked = true;
-            this.enableSimpleNotifications.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.enableSimpleNotifications.Location = new System.Drawing.Point(10, 394);
-            this.enableSimpleNotifications.Name = "enableSimpleNotifications";
-            this.enableSimpleNotifications.Size = new System.Drawing.Size(154, 17);
-            this.enableSimpleNotifications.TabIndex = 4;
-            this.enableSimpleNotifications.Text = "Enable Simple Notifications";
-            this.enableSimpleNotifications.UseVisualStyleBackColor = true;
-            this.enableSimpleNotifications.CheckedChanged += new System.EventHandler(this.enableSimpleNotifications_CheckedChanged);
+            this.notificationSettings.Controls.Add(this.closeSuspendedWindow);
+            this.notificationSettings.Controls.Add(this.suspendedTest);
+            this.notificationSettings.Controls.Add(this.label13);
+            this.notificationSettings.Controls.Add(this.suspendedAnchor);
+            this.notificationSettings.Controls.Add(this.label14);
+            this.notificationSettings.Controls.Add(this.suspendedYOffset);
+            this.notificationSettings.Controls.Add(this.label15);
+            this.notificationSettings.Controls.Add(this.label16);
+            this.notificationSettings.Controls.Add(this.suspendedXOffset);
+            this.notificationSettings.Controls.Add(this.enableSimpleNotificationAnimations);
+            this.notificationSettings.Controls.Add(this.clearNotifications);
+            this.notificationSettings.Controls.Add(this.simpleTestDisplay);
+            this.notificationSettings.Controls.Add(this.label9);
+            this.notificationSettings.Controls.Add(this.simpleAnchor);
+            this.notificationSettings.Controls.Add(this.label10);
+            this.notificationSettings.Controls.Add(this.simpleYOffset);
+            this.notificationSettings.Controls.Add(this.label11);
+            this.notificationSettings.Controls.Add(this.label12);
+            this.notificationSettings.Controls.Add(this.simpleXOffset);
+            this.notificationSettings.Controls.Add(this.richTestDisplay);
+            this.notificationSettings.Controls.Add(this.label8);
+            this.notificationSettings.Controls.Add(this.richAnchor);
+            this.notificationSettings.Controls.Add(this.label7);
+            this.notificationSettings.Controls.Add(this.richYOffset);
+            this.notificationSettings.Controls.Add(this.notificationLabel);
+            this.notificationSettings.Controls.Add(this.notificationLengthSlider);
+            this.notificationSettings.Controls.Add(this.label6);
+            this.notificationSettings.Controls.Add(this.enableRichNotificationsCheckbox);
+            this.notificationSettings.Controls.Add(this.enableSimpleNotifications);
+            this.notificationSettings.Controls.Add(this.label2);
+            this.notificationSettings.Controls.Add(this.richXOffset);
+            this.notificationSettings.Location = new System.Drawing.Point(4, 22);
+            this.notificationSettings.Name = "notificationSettings";
+            this.notificationSettings.Size = new System.Drawing.Size(642, 497);
+            this.notificationSettings.TabIndex = 9;
+            this.notificationSettings.Text = "Notifications";
+            this.notificationSettings.UseVisualStyleBackColor = true;
             // 
-            // richNotificationsPanel
+            // suspendedTest
             // 
-            this.richNotificationsPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.richNotificationsPanel.Controls.Add(this.notificationLengthSlider);
-            this.richNotificationsPanel.Controls.Add(this.notificationLabel);
-            this.richNotificationsPanel.Location = new System.Drawing.Point(11, 90);
-            this.richNotificationsPanel.Name = "richNotificationsPanel";
-            this.richNotificationsPanel.Size = new System.Drawing.Size(306, 94);
-            this.richNotificationsPanel.TabIndex = 3;
+            this.suspendedTest.Location = new System.Drawing.Point(212, 283);
+            this.suspendedTest.Name = "suspendedTest";
+            this.suspendedTest.Size = new System.Drawing.Size(141, 33);
+            this.suspendedTest.TabIndex = 41;
+            this.suspendedTest.Text = "Test Display";
+            this.suspendedTest.UseVisualStyleBackColor = true;
+            this.suspendedTest.Click += new System.EventHandler(this.suspendedTest_Click);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(14, 267);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(41, 13);
+            this.label13.TabIndex = 40;
+            this.label13.Text = "Anchor";
+            // 
+            // suspendedAnchor
+            // 
+            this.suspendedAnchor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.suspendedAnchor.FormattingEnabled = true;
+            this.suspendedAnchor.Items.AddRange(new object[] {
+            "Top Left",
+            "Top Right",
+            "Bottom Left",
+            "Bottom Right"});
+            this.suspendedAnchor.Location = new System.Drawing.Point(64, 264);
+            this.suspendedAnchor.Name = "suspendedAnchor";
+            this.suspendedAnchor.Size = new System.Drawing.Size(121, 21);
+            this.suspendedAnchor.TabIndex = 39;
+            this.suspendedAnchor.SelectedIndexChanged += new System.EventHandler(this.suspendedAnchor_SelectedIndexChanged);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(14, 320);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(45, 13);
+            this.label14.TabIndex = 38;
+            this.label14.Text = "Y Offset";
+            // 
+            // suspendedYOffset
+            // 
+            this.suspendedYOffset.Location = new System.Drawing.Point(64, 317);
+            this.suspendedYOffset.Name = "suspendedYOffset";
+            this.suspendedYOffset.Size = new System.Drawing.Size(121, 20);
+            this.suspendedYOffset.TabIndex = 37;
+            this.suspendedYOffset.TextChanged += new System.EventHandler(this.suspendedYOffset_TextChanged);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(4, 243);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(433, 13);
+            this.label15.TabIndex = 36;
+            this.label15.Text = "The suspended dialog shows up when you use AutoHotkey and you suspend the hotkeys" +
+    ".";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(14, 294);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(45, 13);
+            this.label16.TabIndex = 35;
+            this.label16.Text = "X Offset";
+            // 
+            // suspendedXOffset
+            // 
+            this.suspendedXOffset.Location = new System.Drawing.Point(64, 291);
+            this.suspendedXOffset.Name = "suspendedXOffset";
+            this.suspendedXOffset.Size = new System.Drawing.Size(121, 20);
+            this.suspendedXOffset.TabIndex = 34;
+            this.suspendedXOffset.TextChanged += new System.EventHandler(this.suspendedXOffset_TextChanged);
+            // 
+            // enableSimpleNotificationAnimations
+            // 
+            this.enableSimpleNotificationAnimations.AutoSize = true;
+            this.enableSimpleNotificationAnimations.Checked = true;
+            this.enableSimpleNotificationAnimations.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.enableSimpleNotificationAnimations.Location = new System.Drawing.Point(17, 222);
+            this.enableSimpleNotificationAnimations.Name = "enableSimpleNotificationAnimations";
+            this.enableSimpleNotificationAnimations.Size = new System.Drawing.Size(203, 17);
+            this.enableSimpleNotificationAnimations.TabIndex = 33;
+            this.enableSimpleNotificationAnimations.Text = "Enable Simple Notification Animations";
+            this.enableSimpleNotificationAnimations.UseVisualStyleBackColor = true;
+            this.enableSimpleNotificationAnimations.CheckedChanged += new System.EventHandler(this.enableSimpleNotificationAnimations_CheckedChanged);
+            // 
+            // clearNotifications
+            // 
+            this.clearNotifications.Location = new System.Drawing.Point(421, 161);
+            this.clearNotifications.Name = "clearNotifications";
+            this.clearNotifications.Size = new System.Drawing.Size(141, 33);
+            this.clearNotifications.TabIndex = 32;
+            this.clearNotifications.Text = "Clear Notifications";
+            this.clearNotifications.UseVisualStyleBackColor = true;
+            this.clearNotifications.Click += new System.EventHandler(this.clearNotifications_Click);
+            // 
+            // simpleTestDisplay
+            // 
+            this.simpleTestDisplay.Location = new System.Drawing.Point(216, 161);
+            this.simpleTestDisplay.Name = "simpleTestDisplay";
+            this.simpleTestDisplay.Size = new System.Drawing.Size(141, 33);
+            this.simpleTestDisplay.TabIndex = 31;
+            this.simpleTestDisplay.Text = "Test Display";
+            this.simpleTestDisplay.UseVisualStyleBackColor = true;
+            this.simpleTestDisplay.Click += new System.EventHandler(this.simpleTestDisplay_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(18, 145);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(41, 13);
+            this.label9.TabIndex = 30;
+            this.label9.Text = "Anchor";
+            // 
+            // simpleAnchor
+            // 
+            this.simpleAnchor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.simpleAnchor.FormattingEnabled = true;
+            this.simpleAnchor.Items.AddRange(new object[] {
+            "Top Left",
+            "Top Right",
+            "Bottom Left",
+            "Bottom Right"});
+            this.simpleAnchor.Location = new System.Drawing.Point(68, 142);
+            this.simpleAnchor.Name = "simpleAnchor";
+            this.simpleAnchor.Size = new System.Drawing.Size(121, 21);
+            this.simpleAnchor.TabIndex = 29;
+            this.simpleAnchor.SelectedIndexChanged += new System.EventHandler(this.simpleAnchor_SelectedIndexChanged);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(18, 198);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(45, 13);
+            this.label10.TabIndex = 28;
+            this.label10.Text = "Y Offset";
+            // 
+            // simpleYOffset
+            // 
+            this.simpleYOffset.Location = new System.Drawing.Point(68, 195);
+            this.simpleYOffset.Name = "simpleYOffset";
+            this.simpleYOffset.Size = new System.Drawing.Size(121, 20);
+            this.simpleYOffset.TabIndex = 27;
+            this.simpleYOffset.TextChanged += new System.EventHandler(this.simpleYOffset_TextChanged);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(8, 121);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(518, 13);
+            this.label11.TabIndex = 26;
+            this.label11.Text = "Simple notifications are the small notifications that popup when a rare item drop" +
+    "s, or when an event happens.";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(18, 172);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(45, 13);
+            this.label12.TabIndex = 25;
+            this.label12.Text = "X Offset";
+            // 
+            // simpleXOffset
+            // 
+            this.simpleXOffset.Location = new System.Drawing.Point(68, 169);
+            this.simpleXOffset.Name = "simpleXOffset";
+            this.simpleXOffset.Size = new System.Drawing.Size(121, 20);
+            this.simpleXOffset.TabIndex = 24;
+            this.simpleXOffset.TextChanged += new System.EventHandler(this.simpleXOffset_TextChanged);
+            // 
+            // richTestDisplay
+            // 
+            this.richTestDisplay.Location = new System.Drawing.Point(212, 52);
+            this.richTestDisplay.Name = "richTestDisplay";
+            this.richTestDisplay.Size = new System.Drawing.Size(141, 33);
+            this.richTestDisplay.TabIndex = 23;
+            this.richTestDisplay.Text = "Test Display";
+            this.richTestDisplay.UseVisualStyleBackColor = true;
+            this.richTestDisplay.Click += new System.EventHandler(this.richTestDisplay_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(14, 36);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(41, 13);
+            this.label8.TabIndex = 22;
+            this.label8.Text = "Anchor";
+            // 
+            // richAnchor
+            // 
+            this.richAnchor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.richAnchor.FormattingEnabled = true;
+            this.richAnchor.Items.AddRange(new object[] {
+            "Top Left",
+            "Top Right",
+            "Bottom Left",
+            "Bottom Right"});
+            this.richAnchor.Location = new System.Drawing.Point(64, 33);
+            this.richAnchor.Name = "richAnchor";
+            this.richAnchor.Size = new System.Drawing.Size(121, 21);
+            this.richAnchor.TabIndex = 21;
+            this.richAnchor.SelectedIndexChanged += new System.EventHandler(this.richAnchor_SelectedIndexChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(14, 89);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(45, 13);
+            this.label7.TabIndex = 20;
+            this.label7.Text = "Y Offset";
+            // 
+            // richYOffset
+            // 
+            this.richYOffset.Location = new System.Drawing.Point(64, 86);
+            this.richYOffset.Name = "richYOffset";
+            this.richYOffset.Size = new System.Drawing.Size(121, 20);
+            this.richYOffset.TabIndex = 19;
+            this.richYOffset.TextChanged += new System.EventHandler(this.richYOffset_TextChanged);
+            // 
+            // notificationLabel
+            // 
+            this.notificationLabel.AutoSize = true;
+            this.notificationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.notificationLabel.Location = new System.Drawing.Point(409, 43);
+            this.notificationLabel.Name = "notificationLabel";
+            this.notificationLabel.Size = new System.Drawing.Size(225, 16);
+            this.notificationLabel.TabIndex = 1;
+            this.notificationLabel.Text = "Notification Length: 20 Seconds";
             // 
             // notificationLengthSlider
             // 
-            this.notificationLengthSlider.Location = new System.Drawing.Point(8, 31);
+            this.notificationLengthSlider.Location = new System.Drawing.Point(384, 62);
             this.notificationLengthSlider.Maximum = 120;
             this.notificationLengthSlider.Minimum = 5;
             this.notificationLengthSlider.Name = "notificationLengthSlider";
@@ -905,15 +1174,57 @@
             this.notificationLengthSlider.Value = 20;
             this.notificationLengthSlider.Scroll += new System.EventHandler(this.notificationLengthSlider_Scroll);
             // 
-            // notificationLabel
+            // label6
             // 
-            this.notificationLabel.AutoSize = true;
-            this.notificationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.notificationLabel.Location = new System.Drawing.Point(5, 8);
-            this.notificationLabel.Name = "notificationLabel";
-            this.notificationLabel.Size = new System.Drawing.Size(225, 16);
-            this.notificationLabel.TabIndex = 1;
-            this.notificationLabel.Text = "Notification Length: 20 Seconds";
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(4, 12);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(361, 13);
+            this.label6.TabIndex = 18;
+            this.label6.Text = "Rich notifications are the big notifications that appear with most commands.";
+            // 
+            // enableRichNotificationsCheckbox
+            // 
+            this.enableRichNotificationsCheckbox.AutoSize = true;
+            this.enableRichNotificationsCheckbox.Checked = true;
+            this.enableRichNotificationsCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.enableRichNotificationsCheckbox.Location = new System.Drawing.Point(485, 394);
+            this.enableRichNotificationsCheckbox.Name = "enableRichNotificationsCheckbox";
+            this.enableRichNotificationsCheckbox.Size = new System.Drawing.Size(145, 17);
+            this.enableRichNotificationsCheckbox.TabIndex = 2;
+            this.enableRichNotificationsCheckbox.Text = "Enable Rich Notifications";
+            this.enableRichNotificationsCheckbox.UseVisualStyleBackColor = true;
+            this.enableRichNotificationsCheckbox.CheckedChanged += new System.EventHandler(this.enableRichNotificationsCheckbox_CheckedChanged);
+            // 
+            // enableSimpleNotifications
+            // 
+            this.enableSimpleNotifications.AutoSize = true;
+            this.enableSimpleNotifications.Checked = true;
+            this.enableSimpleNotifications.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.enableSimpleNotifications.Location = new System.Drawing.Point(485, 417);
+            this.enableSimpleNotifications.Name = "enableSimpleNotifications";
+            this.enableSimpleNotifications.Size = new System.Drawing.Size(154, 17);
+            this.enableSimpleNotifications.TabIndex = 4;
+            this.enableSimpleNotifications.Text = "Enable Simple Notifications";
+            this.enableSimpleNotifications.UseVisualStyleBackColor = true;
+            this.enableSimpleNotifications.CheckedChanged += new System.EventHandler(this.enableSimpleNotifications_CheckedChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(14, 63);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(45, 13);
+            this.label2.TabIndex = 17;
+            this.label2.Text = "X Offset";
+            // 
+            // richXOffset
+            // 
+            this.richXOffset.Location = new System.Drawing.Point(64, 60);
+            this.richXOffset.Name = "richXOffset";
+            this.richXOffset.Size = new System.Drawing.Size(121, 20);
+            this.richXOffset.TabIndex = 0;
+            this.richXOffset.TextChanged += new System.EventHandler(this.richXOffset_TextChanged);
             // 
             // databaseTab
             // 
@@ -1148,7 +1459,6 @@
             this.stackableConvertTextBox.Name = "stackableConvertTextBox";
             this.stackableConvertTextBox.Size = new System.Drawing.Size(183, 20);
             this.stackableConvertTextBox.TabIndex = 5;
-            this.stackableConvertTextBox.TextChanged += new System.EventHandler(this.stackableConvertTextBox_TextChanged);
             // 
             // label53
             // 
@@ -1387,7 +1697,7 @@
             this.screenshotPage.Name = "screenshotPage";
             this.screenshotPage.Size = new System.Drawing.Size(642, 497);
             this.screenshotPage.TabIndex = 7;
-            this.screenshotPage.Text = "Screenshots";
+            this.screenshotPage.Text = "Screens";
             this.screenshotPage.UseVisualStyleBackColor = true;
             // 
             // enableScreenshotBox
@@ -1597,6 +1907,16 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // closeSuspendedWindow
+            // 
+            this.closeSuspendedWindow.Location = new System.Drawing.Point(421, 284);
+            this.closeSuspendedWindow.Name = "closeSuspendedWindow";
+            this.closeSuspendedWindow.Size = new System.Drawing.Size(141, 33);
+            this.closeSuspendedWindow.TabIndex = 42;
+            this.closeSuspendedWindow.Text = "Close Suspended Window";
+            this.closeSuspendedWindow.UseVisualStyleBackColor = true;
+            this.closeSuspendedWindow.Click += new System.EventHandler(this.closeSuspendedWindow_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1627,8 +1947,8 @@
             this.resetSettingsPanel.ResumeLayout(false);
             this.notificationPanel.ResumeLayout(false);
             this.notificationPanel.PerformLayout();
-            this.richNotificationsPanel.ResumeLayout(false);
-            this.richNotificationsPanel.PerformLayout();
+            this.notificationSettings.ResumeLayout(false);
+            this.notificationSettings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.notificationLengthSlider)).EndInit();
             this.databaseTab.ResumeLayout(false);
             this.databaseTab.PerformLayout();
@@ -1668,7 +1988,6 @@
         private System.Windows.Forms.Button saveLootImage;
         private System.Windows.Forms.Button damageButton;
         private System.Windows.Forms.CheckBox enableSimpleNotifications;
-        private System.Windows.Forms.Panel richNotificationsPanel;
         private System.Windows.Forms.TrackBar notificationLengthSlider;
         private System.Windows.Forms.Label notificationLabel;
         private System.Windows.Forms.CheckBox enableRichNotificationsCheckbox;
@@ -1782,6 +2101,34 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox outfitGenderBox;
         private System.Windows.Forms.ComboBox browseSelectionBox;
+        private System.Windows.Forms.TabPage notificationSettings;
+        private System.Windows.Forms.Label label2;
+        private EnterTextBox richXOffset;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private EnterTextBox richYOffset;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ComboBox richAnchor;
+        private System.Windows.Forms.Button richTestDisplay;
+        private System.Windows.Forms.Button simpleTestDisplay;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox simpleAnchor;
+        private System.Windows.Forms.Label label10;
+        private EnterTextBox simpleYOffset;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private EnterTextBox simpleXOffset;
+        private System.Windows.Forms.Button clearNotifications;
+        private System.Windows.Forms.CheckBox enableSimpleNotificationAnimations;
+        private System.Windows.Forms.Button suspendedTest;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ComboBox suspendedAnchor;
+        private System.Windows.Forms.Label label14;
+        private EnterTextBox suspendedYOffset;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label16;
+        private EnterTextBox suspendedXOffset;
+        private System.Windows.Forms.Button closeSuspendedWindow;
     }
 }
 

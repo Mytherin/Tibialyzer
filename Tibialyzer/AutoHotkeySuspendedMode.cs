@@ -25,11 +25,12 @@ namespace Tibialyzer {
     class AutoHotkeySuspendedMode : SimpleNotification {
         private System.Windows.Forms.Label typeModeLabel;
         System.Timers.Timer showTimer = null;
+        private bool alwaysShow = false;
 
-        public AutoHotkeySuspendedMode() {
+        public AutoHotkeySuspendedMode(bool alwaysShow) {
             this.InitializeComponent();
             this.FormClosing += AutoHotkeySuspendedMode_FormClosing;
-
+            this.alwaysShow = alwaysShow;
             this.InitializeSimpleNotification(false, false);
 
             showTimer = new System.Timers.Timer(10);
@@ -56,6 +57,7 @@ namespace Tibialyzer {
         }
 
         private void ShowTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
+            if (alwaysShow) return;
             try {
                 // only show the suspended window when tibia is active
                 bool visible = GetActiveProcessFileName() == "Tibia";
