@@ -78,7 +78,7 @@ namespace Tibialyzer {
             this.detailsButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.detailsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.detailsButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.detailsButton.Location = new System.Drawing.Point(5, 4);
+            this.detailsButton.Location = new System.Drawing.Point(12, 291);
             this.detailsButton.Name = "detailsButton";
             this.detailsButton.Padding = new System.Windows.Forms.Padding(2);
             this.detailsButton.Size = new System.Drawing.Size(96, 21);

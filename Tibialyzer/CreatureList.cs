@@ -57,7 +57,7 @@ namespace Tibialyzer {
             this.listTitle.BackColor = System.Drawing.Color.Transparent;
             this.listTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.listTitle.Location = new System.Drawing.Point(152, 9);
+            this.listTitle.Location = new System.Drawing.Point(152, 32);
             this.listTitle.Name = "listTitle";
             this.listTitle.Size = new System.Drawing.Size(32, 16);
             this.listTitle.TabIndex = 14;

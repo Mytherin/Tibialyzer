@@ -37,6 +37,7 @@ namespace Tibialyzer {
         private string huntName = "";
         private string creatureName = "";
         private string rawName = "";
+        private long averageGold = 0;
 
         public static Font loot_font = new Font(FontFamily.GenericSansSerif, 14, FontStyle.Bold);
         public LootDropForm(string command) {
@@ -119,6 +120,20 @@ namespace Tibialyzer {
             int currentPage = 0;
             bool prevPage = page > 0;
             bool nextPage = false;
+
+            averageGold = 0;
+            foreach(KeyValuePair<Creature, int> tpl in creatures) {
+                double average = 0;
+                foreach(ItemDrop dr in tpl.Key.itemdrops) {
+                    Item it = MainForm.getItem(dr.itemid);
+                    if (!it.discard && it.GetMaxValue() > 0 && dr.percentage > 0) {
+                        average += ((dr.min + dr.max) / 2.0) * (dr.percentage / 100.0) * it.GetMaxValue();
+                    }
+                }
+                Console.WriteLine(average);
+                Console.WriteLine(tpl.Value);
+                averageGold += (int)(average * tpl.Value);
+            }
 
             foreach (Tuple<Item, int> tpl in items) {
                 total_value += tpl.Item1.GetMaxValue() * tpl.Item2;
@@ -275,6 +290,7 @@ namespace Tibialyzer {
             totalValueLabel.Location = new Point(5, y);
             totalValueValue.Location = new Point(xPosition, y);
             totalValueValue.Text = total_value.ToString();
+            value_tooltip.SetToolTip(totalValueValue, String.Format("Average gold for these creature kills: {0} gold.", averageGold));
             totalExpLabel.Location = new Point(5, y += 20);
             totalExpValue.Location = new Point(xPosition, y);
             totalExpValue.Text = hunt.totalExp.ToString();

@@ -159,14 +159,14 @@ namespace Tibialyzer {
             for (int i = 0; i < headers.Length; i++) {
                 objectList[i] = new List<TibiaObject>();
             }
-            extraAttributes[0] = "Sell Price";
+            extraAttributes[0] = "Value";
             attributeFunctions[0] = SellPrice;
             attributeSortFunctions[0] = SellSort;
             removedLists[0] = new List<string> { "Value" };
             foreach (ItemSold itemSold in npc.sellItems) {
                 objectList[0].Add(new LazyTibiaObject { id = itemSold.itemid, type = TibiaObjectType.Item });
             }
-            extraAttributes[1] = "Buy Price";
+            extraAttributes[1] = "Price";
             attributeFunctions[1] = BuyPrice;
             attributeSortFunctions[1] = BuySort;
             removedLists[1] = new List<string> { "Value" };
