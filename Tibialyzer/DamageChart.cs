@@ -179,7 +179,7 @@ namespace Tibialyzer {
             foreach (KeyValuePair<string, Tuple<int, int>> kvp in dps) {
                 if (filter != "all" && filter != "creature" && char.IsLower(kvp.Key[0])) continue;
                 if (filter == "creature" && char.IsUpper(kvp.Key[0])) continue;
-                damageDealt.Add(new DamageObject() { name = kvp.Key.Replace(".", ""), totalDamage = kvp.Value.Item1, dps = (double)kvp.Value.Item1 / (double)kvp.Value.Item2 });
+                damageDealt.Add(new DamageObject() { name = kvp.Key.Replace(".", ""), totalDamage = kvp.Value.Item1, dps = (double)kvp.Value.Item1 / (double)(kvp.Value.Item2 * 60) });
             }
             damageDealt.OrderByDescending(o => o.totalDamage);
             if (damageDealt.Count == 0) {
