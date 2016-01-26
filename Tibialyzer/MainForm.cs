@@ -202,10 +202,9 @@ namespace Tibialyzer {
 
             ignoreStamp = createStamp();
 
-            creatureTab.BackgroundImage = NotificationForm.background_image;
-            creatureTab.BackgroundImageLayout = ImageLayout.Tile;
-            itemTab.BackgroundImage = NotificationForm.background_image;
-            itemTab.BackgroundImageLayout = ImageLayout.Tile;
+            browseSelectionBox.SelectedIndex = 0;
+            browseTab.BackgroundImage = NotificationForm.background_image;
+            browseTab.BackgroundImageLayout = ImageLayout.Tile;
             commandListTab.BackgroundImage = NotificationForm.background_image;
             commandListTab.BackgroundImageLayout = ImageLayout.Tile;
             this.backgroundBox.Image = NotificationForm.background_image;
@@ -1525,14 +1524,43 @@ namespace Tibialyzer {
                 creatureTimer.Dispose();
                 creatureTimer = null;
                 mainForm.Invoke((MethodInvoker)delegate {
-                    string creature = creatureSearch.Text;
-                    creatureObjects = searchCreature(creature);
+                    string searchTerm = creatureSearch.Text;
+                    switch (browseSelectionBox.SelectedIndex) {
+                        case 0:
+                            creatureObjects = searchCreature(searchTerm);
+                            break;
+                        case 1:
+                            creatureObjects = searchItem(searchTerm);
+                            break;
+                        case 2:
+                            creatureObjects = searchNPC(searchTerm);
+                            break;
+                        case 3:
+                            creatureObjects = searchHunt(searchTerm).ToList<TibiaObject>();
+                            break;
+                        case 4:
+                            creatureObjects = searchQuest(searchTerm);
+                            break;
+                        case 5:
+                            creatureObjects = searchMount(searchTerm);
+                            break;
+                        case 6:
+                            creatureObjects = searchOutfit(searchTerm);
+                            break;
+                    }
                     refreshItems(creaturePanel, creaturePanel.Controls, creatureObjects, creatureSortedHeader, creatureDesc, sortCreatures);
                 });
             }
         }
 
         private void creatureSearch_TextChanged(object sender, EventArgs e) {
+            refreshCreatureTimer();
+        }
+        
+        private void browseSelectionBox_SelectedIndexChanged(object sender, EventArgs e) {
+            if (creatureSearch.Text == "") {
+                return;
+            }
             refreshCreatureTimer();
         }
 
@@ -1545,53 +1573,7 @@ namespace Tibialyzer {
             }
             refreshItems(creaturePanel, creaturePanel.Controls, creatureObjects, creatureSortedHeader, creatureDesc, sortCreatures);
         }
-
-
-        object itemLock = new object();
-        System.Timers.Timer itemTimer = null;
-        protected void refreshItemTimer() {
-            lock (itemLock) {
-                if (itemTimer != null) {
-                    itemTimer.Dispose();
-                }
-                itemTimer = new System.Timers.Timer(250);
-                itemTimer.Elapsed += ItemTimer_Elapsed;
-                itemTimer.Enabled = true;
-            }
-        }
-
-        private void ItemTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
-            lock (itemLock) {
-                itemTimer.Dispose();
-                itemTimer = null;
-                mainForm.Invoke((MethodInvoker)delegate {
-                    string item = itemSearchBox.Text;
-                    itemObjects = searchItem(item);
-                    refreshItems(itemPanel, itemPanel.Controls, itemObjects, itemSortedHeader, itemDesc, sortItems);
-                });
-            }
-        }
-
-
-        private List<TibiaObject> itemObjects = new List<TibiaObject>();
-        private string itemSortedHeader = null;
-        private bool itemDesc = false;
-
-        private void itemSearchBox_TextChanged(object sender, EventArgs e) {
-            refreshItemTimer();
-        }
-
-        private void sortItems(object sender, EventArgs e) {
-            if (itemSortedHeader == (sender as Control).Name) {
-                itemDesc = !itemDesc;
-            } else {
-                itemSortedHeader = (sender as Control).Name;
-                itemDesc = false;
-            }
-            refreshItems(itemPanel, itemPanel.Controls, itemObjects, itemSortedHeader, itemDesc, sortItems);
-        }
-
-
+        
         object helpLock = new object();
         System.Timers.Timer helpTimer = null;
         protected void refreshHelpTimer() {

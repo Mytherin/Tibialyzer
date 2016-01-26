@@ -384,7 +384,7 @@ namespace Tibialyzer {
                 return minlevel;
             }
             if (header == hashes[2]) {
-                return city;
+                return premium;
             }
             if (header == hashes[3]) {
                 return city;

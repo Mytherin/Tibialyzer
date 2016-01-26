@@ -1165,6 +1165,10 @@ namespace Tibialyzer {
             }
         }
 
+        public static List<TibiaObject> searchQuest(string str) {
+            str = str.ToLower();
+            return questIdMap.Values.Where(o => o.name.ToLower().Contains(str)).ToList<TibiaObject>();
+        }
         public static List<TibiaObject> searchMount(string str) {
             str = str.ToLower();
             if (!mountsLoaded) {

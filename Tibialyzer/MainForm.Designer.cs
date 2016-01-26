@@ -74,7 +74,9 @@
             this.huntBox = new System.Windows.Forms.ListBox();
             this.backgroundBox = new System.Windows.Forms.PictureBox();
             this.settingsTab = new System.Windows.Forms.TabPage();
+            this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.outfitGenderBox = new System.Windows.Forms.ComboBox();
             this.scanSpeedDisplayLabel = new System.Windows.Forms.Label();
             this.scanningSpeedLabel = new System.Windows.Forms.Label();
             this.scanningSpeedTrack = new System.Windows.Forms.TrackBar();
@@ -128,14 +130,11 @@
             this.goldRatioTextBox = new System.Windows.Forms.TextBox();
             this.label52 = new System.Windows.Forms.Label();
             this.label51 = new System.Windows.Forms.Label();
-            this.creatureTab = new System.Windows.Forms.TabPage();
+            this.browseTab = new System.Windows.Forms.TabPage();
+            this.browseSelectionBox = new System.Windows.Forms.ComboBox();
             this.creaturePanel = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.creatureSearch = new System.Windows.Forms.TextBox();
-            this.itemTab = new System.Windows.Forms.TabPage();
-            this.itemPanel = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.itemSearchBox = new System.Windows.Forms.TextBox();
             this.autoHotkey = new System.Windows.Forms.TabPage();
             this.autohotkeyWarningLabel = new System.Windows.Forms.Label();
             this.shutdownOnExit = new System.Windows.Forms.CheckBox();
@@ -169,8 +168,6 @@
             this.loadTimerImage = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.label5 = new System.Windows.Forms.Label();
-            this.outfitGenderBox = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             this.huntingPage.SuspendLayout();
@@ -184,8 +181,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.notificationLengthSlider)).BeginInit();
             this.databaseTab.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.creatureTab.SuspendLayout();
-            this.itemTab.SuspendLayout();
+            this.browseTab.SuspendLayout();
             this.autoHotkey.SuspendLayout();
             this.screenshotPage.SuspendLayout();
             this.screenshotPanel.SuspendLayout();
@@ -207,8 +203,7 @@
             this.tabControl1.Controls.Add(this.huntingPage);
             this.tabControl1.Controls.Add(this.settingsTab);
             this.tabControl1.Controls.Add(this.databaseTab);
-            this.tabControl1.Controls.Add(this.creatureTab);
-            this.tabControl1.Controls.Add(this.itemTab);
+            this.tabControl1.Controls.Add(this.browseTab);
             this.tabControl1.Controls.Add(this.autoHotkey);
             this.tabControl1.Controls.Add(this.screenshotPage);
             this.tabControl1.Controls.Add(this.commandListTab);
@@ -595,6 +590,15 @@
             this.settingsTab.UseVisualStyleBackColor = true;
             this.settingsTab.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(11, 50);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(107, 13);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Default Outfit Gender";
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -604,6 +608,19 @@
             this.label3.Size = new System.Drawing.Size(340, 52);
             this.label3.TabIndex = 19;
             this.label3.Text = resources.GetString("label3.Text");
+            // 
+            // outfitGenderBox
+            // 
+            this.outfitGenderBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.outfitGenderBox.FormattingEnabled = true;
+            this.outfitGenderBox.Items.AddRange(new object[] {
+            "Male",
+            "Female"});
+            this.outfitGenderBox.Location = new System.Drawing.Point(122, 46);
+            this.outfitGenderBox.Name = "outfitGenderBox";
+            this.outfitGenderBox.Size = new System.Drawing.Size(121, 21);
+            this.outfitGenderBox.TabIndex = 15;
+            this.outfitGenderBox.SelectedIndexChanged += new System.EventHandler(this.outfitGenderBox_SelectedIndexChanged);
             // 
             // scanSpeedDisplayLabel
             // 
@@ -1178,19 +1195,38 @@
             this.label51.TabIndex = 0;
             this.label51.Text = resources.GetString("label51.Text");
             // 
-            // creatureTab
+            // browseTab
             // 
-            this.creatureTab.Controls.Add(this.creaturePanel);
-            this.creatureTab.Controls.Add(this.label1);
-            this.creatureTab.Controls.Add(this.creatureSearch);
-            this.creatureTab.Location = new System.Drawing.Point(4, 22);
-            this.creatureTab.Name = "creatureTab";
-            this.creatureTab.Padding = new System.Windows.Forms.Padding(3);
-            this.creatureTab.Size = new System.Drawing.Size(642, 497);
-            this.creatureTab.TabIndex = 1;
-            this.creatureTab.Text = "Creatures";
-            this.creatureTab.UseVisualStyleBackColor = true;
-            this.creatureTab.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
+            this.browseTab.Controls.Add(this.browseSelectionBox);
+            this.browseTab.Controls.Add(this.creaturePanel);
+            this.browseTab.Controls.Add(this.label1);
+            this.browseTab.Controls.Add(this.creatureSearch);
+            this.browseTab.Location = new System.Drawing.Point(4, 22);
+            this.browseTab.Name = "browseTab";
+            this.browseTab.Padding = new System.Windows.Forms.Padding(3);
+            this.browseTab.Size = new System.Drawing.Size(642, 497);
+            this.browseTab.TabIndex = 1;
+            this.browseTab.Text = "Browse";
+            this.browseTab.UseVisualStyleBackColor = true;
+            this.browseTab.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
+            // 
+            // browseSelectionBox
+            // 
+            this.browseSelectionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.browseSelectionBox.FormattingEnabled = true;
+            this.browseSelectionBox.Items.AddRange(new object[] {
+            "Creatures",
+            "Items",
+            "NPCs",
+            "Hunting Places",
+            "Quests",
+            "Mounts",
+            "Outfits"});
+            this.browseSelectionBox.Location = new System.Drawing.Point(513, 10);
+            this.browseSelectionBox.Name = "browseSelectionBox";
+            this.browseSelectionBox.Size = new System.Drawing.Size(121, 21);
+            this.browseSelectionBox.TabIndex = 3;
+            this.browseSelectionBox.SelectedIndexChanged += new System.EventHandler(this.browseSelectionBox_SelectedIndexChanged);
             // 
             // creaturePanel
             // 
@@ -1206,7 +1242,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.Silver;
-            this.label1.Location = new System.Drawing.Point(8, 15);
+            this.label1.Location = new System.Drawing.Point(8, 13);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(41, 13);
             this.label1.TabIndex = 1;
@@ -1214,52 +1250,11 @@
             // 
             // creatureSearch
             // 
-            this.creatureSearch.Location = new System.Drawing.Point(55, 12);
+            this.creatureSearch.Location = new System.Drawing.Point(55, 10);
             this.creatureSearch.Name = "creatureSearch";
-            this.creatureSearch.Size = new System.Drawing.Size(579, 20);
+            this.creatureSearch.Size = new System.Drawing.Size(453, 20);
             this.creatureSearch.TabIndex = 0;
             this.creatureSearch.TextChanged += new System.EventHandler(this.creatureSearch_TextChanged);
-            // 
-            // itemTab
-            // 
-            this.itemTab.Controls.Add(this.itemPanel);
-            this.itemTab.Controls.Add(this.label2);
-            this.itemTab.Controls.Add(this.itemSearchBox);
-            this.itemTab.Location = new System.Drawing.Point(4, 22);
-            this.itemTab.Name = "itemTab";
-            this.itemTab.Size = new System.Drawing.Size(642, 497);
-            this.itemTab.TabIndex = 2;
-            this.itemTab.Text = "Items";
-            this.itemTab.UseVisualStyleBackColor = true;
-            this.itemTab.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
-            // 
-            // itemPanel
-            // 
-            this.itemPanel.AutoScroll = true;
-            this.itemPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.itemPanel.Location = new System.Drawing.Point(0, 36);
-            this.itemPanel.Name = "itemPanel";
-            this.itemPanel.Size = new System.Drawing.Size(642, 461);
-            this.itemPanel.TabIndex = 5;
-            this.itemPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.ForeColor = System.Drawing.Color.Silver;
-            this.label2.Location = new System.Drawing.Point(8, 15);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(41, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Search";
-            // 
-            // itemSearchBox
-            // 
-            this.itemSearchBox.Location = new System.Drawing.Point(55, 12);
-            this.itemSearchBox.Name = "itemSearchBox";
-            this.itemSearchBox.Size = new System.Drawing.Size(579, 20);
-            this.itemSearchBox.TabIndex = 3;
-            this.itemSearchBox.TextChanged += new System.EventHandler(this.itemSearchBox_TextChanged);
             // 
             // autoHotkey
             // 
@@ -1602,28 +1597,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(11, 50);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(107, 13);
-            this.label5.TabIndex = 16;
-            this.label5.Text = "Default Outfit Gender";
-            // 
-            // outfitGenderBox
-            // 
-            this.outfitGenderBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.outfitGenderBox.FormattingEnabled = true;
-            this.outfitGenderBox.Items.AddRange(new object[] {
-            "Male",
-            "Female"});
-            this.outfitGenderBox.Location = new System.Drawing.Point(122, 46);
-            this.outfitGenderBox.Name = "outfitGenderBox";
-            this.outfitGenderBox.Size = new System.Drawing.Size(121, 21);
-            this.outfitGenderBox.TabIndex = 15;
-            this.outfitGenderBox.SelectedIndexChanged += new System.EventHandler(this.outfitGenderBox_SelectedIndexChanged);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1661,10 +1634,8 @@
             this.databaseTab.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            this.creatureTab.ResumeLayout(false);
-            this.creatureTab.PerformLayout();
-            this.itemTab.ResumeLayout(false);
-            this.itemTab.PerformLayout();
+            this.browseTab.ResumeLayout(false);
+            this.browseTab.PerformLayout();
             this.autoHotkey.ResumeLayout(false);
             this.autoHotkey.PerformLayout();
             this.screenshotPage.ResumeLayout(false);
@@ -1685,15 +1656,11 @@
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage mainTab;
-        private System.Windows.Forms.TabPage creatureTab;
-        private System.Windows.Forms.TabPage itemTab;
+        private System.Windows.Forms.TabPage browseTab;
         private System.Windows.Forms.TabPage settingsTab;
         private System.Windows.Forms.Panel creaturePanel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox creatureSearch;
-        private System.Windows.Forms.Panel itemPanel;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox itemSearchBox;
         private System.Windows.Forms.RichTextBox nameTextBox;
         private System.Windows.Forms.Label namesLabel;
         private System.Windows.Forms.Button resetButton;
@@ -1814,6 +1781,7 @@
         private System.Windows.Forms.TextBox helpSearchBox;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox outfitGenderBox;
+        private System.Windows.Forms.ComboBox browseSelectionBox;
     }
 }
 
