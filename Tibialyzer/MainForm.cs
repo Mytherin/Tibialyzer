@@ -409,6 +409,11 @@ namespace Tibialyzer {
                 while (reader2.Read()) {
                     task.creatures.Add(reader2.GetInt32(0));
                 }
+                command2 = new SQLiteCommand(String.Format("SELECT huntingplaceid FROM TaskHunts WHERE taskid={0}", task.id), conn);
+                reader2 = command2.ExecuteReader();
+                while (reader2.Read()) {
+                    task.hunts.Add(reader2.GetInt32(0));
+                }
                 taskList[task.groupname.ToLower()].Add(task);
             }
             command = new SQLiteCommand("SELECT command, description FROM CommandHelp", conn);

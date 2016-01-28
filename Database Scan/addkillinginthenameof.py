@@ -29,9 +29,11 @@ c = conn.cursor()
 c.execute('DROP TABLE IF EXISTS TaskGroups');
 c.execute('DROP TABLE IF EXISTS Tasks');
 c.execute('DROP TABLE IF EXISTS TaskCreatures');
+c.execute('DROP TABLE IF EXISTS TaskHunts');
 c.execute('CREATE TABLE TaskGroups(id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING)')
 c.execute('CREATE TABLE Tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, groupid INTEGER, count INTEGER, taskpoints INTEGER, bossid INTEGER, bossx INTEGER, bossy INTEGER, bossz INTEGER)')
 c.execute('CREATE TABLE TaskCreatures(taskid INTEGER, creatureid INTEGER)')
+c.execute('CREATE TABLE TaskHunts(taskid INTEGER, huntingplaceid INTEGER)')
 root = xml.etree.ElementTree.parse(cities_xmlfile).getroot()
 for child in root.getchildren():
     taskbracketname = child.find('Name').text
@@ -65,6 +67,15 @@ for child in root.getchildren():
             c.execute('SELECT id FROM Creatures WHERE LOWER(name)=? OR LOWER(title)=?', (creature, creature))
             creatureid = c.fetchall()[0][0]
             c.execute('INSERT INTO TaskCreatures(taskid, creatureid) VALUES (?,?)', (taskid, creatureid))
+        hunts = task.find('Hunts')
+        for huntchild in hunts.getchildren():
+            huntname = huntchild.text.replace("_", " ").lower().strip()
+            c.execute('SELECT id FROM HuntingPlaces WHERE LOWER(name)=?', (huntname,))
+            results = c.fetchall()
+            if len(results) <= 0:
+                print(huntname, "not found")
+                exit()
+            c.execute('INSERT INTO TaskHunts(taskid, huntingplaceid) VALUES (?,?)', (taskid, results[0][0]))
 
 conn.commit()
 

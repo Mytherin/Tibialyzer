@@ -963,9 +963,11 @@ namespace Tibialyzer {
         public int bossid;
         public Coordinate bossposition;
         public List<int> creatures;
+        public List<int> hunts;
 
         public Task() {
             creatures = new List<int>();
+            hunts = new List<int>();
         }
 
         public Creature GetBoss() {

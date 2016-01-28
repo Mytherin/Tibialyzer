@@ -9,11 +9,17 @@
 				<Points>1</Points>
 				<Boss>The Snapper</Boss>
 				<BossLocation>127.96,127.202,8</BossLocation>
+				<Hunts>
+					<Hunt>Tiquanda Reptile and Crustacean Caves</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Badger</Creature>
 				<Count>300</Count>
 				<Points>1</Points>
+				<Hunts>
+					<Hunt>Formorgar_Glacier/Mammoths</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Tarantula</Creature>
@@ -21,6 +27,9 @@
 				<Points>2</Points>
 				<Boss>Hide</Boss>
 				<BossLocation>128.54,127.181,8</BossLocation>
+				<Hunts>
+					<Hunt>Tiquanda Tarantula_Caves</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Carniphila</Creature>
@@ -28,11 +37,18 @@
 				<Points>3</Points>
 				<Boss>Deathbine</Boss>
 				<BossLocation>127.210,127.250,8</BossLocation>
+				<Hunts>
+					<Hunt>Tiquanda_Laboratory</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Stone Golem</Creature>
 				<Count>200</Count>
 				<Points>3</Points>
+				<Hunts>
+					<Hunt>Hrodmir_Stone_Golem_Caves</Hunt>
+					<Hunt>Farmine_Mines</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Mammoth</Creature>
@@ -40,32 +56,52 @@
 				<Points>3</Points>
 				<Boss>The Bloodtusk</Boss>
 				<BossLocation>125.104,121.140,2</BossLocation>
+				<Hunts>
+					<Hunt>Formorgar_Glacier/Mammoths</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Gnarlhound</Creature>
 				<Count>300</Count>
 				<Points>2</Points>
+				<Hunts>
+					<Hunt>Gnarlhound_Caves</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Terramite</Creature>
 				<Count>300</Count>
 				<Points>2</Points>
+				<Hunts>
+					<Hunt>Zao_Terramite_Caves</Hunt>
+					<Hunt>Darama_Terramite_Cave</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Name>Ape Task</Name>
 				<Creature>Kongra;Sibang;Merlkin</Creature>
 				<Count>300</Count>
 				<Points>2</Points>
+				<Hunts>
+					<Hunt>Banuta</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Thornback Tortoise</Creature>
 				<Count>300</Count>
 				<Points>2</Points>
+				<Hunts>
+					<Hunt>Laguna_Islands</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Gargoyle</Creature>
 				<Count>200</Count>
 				<Points>2</Points>
+				<Hunts>
+					<Hunt>Hrodmir_Stone_Golem_Caves</Hunt>
+					<Hunt>Farmine_Mines</Hunt>
+				</Hunts>
 			</Task>
 		</Tasks>
 	</TaskBracket>	
@@ -78,12 +114,19 @@
 				<Points>2</Points>
 				<Boss>Shardhead</Boss>
 				<BossLocation>125.141,121.168,3</BossLocation>
+				<Hunts>
+					<Hunt>Nibelor_Ice_Cave</Hunt>
+					<Hunt>Formorgar_Glacier</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Name>Quara Scout Task</Name>
 				<Creature>Quara Constrictor Scout;Quara Hydromancer Scout;Quara Mantassin Scout;Quara Pincher Scout;Quara Predator Scout</Creature>
 				<Count>400</Count>
 				<Points>2</Points>
+				<Hunts>
+					<Hunt>Hrodmir_Quara_Scout_Caves</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Mutated Rat</Creature>
@@ -91,6 +134,9 @@
 				<Points>2</Points>
 				<Boss>Esmeralda</Boss>
 				<BossLocation>127.246,122.13,9</BossLocation>
+				<Hunts>
+					<Hunt>Alchemist_Quarter</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Ancient Scarab</Creature>
@@ -98,26 +144,43 @@
 				<Points>2</Points>
 				<Boss>Fleshcrawler</Boss>
 				<BossLocation>129.20,128.26,11</BossLocation>
+				<Hunts>
+					<Hunt>Kha'zeel Scarab Lair</Hunt>
+					<Hunt>Larva Caves</Hunt>
+					<Hunt>Mother_of_Scarabs_Lair</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Wyvern</Creature>
 				<Count>300</Count>
 				<Points>2</Points>
+				<Hunts>
+					<Hunt>Edron Wyvern Hill</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Lancer Beetle</Creature>
 				<Count>300</Count>
 				<Points>2</Points>
+				<Hunts>
+					<Hunt>Zao_Wailing_Widow_Caves</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Wailing Widow</Creature>
 				<Count>400</Count>
 				<Points>3</Points>
+				<Hunts>
+					<Hunt>Zao_Wailing_Widow_Caves</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Killer Caiman</Creature>
 				<Count>250</Count>
 				<Points>2</Points>
+				<Hunts>
+					<Hunt>Killer_Caiman_Cave</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Bonebeast</Creature>
@@ -125,6 +188,10 @@
 				<Points>2</Points>
 				<Boss>Ribstride</Boss>
 				<BossLocation>129.85,128.35,13</BossLocation>
+				<Hunts>
+					<Hunt>Ramoa</Hunt>
+					<Hunt>Mother_of_Scarabs_Lair</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Crystal Spider</Creature>
@@ -132,11 +199,18 @@
 				<Points>3</Points>
 				<Boss>The Bloodweb</Boss>
 				<BossLocation>125.122,121.209,4</BossLocation>
+				<Hunts>
+					<Hunt>Nibelor_Ice_Cave</Hunt>
+					<Hunt>Formorgar_Glacier</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Mutated Tiger</Creature>
 				<Count>250</Count>
 				<Points>3</Points>
+				<Hunts>
+					<Hunt>Arena_and_Zoo_Quarter</Hunt>
+				</Hunts>
 			</Task>
 		</Tasks>
 	</TaskBracket>
@@ -150,6 +224,11 @@
 				<Points>3</Points>
 				<Boss>Thul</Boss>
 				<BossLocation>125.85,128.14,12</BossLocation>
+				<Hunts>
+					<Hunt>Sunken_Quarter</Hunt>
+					<Hunt>Frozen_Trench</Hunt>
+					<Hunt>Calassa</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Giant Spider</Creature>
@@ -157,6 +236,12 @@
 				<Points>3</Points>
 				<Boss>The Old Widow</Boss>
 				<BossLocation>128.46,126.24,8</BossLocation>
+				<Hunts>
+					<Hunt>Malada</Hunt>
+					<!--<Hunt>Cemetery_Quarter</Hunt>-->
+					<Hunt>Forbidden_Lands</Hunt>
+					<Hunt>Spider_Caves</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Werewolf</Creature>
@@ -164,6 +249,9 @@
 				<Points>4</Points>
 				<Boss>Hemming</Boss>
 				<BossLocation>128.224,122.211,7</BossLocation>
+				<Hunts>
+					<Hunt>Vengoth_Werewolf_Cave</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Name>Nightmare Task</Name>
@@ -172,6 +260,10 @@
 				<Points>3</Points>
 				<Boss>Tormentor</Boss>
 				<BossLocation>125.72,122.51,10</BossLocation>
+				<Hunts>
+					<!--<Hunt>Cemetery_Quarter</Hunt>-->
+					<Hunt>Formorgar_Mines</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Hellspawn</Creature>
@@ -179,6 +271,9 @@
 				<Points>4</Points>
 				<Boss>Flameborn</Boss>
 				<BossLocation>128.48,121.50,7</BossLocation>
+				<Hunts>
+					<Hunt>Magician_Quarter</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Name>High Class Lizard Task</Name>
@@ -187,6 +282,9 @@
 				<Points>3</Points>
 				<Boss>Fazzrah</Boss>
 				<BossLocation>130.30,121.208,7</BossLocation>
+				<Hunts>
+					<Hunt>Muggy_Plains</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Stampor</Creature>
@@ -194,6 +292,9 @@
 				<Points>3</Points>
 				<Boss>Tromphonyte</Boss>
 				<BossLocation>129.112,121.210,8</BossLocation>
+				<Hunts>
+					<Hunt>Stampor_Cave</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Brimstone Bug</Creature>
@@ -201,6 +302,9 @@
 				<Points>3</Points>
 				<Boss>Sulphur Scuttler</Boss>
 				<BossLocation>130.6,121.136,8</BossLocation>
+				<Hunts>
+					<Hunt>Brimstone_Bug_Caves</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Mutated Bat</Creature>
@@ -208,6 +312,11 @@
 				<Points>2</Points>
 				<Boss>Bruise Payne</Boss>
 				<BossLocation>127.167,121.138,3</BossLocation>
+				<Hunts>
+					<!--<Hunt>Cemetery_Quarter</Hunt>-->
+					<Hunt>Souleater_Mountains</Hunt>
+					<Hunt>Middle_Spike</Hunt>
+				</Hunts>
 			</Task>
 		</Tasks>
 	</TaskBracket>
@@ -220,6 +329,12 @@
 				<Points>3</Points>
 				<Boss>The Many</Boss>
 				<BossLocation>128.152,128.115,8</BossLocation>
+				<Hunts>
+					<Hunt>Forbidden_Lands</Hunt>
+					<Hunt>Hydra_Mountain</Hunt>
+					<Hunt>Deeper_Banuta</Hunt>
+					<Hunt>Talahu</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Serpent Spawn</Creature>
@@ -227,6 +342,10 @@
 				<Points>4</Points>
 				<Boss>The Noxious Spawn</Boss>
 				<BossLocation>128.74,127.148,11</BossLocation>
+				<Hunts>
+					<Hunt>Medusa_Cave</Hunt>
+					<Hunt>Deeper_Banuta</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Medusa</Creature>
@@ -234,6 +353,10 @@
 				<Points>5</Points>
 				<Boss>Gorgo</Boss>
 				<BossLocation>128.31,126.245,11</BossLocation>
+				<Hunts>
+					<Hunt>Medusa_Cave</Hunt>
+					<Hunt>Deeper_Banuta</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Behemoth</Creature>
@@ -241,6 +364,12 @@
 				<Points>4</Points>
 				<Boss>Stonecracker</Boss>
 				<BossLocation>129.227,123.231,14</BossLocation>
+				<Hunts>
+					<Hunt>Forbidden_Lands</Hunt>
+					<Hunt>Cyclopolis</Hunt>
+					<Hunt>Vandura_Mountain</Hunt>
+					<Hunt>Formorgar_Mines</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Sea Serpent;Young Sea Serpent</Creature>
@@ -248,6 +377,10 @@
 				<Points>4</Points>
 				<Boss>Leviathan</Boss>
 				<BossLocation>124.182,121.95,10</BossLocation>
+				<Hunts>
+					<!--<Hunt>Seacrest_Grounds</Hunt>-->
+					<Hunt>Sea_Serpent_Area</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Hellhound</Creature>
@@ -255,6 +388,9 @@
 				<Points>5</Points>
 				<Boss>Kerberos</Boss>
 				<BossLocation>125.44,127.35,14</BossLocation>
+				<Hunts>
+					<Hunt>Pits_of_Inferno</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Ghastly Dragon</Creature>
@@ -262,6 +398,9 @@
 				<Points>5</Points>
 				<Boss>Ethershreck</Boss>
 				<BossLocation>129.91,121.28,8</BossLocation>
+				<Hunts>
+					<Hunt>Ghastly_Dragon_Lair</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Name>Draken Task</Name>
@@ -270,6 +409,9 @@
 				<Points>3</Points>
 				<Boss>Paiz the Pauperizer</Boss>
 				<BossLocation>129.42,121.127,2</BossLocation>
+				<Hunts>
+					<Hunt>Razachai</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Destroyer</Creature>
@@ -277,6 +419,10 @@
 				<Points>4</Points>
 				<Boss>Bretzecutioner</Boss>
 				<BossLocation>125.3,121.213,10</BossLocation>
+				<Hunts>
+					<Hunt>Razachai/Inner_Sanctum</Hunt>
+					<Hunt>Formorgar_Mines</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Creature>Undead Dragon</Creature>
@@ -284,6 +430,9 @@
 				<Points>6</Points>
 				<Boss>Zanakeph</Boss>
 				<BossLocation>129.71,121.99,12</BossLocation>
+				<Hunts>
+					<Hunt>Razachai/Inner_Sanctum</Hunt>
+				</Hunts>
 			</Task>
 		</Tasks>
 	</TaskBracket>
@@ -296,6 +445,10 @@
 				<Count>3000</Count>
 				<Boss>Brutus Bloodbeard</Boss>
 				<BossLocation>124.233,128.85,1</BossLocation>
+				<Hunts>
+					<Hunt>Nargor</Hunt>
+					<Hunt>Foreigner_Quarter</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Name>Minotaur Task</Name>
@@ -303,6 +456,11 @@
 				<Count>5000</Count>
 				<Boss>The Horned Fox</Boss>
 				<BossLocation>126.194,124.244,9</BossLocation>
+				<Hunts>
+					<Hunt>Mintwallin</Hunt>
+					<Hunt>Dark_Pyramid</Hunt>
+					<Hunt>Kazordoon_Minotaurs</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Name>Necromancer Task</Name>
@@ -310,6 +468,9 @@
 				<Count>4000</Count>
 				<Boss>Necropharus</Boss>
 				<BossLocation>129.22,126.183,11</BossLocation>
+				<Hunts>
+					<Hunt>Drefia</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Name>Blue Djinn Task</Name>
@@ -317,6 +478,10 @@
 				<Count>500</Count>
 				<Boss>Merikh The Slaughterer</Boss>
 				<BossLocation>128.102,121.136,4</BossLocation>
+				<Hunts>
+					<Hunt>Magician_Quarter Marid_Territory</Hunt>
+					<Hunt>Ashta'daramai</Hunt>
+				</Hunts>
 			</Task>
 			<Task>
 				<Name>Green Djinn Task</Name>
@@ -324,6 +489,10 @@
 				<Count>500</Count>
 				<Boss>Fahim The Wise</Boss>
 				<BossLocation>128.46,121.144,2</BossLocation>
+				<Hunts>
+					<Hunt>Magician_Quarter Efreet_Territory</Hunt>
+					<Hunt>Mal'ouquah</Hunt>
+				</Hunts>
 			</Task>
 		</Tasks>
 	</TaskBracket>
