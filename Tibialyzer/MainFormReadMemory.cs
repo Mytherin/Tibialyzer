@@ -280,7 +280,7 @@ namespace Tibialyzer {
         Tuple<string, int> preprocessItem(string item) {
             int count = 1;
             if (item == "nothing") return new Tuple<string, int>("nothing", 0);
-            if (item.Contains("coin")) {
+            if (item.Contains("platinum coin") || item.Contains("platinum coin") || item.Contains("crystal coin")) {
                 string coinName = "gold coin";
                 count = -1;
                 if (item.Contains("platinum coin")) {
