@@ -388,6 +388,14 @@ namespace Tibialyzer {
             h.loot.logMessages.Clear();
             h.totalExp = 0;
             h.totalTime = 0;
+            foreach(string t in getLatestTimes(clearMinutes)) {
+                if (totalExperienceResults.ContainsKey(t)) {
+                    h.totalExp += totalExperienceResults[t];
+                    h.totalTime += 60;
+                }
+            }
+
+
             SQLiteCommand comm = new SQLiteCommand(String.Format("DELETE FROM \"{0}\" WHERE day < {1} OR hour < {2} OR (hour == {2} AND minute < {3})", h.GetTableName(), stamp, hour, minute), lootConn);
             comm.ExecuteNonQuery();
 
@@ -402,7 +410,7 @@ namespace Tibialyzer {
                 if (!logMessages.ContainsKey(t)) logMessages.Add(t, new List<string>());
                 logMessages[t].Add(line);
             }
-            ParseLootMessages(h, logMessages, null, false, true);
+            ParseLootMessages(h, logMessages, null, false, false, true);
         }
 
         void resetHunt(Hunt h) {
