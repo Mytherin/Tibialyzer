@@ -118,11 +118,16 @@ namespace Tibialyzer {
                     }
                 }
             } else if (comp.StartsWith("skin" + MainForm.commandSymbol)) { //skin@
-                string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
+                string[] split = command.Split(commandSymbol);
+                string parameter = split[1].Trim().ToLower();
+                int count = 1;
                 Creature cr = getCreature(parameter);
                 if (cr != null) {
-                    insertSkin(cr);
+                    if (split.Length > 2)
+                        int.TryParse(split[2], out count);
+                    insertSkin(cr, count);
                 } else {
+                    int.TryParse(parameter, out count);
                     // find creature with highest killcount with a skin and skin that
                     int kills = -1;
                     lock (hunts) {
@@ -133,7 +138,7 @@ namespace Tibialyzer {
                         }
                     }
                     if (cr != null) {
-                        insertSkin(cr);
+                        insertSkin(cr, count);
                     }
                 }
             } else if (comp.StartsWith("city" + MainForm.commandSymbol)) { //city@

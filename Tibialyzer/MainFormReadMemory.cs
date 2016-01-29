@@ -537,7 +537,7 @@ namespace Tibialyzer {
             }
         }
 
-        private void insertSkin(Creature cr) {
+        private void insertSkin(Creature cr, int count = 1) {
             var time = DateTime.Now;
             int hour = time.Hour;
             int minute = time.Minute;
@@ -545,7 +545,7 @@ namespace Tibialyzer {
             string timestamp = String.Format("{0}:{1}", (hour < 10 ? "0" + hour.ToString() : hour.ToString()), (minute < 10 ? "0" + minute.ToString() : minute.ToString()));
             Item item = getItem(cr.skin.dropitemid);
             if (item == null) return;
-            string message = String.Format("{0} Loot of a {1}: {2}", timestamp, cr.displayname.ToLower(), item.displayname.ToLower());
+            string message = String.Format("{0} Loot of a {1}: {2} {3}", timestamp, cr.displayname.ToLower(), count, item.displayname.ToLower());
             SQLiteCommand command = new SQLiteCommand(String.Format("INSERT INTO \"{4}\" VALUES({0}, {1}, {2}, \"{3}\");", stamp, hour, minute, message.Replace("\"", "\\\""), activeHunt.GetTableName()), lootConn);
             command.ExecuteNonQuery();
             lock(hunts) {
@@ -556,11 +556,11 @@ namespace Tibialyzer {
                 }
                 foreach (Item i in activeHunt.loot.creatureLoot[cr].Keys) {
                     if (i.id == cr.skin.dropitemid) {
-                        activeHunt.loot.creatureLoot[cr][i] += 1;
+                        activeHunt.loot.creatureLoot[cr][i] += count;
                         return;
                     }
                 }
-                activeHunt.loot.creatureLoot[cr].Add(item, 1);
+                activeHunt.loot.creatureLoot[cr].Add(item, count);
             }
         }
 
