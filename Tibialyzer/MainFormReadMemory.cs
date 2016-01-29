@@ -546,7 +546,7 @@ namespace Tibialyzer {
             Item item = getItem(cr.skin.dropitemid);
             if (item == null) return;
             string message = String.Format("{0} Loot of a {1}: {2}", timestamp, cr.displayname.ToLower(), item.displayname.ToLower());
-            SQLiteCommand command = new SQLiteCommand(String.Format("INSERT INTO \"{4}\" VALUES({0}, {1}, {2}, \"{3}\");", stamp, hour, minute, message.Replace("\"", "\\\""), activeHunt.name.ToLower()), lootConn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("INSERT INTO \"{4}\" VALUES({0}, {1}, {2}, \"{3}\");", stamp, hour, minute, message.Replace("\"", "\\\""), activeHunt.GetTableName()), lootConn);
             command.ExecuteNonQuery();
             lock(hunts) {
                 if (!activeHunt.loot.logMessages.ContainsKey(timestamp)) activeHunt.loot.logMessages.Add(timestamp, new List<string>());
