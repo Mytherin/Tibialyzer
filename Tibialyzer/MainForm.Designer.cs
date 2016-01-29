@@ -42,6 +42,7 @@
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.mainTab = new System.Windows.Forms.TabPage();
+            this.exceptionLabel = new System.Windows.Forms.Label();
             this.executeCommand = new System.Windows.Forms.Button();
             this.label56 = new System.Windows.Forms.Label();
             this.commandTextBox = new Tibialyzer.EnterTextBox();
@@ -99,35 +100,36 @@
             this.notificationTypeBox = new System.Windows.Forms.ComboBox();
             this.advanceCopyCheckbox = new System.Windows.Forms.CheckBox();
             this.notificationSettings = new System.Windows.Forms.TabPage();
+            this.closeSuspendedWindow = new System.Windows.Forms.Button();
             this.suspendedTest = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.suspendedAnchor = new System.Windows.Forms.ComboBox();
             this.label14 = new System.Windows.Forms.Label();
-            this.suspendedYOffset = new Tibialyzer.EnterTextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
-            this.suspendedXOffset = new Tibialyzer.EnterTextBox();
             this.enableSimpleNotificationAnimations = new System.Windows.Forms.CheckBox();
             this.clearNotifications = new System.Windows.Forms.Button();
             this.simpleTestDisplay = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.simpleAnchor = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.simpleYOffset = new Tibialyzer.EnterTextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.simpleXOffset = new Tibialyzer.EnterTextBox();
             this.richTestDisplay = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.richAnchor = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.richYOffset = new Tibialyzer.EnterTextBox();
             this.notificationLabel = new System.Windows.Forms.Label();
             this.notificationLengthSlider = new System.Windows.Forms.TrackBar();
             this.label6 = new System.Windows.Forms.Label();
             this.enableRichNotificationsCheckbox = new System.Windows.Forms.CheckBox();
             this.enableSimpleNotifications = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.suspendedYOffset = new Tibialyzer.EnterTextBox();
+            this.suspendedXOffset = new Tibialyzer.EnterTextBox();
+            this.simpleYOffset = new Tibialyzer.EnterTextBox();
+            this.simpleXOffset = new Tibialyzer.EnterTextBox();
+            this.richYOffset = new Tibialyzer.EnterTextBox();
             this.richXOffset = new Tibialyzer.EnterTextBox();
             this.databaseTab = new System.Windows.Forms.TabPage();
             this.label50 = new System.Windows.Forms.Label();
@@ -194,7 +196,6 @@
             this.loadTimerImage = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.closeSuspendedWindow = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             this.huntingPage.SuspendLayout();
@@ -244,6 +245,7 @@
             // 
             // mainTab
             // 
+            this.mainTab.Controls.Add(this.exceptionLabel);
             this.mainTab.Controls.Add(this.executeCommand);
             this.mainTab.Controls.Add(this.label56);
             this.mainTab.Controls.Add(this.commandTextBox);
@@ -261,6 +263,19 @@
             this.mainTab.Text = "Main";
             this.mainTab.UseVisualStyleBackColor = true;
             this.mainTab.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
+            // 
+            // exceptionLabel
+            // 
+            this.exceptionLabel.AutoSize = true;
+            this.exceptionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exceptionLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(77)))));
+            this.exceptionLabel.Location = new System.Drawing.Point(11, 291);
+            this.exceptionLabel.MaximumSize = new System.Drawing.Size(600, 0);
+            this.exceptionLabel.Name = "exceptionLabel";
+            this.exceptionLabel.Size = new System.Drawing.Size(170, 16);
+            this.exceptionLabel.TabIndex = 13;
+            this.exceptionLabel.Text = "Exception encountered.";
+            this.exceptionLabel.Visible = false;
             // 
             // executeCommand
             // 
@@ -890,31 +905,31 @@
             this.notificationSettings.Controls.Add(this.label13);
             this.notificationSettings.Controls.Add(this.suspendedAnchor);
             this.notificationSettings.Controls.Add(this.label14);
-            this.notificationSettings.Controls.Add(this.suspendedYOffset);
             this.notificationSettings.Controls.Add(this.label15);
             this.notificationSettings.Controls.Add(this.label16);
-            this.notificationSettings.Controls.Add(this.suspendedXOffset);
             this.notificationSettings.Controls.Add(this.enableSimpleNotificationAnimations);
             this.notificationSettings.Controls.Add(this.clearNotifications);
             this.notificationSettings.Controls.Add(this.simpleTestDisplay);
             this.notificationSettings.Controls.Add(this.label9);
             this.notificationSettings.Controls.Add(this.simpleAnchor);
             this.notificationSettings.Controls.Add(this.label10);
-            this.notificationSettings.Controls.Add(this.simpleYOffset);
             this.notificationSettings.Controls.Add(this.label11);
             this.notificationSettings.Controls.Add(this.label12);
-            this.notificationSettings.Controls.Add(this.simpleXOffset);
             this.notificationSettings.Controls.Add(this.richTestDisplay);
             this.notificationSettings.Controls.Add(this.label8);
             this.notificationSettings.Controls.Add(this.richAnchor);
             this.notificationSettings.Controls.Add(this.label7);
-            this.notificationSettings.Controls.Add(this.richYOffset);
             this.notificationSettings.Controls.Add(this.notificationLabel);
             this.notificationSettings.Controls.Add(this.notificationLengthSlider);
             this.notificationSettings.Controls.Add(this.label6);
             this.notificationSettings.Controls.Add(this.enableRichNotificationsCheckbox);
             this.notificationSettings.Controls.Add(this.enableSimpleNotifications);
             this.notificationSettings.Controls.Add(this.label2);
+            this.notificationSettings.Controls.Add(this.suspendedYOffset);
+            this.notificationSettings.Controls.Add(this.suspendedXOffset);
+            this.notificationSettings.Controls.Add(this.simpleYOffset);
+            this.notificationSettings.Controls.Add(this.simpleXOffset);
+            this.notificationSettings.Controls.Add(this.richYOffset);
             this.notificationSettings.Controls.Add(this.richXOffset);
             this.notificationSettings.Location = new System.Drawing.Point(4, 22);
             this.notificationSettings.Name = "notificationSettings";
@@ -922,6 +937,16 @@
             this.notificationSettings.TabIndex = 9;
             this.notificationSettings.Text = "Notifications";
             this.notificationSettings.UseVisualStyleBackColor = true;
+            // 
+            // closeSuspendedWindow
+            // 
+            this.closeSuspendedWindow.Location = new System.Drawing.Point(421, 284);
+            this.closeSuspendedWindow.Name = "closeSuspendedWindow";
+            this.closeSuspendedWindow.Size = new System.Drawing.Size(141, 33);
+            this.closeSuspendedWindow.TabIndex = 42;
+            this.closeSuspendedWindow.Text = "Close Suspended Window";
+            this.closeSuspendedWindow.UseVisualStyleBackColor = true;
+            this.closeSuspendedWindow.Click += new System.EventHandler(this.closeSuspendedWindow_Click);
             // 
             // suspendedTest
             // 
@@ -966,14 +991,6 @@
             this.label14.TabIndex = 38;
             this.label14.Text = "Y Offset";
             // 
-            // suspendedYOffset
-            // 
-            this.suspendedYOffset.Location = new System.Drawing.Point(64, 317);
-            this.suspendedYOffset.Name = "suspendedYOffset";
-            this.suspendedYOffset.Size = new System.Drawing.Size(121, 20);
-            this.suspendedYOffset.TabIndex = 37;
-            this.suspendedYOffset.TextChanged += new System.EventHandler(this.suspendedYOffset_TextChanged);
-            // 
             // label15
             // 
             this.label15.AutoSize = true;
@@ -992,14 +1009,6 @@
             this.label16.Size = new System.Drawing.Size(45, 13);
             this.label16.TabIndex = 35;
             this.label16.Text = "X Offset";
-            // 
-            // suspendedXOffset
-            // 
-            this.suspendedXOffset.Location = new System.Drawing.Point(64, 291);
-            this.suspendedXOffset.Name = "suspendedXOffset";
-            this.suspendedXOffset.Size = new System.Drawing.Size(121, 20);
-            this.suspendedXOffset.TabIndex = 34;
-            this.suspendedXOffset.TextChanged += new System.EventHandler(this.suspendedXOffset_TextChanged);
             // 
             // enableSimpleNotificationAnimations
             // 
@@ -1067,14 +1076,6 @@
             this.label10.TabIndex = 28;
             this.label10.Text = "Y Offset";
             // 
-            // simpleYOffset
-            // 
-            this.simpleYOffset.Location = new System.Drawing.Point(68, 195);
-            this.simpleYOffset.Name = "simpleYOffset";
-            this.simpleYOffset.Size = new System.Drawing.Size(121, 20);
-            this.simpleYOffset.TabIndex = 27;
-            this.simpleYOffset.TextChanged += new System.EventHandler(this.simpleYOffset_TextChanged);
-            // 
             // label11
             // 
             this.label11.AutoSize = true;
@@ -1093,14 +1094,6 @@
             this.label12.Size = new System.Drawing.Size(45, 13);
             this.label12.TabIndex = 25;
             this.label12.Text = "X Offset";
-            // 
-            // simpleXOffset
-            // 
-            this.simpleXOffset.Location = new System.Drawing.Point(68, 169);
-            this.simpleXOffset.Name = "simpleXOffset";
-            this.simpleXOffset.Size = new System.Drawing.Size(121, 20);
-            this.simpleXOffset.TabIndex = 24;
-            this.simpleXOffset.TextChanged += new System.EventHandler(this.simpleXOffset_TextChanged);
             // 
             // richTestDisplay
             // 
@@ -1144,14 +1137,6 @@
             this.label7.Size = new System.Drawing.Size(45, 13);
             this.label7.TabIndex = 20;
             this.label7.Text = "Y Offset";
-            // 
-            // richYOffset
-            // 
-            this.richYOffset.Location = new System.Drawing.Point(64, 86);
-            this.richYOffset.Name = "richYOffset";
-            this.richYOffset.Size = new System.Drawing.Size(121, 20);
-            this.richYOffset.TabIndex = 19;
-            this.richYOffset.TextChanged += new System.EventHandler(this.richYOffset_TextChanged);
             // 
             // notificationLabel
             // 
@@ -1217,6 +1202,46 @@
             this.label2.Size = new System.Drawing.Size(45, 13);
             this.label2.TabIndex = 17;
             this.label2.Text = "X Offset";
+            // 
+            // suspendedYOffset
+            // 
+            this.suspendedYOffset.Location = new System.Drawing.Point(64, 317);
+            this.suspendedYOffset.Name = "suspendedYOffset";
+            this.suspendedYOffset.Size = new System.Drawing.Size(121, 20);
+            this.suspendedYOffset.TabIndex = 37;
+            this.suspendedYOffset.TextChanged += new System.EventHandler(this.suspendedYOffset_TextChanged);
+            // 
+            // suspendedXOffset
+            // 
+            this.suspendedXOffset.Location = new System.Drawing.Point(64, 291);
+            this.suspendedXOffset.Name = "suspendedXOffset";
+            this.suspendedXOffset.Size = new System.Drawing.Size(121, 20);
+            this.suspendedXOffset.TabIndex = 34;
+            this.suspendedXOffset.TextChanged += new System.EventHandler(this.suspendedXOffset_TextChanged);
+            // 
+            // simpleYOffset
+            // 
+            this.simpleYOffset.Location = new System.Drawing.Point(68, 195);
+            this.simpleYOffset.Name = "simpleYOffset";
+            this.simpleYOffset.Size = new System.Drawing.Size(121, 20);
+            this.simpleYOffset.TabIndex = 27;
+            this.simpleYOffset.TextChanged += new System.EventHandler(this.simpleYOffset_TextChanged);
+            // 
+            // simpleXOffset
+            // 
+            this.simpleXOffset.Location = new System.Drawing.Point(68, 169);
+            this.simpleXOffset.Name = "simpleXOffset";
+            this.simpleXOffset.Size = new System.Drawing.Size(121, 20);
+            this.simpleXOffset.TabIndex = 24;
+            this.simpleXOffset.TextChanged += new System.EventHandler(this.simpleXOffset_TextChanged);
+            // 
+            // richYOffset
+            // 
+            this.richYOffset.Location = new System.Drawing.Point(64, 86);
+            this.richYOffset.Name = "richYOffset";
+            this.richYOffset.Size = new System.Drawing.Size(121, 20);
+            this.richYOffset.TabIndex = 19;
+            this.richYOffset.TextChanged += new System.EventHandler(this.richYOffset_TextChanged);
             // 
             // richXOffset
             // 
@@ -1907,16 +1932,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // closeSuspendedWindow
-            // 
-            this.closeSuspendedWindow.Location = new System.Drawing.Point(421, 284);
-            this.closeSuspendedWindow.Name = "closeSuspendedWindow";
-            this.closeSuspendedWindow.Size = new System.Drawing.Size(141, 33);
-            this.closeSuspendedWindow.TabIndex = 42;
-            this.closeSuspendedWindow.Text = "Close Suspended Window";
-            this.closeSuspendedWindow.UseVisualStyleBackColor = true;
-            this.closeSuspendedWindow.Click += new System.EventHandler(this.closeSuspendedWindow_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2129,6 +2144,7 @@
         private System.Windows.Forms.Label label16;
         private EnterTextBox suspendedXOffset;
         private System.Windows.Forms.Button closeSuspendedWindow;
+        private System.Windows.Forms.Label exceptionLabel;
     }
 }
 

@@ -192,7 +192,7 @@ namespace Tibialyzer {
             try {
                 Pathfinder.LoadFromDatabase(nodeDatabase);
             } catch (Exception e) {
-                ExitWithError("Fatal Error", String.Format("Corrupted database {0}.\nMessage: ", nodeDatabase, e.Message));
+                ExitWithError("Fatal Error", String.Format("Corrupted database {0}.\nMessage: {1}", nodeDatabase, e.Message));
             }
             prevent_settings_update = false;
 
