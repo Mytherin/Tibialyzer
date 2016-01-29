@@ -189,6 +189,7 @@ namespace Tibialyzer {
             this.initializeHunts();
             this.initializeSettings();
             this.initializeMaps();
+            this.initializeTooltips();
             try {
                 Pathfinder.LoadFromDatabase(nodeDatabase);
             } catch (Exception e) {
@@ -421,6 +422,33 @@ namespace Tibialyzer {
             while (reader.Read()) {
                 helpCommands.Add(new HelpCommand { command = reader["command"].ToString(), description = reader["description"].ToString() });
             }
+        }
+
+        private void initializeTooltips() {
+            explanationTooltip.SetToolTip(damageButton, "Saves an image of the damage chart (damage@) to a file.");
+            explanationTooltip.SetToolTip(saveLootImage, "Saves an image of the loot command (loot@) to a file.");
+            explanationTooltip.SetToolTip(resetButton, "WARNING: Clears the active hunt, removing all loot from it.");
+            explanationTooltip.SetToolTip(exportLogButton, "Saves all the log messages of the currently selected hunt to a file.");
+            explanationTooltip.SetToolTip(importLogFile, "Loads a set of log messages from a file into the currently selected hunt. ");
+            explanationTooltip.SetToolTip(activeHuntButton, "Sets the currently selected hunt as the active hunt. Any creatures killed will be added to the currently active hunt. ");
+            explanationTooltip.SetToolTip(trackCreaturesCheckbox, "In the loot@ command, only creatures specified in the box below are shown if this is selected.");
+            explanationTooltip.SetToolTip(sideHuntBox, "When a creature specified in the box below is killed, this hunt is made the currently active hunt.");
+            explanationTooltip.SetToolTip(aggregateHuntBox, "When a creature specified in the box below is killed, the loot of that creature is always added to this hunt (in addition to the active hunt).");
+            explanationTooltip.SetToolTip(clearHuntOnStartup, "If this is checked, this hunt will be automatically cleared when Tibialyzer is restarted.");
+            explanationTooltip.SetToolTip(lookCheckBox, "When you look (shift+click) at an item, creature or npc in-game, Tibialyzer will automatically open a box displaying information about that object.");
+            explanationTooltip.SetToolTip(outfitGenderBox, "Outfit gender displayed in outfit@ searches.");
+            explanationTooltip.SetToolTip(advanceCopyCheckbox, "When you advance in level or skill, the advancement text will be automatically copied for you, so you can easily paste it and notify your friends.");
+            explanationTooltip.SetToolTip(eventNotificationEnable, "When a raid message is send, a notification will appear informing you of the raid.");
+            explanationTooltip.SetToolTip(unrecognizedCommandNotification, "When you type in an unrecognized command in Tibia chat (unrecognized@), a notification will appear notifying you of this.");
+            explanationTooltip.SetToolTip(resetToDefaultButton, "Clears all settings and resets them back to the default settings, except for the hunt settings. ");
+            explanationTooltip.SetToolTip(notificationTypeBox, "Rich notifications are Windows Forms notifications that look pretty. Simple notifications are default Windows bubble notifications. ");
+            explanationTooltip.SetToolTip(alwaysShowLoot, "When this box is checked, a rich notification is shown every time a creature is killed with the loot of the creature, regardless of what that loot is.");
+            explanationTooltip.SetToolTip(rareDropNotificationValueCheckbox, "When an item that is worth at least this amount of gold drops, a notification is displayed.");
+            explanationTooltip.SetToolTip(goldCapRatioCheckbox, "When an item that has at least this gold/cap ratio drops, a notification is displayed.");
+            explanationTooltip.SetToolTip(specificNotificationCheckbox, "When any item that is specified in the box below drops, a notification is displayed informing you of the dropped item.");
+            explanationTooltip.SetToolTip(notificationLengthSlider, "The amount of time that rich notifications (loot@, creature@) remain on the screen before fading.");
+            explanationTooltip.SetToolTip(downloadAutoHotkey, "Download AutoHotkey to the temporary directory and launches an installer. Complete the installer to install AutoHotkey.");
+            explanationTooltip.SetToolTip(exceptionLabel, "An error occurred, please go to github.com/Mytherin/Tibialyzer/issues and report it. Include the error as displayed here and try to describe what you were doing while it occurred.");
         }
 
         void initializePluralMap() {

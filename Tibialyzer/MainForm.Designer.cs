@@ -42,6 +42,10 @@
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.mainTab = new System.Windows.Forms.TabPage();
+            this.tibialyzerDescription = new System.Windows.Forms.Label();
+            this.tibialyzerIcon2 = new System.Windows.Forms.PictureBox();
+            this.tibialyzerIcon = new System.Windows.Forms.PictureBox();
+            this.tibialyzerLabel = new System.Windows.Forms.Label();
             this.exceptionLabel = new System.Windows.Forms.Label();
             this.executeCommand = new System.Windows.Forms.Button();
             this.label56 = new System.Windows.Forms.Label();
@@ -196,8 +200,11 @@
             this.loadTimerImage = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.explanationTooltip = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tibialyzerIcon2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tibialyzerIcon)).BeginInit();
             this.huntingPage.SuspendLayout();
             this.trackAllCreaturesPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backgroundBox)).BeginInit();
@@ -245,6 +252,10 @@
             // 
             // mainTab
             // 
+            this.mainTab.Controls.Add(this.tibialyzerDescription);
+            this.mainTab.Controls.Add(this.tibialyzerIcon2);
+            this.mainTab.Controls.Add(this.tibialyzerIcon);
+            this.mainTab.Controls.Add(this.tibialyzerLabel);
             this.mainTab.Controls.Add(this.exceptionLabel);
             this.mainTab.Controls.Add(this.executeCommand);
             this.mainTab.Controls.Add(this.label56);
@@ -264,6 +275,50 @@
             this.mainTab.UseVisualStyleBackColor = true;
             this.mainTab.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
             // 
+            // tibialyzerDescription
+            // 
+            this.tibialyzerDescription.AutoSize = true;
+            this.tibialyzerDescription.Location = new System.Drawing.Point(9, 54);
+            this.tibialyzerDescription.MaximumSize = new System.Drawing.Size(275, 0);
+            this.tibialyzerDescription.Name = "tibialyzerDescription";
+            this.tibialyzerDescription.Size = new System.Drawing.Size(274, 221);
+            this.tibialyzerDescription.TabIndex = 17;
+            this.tibialyzerDescription.Text = resources.GetString("tibialyzerDescription.Text");
+            // 
+            // tibialyzerIcon2
+            // 
+            this.tibialyzerIcon2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tibialyzerIcon2.Image = ((System.Drawing.Image)(resources.GetObject("tibialyzerIcon2.Image")));
+            this.tibialyzerIcon2.Location = new System.Drawing.Point(259, 8);
+            this.tibialyzerIcon2.Name = "tibialyzerIcon2";
+            this.tibialyzerIcon2.Size = new System.Drawing.Size(32, 32);
+            this.tibialyzerIcon2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.tibialyzerIcon2.TabIndex = 16;
+            this.tibialyzerIcon2.TabStop = false;
+            // 
+            // tibialyzerIcon
+            // 
+            this.tibialyzerIcon.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tibialyzerIcon.Image = ((System.Drawing.Image)(resources.GetObject("tibialyzerIcon.Image")));
+            this.tibialyzerIcon.Location = new System.Drawing.Point(8, 8);
+            this.tibialyzerIcon.Name = "tibialyzerIcon";
+            this.tibialyzerIcon.Size = new System.Drawing.Size(32, 32);
+            this.tibialyzerIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.tibialyzerIcon.TabIndex = 14;
+            this.tibialyzerIcon.TabStop = false;
+            // 
+            // tibialyzerLabel
+            // 
+            this.tibialyzerLabel.AutoSize = true;
+            this.tibialyzerLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tibialyzerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tibialyzerLabel.Location = new System.Drawing.Point(8, 7);
+            this.tibialyzerLabel.Name = "tibialyzerLabel";
+            this.tibialyzerLabel.Padding = new System.Windows.Forms.Padding(70, 0, 70, 0);
+            this.tibialyzerLabel.Size = new System.Drawing.Size(283, 33);
+            this.tibialyzerLabel.TabIndex = 15;
+            this.tibialyzerLabel.Text = "Tibialyzer";
+            // 
             // exceptionLabel
             // 
             this.exceptionLabel.AutoSize = true;
@@ -279,7 +334,7 @@
             // 
             // executeCommand
             // 
-            this.executeCommand.Location = new System.Drawing.Point(386, 439);
+            this.executeCommand.Location = new System.Drawing.Point(559, 439);
             this.executeCommand.Name = "executeCommand";
             this.executeCommand.Size = new System.Drawing.Size(75, 23);
             this.executeCommand.TabIndex = 12;
@@ -301,14 +356,14 @@
             // 
             this.commandTextBox.Location = new System.Drawing.Point(81, 440);
             this.commandTextBox.Name = "commandTextBox";
-            this.commandTextBox.Size = new System.Drawing.Size(299, 20);
+            this.commandTextBox.Size = new System.Drawing.Size(472, 20);
             this.commandTextBox.TabIndex = 9;
             this.commandTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.commandTextBox_KeyPress);
             // 
             // label49
             // 
             this.label49.AutoSize = true;
-            this.label49.Location = new System.Drawing.Point(8, 35);
+            this.label49.Location = new System.Drawing.Point(313, 42);
             this.label49.MaximumSize = new System.Drawing.Size(323, 0);
             this.label49.Name = "label49";
             this.label49.Size = new System.Drawing.Size(301, 26);
@@ -318,7 +373,7 @@
             // 
             // damageButton
             // 
-            this.damageButton.Location = new System.Drawing.Point(467, 224);
+            this.damageButton.Location = new System.Drawing.Point(14, 362);
             this.damageButton.Name = "damageButton";
             this.damageButton.Size = new System.Drawing.Size(122, 40);
             this.damageButton.TabIndex = 7;
@@ -328,7 +383,7 @@
             // 
             // saveLootImage
             // 
-            this.saveLootImage.Location = new System.Drawing.Point(467, 168);
+            this.saveLootImage.Location = new System.Drawing.Point(142, 362);
             this.saveLootImage.Name = "saveLootImage";
             this.saveLootImage.Size = new System.Drawing.Size(122, 40);
             this.saveLootImage.TabIndex = 6;
@@ -338,9 +393,9 @@
             // 
             // resetButton
             // 
-            this.resetButton.Location = new System.Drawing.Point(467, 430);
+            this.resetButton.Location = new System.Drawing.Point(512, 362);
             this.resetButton.Name = "resetButton";
-            this.resetButton.Size = new System.Drawing.Size(122, 42);
+            this.resetButton.Size = new System.Drawing.Size(122, 40);
             this.resetButton.TabIndex = 4;
             this.resetButton.Text = "Reset Hunt";
             this.resetButton.UseVisualStyleBackColor = true;
@@ -348,9 +403,9 @@
             // 
             // nameTextBox
             // 
-            this.nameTextBox.Location = new System.Drawing.Point(11, 69);
+            this.nameTextBox.Location = new System.Drawing.Point(316, 71);
             this.nameTextBox.Name = "nameTextBox";
-            this.nameTextBox.Size = new System.Drawing.Size(196, 215);
+            this.nameTextBox.Size = new System.Drawing.Size(318, 215);
             this.nameTextBox.TabIndex = 2;
             this.nameTextBox.Text = "";
             this.nameTextBox.TextChanged += new System.EventHandler(this.nameTextBox_TextChanged);
@@ -359,7 +414,7 @@
             // 
             this.namesLabel.AutoSize = true;
             this.namesLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.namesLabel.Location = new System.Drawing.Point(8, 11);
+            this.namesLabel.Location = new System.Drawing.Point(311, 20);
             this.namesLabel.Name = "namesLabel";
             this.namesLabel.Size = new System.Drawing.Size(323, 16);
             this.namesLabel.TabIndex = 1;
@@ -753,9 +808,9 @@
             this.lookCheckBox.AutoSize = true;
             this.lookCheckBox.Location = new System.Drawing.Point(10, 20);
             this.lookCheckBox.Name = "lookCheckBox";
-            this.lookCheckBox.Size = new System.Drawing.Size(194, 17);
+            this.lookCheckBox.Size = new System.Drawing.Size(205, 17);
             this.lookCheckBox.TabIndex = 11;
-            this.lookCheckBox.Text = "Automatically View Looked At Items";
+            this.lookCheckBox.Text = "Automatically View Looked At Objects";
             this.lookCheckBox.UseVisualStyleBackColor = true;
             this.lookCheckBox.CheckedChanged += new System.EventHandler(this.lookCheckBox_CheckedChanged);
             // 
@@ -1627,9 +1682,9 @@
             this.shutdownOnExit.AutoSize = true;
             this.shutdownOnExit.Location = new System.Drawing.Point(11, 66);
             this.shutdownOnExit.Name = "shutdownOnExit";
-            this.shutdownOnExit.Size = new System.Drawing.Size(210, 17);
+            this.shutdownOnExit.Size = new System.Drawing.Size(300, 17);
             this.shutdownOnExit.TabIndex = 8;
-            this.shutdownOnExit.Text = "Shutdown AutoHotkey on Program Exit";
+            this.shutdownOnExit.Text = "Shutdown AutoHotkey automatically when Tibialyzer exits.";
             this.shutdownOnExit.UseVisualStyleBackColor = true;
             this.shutdownOnExit.CheckedChanged += new System.EventHandler(this.shutdownOnExit_CheckedChanged);
             // 
@@ -1658,9 +1713,9 @@
             this.startAutohotkeyScript.AutoSize = true;
             this.startAutohotkeyScript.Location = new System.Drawing.Point(11, 46);
             this.startAutohotkeyScript.Name = "startAutohotkeyScript";
-            this.startAutohotkeyScript.Size = new System.Drawing.Size(189, 17);
+            this.startAutohotkeyScript.Size = new System.Drawing.Size(305, 17);
             this.startAutohotkeyScript.TabIndex = 4;
-            this.startAutohotkeyScript.Text = "Start AutoHotkey Script on Startup";
+            this.startAutohotkeyScript.Text = "Start AutoHotkey Script automatically when Tibialyzer starts";
             this.startAutohotkeyScript.UseVisualStyleBackColor = true;
             this.startAutohotkeyScript.CheckedChanged += new System.EventHandler(this.startAutohotkeyScript_CheckedChanged);
             // 
@@ -1951,6 +2006,8 @@
             this.tabControl1.ResumeLayout(false);
             this.mainTab.ResumeLayout(false);
             this.mainTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tibialyzerIcon2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tibialyzerIcon)).EndInit();
             this.huntingPage.ResumeLayout(false);
             this.huntingPage.PerformLayout();
             this.trackAllCreaturesPanel.ResumeLayout(false);
@@ -2145,6 +2202,11 @@
         private EnterTextBox suspendedXOffset;
         private System.Windows.Forms.Button closeSuspendedWindow;
         private System.Windows.Forms.Label exceptionLabel;
+        private System.Windows.Forms.PictureBox tibialyzerIcon;
+        private System.Windows.Forms.Label tibialyzerLabel;
+        private System.Windows.Forms.PictureBox tibialyzerIcon2;
+        private System.Windows.Forms.Label tibialyzerDescription;
+        private System.Windows.Forms.ToolTip explanationTooltip;
     }
 }
 
