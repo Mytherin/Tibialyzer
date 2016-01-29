@@ -99,7 +99,7 @@ namespace Tibialyzer {
             }
             if (itemsLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Items WHERE LOWER(name)=\"{1}\";", _itemProperties, name.Replace("\"", "\\\"")), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Items WHERE LOWER(name)='{1}';", _itemProperties, name.Replace("\'", "\'\'")), mainForm.conn);
             Item item = createItem(command.ExecuteReader());
             return registerItem(item);
         }
@@ -279,7 +279,7 @@ namespace Tibialyzer {
             }
             if (creaturesLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Creatures WHERE LOWER(name)=\"{1}\";", _creatureProperties, name.Replace("\"", "\\\"")), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Creatures WHERE LOWER(name)='{1}';", _creatureProperties, name.Replace("\'", "\'\'")), mainForm.conn);
             Creature cr = createCreature(command.ExecuteReader());
             return registerCreature(cr);
         }
@@ -405,7 +405,7 @@ namespace Tibialyzer {
             }
             if (itemsLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM NPCs WHERE LOWER(name)=\"{1}\";", _npcProperties, name.Replace("\"", "\\\"")), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM NPCs WHERE LOWER(name)='{1}';", _npcProperties, name.Replace("\'", "\'\'")), mainForm.conn);
             NPC npc = createNPC(command.ExecuteReader());
             return registerNPC(npc);
         }
@@ -450,9 +450,11 @@ namespace Tibialyzer {
             npc.id = reader.GetInt32(0);
             npc.name = reader["name"].ToString();
             npc.city = reader["city"].ToString();
-            npc.pos.x = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
-            npc.pos.y = reader.IsDBNull(4) ? DATABASE_NULL : reader.GetInt32(4);
-            npc.pos.z = reader.IsDBNull(5) ? DATABASE_NULL : reader.GetInt32(5);
+            if (!reader.IsDBNull(3) && !reader.IsDBNull(4) && !reader.IsDBNull(5)) {
+                npc.pos.x = reader.GetInt32(3);
+                npc.pos.y = reader.GetInt32(4);
+                npc.pos.z = reader.GetInt32(5);
+            }
             npc.image = Image.FromStream(reader.GetStream(6));
             npc.job = reader.IsDBNull(7) ? "" : reader.GetString(7);
             if (npc.image.RawFormat.Guid == ImageFormat.Gif.Guid) {
@@ -535,7 +537,7 @@ namespace Tibialyzer {
             }
             if (huntsLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM HuntingPlaces WHERE LOWER(name)=\"{1}\";", _huntProperties, name.Replace("\"", "\\\"")), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM HuntingPlaces WHERE LOWER(name)='{1}';", _huntProperties, name.Replace("\'", "\'\'")), mainForm.conn);
             HuntingPlace hunt = createHunt(command.ExecuteReader());
             return registerHunt(hunt);
         }
@@ -650,7 +652,7 @@ namespace Tibialyzer {
             }
             if (spellsLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Spells WHERE LOWER(name)=\"{1}\";", _spellProperties, name.Replace("\"", "\\\"")), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Spells WHERE LOWER(name)='{1}';", _spellProperties, name.Replace("\'", "\'\'")), mainForm.conn);
             Spell s = createSpell(command.ExecuteReader());
             return registerSpell(s);
         }
@@ -735,7 +737,7 @@ namespace Tibialyzer {
             }
             if (mountsLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Mounts WHERE LOWER(name)=\"{1}\";", _mountProperties, name.Replace("\"", "\\\"")), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Mounts WHERE LOWER(name)='{1}';", _mountProperties, name.Replace("\'", "\'\'")), mainForm.conn);
             Mount m = createMount(command.ExecuteReader());
             return registerMount(m);
         }
@@ -801,7 +803,7 @@ namespace Tibialyzer {
             }
             if (outfitsLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Outfits WHERE LOWER(name)=\"{1}\";", _outfitProperties, name.Replace("\"", "\\\"")), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Outfits WHERE LOWER(name)='{1}';", _outfitProperties, name.Replace("\'", "\'\'")), mainForm.conn);
             Outfit o = createOutfit(command.ExecuteReader());
             return registerOutfit(o);
         }
@@ -884,7 +886,7 @@ namespace Tibialyzer {
             }
             if (worldObjectsLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM WorldObjects WHERE LOWER(title)=\"{1}\";", _worldObjectProperties, name.Replace("\"", "\\\"")), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM WorldObjects WHERE LOWER(title)='{1}';", _worldObjectProperties, name.Replace("\'", "\'\'")), mainForm.conn);
             WorldObject o = createWorldObject(command.ExecuteReader());
             return registerWorldObject(o);
         }
@@ -931,7 +933,7 @@ namespace Tibialyzer {
         public static List<TibiaObject> getNPCWithCity(string city) {
             city = city.ToLower();
             if (!npcsLoaded) {
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM NPCs WHERE LOWER(city)=\"{0}\";", city), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM NPCs WHERE LOWER(city)='{0}';", city.Replace("\'", "\'\'")), mainForm.conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 List<TibiaObject> result = new List<TibiaObject>();
                 while (reader.Read()) {
@@ -946,7 +948,7 @@ namespace Tibialyzer {
         public static List<HuntingPlace> getHuntsInCity(string city) {
             city = city.ToLower();
             if (!huntsLoaded) {
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM HuntingPlaces WHERE LOWER(city)=\"{0}\";", city), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM HuntingPlaces WHERE LOWER(city)='{0}';", city.Replace("\'", "\'\'")), mainForm.conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 List<HuntingPlace> result = new List<HuntingPlace>();
                 while (reader.Read()) {
@@ -998,12 +1000,12 @@ namespace Tibialyzer {
             if (!(npcsLoaded && itemsLoaded)) {
                 SQLiteCommand command;
                 SQLiteDataReader reader;
-                command = new SQLiteCommand(String.Format("SELECT NPCs.id FROM BuyItems INNER JOIN NPCs ON NPCs.id=BuyItems.vendorid AND LOWER(NPCs.city)=\"{0}\" AND BuyItems.itemid={1}", city, itemid), mainForm.conn);
+                command = new SQLiteCommand(String.Format("SELECT NPCs.id FROM BuyItems INNER JOIN NPCs ON NPCs.id=BuyItems.vendorid AND LOWER(NPCs.city)='{0}' AND BuyItems.itemid={1}", city.Replace("\'", "\'\'"), itemid), mainForm.conn);
                 reader = command.ExecuteReader();
                 while (reader.Read()) {
                     return getNPC(reader.GetInt32(0));
                 }
-                command = new SQLiteCommand(String.Format("SELECT NPCs.id FROM SellItems INNER JOIN NPCs ON NPCs.id=SellItems.vendorid AND LOWER(NPCs.city)=\"{0}\" AND SellItems.itemid={1}", city, itemid), mainForm.conn);
+                command = new SQLiteCommand(String.Format("SELECT NPCs.id FROM SellItems INNER JOIN NPCs ON NPCs.id=SellItems.vendorid AND LOWER(NPCs.city)='{0}' AND SellItems.itemid={1}", city.Replace("\'", "\'\'"), itemid), mainForm.conn);
                 reader = command.ExecuteReader();
                 while (reader.Read()) {
                     return getNPC(reader.GetInt32(0));
@@ -1024,7 +1026,7 @@ namespace Tibialyzer {
             if (!(npcsLoaded && spellsLoaded)) {
                 SQLiteCommand command;
                 SQLiteDataReader reader;
-                command = new SQLiteCommand(String.Format("SELECT NPCs.id FROM SpellNPCs INNER JOIN NPCs ON NPCs.id=SpellNPCs.npcid AND LOWER(NPCs.city)=\"{0}\" AND SpellNPCs.spellid={1}", city, spellid), mainForm.conn);
+                command = new SQLiteCommand(String.Format("SELECT NPCs.id FROM SpellNPCs INNER JOIN NPCs ON NPCs.id=SpellNPCs.npcid AND LOWER(NPCs.city)='{0}' AND SpellNPCs.spellid={1}", city.Replace("\'", "\'\'"), spellid), mainForm.conn);
                 reader = command.ExecuteReader();
                 while (reader.Read()) {
                     return getNPC(reader.GetInt32(0));
@@ -1064,7 +1066,7 @@ namespace Tibialyzer {
             }
             if (itemsLoaded) return false;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Items WHERE LOWER(name)=\"{0}\";", str.Replace("\"", "\\\"")), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Items WHERE LOWER(name)='{0}';", str.Replace("\'", "\'\'")), mainForm.conn);
 
             return command.ExecuteScalar() != null;
         }
@@ -1075,7 +1077,7 @@ namespace Tibialyzer {
             }
             if (creaturesLoaded) return false;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Creatures WHERE LOWER(name)=\"{0}\";", str.Replace("\"", "\\\"")), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Creatures WHERE LOWER(name)='{0}';", str.Replace("\'", "\'\'")), mainForm.conn);
 
             return command.ExecuteScalar() != null;
         }
@@ -1083,7 +1085,7 @@ namespace Tibialyzer {
         public static List<TibiaObject> searchItem(string str) {
             if (!itemsLoaded) {
                 List<TibiaObject> result = new List<TibiaObject>();
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Items WHERE LOWER(name) LIKE '%{0}%' OR LOWER(title) LIKE '%{0}%' AND category IS NOT NULL ORDER BY category,actual_value;", str.ToLower()), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Items WHERE LOWER(name) LIKE '%{0}%' OR LOWER(title) LIKE '%{0}%' AND category IS NOT NULL ORDER BY category,actual_value;", str.Replace("\'", "\'\'")), mainForm.conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read()) {
                     result.Add(new LazyTibiaObject { id = reader.GetInt32(0), type = TibiaObjectType.Item });
@@ -1097,7 +1099,7 @@ namespace Tibialyzer {
             str = str.ToLower();
             if (!creaturesLoaded) {
                 List<TibiaObject> result = new List<TibiaObject>();
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Creatures WHERE LOWER(name) LIKE '%{0}%' OR LOWER(title) LIKE '%{0}%' ORDER BY experience;", str), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Creatures WHERE LOWER(name) LIKE '%{0}%' OR LOWER(title) LIKE '%{0}%' ORDER BY experience;", str.Replace("\'", "\'\'")), mainForm.conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read()) {
                     result.Add(new LazyTibiaObject { id = reader.GetInt32(0), type = TibiaObjectType.Creature });
@@ -1111,7 +1113,7 @@ namespace Tibialyzer {
             str = str.ToLower();
             if (!npcsLoaded) {
                 List<TibiaObject> result = new List<TibiaObject>();
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM NPCs WHERE LOWER(name) LIKE '%{0}%' ORDER BY city;", str), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM NPCs WHERE LOWER(name) LIKE '%{0}%' ORDER BY city;", str.Replace("\'", "\'\'")), mainForm.conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read()) {
                     result.Add(new LazyTibiaObject { id = reader.GetInt32(0), type = TibiaObjectType.NPC });
@@ -1126,7 +1128,7 @@ namespace Tibialyzer {
             str = str.ToLower();
             if (!huntsLoaded) {
                 List<HuntingPlace> result = new List<HuntingPlace>();
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM HuntingPlaces WHERE LOWER(name) LIKE '%{0}%';", str), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM HuntingPlaces WHERE LOWER(name) LIKE '%{0}%';", str.Replace("\'", "\'\'")), mainForm.conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read()) {
                     result.Add(getHunt(reader.GetInt32(0)));
@@ -1140,7 +1142,7 @@ namespace Tibialyzer {
             str = str.ToLower();
             if (!spellsLoaded) {
                 List<TibiaObject> result = new List<TibiaObject>();
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Spells WHERE LOWER(name) LIKE '%{0}%' ORDER BY levelrequired;", str), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Spells WHERE LOWER(name) LIKE '%{0}%' ORDER BY levelrequired;", str.Replace("\'", "\'\'")), mainForm.conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read()) {
                     result.Add(new LazyTibiaObject { id = reader.GetInt32(0), type = TibiaObjectType.Spell });
@@ -1154,7 +1156,7 @@ namespace Tibialyzer {
             str = str.ToLower();
             if (!spellsLoaded) {
                 List<TibiaObject> result = new List<TibiaObject>();
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Spells WHERE LOWER(words) LIKE '%{0}%' ORDER BY levelrequired;", str), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Spells WHERE LOWER(words) LIKE '%{0}%' ORDER BY levelrequired;", str.Replace("\'", "\'\'")), mainForm.conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read()) {
                     result.Add(new LazyTibiaObject { id = reader.GetInt32(0), type = TibiaObjectType.Spell });
@@ -1173,7 +1175,7 @@ namespace Tibialyzer {
             str = str.ToLower();
             if (!mountsLoaded) {
                 List<TibiaObject> result = new List<TibiaObject>();
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Mounts WHERE LOWER(name) LIKE '%{0}%';", str), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Mounts WHERE LOWER(name) LIKE '%{0}%';", str.Replace("\'", "\'\'")), mainForm.conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read()) {
                     result.Add(new LazyTibiaObject { id = reader.GetInt32(0), type = TibiaObjectType.Mount });
@@ -1187,7 +1189,7 @@ namespace Tibialyzer {
             str = str.ToLower();
             if (!outfitsLoaded) {
                 List<TibiaObject> result = new List<TibiaObject>();
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Outfits WHERE LOWER(name) LIKE '%{0}%';", str), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Outfits WHERE LOWER(name) LIKE '%{0}%';", str.Replace("\'", "\'\'")), mainForm.conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read()) {
                     result.Add(new LazyTibiaObject { id = reader.GetInt32(0), type = TibiaObjectType.Outfit });
@@ -1204,11 +1206,11 @@ namespace Tibialyzer {
                 List<TibiaObject> result = new List<TibiaObject>();
                 SQLiteCommand command;
                 SQLiteDataReader reader;
-                command = new SQLiteCommand(String.Format("SELECT category FROM Items WHERE LOWER(category) LIKE '%{0}%' LIMIT 1", str), mainForm.conn);
+                command = new SQLiteCommand(String.Format("SELECT category FROM Items WHERE LOWER(category) LIKE '%{0}%' LIMIT 1", str.Replace("\'", "\'\'")), mainForm.conn);
                 reader = command.ExecuteReader();
                 if (reader.Read()) {
                     string category = reader.GetString(0).ToLower();
-                    command = new SQLiteCommand(String.Format("SELECT id FROM Items WHERE LOWER(category)='{0}';", category), mainForm.conn);
+                    command = new SQLiteCommand(String.Format("SELECT id FROM Items WHERE LOWER(category)='{0}';", category.Replace("\'", "\'\'")), mainForm.conn);
                     reader = command.ExecuteReader();
                     while (reader.Read()) {
                         result.Add(new LazyTibiaObject { id = reader.GetInt32(0), type = TibiaObjectType.Item });

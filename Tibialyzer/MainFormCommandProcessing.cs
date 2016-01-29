@@ -430,7 +430,7 @@ namespace Tibialyzer {
                             ShowCreatureList(huntList.ToList<TibiaObject>(), title, command);
                         }
                     }
-                } else if (comp.StartsWith("npc" + MainForm.commandSymbol)) {
+                } else if (comp.StartsWith("npc" + MainForm.commandSymbol)) { //npc@
                     string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                     NPC npc = getNPC(parameter);
                     if (npc != null) {
