@@ -1,21 +1,23 @@
 <img align="right" src="https://raw.githubusercontent.com/Mytherin/Tibialyzer/master/Images/tibiagroup.png" alt="Me and my Friends in Tibia, Left To Right: Mytherin, Amel Cyrom, Martincc">
 
 # Tibialyzer
-Tibialyzer is an extension made for the MMORPG Tibia. It scans the server log and messages from the Tibia client in real-time by reading its memory, and gathers various statistics, such as loot found from creatures and damage dealt by party members. See the [Wiki section](https://github.com/Mytherin/Tibialyzer/wiki) for an in-depth description of all features that Tibialyzer has.
+Tibialyzer is an extension made for the MMORPG Tibia. It scans the server log and messages from the Tibia client in real-time by reading its memory, and gathers various statistics, such as loot found from creatures and damage dealt by party members. 
+
+See the [Wiki section](https://github.com/Mytherin/Tibialyzer/wiki) for an in-depth description of all features that Tibialyzer has.
 
 For information on downloading and installing Tibialyzer, see the [Installation Instructions Section](https://github.com/Mytherin/Tibialyzer/wiki/Installation-Instructions). For help getting started, visit the [Quick Start Section](https://github.com/Mytherin/Tibialyzer/wiki/Quick-Start-Guide).
 
 # Why did you make Tibialyzer?
 
-It started a couple of months ago. I was hunting Apes in Banuta on a low-level sorcerer alt. I wanted to power-level (gain a lot of experience), however, `Ape Fur` was worth a lot on my server (about `7000` gold each), which I felt was a waste to just leave in the corpses. So my plan was to look at the server log and check if any ape fur dropped, and if any dropped I would pick it up. While doing this I thought, if these strings are in the server log, why can't I just make a program to read them? And thus the first `Tibialyzer` was born (this really was a simple Python script that would scan for the `Ape Fur` string in the memory of Tibialyzer and would call `notify-send` if it found any), this was still on Linux.
+It started a couple of months ago. I was hunting Apes in Banuta on a low-level sorcerer alt. I wanted to power-level (gain a lot of experience), however, `Ape Fur` was worth a lot on my server (about `7000` gold each), which I felt was a waste to just leave in the corpses. So my plan was to look at the server log and check if any ape fur dropped, and if any dropped I would pick it up. While doing this I thought, if these strings are in the server log, why can't I just make a program to read them? And thus the first `Tibialyzer` was born (this really was a simple Python script that would scan for the `Ape Fur` string in the memory of Tibialyzer and would call `notify-send` if it found any, this was still on Linux).
 
-It worked very well, and at that point I thought, why not keep track of more things this way? I can keep track of all the loot you find and all the creatures you killed. And it blew up from there.
+It worked very well, and at that point I thought, why not keep track of more things this way? I can keep track of all the loot you find and all the creatures you killed. I switched development to Windows because that is what my friends were using and I was already familiar with WinForms. I made proceeded to make the first real Tibialyzer application, and shared it with my friends. We kept on using it, and I kept on adding more and more features until it grew into what it is today.
 
-# `.exe`? Are you going to hack me?
+# This is a `.exe` file, are you going to hack me?
 
 Tibialyzer is completely open source, you can look at the complete source code and verify that there is nothing shady going on in there for yourself. The code is reasonably well documented, and I will be happy to answer any questions you have about the code.
 
-Rest assured that if I wanted to make a program to hack people, I would not have spend this much time polishing it, and I also would not have made it open source. 
+Rest assured that if I wanted to make a program to hack people, I would not have spend this much time polishing it, and I also would not have made it open source. Tibialyzer does not track any of the keys you type, and it does not perform any communication over the network at all. It's completely safe. 
 
 # Building Tibialyzer
 Tibialyzer is written using C#. For visualization it uses WinForms, which is part of the .NET framework. Tibialyzer requires the .NET framework 4.5 or higher to run. In addition, Tibialyzer uses SQLite. The necessary SQLite libraries are shipped with the Tibialyzer application.
@@ -24,7 +26,7 @@ Tibialyzer is build using Visual Studio 2015. If you wish to build it yourself, 
 
 As Tibialyzer is performance intensive, I recommend compiling with optimization flags (i.e. Release Build) if you are compiling a version that you intend to use.
 
-# Is Tibialyzer allowed? Isn't it against the rules?
+# Is Tibialyzer allowed? Isn't this against the rules?
 Tibialyzer does not do anything that is against the rules. [The Tibia rules](http://www.tibia.com/support/?subtopic=tibiarules&rule=3b) specify two rules with regard to external applications.
 
 > #### Manipulating the official client program. 
