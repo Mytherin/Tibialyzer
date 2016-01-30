@@ -13,37 +13,37 @@ Create the initial database with the following command. This creates mostly ever
 ```
 Additional information is then added through the following additional scripts.
 
-## Rashid Locations
+#### Rashid Locations
 This script adds the locations of Rashid (as these vary based on the days of the week). The values are hardcoded in the script.
 ```bash
 	python addrashidinformation.py
 ```
-## World Map Images
+#### World Map Images
 This script downloads the world map files from the tibia.wikia site.
 ```bash
 	python addmapinformation.py
 ```
-## City Information
+#### City Information
 This script adds information about cities, parsed from the "Extra Information/cities.xml" file.
 ```bash
 	python addcityinformation.py
 ```
-## Event Information
+#### Event Information
 This script adds information about events from the "Extra Information/events.xml" file.
 ```bash
 	python addeventinformation.py
 ```
-## Task Information
+#### Task Information
 This script adds information about Killing In The Name Of... tasks from the "Extra Information/killinginthenameof.xml" file.
 ```bash
 	python addkillinginthenameof.py
 ```
-## Tibialyzer Help
+#### Tibialyzer Help
 This script adds information about Tibialyzer commands to be displayed in the Help section to the database.
 ```bash
 	python addhelpinformation.py
 ```
-## Additional Information
+#### Additional Information
 This script adds creature skins, hunting directions, hunting requirements and quest instructions from the corresponding .xml files in the "Extra Information" directory.
 ```bash
 	python addextrainformation.py
