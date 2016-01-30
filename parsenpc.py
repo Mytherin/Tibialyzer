@@ -46,6 +46,8 @@ def parseNPC(title, attributes, c, spells, getURL):
     city = None
     if 'city' in attributes:
         city = attributes['city'].lower()
+    if city == None:
+        return False
     job = None
     if 'job2' in attributes:
         job = attributes['job2']

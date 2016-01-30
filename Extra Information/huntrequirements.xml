@@ -18,4 +18,571 @@
 			</Requirement>
 		</Requirements>
 	</Hunt>
+	<Hunt>
+		<Name>Deeper Banuta</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Ape City Quest</Quest>
+				<RequirementText>Ape City Quest (Mission 09)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Medusa Cave</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Shattered Isles Quest</Quest>
+				<RequirementText>The Shattered Isles Quest (The Counterspell)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Meriana</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Shattered Isles Quest</Quest>
+				<RequirementText>The Shattered Isles Quest (Access To Meriana)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Nargor</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Shattered Isles Quest</Quest>
+				<RequirementText>The Shattered Isles Quest (Access To Meriana)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Nargor Undead Cave</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Shattered Isles Quest</Quest>
+				<RequirementText>The Shattered Isles Quest (Access To Meriana)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Meriana Gargoyle Cave</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Shattered Isles Quest</Quest>
+				<RequirementText>The Shattered Isles Quest (Access To Meriana)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Malada</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Shattered Isles Quest</Quest>
+				<RequirementText>The Shattered Isles Quest (The Counterspell)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Laguna Islands</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Shattered Isles Quest</Quest>
+				<RequirementText>The Shattered Isles Quest (The Counterspell)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Goroma</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Shattered Isles Quest</Quest>
+				<RequirementText>The Shattered Isles Quest (Access To Goroma)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Goroma Dragon Lairs</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Shattered Isles Quest</Quest>
+				<RequirementText>The Shattered Isles Quest (The Counterspell)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Talahu</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Shattered Isles Quest</Quest>
+				<RequirementText>The Shattered Isles Quest (The Counterspell)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Ramoa</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Shattered Isles Quest</Quest>
+				<RequirementText>The Shattered Isles Quest (The Counterspell)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Lich Hell</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Shattered Isles Quest</Quest>
+				<RequirementText>The Shattered Isles Quest (The Counterspell)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Medusa Cave</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Shattered Isles Quest</Quest>
+				<RequirementText>The Shattered Isles Quest (The Counterspell)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Hellgore</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Shattered Isles Quest</Quest>
+				<RequirementText>The Shattered Isles Quest (The Counterspell)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Calassa</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Explorer Society Quest</Quest>
+				<RequirementText>The Explorer Society Quest (Relic Hunter Rank)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Mal'ouquah</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Djinn War - Marid Faction</Quest>
+				<RequirementText>The Djinn War - Marid Faction</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Magician Quarter Efreet Territory</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Djinn War - Marid Faction</Quest>
+				<RequirementText>The Djinn War - Marid Faction</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Ashta'daramai</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Djinn War - Efreet Faction</Quest>
+				<RequirementText>The Djinn War - Efreet Faction</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Magician Quarter Marid Territory</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Djinn War - Efreet Faction</Quest>
+				<RequirementText>The Djinn War - Efreet Faction</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Sea Serpent Area</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Hunt for the Sea Serpent Quest</Quest>
+				<RequirementText>The Hunt for the Sea Serpent Quest</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Vengoth</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>Blood Brothers Quest</Quest>
+				<RequirementText>Blood Brothers Quest (Mission 04)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Vengoth Werewolf Cave</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>Blood Brothers Quest</Quest>
+				<RequirementText>Blood Brothers Quest (Mission 04)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Vengoth Castle</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>Blood Brothers Quest</Quest>
+				<RequirementText>Blood Brothers Quest (Mission 04)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Treasure Island</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>Treasure Island Quest</Quest>
+				<RequirementText>Treasure Island Quest</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Helheim</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Ice Islands Quest</Quest>
+				<RequirementText>Ice Islands Quest (Mission 07)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Okolnir</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>Barbarian Test Quest</Quest>
+				<RequirementText>Barbarian Test Quest</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Inukaya</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Ice Islands Quest</Quest>
+				<RequirementText>Ice Islands Quest (Mission 05)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Yakchal Crypt</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The Ice Islands Quest</Quest>
+				<RequirementText>Ice Islands Quest (Mission 09)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Dragonblaze Peaks</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mission 01)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Zao Orc Land</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mission 01)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Zao Terramite Caves</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mission 01)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Zzaion</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mission 01)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Zao Wailing Widow Caves</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mission 01)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Gnarlhound Caves</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mission 01)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Farmine Mines</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mission 04)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Zao Steppe</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mission 01)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Killer Caiman Cave</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mission 01)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Muggy Plains</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mission 07)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Temple of Equilibrium</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mission 07)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Chaochai</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mission 07)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Stampor Cave</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mission 07)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Northern Zao Plantations</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mission 07)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Brimstone Bug Caves</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mission 07)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Yielothax Dimension</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mission 07)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Fire Dragon Dojo</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mission 07)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Zao Palace Antechambers</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mission 07)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Zao Palace</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mortal Combat)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Corruption Hole</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mortal Combat)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Souleater Mountains</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mortal Combat)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Ghastly Dragon Lair</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>The New Frontier Quest</Quest>
+				<RequirementText>The New Frontier Quest (Mortal Combat)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Warzone 1</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>Bigfoot's Burden Quest</Quest>
+				<RequirementText>Bigfoot's Burden Quest (Rank IV)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Warzone 2</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>Bigfoot's Burden Quest</Quest>
+				<RequirementText>Bigfoot's Burden Quest (Rank IV)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Warzone 3</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>Bigfoot's Burden Quest</Quest>
+				<RequirementText>Bigfoot's Burden Quest (Rank IV)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Nibelor Ice Cave</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>Barbarian Test Quest</Quest>
+				<RequirementText>Barbarian Test Quest</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Energy Sphere</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>Elemental Spheres Quest</Quest>
+				<RequirementText>Elemental Spheres Quest (Knight)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Earth Sphere</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>Elemental Spheres Quest</Quest>
+				<RequirementText>Elemental Spheres Quest (Druid)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Fire Sphere</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>Elemental Spheres Quest</Quest>
+				<RequirementText>Elemental Spheres Quest (Sorcerer)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Ice Sphere</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>Elemental Spheres Quest</Quest>
+				<RequirementText>Elemental Spheres Quest (Paladin)</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Razachai</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>Wrath of the Emperor Quest</Quest>
+				<RequirementText>Wrath of the Emperor Quest</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Razachai/Inner Sanctum</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>Wrath of the Emperor Quest</Quest>
+				<RequirementText>Wrath of the Emperor Quest</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Fiehonja</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>Liquid Black Quest</Quest>
+				<RequirementText>Liquid Black Quest</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
+	<Hunt>
+		<Name>Lion's Rock</Name>
+		<Requirements>
+			<Requirement>
+				<Quest>Lion's Rock Quest</Quest>
+				<RequirementText>Lion's Rock Quest</RequirementText>
+			</Requirement>
+		</Requirements>
+	</Hunt>
 </HuntRequirements>

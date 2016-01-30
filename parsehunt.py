@@ -18,7 +18,7 @@ from coordinates import convert_x, convert_y
 
 mapperRegex = re.compile('Mapper\\?coords=([0-9.]+)[,-]([0-9.]+)[,-]([0-9]+)')
 creatureRegex = re.compile('\\{\\{\\:([^|/]+)\\|List}}')
-creatureRegex2 = re.compile('\\{\\{(CreatureList[^}]+)\\}\\}')
+creatureRegex2 = re.compile('\\{\\{(Creature[ \t\n]?List[^}]+)\\}\\}')
 
 ratingMap = {'very bad': 1, 'bad': 2, 'average': 3, 'good': 4, 'very good': 5}
 
