@@ -136,6 +136,7 @@ namespace Tibialyzer {
                             foreach (KeyValuePair<Creature, int> kvp in activeHunt.loot.killCount) {
                                 if (kvp.Value > kills && kvp.Key.skin != null) {
                                     cr = kvp.Key;
+                                    kills = kvp.Value;
                                 }
                             }
                         }
