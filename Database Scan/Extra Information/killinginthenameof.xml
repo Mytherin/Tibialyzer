@@ -238,7 +238,7 @@
 				<BossLocation>128.46,126.24,8</BossLocation>
 				<Hunts>
 					<Hunt>Malada</Hunt>
-					<!--<Hunt>Cemetery_Quarter</Hunt>-->
+					<Hunt>Cemetery_Quarter</Hunt>
 					<Hunt>Forbidden_Lands</Hunt>
 					<Hunt>Spider_Caves</Hunt>
 				</Hunts>
@@ -261,7 +261,7 @@
 				<Boss>Tormentor</Boss>
 				<BossLocation>125.72,122.51,10</BossLocation>
 				<Hunts>
-					<!--<Hunt>Cemetery_Quarter</Hunt>-->
+					<Hunt>Cemetery_Quarter</Hunt>
 					<Hunt>Formorgar_Mines</Hunt>
 				</Hunts>
 			</Task>
@@ -313,7 +313,7 @@
 				<Boss>Bruise Payne</Boss>
 				<BossLocation>127.167,121.138,3</BossLocation>
 				<Hunts>
-					<!--<Hunt>Cemetery_Quarter</Hunt>-->
+					<Hunt>Cemetery_Quarter</Hunt>
 					<Hunt>Souleater_Mountains</Hunt>
 					<Hunt>Middle_Spike</Hunt>
 				</Hunts>

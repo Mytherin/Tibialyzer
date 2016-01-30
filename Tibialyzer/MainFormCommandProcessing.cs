@@ -333,6 +333,7 @@ namespace Tibialyzer {
                     } else if (command_stack.Count > 0) {
                         MainForm.mainForm.ExecuteCommand(command_stack.Peek().command);
                     }
+                    return true;
                 } else if (comp.StartsWith("switch" + MainForm.commandSymbol)) { //switch@
                                                                                  // switch: switch to hunt
                     string parameter = command.Split(commandSymbol)[1].Trim().ToLower();

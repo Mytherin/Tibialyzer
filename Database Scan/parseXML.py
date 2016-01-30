@@ -36,6 +36,7 @@ from parseattribs import parseAttributes
 from parseoutfit import parseOutfit
 from parsemount import parseMount
 from parseobject import parseObject
+from parsekey import parseKey
 
 webcache = dict()
 
@@ -131,6 +132,7 @@ rewardItems = dict()
 questDangers = dict()
 mountStuff = dict()
 questNPCs = dict()
+keyItems = dict()
 
 import re
 def wordCount(input_string, word):
@@ -155,7 +157,7 @@ if not skipLoading:
         if '/Spoiler' in title:
             quest = title.replace('/Spoiler', '')
             questNPCs[quest] = re.findall('\[\[([^]|]+)(?:|[^]]+)?\]\]', lcontent)
-        elif wordCount(lcontent, 'infobox hunt') == 1 or wordCount(lcontent, 'infobox_hunt') == 1:
+        elif wordCount(lcontent, 'infobox hunt|') == 1 or wordCount(lcontent, 'infobox_hunt|') == 1:
             #print('Hunt', title)
             if not parseHunt(title, attributes, c, content, huntcreatures, getURL):
                 print('Hunt failed', title)
@@ -191,6 +193,10 @@ if not skipLoading:
             #print('Object', title)
             if not parseObject(title, attributes, c, getURL):
                 print('Object failed', title)
+        elif wordCount(lcontent, '{{infobox key') == 1 or wordCount(lcontent, '{{infobox_key') == 1:
+            print('Key', title)
+            if not parseKey(title, attributes, c, keyItems, buyitems, sellitems, getURL):
+                print('Key failed', title)
     saveCache(True)
 
     conn.commit()
@@ -206,12 +212,11 @@ if not skipLoading:
     d['questDangers'] = questDangers
     d['mountStuff'] = mountStuff
     d['questNPCs'] = questNPCs
+    d['keyItems'] = keyItems
 
     f = open('valuedict', 'wb')
     pickle.dump(d, f)
     f.close()
-
-    #exit()
 
 f = open('valuedict', 'rb')
 d = pickle.load(f)
@@ -226,6 +231,19 @@ rewardItems = d['rewardItems']
 questDangers = d['questDangers'] 
 mountStuff = d['mountStuff'] 
 questNPCs = d['questNPCs']
+keyItems = d['keyItems']
+
+# add images to keys
+for keyid,primarytype in iter(keyItems.items()):
+    primaryname = "%s key" % primarytype.lower().strip()
+    c.execute('SELECT image FROM Items WHERE LOWER(name)=? OR LOWER(title)=?', (primaryname,primaryname))
+    results = c.fetchall()
+    if len(results) > 0:
+        imageBinary = results[0][0]
+        c.execute("UPDATE Items SET image=? WHERE id=?", (imageBinary,keyid))
+    else:
+        print("unrecognized primary type %s", primarytype)
+        exit()
 
 #fix typos in spells
 spellMap = {'desintegrate':'disintegrate', 'paralyze':'paralyse','avalanche (rune)':'avalanche'}
@@ -395,7 +413,6 @@ for questid,items in iter(rewardItems.items()):
         _item = itemname.strip().lower()
         if _item in itemMap:
             _item = itemMap[_item]
-        if 'key' in _item: _item = 'copper key'
         if 'image:' in _item: 
             match = re.search('image:outfit(?:_| )([^.]+)(?:_| )male[^.]+\.gif', _item)
             if match != None:
@@ -538,7 +555,5 @@ for crname,items in iter(removeFromDrops.items()):
     	itemid = c.fetchall()[0][0]
     	c.execute('DELETE FROM CreatureDrops WHERE creatureid=? AND itemid=?', (creatureid, itemid))
 
-
-#Hero Cave<br>Star Room
 
 conn.commit()
