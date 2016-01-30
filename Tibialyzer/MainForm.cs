@@ -938,8 +938,8 @@ namespace Tibialyzer {
                 Process tibia = tibia_process[0];
                 screen = Screen.FromHandle(tibia.MainWindowHandle);
             }
-            int xOffset = getSettingInt("RichNotificationXOffset") < 0 ? 30 : getSettingInt("RichNotificationXOffset");
-            int yOffset = getSettingInt("RichNotificationYOffset") < 0 ? 30 : getSettingInt("RichNotificationYOffset");
+            int xOffset = getSettingInt("RichNotificationXOffset") == -1 ? 30 : getSettingInt("RichNotificationXOffset");
+            int yOffset = getSettingInt("RichNotificationYOffset") == -1 ? 30 : getSettingInt("RichNotificationYOffset");
             int anchor = getSettingInt("RichNotificationAnchor");
             switch (anchor) {
                 case 3:
