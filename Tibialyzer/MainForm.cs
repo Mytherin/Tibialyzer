@@ -214,6 +214,7 @@ namespace Tibialyzer {
 
             BackgroundWorker bw = new BackgroundWorker();
             makeDraggable(this.Controls);
+            tibialyzerLogo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
             bw.DoWork += bw_DoWork;
             bw.RunWorkerAsync();
 

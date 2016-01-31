@@ -42,10 +42,9 @@
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.mainTab = new System.Windows.Forms.TabPage();
-            this.tibialyzerDescription = new System.Windows.Forms.Label();
-            this.tibialyzerIcon2 = new System.Windows.Forms.PictureBox();
-            this.tibialyzerIcon = new System.Windows.Forms.PictureBox();
             this.tibialyzerLabel = new System.Windows.Forms.Label();
+            this.tibialyzerLogo = new System.Windows.Forms.PictureBox();
+            this.tibialyzerDescription = new System.Windows.Forms.Label();
             this.exceptionLabel = new System.Windows.Forms.Label();
             this.executeCommand = new System.Windows.Forms.Button();
             this.label56 = new System.Windows.Forms.Label();
@@ -203,8 +202,7 @@
             this.explanationTooltip = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tibialyzerIcon2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tibialyzerIcon)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tibialyzerLogo)).BeginInit();
             this.huntingPage.SuspendLayout();
             this.trackAllCreaturesPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backgroundBox)).BeginInit();
@@ -252,10 +250,9 @@
             // 
             // mainTab
             // 
-            this.mainTab.Controls.Add(this.tibialyzerDescription);
-            this.mainTab.Controls.Add(this.tibialyzerIcon2);
-            this.mainTab.Controls.Add(this.tibialyzerIcon);
             this.mainTab.Controls.Add(this.tibialyzerLabel);
+            this.mainTab.Controls.Add(this.tibialyzerLogo);
+            this.mainTab.Controls.Add(this.tibialyzerDescription);
             this.mainTab.Controls.Add(this.exceptionLabel);
             this.mainTab.Controls.Add(this.executeCommand);
             this.mainTab.Controls.Add(this.label56);
@@ -275,56 +272,45 @@
             this.mainTab.UseVisualStyleBackColor = true;
             this.mainTab.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
             // 
-            // tibialyzerDescription
-            // 
-            this.tibialyzerDescription.AutoSize = true;
-            this.tibialyzerDescription.Location = new System.Drawing.Point(9, 54);
-            this.tibialyzerDescription.MaximumSize = new System.Drawing.Size(275, 0);
-            this.tibialyzerDescription.Name = "tibialyzerDescription";
-            this.tibialyzerDescription.Size = new System.Drawing.Size(274, 221);
-            this.tibialyzerDescription.TabIndex = 17;
-            this.tibialyzerDescription.Text = resources.GetString("tibialyzerDescription.Text");
-            // 
-            // tibialyzerIcon2
-            // 
-            this.tibialyzerIcon2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tibialyzerIcon2.Image = ((System.Drawing.Image)(resources.GetObject("tibialyzerIcon2.Image")));
-            this.tibialyzerIcon2.Location = new System.Drawing.Point(259, 8);
-            this.tibialyzerIcon2.Name = "tibialyzerIcon2";
-            this.tibialyzerIcon2.Size = new System.Drawing.Size(32, 32);
-            this.tibialyzerIcon2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.tibialyzerIcon2.TabIndex = 16;
-            this.tibialyzerIcon2.TabStop = false;
-            // 
-            // tibialyzerIcon
-            // 
-            this.tibialyzerIcon.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tibialyzerIcon.Image = ((System.Drawing.Image)(resources.GetObject("tibialyzerIcon.Image")));
-            this.tibialyzerIcon.Location = new System.Drawing.Point(8, 8);
-            this.tibialyzerIcon.Name = "tibialyzerIcon";
-            this.tibialyzerIcon.Size = new System.Drawing.Size(32, 32);
-            this.tibialyzerIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.tibialyzerIcon.TabIndex = 14;
-            this.tibialyzerIcon.TabStop = false;
-            // 
             // tibialyzerLabel
             // 
             this.tibialyzerLabel.AutoSize = true;
             this.tibialyzerLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tibialyzerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tibialyzerLabel.Location = new System.Drawing.Point(8, 7);
+            this.tibialyzerLabel.Location = new System.Drawing.Point(6, 140);
             this.tibialyzerLabel.Name = "tibialyzerLabel";
             this.tibialyzerLabel.Padding = new System.Windows.Forms.Padding(70, 0, 70, 0);
             this.tibialyzerLabel.Size = new System.Drawing.Size(283, 33);
             this.tibialyzerLabel.TabIndex = 15;
             this.tibialyzerLabel.Text = "Tibialyzer";
             // 
+            // tibialyzerLogo
+            // 
+            this.tibialyzerLogo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tibialyzerLogo.Image = ((System.Drawing.Image)(resources.GetObject("tibialyzerLogo.Image")));
+            this.tibialyzerLogo.InitialImage = null;
+            this.tibialyzerLogo.Location = new System.Drawing.Point(0, 6);
+            this.tibialyzerLogo.Name = "tibialyzerLogo";
+            this.tibialyzerLogo.Size = new System.Drawing.Size(300, 150);
+            this.tibialyzerLogo.TabIndex = 18;
+            this.tibialyzerLogo.TabStop = false;
+            // 
+            // tibialyzerDescription
+            // 
+            this.tibialyzerDescription.AutoSize = true;
+            this.tibialyzerDescription.Location = new System.Drawing.Point(8, 181);
+            this.tibialyzerDescription.MaximumSize = new System.Drawing.Size(275, 0);
+            this.tibialyzerDescription.Name = "tibialyzerDescription";
+            this.tibialyzerDescription.Size = new System.Drawing.Size(274, 117);
+            this.tibialyzerDescription.TabIndex = 17;
+            this.tibialyzerDescription.Text = resources.GetString("tibialyzerDescription.Text");
+            // 
             // exceptionLabel
             // 
             this.exceptionLabel.AutoSize = true;
             this.exceptionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.exceptionLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(77)))), ((int)(((byte)(77)))));
-            this.exceptionLabel.Location = new System.Drawing.Point(11, 291);
+            this.exceptionLabel.Location = new System.Drawing.Point(8, 301);
             this.exceptionLabel.MaximumSize = new System.Drawing.Size(600, 0);
             this.exceptionLabel.Name = "exceptionLabel";
             this.exceptionLabel.Size = new System.Drawing.Size(170, 16);
@@ -2006,8 +1992,7 @@
             this.tabControl1.ResumeLayout(false);
             this.mainTab.ResumeLayout(false);
             this.mainTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tibialyzerIcon2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tibialyzerIcon)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tibialyzerLogo)).EndInit();
             this.huntingPage.ResumeLayout(false);
             this.huntingPage.PerformLayout();
             this.trackAllCreaturesPanel.ResumeLayout(false);
@@ -2202,11 +2187,10 @@
         private EnterTextBox suspendedXOffset;
         private System.Windows.Forms.Button closeSuspendedWindow;
         private System.Windows.Forms.Label exceptionLabel;
-        private System.Windows.Forms.PictureBox tibialyzerIcon;
         private System.Windows.Forms.Label tibialyzerLabel;
-        private System.Windows.Forms.PictureBox tibialyzerIcon2;
         private System.Windows.Forms.Label tibialyzerDescription;
         private System.Windows.Forms.ToolTip explanationTooltip;
+        private System.Windows.Forms.PictureBox tibialyzerLogo;
     }
 }
 
