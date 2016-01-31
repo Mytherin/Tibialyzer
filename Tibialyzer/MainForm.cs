@@ -2165,6 +2165,10 @@ namespace Tibialyzer {
         public void setSetting(string key, bool value) {
             setSetting(key, value.ToString());
         }
+        public void setSetting(string key, List<string> value) {
+            if (!settings.ContainsKey(key)) settings.Add(key, value);
+            else settings[key] = value;
+        }
 
         private void rareDropNotificationValueCheckbox_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
@@ -2713,7 +2717,7 @@ C::NumpadPgDn
             setSetting("StartAutohotkeyAutomatically", false);
             setSetting("ShutdownAutohotkeyOnExit", false);
             setSetting("NotificationItems", "");
-            setSetting("AutoHotkeySettings", defaultWASDSettings);
+            setSetting("AutoHotkeySettings", defaultWASDSettings.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList());
             setSetting("AutoScreenshotAdvance", false);
             setSetting("AutoScreenshotItemDrop", false);
             setSetting("AutoScreenshotDeath", false);
