@@ -726,7 +726,7 @@ namespace Tibialyzer {
         void bw_DoWork(object sender, DoWorkEventArgs e) {
             while (keep_working) {
                 if (circleTimer == null) {
-                    circleTimer = new System.Timers.Timer(1000);
+                    circleTimer = new System.Timers.Timer(10000);
                     circleTimer.Elapsed += circleTimer_Elapsed;
                     circleTimer.Enabled = true;
                 }
