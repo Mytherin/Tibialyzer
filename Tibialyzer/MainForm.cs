@@ -1252,6 +1252,21 @@ namespace Tibialyzer {
             }
         }
 
+        enum HeaderType { Numeric = 0, String = 1 };
+        private static IComparable CoerceTypes(IComparable value, HeaderType type) {
+            if (type == HeaderType.Numeric) {
+                string valueString = value.ToString();
+                double dblVal;
+                if (double.TryParse(valueString, NumberStyles.Any, CultureInfo.InvariantCulture, out dblVal)) {
+                    return dblVal;
+                }
+                return (double)-127;
+            } else if (type == HeaderType.String) {
+                return value.ToString();
+            }
+            return value;
+        }
+
         public static int DisplayCreatureAttributeList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, out int maxwidth, Func<TibiaObject, string> tooltip_function = null, List<Control> createdControls = null, int page = 0, int pageitems = 20, PageInfo pageInfo = null, string extraAttribute = null, Func<TibiaObject, Attribute> attributeFunction = null, EventHandler headerSortFunction = null, string sortedHeader = null, bool desc = false, Func<TibiaObject, IComparable> extraSort = null, List<string> removedAttributes = null, bool conditional = false) {
             const int size = 24;
             const int imageSize = size - 4;
@@ -1268,19 +1283,32 @@ namespace Tibialyzer {
             }
             int offset = 0;
             if (sortedHeader != "" && sortedHeader != null) {
+                int hash = sortedHeader.GetHashCode();
+                HeaderType type = HeaderType.String;
+                foreach (TibiaObject obj in l) {
+                    List<string> headers = conditional ? obj.GetConditionalHeaders() : obj.GetAttributeHeaders();
+                    if (headers.Contains(sortedHeader)) {
+                        IComparable value = conditional ? obj.GetConditionalHeaderValue(sortedHeader) : obj.GetHeaderValue(hash);
+                        if (value is string) {
+                            type = HeaderType.String;
+                        } else {
+                            type = HeaderType.Numeric;
+                        }
+                        break;
+                    }
+                }
+
                 if (desc) {
                     if (sortedHeader == extraAttribute && extraSort != null) {
                         l = l.OrderByDescending(o => extraSort(o)).ToList();
                     } else {
-                        int hash = sortedHeader.GetHashCode();
-                        l = l.OrderByDescending(o => conditional ? o.GetConditionalHeaderValue(sortedHeader) : o.GetHeaderValue(hash)).ToList();
+                        l = l.OrderByDescending(o => CoerceTypes(conditional ? o.GetConditionalHeaderValue(sortedHeader) : o.GetHeaderValue(hash), type)).ToList();
                     }
                 } else {
                     if (sortedHeader == extraAttribute && extraSort != null) {
                         l = l.OrderBy(o => extraSort(o)).ToList();
                     } else {
-                        int hash = sortedHeader.GetHashCode();
-                        l = l.OrderBy(o => conditional ? o.GetConditionalHeaderValue(sortedHeader) : o.GetHeaderValue(hash)).ToList();
+                        l = l.OrderBy(o => CoerceTypes(conditional ? o.GetConditionalHeaderValue(sortedHeader) : o.GetHeaderValue(hash), type)).ToList();
                     }
                 }
             }

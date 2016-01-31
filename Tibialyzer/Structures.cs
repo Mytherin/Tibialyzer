@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 
 namespace Tibialyzer {
+    enum HeaderType { Numeric = 0, String = 1};
     public abstract class TibiaObject {
         public bool permanent;
         public abstract string GetName();
