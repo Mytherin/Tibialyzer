@@ -71,5 +71,8 @@ Note that Tibialyzer does neither of these. It does not alter the client program
 >
 >Tibia Customer Support
 
+# About Me
 
+<img align="right" src="https://raw.githubusercontent.com/Mytherin/Tibialyzer/master/Images/mytherin.png" alt="My character, Mytherin">
 
+My main character in Tibia is called [`Mytherin`](https://secure.tibia.com/community/?subtopic=characters&name=Mytherin). I play as an Elder Druid on the Unitera server. I look a bit like the image to the right. I usually play for an hour or two in the evenings with my friends. Feel free to chat me up.
