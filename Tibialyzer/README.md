@@ -11,7 +11,7 @@ The `ReadMemoryResults` structure is then passed to the `ParseLogResults()` func
 
 This file contains all functions that are used for executing Tibialyzer commands. Note that Tibialyzer uses commands to do everything. If you click on the `Stats` button on the creature view, the command `stats@[creature]` is silently executed. The `ExecuteCommand()` function is a big switch statement that checks which command should be executed, and then performs the execution of that command.
 
-This file also contains the `ScanMemory()` function. This is the big function that performs the routine scanning that Tibialyzer performs in the background. This function calls `ReadMemory() and `ParseLogResults()`, and then executes any commands submitted by the player. 
+This file also contains the `ScanMemory()` function. This is the big function that performs the routine scanning that Tibialyzer performs in the background. This function calls `ReadMemory()` and `ParseLogResults()`, and then executes any commands submitted by the player. 
 
 ###### `MainFormStorage.cs`
 
@@ -40,6 +40,10 @@ This file contains the `SimpleNotification` class. This is the base class that a
 
 This file contains the textbox that is used for syntax highlighting the AutoHotkey script.
 
+###### `MapPictureBox.cs`
+
+This file contains a modified `PictureBox` that displays the map for various other forms (such as NPCs and hunting places). 
+
 #### Rich Notifications
 Aside from these important files, the other files mainly contain the various types of rich notifications. Here's a quick overview of what each file contains.
 - `AutoHotkeySuspendedMode.cs`: The `Suspended` dialog box that pops up when you suspend the integrated AutoHotkey support.
@@ -59,4 +63,8 @@ Aside from these important files, the other files mainly contain the various typ
 - `QuestGuideForm.cs`: Contains the guide used for both quest and hunt directions.
 - `SpellForm.cs`: `spell@[spellname]`
 - `TaskForm.cs`: `task@[taskname]`
+
+#### Simple Notifications
+- `SimpleLootNotification.cs`: The loot notification that is displayed when a creature drops a valuable item.
+- `SimpleTextNoficiation.cs`: A simple notification that displays text with a single image. 
 
