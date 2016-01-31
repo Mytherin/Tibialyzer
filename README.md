@@ -26,7 +26,7 @@ Tibialyzer is written using C#. For visualization it uses WinForms, which is par
 
 Tibialyzer is build using Visual Studio 2015. If you wish to build it yourself, open the Tibialyzer solution using Visual Studio and press F5. If you do not have Visual Studio installed, you can download the [Express Edition](https://www.visualstudio.com/en-us/products/visual-studio-express-vs.aspx) that is provided for free by Microsoft. 
 
-As Tibialyzer is performance intensive, I recommend compiling with optimization flags (i.e. Release Build) if you are compiling a version that you intend to use.
+For a high level overview of the Tibialyzer code base, check the [Tibialyzer Code Readme](https://github.com/Mytherin/Tibialyzer/tree/master/Tibialyzer#important-files). As Tibialyzer is performance intensive, I recommend compiling with optimization flags (i.e. Release Build) if you are compiling a version that you intend to use.
 
 # Is Tibialyzer allowed? Isn't this against the rules?
 Tibialyzer does not do anything that is against the rules. [The Tibia rules](http://www.tibia.com/support/?subtopic=tibiarules&rule=3b) specify two rules with regard to external applications.
