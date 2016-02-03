@@ -1,6 +1,11 @@
 <img align="right" src="https://raw.githubusercontent.com/Mytherin/Tibialyzer/master/Images/tibiagroup.png" alt="Me and my Friends in Tibia, Left To Right: Mytherin, Amel Cyrom, Martincc">
 
+# Please Refrain From Using Tibialyzer
+
+At the moment, there seems to be some confusion between me and CipSoft. Please refrain from using Tibialyzer until this is resolved. [See this thread for more information](https://www.reddit.com/r/TibiaMMO/comments/43wh9h/please_refrain_from_using_tibialyzer_for_the_time/).
+
 # Tibialyzer
+
 Tibialyzer is an extension made for the MMORPG Tibia. It scans the server log and messages from the Tibia client in real-time by reading its memory, and gathers various statistics, such as loot found from creatures and damage dealt by party members. 
 
 See the [Wiki section](https://github.com/Mytherin/Tibialyzer/wiki) for an in-depth description of all features that Tibialyzer has.
