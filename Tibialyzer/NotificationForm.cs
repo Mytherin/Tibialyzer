@@ -145,11 +145,6 @@ namespace Tibialyzer {
         static extern bool SetForegroundWindow(IntPtr hWnd);
         public void ReturnFocusToTibia() {
             return;
-            Process[] tibia_process = Process.GetProcessesByName("Tibia");
-            if (tibia_process.Length != 0) {
-                SetForegroundWindow(tibia_process[0].MainWindowHandle);
-                tibia_process[0].Dispose();
-            }
         }
 
         protected void CloseForm(object sender, EventArgs e) {

@@ -34,6 +34,15 @@ using System.Data.SQLite;
 namespace Tibialyzer {
     public partial class MainForm : Form {
 
+        public static string TibiaClientName = "Tibia";
+        public static int TibiaProcessId = -1;
+        public static Process GetTibiaProcess() {
+            if (TibiaProcessId >= 0) return Process.GetProcessById(TibiaProcessId);
+            Process[] p = Process.GetProcessesByName(TibiaClientName);
+            if (p.Length > 0) return p[0];
+            return null;
+        }
+
         //based on http://www.codeproject.com/Articles/716227/Csharp-How-to-Scan-a-Process-Memory
         const int PROCESS_QUERY_INFORMATION = 0x0400;
         const int MEM_COMMIT = 0x00001000;
@@ -80,6 +89,7 @@ namespace Tibialyzer {
             public List<Tuple<Event,string>> eventMessages = new List<Tuple<Event, string>>();
             public Dictionary<string, List<string>> lookMessages = new Dictionary<string, List<string>>();
             public Dictionary<string, bool> deaths = new Dictionary<string, bool>();
+            public Dictionary<string, List<string>> duplicateMessages = new Dictionary<string, List<string>>();
         }
 
         public class ParseMemoryResults {
@@ -104,13 +114,12 @@ namespace Tibialyzer {
 
             long proc_min_address_l = (long)proc_min_address;
             long proc_max_address_l = (long)proc_max_address;
-            Process[] processes = Process.GetProcessesByName("Tibia");
-            if (processes.Length == 0) {
+            Process process = GetTibiaProcess();
+            if (process == null) {
                 // Tibia process could not be found, wait for a bit and return
                 Thread.Sleep(250);
                 return null;
             }
-            Process process = processes[0];
             IntPtr processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
             MEMORY_BASIC_INFORMATION mem_basic_info = new MEMORY_BASIC_INFORMATION();
             int bytesRead = 0;  // number of bytes read with ReadProcessMemory

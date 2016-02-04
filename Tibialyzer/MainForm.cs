@@ -706,6 +706,8 @@ namespace Tibialyzer {
                 }
             }
 
+            TibiaClientName = settingExists("TibiaClientName") ? getSettingString("TibiaClientName") : TibiaClientName;
+
             screenshotDirectoryBox.Text = getSettingString("ScreenshotPath");
             refreshScreenshots();
         }
@@ -811,12 +813,11 @@ namespace Tibialyzer {
         private void ShowSimpleNotification(SimpleNotification f) {
             int position_x = 0, position_y = 0;
             Screen screen;
-            Process[] tibia_process = Process.GetProcessesByName("Tibia");
-            if (tibia_process.Length == 0) {
+            Process tibia_process = GetTibiaProcess();
+            if (tibia_process == null) {
                 screen = Screen.FromControl(this);
             } else {
-                Process tibia = tibia_process[0];
-                screen = Screen.FromHandle(tibia.MainWindowHandle);
+                screen = Screen.FromHandle(tibia_process.MainWindowHandle);
             }
             int xOffset = getSettingInt("SimpleNotificationXOffset") < 0 ? 30 : getSettingInt("SimpleNotificationXOffset");
             int yOffset = getSettingInt("SimpleNotificationYOffset") < 0 ? 30 : getSettingInt("SimpleNotificationYOffset");
@@ -932,12 +933,11 @@ namespace Tibialyzer {
             }
             int position_x = 0, position_y = 0;
             Screen screen;
-            Process[] tibia_process = Process.GetProcessesByName("Tibia");
-            if (tibia_process.Length == 0) {
+            Process tibia_process = GetTibiaProcess();
+            if (tibia_process == null) {
                 screen = Screen.FromControl(this);
             } else {
-                Process tibia = tibia_process[0];
-                screen = Screen.FromHandle(tibia.MainWindowHandle);
+                screen = Screen.FromHandle(tibia_process.MainWindowHandle);
             }
             int xOffset = getSettingInt("RichNotificationXOffset") == -1 ? 30 : getSettingInt("RichNotificationXOffset");
             int yOffset = getSettingInt("RichNotificationYOffset") == -1 ? 30 : getSettingInt("RichNotificationYOffset");
@@ -2199,6 +2199,10 @@ namespace Tibialyzer {
             else settings[key] = value;
         }
 
+        public bool settingExists(string key) {
+            return settings.ContainsKey(key) && settings[key].Count > 0;
+        }
+
         private void rareDropNotificationValueCheckbox_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
@@ -2382,11 +2386,11 @@ namespace Tibialyzer {
         static extern bool GetWindowRect(IntPtr hWnd, ref RECT Rect);
 
         Bitmap takeScreenshot() {
-            Process[] tibia_process = Process.GetProcessesByName("Tibia");
-            if (tibia_process.Length == 0) return null; //no tibia to take screenshot of
+            Process tibia_process = GetTibiaProcess();
+            if (tibia_process == null)  return null; //no tibia to take screenshot of
 
             RECT Rect = new RECT();
-            if (!GetWindowRect(tibia_process[0].MainWindowHandle, ref Rect)) return null;
+            if (!GetWindowRect(tibia_process.MainWindowHandle, ref Rect)) return null;
 
             Bitmap bitmap = new Bitmap(Rect.right - Rect.left, Rect.bottom - Rect.top);
             using (Graphics gr = Graphics.FromImage(bitmap)) {
@@ -2649,12 +2653,11 @@ namespace Tibialyzer {
                     window = null;
                 }
                 Screen screen;
-                Process[] tibia_process = Process.GetProcessesByName("Tibia");
-                if (tibia_process.Length == 0) {
+                Process tibia_process = GetTibiaProcess();
+                if (tibia_process == null) {
                     screen = Screen.FromControl(this);
                 } else {
-                    Process tibia = tibia_process[0];
-                    screen = Screen.FromHandle(tibia.MainWindowHandle);
+                    screen = Screen.FromHandle(tibia_process.MainWindowHandle);
                 }
                 window = new AutoHotkeySuspendedMode(alwaysShow);
                 int position_x = 0, position_y = 0;
@@ -2764,6 +2767,7 @@ C::NumpadPgDn
             setSetting("SuspendedNotificationXOffset", 10);
             setSetting("SuspendedNotificationYOffset", 10);
             setSetting("SuspendedNotificationAnchor", 1);
+            setSetting("TibiaClientName", "Tibia");
 
             saveSettings();
         }
@@ -2980,6 +2984,11 @@ C::NumpadPgDn
                 setSetting("SuspendedNotificationYOffset", yOffset);
                 saveSettings();
             }
+        }
+
+        private void selectClientButton_Click(object sender, EventArgs e) {
+            SelectProcessForm form = new SelectProcessForm();
+            form.Show();
         }
     }
 

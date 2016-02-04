@@ -110,6 +110,9 @@
     <Compile Include="RichTextBoxAutoHotkey.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="SelectProcessForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="SimpleLootNotification.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -245,6 +248,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="QuestGuideForm.resx">
       <DependentUpon>QuestGuideForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectProcessForm.resx">
+      <DependentUpon>SelectProcessForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SimpleLootNotification.resx">
       <DependentUpon>SimpleLootNotification.cs</DependentUpon>

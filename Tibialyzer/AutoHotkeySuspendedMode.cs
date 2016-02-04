@@ -60,7 +60,7 @@ namespace Tibialyzer {
             if (alwaysShow) return;
             try {
                 // only show the suspended window when tibia is active
-                bool visible = GetActiveProcessFileName() == "Tibia";
+                bool visible = GetActiveProcessFileName() == MainForm.GetTibiaProcess().ProcessName;
                 this.Invoke((MethodInvoker)delegate {
                     this.Visible = visible;
                 });

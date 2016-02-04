@@ -200,6 +200,7 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.explanationTooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.selectClientButton = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tibialyzerLogo)).BeginInit();
@@ -250,6 +251,7 @@
             // 
             // mainTab
             // 
+            this.mainTab.Controls.Add(this.selectClientButton);
             this.mainTab.Controls.Add(this.tibialyzerLabel);
             this.mainTab.Controls.Add(this.tibialyzerLogo);
             this.mainTab.Controls.Add(this.tibialyzerDescription);
@@ -1973,6 +1975,16 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // selectClientButton
+            // 
+            this.selectClientButton.Location = new System.Drawing.Point(384, 362);
+            this.selectClientButton.Name = "selectClientButton";
+            this.selectClientButton.Size = new System.Drawing.Size(122, 40);
+            this.selectClientButton.TabIndex = 19;
+            this.selectClientButton.Text = "Select Client";
+            this.selectClientButton.UseVisualStyleBackColor = true;
+            this.selectClientButton.Click += new System.EventHandler(this.selectClientButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2191,6 +2203,7 @@
         private System.Windows.Forms.Label tibialyzerDescription;
         private System.Windows.Forms.ToolTip explanationTooltip;
         private System.Windows.Forms.PictureBox tibialyzerLogo;
+        private System.Windows.Forms.Button selectClientButton;
     }
 }
 
