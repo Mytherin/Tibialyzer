@@ -155,8 +155,8 @@ namespace Tibialyzer {
             } catch {
                 return null;
             }
-
             process.Dispose();
+            FinalCleanup(results);
             return results;
         }
 
@@ -867,31 +867,76 @@ namespace Tibialyzer {
                 Item it = getItem(itemName);
                 if (it == null) {
                     Console.WriteLine(String.Format("Warning, item {0} was not found in the database.", itemName));
+                    return null;
                 } else {
                     itemList.Add(new Tuple<Item, int>(it, itemCount));
                 }
             }
             return new Tuple<Creature, List<Tuple<Item, int>>>(cr, itemList);
         }
+
+        private void FinalCleanup(ReadMemoryResults res) {
+            foreach(KeyValuePair<string, List<Tuple<string, string>>> kvp in res.commands) {
+                string time = kvp.Key;
+                if (res.itemDrops.ContainsKey(time)) {
+                    foreach (Tuple<string, string> command in kvp.Value) {
+                        if (res.itemDrops[time].Contains(command.Item2.Trim())) {
+                            res.itemDrops[time].Remove(command.Item2);
+                        }
+                    }
+                }
+            }
+        }
         
+        private bool flashClient = true;
         private int ignoreStamp = 0;
         private void SearchChunk(List<string> chunk, ReadMemoryResults res) {
+            flashClient = TibiaClientName.ToLower().Contains("flash");
+            
             List<int> stamps = getLatestStamps(3, ignoreStamp);
-            foreach (string logMessage in chunk) {
+            for (int it = 0; it < chunk.Count; it++) {
+                string logMessage = chunk[it];
                 string t = logMessage.Substring(0, 5);
                 int hour = int.Parse(logMessage.Substring(0, 2));
                 int minute = int.Parse(logMessage.Substring(3, 2));
                 if (!stamps.Contains(getStamp(hour, minute))) continue; // the log message is not recent, so we skip parsing it
 
+                if (flashClient) {
+                    // the flash client has some properties that we have to work around
+                    // first, strings in the server log use this nice formatting, so we need to remove the formatting
+                    logMessage = logMessage.Replace("</font>", "").Replace("</p>", "").Trim();
+                    // there is some inconsistency with log messages, certain log messages use "12:00: Message.", others use "12:00 Message"
+                    // if there is a : after the timestamp we remove it
+                    if (logMessage[5] == ':') {
+                        logMessage = logMessage.Remove(5, 1);
+                    }
+                    // lastly, the flash client seems to store many duplicates of strings shown in the server log
+                    // this causes loot to be recorded multiple times, commands to be executed multiple times, etc
+                    // the solution is to disallow any duplicate messages, because of the timestamps we will rarely miss actual loot this way
+                    // however, it is a slight annoyance because the user cannot use the same command in the same minute
+                    // damage can also be messed up because dealing the same amount of damage twice in the same minute is not counted
+                    // (which is very likely with AOE runes)
+                    // all in all, a very bad solution but the only one I can think of
+                    if (!res.duplicateMessages.ContainsKey(t)) {
+                        res.duplicateMessages.Add(t, new List<string>());
+                    }
+                    if (!res.duplicateMessages[t].Contains(logMessage)) {
+                        res.duplicateMessages[t].Add(logMessage);
+                    } else {
+                        continue;
+                    }
+                }
                 string message = logMessage.Substring(6); // message without timestamp
                 if (logMessage.Length > 14 && logMessage.Substring(5, 9) == " You see ") {
                     // the message contains "you see", so it's a look message
                     if (!res.lookMessages.ContainsKey(t)) res.lookMessages.Add(t, new List<string>());
                     res.lookMessages[t].Add(logMessage);
+                    Console.WriteLine("Look: {0}", logMessage);
                 } else if (message.Contains(':')) {
                     if (logMessage.Length > 14 && logMessage.Substring(5, 9) == " Loot of ") { // loot drop message
                         if (!res.itemDrops.ContainsKey(t)) res.itemDrops.Add(t, new List<string>());
                         res.itemDrops[t].Add(logMessage);
+                        Console.WriteLine("Loot: {0}", logMessage);
                     } else { // if the message contains the ':' symbol but is not a loot drop message, it is a chat message, i.e. a command or url
                              // we only split at most once, because the chat message can contain the ':' symbol as well and we don't want to discard that
                         string[] split = message.Split(new char[] { ':' }, 2);
@@ -909,6 +954,7 @@ namespace Tibialyzer {
                             // @ symbol symbolizes a command, so if there is an @ symbol, we treat the string as a command
                             if (!res.commands.ContainsKey(t)) res.commands.Add(t, new List<Tuple<string, string>>());
                             res.commands[t].Add(new Tuple<string, string>(player, command));
+                            Console.WriteLine("Command: {0}", logMessage);
                         } else if (command.Contains("www") || command.Contains("http") || command.Contains(".com") || command.Contains(".net") || command.Contains(".tv") || command.Contains(".br")) {
                             // check if the command is an url, we aren't really smart about this, just check for a couple of common url-like things
                             if (!res.urls.ContainsKey(t)) res.urls.Add(t, new List<Tuple<string, string>>());
