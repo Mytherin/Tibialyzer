@@ -104,6 +104,7 @@ namespace Tibialyzer {
 
         private Dictionary<string, List<string>> totalLooks = new Dictionary<string, List<string>>();
         private HashSet<string> levelAdvances = new HashSet<string>();
+        List<int> memorySegments = new List<int>();
         private ReadMemoryResults ReadMemory() {
             ReadMemoryResults results = null;
             SYSTEM_INFO sys_info = new SYSTEM_INFO();
@@ -133,19 +134,23 @@ namespace Tibialyzer {
 
                     // check if this memory chunk is accessible
                     if (mem_basic_info.Protect == PAGE_READWRITE && mem_basic_info.State == MEM_COMMIT) {
-                        byte[] buffer = new byte[mem_basic_info.RegionSize];
+                        if (!memorySegments.Contains(mem_basic_info.BaseAddress)) {
+                            byte[] buffer = new byte[mem_basic_info.RegionSize];
 
-                        // read everything in the buffer above
-                        ReadProcessMemory((int)processHandle, mem_basic_info.BaseAddress, buffer, mem_basic_info.RegionSize, ref bytesRead);
-                        // scan the memory for strings that start with timestamps and end with the null terminator ('\0')
-                        List<string> strings = FindTimestamps(buffer);
-                        if (strings.Count > 0) {
-                            // if any timestamp strings were found, scan the chunk for any messages
-                            SearchChunk(strings, results);
-                        }
-                        // performance throttling sleep after every scan (depending on scanSpeed setting)
-                        if (scanSpeed > 0) {
-                            Thread.Sleep(scanSpeed);
+                            // read everything in the buffer above
+                            ReadProcessMemory((int)processHandle, mem_basic_info.BaseAddress, buffer, mem_basic_info.RegionSize, ref bytesRead);
+                            // scan the memory for strings that start with timestamps and end with the null terminator ('\0')
+                            List<string> strings = FindTimestamps(buffer);
+                            if (strings.Count > 0) {
+                                // if any timestamp strings were found, scan the chunk for any messages
+                                SearchChunk(strings, results);
+                            } else {
+                                memorySegments.Add(mem_basic_info.BaseAddress);
+                            }
+                            // performance throttling sleep after every scan (depending on scanSpeed setting)
+                            if (scanSpeed > 0) {
+                                Thread.Sleep(scanSpeed);
+                            }
                         }
                     }
 
@@ -155,6 +160,7 @@ namespace Tibialyzer {
             } catch {
                 return null;
             }
+            memorySegments.RemoveRange(0, 20);
             process.Dispose();
             FinalCleanup(results);
             return results;
@@ -931,12 +937,10 @@ namespace Tibialyzer {
                     // the message contains "you see", so it's a look message
                     if (!res.lookMessages.ContainsKey(t)) res.lookMessages.Add(t, new List<string>());
                     res.lookMessages[t].Add(logMessage);
-                    Console.WriteLine("Look: {0}", logMessage);
                 } else if (message.Contains(':')) {
                     if (logMessage.Length > 14 && logMessage.Substring(5, 9) == " Loot of ") { // loot drop message
                         if (!res.itemDrops.ContainsKey(t)) res.itemDrops.Add(t, new List<string>());
                         res.itemDrops[t].Add(logMessage);
-                        Console.WriteLine("Loot: {0}", logMessage);
                     } else { // if the message contains the ':' symbol but is not a loot drop message, it is a chat message, i.e. a command or url
                              // we only split at most once, because the chat message can contain the ':' symbol as well and we don't want to discard that
                         string[] split = message.Split(new char[] { ':' }, 2);
@@ -954,7 +958,6 @@ namespace Tibialyzer {
                             // @ symbol symbolizes a command, so if there is an @ symbol, we treat the string as a command
                             if (!res.commands.ContainsKey(t)) res.commands.Add(t, new List<Tuple<string, string>>());
                             res.commands[t].Add(new Tuple<string, string>(player, command));
-                            Console.WriteLine("Command: {0}", logMessage);
                         } else if (command.Contains("www") || command.Contains("http") || command.Contains(".com") || command.Contains(".net") || command.Contains(".tv") || command.Contains(".br")) {
                             // check if the command is an url, we aren't really smart about this, just check for a couple of common url-like things
                             if (!res.urls.ContainsKey(t)) res.urls.Add(t, new List<Tuple<string, string>>());
