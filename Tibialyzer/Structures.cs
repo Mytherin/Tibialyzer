@@ -177,7 +177,7 @@ namespace Tibialyzer {
         public override string GetName() { return name; }
         public override Image GetImage() {
             for (int i = 3; i >= 0; i--) {
-                if (MainForm.mainForm.getSettingBool("OutfitGenderMale")) {
+                if (SettingsManager.getSettingBool("OutfitGenderMale")) {
                     if (maleImages[i] != null) return maleImages[i];
                     if (femaleImages[i] != null) return femaleImages[i];
                 } else {

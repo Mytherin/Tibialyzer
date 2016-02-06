@@ -60,13 +60,9 @@ namespace Tibialyzer {
                 } else if (comp.StartsWith("look" + MainForm.commandSymbol)) { //look@
                     string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                     if (parameter == "on") {
-                        if (!settings.ContainsKey("LookMode")) settings.Add("LookMode", new List<string>());
-                        settings["LookMode"].Clear(); settings["LookMode"].Add("True");
-                        saveSettings();
+                        SettingsManager.setSetting("LookMode", "True");
                     } else if (parameter == "off") {
-                        if (!settings.ContainsKey("LookMode")) settings.Add("LookMode", new List<string>());
-                        settings["LookMode"].Clear(); settings["LookMode"].Add("False");
-                        saveSettings();
+                        SettingsManager.setSetting("LookMode", "False");
                     } else {
                         List<string> times = getLatestTimes(5);
                         List<TibiaObject> items = new List<TibiaObject>();
@@ -165,7 +161,7 @@ namespace Tibialyzer {
                     string title = "Experience";
                     string text = "Currently gaining " + (parseMemoryResults == null ? "unknown" : ((int)parseMemoryResults.expPerHour).ToString()) + " experience an hour.";
                     Image image = tibia_image;
-                    if (!lootNotificationRich) {
+                    if (!SettingsManager.getSettingBool("UseRichNotificationType")) {
                         ShowSimpleNotification(title, text, image);
                     } else {
                         ShowSimpleNotification(new SimpleTextNotification(null, title, text));
@@ -656,12 +652,12 @@ namespace Tibialyzer {
                 lastResults = parseMemoryResults;
             }
             if (readMemoryResults != null && readMemoryResults.newAdvances.Count > 0) {
-                if (getSettingBool("AutoScreenshotAdvance")) {
+                if (SettingsManager.getSettingBool("AutoScreenshotAdvance")) {
                     this.Invoke((MethodInvoker)delegate {
                         saveScreenshot("Advance", takeScreenshot());
                     });
                 }
-                if (copyAdvances) {
+                if (SettingsManager.getSettingBool("CopyAdvances")) {
                     foreach (object obj in readMemoryResults.newAdvances) {
                         this.Invoke((MethodInvoker)delegate {
                             Clipboard.SetText(obj.ToString());
@@ -672,7 +668,7 @@ namespace Tibialyzer {
             }
 
             if (parseMemoryResults != null && parseMemoryResults.death) {
-                if (getSettingBool("AutoScreenshotDeath")) {
+                if (SettingsManager.getSettingBool("AutoScreenshotDeath")) {
                     this.Invoke((MethodInvoker)delegate {
                         saveScreenshot("Death", takeScreenshot());
                     });
@@ -682,12 +678,12 @@ namespace Tibialyzer {
 
             if (parseMemoryResults != null) {
                 if (parseMemoryResults.newEventMessages.Count > 0) {
-                    if (getSettingBool("EnableEventNotifications")) {
+                    if (SettingsManager.getSettingBool("EnableEventNotifications")) {
                         foreach (Tuple<Event, string> tpl in parseMemoryResults.newEventMessages) {
                             Event ev = tpl.Item1;
                             Creature cr = getCreature(ev.creatureid);
                             this.Invoke((MethodInvoker)delegate {
-                                if (!lootNotificationRich) {
+                                if (!SettingsManager.getSettingBool("UseRichNotificationType")) {
                                     ShowSimpleNotification("Event in " + ev.location, tpl.Item2, cr.image);
                                 } else {
                                     ShowSimpleNotification(new SimpleTextNotification(cr.image, "Event in " + ev.location, tpl.Item2));
@@ -699,7 +695,7 @@ namespace Tibialyzer {
                 }
             }
 
-            if (getSettingBool("LookMode") && readMemoryResults != null) {
+            if (SettingsManager.getSettingBool("LookMode") && readMemoryResults != null) {
                 foreach (string msg in parseMemoryResults.newLooks) {
                     string itemName = parseLookItem(msg).ToLower();
                     if (itemExists(itemName)) {
@@ -729,8 +725,8 @@ namespace Tibialyzer {
 
             foreach (string command in commands) {
                 this.Invoke((MethodInvoker)delegate {
-                    if (!ExecuteCommand(command, parseMemoryResults) && getSettingBool("EnableUnrecognizedNotifications")) {
-                        if (!lootNotificationRich) {
+                    if (!ExecuteCommand(command, parseMemoryResults) && SettingsManager.getSettingBool("EnableUnrecognizedNotifications")) {
+                        if (!SettingsManager.getSettingBool("UseRichNotificationType")) {
                             ShowSimpleNotification("Unrecognized command", "Unrecognized command: " + command, tibia_image);
                         } else {
                             ShowSimpleNotification(new SimpleTextNotification(null, "Unrecognized command", "Unrecognized command: " + command));
@@ -747,62 +743,51 @@ namespace Tibialyzer {
                 foreach (Tuple<Creature, List<Tuple<Item, int>>> tpl in parseMemoryResults.newItems) {
                     Creature cr = tpl.Item1;
                     List<Tuple<Item, int>> items = tpl.Item2;
-                    bool showNotification = false;
-                    if (getSettingBool("AlwaysShowLoot")) {
-                        // If AlwaysShowLoot is enabled, we always show a notification, as long as the creature is part of the hunts' creature list
-                        if (activeHunt.trackAllCreatures) {
-                            showNotification = true;
-                        } else {
-                            string[] creatures = activeHunt.trackedCreatures.Split('\n');
-                            for (int i = 0; i < creatures.Length; i++) {
-                                creatures[i] = creatures[i].ToLower();
-                            }
-                            if (creatures.Contains(cr.GetName().ToLower())) {
-                                showNotification = true;
-                            }
-                        }
-                    }
-
+                    bool showNotification = NotificationConditionManager.ResolveConditions(tpl);
+                    bool showNotificationSpecific = false;
                     foreach (Tuple<Item, int> tpl2 in items) {
                         Item item = tpl2.Item1;
-                        bool showNotificationValue = item.GetMaxValue() >= notification_value && showNotificationsValue;
-                        bool showNotificationRatio = getSettingBool("ShowNotificationsGoldRatio") && (item.GetMaxValue() / item.capacity) >= getSettingDouble("NotificationGoldRatio");
-                        bool showNotificationSpecific = showNotificationsSpecific && settings["NotificationItems"].Contains(item.displayname.ToLower());
-                        if (((!showNotificationsValue || showNotificationValue) && (!getSettingBool("ShowNotificationsGoldRatio") || showNotificationRatio) && (getSettingBool("ShowNotificationsGoldRatio") || showNotificationsValue)) || showNotificationSpecific) {
+                        showNotificationSpecific = SettingsManager.getSettingBool("ShowNotificationsSpecific") && SettingsManager.getSetting("NotificationItems").Contains(item.displayname.ToLower());
+                        if (showNotificationSpecific) {
                             showNotification = true;
-                            if (getSettingBool("AutoScreenshotItemDrop")) {
-                                // Take a screenshot if Tibialyzer is set to take screenshots of valuable loot
-                                Bitmap screenshot = takeScreenshot();
-                                if (screenshot == null) continue;
-                                // Add a notification to the screenshot
-                                SimpleLootNotification screenshotNotification = new SimpleLootNotification(cr, items);
-                                Bitmap notification = new Bitmap(screenshotNotification.Width, screenshotNotification.Height);
-                                screenshotNotification.DrawToBitmap(notification, new Rectangle(0, 0, screenshotNotification.Width, screenshotNotification.Height));
-                                foreach (Control c in screenshotNotification.Controls) {
-                                    c.DrawToBitmap(notification, new Rectangle(c.Location, c.Size));
-                                }
-                                screenshotNotification.Dispose();
-                                int widthOffset = notification.Width + 10;
-                                int heightOffset = notification.Height + 10;
-                                if (screenshot.Width > widthOffset && screenshot.Height > heightOffset) {
-                                    using (Graphics gr = Graphics.FromImage(screenshot)) {
-                                        gr.DrawImage(notification, new Point(screenshot.Width - widthOffset, screenshot.Height - heightOffset));
-                                    }
-                                }
-                                notification.Dispose();
-                                this.Invoke((MethodInvoker)delegate {
-                                    saveScreenshot("Loot", screenshot);
-                                });
-                            }
-                            if (this.showNotifications && !lootNotificationRich) {
-                                ShowSimpleNotification(cr.displayname, cr.displayname + " dropped a " + item.displayname + ".", cr.image);
-                            }
+                            break;
                         }
                     }
-                    if (this.showNotifications && showNotification && lootNotificationRich) {
-                        this.Invoke((MethodInvoker)delegate {
-                            ShowSimpleNotification(new SimpleLootNotification(cr, items));
-                        });
+                    if (showNotification) {
+                        if (SettingsManager.getSettingBool("AutoScreenshotItemDrop")) {
+                            // Take a screenshot if Tibialyzer is set to take screenshots of valuable loot
+                            Bitmap screenshot = takeScreenshot();
+                            if (screenshot == null) continue;
+                            // Add a notification to the screenshot
+                            SimpleLootNotification screenshotNotification = new SimpleLootNotification(cr, items);
+                            Bitmap notification = new Bitmap(screenshotNotification.Width, screenshotNotification.Height);
+                            screenshotNotification.DrawToBitmap(notification, new Rectangle(0, 0, screenshotNotification.Width, screenshotNotification.Height));
+                            foreach (Control c in screenshotNotification.Controls) {
+                                c.DrawToBitmap(notification, new Rectangle(c.Location, c.Size));
+                            }
+                            screenshotNotification.Dispose();
+                            int widthOffset = notification.Width + 10;
+                            int heightOffset = notification.Height + 10;
+                            if (screenshot.Width > widthOffset && screenshot.Height > heightOffset) {
+                                using (Graphics gr = Graphics.FromImage(screenshot)) {
+                                    gr.DrawImage(notification, new Point(screenshot.Width - widthOffset, screenshot.Height - heightOffset));
+                                }
+                            }
+                            notification.Dispose();
+                            this.Invoke((MethodInvoker)delegate {
+                                saveScreenshot("Loot", screenshot);
+                            });
+                        }
+
+                        if (SettingsManager.getSettingBool("ShowNotifications")) {
+                            if (!SettingsManager.getSettingBool("UseRichNotificationType")) {
+                                ShowSimpleNotification(cr.displayname, cr.displayname + " dropped a valuable item.", cr.image);
+                            } else {
+                                this.Invoke((MethodInvoker)delegate {
+                                    ShowSimpleNotification(new SimpleLootNotification(cr, items));
+                                });
+                            }
+                        }
                     }
                 }
             }

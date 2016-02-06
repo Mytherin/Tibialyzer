@@ -125,7 +125,7 @@ namespace Tibialyzer {
             IntPtr processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
             MEMORY_BASIC_INFORMATION mem_basic_info = new MEMORY_BASIC_INFORMATION();
             int bytesRead = 0;  // number of bytes read with ReadProcessMemory
-            int scanSpeed = getSettingInt("ScanSpeed");
+            int scanSpeed = SettingsManager.getSettingInt("ScanSpeed");
             try {
                 results = new ReadMemoryResults();
                 while (proc_min_address_l < proc_max_address_l) {
@@ -852,7 +852,7 @@ namespace Tibialyzer {
                             unseenCommands.Add(command);
                             string player = command.Item1;
                             string cmd = command.Item2;
-                            if (settings["Names"].Contains(player)) {
+                            if (SettingsManager.getSetting("Names").Contains(player)) {
                                 o.newCommands.Add(cmd);
                             }
                         } else {

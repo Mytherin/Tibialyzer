@@ -42,6 +42,7 @@
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.mainTab = new System.Windows.Forms.TabPage();
+            this.selectClientButton = new System.Windows.Forms.Button();
             this.tibialyzerLabel = new System.Windows.Forms.Label();
             this.tibialyzerLogo = new System.Windows.Forms.PictureBox();
             this.tibialyzerDescription = new System.Windows.Forms.Label();
@@ -92,13 +93,10 @@
             this.lookCheckBox = new System.Windows.Forms.CheckBox();
             this.showNotificationCheckbox = new System.Windows.Forms.CheckBox();
             this.notificationPanel = new System.Windows.Forms.Panel();
-            this.goldCapRatioCheckbox = new System.Windows.Forms.CheckBox();
-            this.goldCapRatioValue = new System.Windows.Forms.TextBox();
-            this.alwaysShowLoot = new System.Windows.Forms.CheckBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.conditionBox = new System.Windows.Forms.RichTextBox();
             this.specificNotificationTextbox = new System.Windows.Forms.RichTextBox();
             this.specificNotificationCheckbox = new System.Windows.Forms.CheckBox();
-            this.rareDropNotificationValueCheckbox = new System.Windows.Forms.CheckBox();
-            this.notificationValue = new System.Windows.Forms.TextBox();
             this.label48 = new System.Windows.Forms.Label();
             this.notificationTypeBox = new System.Windows.Forms.ComboBox();
             this.advanceCopyCheckbox = new System.Windows.Forms.CheckBox();
@@ -200,7 +198,6 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.explanationTooltip = new System.Windows.Forms.ToolTip(this.components);
-            this.selectClientButton = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tibialyzerLogo)).BeginInit();
@@ -273,6 +270,16 @@
             this.mainTab.Text = "Main";
             this.mainTab.UseVisualStyleBackColor = true;
             this.mainTab.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
+            // 
+            // selectClientButton
+            // 
+            this.selectClientButton.Location = new System.Drawing.Point(384, 362);
+            this.selectClientButton.Name = "selectClientButton";
+            this.selectClientButton.Size = new System.Drawing.Size(122, 40);
+            this.selectClientButton.TabIndex = 19;
+            this.selectClientButton.Text = "Select Client";
+            this.selectClientButton.UseVisualStyleBackColor = true;
+            this.selectClientButton.Click += new System.EventHandler(this.selectClientButton_Click);
             // 
             // tibialyzerLabel
             // 
@@ -807,7 +814,7 @@
             this.showNotificationCheckbox.AutoSize = true;
             this.showNotificationCheckbox.Checked = true;
             this.showNotificationCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showNotificationCheckbox.Location = new System.Drawing.Point(362, 23);
+            this.showNotificationCheckbox.Location = new System.Drawing.Point(362, 4);
             this.showNotificationCheckbox.Name = "showNotificationCheckbox";
             this.showNotificationCheckbox.Size = new System.Drawing.Size(195, 17);
             this.showNotificationCheckbox.TabIndex = 7;
@@ -818,50 +825,34 @@
             // notificationPanel
             // 
             this.notificationPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.notificationPanel.Controls.Add(this.goldCapRatioCheckbox);
-            this.notificationPanel.Controls.Add(this.goldCapRatioValue);
-            this.notificationPanel.Controls.Add(this.alwaysShowLoot);
+            this.notificationPanel.Controls.Add(this.label17);
+            this.notificationPanel.Controls.Add(this.conditionBox);
             this.notificationPanel.Controls.Add(this.specificNotificationTextbox);
             this.notificationPanel.Controls.Add(this.specificNotificationCheckbox);
-            this.notificationPanel.Controls.Add(this.rareDropNotificationValueCheckbox);
-            this.notificationPanel.Controls.Add(this.notificationValue);
             this.notificationPanel.Controls.Add(this.label48);
             this.notificationPanel.Controls.Add(this.notificationTypeBox);
-            this.notificationPanel.Location = new System.Drawing.Point(358, 31);
+            this.notificationPanel.Location = new System.Drawing.Point(358, 5);
             this.notificationPanel.Name = "notificationPanel";
-            this.notificationPanel.Size = new System.Drawing.Size(276, 459);
+            this.notificationPanel.Size = new System.Drawing.Size(276, 485);
             this.notificationPanel.TabIndex = 8;
             // 
-            // goldCapRatioCheckbox
+            // label17
             // 
-            this.goldCapRatioCheckbox.AutoSize = true;
-            this.goldCapRatioCheckbox.Location = new System.Drawing.Point(9, 107);
-            this.goldCapRatioCheckbox.Name = "goldCapRatioCheckbox";
-            this.goldCapRatioCheckbox.Size = new System.Drawing.Size(247, 17);
-            this.goldCapRatioCheckbox.TabIndex = 14;
-            this.goldCapRatioCheckbox.Text = "Show Notifications for items with gold/cap ratio";
-            this.goldCapRatioCheckbox.UseVisualStyleBackColor = true;
-            this.goldCapRatioCheckbox.CheckedChanged += new System.EventHandler(this.goldCapRatioCheckbox_CheckedChanged);
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(4, 42);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(271, 13);
+            this.label17.TabIndex = 14;
+            this.label17.Text = "Show notification when the following conditions are met.";
             // 
-            // goldCapRatioValue
+            // conditionBox
             // 
-            this.goldCapRatioValue.Location = new System.Drawing.Point(74, 129);
-            this.goldCapRatioValue.Name = "goldCapRatioValue";
-            this.goldCapRatioValue.Size = new System.Drawing.Size(167, 20);
-            this.goldCapRatioValue.TabIndex = 13;
-            this.goldCapRatioValue.Text = "40.0";
-            this.goldCapRatioValue.TextChanged += new System.EventHandler(this.goldCapRatioValue_TextChanged);
-            // 
-            // alwaysShowLoot
-            // 
-            this.alwaysShowLoot.AutoSize = true;
-            this.alwaysShowLoot.Location = new System.Drawing.Point(9, 37);
-            this.alwaysShowLoot.Name = "alwaysShowLoot";
-            this.alwaysShowLoot.Size = new System.Drawing.Size(169, 17);
-            this.alwaysShowLoot.TabIndex = 12;
-            this.alwaysShowLoot.Text = "Always Show Loot Notification";
-            this.alwaysShowLoot.UseVisualStyleBackColor = true;
-            this.alwaysShowLoot.CheckedChanged += new System.EventHandler(this.alwaysShowLoot_CheckedChanged);
+            this.conditionBox.Location = new System.Drawing.Point(7, 58);
+            this.conditionBox.Name = "conditionBox";
+            this.conditionBox.Size = new System.Drawing.Size(260, 96);
+            this.conditionBox.TabIndex = 13;
+            this.conditionBox.Text = "";
+            this.conditionBox.TextChanged += new System.EventHandler(this.conditionBox_TextChanged);
             // 
             // specificNotificationTextbox
             // 
@@ -884,32 +875,10 @@
             this.specificNotificationCheckbox.UseVisualStyleBackColor = true;
             this.specificNotificationCheckbox.CheckedChanged += new System.EventHandler(this.notificationSpecific_CheckedChanged);
             // 
-            // rareDropNotificationValueCheckbox
-            // 
-            this.rareDropNotificationValueCheckbox.AutoSize = true;
-            this.rareDropNotificationValueCheckbox.Checked = true;
-            this.rareDropNotificationValueCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.rareDropNotificationValueCheckbox.Location = new System.Drawing.Point(9, 59);
-            this.rareDropNotificationValueCheckbox.Name = "rareDropNotificationValueCheckbox";
-            this.rareDropNotificationValueCheckbox.Size = new System.Drawing.Size(236, 17);
-            this.rareDropNotificationValueCheckbox.TabIndex = 3;
-            this.rareDropNotificationValueCheckbox.Text = "Show Notifications on Items worth more than";
-            this.rareDropNotificationValueCheckbox.UseVisualStyleBackColor = true;
-            this.rareDropNotificationValueCheckbox.CheckedChanged += new System.EventHandler(this.rareDropNotificationValueCheckbox_CheckedChanged);
-            // 
-            // notificationValue
-            // 
-            this.notificationValue.Location = new System.Drawing.Point(74, 81);
-            this.notificationValue.Name = "notificationValue";
-            this.notificationValue.Size = new System.Drawing.Size(167, 20);
-            this.notificationValue.TabIndex = 2;
-            this.notificationValue.Text = "2000";
-            this.notificationValue.TextChanged += new System.EventHandler(this.notificationValue_TextChanged);
-            // 
             // label48
             // 
             this.label48.AutoSize = true;
-            this.label48.Location = new System.Drawing.Point(7, 17);
+            this.label48.Location = new System.Drawing.Point(7, 20);
             this.label48.Name = "label48";
             this.label48.Size = new System.Drawing.Size(87, 13);
             this.label48.TabIndex = 1;
@@ -922,7 +891,7 @@
             this.notificationTypeBox.Items.AddRange(new object[] {
             "Simple Notification",
             "Rich Notification"});
-            this.notificationTypeBox.Location = new System.Drawing.Point(109, 13);
+            this.notificationTypeBox.Location = new System.Drawing.Point(109, 16);
             this.notificationTypeBox.Name = "notificationTypeBox";
             this.notificationTypeBox.Size = new System.Drawing.Size(121, 21);
             this.notificationTypeBox.TabIndex = 0;
@@ -1975,16 +1944,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // selectClientButton
-            // 
-            this.selectClientButton.Location = new System.Drawing.Point(384, 362);
-            this.selectClientButton.Name = "selectClientButton";
-            this.selectClientButton.Size = new System.Drawing.Size(122, 40);
-            this.selectClientButton.TabIndex = 19;
-            this.selectClientButton.Text = "Select Client";
-            this.selectClientButton.UseVisualStyleBackColor = true;
-            this.selectClientButton.Click += new System.EventHandler(this.selectClientButton_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2064,8 +2023,6 @@
         private System.Windows.Forms.Panel notificationPanel;
         private System.Windows.Forms.RichTextBox specificNotificationTextbox;
         private System.Windows.Forms.CheckBox specificNotificationCheckbox;
-        private System.Windows.Forms.CheckBox rareDropNotificationValueCheckbox;
-        private System.Windows.Forms.TextBox notificationValue;
         private System.Windows.Forms.Label label48;
         private System.Windows.Forms.ComboBox notificationTypeBox;
         private System.Windows.Forms.CheckBox showNotificationCheckbox;
@@ -2097,7 +2054,6 @@
         private System.Windows.Forms.Button exportLogButton;
         private System.Windows.Forms.Button importLogFile;
         private System.Windows.Forms.CheckBox lookCheckBox;
-        private System.Windows.Forms.CheckBox alwaysShowLoot;
         private System.Windows.Forms.TabPage autoHotkey;
         private System.Windows.Forms.Button downloadAutoHotkey;
         private System.Windows.Forms.Label label57;
@@ -2161,8 +2117,6 @@
         private System.Windows.Forms.Label scanningSpeedLabel;
         private System.Windows.Forms.TrackBar scanningSpeedTrack;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.CheckBox goldCapRatioCheckbox;
-        private System.Windows.Forms.TextBox goldCapRatioValue;
         private System.Windows.Forms.Button showLootButton;
         private System.Windows.Forms.Panel helpPanel;
         private System.Windows.Forms.Label label4;
@@ -2204,6 +2158,8 @@
         private System.Windows.Forms.ToolTip explanationTooltip;
         private System.Windows.Forms.PictureBox tibialyzerLogo;
         private System.Windows.Forms.Button selectClientButton;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.RichTextBox conditionBox;
     }
 }
 

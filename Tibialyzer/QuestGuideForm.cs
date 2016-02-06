@@ -209,7 +209,7 @@ namespace Tibialyzer {
             int sizeWidth = 392;
             int y = this.questTitle.Location.Y + 40;
 
-            int suggestedWidth = MainForm.mainForm.getSettingInt("GuideFormWidth");
+            int suggestedWidth = SettingsManager.getSettingInt("GuideFormWidth");
             if (suggestedWidth > minwidth && suggestedWidth < maxwidth) {
                 sizeWidth = suggestedWidth;
             }
@@ -645,7 +645,7 @@ namespace Tibialyzer {
         }
 
         private void normalButton_Click(object sender, EventArgs e) {
-            MainForm.mainForm.setSetting("GuideFormWidth", widths[0].ToString());
+            SettingsManager.setSetting("GuideFormWidth", widths[0].ToString());
             this.SuspendLayout();
             setupGuide();
             this.ResumeLayout(true);
@@ -653,7 +653,7 @@ namespace Tibialyzer {
         }
 
         private void largeButton_Click(object sender, EventArgs e) {
-            MainForm.mainForm.setSetting("GuideFormWidth", widths[1].ToString());
+            SettingsManager.setSetting("GuideFormWidth", widths[1].ToString());
             this.SuspendLayout();
             setupGuide();
             this.ResumeLayout(true);
@@ -661,7 +661,7 @@ namespace Tibialyzer {
         }
 
         private void largestButton_Click(object sender, EventArgs e) {
-            MainForm.mainForm.setSetting("GuideFormWidth", widths[2].ToString());
+            SettingsManager.setSetting("GuideFormWidth", widths[2].ToString());
             this.SuspendLayout();
             setupGuide();
             this.ResumeLayout(true);

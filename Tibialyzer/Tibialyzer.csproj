@@ -90,6 +90,7 @@
     <Compile Include="DamageChart.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="HuntManager.cs" />
     <Compile Include="MainFormStorage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -101,6 +102,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Pathfinder.cs" />
+    <Compile Include="NotificationConditionManager.cs" />
     <Compile Include="QuestForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -113,6 +115,7 @@
     <Compile Include="SelectProcessForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="SettingsManager.cs" />
     <Compile Include="SimpleLootNotification.cs">
       <SubType>Form</SubType>
     </Compile>

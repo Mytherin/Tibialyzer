@@ -109,7 +109,7 @@ namespace Tibialyzer {
             if (this.processList.SelectedIndex < processes.Count) {
                 MainForm.TibiaClientName = this.processes[processList.SelectedIndex].ProcessName;
                 MainForm.TibiaProcessId = this.processes[processList.SelectedIndex].Id;
-                MainForm.mainForm.setSetting("TibiaClientName", MainForm.TibiaClientName);
+                SettingsManager.setSetting("TibiaClientName", MainForm.TibiaClientName);
             }
             this.Close();
         }

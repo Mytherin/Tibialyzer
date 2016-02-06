@@ -207,7 +207,7 @@ namespace Tibialyzer {
             int x = 0, y = 0;
             int item_spacing = 4;
             Size item_size = new Size(32, 32);
-            int max_x = MainForm.mainForm.getSettingInt("LootFormWidth");
+            int max_x = SettingsManager.getSettingInt("LootFormWidth");
             if (max_x < minLootWidth) max_x = minLootWidth;
             int width_x = max_x + item_spacing * 2;
             
@@ -544,11 +544,11 @@ namespace Tibialyzer {
         }
 
         private void changeSize(int modification) {
-            int max_x = MainForm.mainForm.getSettingInt("LootFormWidth");
+            int max_x = SettingsManager.getSettingInt("LootFormWidth");
             if (max_x < minLootWidth) max_x = minLootWidth;
             max_x += modification;
             if (max_x < minLootWidth) max_x = minLootWidth;
-            MainForm.mainForm.setSetting("LootFormWidth", (max_x).ToString());
+            SettingsManager.setSetting("LootFormWidth", (max_x).ToString());
             this.SuspendForm();
             this.RefreshLoot();
             this.ResumeForm();

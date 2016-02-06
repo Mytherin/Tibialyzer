@@ -62,7 +62,6 @@ namespace Tibialyzer {
         private bool keep_working = true;
         private static string databaseFile = @"Database\Database.db";
         private static string lootDatabaseFile = @"Database\Loot.db";
-        private static string settingsFile = @"Database\settings.txt";
         private static string nodeDatabase = @"Database\Nodes.db";
         private static string pluralMapFile = @"Database\pluralMap.txt";
         private static string autohotkeyFile = @"Database\autohotkey.ahk";
@@ -71,8 +70,6 @@ namespace Tibialyzer {
         public List<string> new_names = null;
         private bool prevent_settings_update = false;
         private bool minimize_notification = true;
-        public int notification_value = 2000;
-        public double notification_goldratio = 40.0;
         static HashSet<string> cities = new HashSet<string>() { "ab'dendriel", "carlin", "kazordoon", "venore", "thais", "ankrahmun", "farmine", "gray beach", "liberty bay", "port hope", "rathleton", "roshamuul", "yalahar", "svargrond", "edron", "darashia", "rookgaard", "dawnport", "gray beach" };
         public List<string> notification_items = new List<string>();
         private ToolTip scan_tooltip = new ToolTip();
@@ -183,9 +180,8 @@ namespace Tibialyzer {
             } catch (Exception e) {
                 ExitWithError("Fatal Error", String.Format("Corrupted database {0}.\nMessage: {1}", databaseFile, e.Message));
             }
-            this.loadSettings();
+            SettingsManager.LoadSettings();
             MainForm.initializeFonts();
-            this.initializeNames();
             this.initializeHunts();
             this.initializeSettings();
             this.initializeMaps();
@@ -197,7 +193,7 @@ namespace Tibialyzer {
             }
             prevent_settings_update = false;
 
-            if (getSettingBool("StartAutohotkeyAutomatically")) {
+            if (SettingsManager.getSettingBool("StartAutohotkeyAutomatically")) {
                 startAutoHotkey_Click(null, null);
             }
 
@@ -211,7 +207,7 @@ namespace Tibialyzer {
             this.backgroundBox.Image = NotificationForm.background_image;
 
             this.Load += MainForm_Load;
-
+            
             BackgroundWorker bw = new BackgroundWorker();
             makeDraggable(this.Controls);
             tibialyzerLogo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
@@ -443,9 +439,9 @@ namespace Tibialyzer {
             explanationTooltip.SetToolTip(unrecognizedCommandNotification, "When you type in an unrecognized command in Tibia chat (unrecognized@), a notification will appear notifying you of this.");
             explanationTooltip.SetToolTip(resetToDefaultButton, "Clears all settings and resets them back to the default settings, except for the hunt settings. ");
             explanationTooltip.SetToolTip(notificationTypeBox, "Rich notifications are Windows Forms notifications that look pretty. Simple notifications are default Windows bubble notifications. ");
-            explanationTooltip.SetToolTip(alwaysShowLoot, "When this box is checked, a rich notification is shown every time a creature is killed with the loot of the creature, regardless of what that loot is.");
+            /*explanationTooltip.SetToolTip(alwaysShowLoot, "When this box is checked, a rich notification is shown every time a creature is killed with the loot of the creature, regardless of what that loot is.");
             explanationTooltip.SetToolTip(rareDropNotificationValueCheckbox, "When an item that is worth at least this amount of gold drops, a notification is displayed.");
-            explanationTooltip.SetToolTip(goldCapRatioCheckbox, "When an item that has at least this gold/cap ratio drops, a notification is displayed.");
+            explanationTooltip.SetToolTip(goldCapRatioCheckbox, "When an item that has at least this gold/cap ratio drops, a notification is displayed.");*/
             explanationTooltip.SetToolTip(specificNotificationCheckbox, "When any item that is specified in the box below drops, a notification is displayed informing you of the dropped item.");
             explanationTooltip.SetToolTip(notificationLengthSlider, "The amount of time that rich notifications (loot@, creature@) remain on the screen before fading.");
             explanationTooltip.SetToolTip(downloadAutoHotkey, "Download AutoHotkey to the temporary directory and launches an installer. Complete the installer to install AutoHotkey.");
@@ -470,73 +466,16 @@ namespace Tibialyzer {
 
         private Hunt activeHunt = null;
         public List<Hunt> hunts = new List<Hunt>();
-        bool showNotifications = true;
-        bool showNotificationsValue = true;
-        bool showNotificationsSpecific = false;
-        bool lootNotificationRich = false;
-        bool copyAdvances = true;
-        bool simpleNotifications = true;
-        bool richNotifications = true;
-        public int notificationLength = 20;
 
-        public Dictionary<string, List<string>> settings = new Dictionary<string, List<string>>();
-        void loadSettings() {
-            string line;
-            string currentSetting = null;
-
-            if (!File.Exists(settingsFile)) {
-                ResetSettingsToDefault();
-                saveSettings();
-            } else {
-                StreamReader file = new StreamReader(settingsFile);
-                while ((line = file.ReadLine()) != null) {
-                    if (line.Length == 0) continue;
-                    if (line[0] == '@') {
-                        currentSetting = line.Substring(1, line.Length - 1);
-                        if (!settings.ContainsKey(currentSetting))
-                            settings.Add(currentSetting, new List<string>());
-                    } else if (currentSetting != null) {
-                        settings[currentSetting].Add(line);
-                    }
-                }
-                file.Close();
-            }
-        }
-
-        void saveSettings() {
-            try {
-                lock (settings) {
-                    using (StreamWriter file = new StreamWriter(settingsFile)) {
-                        foreach (KeyValuePair<string, List<string>> pair in settings) {
-                            file.WriteLine("@" + pair.Key);
-                            foreach (string str in pair.Value) {
-                                file.WriteLine(str);
-                            }
-                        }
-                    }
-                }
-            } catch {
-            }
-        }
-
-        void initializeNames() {
-            if (!settings.ContainsKey("Names")) settings.Add("Names", new List<string>());
-
-            string massiveString = "";
-            foreach (string str in settings["Names"]) {
-                massiveString += str + "\n";
-            }
-            this.nameTextBox.Text = massiveString;
-        }
 
         void initializeHunts() {
             //"Name#DBTableID#Track#Time#Exp#SideHunt#AggregateHunt#ClearOnStartup#Creature#Creature#..."
-            if (!settings.ContainsKey("Hunts")) {
-                settings.Add("Hunts", new List<string>() { "New Hunt#True#0#0#False#True" });
+            if (!SettingsManager.settingExists("Hunts")) {
+                SettingsManager.setSetting("Hunts", new List<string>() { "New Hunt#True#0#0#False#True" });
             }
             int activeHuntIndex = 0, index = 0;
             List<int> dbTableIds = new List<int>();
-            foreach (string str in settings["Hunts"]) {
+            foreach (string str in SettingsManager.getSetting("Hunts")) {
                 SQLiteCommand command; SQLiteDataReader reader;
                 Hunt hunt = new Hunt();
                 string[] splits = str.Split('#');
@@ -562,7 +501,7 @@ namespace Tibialyzer {
                     }
                     hunt.trackedCreatures = massiveString;
                     // set this hunt to the active hunt if it is the active hunt
-                    if (settings.ContainsKey("ActiveHunt") && settings["ActiveHunt"].Count > 0 && settings["ActiveHunt"][0] == hunt.name)
+                    if (SettingsManager.settingExists("ActiveHunt") && SettingsManager.getSettingString("ActiveHunt") == hunt.name)
                         activeHuntIndex = index;
 
                     refreshLootCreatures(hunt);
@@ -631,85 +570,112 @@ namespace Tibialyzer {
         }
 
         void initializeSettings() {
-            this.notificationLength = getSettingInt("NotificationDuration") < 0 ? notificationLength : getSettingInt("NotificationDuration");
-            this.simpleNotifications = getSettingBool("EnableSimpleNotifications");
-            this.richNotifications = getSettingBool("EnableRichNotifications");
-            this.copyAdvances = getSettingBool("CopyAdvances");
-            this.showNotifications = getSettingBool("ShowNotifications");
-            this.lootNotificationRich = getSettingBool("UseRichNotificationType");
-            this.showNotificationsValue = getSettingBool("ShowNotificationsValue");
-            this.notification_value = getSettingInt("NotificationValue") < 0 ? notification_value : getSettingInt("NotificationValue");
-            this.notification_goldratio = getSettingDouble("NotificationGoldRatio") < 0 ? notification_goldratio : getSettingDouble("NotificationGoldRatio");
-            this.showNotificationsSpecific = getSettingBool("ShowNotificationsSpecific");
+            int notificationLength = SettingsManager.getSettingInt("NotificationDuration") < 0 ? 30 : SettingsManager.getSettingInt("NotificationDuration");
+            bool simpleNotifications = SettingsManager.getSettingBool("EnableSimpleNotifications");
+            bool richNotifications = SettingsManager.getSettingBool("EnableRichNotifications");
+            bool copyAdvances = SettingsManager.getSettingBool("CopyAdvances");
+            bool showNotifications = SettingsManager.getSettingBool("ShowNotifications");
+            bool lootNotificationRich = SettingsManager.getSettingBool("UseRichNotificationType");
+            bool showNotificationsValue = SettingsManager.getSettingBool("ShowNotificationsValue");
+            int notification_value = SettingsManager.getSettingInt("NotificationValue") < 0 ? 2000 : SettingsManager.getSettingInt("NotificationValue");
+            double notification_goldratio = SettingsManager.getSettingDouble("NotificationGoldRatio") < 0 ? 100 : SettingsManager.getSettingDouble("NotificationGoldRatio");
+            bool showNotificationsSpecific = SettingsManager.getSettingBool("ShowNotificationsSpecific");
 
             this.notificationPanel.Enabled = showNotifications;
-            this.goldCapRatioValue.Text = notification_goldratio.ToString(CultureInfo.InvariantCulture);
-            this.goldCapRatioCheckbox.Checked = getSettingBool("ShowNotificationsGoldRatio");
-            this.enableSimpleNotificationAnimations.Checked = getSettingBool("EnableSimpleNotificationAnimation");
+            this.enableSimpleNotificationAnimations.Checked = SettingsManager.getSettingBool("EnableSimpleNotificationAnimation");
             this.specificNotificationTextbox.Enabled = showNotificationsSpecific;
             this.notificationLabel.Text = "Notification Length: " + notificationLength.ToString() + " Seconds";
-            this.scanningSpeedTrack.Value = Math.Min(Math.Max(getSettingInt("ScanSpeed"), 0), 4);
+            this.scanningSpeedTrack.Value = Math.Min(Math.Max(SettingsManager.getSettingInt("ScanSpeed"), 0), 4);
             this.scanSpeedDisplayLabel.Text = scanSpeedText[scanningSpeedTrack.Value];
             this.notificationLengthSlider.Value = notificationLength;
             this.enableSimpleNotifications.Checked = simpleNotifications;
-            this.eventNotificationEnable.Checked = getSettingBool("EnableEventNotifications");
-            this.unrecognizedCommandNotification.Checked = getSettingBool("EnableUnrecognizedNotifications");
+            this.eventNotificationEnable.Checked = SettingsManager.getSettingBool("EnableEventNotifications");
+            this.unrecognizedCommandNotification.Checked = SettingsManager.getSettingBool("EnableUnrecognizedNotifications");
             this.enableRichNotificationsCheckbox.Checked = richNotifications;
             this.advanceCopyCheckbox.Checked = copyAdvances;
             this.showNotificationCheckbox.Checked = showNotifications;
             this.notificationTypeBox.SelectedIndex = lootNotificationRich ? 1 : 0;
-            this.outfitGenderBox.SelectedIndex = getSettingBool("OutfitGenderMale") ? 0 : 1;
-            this.rareDropNotificationValueCheckbox.Checked = showNotificationsValue;
-            this.notificationValue.Text = notification_value.ToString();
+            this.outfitGenderBox.SelectedIndex = SettingsManager.getSettingBool("OutfitGenderMale") ? 0 : 1;
             this.specificNotificationCheckbox.Checked = showNotificationsSpecific;
-            this.lookCheckBox.Checked = getSettingBool("LookMode");
-            this.alwaysShowLoot.Checked = getSettingBool("AlwaysShowLoot");
-            this.startAutohotkeyScript.Checked = getSettingBool("StartAutohotkeyAutomatically");
-            this.shutdownOnExit.Checked = getSettingBool("ShutdownAutohotkeyOnExit");
-            this.richAnchor.SelectedIndex = Math.Min(Math.Max(getSettingInt("RichNotificationAnchor"), 0), 3);
-            this.richXOffset.Text = getSettingInt("RichNotificationXOffset").ToString();
-            this.richYOffset.Text = getSettingInt("RichNotificationYOffset").ToString();
-            this.simpleAnchor.SelectedIndex = Math.Min(Math.Max(getSettingInt("SimpleNotificationAnchor"), 0), 3);
-            this.simpleXOffset.Text = getSettingInt("SimpleNotificationXOffset").ToString();
-            this.simpleYOffset.Text = getSettingInt("SimpleNotificationYOffset").ToString();
-            this.suspendedAnchor.SelectedIndex = Math.Min(Math.Max(getSettingInt("SuspendedNotificationAnchor"), 0), 3);
-            this.suspendedXOffset.Text = getSettingInt("SuspendedNotificationXOffset").ToString();
-            this.suspendedYOffset.Text = getSettingInt("SuspendedNotificationYOffset").ToString();
+            this.lookCheckBox.Checked = SettingsManager.getSettingBool("LookMode");
+            this.startAutohotkeyScript.Checked = SettingsManager.getSettingBool("StartAutohotkeyAutomatically");
+            this.shutdownOnExit.Checked = SettingsManager.getSettingBool("ShutdownAutohotkeyOnExit");
+            this.richAnchor.SelectedIndex = Math.Min(Math.Max(SettingsManager.getSettingInt("RichNotificationAnchor"), 0), 3);
+            this.richXOffset.Text = SettingsManager.getSettingInt("RichNotificationXOffset").ToString();
+            this.richYOffset.Text = SettingsManager.getSettingInt("RichNotificationYOffset").ToString();
+            this.simpleAnchor.SelectedIndex = Math.Min(Math.Max(SettingsManager.getSettingInt("SimpleNotificationAnchor"), 0), 3);
+            this.simpleXOffset.Text = SettingsManager.getSettingInt("SimpleNotificationXOffset").ToString();
+            this.simpleYOffset.Text = SettingsManager.getSettingInt("SimpleNotificationYOffset").ToString();
+            this.suspendedAnchor.SelectedIndex = Math.Min(Math.Max(SettingsManager.getSettingInt("SuspendedNotificationAnchor"), 0), 3);
+            this.suspendedXOffset.Text = SettingsManager.getSettingInt("SuspendedNotificationXOffset").ToString();
+            this.suspendedYOffset.Text = SettingsManager.getSettingInt("SuspendedNotificationYOffset").ToString();
 
             string massiveString = "";
-            if (settings.ContainsKey("NotificationItems")) {
-                foreach (string str in settings["NotificationItems"]) {
-                    massiveString += str + "\n";
-                }
+            foreach (string str in SettingsManager.getSetting("NotificationItems")) {
+                massiveString += str + "\n";
             }
             this.specificNotificationTextbox.Text = massiveString;
+
             massiveString = "";
-            if (settings.ContainsKey("AutoHotkeySettings")) {
-                foreach (string str in settings["AutoHotkeySettings"]) {
-                    massiveString += str + "\n";
-                }
+            foreach (string str in SettingsManager.getSetting("AutoHotkeySettings")) {
+                massiveString += str + "\n";
             }
             this.autoHotkeyGridSettings.Text = massiveString;
             (this.autoHotkeyGridSettings as RichTextBoxAutoHotkey).RefreshSyntax();
 
-            this.autoScreenshotAdvance.Checked = getSettingBool("AutoScreenshotAdvance");
-            this.autoScreenshotDrop.Checked = getSettingBool("AutoScreenshotItemDrop");
-            this.autoScreenshotDeath.Checked = getSettingBool("AutoScreenshotDeath");
+            massiveString = "";
+            foreach (string str in SettingsManager.getSetting("Names")) {
+                massiveString += str + "\n";
+            }
+            this.nameTextBox.Text = massiveString;
 
-            this.enableScreenshotBox.Checked = getSettingBool("EnableScreenshots");
+
+            this.autoScreenshotAdvance.Checked = SettingsManager.getSettingBool("AutoScreenshotAdvance");
+            this.autoScreenshotDrop.Checked = SettingsManager.getSettingBool("AutoScreenshotItemDrop");
+            this.autoScreenshotDeath.Checked = SettingsManager.getSettingBool("AutoScreenshotDeath");
+
+            this.enableScreenshotBox.Checked = SettingsManager.getSettingBool("EnableScreenshots");
             this.screenshotPanel.Enabled = enableScreenshotBox.Checked;
-            if (getSettingString("ScreenshotPath") == null || !Directory.Exists(getSettingString("ScreenshotPath"))) {
+            if (SettingsManager.getSettingString("ScreenshotPath") == null || !Directory.Exists(SettingsManager.getSettingString("ScreenshotPath"))) {
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "Screenshots");
-                setSetting("ScreenshotPath", path);
+                SettingsManager.setSetting("ScreenshotPath", path);
                 if (!Directory.Exists(path)) {
                     Directory.CreateDirectory(path);
                 }
             }
 
-            TibiaClientName = settingExists("TibiaClientName") ? getSettingString("TibiaClientName") : TibiaClientName;
+            TibiaClientName = SettingsManager.settingExists("TibiaClientName") ? SettingsManager.getSettingString("TibiaClientName") : TibiaClientName;
 
-            screenshotDirectoryBox.Text = getSettingString("ScreenshotPath");
+            screenshotDirectoryBox.Text = SettingsManager.getSettingString("ScreenshotPath");
             refreshScreenshots();
+
+            // convert legacy settings
+            if (SettingsManager.settingExists("NotificationGoldRatio") || SettingsManager.settingExists("NotificationValue")) {
+                // convert old notification conditions to new SQL conditions
+                List<string> conditions = new List<string>();
+                if (SettingsManager.settingExists("NotificationValue") && SettingsManager.getSettingBool("ShowNotificationsValue")) {
+                    double value = SettingsManager.getSettingDouble("NotificationValue");
+                    conditions.Add(String.Format("item.value >= {0}", value.ToString(CultureInfo.InvariantCulture)));
+                }
+                if (SettingsManager.settingExists("NotificationGoldRatio") && SettingsManager.getSettingBool("ShowNotificationsGoldRatio")) {
+                    double value = SettingsManager.getSettingDouble("NotificationGoldRatio");
+                    conditions.Add(String.Format("item.value / item.capacity >= {0}", value.ToString(CultureInfo.InvariantCulture)));
+                }
+                if (SettingsManager.getSettingBool("AlwaysShowLoot")) {
+                    conditions.Add("1=1");
+                }
+                SettingsManager.removeSetting("NotificationGoldRatio");
+                SettingsManager.removeSetting("NotificationValue");
+                SettingsManager.removeSetting("ShowNotificationsGoldRatio");
+                SettingsManager.removeSetting("ShowNotificationsValue");
+                SettingsManager.removeSetting("AlwaysShowLoot");
+                SettingsManager.setSetting("NotificationConditions", conditions);
+            }
+            massiveString = "";
+            foreach (string str in SettingsManager.getSetting("NotificationConditions")) {
+                massiveString += str + "\n";
+            }
+            this.conditionBox.Text = massiveString;
         }
 
         void makeDraggable(Control.ControlCollection controls) {
@@ -738,7 +704,8 @@ namespace Tibialyzer {
                 } catch (Exception ex) {
                     if (errorVisible) {
                         errorVisible = false;
-                        ExitWithError("Database Scan Error (Non-Fatal)", ex.Message, false);
+                        this.exceptionLabel.Text = String.Format("Database Scan Error (Non-Fatal): {0}", ex.Message);
+                        this.exceptionLabel.Visible = true;
                     }
                     Console.WriteLine(ex.Message);
                 }
@@ -793,7 +760,7 @@ namespace Tibialyzer {
         }
 
         private void ShowSimpleNotification(string title, string text, Image image) {
-            if (!simpleNotifications) return;
+            if (!SettingsManager.getSettingBool("EnableSimpleNotifications")) return;
             notifyIcon1.BalloonTipText = text;
             notifyIcon1.BalloonTipTitle = title;
             notifyIcon1.Icon = Icon.FromHandle(((Bitmap)image).GetHicon());
@@ -819,9 +786,12 @@ namespace Tibialyzer {
             } else {
                 screen = Screen.FromHandle(tibia_process.MainWindowHandle);
             }
-            int xOffset = getSettingInt("SimpleNotificationXOffset") < 0 ? 30 : getSettingInt("SimpleNotificationXOffset");
-            int yOffset = getSettingInt("SimpleNotificationYOffset") < 0 ? 30 : getSettingInt("SimpleNotificationYOffset");
-            int anchor = getSettingInt("SimpleNotificationAnchor");
+            int simpleX = SettingsManager.getSettingInt("SimpleNotificationXOffset");
+            int simpleY = SettingsManager.getSettingInt("SimpleNotificationYOffset");
+
+            int xOffset = simpleX < 0 ? 30 : simpleX;
+            int yOffset = simpleY < 0 ? 30 : simpleY;
+            int anchor = SettingsManager.getSettingInt("SimpleNotificationAnchor");
             int sign = 1;
             int basePosition = screen.WorkingArea.Bottom - yOffset;
             int startX = 0;
@@ -857,7 +827,7 @@ namespace Tibialyzer {
             }
             position_y = basePosition - sign * f.Height;
             f.StartPosition = FormStartPosition.Manual;
-            if (!getSettingBool("EnableSimpleNotificationAnimation")) {
+            if (!SettingsManager.getSettingBool("EnableSimpleNotificationAnimation")) {
                 startX = position_x;
             }
 
@@ -888,7 +858,7 @@ namespace Tibialyzer {
             if (notification == null) return;
             bool moveDown = false;
             int positionModification = 0;
-            int anchor = getSettingInt("SimpleNotificationAnchor");
+            int anchor = SettingsManager.getSettingInt("SimpleNotificationAnchor");
             int sign = 1;
             switch (anchor) {
                 case 0:
@@ -908,7 +878,7 @@ namespace Tibialyzer {
         }
 
         private void ShowNotification(NotificationForm f, string command, string screenshot_path = "") {
-            if (!richNotifications) return;
+            if (!SettingsManager.getSettingBool("EnableRichNotifications")) return;
 
             if (screenshot_path == "") {
                 TibialyzerCommand cmd = new TibialyzerCommand(command);
@@ -939,9 +909,11 @@ namespace Tibialyzer {
             } else {
                 screen = Screen.FromHandle(tibia_process.MainWindowHandle);
             }
-            int xOffset = getSettingInt("RichNotificationXOffset") == -1 ? 30 : getSettingInt("RichNotificationXOffset");
-            int yOffset = getSettingInt("RichNotificationYOffset") == -1 ? 30 : getSettingInt("RichNotificationYOffset");
-            int anchor = getSettingInt("RichNotificationAnchor");
+            int richX = SettingsManager.getSettingInt("RichNotificationXOffset");
+            int richY = SettingsManager.getSettingInt("RichNotificationYOffset");
+            int xOffset = richX == -1 ? 30 : richX;
+            int yOffset = richY == -1 ? 30 : richY;
+            int anchor = SettingsManager.getSettingInt("RichNotificationAnchor");
             switch (anchor) {
                 case 3:
                     position_x = screen.WorkingArea.Right - xOffset - f.Width;
@@ -2025,11 +1997,10 @@ namespace Tibialyzer {
                     if (hunt.temporary) continue;
                     huntStrings.Add(hunt.ToString());
                 }
-                settings["Hunts"] = huntStrings;
+                SettingsManager.setSetting("Hunts", huntStrings);
                 if (activeHunt != null) {
-                    setSetting("ActiveHunt", activeHunt.name);
+                    SettingsManager.setSetting("ActiveHunt", activeHunt.name);
                 }
-                saveSettings();
             }
         }
 
@@ -2153,97 +2124,39 @@ namespace Tibialyzer {
             saveHunts();
         }
 
-        public bool getSettingBool(string key) {
-            if (!settings.ContainsKey(key) || settings[key].Count == 0) return false;
-            return settings[key][0] == "True";
-        }
-
-        public int getSettingInt(string key) {
-            if (!settings.ContainsKey(key) || settings[key].Count == 0) return -1;
-            int v;
-            if (int.TryParse(settings[key][0], out v)) {
-                return v;
-            }
-            return -1;
-        }
-        public double getSettingDouble(string key) {
-            if (!settings.ContainsKey(key) || settings[key].Count == 0) return -1;
-            double v;
-            if (double.TryParse(settings[key][0], NumberStyles.Any, CultureInfo.InvariantCulture, out v)) {
-                return v;
-            }
-            return -1;
-        }
-
-        public string getSettingString(string key) {
-            if (!settings.ContainsKey(key) || settings[key].Count == 0) return null;
-            return settings[key][0];
-        }
-
-        public void setSetting(string key, string value) {
-            if (!settings.ContainsKey(key)) settings.Add(key, new List<string>());
-            settings[key].Clear();
-            settings[key].Add(value);
-        }
-
-        public void setSetting(string key, int value) {
-            setSetting(key, value.ToString());
-        }
-        public void setSetting(string key, bool value) {
-            setSetting(key, value.ToString());
-        }
-        public void setSetting(string key, List<string> value) {
-            if (!settings.ContainsKey(key)) settings.Add(key, value);
-            else settings[key] = value;
-        }
-
-        public bool settingExists(string key) {
-            return settings.ContainsKey(key) && settings[key].Count > 0;
-        }
-
         private void rareDropNotificationValueCheckbox_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("ShowNotificationsValue", (sender as CheckBox).Checked.ToString());
-            saveSettings();
-
-            this.showNotificationsValue = (sender as CheckBox).Checked;
+            SettingsManager.setSetting("ShowNotificationsValue", (sender as CheckBox).Checked.ToString());
         }
 
         private void notificationValue_TextChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
             int value;
             if (int.TryParse((sender as TextBox).Text, out value)) {
-                this.notification_value = value;
-                setSetting("NotificationValue", notification_value.ToString());
-                saveSettings();
+                SettingsManager.setSetting("NotificationValue", value);
             }
         }
 
         private void goldCapRatioCheckbox_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("ShowNotificationsGoldRatio", (sender as CheckBox).Checked.ToString());
-            saveSettings();
+            SettingsManager.setSetting("ShowNotificationsGoldRatio", (sender as CheckBox).Checked.ToString());
         }
 
         private void goldCapRatioValue_TextChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
             double value;
             if (double.TryParse((sender as TextBox).Text, NumberStyles.Any, CultureInfo.InvariantCulture, out value)) {
-                this.notification_goldratio = value;
-                setSetting("NotificationGoldRatio", notification_goldratio.ToString(CultureInfo.InvariantCulture));
-                saveSettings();
+                SettingsManager.setSetting("NotificationGoldRatio", value);
             }
         }
 
         private void notificationSpecific_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("ShowNotificationsSpecific", (sender as CheckBox).Checked.ToString());
-            saveSettings();
+            SettingsManager.setSetting("ShowNotificationsSpecific", (sender as CheckBox).Checked.ToString());
 
-            this.showNotificationsSpecific = (sender as CheckBox).Checked;
             specificNotificationTextbox.Enabled = (sender as CheckBox).Checked;
         }
 
@@ -2254,19 +2167,14 @@ namespace Tibialyzer {
             string[] lines = (sender as RichTextBox).Text.Split('\n');
             for (int i = 0; i < lines.Length; i++)
                 names.Add(lines[i].ToLower());
-            settings["NotificationItems"] = names;
-
-            saveSettings();
+            SettingsManager.setSetting("NotificationItems", names);
         }
 
         private void showNotificationCheckbox_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
             string chk = (sender as CheckBox).Checked.ToString();
 
-            setSetting("ShowNotifications", chk);
-            saveSettings();
-
-            this.showNotifications = (sender as CheckBox).Checked;
+            SettingsManager.setSetting("ShowNotifications", chk);
 
             notificationPanel.Enabled = (sender as CheckBox).Checked;
         }
@@ -2274,67 +2182,50 @@ namespace Tibialyzer {
         private void notificationTypeBox_SelectedIndexChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("UseRichNotificationType", ((sender as ComboBox).SelectedIndex == 1).ToString());
-            saveSettings();
-
-            this.lootNotificationRich = (sender as ComboBox).SelectedIndex == 1;
+            SettingsManager.setSetting("UseRichNotificationType", ((sender as ComboBox).SelectedIndex == 1).ToString());
         }
 
         private void outfitGenderBox_SelectedIndexChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("OutfitGenderMale", ((sender as ComboBox).SelectedIndex == 0).ToString());
-            saveSettings();
+            SettingsManager.setSetting("OutfitGenderMale", ((sender as ComboBox).SelectedIndex == 0).ToString());
         }
 
         private void notificationLengthSlider_Scroll(object sender, EventArgs e) {
             if (prevent_settings_update) return;
-            setSetting("NotificationDuration", (sender as TrackBar).Value.ToString());
-            saveSettings();
+            SettingsManager.setSetting("NotificationDuration", (sender as TrackBar).Value.ToString());
 
-            this.notificationLength = (sender as TrackBar).Value;
-            this.notificationLabel.Text = "Notification Length: " + notificationLength.ToString() + " Seconds";
+            this.notificationLabel.Text = "Notification Length: " + SettingsManager.getSettingString("NotificationDuration") + " Seconds";
         }
 
         private void enableRichNotificationsCheckbox_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("EnableRichNotifications", (sender as CheckBox).Checked.ToString());
-            saveSettings();
-
-            this.richNotifications = (sender as CheckBox).Checked;
+            SettingsManager.setSetting("EnableRichNotifications", (sender as CheckBox).Checked.ToString());
         }
 
         private void enableSimpleNotifications_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("EnableSimpleNotifications", (sender as CheckBox).Checked.ToString());
-            saveSettings();
-
-            this.simpleNotifications = (sender as CheckBox).Checked;
+            SettingsManager.setSetting("EnableSimpleNotifications", (sender as CheckBox).Checked.ToString());
         }
 
         private void eventNotificationEnable_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("EnableEventNotifications", (sender as CheckBox).Checked.ToString());
-            saveSettings();
+            SettingsManager.setSetting("EnableEventNotifications", (sender as CheckBox).Checked.ToString());
         }
 
         private void unrecognizedCommandNotification_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("EnableUnrecognizedNotifications", (sender as CheckBox).Checked.ToString());
-            saveSettings();
+            SettingsManager.setSetting("EnableUnrecognizedNotifications", (sender as CheckBox).Checked.ToString());
         }
 
         private void advanceCopyCheckbox_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("CopyAdvances", (sender as CheckBox).Checked.ToString());
-            saveSettings();
-
-            this.copyAdvances = (sender as CheckBox).Checked;
+            SettingsManager.setSetting("CopyAdvances", (sender as CheckBox).Checked.ToString());
         }
 
         private void nameTextBox_TextChanged(object sender, EventArgs e) {
@@ -2344,30 +2235,25 @@ namespace Tibialyzer {
             string[] lines = (sender as RichTextBox).Text.Split('\n');
             for (int i = 0; i < lines.Length; i++)
                 names.Add(lines[i]);
-            settings["Names"] = names;
-
-            saveSettings();
+            SettingsManager.setSetting("Names", names);
         }
 
         private void lookCheckBox_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("LookMode", (sender as CheckBox).Checked.ToString());
-            saveSettings();
+            SettingsManager.setSetting("LookMode", (sender as CheckBox).Checked.ToString());
         }
 
         private void alwaysShowLoot_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("AlwaysShowLoot", (sender as CheckBox).Checked.ToString());
-            saveSettings();
+            SettingsManager.setSetting("AlwaysShowLoot", (sender as CheckBox).Checked.ToString());
         }
 
         private void enableScreenshotBox_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("EnableScreenshots", (sender as CheckBox).Checked.ToString());
-            saveSettings();
+            SettingsManager.setSetting("EnableScreenshots", (sender as CheckBox).Checked.ToString());
 
             this.screenshotPanel.Enabled = (sender as CheckBox).Checked;
         }
@@ -2400,7 +2286,7 @@ namespace Tibialyzer {
 
         void saveScreenshot(string name, Bitmap bitmap) {
             if (bitmap == null) return;
-            string path = getSettingString("ScreenshotPath");
+            string path = SettingsManager.getSettingString("ScreenshotPath");
             if (path == null) return;
 
             DateTime dt = DateTime.Now;
@@ -2416,7 +2302,7 @@ namespace Tibialyzer {
             string selectedValue = screenshotList.SelectedIndex >= 0 ? screenshotList.Items[screenshotList.SelectedIndex].ToString() : null;
             int index = 0;
 
-            string path = getSettingString("ScreenshotPath");
+            string path = SettingsManager.getSettingString("ScreenshotPath");
             if (path == null) return;
 
             if (!Directory.Exists(path)) {
@@ -2445,10 +2331,10 @@ namespace Tibialyzer {
         }
 
         private void screenshotBrowse_Click(object sender, EventArgs e) {
-            folderBrowserDialog1.SelectedPath = getSettingString("ScreenshotPath");
+            folderBrowserDialog1.SelectedPath = SettingsManager.getSettingString("ScreenshotPath");
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK) {
-                setSetting("ScreenshotPath", folderBrowserDialog1.SelectedPath);
-                screenshotDirectoryBox.Text = getSettingString("ScreenshotPath");
+                SettingsManager.setSetting("ScreenshotPath", folderBrowserDialog1.SelectedPath);
+                screenshotDirectoryBox.Text = folderBrowserDialog1.SelectedPath;
                 refreshScreenshots();
             }
         }
@@ -2456,22 +2342,19 @@ namespace Tibialyzer {
         private void autoScreenshot_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("AutoScreenshotAdvance", (sender as CheckBox).Checked.ToString());
-            saveSettings();
+            SettingsManager.setSetting("AutoScreenshotAdvance", (sender as CheckBox).Checked.ToString());
         }
 
         private void autoScreenshotDrop_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("AutoScreenshotItemDrop", (sender as CheckBox).Checked.ToString());
-            saveSettings();
+            SettingsManager.setSetting("AutoScreenshotItemDrop", (sender as CheckBox).Checked.ToString());
         }
 
         private void autoScreenshotDeath_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("AutoScreenshotDeath", (sender as CheckBox).Checked.ToString());
-            saveSettings();
+            SettingsManager.setSetting("AutoScreenshotDeath", (sender as CheckBox).Checked.ToString());
         }
 
         bool refreshingScreenshots = false;
@@ -2480,7 +2363,7 @@ namespace Tibialyzer {
             if (screenshotList.SelectedIndex >= 0) {
                 string selectedImage = screenshotList.Items[screenshotList.SelectedIndex].ToString();
 
-                string path = getSettingString("ScreenshotPath");
+                string path = SettingsManager.getSettingString("ScreenshotPath");
                 if (path == null) return;
 
                 string imagePath = Path.Combine(path, selectedImage);
@@ -2496,7 +2379,7 @@ namespace Tibialyzer {
         }
 
         private void openInExplorer_Click(object sender, EventArgs e) {
-            string path = getSettingString("ScreenshotPath");
+            string path = SettingsManager.getSettingString("ScreenshotPath");
             if (path == null) return;
             Process.Start(path);
         }
@@ -2504,14 +2387,12 @@ namespace Tibialyzer {
         private void startAutohotkeyScript_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("StartAutohotkeyAutomatically", (sender as CheckBox).Checked.ToString());
-            saveSettings();
+            SettingsManager.setSetting("StartAutohotkeyAutomatically", (sender as CheckBox).Checked.ToString());
         }
         private void shutdownOnExit_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("ShutdownAutohotkeyOnExit", (sender as CheckBox).Checked.ToString());
-            saveSettings();
+            SettingsManager.setSetting("ShutdownAutohotkeyOnExit", (sender as CheckBox).Checked.ToString());
         }
 
         static string autoHotkeyURL = "http://ahkscript.org/download/ahk-install.exe";
@@ -2567,18 +2448,18 @@ namespace Tibialyzer {
 
         private void autoHotkeyGridSettings_TextChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
-            if (!settings.ContainsKey("AutoHotkeySettings")) settings.Add("AutoHotkeySettings", autoHotkeyGridSettings.Text.Split('\n').ToList());
-            else settings["AutoHotkeySettings"] = autoHotkeyGridSettings.Text.Split('\n').ToList();
-            saveSettings();
+
+            SettingsManager.setSetting("AutoHotkeySettings", autoHotkeyGridSettings.Text.Split('\n').ToList());
+
             this.autohotkeyWarningLabel.Visible = true;
         }
 
         private void writeToAutoHotkeyFile() {
-            if (!settings.ContainsKey("AutoHotkeySettings")) return;
+            if (!SettingsManager.settingExists("AutoHotkeySettings")) return;
             using (StreamWriter writer = new StreamWriter(autohotkeyFile)) {
                 writer.WriteLine("#SingleInstance force");
                 writer.WriteLine("#IfWinActive ahk_class TibiaClient");
-                foreach (string l in settings["AutoHotkeySettings"]) {
+                foreach (string l in SettingsManager.getSetting("AutoHotkeySettings")) {
                     string line = l.ToLower();
                     if (line.Length == 0 || line[0] == '#') continue;
                     if (line.Contains("suspend")) {
@@ -2612,7 +2493,7 @@ namespace Tibialyzer {
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
-            if (getSettingBool("ShutdownAutohotkeyOnExit")) {
+            if (SettingsManager.getSettingBool("ShutdownAutohotkeyOnExit")) {
                 shutdownAutoHotkey_Click(null, null);
             }
         }
@@ -2659,9 +2540,13 @@ namespace Tibialyzer {
                 }
                 window = new AutoHotkeySuspendedMode(alwaysShow);
                 int position_x = 0, position_y = 0;
-                int xOffset = getSettingInt("SuspendedNotificationXOffset") < 0 ? 10 : getSettingInt("SuspendedNotificationXOffset");
-                int yOffset = getSettingInt("SuspendedNotificationYOffset") < 0 ? 10 : getSettingInt("SuspendedNotificationYOffset");
-                int anchor = getSettingInt("SuspendedNotificationAnchor");
+
+                int suspendedX = SettingsManager.getSettingInt("SuspendedNotificationXOffset");
+                int suspendedY = SettingsManager.getSettingInt("SuspendedNotificationYOffset");
+
+                int xOffset = suspendedX < 0 ? 10 : suspendedX;
+                int yOffset = suspendedY < 0 ? 10 : suspendedY;
+                int anchor = SettingsManager.getSettingInt("SuspendedNotificationAnchor");
                 switch (anchor) {
                     case 3:
                         position_x = screen.WorkingArea.Right - xOffset - window.Width;
@@ -2704,77 +2589,11 @@ namespace Tibialyzer {
             resetSettingsPanel.Enabled = (sender as CheckBox).Checked;
         }
 
-        private string defaultWASDSettings = @"# Suspend autohotkey mode with Ctrl+Enter
-Ctrl+Enter::Suspend
-# Enable WASD Movement
-W::Up
-A::Left
-S::Down
-D::Right
-# Enable diagonal movement with QEZC
-Q::NumpadHome
-E::NumpadPgUp
-Z::NumpadEnd
-C::NumpadPgDn
-# Hotkey Tibialyzer commands
-# Open loot window with the [ key
-[::Command=loot@
-# Show exp with ] key 
-]::Command=exp@ 
-# Close all windows when = key is pressed
-=::Command=close@ 
-# Open last window with - key
--::Command=refresh@ 
-";
-
-        private void ResetSettingsToDefault() {
-            settings = new Dictionary<string, List<string>>();
-            setSetting("NotificationDuration", 30);
-            setSetting("EnableSimpleNotifications", true);
-            setSetting("EnableEventNotifications", true);
-            setSetting("EnableUnrecognizedNotifications", true);
-            setSetting("EnableRichNotifications", true);
-            setSetting("CopyAdvances", true);
-            setSetting("ShowNotifications", true);
-            setSetting("UseRichNotificationType", true);
-            setSetting("ShowNotificationsValue", true);
-            setSetting("NotificationValue", 2000);
-            setSetting("ShowNotificationsRatio", false);
-            setSetting("NotificationGoldRatio", 100);
-            setSetting("ShowNotificationsSpecific", true);
-            setSetting("LookMode", true);
-            setSetting("AlwaysShowLoot", false);
-            setSetting("StartAutohotkeyAutomatically", false);
-            setSetting("ShutdownAutohotkeyOnExit", false);
-            setSetting("NotificationItems", "");
-            setSetting("AutoHotkeySettings", defaultWASDSettings.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList());
-            setSetting("AutoScreenshotAdvance", false);
-            setSetting("AutoScreenshotItemDrop", false);
-            setSetting("AutoScreenshotDeath", false);
-            setSetting("EnableScreenshots", false);
-            setSetting("Names", "Mytherin");
-            setSetting("ScanSpeed", "0");
-            setSetting("OutfitGenderMale", true);
-            setSetting("RichNotificationXOffset", 30);
-            setSetting("RichNotificationYOffset", 30);
-            setSetting("RichNotificationAnchor", 0);
-            setSetting("SimpleNotificationXOffset", 5);
-            setSetting("SimpleNotificationYOffset", 10);
-            setSetting("SimpleNotificationAnchor", 3);
-            setSetting("EnableSimpleNotificationAnimation", true);
-            setSetting("SuspendedNotificationXOffset", 10);
-            setSetting("SuspendedNotificationYOffset", 10);
-            setSetting("SuspendedNotificationAnchor", 1);
-            setSetting("TibiaClientName", "Tibia");
-
-            saveSettings();
-        }
-
         private void resetToDefaultButton_Click(object sender, EventArgs e) {
-            ResetSettingsToDefault();
+            SettingsManager.ResetSettingsToDefault();
+            SettingsManager.SaveSettings();
             shutdownAutoHotkey_Click(null, null);
             initializeSettings();
-            initializeNames();
         }
 
         public string[] scanSpeedText = { "Fastest", "Fast", "Medium", "Slow", "Slowest" };
@@ -2782,8 +2601,7 @@ C::NumpadPgDn
         private void scanningSpeedTrack_Scroll(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("ScanSpeed", scanningSpeedTrack.Value);
-            saveSettings();
+            SettingsManager.setSetting("ScanSpeed", scanningSpeedTrack.Value);
             scanSpeedDisplayLabel.Text = scanSpeedText[scanningSpeedTrack.Value];
         }
 
@@ -2883,8 +2701,7 @@ C::NumpadPgDn
         private void richAnchor_SelectedIndexChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("RichNotificationAnchor", richAnchor.SelectedIndex);
-            saveSettings();
+            SettingsManager.setSetting("RichNotificationAnchor", richAnchor.SelectedIndex);
         }
 
         private void richXOffset_TextChanged(object sender, EventArgs e) {
@@ -2892,16 +2709,14 @@ C::NumpadPgDn
 
             int xOffset;
             if (int.TryParse((sender as TextBox).Text, out xOffset)) {
-                setSetting("RichNotificationXOffset", xOffset);
-                saveSettings();
+                SettingsManager.setSetting("RichNotificationXOffset", xOffset);
             }
         }
 
         private void richYOffset_TextChanged(object sender, EventArgs e) {
             int yOffset;
             if (int.TryParse((sender as TextBox).Text, out yOffset)) {
-                setSetting("RichNotificationYOffset", yOffset);
-                saveSettings();
+                SettingsManager.setSetting("RichNotificationYOffset", yOffset);
             }
         }
 
@@ -2912,8 +2727,7 @@ C::NumpadPgDn
         private void simpleAnchor_SelectedIndexChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("SimpleNotificationAnchor", simpleAnchor.SelectedIndex);
-            saveSettings();
+            SettingsManager.setSetting("SimpleNotificationAnchor", simpleAnchor.SelectedIndex);
         }
 
         private void simpleXOffset_TextChanged(object sender, EventArgs e) {
@@ -2921,8 +2735,7 @@ C::NumpadPgDn
 
             int xOffset;
             if (int.TryParse((sender as TextBox).Text, out xOffset)) {
-                setSetting("SimpleNotificationXOffset", xOffset);
-                saveSettings();
+                SettingsManager.setSetting("SimpleNotificationXOffset", xOffset);
             }
         }
 
@@ -2931,8 +2744,7 @@ C::NumpadPgDn
 
             int yOffset;
             if (int.TryParse((sender as TextBox).Text, out yOffset)) {
-                setSetting("SimpleNotificationYOffset", yOffset);
-                saveSettings();
+                SettingsManager.setSetting("SimpleNotificationYOffset", yOffset);
             }
         }
 
@@ -2947,8 +2759,7 @@ C::NumpadPgDn
         private void enableSimpleNotificationAnimations_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("EnableSimpleNotificationAnimation", (sender as CheckBox).Checked);
-            saveSettings();
+            SettingsManager.setSetting("EnableSimpleNotificationAnimation", (sender as CheckBox).Checked);
         }
 
         private void suspendedTest_Click(object sender, EventArgs e) {
@@ -2962,15 +2773,13 @@ C::NumpadPgDn
         private void suspendedAnchor_SelectedIndexChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            setSetting("SuspendedNotificationAnchor", suspendedAnchor.SelectedIndex);
-            saveSettings();
+            SettingsManager.setSetting("SuspendedNotificationAnchor", suspendedAnchor.SelectedIndex);
         }
 
         private void suspendedXOffset_TextChanged(object sender, EventArgs e) {
             int xOffset;
             if (int.TryParse((sender as TextBox).Text, out xOffset)) {
-                setSetting("SuspendedNotificationXOffset", xOffset);
-                saveSettings();
+                SettingsManager.setSetting("SuspendedNotificationXOffset", xOffset);
             }
         }
 
@@ -2979,14 +2788,19 @@ C::NumpadPgDn
 
             int yOffset;
             if (int.TryParse((sender as TextBox).Text, out yOffset)) {
-                setSetting("SuspendedNotificationYOffset", yOffset);
-                saveSettings();
+                SettingsManager.setSetting("SuspendedNotificationYOffset", yOffset);
             }
         }
 
         private void selectClientButton_Click(object sender, EventArgs e) {
             SelectProcessForm form = new SelectProcessForm();
             form.Show();
+        }
+
+        private void conditionBox_TextChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+            string[] split = conditionBox.Text.Split('\n');
+            SettingsManager.setSetting("NotificationConditions", split.ToList<string>());
         }
     }
 

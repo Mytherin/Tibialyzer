@@ -71,7 +71,7 @@ namespace Tibialyzer {
         protected void NotificationInitialize() {
             this.BackgroundImage = background_image;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            closeTimer = new System.Timers.Timer(1000 * MainForm.mainForm.notificationLength);
+            closeTimer = new System.Timers.Timer(1000 * SettingsManager.getSettingInt("NotificationDuration"));
             closeTimer.Elapsed += new System.Timers.ElapsedEventHandler(CloseNotification);
             closeTimer.Enabled = true;
 
@@ -87,7 +87,7 @@ namespace Tibialyzer {
         
         protected void refreshTimer() {
             closeTimer.Dispose();
-            closeTimer = new System.Timers.Timer(1000 * MainForm.mainForm.notificationLength);
+            closeTimer = new System.Timers.Timer(1000 * SettingsManager.getSettingInt("NotificationDuration"));
             closeTimer.Elapsed += new System.Timers.ElapsedEventHandler(CloseNotification);
             closeTimer.Enabled = true;
         }
