@@ -121,6 +121,7 @@ namespace Tibialyzer {
                 Thread.Sleep(250);
                 return null;
             }
+            flashClient = TibiaClientName.ToLower().Contains("flash");
             IntPtr processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
             MEMORY_BASIC_INFORMATION mem_basic_info = new MEMORY_BASIC_INFORMATION();
             int bytesRead = 0;  // number of bytes read with ReadProcessMemory
@@ -140,7 +141,12 @@ namespace Tibialyzer {
                             // read everything in the buffer above
                             ReadProcessMemory((int)processHandle, mem_basic_info.BaseAddress, buffer, mem_basic_info.RegionSize, ref bytesRead);
                             // scan the memory for strings that start with timestamps and end with the null terminator ('\0')
-                            List<string> strings = FindTimestamps(buffer);
+                            List<string> strings;
+                            if (!flashClient) {
+                                strings = FindTimestamps(buffer);
+                            } else {
+                                strings = FindTimestampsFlash(buffer);
+                            }
                             if (strings.Count > 0) {
                                 // if any timestamp strings were found, scan the chunk for any messages
                                 SearchChunk(strings, results);
@@ -160,7 +166,11 @@ namespace Tibialyzer {
             } catch {
                 return null;
             }
-            memorySegments.RemoveRange(0, 20);
+            if (memorySegments.Count > 20) {
+                memorySegments.RemoveRange(0, 20);
+            } else {
+                memorySegments.Clear();
+            }
             process.Dispose();
             FinalCleanup(results);
             return results;
@@ -175,7 +185,7 @@ namespace Tibialyzer {
             int start = 0, i = 0;
             for (i = 0; i < array.Length; i++) {
                 if (index < 5) {
-                    if (array[i] > 47 && array[i] < 59) { // digits are 47-58, semicolon is 59
+                    if (array[i] > 47 && array[i] < 59) { // digits are 47-57, colon is 58
                         index++;
                         start = i;
                     } else {
@@ -195,6 +205,63 @@ namespace Tibialyzer {
                 string str = System.Text.Encoding.UTF8.GetString(array, start, (i - start));
                 if (isDigit(str[0]) && isDigit(str[1]) && isDigit(str[3]) && isDigit(str[4]) && str[2] == ':') {
                     strings.Add(str);
+                }
+            }
+            return strings;
+        }
+
+
+        public static bool checkDigit(byte[] array, char result, ref int index) {
+            if (array[index] == result) {
+                index++;
+                return true;
+            }
+            return false;
+        }
+
+        public static bool checkRange(byte[] array, char min, char max, ref int index) {
+            if (array[index] >= min && array[index] <= max) {
+                index++;
+                return true;
+            }
+            return false;
+        }
+
+
+        public static List<string> FindTimestampsFlash(byte[] array) {
+            int index = 0;
+            List<string> strings = new List<string>();
+            // scan the memory for "timestamp values"
+            // i.e. values that are like "xx:xx" where x = a number
+            // we consider timestamps the "starting point" of a string, and the null terminator the "ending point"
+            int start = 0, i = 0;
+            for (i = 0; i < array.Length; i++) {
+                if (index < 1) {
+                    if (i > array.Length - 6) break;
+                    
+                    if (!checkRange(array, '0', '9', ref i)) continue;
+                    if (!checkRange(array, '0', '9', ref i)) continue;
+                    if (!checkDigit(array, ':', ref i)) continue;
+                    if (!checkRange(array, '0', '9', ref i)) continue;
+                    if (!checkRange(array, '0', '9', ref i)) continue;
+                    if (!(checkDigit(array, ' ', ref i) || checkDigit(array, ':', ref i))) continue;
+                    index = 1;
+                    start = i - 6;
+                } else { // scan for the null terminator
+                    if (array[i] == '\0') {
+                        strings.Add(System.Text.Encoding.UTF8.GetString(array, start, (i - start)));
+                        index = 0;
+                    }
+                    // in the flash client: skip any messages that end in </font>
+                    // these are the messages that are displayed in the log, and they have annoying properties (duplicated many times, etc)
+                    if (!checkDigit(array, '<', ref i)) continue;
+                    if (!checkDigit(array, '/', ref i)) continue;
+                    if (!checkDigit(array, 'f', ref i)) continue;
+                    if (!checkDigit(array, 'o', ref i)) continue;
+                    if (!checkDigit(array, 'n', ref i)) continue;
+                    if (!checkDigit(array, 't', ref i)) continue;
+                    if (!checkDigit(array, '>', ref i)) continue;
+                    index = 0;
                 }
             }
             return strings;
@@ -897,8 +964,6 @@ namespace Tibialyzer {
         private bool flashClient = true;
         private int ignoreStamp = 0;
         private void SearchChunk(List<string> chunk, ReadMemoryResults res) {
-            flashClient = TibiaClientName.ToLower().Contains("flash");
-            
             List<int> stamps = getLatestStamps(3, ignoreStamp);
             for (int it = 0; it < chunk.Count; it++) {
                 string logMessage = chunk[it];
@@ -906,30 +971,12 @@ namespace Tibialyzer {
                 int hour = int.Parse(logMessage.Substring(0, 2));
                 int minute = int.Parse(logMessage.Substring(3, 2));
                 if (!stamps.Contains(getStamp(hour, minute))) continue; // the log message is not recent, so we skip parsing it
-
+                
                 if (flashClient) {
-                    // the flash client has some properties that we have to work around
-                    // first, strings in the server log use this nice formatting, so we need to remove the formatting
-                    logMessage = logMessage.Replace("</font>", "").Replace("</p>", "").Trim();
                     // there is some inconsistency with log messages, certain log messages use "12:00: Message.", others use "12:00 Message"
                     // if there is a : after the timestamp we remove it
                     if (logMessage[5] == ':') {
                         logMessage = logMessage.Remove(5, 1);
-                    }
-                    // lastly, the flash client seems to store many duplicates of strings shown in the server log
-                    // this causes loot to be recorded multiple times, commands to be executed multiple times, etc
-                    // the solution is to disallow any duplicate messages, because of the timestamps we will rarely miss actual loot this way
-                    // however, it is a slight annoyance because the user cannot use the same command in the same minute
-                    // damage can also be messed up because dealing the same amount of damage twice in the same minute is not counted
-                    // (which is very likely with AOE runes)
-                    // all in all, a very bad solution but the only one I can think of
-                    if (!res.duplicateMessages.ContainsKey(t)) {
-                        res.duplicateMessages.Add(t, new List<string>());
-                    }
-                    if (!res.duplicateMessages[t].Contains(logMessage)) {
-                        res.duplicateMessages[t].Add(logMessage);
-                    } else {
-                        continue;
                     }
                 }
                 string message = logMessage.Substring(6); // message without timestamp
