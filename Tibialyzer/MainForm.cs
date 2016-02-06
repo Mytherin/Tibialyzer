@@ -469,7 +469,7 @@ namespace Tibialyzer {
         }
 
         private Hunt activeHunt = null;
-        List<Hunt> hunts = new List<Hunt>();
+        public List<Hunt> hunts = new List<Hunt>();
         bool showNotifications = true;
         bool showNotificationsValue = true;
         bool showNotificationsSpecific = false;
@@ -1044,10 +1044,8 @@ namespace Tibialyzer {
             ShowNotification(f, comm, screenshot_path);
         }
 
-        private void ShowLootDrops(Dictionary<Creature, int> creatures, List<Tuple<Item, int>> items, Hunt h, string comm, string screenshot_path) {
+        private void ShowLootDrops(Hunt h, string comm, string screenshot_path) {
             LootDropForm ldf = new LootDropForm(comm);
-            ldf.creatures = creatures;
-            ldf.items = items;
             ldf.hunt = h;
 
             ShowNotification(ldf, comm, screenshot_path);

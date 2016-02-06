@@ -12,7 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -28,17 +28,22 @@ namespace Tibialyzer {
     public partial class LootDropForm : NotificationForm {
         public List<Tuple<Item, int>> items;
         public Dictionary<Creature, int> creatures;
+
+        public Dictionary<Item, List<PictureBox>> itemControls = new Dictionary<Item, List<PictureBox>>();
+        public Dictionary<Creature, Tuple<PictureBox, Label>> creatureControls = new Dictionary<Creature, Tuple<PictureBox, Label>>();
+        public Creature lootCreature;
         public Hunt hunt;
         public int initialPage = 0;
         public int page = 0;
         public const int pageHeight = 400;
         public const int maxCreatureHeight = 700;
-        public const int minLootWidth = 275;
+        public const int minLootWidth = 203;
         private string huntName = "";
         private string creatureName = "";
-        private string rawName = "";
+        public string rawName = "";
         private long averageGold = 0;
 
+        ToolTip value_tooltip = new ToolTip();
         public static Font loot_font = new Font(FontFamily.GenericSansSerif, 14, FontStyle.Bold);
         public LootDropForm(string command) {
             string[] split = command.Split('@');
@@ -51,7 +56,13 @@ namespace Tibialyzer {
             if (split.Length >= 4) {
                 rawName = split[3];
             }
+            lootCreature = MainForm.getCreature(creatureName);
             InitializeComponent();
+            value_tooltip.AutoPopDelay = 60000;
+            value_tooltip.InitialDelay = 500;
+            value_tooltip.ReshowDelay = 0;
+            value_tooltip.ShowAlways = true;
+            value_tooltip.UseFading = true;
         }
 
         public static Bitmap GetStackImage(Image image, int count, Item item) {
@@ -92,9 +103,100 @@ namespace Tibialyzer {
             return image;
         }
 
+        public static Tuple<Dictionary<Creature, int>, List<Tuple<Item, int>>> GenerateLootInformation(Hunt hunt, string rawName, Creature lootCreature) {
+            Dictionary<Creature, int> creatureKills;
+            List<Tuple<Item, int>> itemDrops = new List<Tuple<Item, int>>();
+            lock (MainForm.mainForm.hunts) {
+                bool raw = rawName == "raw";
+                bool all = raw || rawName == "all";
+
+                if (lootCreature != null) {
+                    //the command is loot@<creature>, so we only display the kills and loot from the specified creature
+                    creatureKills = new Dictionary<Creature, int>();
+                    if (hunt.loot.killCount.ContainsKey(lootCreature)) {
+                        creatureKills.Add(lootCreature, hunt.loot.killCount[lootCreature]);
+                    } else {
+                        creatureKills = new Dictionary<Creature, int>(); //empty dictionary
+                    }
+                } else if (hunt.trackAllCreatures || hunt.trackedCreatures.Length == 0) {
+                    creatureKills = hunt.loot.killCount; //display all creatures
+                } else {
+                    // only display tracked creatures
+                    creatureKills = new Dictionary<Creature, int>();
+                    foreach (string creature in hunt.lootCreatures) {
+                        Creature cr = MainForm.getCreature(creature.ToLower());
+                        if (cr == null) continue;
+                        if (!hunt.loot.killCount.ContainsKey(cr)) continue;
+
+                        creatureKills.Add(cr, hunt.loot.killCount[cr]);
+                    }
+                }
+
+                // now handle item drops, gather a count for every item
+                Dictionary<Item, int> itemCounts = new Dictionary<Item, int>();
+                foreach (KeyValuePair<Creature, Dictionary<Item, int>> kvp in hunt.loot.creatureLoot) {
+                    if (lootCreature != null && kvp.Key != lootCreature) continue; // if lootCreature is specified, only consider loot from the specified creature
+                    if (!hunt.trackAllCreatures && hunt.trackedCreatures.Length > 0 && !hunt.lootCreatures.Contains(kvp.Key.GetName().ToLower())) continue;
+                    foreach (KeyValuePair<Item, int> kvp2 in kvp.Value) {
+                        Item item = kvp2.Key;
+                        int value = kvp2.Value;
+                        if (!itemCounts.ContainsKey(item)) itemCounts.Add(item, value);
+                        else itemCounts[item] += value;
+                    }
+                }
+
+                // now we do item conversion
+                long extraGold = 0;
+                foreach (KeyValuePair<Item, int> kvp in itemCounts) {
+                    Item item = kvp.Key;
+                    int count = kvp.Value;
+                    // discard items that are set to be discarded (as long as all/raw mode is not enabled)
+                    if (item.discard && !all) continue;
+                    // convert items to gold (as long as raw mode is not enabled), always gather up all the gold coins found
+                    if ((!raw && item.convert_to_gold) || item.displayname == "gold coin" || item.displayname == "platinum coin" || item.displayname == "crystal coin") {
+                        extraGold += Math.Max(item.actual_value, item.vendor_value) * count;
+                    } else {
+                        itemDrops.Add(new Tuple<Item, int>(item, count));
+                    }
+                }
+
+                // handle coin drops, we always convert the gold to the highest possible denomination (so if gold = 10K, we display a crystal coin)
+                long currentGold = extraGold;
+                if (currentGold > 10000) {
+                    itemDrops.Add(new Tuple<Item, int>(MainForm.getItem("crystal coin"), (int)(currentGold / 10000)));
+                    currentGold = currentGold % 10000;
+                }
+                if (currentGold > 100) {
+                    itemDrops.Add(new Tuple<Item, int>(MainForm.getItem("platinum coin"), (int)(currentGold / 100)));
+                    currentGold = currentGold % 100;
+                }
+                if (currentGold > 0) {
+                    itemDrops.Add(new Tuple<Item, int>(MainForm.getItem("gold coin"), (int)(currentGold)));
+                }
+
+                // now order by value so most valuable items are placed first
+                // we use a special value for the gold coins so the gold is placed together in the order crystal > platinum > gold
+                // gold coins = <gold total> - 2, platinum coins = <gold total> - 1, crystal coins = <gold total>
+                itemDrops = itemDrops.OrderByDescending(o => o.Item1.displayname == "gold coin" ? extraGold - 2 : (o.Item1.displayname == "platinum coin" ? extraGold - 1 : (o.Item1.displayname == "crystal coin" ? extraGold : Math.Max(o.Item1.actual_value, o.Item1.vendor_value) * o.Item2))).ToList();
+            }
+            return new Tuple<Dictionary<Creature, int>, List<Tuple<Item, int>>>(creatureKills, itemDrops);
+
+        }
+
+        public void UpdateLoot() {
+            if (this.IsDisposed) return;
+            refreshTimer();
+            var tpl = LootDropForm.GenerateLootInformation(hunt, rawName, lootCreature);
+            creatures = tpl.Item1;
+            items = tpl.Item2;
+            this.SuspendForm();
+            RefreshLoot();
+            this.ResumeForm();
+        }
+
         public List<Control> createdControls = new List<Control>();
         public void RefreshLoot() {
-            foreach (Control c in createdControls) {
+            foreach(Control c in createdControls) {
                 this.Controls.Remove(c);
                 c.Dispose();
             }
@@ -108,36 +210,28 @@ namespace Tibialyzer {
             int max_x = MainForm.mainForm.getSettingInt("LootFormWidth");
             if (max_x < minLootWidth) max_x = minLootWidth;
             int width_x = max_x + item_spacing * 2;
-
-            // add a tooltip that displays the actual droprate when you mouseover
-            ToolTip value_tooltip = new ToolTip();
-            value_tooltip.AutoPopDelay = 60000;
-            value_tooltip.InitialDelay = 500;
-            value_tooltip.ReshowDelay = 0;
-            value_tooltip.ShowAlways = true;
-            value_tooltip.UseFading = true;
+            
             long total_value = 0;
             int currentPage = 0;
             bool prevPage = page > 0;
             bool nextPage = false;
 
             averageGold = 0;
-            foreach(KeyValuePair<Creature, int> tpl in creatures) {
+            foreach (KeyValuePair<Creature, int> tpl in creatures) {
                 double average = 0;
-                foreach(ItemDrop dr in tpl.Key.itemdrops) {
+                foreach (ItemDrop dr in tpl.Key.itemdrops) {
                     Item it = MainForm.getItem(dr.itemid);
                     if (!it.discard && it.GetMaxValue() > 0 && dr.percentage > 0) {
                         average += ((dr.min + dr.max) / 2.0) * (dr.percentage / 100.0) * it.GetMaxValue();
                     }
                 }
-                Console.WriteLine(average);
-                Console.WriteLine(tpl.Value);
                 averageGold += (int)(average * tpl.Value);
             }
 
             foreach (Tuple<Item, int> tpl in items) {
                 total_value += tpl.Item1.GetMaxValue() * tpl.Item2;
             }
+            Dictionary<Item, List<PictureBox>> newItemControls = new Dictionary<Item, List<PictureBox>>();
             foreach (Tuple<Item, int> tpl in items) {
                 Item item = tpl.Item1;
                 int count = tpl.Item2;
@@ -160,25 +254,42 @@ namespace Tibialyzer {
                     if (item.stackable || count > 100) mitems = Math.Min(count, 100);
                     count -= mitems;
                     if (currentPage == page) {
-                        PictureBox picture_box = new PictureBox();
-                        picture_box.Location = new System.Drawing.Point(base_x + x, base_y + y);
-                        picture_box.Name = item.GetName();
-                        picture_box.Size = new System.Drawing.Size(item_size.Width, item_size.Height);
-                        picture_box.TabIndex = 1;
-                        picture_box.TabStop = false;
-                        if (item.stackable || mitems > 1) {
-                            picture_box.Image = LootDropForm.DrawCountOnItem(item, mitems);
+                        PictureBox picture_box;
+                        if (itemControls.ContainsKey(item)) {
+                            picture_box = itemControls[item][0];
+                            itemControls[item].RemoveAt(0);
+                            if (itemControls[item].Count == 0) {
+                                itemControls.Remove(item);
+                            }
+                            picture_box.Location = new System.Drawing.Point(base_x + x, base_y + y);
+                            if (picture_box.TabIndex != mitems && (item.stackable || mitems > 1)) {
+                                picture_box.Image = LootDropForm.DrawCountOnItem(item, mitems);
+                            }
+                            picture_box.TabIndex = mitems;
+                            long individualValue = Math.Max(item.actual_value, item.vendor_value);
+                            value_tooltip.SetToolTip(picture_box, System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(item.displayname) + " value: " + (individualValue >= 0 ? (individualValue * mitems).ToString() : "Unknown"));
                         } else {
-                            picture_box.Image = item.GetImage();
-                        }
+                            picture_box = new PictureBox();
+                            picture_box.Location = new System.Drawing.Point(base_x + x, base_y + y);
+                            picture_box.Name = item.GetName();
+                            picture_box.Size = new System.Drawing.Size(item_size.Width, item_size.Height);
+                            picture_box.TabIndex = mitems;
+                            picture_box.TabStop = false;
+                            if (item.stackable || mitems > 1) {
+                                picture_box.Image = LootDropForm.DrawCountOnItem(item, mitems);
+                            } else {
+                                picture_box.Image = item.GetImage();
+                            }
 
-                        picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
-                        picture_box.BackgroundImage = MainForm.item_background;
-                        picture_box.Click += openItemBox;
-                        long individualValue = Math.Max(item.actual_value, item.vendor_value);
-                        value_tooltip.SetToolTip(picture_box, System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(item.displayname) + " value: " + (individualValue >= 0 ? (individualValue * mitems).ToString() : "Unknown"));
-                        createdControls.Add(picture_box);
-                        this.Controls.Add(picture_box);
+                            picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
+                            picture_box.BackgroundImage = MainForm.item_background;
+                            picture_box.Click += openItemBox;
+                            long individualValue = Math.Max(item.actual_value, item.vendor_value);
+                            value_tooltip.SetToolTip(picture_box, System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(item.displayname) + " value: " + (individualValue >= 0 ? (individualValue * mitems).ToString() : "Unknown"));
+                            this.Controls.Add(picture_box);
+                        }
+                        if (!newItemControls.ContainsKey(item)) newItemControls.Add(item, new List<PictureBox>());
+                        newItemControls[item].Add(picture_box);
                     }
 
                     x += item_size.Width + item_spacing;
@@ -192,6 +303,14 @@ namespace Tibialyzer {
                 RefreshLoot();
                 return;
             }
+
+            foreach(KeyValuePair<Item, List<PictureBox>> kvp in itemControls) {
+                foreach(PictureBox p in kvp.Value) {
+                    this.Controls.Remove(p);
+                    p.Dispose();
+                }
+            }
+            itemControls = newItemControls;
 
             y = y + item_size.Height + item_spacing;
             if (prevPage) {
@@ -229,6 +348,7 @@ namespace Tibialyzer {
                 creature_size.Height = Math.Max(creature_size.Height, creature.GetImage().Height);
             }
             {
+                Dictionary<Creature, Tuple<PictureBox, Label>> newCreatureControls = new Dictionary<Creature, Tuple<PictureBox, Label>>();
                 int i = 0;
                 foreach (Creature cr in creatures.Keys.OrderByDescending(o => creatures[o] * (1 + o.experience)).ToList<Creature>()) {
                     Creature creature = cr;
@@ -243,45 +363,64 @@ namespace Tibialyzer {
                     int xoffset = (creature_size.Width - creature.GetImage().Width) / 2;
                     int yoffset = (creature_size.Height - creature.GetImage().Height) / 2;
 
-                    Label count = new Label();
-                    count.Text = killCount.ToString() + "x";
-                    count.Font = loot_font;
-                    count.Size = new Size(1, 10);
-                    count.Location = new Point(base_x + x + xoffset, base_y + y + creature_size.Height);
-                    count.AutoSize = true;
-                    count.TextAlign = ContentAlignment.MiddleCenter;
-                    count.ForeColor = Color.FromArgb(191, 191, 191);
-                    count.BackColor = Color.Transparent;
+                    Label count;
+                    PictureBox picture_box;
+                    if (creatureControls.ContainsKey(creature)) {
+                        picture_box = creatureControls[creature].Item1;
+                        count = creatureControls[creature].Item2;
+                        creatureControls.Remove(creature);
 
+                        picture_box.Location = new System.Drawing.Point(base_x + x + xoffset, base_y + y + yoffset + (creature_size.Height - creature.GetImage().Height) / 2);
+                        count.Location = new Point(base_x + x + xoffset, base_y + y + creature_size.Height);
+                        count.Text = killCount.ToString() + "x";
+                    } else {
+                        count = new Label();
+                        count.Text = killCount.ToString() + "x";
+                        count.Font = loot_font;
+                        count.Size = new Size(1, 10);
+                        count.Location = new Point(base_x + x + xoffset, base_y + y + creature_size.Height);
+                        count.AutoSize = true;
+                        count.TextAlign = ContentAlignment.MiddleCenter;
+                        count.ForeColor = Color.FromArgb(191, 191, 191);
+                        count.BackColor = Color.Transparent;
+
+                        picture_box = new PictureBox();
+                        picture_box.Location = new System.Drawing.Point(base_x + x + xoffset, base_y + y + yoffset + (creature_size.Height - creature.GetImage().Height) / 2);
+                        picture_box.Name = creature.GetName();
+                        picture_box.Size = new System.Drawing.Size(creature.GetImage().Width, creature.GetImage().Height);
+                        picture_box.TabIndex = 1;
+                        picture_box.TabStop = false;
+                        picture_box.Image = creature.GetImage();
+                        picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
+                        picture_box.Click += openCreatureDrops;
+                        picture_box.BackColor = Color.Transparent;
+                        
+                        this.Controls.Add(picture_box);
+                        this.Controls.Add(count);
+                    }
                     int measured_size = (int)count.CreateGraphics().MeasureString(count.Text, count.Font).Width;
                     int width = Math.Max(measured_size, creature.GetImage().Width);
-                    PictureBox picture_box = new PictureBox();
-                    picture_box.Location = new System.Drawing.Point(base_x + x + xoffset, base_y + y + yoffset + (creature_size.Height - creature.GetImage().Height) / 2);
-                    picture_box.Name = creature.GetName();
-                    picture_box.Size = new System.Drawing.Size(creature.GetImage().Width, creature.GetImage().Height);
-                    picture_box.TabIndex = 1;
-                    picture_box.TabStop = false;
-                    picture_box.Image = creature.GetImage();
-                    picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
-                    picture_box.Click += openCreatureDrops;
-                    picture_box.BackColor = Color.Transparent;
 
                     if (width > creature.GetImage().Width) {
                         picture_box.Location = new Point(picture_box.Location.X + (width - creature.GetImage().Width) / 2, picture_box.Location.Y);
                     } else {
                         count.Location = new Point(count.Location.X + (width - measured_size) / 2, count.Location.Y);
                     }
+                    newCreatureControls.Add(creature, new Tuple<PictureBox, Label>(picture_box, count));
 
                     labelSize = count.Size;
 
                     i++;
                     x += width + xoffset;
-                    createdControls.Add(picture_box);
-                    createdControls.Add(count);
-                    this.Controls.Add(picture_box);
-                    this.Controls.Add(count);
                 }
                 y = y + creature_size.Height + labelSize.Height * 2;
+                foreach (KeyValuePair<Creature, Tuple<PictureBox, Label>> kvp in creatureControls) {
+                    this.Controls.Remove(kvp.Value.Item1);
+                    this.Controls.Remove(kvp.Value.Item2);
+                    kvp.Value.Item1.Dispose();
+                    kvp.Value.Item2.Dispose();
+                }
+                creatureControls = newCreatureControls;
             }
 
             int xPosition = width_x - totalValueValue.Size.Width - 5;
@@ -330,16 +469,17 @@ namespace Tibialyzer {
         }
 
         public override void LoadForm() {
-            this.SuspendForm();
             this.NotificationInitialize();
 
             lootSmaller.Click -= c_Click;
             lootLarger.Click -= c_Click;
+            rawLootButton.Click -= c_Click;
+            allLootButton.Click -= c_Click;
+            lootButton.Click -= c_Click;
 
-            RefreshLoot();
+            UpdateLoot();
 
             base.NotificationFinalize();
-            this.ResumeForm();
         }
 
         private void Prevpage_Click(object sender, EventArgs e) {
@@ -371,7 +511,6 @@ namespace Tibialyzer {
         void openCreatureDrops(object sender, EventArgs e) {
             if (clicked) return;
             clicked = true;
-            this.ReturnFocusToTibia();
             if (creatures.Keys.Count == 1) {
                 MainForm.mainForm.ExecuteCommand("creature" + MainForm.commandSymbol + (sender as Control).Name);
             } else {
@@ -380,19 +519,28 @@ namespace Tibialyzer {
         }
 
         private void huntNameLabel_Click(object sender, EventArgs e) {
-
         }
 
         private void rawLootButton_Click(object sender, EventArgs e) {
-            MainForm.mainForm.ExecuteCommand(String.Format("loot{0}{1}{0}{2}{0}{3}", MainForm.commandSymbol, huntName, creatureName, "raw"));
+            rawName = "raw";
+            this.UpdateLoot();
+            this.UpdateCommand();
         }
 
         private void allLootButton_Click(object sender, EventArgs e) {
-            MainForm.mainForm.ExecuteCommand(String.Format("loot{0}{1}{0}{2}{0}{3}", MainForm.commandSymbol, huntName, creatureName, "all"));
+            rawName = "all";
+            this.UpdateLoot();
+            this.UpdateCommand();
         }
 
         private void lootButton_Click(object sender, EventArgs e) {
-            MainForm.mainForm.ExecuteCommand(String.Format("loot{0}{1}{0}{2}{0}{3}", MainForm.commandSymbol, huntName, "", ""));
+            rawName = "";
+            this.UpdateLoot();
+            this.UpdateCommand();
+        }
+
+        private void UpdateCommand() {
+            this.command.command = String.Format("loot{0}{1}{0}{2}{0}{3}", MainForm.commandSymbol, huntName, lootCreature == null ? "" : lootCreature.GetName(), rawName);
         }
 
         private void changeSize(int modification) {

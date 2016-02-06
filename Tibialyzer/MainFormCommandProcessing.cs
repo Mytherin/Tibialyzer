@@ -150,15 +150,17 @@ namespace Tibialyzer {
                         City city = cityNameMap[parameter];
                         ShowCityDisplayForm(city, command);
                     }
-                } else if (comp.StartsWith("damage" + MainForm.commandSymbol) && parseMemoryResults != null) { //damage@
-                    string[] splits = command.Split(commandSymbol);
-                    string screenshot_path = "";
-                    string parameter = splits[1].Trim().ToLower();
-                    if (parameter == "screenshot" && splits.Length > 2) {
-                        parameter = "";
-                        screenshot_path = splits[2];
+                } else if (comp.StartsWith("damage" + MainForm.commandSymbol)) { //damage@
+                    if (parseMemoryResults != null) {
+                        string[] splits = command.Split(commandSymbol);
+                        string screenshot_path = "";
+                        string parameter = splits[1].Trim().ToLower();
+                        if (parameter == "screenshot" && splits.Length > 2) {
+                            parameter = "";
+                            screenshot_path = splits[2];
+                        }
+                        ShowDamageMeter(parseMemoryResults.damagePerSecond, command, parameter, screenshot_path);
                     }
-                    ShowDamageMeter(parseMemoryResults.damagePerSecond, command, parameter, screenshot_path);
                 } else if (comp.StartsWith("exp" + MainForm.commandSymbol)) { //exp@
                     string title = "Experience";
                     string text = "Currently gaining " + (parseMemoryResults == null ? "unknown" : ((int)parseMemoryResults.expPerHour).ToString()) + " experience an hour.";
@@ -168,9 +170,8 @@ namespace Tibialyzer {
                     } else {
                         ShowSimpleNotification(new SimpleTextNotification(null, title, text));
                     }
-                } else if (comp.StartsWith("loot" + MainForm.commandSymbol) || comp.StartsWith("clipboard" + MainForm.commandSymbol)) { //loot@ clipboard@
+                } else if (comp.StartsWith("loot" + MainForm.commandSymbol)) { //loot@
                     string[] splits = command.Split(commandSymbol);
-                    bool clipboard = comp.StartsWith("clipboard" + MainForm.commandSymbol);
                     string screenshot_path = "";
                     string parameter = splits[1].Trim().ToLower();
                     if (parameter == "screenshot" && splits.Length > 2) {
@@ -179,129 +180,57 @@ namespace Tibialyzer {
                     }
 
 
+                    Hunt currentHunt = activeHunt;
+                    if (splits.Length >= 2 && splits[1] != "") {
+                        foreach (Hunt h in hunts) {
+                            if (h.name.ToLower().Contains(splits[1].ToLower())) {
+                                currentHunt = h;
+                                break;
+                            }
+                        }
+                    }
+                    // display loot notification
+                    ShowLootDrops(currentHunt, command, screenshot_path);
+                } else if (comp.StartsWith("clipboard" + MainForm.commandSymbol)) { //clipboard@
+                    // Copy loot message to the clipboard
+                    // clipboard@damage copies the damage information to the clipboard
+                    // clipboard@<creature> copies the loot of a specific creature to the clipboard
+                    // clipboard@ copies all loot to the clipboard
+                    string creatureName = command.Split(commandSymbol)[1].Trim().ToLower();
                     Creature lootCreature = null;
-                    if (splits.Length >= 3 && splits[2] != "") {
-                        lootCreature = getCreature(splits[2]);
+                    if (creatureName == "damage" && parseMemoryResults != null) {
+                        var damageInformation = DamageChart.GenerateDamageInformation(parseMemoryResults.damagePerSecond, "");
+                        string damageString = "Damage Dealt: ";
+                        foreach(var damage in damageInformation) {
+                            damageString += String.Format("{0}: {1:N1}%; ", damage.name, damage.percentage);
+                        }
+                        Clipboard.SetText(damageString.Substring(0, damageString.Length - 2));
+                        return true;
+                    } else if (creatureName != "") {
+                        lootCreature = getCreature(creatureName);
                     }
-                    bool raw = false; // raw mode means 'display everything and don't convert anything to gold'
-                    bool all = false; //all mode means 'display everything' (i.e. ignore discard flag on items)
-                    if (splits.Length >= 4 && splits[3] != "") {
-                        if (splits[3] == "raw") {
-                            raw = true;
-                            all = true;
-                        } else if (splits[3] == "all") {
-                            all = true;
+                    
+                    var tpl = LootDropForm.GenerateLootInformation(activeHunt, "", lootCreature);
+                    var creatureKills = tpl.Item1;
+                    var itemDrops = tpl.Item2;
+
+                    string lootString = "";
+                    if (creatureKills.Count == 1) {
+                        foreach (KeyValuePair<Creature, int> kvp in creatureKills) {
+                            lootString = "Total Loot of " + kvp.Value.ToString() + " " + kvp.Key.GetName() + (kvp.Value > 1 ? "s" : "") + ": ";
                         }
+                    } else {
+                        int totalKills = 0;
+                        foreach (KeyValuePair<Creature, int> kvp in creatureKills) {
+                            totalKills += kvp.Value;
+                        }
+                        lootString = "Total Loot of " + totalKills + " Kills: ";
                     }
-
-                    // first handle creature kills
-                    lock (hunts) {
-                        Dictionary<Creature, int> creatureKills;
-                        Hunt currentHunt = activeHunt;
-                        if (splits.Length >= 2 && splits[1] != "") {
-                            foreach (Hunt h in hunts) {
-                                if (h.name.ToLower().Contains(splits[1].ToLower())) {
-                                    currentHunt = h;
-                                    break;
-                                }
-                            }
-                        }
-                        if (lootCreature != null) {
-                            //the command is loot@<creature>, so we only display the kills and loot from the specified creature
-                            creatureKills = new Dictionary<Creature, int>();
-                            if (currentHunt.loot.killCount.ContainsKey(lootCreature)) {
-                                creatureKills.Add(lootCreature, currentHunt.loot.killCount[lootCreature]);
-                            } else {
-                                return true; // if there are no kills of the specified creature, just skip the command
-                            }
-                        } else if (currentHunt.trackAllCreatures || currentHunt.trackedCreatures.Length == 0) {
-                            creatureKills = currentHunt.loot.killCount; //display all creatures
-                        } else {
-                            // only display tracked creatures
-                            creatureKills = new Dictionary<Creature, int>();
-                            foreach (string creature in currentHunt.lootCreatures) {
-                                Creature cr = getCreature(creature.ToLower());
-                                if (cr == null) continue;
-                                if (!currentHunt.loot.killCount.ContainsKey(cr)) continue;
-
-                                creatureKills.Add(cr, currentHunt.loot.killCount[cr]);
-                            }
-
-                        }
-
-                        // now handle item drops, gather a count for every item
-                        List<Tuple<Item, int>> itemDrops = new List<Tuple<Item, int>>();
-                        Dictionary<Item, int> itemCounts = new Dictionary<Item, int>();
-                        foreach (KeyValuePair<Creature, Dictionary<Item, int>> kvp in currentHunt.loot.creatureLoot) {
-                            if (lootCreature != null && kvp.Key != lootCreature) continue; // if lootCreature is specified, only consider loot from the specified creature
-                            if (!currentHunt.trackAllCreatures && currentHunt.trackedCreatures.Length > 0 && !currentHunt.lootCreatures.Contains(kvp.Key.GetName().ToLower())) continue;
-                            foreach (KeyValuePair<Item, int> kvp2 in kvp.Value) {
-                                Item item = kvp2.Key;
-                                int value = kvp2.Value;
-                                if (!itemCounts.ContainsKey(item)) itemCounts.Add(item, value);
-                                else itemCounts[item] += value;
-                            }
-                        }
-                        // now we do item conversion
-                        long extraGold = 0;
-                        foreach (KeyValuePair<Item, int> kvp in itemCounts) {
-                            Item item = kvp.Key;
-                            int count = kvp.Value;
-                            // discard items that are set to be discarded (as long as all/raw mode is not enabled)
-                            if (item.discard && !all) continue;
-                            // convert items to gold (as long as raw mode is not enabled), always gather up all the gold coins found
-                            if ((!raw && item.convert_to_gold) || item.displayname == "gold coin" || item.displayname == "platinum coin" || item.displayname == "crystal coin") {
-                                extraGold += Math.Max(item.actual_value, item.vendor_value) * count;
-                            } else {
-                                itemDrops.Add(new Tuple<Item, int>(item, count));
-                            }
-                        }
-
-                        // handle coin drops, we always convert the gold to the highest possible denomination (so if gold = 10K, we display a crystal coin)
-                        long currentGold = extraGold;
-                        if (currentGold > 10000) {
-                            itemDrops.Add(new Tuple<Item, int>(getItem("crystal coin"), (int)(currentGold / 10000)));
-                            currentGold = currentGold % 10000;
-                        }
-                        if (currentGold > 100) {
-                            itemDrops.Add(new Tuple<Item, int>(getItem("platinum coin"), (int)(currentGold / 100)));
-                            currentGold = currentGold % 100;
-                        }
-                        if (currentGold > 0) {
-                            itemDrops.Add(new Tuple<Item, int>(getItem("gold coin"), (int)(currentGold)));
-                        }
-
-                        // now order by value so most valuable items are placed first
-                        // we use a special value for the gold coins so the gold is placed together in the order crystal > platinum > gold
-                        // gold coins = <gold total> - 2, platinum coins = <gold total> - 1, crystal coins = <gold total>
-                        itemDrops = itemDrops.OrderByDescending(o => o.Item1.displayname == "gold coin" ? extraGold - 2 : (o.Item1.displayname == "platinum coin" ? extraGold - 1 : (o.Item1.displayname == "crystal coin" ? extraGold : Math.Max(o.Item1.actual_value, o.Item1.vendor_value) * o.Item2))).ToList();
-
-                        if (clipboard) {
-                            // Copy loot message to the clipboard
-                            // clipboard@<creature> copies the loot of a specific creature to the clipboard
-                            // clipboard@ copies all loot to the clipboard
-                            string lootString = "";
-                            if (creatureKills.Count == 1) {
-                                foreach (KeyValuePair<Creature, int> kvp in creatureKills) {
-                                    lootString = "Total Loot of " + kvp.Value.ToString() + " " + kvp.Key.GetName() + (kvp.Value > 1 ? "s" : "") + ": ";
-                                }
-                            } else {
-                                int totalKills = 0;
-                                foreach (KeyValuePair<Creature, int> kvp in creatureKills) {
-                                    totalKills += kvp.Value;
-                                }
-                                lootString = "Total Loot of " + totalKills + " Kills: ";
-                            }
-                            foreach (Tuple<Item, int> kvp in itemDrops) {
-                                lootString += kvp.Item2 + " " + kvp.Item1.displayname + (kvp.Item2 > 1 ? "s" : "") + ", ";
-                            }
-                            lootString = lootString.Substring(0, lootString.Length - 2) + ".";
-                            Clipboard.SetText(lootString);
-                        } else {
-                            // display loot notification
-                            ShowLootDrops(creatureKills, itemDrops, currentHunt, command, screenshot_path);
-                        }
+                    foreach (Tuple<Item, int> kvp in itemDrops) {
+                        lootString += kvp.Item2 + " " + kvp.Item1.displayname + (kvp.Item2 > 1 ? "s" : "") + ", ";
                     }
+                    lootString = lootString.Substring(0, lootString.Length - 2) + ".";
+                    Clipboard.SetText(lootString);
                 } else if (comp.StartsWith("reset" + MainForm.commandSymbol)) { //reset@
                     string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                     int time = 0;
@@ -708,7 +637,7 @@ namespace Tibialyzer {
                     return false;
                 }
                 return true;
-            } catch(Exception e) {
+            } catch (Exception e) {
                 Console.WriteLine(e.Message);
                 if (!shownException) {
                     shownException = true;
@@ -810,6 +739,11 @@ namespace Tibialyzer {
                 });
             }
             if (parseMemoryResults != null) {
+                if (parseMemoryResults.newItems.Count > 0 && tooltipForm != null && tooltipForm is LootDropForm) {
+                    this.Invoke((MethodInvoker)delegate {
+                        (tooltipForm as LootDropForm).UpdateLoot();
+                    });
+                }
                 foreach (Tuple<Creature, List<Tuple<Item, int>>> tpl in parseMemoryResults.newItems) {
                     Creature cr = tpl.Item1;
                     List<Tuple<Item, int>> items = tpl.Item2;

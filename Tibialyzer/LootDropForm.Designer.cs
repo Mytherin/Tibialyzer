@@ -206,6 +206,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(348, 261);
+            this.Controls.Add(this.totalTimeLabel);
+            this.Controls.Add(this.totalExpLabel);
+            this.Controls.Add(this.totalValueLabel);
             this.Controls.Add(this.lootSmaller);
             this.Controls.Add(this.lootLarger);
             this.Controls.Add(this.lootButton);
@@ -215,9 +218,6 @@
             this.Controls.Add(this.totalExpValue);
             this.Controls.Add(this.totalValueValue);
             this.Controls.Add(this.huntNameLabel);
-            this.Controls.Add(this.totalTimeLabel);
-            this.Controls.Add(this.totalExpLabel);
-            this.Controls.Add(this.totalValueLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LootDropForm";
