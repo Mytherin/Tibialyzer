@@ -85,3 +85,4 @@ blue pieces of cloth=blue piece of cloth
 green pieces of cloth=green piece of cloth
 bunches of ripe rice=bunch of ripe rice
 candies=candy
+elven scouting glasses=elven scouting glass

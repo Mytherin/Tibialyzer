@@ -170,25 +170,22 @@ namespace Tibialyzer {
             this.ResumeForm();
         }
 
-        public override void LoadForm() {
-            this.SuspendForm();
-            NotificationInitialize();
-            detailsButton.Click -= c_Click;
-            startX = this.Size.Width;
-            startY = this.Size.Height;
+
+        public static List<DamageObject> GenerateDamageInformation(Dictionary<string, Tuple<int, int>> dps, string filter) {
+            List<DamageObject> damageDealt = new List<DamageObject>();
             foreach (KeyValuePair<string, Tuple<int, int>> kvp in dps) {
-                if (filter != "all" && filter != "creature" && char.IsLower(kvp.Key[0])) continue;
-                if (filter == "creature" && char.IsUpper(kvp.Key[0])) continue;
-                damageDealt.Add(new DamageObject() { name = kvp.Key.Replace(".", ""), totalDamage = kvp.Value.Item1, dps = (double)kvp.Value.Item1 / (double)(kvp.Value.Item2 * 60) });
+                string name = kvp.Key.Replace(".", "").Replace("a ", "").Replace("an ", "");
+                Creature cr = MainForm.getCreature(name);
+                if (filter != "all" && filter != "creature" && cr != null) continue;
+                if (filter == "creature" && cr == null) continue;
+                damageDealt.Add(new DamageObject() { name = name, totalDamage = kvp.Value.Item1, dps = (double)kvp.Value.Item1 / (double)(kvp.Value.Item2 * 60) });
             }
-            damageDealt.OrderByDescending(o => o.totalDamage);
             if (damageDealt.Count == 0) {
                 damageDealt.Add(new DamageObject() { name = "Mytherin", dps = 50, totalDamage = 501 });
                 damageDealt.Add(new DamageObject() { name = "Amel Cyrom", dps = 50, totalDamage = 250 });
                 damageDealt.Add(new DamageObject() { name = "Martincc", dps = 50, totalDamage = 499 });
                 damageDealt.Add(new DamageObject() { name = "You", dps = 50, totalDamage = 750 });
             }
-
             double total_damage = 0;
             foreach (DamageObject player in damageDealt) {
                 total_damage = total_damage + player.totalDamage;
@@ -196,6 +193,18 @@ namespace Tibialyzer {
             foreach (DamageObject p in damageDealt) {
                 p.percentage = p.totalDamage / total_damage * 100;
             }
+            damageDealt = damageDealt.OrderByDescending(o => o.totalDamage).ToList();
+            return damageDealt;
+        }
+
+        public override void LoadForm() {
+            this.SuspendForm();
+            NotificationInitialize();
+            detailsButton.Click -= c_Click;
+            startX = this.Size.Width;
+            startY = this.Size.Height;
+
+            damageDealt = GenerateDamageInformation(dps, filter);
 
             refreshDamageChart();
             this.ResumeForm();
