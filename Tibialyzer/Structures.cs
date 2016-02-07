@@ -1033,7 +1033,7 @@ namespace Tibialyzer {
         static List<string> headers = new List<string> { "Command", "Description" };
         static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode() };
         public override List<Attribute> GetAttributes() {
-            return new List<Attribute> { new StringAttribute(command, 180), new StringAttribute(description, 420) };
+            return new List<Attribute> { new StringAttribute(command, 180), new StringAttribute(description, 320) };
         }
         public override string GetCommand() {
             return "";

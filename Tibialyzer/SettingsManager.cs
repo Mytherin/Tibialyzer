@@ -106,6 +106,24 @@ namespace Tibialyzer {
             setSetting(key, value.ToString(CultureInfo.InvariantCulture));
         }
 
+        public static void setSettingIfNotSet(string key, List<string> value) {
+            if (!settings.ContainsKey(key)) settings.Add(key, value);
+        }
+
+        public static void setSettingIfNotSet(string key, string value) {
+            if (!settings.ContainsKey(key)) setSetting(key, new List<string> { value });
+        }
+
+        public static void setSettingIfNotSet(string key, int value) {
+            if (!settings.ContainsKey(key)) setSetting(key, value.ToString());
+        }
+        public static void setSettingIfNotSet(string key, bool value) {
+            if (!settings.ContainsKey(key)) setSetting(key, value.ToString());
+        }
+        public static void setSettingIfNotSet(string key, double value) {
+            if (!settings.ContainsKey(key)) setSetting(key, value.ToString(CultureInfo.InvariantCulture));
+        }
+
         public static bool settingExists(string key) {
             return settings.ContainsKey(key) && settings[key].Count > 0;
         }
@@ -133,46 +151,47 @@ C::NumpadPgDn
 -::Command=refresh@ 
 ";
 
+        public static void ApplyDefaultSettings() {
+            setSettingIfNotSet("EnableEventNotifications", true);
+            setSettingIfNotSet("EnableUnrecognizedNotifications", true);
+            setSettingIfNotSet("CopyAdvances", true);
+            setSettingIfNotSet("UseRichNotificationType", true);
+            setSettingIfNotSet("LookMode", true);
+            setSettingIfNotSet("StartAutohotkeyAutomatically", false);
+            setSettingIfNotSet("ShutdownAutohotkeyOnExit", false);
+            setSettingIfNotSet("NotificationItems", "");
+            setSettingIfNotSet("AutoHotkeySettings", defaultWASDSettings.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList());
+            setSettingIfNotSet("AutoScreenshotAdvance", false);
+            setSettingIfNotSet("AutoScreenshotItemDrop", false);
+            setSettingIfNotSet("AutoScreenshotDeath", false);
+            setSettingIfNotSet("EnableScreenshots", false);
+            setSettingIfNotSet("Names", "Mytherin");
+            setSettingIfNotSet("ScanSpeed", "0");
+            setSettingIfNotSet("OutfitGenderMale", true);
+            setSettingIfNotSet("RichNotificationXOffset", 30);
+            setSettingIfNotSet("RichNotificationYOffset", 30);
+            setSettingIfNotSet("RichNotificationAnchor", 0);
+            setSettingIfNotSet("SimpleNotificationXOffset", 5);
+            setSettingIfNotSet("SimpleNotificationYOffset", 10);
+            setSettingIfNotSet("SimpleNotificationAnchor", 3);
+            setSettingIfNotSet("EnableSimpleNotificationAnimation", true);
+            setSettingIfNotSet("SuspendedNotificationXOffset", 10);
+            setSettingIfNotSet("SuspendedNotificationYOffset", 10);
+            setSettingIfNotSet("SuspendedNotificationAnchor", 1);
+            setSettingIfNotSet("TibiaClientName", "Tibia");
+            foreach (string obj in MainForm.NotificationTypes) {
+                string settingObject = obj.Replace(" ", "");
+                setSettingIfNotSet(settingObject + "Anchor", 0);
+                setSettingIfNotSet(settingObject + "XOffset", 30);
+                setSettingIfNotSet(settingObject + "YOffset", 30);
+                setSettingIfNotSet(settingObject + "Duration", 30);
+                setSettingIfNotSet(settingObject + "Group", 0);
+            }
+        }
+
         public static void ResetSettingsToDefault() {
             settings = new Dictionary<string, List<string>>();
-            setSetting("NotificationDuration", 30);
-            setSetting("EnableSimpleNotifications", true);
-            setSetting("EnableEventNotifications", true);
-            setSetting("EnableUnrecognizedNotifications", true);
-            setSetting("EnableRichNotifications", true);
-            setSetting("CopyAdvances", true);
-            setSetting("ShowNotifications", true);
-            setSetting("UseRichNotificationType", true);
-            setSetting("ShowNotificationsValue", true);
-            setSetting("NotificationValue", 2000);
-            setSetting("ShowNotificationsRatio", false);
-            setSetting("NotificationGoldRatio", 100);
-            setSetting("ShowNotificationsSpecific", true);
-            setSetting("LookMode", true);
-            setSetting("AlwaysShowLoot", false);
-            setSetting("StartAutohotkeyAutomatically", false);
-            setSetting("ShutdownAutohotkeyOnExit", false);
-            setSetting("NotificationItems", "");
-            setSetting("AutoHotkeySettings", defaultWASDSettings.Split(new string[] { "\r\n" }, StringSplitOptions.None).ToList());
-            setSetting("AutoScreenshotAdvance", false);
-            setSetting("AutoScreenshotItemDrop", false);
-            setSetting("AutoScreenshotDeath", false);
-            setSetting("EnableScreenshots", false);
-            setSetting("Names", "Mytherin");
-            setSetting("ScanSpeed", "0");
-            setSetting("OutfitGenderMale", true);
-            setSetting("RichNotificationXOffset", 30);
-            setSetting("RichNotificationYOffset", 30);
-            setSetting("RichNotificationAnchor", 0);
-            setSetting("SimpleNotificationXOffset", 5);
-            setSetting("SimpleNotificationYOffset", 10);
-            setSetting("SimpleNotificationAnchor", 3);
-            setSetting("EnableSimpleNotificationAnimation", true);
-            setSetting("SuspendedNotificationXOffset", 10);
-            setSetting("SuspendedNotificationYOffset", 10);
-            setSetting("SuspendedNotificationAnchor", 1);
-            setSetting("TibiaClientName", "Tibia");
-
+            ApplyDefaultSettings();
             SaveSettings();
         }
     }

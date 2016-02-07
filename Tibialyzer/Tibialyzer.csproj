@@ -103,6 +103,15 @@
     </Compile>
     <Compile Include="Pathfinder.cs" />
     <Compile Include="NotificationConditionManager.cs" />
+    <Compile Include="PrettyCheckbox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PrettyDropDownList.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PrettyListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="QuestForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -296,6 +305,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Database\metadata.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Database\pluralMap.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -339,6 +351,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\boat.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\checkbox-checked.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\checkbox-empty.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\checkmark-no.png">
@@ -491,6 +509,7 @@
     <Content Include="Images\tibiastore.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\warningicon.png" />
     <Content Include="Images\whirlpool.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

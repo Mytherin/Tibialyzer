@@ -1072,6 +1072,7 @@ namespace Tibialyzer {
         }
 
         public static bool creatureExists(string str) {
+            str = str.ToLower().Trim();
             if (_creatureNameMap.ContainsKey(str)) {
                 return true;
             }

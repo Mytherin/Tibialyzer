@@ -510,6 +510,43 @@ namespace Tibialyzer {
             comm.ExecuteNonQuery();
         }
 
+        void deleteLogMessage(Hunt h, string logMessage) {
+            string timeStamp = logMessage.Substring(0, 5);
+            bool found = false;
+            lock(hunts) {
+                if (h.loot.logMessages.ContainsKey(timeStamp)) {
+                    if (h.loot.logMessages[timeStamp].Contains(logMessage)) {
+                        h.loot.logMessages[timeStamp].Remove(logMessage);
+                        var logMessageItems = ParseLootMessage(logMessage);
+                        Creature cr = logMessageItems.Item1;
+                        if (h.loot.killCount.ContainsKey(cr)) {
+                            h.loot.killCount[cr]--;
+                            if (h.loot.killCount[cr] == 0) {
+                                h.loot.killCount.Remove(cr);
+                            }
+                        }
+                        foreach(Tuple<Item, int> tpl in logMessageItems.Item2) {
+                            if (h.loot.creatureLoot[cr].ContainsKey(tpl.Item1)) {
+                                h.loot.creatureLoot[cr][tpl.Item1] -= tpl.Item2;
+                                if (h.loot.creatureLoot[cr][tpl.Item1] <= 0) {
+                                    h.loot.creatureLoot[cr].Remove(tpl.Item1);
+                                }
+                            }
+                        }
+                        found = true;
+                    }
+                }
+            }
+            if (!found) return;
+            string huntTable = h.GetTableName();
+            SQLiteCommand comm = new SQLiteCommand(String.Format("SELECT day,hour,minute,message FROM \"{0}\" WHERE message=\"{1}\"", huntTable, logMessage.Replace("\"", "\\\"")), lootConn);
+            SQLiteDataReader reader = comm.ExecuteReader();
+            if (reader.Read()) {
+                comm = new SQLiteCommand(String.Format("DELETE FROM \"{0}\" WHERE day={1} AND hour={2} AND minute={3} AND message=\"{4}\"", huntTable, reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2), reader["message"].ToString()), lootConn);
+                comm.ExecuteNonQuery();
+            }
+        }
+
         void saveLog(Hunt h, string logPath) {
             StreamWriter streamWriter = new StreamWriter(logPath);
 
@@ -914,6 +951,7 @@ namespace Tibialyzer {
         }
 
         public Tuple<Creature, List<Tuple<Item, int>>> ParseLootMessage(string message) {
+            if (message.Length <= 14) return null;
             string lootMessage = message.Substring(14);
             // split on : because the message is Loot of a x: a, b, c, d
             if (!lootMessage.Contains(':')) return null;

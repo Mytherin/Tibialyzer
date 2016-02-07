@@ -12,7 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -28,11 +28,14 @@ using System.Diagnostics;
 namespace Tibialyzer {
 
     public class NotificationForm : Form {
+        object timerLock = new object();
+        object closeLock = new object();
         System.Timers.Timer closeTimer = null;
         public static Bitmap background_image = null;
         public TibialyzerCommand command;
         protected PictureBox back_button;
-        
+        public int notificationDuration = 1;
+
         [DllImport("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, Int32 wMsg, bool wParam, Int32 lParam);
 
@@ -71,9 +74,11 @@ namespace Tibialyzer {
         protected void NotificationInitialize() {
             this.BackgroundImage = background_image;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            closeTimer = new System.Timers.Timer(1000 * SettingsManager.getSettingInt("NotificationDuration"));
-            closeTimer.Elapsed += new System.Timers.ElapsedEventHandler(CloseNotification);
-            closeTimer.Enabled = true;
+            if (notificationDuration != MainForm.MaximumNotificationDuration) {
+                closeTimer = new System.Timers.Timer(1000 * notificationDuration);
+                closeTimer.Elapsed += new System.Timers.ElapsedEventHandler(CloseNotification);
+                closeTimer.Enabled = true;
+            }
 
             foreach (Control c in this.Controls) {
                 if (c is TextBox || c is CheckBox || c is System.Windows.Forms.DataVisualization.Charting.Chart) continue;
@@ -84,12 +89,16 @@ namespace Tibialyzer {
         public virtual void LoadForm() {
 
         }
-        
+
         protected void refreshTimer() {
-            closeTimer.Dispose();
-            closeTimer = new System.Timers.Timer(1000 * SettingsManager.getSettingInt("NotificationDuration"));
-            closeTimer.Elapsed += new System.Timers.ElapsedEventHandler(CloseNotification);
-            closeTimer.Enabled = true;
+            lock (timerLock) {
+                if (closeTimer != null) {
+                    closeTimer.Dispose();
+                    closeTimer = new System.Timers.Timer(1000 * notificationDuration);
+                    closeTimer.Elapsed += new System.Timers.ElapsedEventHandler(CloseNotification);
+                    closeTimer.Enabled = true;
+                }
+            }
         }
 
         protected void RegisterForClose(Control c) {
@@ -121,14 +130,17 @@ namespace Tibialyzer {
         }
 
         protected void Cleanup() {
-            if (closeTimer != null) closeTimer.Dispose();
+            lock (timerLock) {
+                if (closeTimer != null) {
+                    closeTimer.Dispose();
+                    closeTimer = null;
+                }
+            }
         }
 
         public void close() {
-            try {
+            lock (closeLock) {
                 this.Close();
-            } catch {
-
             }
         }
 
@@ -171,30 +183,43 @@ namespace Tibialyzer {
         }
 
         public void ResetTimer() {
-            this.closeTimer.Stop();
-            this.closeTimer.Start();
+            lock (timerLock) {
+                if (closeTimer != null) {
+                    this.closeTimer.Stop();
+                    this.closeTimer.Start();
+                }
+            }
         }
 
         public void CloseNotification(object sender, EventArgs e) {
             if (this.Opacity <= 0) {
-                closeTimer.Close();
-
-                this.Invoke((MethodInvoker)delegate {
-                    close();
-                });
+                lock (timerLock) {
+                    if (closeTimer != null) {
+                        closeTimer.Close();
+                        closeTimer = null;
+                    }
+                }
+                lock (closeLock) {
+                    if (this.IsHandleCreated && !this.IsDisposed) {
+                        this.BeginInvoke((MethodInvoker)delegate {
+                            close();
+                        });
+                    }
+                }
             } else {
-                if (this.IsHandleCreated && !this.IsDisposed) {
-                    try {
-                        this.Invoke((MethodInvoker)delegate {
+                lock (closeLock) {
+                    if (this.IsHandleCreated && !this.IsDisposed) {
+                        this.BeginInvoke((MethodInvoker)delegate {
                             this.Opacity -= 0.03;
                         });
-                    } catch {
-
                     }
-                    closeTimer.Interval = 20;
-                    closeTimer.Start();
                 }
-
+                lock (timerLock) {
+                    if (closeTimer != null) {
+                        closeTimer.Interval = 20;
+                        closeTimer.Start();
+                    }
+                }
             }
         }
 
@@ -225,8 +250,6 @@ namespace Tibialyzer {
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "NotificationForm";
             this.ResumeLayout(false);
-
         }
-
     }
 }

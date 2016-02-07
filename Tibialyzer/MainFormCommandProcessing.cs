@@ -100,8 +100,10 @@ namespace Tibialyzer {
                     }
                 } else if (comp.StartsWith("close" + MainForm.commandSymbol)) { //close@
                                                                                 // close all notifications
-                    if (tooltipForm != null) {
-                        tooltipForm.Close();
+                    for (int i = 0; i < NotificationFormGroups.Length; i++) {
+                        if (NotificationFormGroups[i] != null) {
+                            NotificationFormGroups[i].close();
+                        }
                     }
                     ClearSimpleNotifications();
                 } else if (comp.StartsWith("delete" + MainForm.commandSymbol)) { //delete@
@@ -197,7 +199,7 @@ namespace Tibialyzer {
                     if (creatureName == "damage" && parseMemoryResults != null) {
                         var damageInformation = DamageChart.GenerateDamageInformation(parseMemoryResults.damagePerSecond, "");
                         string damageString = "Damage Dealt: ";
-                        foreach(var damage in damageInformation) {
+                        foreach (var damage in damageInformation) {
                             damageString += String.Format("{0}: {1:N1}%; ", damage.name, damage.percentage);
                         }
                         Clipboard.SetText(damageString.Substring(0, damageString.Length - 2));
@@ -205,7 +207,7 @@ namespace Tibialyzer {
                     } else if (creatureName != "") {
                         lootCreature = getCreature(creatureName);
                     }
-                    
+
                     var tpl = LootDropForm.GenerateLootInformation(activeHunt, "", lootCreature);
                     var creatureKills = tpl.Item1;
                     var itemDrops = tpl.Item2;
@@ -251,14 +253,14 @@ namespace Tibialyzer {
                     ignoreStamp = createStamp();
                 } else if (comp.StartsWith("refresh" + MainForm.commandSymbol)) { //refresh@
                                                                                   // refresh: refresh duration on current form, or if no current form, repeat last command without removing it from stack
-                    if (tooltipForm != null && !tooltipForm.IsDisposed) {
-                        try {
-                            (tooltipForm as NotificationForm).ResetTimer();
-                        } catch {
-                        }
-                    } else if (command_stack.Count > 0) {
-                        MainForm.mainForm.ExecuteCommand(command_stack.Peek().command);
-                    }
+                                                                                  /*if (tooltipForm != null && !tooltipForm.IsDisposed) {
+                                                                                      try {
+                                                                                          (tooltipForm as NotificationForm).ResetTimer();
+                                                                                      } catch {
+                                                                                      }
+                                                                                  } else if (command_stack.Count > 0) {*/
+                    MainForm.mainForm.ExecuteCommand(command_stack.Peek().command);
+                    //}
                     return true;
                 } else if (comp.StartsWith("switch" + MainForm.commandSymbol)) { //switch@
                                                                                  // switch: switch to hunt
@@ -634,14 +636,24 @@ namespace Tibialyzer {
                 }
                 return true;
             } catch (Exception e) {
+                DisplayWarning(String.Format("Tibialyzer Exception While Processing Command \"{0}\".\nMessage: {1} ", command, e.Message));
                 Console.WriteLine(e.Message);
-                if (!shownException) {
-                    shownException = true;
-                    this.exceptionLabel.Text = String.Format("Tibialyzer Exception While Processing Command \"{0}\".\nMessage: {1} ", command, e.Message);
-                    this.exceptionLabel.Visible = true;
-                }
                 return true;
             }
+        }
+
+        private bool ShowDropNotification(Tuple<Creature, List<Tuple<Item, int>>> tpl) {
+            bool showNotification = NotificationConditionManager.ResolveConditions(tpl);
+            bool showNotificationSpecific = false;
+            foreach (Tuple<Item, int> tpl2 in tpl.Item2) {
+                Item item = tpl2.Item1;
+                showNotificationSpecific = SettingsManager.getSetting("NotificationItems").Contains(item.displayname.ToLower());
+                if (showNotificationSpecific) {
+                    showNotification = true;
+                    break;
+                }
+            }
+            return showNotification;
         }
 
         private bool ScanMemory() {
@@ -735,24 +747,22 @@ namespace Tibialyzer {
                 });
             }
             if (parseMemoryResults != null) {
-                if (parseMemoryResults.newItems.Count > 0 && tooltipForm != null && tooltipForm is LootDropForm) {
+                if (parseMemoryResults.newItems.Count > 0) {
                     this.Invoke((MethodInvoker)delegate {
-                        (tooltipForm as LootDropForm).UpdateLoot();
+                        for (int i = 0; i < NotificationFormGroups.Length; i++) {
+                            if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is LootDropForm) {
+                                (NotificationFormGroups[i] as LootDropForm).UpdateLoot();
+                            }
+                        }
+                        if (logButton.Enabled == false) {
+                            refreshHuntLog(getSelectedHunt());
+                        }
                     });
                 }
                 foreach (Tuple<Creature, List<Tuple<Item, int>>> tpl in parseMemoryResults.newItems) {
                     Creature cr = tpl.Item1;
                     List<Tuple<Item, int>> items = tpl.Item2;
-                    bool showNotification = NotificationConditionManager.ResolveConditions(tpl);
-                    bool showNotificationSpecific = false;
-                    foreach (Tuple<Item, int> tpl2 in items) {
-                        Item item = tpl2.Item1;
-                        showNotificationSpecific = SettingsManager.getSettingBool("ShowNotificationsSpecific") && SettingsManager.getSetting("NotificationItems").Contains(item.displayname.ToLower());
-                        if (showNotificationSpecific) {
-                            showNotification = true;
-                            break;
-                        }
-                    }
+                    bool showNotification = ShowDropNotification(tpl);
                     if (showNotification) {
                         if (SettingsManager.getSettingBool("AutoScreenshotItemDrop")) {
                             // Take a screenshot if Tibialyzer is set to take screenshots of valuable loot
@@ -779,14 +789,12 @@ namespace Tibialyzer {
                             });
                         }
 
-                        if (SettingsManager.getSettingBool("ShowNotifications")) {
-                            if (!SettingsManager.getSettingBool("UseRichNotificationType")) {
-                                ShowSimpleNotification(cr.displayname, cr.displayname + " dropped a valuable item.", cr.image);
-                            } else {
-                                this.Invoke((MethodInvoker)delegate {
-                                    ShowSimpleNotification(new SimpleLootNotification(cr, items));
-                                });
-                            }
+                        if (!SettingsManager.getSettingBool("UseRichNotificationType")) {
+                            ShowSimpleNotification(cr.displayname, cr.displayname + " dropped a valuable item.", cr.image);
+                        } else {
+                            this.Invoke((MethodInvoker)delegate {
+                                ShowSimpleNotification(new SimpleLootNotification(cr, items));
+                            });
                         }
                     }
                 }

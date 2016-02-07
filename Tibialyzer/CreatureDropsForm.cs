@@ -128,11 +128,8 @@ namespace Tibialyzer {
             }
             this.Refresh();
         }
-
-        private bool clicked = false;
+        
         void openItemBox(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("item" + MainForm.commandSymbol + (sender as Control).Name);
         }
@@ -140,6 +137,8 @@ namespace Tibialyzer {
         public override void LoadForm() {
             this.SuspendForm();
             base.NotificationInitialize();
+            statsButton.Click -= c_Click;
+            huntButton.Click -= c_Click;
             // load image from the creature
             this.mainImage.Image = this.creature.GetImage();
             this.statsButton.Name = this.creature.GetName().ToLower();
@@ -172,15 +171,11 @@ namespace Tibialyzer {
         }
 
         private void statsButton_Click(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("stats" + MainForm.commandSymbol + (sender as Control).Name);
         }
 
         private void huntButton_Click(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("hunt" + MainForm.commandSymbol + (sender as Control).Name);
         }

@@ -31,6 +31,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Data.SQLite;
 using System.Globalization;
+using System.Xml;
 
 namespace Tibialyzer {
     public partial class MainForm : Form {
@@ -38,11 +39,12 @@ namespace Tibialyzer {
 
         public static List<string> vocations = new List<string> { "knight", "druid", "paladin", "sorcerer" };
 
+        private NotificationForm[] NotificationFormGroups = new NotificationForm[10];
+
         public static Color background_color = Color.FromArgb(0, 51, 102);
         public static double opacity = 0.8;
         public static bool transparent = true;
         public static Image[] image_numbers = new Image[10];
-        private Form tooltipForm = null;
         public static Image tibia_store_image = null;
         private static Image tibia_image = null;
         public static Image back_image = null;
@@ -56,6 +58,8 @@ namespace Tibialyzer {
         public static Image mapdown_image = null;
         public static Image checkmark_yes = null;
         public static Image checkmark_no = null;
+        public static Image checkbox_yes = null;
+        public static Image checkbox_no = null;
         public static Image infoIcon = null;
         public static Image nomapavailable = null;
         public static Dictionary<string, Image> vocationImages = new Dictionary<string, Image>();
@@ -65,6 +69,7 @@ namespace Tibialyzer {
         private static string nodeDatabase = @"Database\Nodes.db";
         private static string pluralMapFile = @"Database\pluralMap.txt";
         private static string autohotkeyFile = @"Database\autohotkey.ahk";
+        private static string settingMetadata = @"Database\metadata.xml";
         public static Color label_text_color = Color.FromArgb(191, 191, 191);
         public static int max_creatures = 50;
         public List<string> new_names = null;
@@ -74,6 +79,10 @@ namespace Tibialyzer {
         public List<string> notification_items = new List<string>();
         private ToolTip scan_tooltip = new ToolTip();
         private Stack<TibialyzerCommand> command_stack = new Stack<TibialyzerCommand>();
+        public static List<string> NotificationTypes = new List<string> { "Loot Notification", "Damage Notification", "Object List", "City Information", "Creature Loot Information", "Creature Stats Information", "Hunt Information", "Item Information", "NPC Information", "Outfit Information", "Quest Information", "Spell Information", "Quest/Hunt Directions", "Task Form" };
+        public static List<string> NotificationTestCommands = new List<string> { "loot@", "damage@", "creature@quara", "city@venore", "creature@demon", "stats@dragon lord", "hunt@formorgar mines", "item@heroic axe", "npc@rashid", "outfit@brotherhood", "quest@killing in the name of", "spell@light healing", "guide@desert dungeon quest", "task@crystal spider" };
+        public static List<Type> NotificationTypeObjects = new List<Type>() { typeof(LootDropForm), typeof(DamageChart), typeof(CreatureList), typeof(CityDisplayForm), typeof(CreatureDropsForm), typeof(CreatureStatsForm), typeof(HuntingPlaceForm), typeof(ItemViewForm), typeof(NPCForm), typeof(OutfitForm), typeof(QuestForm), typeof(SpellForm), typeof(QuestGuideForm), typeof(TaskForm) };
+
         public static List<Font> fontList = new List<Font>();
 
         public static Font text_font = new Font(FontFamily.GenericSansSerif, 9, FontStyle.Bold);
@@ -100,8 +109,7 @@ namespace Tibialyzer {
             }
             return image;
         }
-
-        bool errorVisible = true;
+        
         public void ExitWithError(string title, string text, bool exit = true) {
             MessageBox.Show(this, text, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
             if (exit) {
@@ -109,10 +117,72 @@ namespace Tibialyzer {
             }
         }
 
+        class SettingData {
+            public string title;
+            public string tab;
+            public string description;
+            public string searchString;
+            public string settingValue;
+        }
+        List<SettingData> settingData = new List<SettingData>();
+        private void initializeSettingData() {
+            try {
+                using(XmlReader reader = XmlReader.Create(new StreamReader(settingMetadata))) {
+                    SettingData currentSetting = null;
+                    string currentAttribute = null;
+                    while (reader.Read()) {
+                        switch(reader.NodeType) {
+                            case XmlNodeType.Element:
+                                if (reader.Name == "Setting") {
+                                    currentSetting = new SettingData();
+                                    currentSetting.searchString = "";
+                                } else {
+                                    currentAttribute = reader.Name;
+                                }
+                                break;
+                            case XmlNodeType.Text:
+                                switch(currentAttribute) {
+                                    case "Name":
+                                        currentSetting.title = reader.Value;
+                                        currentSetting.searchString += currentSetting.title.ToLower() + " ";
+                                        break;
+                                    case "Tab":
+                                        currentSetting.tab = reader.Value;
+                                        break;
+                                    case "Description":
+                                        currentSetting.description = reader.Value;
+                                        currentSetting.searchString += currentSetting.description.ToLower() + " ";
+                                        break;
+                                    case "ExtraTerms":
+                                        currentSetting.searchString += reader.Value.ToLower() + " ";
+                                        break;
+                                    case "SettingValue":
+                                        currentSetting.settingValue = reader.Value;
+                                        break;
+                                }
+                                break;
+                            case XmlNodeType.EndElement:
+                                if (reader.Name == "Setting") {
+                                    settingData.Add(currentSetting);
+                                    currentSetting = null;
+                                }
+                                break;
+                        }
+                    }
+                }
+            } catch(Exception ex) {
+                Console.WriteLine("Failed to read settings metadata: {0}", ex.Message);
+            }
+        }
+
         public MainForm() {
             Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
             mainForm = this;
             InitializeComponent();
+            makeDraggable(this.Controls);
+            this.InitializeTabs();
+            switchTab(0);
+            initializeSettingData();
 
             if (!File.Exists(databaseFile)) {
                 ExitWithError("Fatal Error", String.Format("Could not find database file {0}.", databaseFile));
@@ -137,9 +207,12 @@ namespace Tibialyzer {
             mapdown_image = LoadImage(@"Images\mapdown.png");
             checkmark_no = LoadImage(@"Images\checkmark-no.png");
             checkmark_yes = LoadImage(@"Images\checkmark-yes.png");
+            checkbox_yes = LoadImage(@"Images\checkbox-checked.png");
+            checkbox_no = LoadImage(@"Images\checkbox-empty.png");
             infoIcon = LoadImage(@"Images\defaulticon.png");
             tibia_store_image = LoadImage(@"Images\tibiastore.png");
             nomapavailable = LoadImage(@"Images\nomapavailable.png");
+            checkbox_yes = LoadImage(@"Images\checkbox-checked.png");
             utilityImages.Add("offline training", LoadImage(@"Images\offlinetraining.png"));
             utilityImages.Add("offline training melee", utilityImages["offline training"]);
             utilityImages.Add("offline training magic", LoadImage(@"Images\offlinetrainingmagic.png"));
@@ -199,21 +272,18 @@ namespace Tibialyzer {
 
             ignoreStamp = createStamp();
 
-            browseSelectionBox.SelectedIndex = 0;
-            browseTab.BackgroundImage = NotificationForm.background_image;
-            browseTab.BackgroundImageLayout = ImageLayout.Tile;
-            commandListTab.BackgroundImage = NotificationForm.background_image;
-            commandListTab.BackgroundImageLayout = ImageLayout.Tile;
-            this.backgroundBox.Image = NotificationForm.background_image;
+            browseTypeBox.SelectedIndex = 0;
 
             this.Load += MainForm_Load;
-            
-            BackgroundWorker bw = new BackgroundWorker();
-            makeDraggable(this.Controls);
+
             tibialyzerLogo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
+
+            BackgroundWorker bw = new BackgroundWorker();
             bw.DoWork += bw_DoWork;
             bw.RunWorkerAsync();
 
+
+            MaximumNotificationDuration = notificationDurationBox.Maximum;
             scan_tooltip.AutoPopDelay = 60000;
             scan_tooltip.InitialDelay = 500;
             scan_tooltip.ReshowDelay = 0;
@@ -422,30 +492,30 @@ namespace Tibialyzer {
         }
 
         private void initializeTooltips() {
-            explanationTooltip.SetToolTip(damageButton, "Saves an image of the damage chart (damage@) to a file.");
-            explanationTooltip.SetToolTip(saveLootImage, "Saves an image of the loot command (loot@) to a file.");
-            explanationTooltip.SetToolTip(resetButton, "WARNING: Clears the active hunt, removing all loot from it.");
-            explanationTooltip.SetToolTip(exportLogButton, "Saves all the log messages of the currently selected hunt to a file.");
-            explanationTooltip.SetToolTip(importLogFile, "Loads a set of log messages from a file into the currently selected hunt. ");
-            explanationTooltip.SetToolTip(activeHuntButton, "Sets the currently selected hunt as the active hunt. Any creatures killed will be added to the currently active hunt. ");
-            explanationTooltip.SetToolTip(trackCreaturesCheckbox, "In the loot@ command, only creatures specified in the box below are shown if this is selected.");
-            explanationTooltip.SetToolTip(sideHuntBox, "When a creature specified in the box below is killed, this hunt is made the currently active hunt.");
-            explanationTooltip.SetToolTip(aggregateHuntBox, "When a creature specified in the box below is killed, the loot of that creature is always added to this hunt (in addition to the active hunt).");
-            explanationTooltip.SetToolTip(clearHuntOnStartup, "If this is checked, this hunt will be automatically cleared when Tibialyzer is restarted.");
-            explanationTooltip.SetToolTip(lookCheckBox, "When you look (shift+click) at an item, creature or npc in-game, Tibialyzer will automatically open a box displaying information about that object.");
-            explanationTooltip.SetToolTip(outfitGenderBox, "Outfit gender displayed in outfit@ searches.");
-            explanationTooltip.SetToolTip(advanceCopyCheckbox, "When you advance in level or skill, the advancement text will be automatically copied for you, so you can easily paste it and notify your friends.");
-            explanationTooltip.SetToolTip(eventNotificationEnable, "When a raid message is send, a notification will appear informing you of the raid.");
-            explanationTooltip.SetToolTip(unrecognizedCommandNotification, "When you type in an unrecognized command in Tibia chat (unrecognized@), a notification will appear notifying you of this.");
-            explanationTooltip.SetToolTip(resetToDefaultButton, "Clears all settings and resets them back to the default settings, except for the hunt settings. ");
-            explanationTooltip.SetToolTip(notificationTypeBox, "Rich notifications are Windows Forms notifications that look pretty. Simple notifications are default Windows bubble notifications. ");
+            explanationTooltip.SetToolTip(saveDamageImageButton, "Saves an image of the damage chart (damage@) to a file.");
+            explanationTooltip.SetToolTip(saveLootImageButton, "Saves an image of the loot command (loot@) to a file.");
+            explanationTooltip.SetToolTip(clearLog, "WARNING: Clears the active hunt, removing all loot from it.");
+            explanationTooltip.SetToolTip(saveLogToFileButton, "Saves all the log messages of the currently selected hunt to a file.");
+            explanationTooltip.SetToolTip(loadLogFromFileButton, "Loads a set of log messages from a file into the currently selected hunt. ");
+            explanationTooltip.SetToolTip(setActiveHuntButton, "Sets the currently selected hunt as the active hunt. Any creatures killed will be added to the currently active hunt. ");
+            explanationTooltip.SetToolTip(displayAllCreaturesBox, "In the loot@ command, only creatures specified in the box below are shown if this is selected.");
+            explanationTooltip.SetToolTip(switchOnKillBox, "When a creature specified in the box below is killed, this hunt is made the currently active hunt.");
+            explanationTooltip.SetToolTip(gatherTrackedKillsBox, "When a creature specified in the box below is killed, the loot of that creature is always added to this hunt (in addition to the active hunt).");
+            explanationTooltip.SetToolTip(clearHuntOnStartupBox, "If this is checked, this hunt will be automatically cleared when Tibialyzer is restarted.");
+            explanationTooltip.SetToolTip(this.lookModeCheckbox, "When you look (shift+click) at an item, creature or npc in-game, Tibialyzer will automatically open a box displaying information about that object.");
+            explanationTooltip.SetToolTip(outfitGenderCheckbox, "Outfit gender displayed in outfit@ searches.");
+            explanationTooltip.SetToolTip(copyAdvancesCheckbox, "When you advance in level or skill, the advancement text will be automatically copied for you, so you can easily paste it and notify your friends.");
+            explanationTooltip.SetToolTip(eventPopupBox, "When a raid message is send, a notification will appear informing you of the raid.");
+            explanationTooltip.SetToolTip(unrecognizedPopupBox, "When you type in an unrecognized command in Tibia chat (unrecognized@), a notification will appear notifying you of this.");
+            explanationTooltip.SetToolTip(resetSettingsButton, "Clears all settings and resets them back to the default settings, except for the hunt settings. ");
+            explanationTooltip.SetToolTip(popupTypeBox, "Rich notifications are Windows Forms notifications that look pretty. Simple notifications are default Windows bubble notifications. ");
             /*explanationTooltip.SetToolTip(alwaysShowLoot, "When this box is checked, a rich notification is shown every time a creature is killed with the loot of the creature, regardless of what that loot is.");
             explanationTooltip.SetToolTip(rareDropNotificationValueCheckbox, "When an item that is worth at least this amount of gold drops, a notification is displayed.");
             explanationTooltip.SetToolTip(goldCapRatioCheckbox, "When an item that has at least this gold/cap ratio drops, a notification is displayed.");*/
-            explanationTooltip.SetToolTip(specificNotificationCheckbox, "When any item that is specified in the box below drops, a notification is displayed informing you of the dropped item.");
-            explanationTooltip.SetToolTip(notificationLengthSlider, "The amount of time that rich notifications (loot@, creature@) remain on the screen before fading.");
-            explanationTooltip.SetToolTip(downloadAutoHotkey, "Download AutoHotkey to the temporary directory and launches an installer. Complete the installer to install AutoHotkey.");
-            explanationTooltip.SetToolTip(exceptionLabel, "An error occurred, please go to github.com/Mytherin/Tibialyzer/issues and report it. Include the error as displayed here and try to describe what you were doing while it occurred.");
+            //explanationTooltip.SetToolTip(specificNotificationCheckbox, "When any item that is specified in the box below drops, a notification is displayed informing you of the dropped item.");
+            //explanationTooltip.SetToolTip(notificationLengthSlider, "The amount of time that rich notifications (loot@, creature@) remain on the screen before fading.");
+            explanationTooltip.SetToolTip(downloadAutoHotkeyButton, "Download AutoHotkey to the temporary directory and launches an installer. Complete the installer to install AutoHotkey.");
+            explanationTooltip.SetToolTip(scanningSpeedTrack, "Set the memory scanning speed of Tibialyzer. Lower settings drastically reduce CPU usage, but increase response time for Tibialyzer to respond to events in-game (such as in-game commands, look events and loot parsing).");
         }
 
         void initializePluralMap() {
@@ -549,13 +619,79 @@ namespace Tibialyzer {
             }
 
             skip_hunt_refresh = true;
-            huntBox.Items.Clear();
+            huntList.Items.Clear();
             foreach (Hunt h in hunts) {
-                huntBox.Items.Add(h.name);
+                huntList.Items.Add(h.name);
             }
             activeHunt = hunts[activeHuntIndex];
             skip_hunt_refresh = false;
-            huntBox.SelectedIndex = activeHuntIndex;
+            huntList.SelectedIndex = activeHuntIndex;
+            huntList.ItemsChanged += HuntList_ItemsChanged;
+            huntList.ChangeTextOnly = true;
+            huntList.AttemptDeleteItem += HuntList_AttemptDeleteItem;
+            huntList.AttemptNewItem += HuntList_AttemptNewItem;
+
+            logMessageCollection.ReadOnly = true;
+            logMessageCollection.TextAlign = HorizontalAlignment.Left;
+            logMessageCollection.AttemptDeleteItem += LogMessageCollection_AttemptDeleteItem;
+        }
+
+        private void LogMessageCollection_AttemptDeleteItem(object sender, EventArgs e) {
+            Hunt h = getSelectedHunt();
+            if (h != null && logMessageCollection.SelectedIndex >= 0) {
+                string logMessage = logMessageCollection.Items[logMessageCollection.SelectedIndex].ToString();
+                deleteLogMessage(h, logMessage);
+                refreshHunts();
+            }
+        }
+
+        private void HuntList_AttemptNewItem(object sender, EventArgs e) {
+            Hunt h = new Hunt();
+            lock (hunts) {
+                SQLiteCommand command;
+                if (!nameExists("New Hunt")) {
+                    h.name = "New Hunt";
+                } else {
+                    int index = 1;
+                    while (nameExists("New Hunt " + index)) index++;
+                    h.name = "New Hunt " + index;
+                }
+
+                h.dbtableid = 1;
+                while (true) {
+                    command = new SQLiteCommand(String.Format("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='{0}';", h.GetTableName()), lootConn);
+                    int value = int.Parse(command.ExecuteScalar().ToString());
+                    if (value == 0) {
+                        break;
+                    }
+                    h.dbtableid++;
+                }
+            }
+            resetHunt(h);
+            h.trackAllCreatures = true;
+            h.trackedCreatures = "";
+            hunts.Add(h);
+            refreshHunts();
+        }
+
+        private void HuntList_AttemptDeleteItem(object sender, EventArgs e) {
+            if (hunts.Count <= 1) return;
+            Hunt h = getSelectedHunt();
+            lock (hunts) {
+                hunts.Remove(h);
+                if (h == activeHunt) {
+                    activeHunt = hunts[0];
+                }
+            }
+            saveHunts();
+            refreshHunts(true);
+        }
+
+        private void HuntList_ItemsChanged(object sender, EventArgs e) {
+            Hunt h = getSelectedHunt();
+            if (h != null) {
+                h.name = (sender as PrettyListBox).Items[(sender as PrettyListBox).SelectedIndex].ToString();
+            }
         }
 
         public void SuspendForm() {
@@ -569,73 +705,57 @@ namespace Tibialyzer {
             this.Refresh();
         }
 
+        private static List<string> displayItemList = new List<string> { "Mace", "Plate Armor", "Halberd", "Steel Helmet", "Gold Coin", "Dragon Hammer", "Knight Armor", "Giant Sword", "Crown Armor", "Golden Armor" };
+        private static List<string> convertUnstackableItemList = new List<string> { "Mace", "Plate Armor", "Halberd", "Steel Helmet", "War Hammer", "Dragon Hammer", "Knight Armor", "Giant Sword", "Crown Armor", "Golden Armor" };
+        private static List<string> convertStackableItemList = new List<string> { "Spear", "Burst Arrow", "Mana Potion", "Strong Mana Potion", "Great Mana Potion", "Great Fireball Rune", "Black Hood", "Strand of Medusa Hair", "Small Ruby", "Spider Silk" };
         void initializeSettings() {
-            int notificationLength = SettingsManager.getSettingInt("NotificationDuration") < 0 ? 30 : SettingsManager.getSettingInt("NotificationDuration");
-            bool simpleNotifications = SettingsManager.getSettingBool("EnableSimpleNotifications");
-            bool richNotifications = SettingsManager.getSettingBool("EnableRichNotifications");
+            SettingsManager.ApplyDefaultSettings();
+
             bool copyAdvances = SettingsManager.getSettingBool("CopyAdvances");
-            bool showNotifications = SettingsManager.getSettingBool("ShowNotifications");
             bool lootNotificationRich = SettingsManager.getSettingBool("UseRichNotificationType");
-            bool showNotificationsValue = SettingsManager.getSettingBool("ShowNotificationsValue");
-            int notification_value = SettingsManager.getSettingInt("NotificationValue") < 0 ? 2000 : SettingsManager.getSettingInt("NotificationValue");
-            double notification_goldratio = SettingsManager.getSettingDouble("NotificationGoldRatio") < 0 ? 100 : SettingsManager.getSettingDouble("NotificationGoldRatio");
-            bool showNotificationsSpecific = SettingsManager.getSettingBool("ShowNotificationsSpecific");
-
-            this.notificationPanel.Enabled = showNotifications;
-            this.enableSimpleNotificationAnimations.Checked = SettingsManager.getSettingBool("EnableSimpleNotificationAnimation");
-            this.specificNotificationTextbox.Enabled = showNotificationsSpecific;
-            this.notificationLabel.Text = "Notification Length: " + notificationLength.ToString() + " Seconds";
-            this.scanningSpeedTrack.Value = Math.Min(Math.Max(SettingsManager.getSettingInt("ScanSpeed"), 0), 4);
+            
+            this.popupAnimationBox.Checked = SettingsManager.getSettingBool("EnableSimpleNotificationAnimation");
+            this.scanningSpeedTrack.Value = Math.Min(Math.Max(SettingsManager.getSettingInt("ScanSpeed"), scanningSpeedTrack.Minimum), scanningSpeedTrack.Maximum);
             this.scanSpeedDisplayLabel.Text = scanSpeedText[scanningSpeedTrack.Value];
-            this.notificationLengthSlider.Value = notificationLength;
-            this.enableSimpleNotifications.Checked = simpleNotifications;
-            this.eventNotificationEnable.Checked = SettingsManager.getSettingBool("EnableEventNotifications");
-            this.unrecognizedCommandNotification.Checked = SettingsManager.getSettingBool("EnableUnrecognizedNotifications");
-            this.enableRichNotificationsCheckbox.Checked = richNotifications;
-            this.advanceCopyCheckbox.Checked = copyAdvances;
-            this.showNotificationCheckbox.Checked = showNotifications;
-            this.notificationTypeBox.SelectedIndex = lootNotificationRich ? 1 : 0;
-            this.outfitGenderBox.SelectedIndex = SettingsManager.getSettingBool("OutfitGenderMale") ? 0 : 1;
-            this.specificNotificationCheckbox.Checked = showNotificationsSpecific;
-            this.lookCheckBox.Checked = SettingsManager.getSettingBool("LookMode");
-            this.startAutohotkeyScript.Checked = SettingsManager.getSettingBool("StartAutohotkeyAutomatically");
-            this.shutdownOnExit.Checked = SettingsManager.getSettingBool("ShutdownAutohotkeyOnExit");
-            this.richAnchor.SelectedIndex = Math.Min(Math.Max(SettingsManager.getSettingInt("RichNotificationAnchor"), 0), 3);
-            this.richXOffset.Text = SettingsManager.getSettingInt("RichNotificationXOffset").ToString();
-            this.richYOffset.Text = SettingsManager.getSettingInt("RichNotificationYOffset").ToString();
-            this.simpleAnchor.SelectedIndex = Math.Min(Math.Max(SettingsManager.getSettingInt("SimpleNotificationAnchor"), 0), 3);
-            this.simpleXOffset.Text = SettingsManager.getSettingInt("SimpleNotificationXOffset").ToString();
-            this.simpleYOffset.Text = SettingsManager.getSettingInt("SimpleNotificationYOffset").ToString();
-            this.suspendedAnchor.SelectedIndex = Math.Min(Math.Max(SettingsManager.getSettingInt("SuspendedNotificationAnchor"), 0), 3);
-            this.suspendedXOffset.Text = SettingsManager.getSettingInt("SuspendedNotificationXOffset").ToString();
-            this.suspendedYOffset.Text = SettingsManager.getSettingInt("SuspendedNotificationYOffset").ToString();
+            this.eventPopupBox.Checked = SettingsManager.getSettingBool("EnableEventNotifications");
+            this.unrecognizedPopupBox.Checked = SettingsManager.getSettingBool("EnableUnrecognizedNotifications");
+            this.copyAdvancesCheckbox.Checked = copyAdvances;
+            this.popupTypeBox.SelectedIndex = lootNotificationRich ? 1 : 0;
+            this.outfitGenderCheckbox.SelectedIndex = SettingsManager.getSettingBool("OutfitGenderMale") ? 0 : 1;
+            this.lookModeCheckbox.Checked = SettingsManager.getSettingBool("LookMode");
+            this.startScriptOnStartupBox.Checked = SettingsManager.getSettingBool("StartAutohotkeyAutomatically");
+            this.exitScriptOnShutdownBox.Checked = SettingsManager.getSettingBool("ShutdownAutohotkeyOnExit");
+            this.popupAnchorBox.SelectedIndex = Math.Min(Math.Max(SettingsManager.getSettingInt("SimpleNotificationAnchor"), 0), 3);
+            this.popupXOffsetBox.Text = SettingsManager.getSettingInt("SimpleNotificationXOffset").ToString();
+            this.popupYOffsetBox.Text = SettingsManager.getSettingInt("SimpleNotificationYOffset").ToString();
+            this.suspendedAnchorBox.SelectedIndex = Math.Min(Math.Max(SettingsManager.getSettingInt("SuspendedNotificationAnchor"), 0), 3);
+            this.suspendedXOffsetBox.Text = SettingsManager.getSettingInt("SuspendedNotificationXOffset").ToString();
+            this.suspendedYOffsetBox.Text = SettingsManager.getSettingInt("SuspendedNotificationYOffset").ToString();
 
-            string massiveString = "";
+            popupSpecificItemBox.Items.Clear();
             foreach (string str in SettingsManager.getSetting("NotificationItems")) {
-                massiveString += str + "\n";
+                popupSpecificItemBox.Items.Add(str);
             }
-            this.specificNotificationTextbox.Text = massiveString;
+            popupSpecificItemBox.ItemsChanged += PopupSpecificItemBox_ItemsChanged;
+            popupSpecificItemBox.verifyItem = MainForm.itemExists;
+            popupSpecificItemBox.RefreshControl();
 
-            massiveString = "";
-            foreach (string str in SettingsManager.getSetting("AutoHotkeySettings")) {
-                massiveString += str + "\n";
-            }
-            this.autoHotkeyGridSettings.Text = massiveString;
-            (this.autoHotkeyGridSettings as RichTextBoxAutoHotkey).RefreshSyntax();
-
-            massiveString = "";
+            nameListBox.Items.Clear();
             foreach (string str in SettingsManager.getSetting("Names")) {
-                massiveString += str + "\n";
+                nameListBox.Items.Add(str);
             }
-            this.nameTextBox.Text = massiveString;
+            nameListBox.RefreshControl();
+            nameListBox.ItemsChanged += NameListBox_ItemsChanged;
 
+            trackedCreatureList.ItemsChanged += TrackedCreatureList_ItemsChanged;
+            trackedCreatureList.verifyItem = creatureExists;
 
-            this.autoScreenshotAdvance.Checked = SettingsManager.getSettingBool("AutoScreenshotAdvance");
-            this.autoScreenshotDrop.Checked = SettingsManager.getSettingBool("AutoScreenshotItemDrop");
-            this.autoScreenshotDeath.Checked = SettingsManager.getSettingBool("AutoScreenshotDeath");
+            notificationTypeList.ReadOnly = true;
+            this.screenshotAdvanceBox.Checked = SettingsManager.getSettingBool("AutoScreenshotAdvance");
+            this.screenshotRareBox.Checked = SettingsManager.getSettingBool("AutoScreenshotItemDrop");
+            this.screenshotDeathBox.Checked = SettingsManager.getSettingBool("AutoScreenshotDeath");
 
-            this.enableScreenshotBox.Checked = SettingsManager.getSettingBool("EnableScreenshots");
-            this.screenshotPanel.Enabled = enableScreenshotBox.Checked;
+            this.enableScreenshotCheckbox.Checked = SettingsManager.getSettingBool("EnableScreenshots");
             if (SettingsManager.getSettingString("ScreenshotPath") == null || !Directory.Exists(SettingsManager.getSettingString("ScreenshotPath"))) {
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "Screenshots");
                 SettingsManager.setSetting("ScreenshotPath", path);
@@ -644,12 +764,19 @@ namespace Tibialyzer {
                 }
             }
 
+            CreateRatioDisplay(MainForm.displayItemList, discardItemsHeader.Location.X + 10, discardItemsHeader.Location.Y + discardItemsHeader.Size.Height + 8, UpdateDiscardRatio, discardLabels);
+            UpdateDiscardDisplay();
+            CreateRatioDisplay(MainForm.convertUnstackableItemList, convertUnstackableHeader.Location.X + 10, convertUnstackableHeader.Location.Y + convertUnstackableHeader.Size.Height + 8, UpdateConvertRatio, convertLabels);
+            CreateRatioDisplay(MainForm.convertStackableItemList, convertStackableHeader.Location.X + 10, convertStackableHeader.Location.Y + convertStackableHeader.Size.Height + 8, UpdateConvertRatio, convertLabels);
+            UpdateConvertDisplay();
+
             TibiaClientName = SettingsManager.settingExists("TibiaClientName") ? SettingsManager.getSettingString("TibiaClientName") : TibiaClientName;
 
-            screenshotDirectoryBox.Text = SettingsManager.getSettingString("ScreenshotPath");
+            screenshotPathBox.Text = SettingsManager.getSettingString("ScreenshotPath");
             refreshScreenshots();
 
             // convert legacy settings
+            bool legacy = false;
             if (SettingsManager.settingExists("NotificationGoldRatio") || SettingsManager.settingExists("NotificationValue")) {
                 // convert old notification conditions to new SQL conditions
                 List<string> conditions = new List<string>();
@@ -662,7 +789,7 @@ namespace Tibialyzer {
                     conditions.Add(String.Format("item.value / item.capacity >= {0}", value.ToString(CultureInfo.InvariantCulture)));
                 }
                 if (SettingsManager.getSettingBool("AlwaysShowLoot")) {
-                    conditions.Add("1=1");
+                    conditions.Add("1");
                 }
                 SettingsManager.removeSetting("NotificationGoldRatio");
                 SettingsManager.removeSetting("NotificationValue");
@@ -670,18 +797,185 @@ namespace Tibialyzer {
                 SettingsManager.removeSetting("ShowNotificationsValue");
                 SettingsManager.removeSetting("AlwaysShowLoot");
                 SettingsManager.setSetting("NotificationConditions", conditions);
+                legacy = true;
             }
-            massiveString = "";
-            foreach (string str in SettingsManager.getSetting("NotificationConditions")) {
+            if (SettingsManager.settingExists("NotificationDuration")) {
+                int notificationLength = SettingsManager.getSettingInt("NotificationDuration") < 0 ? 30 : SettingsManager.getSettingInt("NotificationDuration");
+                int anchor = Math.Min(Math.Max(SettingsManager.getSettingInt("RichNotificationAnchor"), 0), 3);
+                int xOffset = SettingsManager.getSettingInt("RichNotificationXOffset") == -1 ? 30 : SettingsManager.getSettingInt("RichNotificationXOffset");
+                int yOffset = SettingsManager.getSettingInt("RichNotificationYOffset") == -1 ? 30 : SettingsManager.getSettingInt("RichNotificationYOffset");
+                foreach (string obj in NotificationTypes) {
+                    string settingObject = obj.Replace(" ", "");
+                    SettingsManager.setSetting(settingObject + "Anchor", anchor);
+                    SettingsManager.setSetting(settingObject + "XOffset", xOffset);
+                    SettingsManager.setSetting(settingObject + "YOffset", yOffset);
+                    SettingsManager.setSetting(settingObject + "Duration", notificationLength);
+                    SettingsManager.setSetting(settingObject + "Group", 0);
+                }
+                SettingsManager.removeSetting("NotificationDuration");
+                SettingsManager.removeSetting("RichNotificationAnchor");
+                SettingsManager.removeSetting("RichNotificationXOffset");
+                SettingsManager.removeSetting("RichNotificationYOffset");
+                legacy = true;
+            }
+            if (legacy) {
+                // legacy settings had "#" as comment symbol in AutoHotkey text, replace that with the new comment symbol ";"
+                List<string> newAutoHotkeySettings = new List<string>();
+                foreach(string str in SettingsManager.getSetting("AutoHotkeySettings")) {
+                    newAutoHotkeySettings.Add(str.Replace('#', ';'));
+                }
+                SettingsManager.setSetting("AutoHotkeySettings", newAutoHotkeySettings);
+            }
+
+            string massiveString = "";
+            foreach (string str in SettingsManager.getSetting("AutoHotkeySettings")) {
                 massiveString += str + "\n";
             }
-            this.conditionBox.Text = massiveString;
+            this.autoHotkeyGridSettings.Text = massiveString;
+            (this.autoHotkeyGridSettings as RichTextBoxAutoHotkey).RefreshSyntax();
+
+
+            notificationTypeList.Items.Clear();
+            foreach (string str in NotificationTypes) {
+                notificationTypeList.Items.Add(str);
+            }
+            notificationTypeList.SelectedIndex = 0;
+
+            popupConditionBox.Items.Clear();
+            foreach (string str in SettingsManager.getSetting("NotificationConditions")) {
+                popupConditionBox.Items.Add(str);
+            }
+            popupConditionBox.ItemsChanged += PopupConditionBox_ItemsChanged;
+            popupConditionBox.verifyItem = NotificationConditionManager.ValidCondition;
+            popupConditionBox.RefreshControl();
+        }
+
+        private void CreateRatioDisplay(List<string> itemList, int baseX, int baseY, EventHandler itemClick, List<Control> labelControls) {
+            int it = 0;
+            foreach (string itemName in itemList) {
+                Item item = getItem(itemName);
+                PictureBox pictureBox = new PictureBox();
+                pictureBox.Image = item.image;
+                pictureBox.Location = new Point(baseX + it * 52, baseY);
+                pictureBox.BackgroundImage = MainForm.item_background;
+                pictureBox.BackgroundImageLayout = ImageLayout.Zoom;
+                pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                pictureBox.Size = new Size(48, 48);
+                pictureBox.Name = itemName;
+                pictureBox.Click += itemClick;
+
+                double goldRatio = item.GetMaxValue() / item.capacity;
+                Label label = new Label();
+                label.Text = String.Format(goldRatio < 100 ? "{0:0.#}" : "{0:0.}", goldRatio);
+                label.Location = new Point(pictureBox.Location.X, pictureBox.Location.Y + pictureBox.Size.Height);
+                label.Font = new Font(FontFamily.GenericSansSerif, 10.0f, FontStyle.Bold);
+                label.Size = new Size(48, 24);
+                label.ForeColor = MainForm.ButtonColor;
+                label.TextAlign = ContentAlignment.MiddleCenter;
+                label.Name = itemName;
+                labelControls.Add(label);
+
+                tabControls[6].Add(pictureBox);
+                tabControls[6].Add(label);
+                it++;
+            }
+        }
+        private void UpdateDiscardRatio(object sender, EventArgs e) {
+            string itemName = (sender as Control).Name;
+            Item item = getItem(itemName);
+            double ratio = item.GetMaxValue() / item.capacity;
+            this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + Math.Floor(ratio));
+            UpdateDiscardDisplay();
+        }
+
+        private List<Control> discardLabels = new List<Control>();
+        private void UpdateDiscardDisplay() {
+            foreach (Control c in discardLabels) {
+                string itemName = c.Name;
+                Item item = getItem(itemName);
+                if (item.discard) {
+                    c.BackColor = Color.FromArgb(174, 33, 33);
+                } else {
+                    c.BackColor = Color.FromArgb(56, 156, 56);
+                }
+            }
+        }
+        
+        private void UpdateConvertRatio(object sender, EventArgs e) {
+            string itemName = (sender as Control).Name;
+            Item item = getItem(itemName);
+            double ratio = item.GetMaxValue() / item.capacity;
+            this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + (item.stackable ? "1-" : "0-") + Math.Ceiling(ratio + 0.01));
+            UpdateConvertDisplay();
+        }
+
+        private List<Control> convertLabels = new List<Control>();
+        private void UpdateConvertDisplay() {
+            foreach (Control c in convertLabels) {
+                string itemName = c.Name;
+                Item item = getItem(itemName);
+                if (item.convert_to_gold) {
+                    c.BackColor = Item.GoldColor;
+                } else {
+                    c.BackColor = Color.FromArgb(76, 128, 176);
+                }
+            }
+        }
+
+
+        private void applyDiscardRatioButton_Click(object sender, EventArgs e) {
+            double ratio;
+            if (double.TryParse(customDiscardRatioBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out ratio)) {
+                this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + Math.Floor(ratio));
+                UpdateDiscardDisplay();
+            }
+        }
+
+        private void customDiscardRatioBox_KeyPress(object sender, KeyPressEventArgs e) {
+            if (e.KeyChar == '\r') {
+                applyDiscardRatioButton_Click(null, null);
+                e.Handled = true;
+            }
+        }
+
+        private void applyConvertRatioButton_Click(object sender, EventArgs e) {
+            double ratio;
+            if (double.TryParse(customConvertRatioBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out ratio)) {
+                this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "0-" + Math.Floor(ratio));
+                this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "1-" + Math.Floor(ratio));
+                UpdateConvertDisplay();
+            }
+        }
+        
+        private void customConvertRatioBox_KeyPress(object sender, KeyPressEventArgs e) {
+            if (e.KeyChar == '\r') {
+                applyConvertRatioButton_Click(null, null);
+                e.Handled = true;
+            }
+        }
+        
+        private void PopupConditionBox_ItemsChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+            List<string> conditions = new List<string>();
+            foreach (object obj in popupConditionBox.Items) {
+                conditions.Add(obj.ToString());
+            }
+            SettingsManager.setSetting("NotificationConditions", conditions);
+        }
+
+        private void PopupSpecificItemBox_ItemsChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+            List<string> items = new List<string>();
+
+            foreach (object obj in (sender as PrettyListBox).Items) {
+                items.Add(obj.ToString());
+            }
+            SettingsManager.setSetting("NotificationItems", items);
         }
 
         void makeDraggable(Control.ControlCollection controls) {
             foreach (Control c in controls) {
-                if (c == this.closeButton || c == this.minimizeButton) continue;
-                if (c is Label || c is Panel) {
+                if ((c is Label && !c.Name.ToLower().Contains("button")) || c is Panel) {
                     c.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
                 }
                 if (c is Panel || c is TabPage || c is TabControl) {
@@ -702,11 +996,7 @@ namespace Tibialyzer {
                 try {
                     success = ScanMemory();
                 } catch (Exception ex) {
-                    if (errorVisible) {
-                        errorVisible = false;
-                        this.exceptionLabel.Text = String.Format("Database Scan Error (Non-Fatal): {0}", ex.Message);
-                        this.exceptionLabel.Visible = true;
-                    }
+                    DisplayWarning(String.Format("Database Scan Error (Non-Fatal): {0}", ex.Message));
                     Console.WriteLine(ex.Message);
                 }
                 circleTimer.Dispose();
@@ -745,6 +1035,21 @@ namespace Tibialyzer {
         }
 
 
+        private string lastWarning;
+        private void DisplayWarning(string message) {
+            warningImageBox.Visible = true;
+            if (lastWarning != message) {
+                explanationTooltip.SetToolTip(warningImageBox, message);
+                lastWarning = message;
+            }
+        }
+
+        private void ClearWarning(string message) {
+            if (lastWarning == message) {
+                warningImageBox.Visible = false;
+            }
+        }
+
         public static string ToTitle(string str) {
             return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(str);
         }
@@ -760,19 +1065,11 @@ namespace Tibialyzer {
         }
 
         private void ShowSimpleNotification(string title, string text, Image image) {
-            if (!SettingsManager.getSettingBool("EnableSimpleNotifications")) return;
             notifyIcon1.BalloonTipText = text;
             notifyIcon1.BalloonTipTitle = title;
             notifyIcon1.Icon = Icon.FromHandle(((Bitmap)image).GetHicon());
             notifyIcon1.ShowBalloonTip(5000);
         }
-
-        public void CloseNotification() {
-            if (tooltipForm != null) {
-                tooltipForm.Close();
-            }
-        }
-
 
         bool clearSimpleNotifications = false;
         int notificationSpacing = 5;
@@ -878,7 +1175,7 @@ namespace Tibialyzer {
         }
 
         private void ShowNotification(NotificationForm f, string command, string screenshot_path = "") {
-            if (!SettingsManager.getSettingBool("EnableRichNotifications")) return;
+            if (f == null) return;
 
             if (screenshot_path == "") {
                 TibialyzerCommand cmd = new TibialyzerCommand(command);
@@ -886,6 +1183,23 @@ namespace Tibialyzer {
                 f.command = cmd;
             }
             f.Visible = false;
+            int richX = -1;
+            int richY = -1;
+            int anchor = 0;
+            int duration = 5;
+            int group = 0;
+            for (int it = 0; it < NotificationTypeObjects.Count; it++) {
+                if (f.GetType() == NotificationTypeObjects[it]) {
+                    string settingObject = NotificationTypes[it].Replace(" ", "");
+                    richX = SettingsManager.getSettingInt(settingObject + "XOffset");
+                    richY = SettingsManager.getSettingInt(settingObject + "YOffset");
+                    anchor = SettingsManager.getSettingInt(settingObject + "Anchor");
+                    duration = SettingsManager.getSettingInt(settingObject + "Duration");
+                    group = Math.Min(Math.Max(SettingsManager.getSettingInt(settingObject + "Group"), 0), 9);
+                    break;
+                }
+            }
+            f.notificationDuration = duration;
             f.LoadForm();
             if (screenshot_path != "") {
                 Bitmap bitmap = new Bitmap(f.Width, f.Height);
@@ -898,8 +1212,8 @@ namespace Tibialyzer {
                 f.Dispose();
                 return;
             }
-            if (tooltipForm != null) {
-                tooltipForm.Close();
+            if (NotificationFormGroups[group] != null) {
+                NotificationFormGroups[group].close();
             }
             int position_x = 0, position_y = 0;
             Screen screen;
@@ -909,11 +1223,9 @@ namespace Tibialyzer {
             } else {
                 screen = Screen.FromHandle(tibia_process.MainWindowHandle);
             }
-            int richX = SettingsManager.getSettingInt("RichNotificationXOffset");
-            int richY = SettingsManager.getSettingInt("RichNotificationYOffset");
+
             int xOffset = richX == -1 ? 30 : richX;
             int yOffset = richY == -1 ? 30 : richY;
-            int anchor = SettingsManager.getSettingInt("RichNotificationAnchor");
             switch (anchor) {
                 case 3:
                     position_x = screen.WorkingArea.Right - xOffset - f.Width;
@@ -937,7 +1249,7 @@ namespace Tibialyzer {
             f.SetDesktopLocation(position_x, position_y);
             f.TopMost = true;
             f.Show();
-            tooltipForm = f;
+            NotificationFormGroups[group] = f;
         }
 
         public void Back() {
@@ -1478,7 +1790,7 @@ namespace Tibialyzer {
         }
 
         private static void executeNameCommand(object sender, EventArgs e) {
-            mainForm.ExecuteCommand((sender as Control).Name);
+
         }
 
         public static int DisplayCreatureList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, int max_x, int spacing, Func<TibiaObject, string> tooltip_function = null, float magnification = 1.0f, List<Control> createdControls = null, int page = 0, int pageheight = 10000, PageInfo pageInfo = null, int currentDisplay = -1) {
@@ -1628,8 +1940,8 @@ namespace Tibialyzer {
                 creatureTimer.Dispose();
                 creatureTimer = null;
                 mainForm.Invoke((MethodInvoker)delegate {
-                    string searchTerm = creatureSearch.Text;
-                    switch (browseSelectionBox.SelectedIndex) {
+                    string searchTerm = browseTextBox.Text;
+                    switch (browseTypeBox.SelectedIndex) {
                         case 0:
                             creatureObjects = searchCreature(searchTerm);
                             break;
@@ -1662,7 +1974,7 @@ namespace Tibialyzer {
         }
 
         private void browseSelectionBox_SelectedIndexChanged(object sender, EventArgs e) {
-            if (creatureSearch.Text == "") {
+            if (browseTextBox.Text == "") {
                 return;
             }
             refreshCreatureTimer();
@@ -1697,7 +2009,7 @@ namespace Tibialyzer {
                     helpTimer.Dispose();
                 helpTimer = null;
                 mainForm.Invoke((MethodInvoker)delegate {
-                    string helpText = helpSearchBox.Text.ToLower();
+                    string helpText = searchCommandHelpBox.Text.ToLower();
                     commands.Clear();
                     foreach (HelpCommand command in helpCommands) {
                         if (helpText == "" || command.command.ToLower().Contains(helpText) || command.description.ToLower().Contains(helpText)) {
@@ -1736,7 +2048,7 @@ namespace Tibialyzer {
             this.ExecuteCommand("item" + MainForm.commandSymbol + item_name);
         }
 
-        private void exportLogButton_Click(object sender, EventArgs e) {
+        private void exportLogButton_Click(object sender, MouseEventArgs e) {
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.Title = "Export Log File";
             if (File.Exists("exported_log")) {
@@ -1752,14 +2064,14 @@ namespace Tibialyzer {
             }
         }
 
-        private void resetButton_Click(object sender, EventArgs e) {
+        private void resetButton_Click(object sender, MouseEventArgs e) {
             Hunt h = getSelectedHunt();
             if (h != null) {
                 ExecuteCommand("reset" + MainForm.commandSymbol + h.name);
             }
         }
 
-        private void importLogFile_Click(object sender, EventArgs e) {
+        private void importLogFile_Click(object sender, MouseEventArgs e) {
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Title = "Import Log File";
             DialogResult result = dialog.ShowDialog();
@@ -1872,14 +2184,76 @@ namespace Tibialyzer {
             this.ExecuteCommand(commandTextBox.Text);
         }
 
+
+        private void searchSettingsTextBox_KeyPress(object sender, KeyPressEventArgs e) {
+            if (e.KeyChar == '\r') {
+                settingSearchButton_Click(null, null);
+                e.Handled = true;
+            }
+        }
+
+        List<Control> searchControls = new List<Control>();
+        private void settingSearchButton_Click(object sender, EventArgs e) {
+            foreach(Control c in searchControls) {
+                this.Controls.Remove(c);
+                c.Dispose();
+            }
+            searchControls.Clear();
+            string[] words = searchSettingsTextBox.Text.ToLower().Split(' ');
+            List<SettingData> matchingData = new List<SettingData>();
+            foreach(SettingData settingData in settingData) {
+                bool found = true;
+                foreach (string word in words) {
+                    if (!settingData.searchString.Contains(word)) {
+                        found = false;
+                        break;
+                    }
+                }
+                if (found) {
+                    matchingData.Add(settingData);
+                }
+            }
+            int it = 0;
+            foreach(SettingData settingData in matchingData) {
+                Label label = new Label();
+                label.Size = new Size(180, 115);
+                label.Location = new Point(searchSettingsTextBox.Location.X + it * 180, searchSettingsTextBox.Location.Y + searchSettingsTextBox.Size.Height);
+                if (settingData.settingValue == null) {
+                    label.Text = String.Format("{0}\n{1}\n\n{2}", settingData.title, settingData.tab, settingData.description);
+                } else {
+                    label.Text = String.Format("{0} ({3})\n{1}\n\n{2}", settingData.title, settingData.tab, settingData.description, SettingsManager.getSettingString(settingData.settingValue));
+                }
+                label.AutoSize = false;
+                label.BackColor = ButtonColor;
+                label.ForeColor = ButtonForeColor;
+                label.MouseEnter += mainButton_MouseEnter;
+                label.MouseLeave += mainButton_MouseLeave;
+                label.Name = settingData.tab;
+                label.Click += switchToTab;
+                label.Font = generalButton.Font;
+                explanationTooltip.SetToolTip(label, settingData.description);
+                searchControls.Add(label);
+                this.Controls.Add(label);
+                it++;
+            }
+        }
+
+        private List<string> tabNames = new List<string> { "main", "settings", "hunts", "logs", "notifications", "popups", "database", "autohotkey", "screenshots", "browse", "help" };
+        private void switchToTab(object sender, EventArgs e) {
+            string tab = (sender as Control).Name.ToLower().Trim();
+            if (tabNames.Contains(tab)) {
+                switchTab(tabNames.IndexOf(tab));
+            }
+        }
+
         private Hunt getActiveHunt() {
             return activeHunt;
         }
         private Hunt getSelectedHunt() {
-            if (huntBox.SelectedIndex < 0) return null;
+            if (huntList.SelectedIndex < 0) return null;
             lock (hunts) {
 
-                return huntBox.SelectedIndex >= hunts.Count ? null : hunts[huntBox.SelectedIndex];
+                return huntList.SelectedIndex >= hunts.Count ? null : hunts[huntList.SelectedIndex];
             }
         }
 
@@ -1892,34 +2266,6 @@ namespace Tibialyzer {
             return false;
         }
 
-        private void newHuntButton_Click(object sender, EventArgs e) {
-            Hunt h = new Hunt();
-            lock (hunts) {
-                SQLiteCommand command;
-                if (!nameExists("New Hunt")) {
-                    h.name = "New Hunt";
-                } else {
-                    int index = 1;
-                    while (nameExists("New Hunt " + index)) index++;
-                    h.name = "New Hunt " + index;
-                }
-
-                h.dbtableid = 1;
-                while (true) {
-                    command = new SQLiteCommand(String.Format("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='{0}';", h.GetTableName()), lootConn);
-                    int value = int.Parse(command.ExecuteScalar().ToString());
-                    if (value == 0) {
-                        break;
-                    }
-                    h.dbtableid++;
-                }
-            }
-            resetHunt(h);
-            h.trackAllCreatures = true;
-            h.trackedCreatures = "";
-            hunts.Add(h);
-            refreshHunts();
-        }
 
         private void deleteHuntButton_Click(object sender, EventArgs e) {
             if (hunts.Count <= 1) return;
@@ -1935,41 +2281,44 @@ namespace Tibialyzer {
         bool switch_hunt = false;
         private void huntBox_SelectedIndexChanged(object sender, EventArgs e) {
             if (skip_hunt_refresh) return;
+            if (huntList.SelectedIndex < 0) return;
             switch_hunt = true;
             Hunt h = getSelectedHunt();
-            this.huntNameBox.Text = h.name;
-            trackCreaturesCheckbox.Checked = h.trackAllCreatures;
+            displayAllCreaturesBox.Checked = h.trackAllCreatures;
             if (h == activeHunt) {
-                activeHuntButton.Text = "Currently Active";
-                activeHuntButton.Enabled = false;
+                setActiveHuntButton.Text = "Currently Active";
+                setActiveHuntButton.Enabled = false;
             } else {
-                activeHuntButton.Text = "Set As Active Hunt";
-                activeHuntButton.Enabled = true;
+                setActiveHuntButton.Text = "Set As Active Hunt";
+                setActiveHuntButton.Enabled = true;
             }
-            trackCreaturesBox.Text = h.trackedCreatures;
-            clearHuntOnStartup.Checked = h.clearOnStartup;
-            sideHuntBox.Checked = h.sideHunt;
-            aggregateHuntBox.Checked = h.aggregateHunt;
+            string[] split = h.trackedCreatures.Split('\n');
+            trackedCreatureList.Items.Clear();
+            foreach (string str in split) {
+                trackedCreatureList.Items.Add(str);
+            }
+            clearHuntOnStartupBox.Checked = h.clearOnStartup;
+            switchOnKillBox.Checked = h.sideHunt;
+            gatherTrackedKillsBox.Checked = h.aggregateHunt;
             refreshHuntImages(h);
             refreshHuntLog(h);
             switch_hunt = false;
         }
 
         void refreshHuntLog(Hunt h) {
-            const int maxLogLines = 1000;
-            string massiveString = "";
+            const int maxLogLines = 250;
             List<string> timestamps = h.loot.logMessages.Keys.OrderByDescending(o => o).ToList();
             int count = 0;
+            logMessageCollection.Items.Clear();
             foreach (string t in timestamps) {
                 List<string> strings = h.loot.logMessages[t].ToList();
                 strings.Reverse();
                 foreach (string str in strings) {
-                    massiveString += str + "\n";
+                    logMessageCollection.Items.Add(str);
                     if (count++ > maxLogLines) break;
                 }
                 if (count > maxLogLines) break;
             }
-            this.logMessageTextBox.Text = massiveString;
         }
 
         void refreshHunts(bool refreshSelection = false) {
@@ -1978,16 +2327,16 @@ namespace Tibialyzer {
             skip_hunt_refresh = true;
 
             lock (hunts) {
-                huntBox.Items.Clear();
+                huntList.Items.Clear();
                 foreach (Hunt hunt in hunts) {
-                    huntBox.Items.Add(hunt.name);
-                    if (hunt == h) currentHunt = huntBox.Items.Count - 1;
+                    huntList.Items.Add(hunt.name);
+                    if (hunt == h) currentHunt = huntList.Items.Count - 1;
                 }
-                huntBox.SelectedIndex = refreshSelection ? 0 : currentHunt;
+                huntList.SelectedIndex = refreshSelection ? 0 : currentHunt;
             }
 
             skip_hunt_refresh = false;
-            huntBox_SelectedIndexChanged(huntBox, null);
+            huntBox_SelectedIndexChanged(huntList, null);
         }
 
         void saveHunts() {
@@ -2012,14 +2361,14 @@ namespace Tibialyzer {
             refreshHunts();
         }
 
-        private void activeHuntButton_Click(object sender, EventArgs e) {
+        private void activeHuntButton_Click(object sender, MouseEventArgs e) {
             if (switch_hunt) return;
             Hunt h = getSelectedHunt();
             lock (hunts) {
                 activeHunt = h;
             }
-            activeHuntButton.Text = "Currently Active";
-            activeHuntButton.Enabled = false;
+            setActiveHuntButton.Text = "Currently Active";
+            setActiveHuntButton.Enabled = false;
             saveHunts();
         }
 
@@ -2107,8 +2456,21 @@ namespace Tibialyzer {
 
         private void trackCreaturesBox_TextChanged(object sender, EventArgs e) {
             if (switch_hunt) return;
-            Hunt h = hunts[huntBox.SelectedIndex];
+            Hunt h = hunts[huntList.SelectedIndex];
             h.trackedCreatures = (sender as RichTextBox).Text;
+
+            saveHunts();
+            refreshHuntImages(h);
+        }
+
+        private void TrackedCreatureList_ItemsChanged(object sender, EventArgs e) {
+            if (switch_hunt) return;
+            Hunt h = hunts[huntList.SelectedIndex];
+            string str = "";
+            foreach (object obj in (sender as PrettyListBox).Items) {
+                str += obj.ToString() + "\n";
+            }
+            h.trackedCreatures = str.Trim();
 
             saveHunts();
             refreshHuntImages(h);
@@ -2151,15 +2513,7 @@ namespace Tibialyzer {
                 SettingsManager.setSetting("NotificationGoldRatio", value);
             }
         }
-
-        private void notificationSpecific_CheckedChanged(object sender, EventArgs e) {
-            if (prevent_settings_update) return;
-
-            SettingsManager.setSetting("ShowNotificationsSpecific", (sender as CheckBox).Checked.ToString());
-
-            specificNotificationTextbox.Enabled = (sender as CheckBox).Checked;
-        }
-
+        
         private void specificNotificationTextbox_TextChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
             List<string> names = new List<string>();
@@ -2169,16 +2523,7 @@ namespace Tibialyzer {
                 names.Add(lines[i].ToLower());
             SettingsManager.setSetting("NotificationItems", names);
         }
-
-        private void showNotificationCheckbox_CheckedChanged(object sender, EventArgs e) {
-            if (prevent_settings_update) return;
-            string chk = (sender as CheckBox).Checked.ToString();
-
-            SettingsManager.setSetting("ShowNotifications", chk);
-
-            notificationPanel.Enabled = (sender as CheckBox).Checked;
-        }
-
+        
         private void notificationTypeBox_SelectedIndexChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
@@ -2190,26 +2535,7 @@ namespace Tibialyzer {
 
             SettingsManager.setSetting("OutfitGenderMale", ((sender as ComboBox).SelectedIndex == 0).ToString());
         }
-
-        private void notificationLengthSlider_Scroll(object sender, EventArgs e) {
-            if (prevent_settings_update) return;
-            SettingsManager.setSetting("NotificationDuration", (sender as TrackBar).Value.ToString());
-
-            this.notificationLabel.Text = "Notification Length: " + SettingsManager.getSettingString("NotificationDuration") + " Seconds";
-        }
-
-        private void enableRichNotificationsCheckbox_CheckedChanged(object sender, EventArgs e) {
-            if (prevent_settings_update) return;
-
-            SettingsManager.setSetting("EnableRichNotifications", (sender as CheckBox).Checked.ToString());
-        }
-
-        private void enableSimpleNotifications_CheckedChanged(object sender, EventArgs e) {
-            if (prevent_settings_update) return;
-
-            SettingsManager.setSetting("EnableSimpleNotifications", (sender as CheckBox).Checked.ToString());
-        }
-
+                
         private void eventNotificationEnable_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
@@ -2228,13 +2554,13 @@ namespace Tibialyzer {
             SettingsManager.setSetting("CopyAdvances", (sender as CheckBox).Checked.ToString());
         }
 
-        private void nameTextBox_TextChanged(object sender, EventArgs e) {
+        private void NameListBox_ItemsChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
             List<string> names = new List<string>();
 
-            string[] lines = (sender as RichTextBox).Text.Split('\n');
-            for (int i = 0; i < lines.Length; i++)
-                names.Add(lines[i]);
+            foreach (object obj in (sender as PrettyListBox).Items) {
+                names.Add(obj.ToString());
+            }
             SettingsManager.setSetting("Names", names);
         }
 
@@ -2243,19 +2569,11 @@ namespace Tibialyzer {
 
             SettingsManager.setSetting("LookMode", (sender as CheckBox).Checked.ToString());
         }
-
-        private void alwaysShowLoot_CheckedChanged(object sender, EventArgs e) {
-            if (prevent_settings_update) return;
-
-            SettingsManager.setSetting("AlwaysShowLoot", (sender as CheckBox).Checked.ToString());
-        }
-
+        
         private void enableScreenshotBox_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
             SettingsManager.setSetting("EnableScreenshots", (sender as CheckBox).Checked.ToString());
-
-            this.screenshotPanel.Enabled = (sender as CheckBox).Checked;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -2271,7 +2589,7 @@ namespace Tibialyzer {
 
         Bitmap takeScreenshot() {
             Process tibia_process = GetTibiaProcess();
-            if (tibia_process == null)  return null; //no tibia to take screenshot of
+            if (tibia_process == null) return null; //no tibia to take screenshot of
 
             RECT Rect = new RECT();
             if (!GetWindowRect(tibia_process.MainWindowHandle, ref Rect)) return null;
@@ -2299,7 +2617,7 @@ namespace Tibialyzer {
 
         List<string> imageExtensions = new List<string> { ".jpg", ".bmp", ".gif", ".png" };
         void refreshScreenshots() {
-            string selectedValue = screenshotList.SelectedIndex >= 0 ? screenshotList.Items[screenshotList.SelectedIndex].ToString() : null;
+            string selectedValue = screenshotDisplayList.SelectedIndex >= 0 ? screenshotDisplayList.Items[screenshotDisplayList.SelectedIndex].ToString() : null;
             int index = 0;
 
             string path = SettingsManager.getSettingString("ScreenshotPath");
@@ -2313,20 +2631,20 @@ namespace Tibialyzer {
 
             refreshingScreenshots = true;
 
-            screenshotList.Items.Clear();
+            screenshotDisplayList.Items.Clear();
             foreach (string file in files) {
                 if (imageExtensions.Contains(Path.GetExtension(file).ToLower())) { //check if file is an image
                     string f = Path.GetFileName(file);
                     if (f == selectedValue) {
-                        index = screenshotList.Items.Count;
+                        index = screenshotDisplayList.Items.Count;
                     }
-                    screenshotList.Items.Add(f);
+                    screenshotDisplayList.Items.Add(f);
                 }
             }
 
             refreshingScreenshots = false;
-            if (screenshotList.Items.Count > 0) {
-                screenshotList.SelectedIndex = index;
+            if (screenshotDisplayList.Items.Count > 0) {
+                screenshotDisplayList.SelectedIndex = index;
             }
         }
 
@@ -2334,7 +2652,7 @@ namespace Tibialyzer {
             folderBrowserDialog1.SelectedPath = SettingsManager.getSettingString("ScreenshotPath");
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK) {
                 SettingsManager.setSetting("ScreenshotPath", folderBrowserDialog1.SelectedPath);
-                screenshotDirectoryBox.Text = folderBrowserDialog1.SelectedPath;
+                screenshotPathBox.Text = folderBrowserDialog1.SelectedPath;
                 refreshScreenshots();
             }
         }
@@ -2360,20 +2678,25 @@ namespace Tibialyzer {
         bool refreshingScreenshots = false;
         private void screenshotList_SelectedIndexChanged(object sender, EventArgs e) {
             if (refreshingScreenshots) return;
-            if (screenshotList.SelectedIndex >= 0) {
-                string selectedImage = screenshotList.Items[screenshotList.SelectedIndex].ToString();
+            if (screenshotDisplayList.SelectedIndex >= 0) {
+                string selectedImage = screenshotDisplayList.Items[screenshotDisplayList.SelectedIndex].ToString();
 
                 string path = SettingsManager.getSettingString("ScreenshotPath");
                 if (path == null) return;
 
                 string imagePath = Path.Combine(path, selectedImage);
-
-                Image image = Image.FromFile(imagePath);
-                if (image != null) {
-                    if (screenshotBox.Image != null) {
-                        screenshotBox.Image.Dispose();
+                if (!File.Exists(imagePath)) return;
+                try {
+                    Image image = Image.FromFile(imagePath);
+                    if (image != null) {
+                        if (screenshotBox.Image != null) {
+                            screenshotBox.Image.Dispose();
+                        }
+                        screenshotBox.Image = image;
+                        screenshotTitleLabel.Text = selectedImage;
                     }
-                    screenshotBox.Image = image;
+                } catch {
+
                 }
             }
         }
@@ -2403,8 +2726,6 @@ namespace Tibialyzer {
             client.DownloadProgressChanged += Client_DownloadProgressChanged;
 
             downloadBar.Visible = true;
-            downloadLabel.Visible = true;
-            downloadLabel.Text = "Downloading...";
 
             client.DownloadDataAsync(new Uri(autoHotkeyURL));
         }
@@ -2415,15 +2736,12 @@ namespace Tibialyzer {
         }
 
         private void Client_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e) {
-            downloadLabel.Text = "Writing...";
             try {
                 string filepath = System.IO.Path.GetTempPath() + "autohotkeyinstaller.exe";
                 Console.WriteLine(filepath);
                 File.WriteAllBytes(filepath, e.Result);
                 System.Diagnostics.Process.Start(filepath);
-                downloadLabel.Text = "Download successful.";
             } catch {
-                downloadLabel.Text = "Failed to download.";
             }
             downloadBar.Visible = false;
         }
@@ -2446,12 +2764,12 @@ namespace Tibialyzer {
             return value;
         }
 
+        private string autoHotkeyWarning = "Warning: Modified AutoHotkey settings have not taken effect. Restart AutoHotkey to apply changes.";
         private void autoHotkeyGridSettings_TextChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
             SettingsManager.setSetting("AutoHotkeySettings", autoHotkeyGridSettings.Text.Split('\n').ToList());
-
-            this.autohotkeyWarningLabel.Visible = true;
+            DisplayWarning(autoHotkeyWarning);
         }
 
         private void writeToAutoHotkeyFile() {
@@ -2481,7 +2799,7 @@ namespace Tibialyzer {
         }
 
         private void startAutoHotkey_Click(object sender, EventArgs e) {
-            this.autohotkeyWarningLabel.Visible = false;
+            ClearWarning(autoHotkeyWarning);
             writeToAutoHotkeyFile();
             System.Diagnostics.Process.Start(autohotkeyFile);
         }
@@ -2490,6 +2808,7 @@ namespace Tibialyzer {
             foreach (var process in Process.GetProcessesByName("AutoHotkey")) {
                 process.Kill();
             }
+            CloseSuspendedWindow();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
@@ -2585,10 +2904,6 @@ namespace Tibialyzer {
             }
         }
 
-        private void unlockResetSettingsButton_CheckedChanged(object sender, EventArgs e) {
-            resetSettingsPanel.Enabled = (sender as CheckBox).Checked;
-        }
-
         private void resetToDefaultButton_Click(object sender, EventArgs e) {
             SettingsManager.ResetSettingsToDefault();
             SettingsManager.SaveSettings();
@@ -2596,7 +2911,7 @@ namespace Tibialyzer {
             initializeSettings();
         }
 
-        public string[] scanSpeedText = { "Fastest", "Fast", "Medium", "Slow", "Slowest" };
+        public string[] scanSpeedText = { "Fastest (10)", "Fast (9)", "Fast (8)", "Fast (7)", "Medium (6)", "Medium (5)", "Medium (4)", "Slow (3)", "Slow (2)", "Slow (1)", "Slowest (0)" };
 
         private void scanningSpeedTrack_Scroll(object sender, EventArgs e) {
             if (prevent_settings_update) return;
@@ -2611,123 +2926,11 @@ namespace Tibialyzer {
                 ExecuteCommand("loot" + MainForm.commandSymbol + h.name);
             }
         }
-
-
-        private void pickupRare_Click(object sender, EventArgs e) {
-            this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + "100");
-        }
-
-        private void pickupHigh_Click(object sender, EventArgs e) {
-            this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + "25");
-
-        }
-
-        private void pickupGold_Click(object sender, EventArgs e) {
-            this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + "10");
-        }
-
-        private void pickupPlate_Click(object sender, EventArgs e) {
-            this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + "3");
-
-        }
-
-        private void pickupEverything_Click(object sender, EventArgs e) {
-            this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + "0");
-        }
-
-        private void convertAllStackable_Click(object sender, EventArgs e) {
-            this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "1-9999999999");
-        }
-
-        private void noConvertStackable_Click(object sender, EventArgs e) {
-            this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "1-0");
-        }
-
-        private void convertNonStackable_Click(object sender, EventArgs e) {
-            this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "0-9999999999");
-        }
-
-        private void convertCheapNonStackable_Click(object sender, EventArgs e) {
-            this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "0-10");
-        }
-
-        private void dontConvert_Click(object sender, EventArgs e) {
-            this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "0-0");
-        }
-
-        private void PickupCreatureDrops(bool pickup) {
-            using (var transaction = conn.BeginTransaction()) {
-                SQLiteCommand command;
-                command = new SQLiteCommand(String.Format("UPDATE Items SET discard={0} WHERE category='{1}';", !pickup ? "1" : "0", "Creature Products"), conn, transaction);
-                command.ExecuteNonQuery();
-                transaction.Commit();
-            }
-            foreach (int id in _itemIdMap.Keys.ToArray().ToList()) {
-                Item item = _itemIdMap[id];
-                if (item.category == "Creature Products") {
-                    item.discard = !pickup;
-                }
-            }
-        }
-
-        private void pickupCreature_Click(object sender, EventArgs e) {
-            PickupCreatureDrops(true);
-        }
-
-        private void nopickupCreature_Click(object sender, EventArgs e) {
-            PickupCreatureDrops(false);
-        }
-        private void applyRatioButton_Click(object sender, EventArgs e) {
-            double val = 0;
-            if (double.TryParse(goldRatioTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out val)) {
-                this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + goldRatioTextBox.Text);
-            }
-        }
-
-        private void stackableConvertApply_Click(object sender, EventArgs e) {
-            double val = 0;
-            if (double.TryParse(stackableConvertTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out val)) {
-                this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "1-" + stackableConvertTextBox.Text);
-            }
-        }
-
-        private void unstackableConvertApply_Click(object sender, EventArgs e) {
-            double val = 0;
-            if (double.TryParse(unstackableConvertTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out val)) {
-                this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "0-" + unstackableConvertTextBox.Text);
-            }
-        }
-
-        private void richAnchor_SelectedIndexChanged(object sender, EventArgs e) {
-            if (prevent_settings_update) return;
-
-            SettingsManager.setSetting("RichNotificationAnchor", richAnchor.SelectedIndex);
-        }
-
-        private void richXOffset_TextChanged(object sender, EventArgs e) {
-            if (prevent_settings_update) return;
-
-            int xOffset;
-            if (int.TryParse((sender as TextBox).Text, out xOffset)) {
-                SettingsManager.setSetting("RichNotificationXOffset", xOffset);
-            }
-        }
-
-        private void richYOffset_TextChanged(object sender, EventArgs e) {
-            int yOffset;
-            if (int.TryParse((sender as TextBox).Text, out yOffset)) {
-                SettingsManager.setSetting("RichNotificationYOffset", yOffset);
-            }
-        }
-
-        private void richTestDisplay_Click(object sender, EventArgs e) {
-            MainForm.mainForm.ExecuteCommand("creature@demon");
-        }
-
+        
         private void simpleAnchor_SelectedIndexChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            SettingsManager.setSetting("SimpleNotificationAnchor", simpleAnchor.SelectedIndex);
+            SettingsManager.setSetting("SimpleNotificationAnchor", (sender as ComboBox).SelectedIndex);
         }
 
         private void simpleXOffset_TextChanged(object sender, EventArgs e) {
@@ -2762,6 +2965,21 @@ namespace Tibialyzer {
             SettingsManager.setSetting("EnableSimpleNotificationAnimation", (sender as CheckBox).Checked);
         }
 
+        private void popupTestButton_Click(object sender, EventArgs e) {
+            var parseResult = ParseLootMessage(popupTestLootBox.Text);
+            if (parseResult != null) {
+                bool showNotification = ShowDropNotification(parseResult);
+                if (showNotification) {
+                    this.Invoke((MethodInvoker)delegate {
+                        ShowSimpleNotification(new SimpleLootNotification(parseResult.Item1, parseResult.Item2));
+                    });
+                }
+            } else {
+                DisplayWarning(String.Format("Could not parse loot message: {0}", popupTestLootBox.Text));
+            }
+
+        }
+
         private void suspendedTest_Click(object sender, EventArgs e) {
             ShowSuspendedWindow(true);
         }
@@ -2773,7 +2991,7 @@ namespace Tibialyzer {
         private void suspendedAnchor_SelectedIndexChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            SettingsManager.setSetting("SuspendedNotificationAnchor", suspendedAnchor.SelectedIndex);
+            SettingsManager.setSetting("SuspendedNotificationAnchor", (sender as ComboBox).SelectedIndex);
         }
 
         private void suspendedXOffset_TextChanged(object sender, EventArgs e) {
@@ -2797,10 +3015,283 @@ namespace Tibialyzer {
             form.Show();
         }
 
-        private void conditionBox_TextChanged(object sender, EventArgs e) {
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e) {
+
+        }
+
+        public static Color HoverColor = Color.FromArgb(43, 47, 51);
+        public static Color ButtonColor = Color.FromArgb(51, 55, 59);
+        public static Color HoverForeColor = Color.FromArgb(190, 204, 217);
+        public static Color ButtonForeColor = Color.FromArgb(124, 133, 142);
+        private void mainButton_MouseEnter(object sender, EventArgs e) {
+            (sender as Control).BackColor = HoverColor;
+            (sender as Control).ForeColor = HoverForeColor;
+        }
+
+        private void mainButton_MouseLeave(object sender, EventArgs e) {
+            (sender as Control).BackColor = ButtonColor;
+            (sender as Control).ForeColor = ButtonForeColor;
+        }
+
+        private void backgroundLabel_Click(object sender, EventArgs e) {
+
+        }
+
+        private List<Control> activeControls = new List<Control>();
+        private List<List<Control>> tabControls = new List<List<Control>>();
+        private void InitializeTabs() {
+            foreach (TabPage tabPage in mainTabs.TabPages) {
+                List<Control> controlList = new List<Control>();
+                foreach (Control c in tabPage.Controls) {
+                    controlList.Add(c);
+                    c.Location = new Point(c.Location.X + mainTabs.Location.X + 6, c.Location.Y + mainTabs.Location.Y + 12);
+                }
+                tabPage.Controls.Clear();
+                tabControls.Add(controlList);
+            }
+            this.Controls.Remove(mainTabs);
+            mainTabs.Dispose();
+            // Manually add controls that appear on multiple pages
+            tabControls[3].Add(huntList);
+            tabControls[3].Add(huntListLabel);
+        }
+
+        private void switchTab(int tab) {
+            foreach (Control c in searchControls) {
+                this.Controls.Remove(c);
+                c.Dispose();
+            }
+            searchControls.Clear();
+            foreach (Control c in activeControls) {
+                this.Controls.Remove(c);
+            }
+            activeControls.Clear();
+            foreach (Control c in tabControls[tab]) {
+                activeControls.Add(c);
+                this.Controls.Add(c);
+            }
+
+            mainButton.Enabled = true;
+            generalButton.Enabled = true;
+            huntButton.Enabled = true;
+            logButton.Enabled = true;
+            notificationButton.Enabled = true;
+            popupButton.Enabled = true;
+            databaseButton.Enabled = true;
+            autoHotkeyButton.Enabled = true;
+            screenshotButton.Enabled = true;
+            browseButton.Enabled = true;
+            helpButton.Enabled = true;
+            switch (tab) {
+                case 0:
+                    mainButton.Enabled = false; break;
+                case 1:
+                    generalButton.Enabled = false; break;
+                case 2:
+                    huntButton.Enabled = false; break;
+                case 3:
+                    logButton.Enabled = false; break;
+                case 4:
+                    notificationButton.Enabled = false; break;
+                case 5:
+                    popupButton.Enabled = false; break;
+                case 6:
+                    databaseButton.Enabled = false; break;
+                case 7:
+                    autoHotkeyButton.Enabled = false; break;
+                case 8:
+                    screenshotButton.Enabled = false; break;
+                case 9:
+                    browseButton.Enabled = false; break;
+                case 10:
+                    helpButton.Enabled = false; break;
+            }
+        }
+
+        private void mainButton_Click(object sender, MouseEventArgs e) {
+            switchTab(0);
+        }
+
+        private void generalButton_Click(object sender, MouseEventArgs e) {
+            switchTab(1);
+        }
+
+        private void huntButton_Click(object sender, MouseEventArgs e) {
+            switchTab(2);
+        }
+
+        private void logButton_Click(object sender, MouseEventArgs e) {
+            switchTab(3);
+        }
+
+        private void notificationButton_Click(object sender, MouseEventArgs e) {
+            switchTab(4);
+        }
+
+        private void popupButton_Click(object sender, MouseEventArgs e) {
+            switchTab(5);
+        }
+
+        private void databaseButton_Click(object sender, MouseEventArgs e) {
+            switchTab(6);
+        }
+
+        private void autoHotkeyButton_Click(object sender, MouseEventArgs e) {
+            switchTab(7);
+        }
+
+        private void screenshotButton_Click(object sender, MouseEventArgs e) {
+            switchTab(8);
+        }
+
+        private void browseButton_Click(object sender, MouseEventArgs e) {
+            switchTab(9);
+        }
+
+        private void helpButton_Click(object sender, MouseEventArgs e) {
+            switchTab(10);
+        }
+
+        private void gettingStartedGuide_Click(object sender, EventArgs e) {
+
+        }
+
+        private void commandsGuide_Click(object sender, EventArgs e) {
+
+        }
+
+        private void popupsGuide_Click(object sender, EventArgs e) {
+
+        }
+
+        private void issuesGuide_Click(object sender, EventArgs e) {
+
+        }
+
+        private void unlockResetButton_Click(object sender, MouseEventArgs e) {
+            if (resetSettingsButton.Enabled) {
+                resetSettingsButton.Enabled = false;
+                resetSettingsButton.Text = "(Locked)";
+                (sender as Control).Text = "Unlock Reset Button";
+                unlockLabel.Text = "Unlock";
+                unlockLabel.BackColor = Color.FromArgb(152, 52, 52);
+            } else {
+                resetSettingsButton.Enabled = true;
+                resetSettingsButton.Text = "Reset Settings To Default";
+                (sender as Control).Text = "Lock Reset Button";
+                unlockLabel.Text = "Lock";
+                unlockLabel.BackColor = Color.FromArgb(76, 128, 176);
+            }
+        }
+
+
+        private string selectedNotificationObject() {
+            return notificationTypeList.Items[notificationTypeList.SelectedIndex].ToString().Replace(" ", ""); ;
+        }
+
+        private void notificationTypeList_SelectedIndexChanged(object sender, EventArgs e) {
+            string settingObject = selectedNotificationObject();
+
+            selectedWindowLabel.Text = notificationTypeList.Items[notificationTypeList.SelectedIndex].ToString();
+
+            int anchor = Math.Max(Math.Min(SettingsManager.getSettingInt(settingObject + "Anchor"), 3), 0);
+            int xOffset = SettingsManager.getSettingInt(settingObject + "XOffset");
+            int yOffset = SettingsManager.getSettingInt(settingObject + "YOffset");
+            int notificationLength = SettingsManager.getSettingInt(settingObject + "Duration");
+            int groupnr = Math.Max(Math.Min(SettingsManager.getSettingInt(settingObject + "Group"), 9), 0);
+            int sliderValue = Math.Max(Math.Min(notificationLength, notificationDurationBox.Maximum), notificationDurationBox.Minimum);
+
+            prevent_settings_update = true;
+            notificationDurationLabel.Text = String.Format("Duration ({0})", sliderValue == notificationDurationBox.Maximum ? "INF" : sliderValue.ToString() + "s");
+            notificationDurationBox.Value = sliderValue;
+            notificationGroupBox.SelectedIndex = groupnr;
+            notificationXOffsetBox.Text = xOffset.ToString();
+            notificationYOffsetBox.Text = yOffset.ToString();
+            notificationAnchorBox.SelectedIndex = anchor;
+            prevent_settings_update = false;
+        }
+
+        private void notificationAnchorBox_SelectedIndexChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
-            string[] split = conditionBox.Text.Split('\n');
-            SettingsManager.setSetting("NotificationConditions", split.ToList<string>());
+            SettingsManager.setSetting(selectedNotificationObject() + "Anchor", notificationAnchorBox.SelectedIndex);
+        }
+
+        private void groupSelectionList_SelectedIndexChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+            SettingsManager.setSetting(selectedNotificationObject() + "Group", notificationGroupBox.SelectedIndex);
+        }
+
+        private void notificationXOffsetBox_TextChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+            int value;
+            if (int.TryParse(notificationXOffsetBox.Text, out value)) {
+                SettingsManager.setSetting(selectedNotificationObject() + "XOffset", value);
+            }
+        }
+
+        private void notificationYOffsetBox_TextChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+            int value;
+            if (int.TryParse(notificationYOffsetBox.Text, out value)) {
+                SettingsManager.setSetting(selectedNotificationObject() + "YOffset", value);
+            }
+        }
+
+        private void notificationDurationBox_Scroll(object sender, EventArgs e) {
+            int sliderValue = notificationDurationBox.Value;
+            notificationDurationLabel.Text = String.Format("Duration ({0})", sliderValue == notificationDurationBox.Maximum ? "INF" : sliderValue.ToString() + "s");
+            SettingsManager.setSetting(selectedNotificationObject() + "Duration", sliderValue);
+        }
+
+        public static int MaximumNotificationDuration;
+        private void applyNotificationSettingsToAllButton_Click(object sender, EventArgs e) {
+            string selectedSettingObject = selectedNotificationObject();
+
+            int anchor = Math.Max(Math.Min(SettingsManager.getSettingInt(selectedSettingObject + "Anchor"), 3), 0);
+            int xOffset = SettingsManager.getSettingInt(selectedSettingObject + "XOffset");
+            int yOffset = SettingsManager.getSettingInt(selectedSettingObject + "YOffset");
+            int notificationLength = SettingsManager.getSettingInt(selectedSettingObject + "Duration");
+            int groupnr = Math.Max(Math.Min(SettingsManager.getSettingInt(selectedSettingObject + "Group"), 9), 0);
+            int sliderValue = Math.Max(Math.Min(notificationLength, notificationDurationBox.Maximum), notificationDurationBox.Minimum);
+
+            foreach (string str in NotificationTypes) {
+                string settingObject = str.Replace(" ", "");
+                SettingsManager.setSetting(settingObject + "Anchor", anchor);
+                SettingsManager.setSetting(settingObject + "XOffset", xOffset);
+                SettingsManager.setSetting(settingObject + "YOffset", yOffset);
+                SettingsManager.setSetting(settingObject + "Duration", notificationLength);
+                SettingsManager.setSetting(settingObject + "Group", groupnr);
+            }
+        }
+
+        private void testNotificationDisplayButton_Click(object sender, EventArgs e) {
+            string command = NotificationTestCommands[notificationTypeList.SelectedIndex];
+            MainForm.mainForm.ExecuteCommand(command);
+        }
+
+        private void clearNotificationDisplayButton_Click(object sender, EventArgs e) {
+            MainForm.mainForm.ExecuteCommand("close@");
+        }
+
+        private void warningImageBox_MouseDown(object sender, MouseEventArgs e) {
+            (sender as Control).Visible = false;
+        }
+
+        private bool imageStretched = false;
+        private Size initialSize;
+        private Point initialLocation;
+        private void screenshotBox_Click(object sender, EventArgs e) {
+            if (imageStretched) {
+                (sender as Control).Location = initialLocation;
+                (sender as Control).Size = initialSize;
+                imageStretched = false;
+            } else {
+                initialSize = (sender as Control).Size;
+                initialLocation = (sender as Control).Location;
+                imageStretched = true;
+                (sender as Control).Location = new Point(screenshotListLabel.Location.X, screenshotListLabel.Location.Y);
+                (sender as Control).Size = new Size(534, 497);
+            }
         }
     }
 

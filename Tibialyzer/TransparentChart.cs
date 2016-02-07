@@ -22,7 +22,7 @@ using System.Drawing;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Tibialyzer {
-    class TransparentChart : Chart {
+    class TransparentChart : Chart {/*
         protected override void OnClick(EventArgs e) {
             base.OnClick(e);
 
@@ -38,6 +38,6 @@ namespace Tibialyzer {
                 p = p.Parent;
             }
             MainForm.mainForm.CloseNotification();
-        }
+        }*/
     }
 }
