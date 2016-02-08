@@ -862,7 +862,11 @@ namespace Tibialyzer {
             popupConditionBox.ItemsChanged += PopupConditionBox_ItemsChanged;
             popupConditionBox.verifyItem = NotificationConditionManager.ValidCondition;
             popupConditionBox.RefreshControl();
+
+            screenshotDisplayList.ReadOnly = true;
+            screenshotDisplayList.AttemptDeleteItem += ScreenshotDisplayList_AttemptDeleteItem;
         }
+
 
         private void CreateRatioDisplay(List<string> itemList, int baseX, int baseY, EventHandler itemClick, List<Control> labelControls) {
             int it = 0;
@@ -2752,6 +2756,29 @@ namespace Tibialyzer {
                 } catch {
 
                 }
+            }
+        }
+
+        private void ScreenshotDisplayList_AttemptDeleteItem(object sender, EventArgs e) {
+            if (screenshotDisplayList.SelectedIndex >= 0) {
+                string fileName = screenshotDisplayList.Text;
+                string path = SettingsManager.getSettingString("ScreenshotPath");
+                if (path == null) return;
+
+                string imagePath = Path.Combine(path, fileName);
+                if (!File.Exists(imagePath)) return;
+
+                screenshotBox.Image.Dispose();
+                screenshotBox.Image = null;
+
+                try {
+                    File.Delete(imagePath);
+                } catch {
+                    return;
+                }
+                
+                screenshotDisplayList.Items.RemoveAt(screenshotDisplayList.SelectedIndex);
+                refreshScreenshots();
             }
         }
 
