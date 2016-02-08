@@ -1790,7 +1790,7 @@ namespace Tibialyzer {
         }
 
         private static void executeNameCommand(object sender, EventArgs e) {
-
+            mainForm.ExecuteCommand((sender as Control).Name);
         }
 
         public static int DisplayCreatureList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, int max_x, int spacing, Func<TibiaObject, string> tooltip_function = null, float magnification = 1.0f, List<Control> createdControls = null, int page = 0, int pageheight = 10000, PageInfo pageInfo = null, int currentDisplay = -1) {
