@@ -973,6 +973,46 @@ namespace Tibialyzer {
             SettingsManager.setSetting("NotificationItems", items);
         }
 
+        private void setValuePopupButton_Click(object sender, EventArgs e) {
+            int value = 0;
+            if (int.TryParse(popupValueBox.Text.Trim(), out value)) {
+                string valueString = String.Format("item.value >= {0}", value);
+                for (int i = 0; i < popupConditionBox.Items.Count; i++) {
+                    string testObject = popupConditionBox.Items[i].ToString().Replace(" ", "");
+                    if (testObject.Trim().Length == 0 || testObject.StartsWith("item.value>=")) {
+                        popupConditionBox.Items[i] = valueString;
+                        if (testObject.Trim().Length == 0) {
+                            popupConditionBox.Items.Add("");
+                        }
+                        PopupConditionBox_ItemsChanged(popupConditionBox, null);
+                        return;
+                    }
+                }
+                popupConditionBox.Items.Add(valueString);
+                PopupConditionBox_ItemsChanged(popupConditionBox, null);
+            }
+        }
+
+        private void popupSetGoldCapRatioButton_Click(object sender, EventArgs e) {
+            int value = 0;
+            if (int.TryParse(popupGoldCapRatioBox.Text.Trim(), out value)) {
+                string valueString = String.Format("(item.value / item.capacity) >= {0}", value);
+                for (int i = 0; i < popupConditionBox.Items.Count; i++) {
+                    string testObject = popupConditionBox.Items[i].ToString().Replace(" ", "");
+                    if (testObject.Trim().Length == 0 || testObject.StartsWith("(item.value/item.capacity)>=")) {
+                        popupConditionBox.Items[i] = valueString;
+                        if (testObject.Trim().Length == 0) {
+                            popupConditionBox.Items.Add("");
+                        }
+                        PopupConditionBox_ItemsChanged(popupConditionBox, null);
+                        return;
+                    }
+                }
+                popupConditionBox.Items.Add(valueString);
+                PopupConditionBox_ItemsChanged(popupConditionBox, null);
+            }
+        }
+
         void makeDraggable(Control.ControlCollection controls) {
             foreach (Control c in controls) {
                 if ((c is Label && !c.Name.ToLower().Contains("button")) || c is Panel) {
