@@ -14,17 +14,49 @@ namespace Tibialyzer {
         public event EventHandler AttemptDeleteItem;
         public event EventHandler AttemptNewItem;
         public VerifyItem verifyItem = null;
-        
+
         public bool ReadOnly = false;
         public bool ChangeTextOnly = false;
         public HorizontalAlignment TextAlign = HorizontalAlignment.Center;
 
+        private object timerLock = new object();
+        private System.Timers.Timer flickerTimer = null;
+        private bool caret_flicker = true;
+        private int caretOffset = 0;
         public PrettyListBox() {
 
             this.DrawItem += PrettyListBox_DrawItem;
             this.KeyDown += PrettyListBox_KeyDown;
             this.KeyPress += PrettyListBox_KeyPress;
             this.ItemsChanged += PrettyListBox_ItemsChanged;
+            this.GotFocus += PrettyListBox_GotFocus;
+
+            flickerTimer = new System.Timers.Timer(250);
+            flickerTimer.Elapsed += FlickerTimer_Elapsed;
+        }
+        
+        private void PrettyListBox_GotFocus(object sender, EventArgs e) {
+            if (ReadOnly) return;
+            lock (timerLock) {
+                flickerTimer.Start();
+            }
+        }
+
+        private void FlickerTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
+            try {
+                this.Invoke((MethodInvoker)delegate {
+                    lock (timerLock) {
+                        if (this.Focused) {
+                            this.Refresh();
+                            flickerTimer.Start();
+                        } else {
+                            flickerTimer.Stop();
+                        }
+                    }
+                });
+            } catch {
+
+            }
         }
 
         public void RefreshControl() {
@@ -50,7 +82,9 @@ namespace Tibialyzer {
             if (ReadOnly) return;
             if (this.SelectedIndex >= 0) {
                 if (e.KeyChar >= 32 && e.KeyChar <= 126) {
-                    this.Items[this.SelectedIndex] = this.Items[this.SelectedIndex].ToString() + e.KeyChar;
+                    string currentString = this.Items[this.SelectedIndex].ToString();
+                    int caretPosition = CaretPosition(currentString);
+                    this.Items[this.SelectedIndex] = currentString.Substring(0, caretPosition) + e.KeyChar + currentString.Substring(caretPosition, currentString.Length - caretPosition);
                     e.Handled = true;
                     if (ItemsChanged != null) {
                         ItemsChanged.Invoke(this, null);
@@ -58,7 +92,12 @@ namespace Tibialyzer {
                 }
             }
         }
-        
+
+        private int CaretPosition(string currentString) {
+            caretOffset = Math.Min(Math.Max(caretOffset, 0), currentString.Length);
+            return currentString.Length - caretOffset;
+        }
+
         private void PrettyListBox_KeyDown(object sender, KeyEventArgs e) {
             if (e.KeyCode == Keys.Delete && this.SelectedIndex >= 0) {
                 if (AttemptDeleteItem != null) {
@@ -84,14 +123,14 @@ namespace Tibialyzer {
                     this.SelectedIndex = this.Items.Count - 1;
                 }
                 e.Handled = true;
-            }
-            else if (e.KeyCode == Keys.Back && !ReadOnly) {
+            } else if (e.KeyCode == Keys.Back && !ReadOnly) {
                 if (e.Modifiers == Keys.Control) {
                     this.Items[this.SelectedIndex] = "";
                 } else {
-                    string str = this.Items[this.SelectedIndex].ToString();
-                    if (str.Length > 0) {
-                        this.Items[this.SelectedIndex] = str.Substring(0, str.Length - 1);
+                    string itemString = this.Items[this.SelectedIndex].ToString();
+                    if (itemString.Length > 0) {
+                        int caretPosition = CaretPosition(itemString);
+                        this.Items[this.SelectedIndex] = itemString.Substring(0, caretPosition - 1) + itemString.Substring(caretPosition, itemString.Length - caretPosition);
                     }
                 }
                 e.Handled = true;
@@ -108,6 +147,18 @@ namespace Tibialyzer {
                 }
             } else if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control) {
                 Clipboard.SetText(this.Items[this.SelectedIndex].ToString());
+            } else if (e.KeyCode == Keys.Left) {
+                caretOffset++;
+                e.Handled = true;
+            } else if (e.KeyCode == Keys.Right) {
+                caretOffset--;
+                e.Handled = true;
+            } else if (e.KeyCode == Keys.Home) {
+                caretOffset = int.MaxValue;
+                e.Handled = true;
+            } else if (e.KeyCode == Keys.End) {
+                caretOffset = 0;
+                e.Handled = true;
             }
         }
 
@@ -123,24 +174,33 @@ namespace Tibialyzer {
                 return;
             }
             Brush brush = ColorBrush;
+            string itemString = (sender as ListBox).Items[e.Index].ToString();
+            string displayString = itemString;
             if ((e.State & DrawItemState.Selected) == DrawItemState.Selected) {
                 e.Graphics.FillRectangle(HoverBrush, e.Bounds);
                 brush = HoverForeBrush;
+                if (!ReadOnly) {
+                    if (this.Focused) {
+                        int caretPosition = CaretPosition(itemString);
+                        string caret = caret_flicker ? "/" : "\\";
+                        displayString = displayString.Substring(0, caretPosition) + caret + displayString.Substring(caretPosition, displayString.Length - caretPosition);
+                        caret_flicker = !caret_flicker;
+                    }
+                }
             }
             // Draw the current item text based on the current Font  
             // and the custom brush settings.
-            string str = (sender as ListBox).Items[e.Index].ToString();
-            if (verifyItem != null && !verifyItem(str)) {
+            if (verifyItem != null && !verifyItem(itemString)) {
                 brush = ErrorBrush;
             }
-            SizeF size = e.Graphics.MeasureString(str, e.Font, e.Bounds.Width, StringFormat.GenericDefault);
+            SizeF size = e.Graphics.MeasureString(displayString, e.Font, e.Bounds.Width, StringFormat.GenericDefault);
             Rectangle newBounds = e.Bounds;
             if (TextAlign == HorizontalAlignment.Center) {
                 int halfWidth = (int)Math.Max(0, (e.Bounds.Width - size.Width) / 2.0);
                 int halfHeight = (int)Math.Max(0, (e.Bounds.Height - size.Height) / 2.0);
                 newBounds = new Rectangle(e.Bounds.X + halfWidth, e.Bounds.Y + halfHeight, e.Bounds.Width - halfWidth, e.Bounds.Height - halfHeight);
             }
-            e.Graphics.DrawString(str, e.Font, brush, newBounds, StringFormat.GenericDefault);
+            e.Graphics.DrawString(displayString, e.Font, brush, newBounds, StringFormat.GenericDefault);
         }
     }
 }
