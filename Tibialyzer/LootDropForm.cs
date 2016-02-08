@@ -535,6 +535,8 @@ namespace Tibialyzer {
 
         private void lootButton_Click(object sender, EventArgs e) {
             rawName = "";
+            creatureName = "";
+            lootCreature = null;
             this.UpdateLoot();
             this.UpdateCommand();
         }
