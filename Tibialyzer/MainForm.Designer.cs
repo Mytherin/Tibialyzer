@@ -226,6 +226,8 @@
             this.label30 = new System.Windows.Forms.Label();
             this.logButton = new System.Windows.Forms.Label();
             this.warningImageBox = new System.Windows.Forms.PictureBox();
+            this.showAllLootButton = new System.Windows.Forms.Label();
+            this.showPopupButton = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.screenshotBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.scanningSpeedTrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tibialyzerLogo)).BeginInit();
@@ -1410,6 +1412,8 @@
             // 
             // logSettings
             // 
+            this.logSettings.Controls.Add(this.showPopupButton);
+            this.logSettings.Controls.Add(this.showAllLootButton);
             this.logSettings.Controls.Add(this.label33);
             this.logSettings.Controls.Add(this.label31);
             this.logSettings.Controls.Add(this.label38);
@@ -1473,7 +1477,7 @@
             ""});
             this.logMessageCollection.Location = new System.Drawing.Point(3, 240);
             this.logMessageCollection.Name = "logMessageCollection";
-            this.logMessageCollection.Size = new System.Drawing.Size(534, 235);
+            this.logMessageCollection.Size = new System.Drawing.Size(534, 221);
             this.logMessageCollection.TabIndex = 46;
             // 
             // notificationsPage
@@ -2877,6 +2881,38 @@
             this.warningImageBox.Visible = false;
             this.warningImageBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.warningImageBox_MouseDown);
             // 
+            // showAllLootButton
+            // 
+            this.showAllLootButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.showAllLootButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showAllLootButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.showAllLootButton.Location = new System.Drawing.Point(3, 463);
+            this.showAllLootButton.Name = "showAllLootButton";
+            this.showAllLootButton.Padding = new System.Windows.Forms.Padding(10);
+            this.showAllLootButton.Size = new System.Drawing.Size(238, 38);
+            this.showAllLootButton.TabIndex = 48;
+            this.showAllLootButton.Text = "Show All Loot";
+            this.showAllLootButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.showAllLootButton.Click += new System.EventHandler(this.showAllLootButton_Click);
+            this.showAllLootButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
+            this.showAllLootButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
+            // 
+            // showPopupButton
+            // 
+            this.showPopupButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.showPopupButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showPopupButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.showPopupButton.Location = new System.Drawing.Point(299, 463);
+            this.showPopupButton.Name = "showPopupButton";
+            this.showPopupButton.Padding = new System.Windows.Forms.Padding(10);
+            this.showPopupButton.Size = new System.Drawing.Size(238, 38);
+            this.showPopupButton.TabIndex = 49;
+            this.showPopupButton.Text = "Popup Selected Message";
+            this.showPopupButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.showPopupButton.Click += new System.EventHandler(this.showPopupButton_Click);
+            this.showPopupButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
+            this.showPopupButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3135,6 +3171,8 @@
         private System.Windows.Forms.Label popupSetGoldCapRatioButton;
         private EnterTextBox popupGoldCapRatioBox;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label showPopupButton;
+        private System.Windows.Forms.Label showAllLootButton;
     }
 }
 

@@ -645,6 +645,20 @@ namespace Tibialyzer {
             }
         }
 
+        private void showAllLootButton_Click(object sender, EventArgs e) {
+            this.ExecuteCommand("loot@");
+        }
+
+        private void showPopupButton_Click(object sender, EventArgs e) {
+            if (logMessageCollection.SelectedIndex >= 0) {
+                string message = logMessageCollection.Items[logMessageCollection.SelectedIndex].ToString();
+                var result = ParseLootMessage(message);
+                if (result != null) {
+                    ShowSimpleNotification(new SimpleLootNotification(result.Item1, result.Item2));
+                }
+            }
+        }
+
         private void HuntList_AttemptNewItem(object sender, EventArgs e) {
             Hunt h = new Hunt();
             lock (hunts) {
