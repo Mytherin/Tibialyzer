@@ -2833,7 +2833,7 @@ namespace Tibialyzer {
                 writer.WriteLine("#IfWinActive ahk_class TibiaClient");
                 foreach (string l in SettingsManager.getSetting("AutoHotkeySettings")) {
                     string line = l.ToLower();
-                    if (line.Length == 0 || line[0] == '#') continue;
+                    if (line.Length == 0 || line[0] == ';') continue;
                     if (line.Contains("suspend")) {
                         // if the key is set to suspend the hotkey layout, we set it up so it sends a message to us 
                         writer.WriteLine(modifyKeyString(line.ToLower().Split(new string[] { "suspend" }, StringSplitOptions.None)[0]));

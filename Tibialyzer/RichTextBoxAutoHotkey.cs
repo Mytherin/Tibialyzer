@@ -29,12 +29,14 @@ namespace Tibialyzer {
         List<string> modifierStrings = new List<string> { "ctrl+", "shift+", "alt+", "command=" };
         List<string> operatorStrings = new List<string> { "::" };
         List<Regex> keywordRegexes = new List<Regex> { new Regex("f[0-9]{1,2}") };
-        List<Regex> commentRegexes = new List<Regex> { new Regex("#[^\n]*"), new Regex(";[^\n]*") };
+        List<Regex> commentRegexes = new List<Regex> { new Regex(";[^\n]*") };
+        List<Regex> specialTokenRegex = new List<Regex> { new Regex("#[^\n]*") };
         List<Regex> commandRegexes = new List<Regex> { new Regex("[a-z0-9]+@[a-z0-9]*") };
         Color keywordColor = Color.FromArgb(25, 25, 112);
         Color modifierColor = Color.FromArgb(178,34,34);
         Color operatorColor = Color.FromArgb(31, 31, 31);
         Color operatorBackColor = Color.FromArgb(191, 191, 191);
+        Color specialTokenColor = Color.FromArgb(64, 128, 176);
         Color commentColor = Color.FromArgb(34, 139, 34);
         Color commandColor = Color.FromArgb(140, 95, 20);
 
@@ -139,6 +141,7 @@ namespace Tibialyzer {
             modifyText(text, modifierStrings, modifierColor, Color.Empty, start, end);
             modifyText(text, keywordRegexes, keywordColor, Color.Empty, start, end);
             modifyText(text, commentRegexes, commentColor, Color.Empty, start, end);
+            modifyText(text, specialTokenRegex, specialTokenColor, Color.Empty, start, end);
             modifyText(text, commandRegexes, commandColor, Color.Empty, start, end);
 
             this.SelectionStart = initialCursorPosition;
