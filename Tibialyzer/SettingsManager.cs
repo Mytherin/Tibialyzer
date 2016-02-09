@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Globalization;
+using System.Windows.Forms;
 
 namespace Tibialyzer {
     public class SettingsManager {
-        private static string settingsFile = @"Database\settings.txt";
         public static Dictionary<string, List<string>> settings = new Dictionary<string, List<string>>();
-        public static void LoadSettings() {
+        public static void LoadSettings(string settingsFile) {
             string line;
             string currentSetting = null;
+            settings.Clear();
 
             if (!File.Exists(settingsFile)) {
                 ResetSettingsToDefault();
@@ -34,7 +35,7 @@ namespace Tibialyzer {
         public static void SaveSettings() {
             try {
                 lock (settings) {
-                    using (StreamWriter file = new StreamWriter(settingsFile)) {
+                    using (StreamWriter file = new StreamWriter(MainForm.settingsFile)) {
                         foreach (KeyValuePair<string, List<string>> pair in settings) {
                             file.WriteLine("@" + pair.Key);
                             foreach (string str in pair.Value) {
@@ -43,7 +44,10 @@ namespace Tibialyzer {
                         }
                     }
                 }
-            } catch {
+            } catch(Exception ex) {
+                MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                    MainForm.mainForm.DisplayWarning(String.Format("Failed to save settings: {0}", ex.Message));
+                });
             }
         }
 

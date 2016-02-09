@@ -70,6 +70,7 @@ namespace Tibialyzer {
         private static string pluralMapFile = @"Database\pluralMap.txt";
         private static string autohotkeyFile = @"Database\autohotkey.ahk";
         private static string settingMetadata = @"Database\metadata.xml";
+        public static string settingsFile = @"Database\settings.txt";
         public static Color label_text_color = Color.FromArgb(191, 191, 191);
         public static int max_creatures = 50;
         public List<string> new_names = null;
@@ -109,7 +110,7 @@ namespace Tibialyzer {
             }
             return image;
         }
-        
+
         public void ExitWithError(string title, string text, bool exit = true) {
             MessageBox.Show(this, text, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
             if (exit) {
@@ -127,11 +128,11 @@ namespace Tibialyzer {
         List<SettingData> settingData = new List<SettingData>();
         private void initializeSettingData() {
             try {
-                using(XmlReader reader = XmlReader.Create(new StreamReader(settingMetadata))) {
+                using (XmlReader reader = XmlReader.Create(new StreamReader(settingMetadata))) {
                     SettingData currentSetting = null;
                     string currentAttribute = null;
                     while (reader.Read()) {
-                        switch(reader.NodeType) {
+                        switch (reader.NodeType) {
                             case XmlNodeType.Element:
                                 if (reader.Name == "Setting") {
                                     currentSetting = new SettingData();
@@ -141,7 +142,7 @@ namespace Tibialyzer {
                                 }
                                 break;
                             case XmlNodeType.Text:
-                                switch(currentAttribute) {
+                                switch (currentAttribute) {
                                     case "Name":
                                         currentSetting.title = reader.Value;
                                         currentSetting.searchString += currentSetting.title.ToLower() + " ";
@@ -170,7 +171,7 @@ namespace Tibialyzer {
                         }
                     }
                 }
-            } catch(Exception ex) {
+            } catch (Exception ex) {
                 Console.WriteLine("Failed to read settings metadata: {0}", ex.Message);
             }
         }
@@ -253,7 +254,7 @@ namespace Tibialyzer {
             } catch (Exception e) {
                 ExitWithError("Fatal Error", String.Format("Corrupted database {0}.\nMessage: {1}", databaseFile, e.Message));
             }
-            SettingsManager.LoadSettings();
+            SettingsManager.LoadSettings(settingsFile);
             MainForm.initializeFonts();
             this.initializeHunts();
             this.initializeSettings();
@@ -543,6 +544,7 @@ namespace Tibialyzer {
             if (!SettingsManager.settingExists("Hunts")) {
                 SettingsManager.setSetting("Hunts", new List<string>() { "New Hunt#True#0#0#False#True" });
             }
+            hunts.Clear();
             int activeHuntIndex = 0, index = 0;
             List<int> dbTableIds = new List<int>();
             foreach (string str in SettingsManager.getSetting("Hunts")) {
@@ -646,7 +648,8 @@ namespace Tibialyzer {
         }
 
         private void showAllLootButton_Click(object sender, EventArgs e) {
-            this.ExecuteCommand("loot@");
+            Hunt h = getSelectedHunt();
+            this.ExecuteCommand("loot" + MainForm.commandSymbol + (h == null ? "" : h.name));
         }
 
         private void showPopupButton_Click(object sender, EventArgs e) {
@@ -727,7 +730,7 @@ namespace Tibialyzer {
 
             bool copyAdvances = SettingsManager.getSettingBool("CopyAdvances");
             bool lootNotificationRich = SettingsManager.getSettingBool("UseRichNotificationType");
-            
+
             this.popupAnimationBox.Checked = SettingsManager.getSettingBool("EnableSimpleNotificationAnimation");
             this.scanningSpeedTrack.Value = Math.Min(Math.Max(SettingsManager.getSettingInt("ScanSpeed"), scanningSpeedTrack.Minimum), scanningSpeedTrack.Maximum);
             this.scanSpeedDisplayLabel.Text = scanSpeedText[scanningSpeedTrack.Value];
@@ -835,7 +838,7 @@ namespace Tibialyzer {
             if (legacy) {
                 // legacy settings had "#" as comment symbol in AutoHotkey text, replace that with the new comment symbol ";"
                 List<string> newAutoHotkeySettings = new List<string>();
-                foreach(string str in SettingsManager.getSetting("AutoHotkeySettings")) {
+                foreach (string str in SettingsManager.getSetting("AutoHotkeySettings")) {
                     newAutoHotkeySettings.Add(str.Replace('#', ';'));
                 }
                 SettingsManager.setSetting("AutoHotkeySettings", newAutoHotkeySettings);
@@ -918,7 +921,7 @@ namespace Tibialyzer {
                 }
             }
         }
-        
+
         private void UpdateConvertRatio(object sender, EventArgs e) {
             string itemName = (sender as Control).Name;
             Item item = getItem(itemName);
@@ -964,14 +967,14 @@ namespace Tibialyzer {
                 UpdateConvertDisplay();
             }
         }
-        
+
         private void customConvertRatioBox_KeyPress(object sender, KeyPressEventArgs e) {
             if (e.KeyChar == '\r') {
                 applyConvertRatioButton_Click(null, null);
                 e.Handled = true;
             }
         }
-        
+
         private void PopupConditionBox_ItemsChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
             List<string> conditions = new List<string>();
@@ -1094,7 +1097,7 @@ namespace Tibialyzer {
 
 
         private string lastWarning;
-        private void DisplayWarning(string message) {
+        public void DisplayWarning(string message) {
             warningImageBox.Visible = true;
             if (lastWarning != message) {
                 explanationTooltip.SetToolTip(warningImageBox, message);
@@ -2252,14 +2255,14 @@ namespace Tibialyzer {
 
         List<Control> searchControls = new List<Control>();
         private void settingSearchButton_Click(object sender, EventArgs e) {
-            foreach(Control c in searchControls) {
+            foreach (Control c in searchControls) {
                 this.Controls.Remove(c);
                 c.Dispose();
             }
             searchControls.Clear();
             string[] words = searchSettingsTextBox.Text.ToLower().Split(' ');
             List<SettingData> matchingData = new List<SettingData>();
-            foreach(SettingData settingData in settingData) {
+            foreach (SettingData settingData in settingData) {
                 bool found = true;
                 foreach (string word in words) {
                     if (!settingData.searchString.Contains(word)) {
@@ -2272,7 +2275,7 @@ namespace Tibialyzer {
                 }
             }
             int it = 0;
-            foreach(SettingData settingData in matchingData) {
+            foreach (SettingData settingData in matchingData) {
                 Label label = new Label();
                 label.Size = new Size(180, 115);
                 label.Location = new Point(searchSettingsTextBox.Location.X + it * 180, searchSettingsTextBox.Location.Y + searchSettingsTextBox.Size.Height);
@@ -2571,7 +2574,7 @@ namespace Tibialyzer {
                 SettingsManager.setSetting("NotificationGoldRatio", value);
             }
         }
-        
+
         private void specificNotificationTextbox_TextChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
             List<string> names = new List<string>();
@@ -2581,7 +2584,7 @@ namespace Tibialyzer {
                 names.Add(lines[i].ToLower());
             SettingsManager.setSetting("NotificationItems", names);
         }
-        
+
         private void notificationTypeBox_SelectedIndexChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
@@ -2593,7 +2596,7 @@ namespace Tibialyzer {
 
             SettingsManager.setSetting("OutfitGenderMale", ((sender as ComboBox).SelectedIndex == 0).ToString());
         }
-                
+
         private void eventNotificationEnable_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
@@ -2627,7 +2630,7 @@ namespace Tibialyzer {
 
             SettingsManager.setSetting("LookMode", (sender as CheckBox).Checked.ToString());
         }
-        
+
         private void enableScreenshotBox_CheckedChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
@@ -2776,7 +2779,7 @@ namespace Tibialyzer {
                 } catch {
                     return;
                 }
-                
+
                 screenshotDisplayList.Items.RemoveAt(screenshotDisplayList.SelectedIndex);
                 refreshScreenshots();
             }
@@ -3007,7 +3010,7 @@ namespace Tibialyzer {
                 ExecuteCommand("loot" + MainForm.commandSymbol + h.name);
             }
         }
-        
+
         private void simpleAnchor_SelectedIndexChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
@@ -3163,6 +3166,7 @@ namespace Tibialyzer {
             screenshotButton.Enabled = true;
             browseButton.Enabled = true;
             helpButton.Enabled = true;
+            upgradeButton.Enabled = true;
             switch (tab) {
                 case 0:
                     mainButton.Enabled = false; break;
@@ -3186,6 +3190,8 @@ namespace Tibialyzer {
                     browseButton.Enabled = false; break;
                 case 10:
                     helpButton.Enabled = false; break;
+                case 11:
+                    upgradeButton.Enabled = false; break;
             }
         }
 
@@ -3231,6 +3237,10 @@ namespace Tibialyzer {
 
         private void helpButton_Click(object sender, MouseEventArgs e) {
             switchTab(10);
+        }
+
+        private void upgradeButton_Click(object sender, EventArgs e) {
+            switchTab(11);
         }
 
         private void gettingStartedGuide_Click(object sender, EventArgs e) {
@@ -3372,6 +3382,72 @@ namespace Tibialyzer {
                 imageStretched = true;
                 (sender as Control).Location = new Point(screenshotListLabel.Location.X, screenshotListLabel.Location.Y);
                 (sender as Control).Size = new Size(534, 497);
+            }
+        }
+
+        private void selectUpgradeTibialyzerButton_Click(object sender, EventArgs e) {
+            folderBrowserDialog1.SelectedPath = AppDomain.CurrentDomain.BaseDirectory;
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK) {
+                string tibialyzerPath = folderBrowserDialog1.SelectedPath;
+                string settings = System.IO.Path.Combine(tibialyzerPath, "settings.txt");
+                lock (hunts) {
+                    if (!File.Exists(settings)) {
+                        settings = System.IO.Path.Combine(tibialyzerPath, settingsFile);
+                        if (!File.Exists(settings)) {
+                            DisplayWarning("Could not find settings.txt in upgrade path.");
+                            return;
+                        }
+                    }
+                    SettingsManager.LoadSettings(settings);
+                    initializeSettings();
+
+                    string lootDatabase = System.IO.Path.Combine(tibialyzerPath, "loot.db");
+                    if (!File.Exists(lootDatabase)) {
+                        lootDatabase = System.IO.Path.Combine(tibialyzerPath, lootDatabaseFile);
+                        if (!File.Exists(lootDatabase)) {
+                            DisplayWarning("Could not find loot.db in upgrade path.");
+                            return;
+                        }
+                    }
+
+                    lootConn.Close();
+                    lootConn.Dispose();
+                    try {
+                        File.Delete(lootDatabaseFile);
+                        File.Copy(lootDatabase, lootDatabaseFile);
+                    } catch (Exception ex) {
+                        DisplayWarning(String.Format("Error modifying loot database: {0}", ex.Message));
+                        return;
+                    }
+                    lootConn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", lootDatabaseFile));
+                    lootConn.Open();
+
+                    initializeHunts();
+
+
+                    string database = System.IO.Path.Combine(tibialyzerPath, "database.db");
+                    if (!File.Exists(database)) {
+                        database = System.IO.Path.Combine(tibialyzerPath, databaseFile);
+                        if (!File.Exists(database)) {
+                            DisplayWarning("Could not find database.db in upgrade path.");
+                            return;
+                        }
+                    }
+                    SQLiteConnection databaseConnection = new SQLiteConnection(String.Format("Data Source={0};Version=3;", database));
+                    databaseConnection.Open();
+                    SQLiteCommand comm = new SQLiteCommand("SELECT id, discard, convert_to_gold, actual_value FROM Items", databaseConnection);
+                    SQLiteDataReader reader = comm.ExecuteReader();
+                    using(var transaction = mainForm.conn.BeginTransaction()) {
+                        while (reader.Read()) {
+                            int itemid = reader.GetInt32(0);
+                            bool discard = reader.GetBoolean(1);
+                            bool convert = reader.GetBoolean(2);
+                            long value = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt64(3);
+                            MainForm.UpdateItem(itemid, discard, convert, value, transaction);
+                        }
+                        transaction.Commit();
+                    }
+                }
             }
         }
     }

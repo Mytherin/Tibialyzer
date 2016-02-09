@@ -131,6 +131,16 @@ namespace Tibialyzer {
             return item;
         }
 
+        private static void UpdateItem(int itemid, bool discard, bool convert, long value, SQLiteTransaction transaction) {
+            if (_itemIdMap.ContainsKey(itemid)) {
+                _itemIdMap[itemid].discard = discard;
+                _itemIdMap[itemid].convert_to_gold = convert;
+                _itemIdMap[itemid].actual_value = value;
+            }
+            SQLiteCommand command = new SQLiteCommand(String.Format("UPDATE Items SET discard={1},convert_to_gold={2},actual_value={3} WHERE id={0}", itemid, discard ? 1 : 0, convert ? 1 : 0, value), mainForm.conn, transaction);
+            command.ExecuteNonQuery();
+        }
+
         private static string _itemPropertiesBase = "id, name, actual_value, vendor_value, stackable, capacity, category, discard, convert_to_gold, look_text, title, currency";
         private static string _itemProperties = _itemPropertiesBase + ", image";
         private static Item createItem(SQLiteDataReader reader) {

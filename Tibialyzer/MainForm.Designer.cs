@@ -124,6 +124,8 @@
             this.clearHuntOnStartupBox = new Tibialyzer.PrettyCheckBox();
             this.huntList = new Tibialyzer.PrettyListBox();
             this.logSettings = new System.Windows.Forms.TabPage();
+            this.showPopupButton = new System.Windows.Forms.Label();
+            this.showAllLootButton = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
             this.label38 = new System.Windows.Forms.Label();
@@ -223,11 +225,14 @@
             this.helpPage = new System.Windows.Forms.TabPage();
             this.label102 = new System.Windows.Forms.Label();
             this.searchCommandHelpBox = new Tibialyzer.EnterTextBox();
+            this.upgradeTab = new System.Windows.Forms.TabPage();
+            this.selectUpgradeTibialyzerButton = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
             this.logButton = new System.Windows.Forms.Label();
             this.warningImageBox = new System.Windows.Forms.PictureBox();
-            this.showAllLootButton = new System.Windows.Forms.Label();
-            this.showPopupButton = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.upgradeButton = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.screenshotBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.scanningSpeedTrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tibialyzerLogo)).BeginInit();
@@ -245,6 +250,7 @@
             this.Screenshot.SuspendLayout();
             this.browsePage.SuspendLayout();
             this.helpPage.SuspendLayout();
+            this.upgradeTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.warningImageBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -656,6 +662,7 @@
             this.mainTabs.Controls.Add(this.Screenshot);
             this.mainTabs.Controls.Add(this.browsePage);
             this.mainTabs.Controls.Add(this.helpPage);
+            this.mainTabs.Controls.Add(this.upgradeTab);
             this.mainTabs.Location = new System.Drawing.Point(102, 2);
             this.mainTabs.Name = "mainTabs";
             this.mainTabs.SelectedIndex = 0;
@@ -1427,6 +1434,38 @@
             this.logSettings.TabIndex = 9;
             this.logSettings.Text = "Log";
             this.logSettings.UseVisualStyleBackColor = true;
+            // 
+            // showPopupButton
+            // 
+            this.showPopupButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.showPopupButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showPopupButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.showPopupButton.Location = new System.Drawing.Point(299, 463);
+            this.showPopupButton.Name = "showPopupButton";
+            this.showPopupButton.Padding = new System.Windows.Forms.Padding(10);
+            this.showPopupButton.Size = new System.Drawing.Size(238, 38);
+            this.showPopupButton.TabIndex = 49;
+            this.showPopupButton.Text = "Popup Selected Message";
+            this.showPopupButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.showPopupButton.Click += new System.EventHandler(this.showPopupButton_Click);
+            this.showPopupButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
+            this.showPopupButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
+            // 
+            // showAllLootButton
+            // 
+            this.showAllLootButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.showAllLootButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showAllLootButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.showAllLootButton.Location = new System.Drawing.Point(3, 463);
+            this.showAllLootButton.Name = "showAllLootButton";
+            this.showAllLootButton.Padding = new System.Windows.Forms.Padding(10);
+            this.showAllLootButton.Size = new System.Drawing.Size(238, 38);
+            this.showAllLootButton.TabIndex = 48;
+            this.showAllLootButton.Text = "Show All Loot";
+            this.showAllLootButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.showAllLootButton.Click += new System.EventHandler(this.showAllLootButton_Click);
+            this.showAllLootButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
+            this.showAllLootButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
             // 
             // label33
             // 
@@ -2844,6 +2883,45 @@
             this.searchCommandHelpBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.searchCommandHelpBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
             // 
+            // upgradeTab
+            // 
+            this.upgradeTab.Controls.Add(this.selectUpgradeTibialyzerButton);
+            this.upgradeTab.Controls.Add(this.label4);
+            this.upgradeTab.Location = new System.Drawing.Point(4, 22);
+            this.upgradeTab.Name = "upgradeTab";
+            this.upgradeTab.Size = new System.Drawing.Size(540, 497);
+            this.upgradeTab.TabIndex = 11;
+            this.upgradeTab.Text = "Upgrade";
+            this.upgradeTab.UseVisualStyleBackColor = true;
+            // 
+            // selectUpgradeTibialyzerButton
+            // 
+            this.selectUpgradeTibialyzerButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.selectUpgradeTibialyzerButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.selectUpgradeTibialyzerButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.selectUpgradeTibialyzerButton.Location = new System.Drawing.Point(3, 247);
+            this.selectUpgradeTibialyzerButton.Name = "selectUpgradeTibialyzerButton";
+            this.selectUpgradeTibialyzerButton.Padding = new System.Windows.Forms.Padding(10);
+            this.selectUpgradeTibialyzerButton.Size = new System.Drawing.Size(534, 38);
+            this.selectUpgradeTibialyzerButton.TabIndex = 56;
+            this.selectUpgradeTibialyzerButton.Text = "Select Tibialyzer";
+            this.selectUpgradeTibialyzerButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.selectUpgradeTibialyzerButton.Click += new System.EventHandler(this.selectUpgradeTibialyzerButton_Click);
+            this.selectUpgradeTibialyzerButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
+            this.selectUpgradeTibialyzerButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
+            // 
+            // label4
+            // 
+            this.label4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
+            this.label4.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.label4.Location = new System.Drawing.Point(3, 217);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(534, 30);
+            this.label4.TabIndex = 55;
+            this.label4.Text = "Import Settings From Previous Tibialyzer";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // label30
             // 
             this.label30.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
@@ -2881,37 +2959,29 @@
             this.warningImageBox.Visible = false;
             this.warningImageBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.warningImageBox_MouseDown);
             // 
-            // showAllLootButton
+            // label2
             // 
-            this.showAllLootButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.showAllLootButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.showAllLootButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.showAllLootButton.Location = new System.Drawing.Point(3, 463);
-            this.showAllLootButton.Name = "showAllLootButton";
-            this.showAllLootButton.Padding = new System.Windows.Forms.Padding(10);
-            this.showAllLootButton.Size = new System.Drawing.Size(238, 38);
-            this.showAllLootButton.TabIndex = 48;
-            this.showAllLootButton.Text = "Show All Loot";
-            this.showAllLootButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.showAllLootButton.Click += new System.EventHandler(this.showAllLootButton_Click);
-            this.showAllLootButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
-            this.showAllLootButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
+            this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
+            this.label2.Location = new System.Drawing.Point(0, 373);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(102, 5);
+            this.label2.TabIndex = 25;
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // showPopupButton
+            // upgradeButton
             // 
-            this.showPopupButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.showPopupButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.showPopupButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.showPopupButton.Location = new System.Drawing.Point(299, 463);
-            this.showPopupButton.Name = "showPopupButton";
-            this.showPopupButton.Padding = new System.Windows.Forms.Padding(10);
-            this.showPopupButton.Size = new System.Drawing.Size(238, 38);
-            this.showPopupButton.TabIndex = 49;
-            this.showPopupButton.Text = "Popup Selected Message";
-            this.showPopupButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.showPopupButton.Click += new System.EventHandler(this.showPopupButton_Click);
-            this.showPopupButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
-            this.showPopupButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
+            this.upgradeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.upgradeButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.upgradeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.upgradeButton.Location = new System.Drawing.Point(0, 379);
+            this.upgradeButton.Name = "upgradeButton";
+            this.upgradeButton.Size = new System.Drawing.Size(100, 25);
+            this.upgradeButton.TabIndex = 26;
+            this.upgradeButton.Text = "Upgrade";
+            this.upgradeButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.upgradeButton.Click += new System.EventHandler(this.upgradeButton_Click);
+            this.upgradeButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
+            this.upgradeButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
             // 
             // MainForm
             // 
@@ -2921,6 +2991,8 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(655, 525);
+            this.Controls.Add(this.upgradeButton);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.warningImageBox);
             this.Controls.Add(this.logButton);
             this.Controls.Add(this.label30);
@@ -2976,6 +3048,7 @@
             this.browsePage.PerformLayout();
             this.helpPage.ResumeLayout(false);
             this.helpPage.PerformLayout();
+            this.upgradeTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.warningImageBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -3173,6 +3246,11 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label showPopupButton;
         private System.Windows.Forms.Label showAllLootButton;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label upgradeButton;
+        private System.Windows.Forms.TabPage upgradeTab;
+        private System.Windows.Forms.Label selectUpgradeTibialyzerButton;
+        private System.Windows.Forms.Label label4;
     }
 }
 

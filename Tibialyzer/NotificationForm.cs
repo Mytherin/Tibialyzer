@@ -81,7 +81,7 @@ namespace Tibialyzer {
             }
 
             foreach (Control c in this.Controls) {
-                if (c is TextBox || c is CheckBox || c is System.Windows.Forms.DataVisualization.Charting.Chart) continue;
+                if (c is TextBox || c is CheckBox || c is TransparentChart) continue;
                 c.Click += c_Click;
             }
         }

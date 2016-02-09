@@ -22,22 +22,25 @@ using System.Drawing;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Tibialyzer {
-    class TransparentChart : Chart {/*
+    class TransparentChart : Chart {
         protected override void OnClick(EventArgs e) {
             base.OnClick(e);
 
+            NotificationForm c = null;
             Control p = Parent;
             while (p != null) {
                 // draw the background of the parent as background onto this 
                 if (p is NotificationForm) {
-                    NotificationForm c = (NotificationForm)p;
+                    c = (NotificationForm)p;
                     c.Controls.Remove(this);
                     break;
                 }
                 if (p.Parent == p) break;
                 p = p.Parent;
             }
-            MainForm.mainForm.CloseNotification();
-        }*/
+            if (c != null) {
+                c.close();
+            }
+        }
     }
 }
