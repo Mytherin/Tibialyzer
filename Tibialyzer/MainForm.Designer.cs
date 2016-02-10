@@ -243,6 +243,7 @@
             this.warningImageBox = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.upgradeButton = new System.Windows.Forms.Label();
+            this.saveAllLootCheckbox = new Tibialyzer.PrettyCheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.screenshotBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.scanningSpeedTrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tibialyzerLogo)).BeginInit();
@@ -681,6 +682,7 @@
             // 
             // mainPage
             // 
+            this.mainPage.Controls.Add(this.saveAllLootCheckbox);
             this.mainPage.Controls.Add(this.label11);
             this.mainPage.Controls.Add(this.ignoreLowExperienceBox);
             this.mainPage.Controls.Add(this.ignoreLowExperienceButton);
@@ -3135,6 +3137,22 @@
             this.upgradeButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.upgradeButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
             // 
+            // saveAllLootCheckbox
+            // 
+            this.saveAllLootCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.saveAllLootCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.saveAllLootCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.saveAllLootCheckbox.Location = new System.Drawing.Point(3, 300);
+            this.saveAllLootCheckbox.Name = "saveAllLootCheckbox";
+            this.saveAllLootCheckbox.Padding = new System.Windows.Forms.Padding(10);
+            this.saveAllLootCheckbox.Size = new System.Drawing.Size(296, 40);
+            this.saveAllLootCheckbox.TabIndex = 45;
+            this.saveAllLootCheckbox.Text = "Automatically Write Loot To File";
+            this.saveAllLootCheckbox.UseVisualStyleBackColor = false;
+            this.saveAllLootCheckbox.CheckedChanged += new System.EventHandler(this.saveAllLootCheckbox_CheckedChanged);
+            this.saveAllLootCheckbox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
+            this.saveAllLootCheckbox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3414,6 +3432,7 @@
         private PrettyCheckBox stackAllItemsCheckbox;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
+        private PrettyCheckBox saveAllLootCheckbox;
     }
 }
 

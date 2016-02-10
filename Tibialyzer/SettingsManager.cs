@@ -194,6 +194,7 @@ C::NumpadPgDn
             setSettingIfNotSet("StackAllItems", false);
             setSettingIfNotSet("IgnoreLowExperience", false);
             setSettingIfNotSet("IgnoreLowExperienceValue", 250);
+            setSettingIfNotSet("AutomaticallyWriteLootToFile", true);
         }
 
         public static void ResetSettingsToDefault() {

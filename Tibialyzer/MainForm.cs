@@ -70,6 +70,7 @@ namespace Tibialyzer {
         private static string pluralMapFile = @"Database\pluralMap.txt";
         private static string autohotkeyFile = @"Database\autohotkey.ahk";
         public static string settingsFile = @"Database\settings.txt";
+        public static string bigLootFile = @"Database\loot.txt";
         public static Color label_text_color = Color.FromArgb(191, 191, 191);
         public static int max_creatures = 50;
         public List<string> new_names = null;
@@ -86,6 +87,8 @@ namespace Tibialyzer {
         public static List<Font> fontList = new List<Font>();
 
         public static Font text_font = new Font(FontFamily.GenericSansSerif, 9, FontStyle.Bold);
+
+        private static StreamWriter fileWriter = null;
 
         private SQLiteConnection conn;
         private SQLiteConnection lootConn;
@@ -211,6 +214,8 @@ namespace Tibialyzer {
                 startAutoHotkey_Click(null, null);
             }
 
+            fileWriter = new StreamWriter(bigLootFile, true);
+
             ignoreStamp = createStamp();
 
             browseTypeBox.SelectedIndex = 0;
@@ -222,7 +227,6 @@ namespace Tibialyzer {
             BackgroundWorker bw = new BackgroundWorker();
             bw.DoWork += bw_DoWork;
             bw.RunWorkerAsync();
-
 
             MaximumNotificationDuration = notificationDurationBox.Maximum;
             scan_tooltip.AutoPopDelay = 60000;
@@ -692,6 +696,7 @@ namespace Tibialyzer {
             this.ignoreLowExperienceButton.Checked = SettingsManager.getSettingBool("IgnoreLowExperience");
             this.ignoreLowExperienceBox.Enabled = this.ignoreLowExperienceButton.Checked;
             this.ignoreLowExperienceBox.Text = SettingsManager.getSettingInt("IgnoreLowExperienceValue").ToString();
+            this.saveAllLootCheckbox.Checked = SettingsManager.getSettingBool("AutomaticallyWriteLootToFile");
 
             popupSpecificItemBox.Items.Clear();
             foreach (string str in SettingsManager.getSetting("NotificationItems")) {
@@ -2841,6 +2846,9 @@ namespace Tibialyzer {
             if (SettingsManager.getSettingBool("ShutdownAutohotkeyOnExit")) {
                 shutdownAutoHotkey_Click(null, null);
             }
+            if (fileWriter != null) {
+                fileWriter.Close();
+            }
         }
 
         AutoHotkeySuspendedMode window = null;
@@ -3429,6 +3437,12 @@ namespace Tibialyzer {
             if (int.TryParse(ignoreLowExperienceBox.Text, out value)) {
                 SettingsManager.setSetting("IgnoreLowExperienceValue", value);
             }
+        }
+
+        private void saveAllLootCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            SettingsManager.setSetting("AutomaticallyWriteLootToFile", (sender as CheckBox).Checked);
         }
     }
 

@@ -748,6 +748,9 @@ namespace Tibialyzer {
                                 }
 
                                 addKillToHunt(h, resultList, t, message, stamp, hour, minute, transaction);
+                                if (fileWriter != null && SettingsManager.getSettingBool("AutomaticallyWriteLootToFile")) {
+                                    fileWriter.WriteLine(message);
+                                }
 
                                 if (newItems != null) {
                                     newItems.Add(resultList);
