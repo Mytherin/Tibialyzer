@@ -113,7 +113,7 @@ namespace Tibialyzer {
         public int z;
 
         public const int MaxWidth = 2048;
-        public const int MaxHeight = 2304;
+        public const int MaxHeight = 2048;
 
         public Coordinate() {
             this.x = MaxWidth / 2;
