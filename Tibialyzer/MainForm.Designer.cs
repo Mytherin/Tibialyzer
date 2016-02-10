@@ -76,9 +76,6 @@
             this.mainTabs = new System.Windows.Forms.TabControl();
             this.mainPage = new System.Windows.Forms.TabPage();
             this.mainExecuteTibialyzerCommandLabel = new System.Windows.Forms.Label();
-            this.settingSearchButton = new System.Windows.Forms.Label();
-            this.searchSettingsTextBox = new Tibialyzer.EnterTextBox();
-            this.mainSearchSettingsLabel = new System.Windows.Forms.Label();
             this.saveDamageImageButton = new System.Windows.Forms.Label();
             this.saveLootImageButton = new System.Windows.Forms.Label();
             this.selectClientProgramButton = new System.Windows.Forms.Label();
@@ -226,6 +223,8 @@
             this.label102 = new System.Windows.Forms.Label();
             this.searchCommandHelpBox = new Tibialyzer.EnterTextBox();
             this.upgradeTab = new System.Windows.Forms.TabPage();
+            this.customCommandParameterBox = new Tibialyzer.EnterTextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.customCommandBox = new Tibialyzer.EnterTextBox();
             this.customCommandName = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -238,8 +237,6 @@
             this.warningImageBox = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.upgradeButton = new System.Windows.Forms.Label();
-            this.customCommandParameterBox = new Tibialyzer.EnterTextBox();
-            this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.screenshotBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.scanningSpeedTrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tibialyzerLogo)).BeginInit();
@@ -679,9 +676,6 @@
             // mainPage
             // 
             this.mainPage.Controls.Add(this.mainExecuteTibialyzerCommandLabel);
-            this.mainPage.Controls.Add(this.settingSearchButton);
-            this.mainPage.Controls.Add(this.searchSettingsTextBox);
-            this.mainPage.Controls.Add(this.mainSearchSettingsLabel);
             this.mainPage.Controls.Add(this.saveDamageImageButton);
             this.mainPage.Controls.Add(this.saveLootImageButton);
             this.mainPage.Controls.Add(this.selectClientProgramButton);
@@ -714,46 +708,6 @@
             this.mainExecuteTibialyzerCommandLabel.TabIndex = 35;
             this.mainExecuteTibialyzerCommandLabel.Text = "Execute Tibialyzer Command";
             this.mainExecuteTibialyzerCommandLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // settingSearchButton
-            // 
-            this.settingSearchButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.settingSearchButton.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.settingSearchButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.settingSearchButton.Location = new System.Drawing.Point(382, 199);
-            this.settingSearchButton.Name = "settingSearchButton";
-            this.settingSearchButton.Size = new System.Drawing.Size(150, 23);
-            this.settingSearchButton.TabIndex = 34;
-            this.settingSearchButton.Text = "Search";
-            this.settingSearchButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.settingSearchButton.Click += new System.EventHandler(this.settingSearchButton_Click);
-            this.settingSearchButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
-            this.settingSearchButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
-            // searchSettingsTextBox
-            // 
-            this.searchSettingsTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.searchSettingsTextBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.searchSettingsTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
-            this.searchSettingsTextBox.Location = new System.Drawing.Point(9, 199);
-            this.searchSettingsTextBox.Name = "searchSettingsTextBox";
-            this.searchSettingsTextBox.Size = new System.Drawing.Size(372, 23);
-            this.searchSettingsTextBox.TabIndex = 33;
-            this.searchSettingsTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.searchSettingsTextBox_KeyPress);
-            this.searchSettingsTextBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
-            this.searchSettingsTextBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
-            // mainSearchSettingsLabel
-            // 
-            this.mainSearchSettingsLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.mainSearchSettingsLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mainSearchSettingsLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.mainSearchSettingsLabel.Location = new System.Drawing.Point(9, 167);
-            this.mainSearchSettingsLabel.Name = "mainSearchSettingsLabel";
-            this.mainSearchSettingsLabel.Size = new System.Drawing.Size(523, 30);
-            this.mainSearchSettingsLabel.TabIndex = 32;
-            this.mainSearchSettingsLabel.Text = "Search Settings";
-            this.mainSearchSettingsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // saveDamageImageButton
             // 
@@ -2908,6 +2862,31 @@
             this.upgradeTab.Text = "Upgrade";
             this.upgradeTab.UseVisualStyleBackColor = true;
             // 
+            // customCommandParameterBox
+            // 
+            this.customCommandParameterBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.customCommandParameterBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.customCommandParameterBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
+            this.customCommandParameterBox.Location = new System.Drawing.Point(239, 206);
+            this.customCommandParameterBox.Name = "customCommandParameterBox";
+            this.customCommandParameterBox.Size = new System.Drawing.Size(299, 23);
+            this.customCommandParameterBox.TabIndex = 63;
+            this.customCommandParameterBox.TextChanged += new System.EventHandler(this.customCommandParameterBox_TextChanged);
+            this.customCommandParameterBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
+            this.customCommandParameterBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
+            // 
+            // label8
+            // 
+            this.label8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
+            this.label8.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.label8.Location = new System.Drawing.Point(240, 176);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(297, 30);
+            this.label8.TabIndex = 62;
+            this.label8.Text = "Parameters";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // customCommandBox
             // 
             this.customCommandBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -3063,31 +3042,6 @@
             this.upgradeButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.upgradeButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
             // 
-            // customCommandParameterBox
-            // 
-            this.customCommandParameterBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.customCommandParameterBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.customCommandParameterBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
-            this.customCommandParameterBox.Location = new System.Drawing.Point(239, 206);
-            this.customCommandParameterBox.Name = "customCommandParameterBox";
-            this.customCommandParameterBox.Size = new System.Drawing.Size(299, 23);
-            this.customCommandParameterBox.TabIndex = 63;
-            this.customCommandParameterBox.TextChanged += new System.EventHandler(this.customCommandParameterBox_TextChanged);
-            this.customCommandParameterBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
-            this.customCommandParameterBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
-            // label8
-            // 
-            this.label8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label8.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label8.Location = new System.Drawing.Point(240, 176);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(297, 30);
-            this.label8.TabIndex = 62;
-            this.label8.Text = "Parameters";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3218,9 +3172,6 @@
         private System.Windows.Forms.Label saveLootImageButton;
         private System.Windows.Forms.Label selectClientProgramButton;
         private System.Windows.Forms.Label mainExecuteTibialyzerCommandLabel;
-        private System.Windows.Forms.Label settingSearchButton;
-        private EnterTextBox searchSettingsTextBox;
-        private System.Windows.Forms.Label mainSearchSettingsLabel;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Label label26;
         private PrettyCheckBox copyAdvancesCheckbox;

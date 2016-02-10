@@ -926,7 +926,7 @@ namespace Tibialyzer {
             controlList.Clear();
             int newwidth;
             MainForm.PageInfo pageInfo = new MainForm.PageInfo(false, false);
-            int y = base_y + MainForm.DisplayCreatureAttributeList(this.Controls, objectList[currentControlList], 10, base_y, out newwidth, null, controlList, currentPage, 20, pageInfo, extraAttributes[currentControlList], attributeFunctions[currentControlList], sortHeader, sortedHeader, desc, attributeSortFunctions[currentControlList]);
+            int y = base_y + MainForm.DisplayCreatureAttributeList(this.Controls, objectList[currentControlList], 10, base_y, out newwidth, null, controlList, currentPage, 10, pageInfo, extraAttributes[currentControlList], attributeFunctions[currentControlList], sortHeader, sortedHeader, desc, attributeSortFunctions[currentControlList]);
             newwidth = Math.Max(newwidth, this.Size.Width);
             if (pageInfo.prevPage || pageInfo.nextPage) {
                 if (pageInfo.prevPage) {

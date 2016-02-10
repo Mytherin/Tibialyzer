@@ -69,7 +69,6 @@ namespace Tibialyzer {
         private static string nodeDatabase = @"Database\Nodes.db";
         private static string pluralMapFile = @"Database\pluralMap.txt";
         private static string autohotkeyFile = @"Database\autohotkey.ahk";
-        private static string settingMetadata = @"Database\metadata.xml";
         public static string settingsFile = @"Database\settings.txt";
         public static Color label_text_color = Color.FromArgb(191, 191, 191);
         public static int max_creatures = 50;
@@ -117,65 +116,7 @@ namespace Tibialyzer {
                 System.Environment.Exit(1);
             }
         }
-
-        class SettingData {
-            public string title;
-            public string tab;
-            public string description;
-            public string searchString;
-            public string settingValue;
-        }
-        List<SettingData> settingData = new List<SettingData>();
-        private void initializeSettingData() {
-            try {
-                using (XmlReader reader = XmlReader.Create(new StreamReader(settingMetadata))) {
-                    SettingData currentSetting = null;
-                    string currentAttribute = null;
-                    while (reader.Read()) {
-                        switch (reader.NodeType) {
-                            case XmlNodeType.Element:
-                                if (reader.Name == "Setting") {
-                                    currentSetting = new SettingData();
-                                    currentSetting.searchString = "";
-                                } else {
-                                    currentAttribute = reader.Name;
-                                }
-                                break;
-                            case XmlNodeType.Text:
-                                switch (currentAttribute) {
-                                    case "Name":
-                                        currentSetting.title = reader.Value;
-                                        currentSetting.searchString += currentSetting.title.ToLower() + " ";
-                                        break;
-                                    case "Tab":
-                                        currentSetting.tab = reader.Value;
-                                        break;
-                                    case "Description":
-                                        currentSetting.description = reader.Value;
-                                        currentSetting.searchString += currentSetting.description.ToLower() + " ";
-                                        break;
-                                    case "ExtraTerms":
-                                        currentSetting.searchString += reader.Value.ToLower() + " ";
-                                        break;
-                                    case "SettingValue":
-                                        currentSetting.settingValue = reader.Value;
-                                        break;
-                                }
-                                break;
-                            case XmlNodeType.EndElement:
-                                if (reader.Name == "Setting") {
-                                    settingData.Add(currentSetting);
-                                    currentSetting = null;
-                                }
-                                break;
-                        }
-                    }
-                }
-            } catch (Exception ex) {
-                Console.WriteLine("Failed to read settings metadata: {0}", ex.Message);
-            }
-        }
-
+        
         public MainForm() {
             Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
             mainForm = this;
@@ -183,7 +124,6 @@ namespace Tibialyzer {
             makeDraggable(this.Controls);
             this.InitializeTabs();
             switchTab(0);
-            initializeSettingData();
 
             if (!File.Exists(databaseFile)) {
                 ExitWithError("Fatal Error", String.Format("Could not find database file {0}.", databaseFile));
@@ -2304,69 +2244,7 @@ namespace Tibialyzer {
         private void executeCommand_Click(object sender, EventArgs e) {
             this.ExecuteCommand(commandTextBox.Text);
         }
-
-
-        private void searchSettingsTextBox_KeyPress(object sender, KeyPressEventArgs e) {
-            if (e.KeyChar == '\r') {
-                settingSearchButton_Click(null, null);
-                e.Handled = true;
-            }
-        }
-
-        List<Control> searchControls = new List<Control>();
-        private void settingSearchButton_Click(object sender, EventArgs e) {
-            foreach (Control c in searchControls) {
-                this.Controls.Remove(c);
-                c.Dispose();
-            }
-            searchControls.Clear();
-            string[] words = searchSettingsTextBox.Text.ToLower().Split(' ');
-            List<SettingData> matchingData = new List<SettingData>();
-            foreach (SettingData settingData in settingData) {
-                bool found = true;
-                foreach (string word in words) {
-                    if (!settingData.searchString.Contains(word)) {
-                        found = false;
-                        break;
-                    }
-                }
-                if (found) {
-                    matchingData.Add(settingData);
-                }
-            }
-            int it = 0;
-            foreach (SettingData settingData in matchingData) {
-                Label label = new Label();
-                label.Size = new Size(180, 115);
-                label.Location = new Point(searchSettingsTextBox.Location.X + it * 180, searchSettingsTextBox.Location.Y + searchSettingsTextBox.Size.Height);
-                if (settingData.settingValue == null) {
-                    label.Text = String.Format("{0}\n{1}\n\n{2}", settingData.title, settingData.tab, settingData.description);
-                } else {
-                    label.Text = String.Format("{0} ({3})\n{1}\n\n{2}", settingData.title, settingData.tab, settingData.description, SettingsManager.getSettingString(settingData.settingValue));
-                }
-                label.AutoSize = false;
-                label.BackColor = ButtonColor;
-                label.ForeColor = ButtonForeColor;
-                label.MouseEnter += mainButton_MouseEnter;
-                label.MouseLeave += mainButton_MouseLeave;
-                label.Name = settingData.tab;
-                label.Click += switchToTab;
-                label.Font = generalButton.Font;
-                explanationTooltip.SetToolTip(label, settingData.description);
-                searchControls.Add(label);
-                this.Controls.Add(label);
-                it++;
-            }
-        }
-
-        private List<string> tabNames = new List<string> { "main", "settings", "hunts", "logs", "notifications", "popups", "database", "autohotkey", "screenshots", "browse", "help" };
-        private void switchToTab(object sender, EventArgs e) {
-            string tab = (sender as Control).Name.ToLower().Trim();
-            if (tabNames.Contains(tab)) {
-                switchTab(tabNames.IndexOf(tab));
-            }
-        }
-
+        
         private Hunt getActiveHunt() {
             return activeHunt;
         }
@@ -3201,11 +3079,6 @@ namespace Tibialyzer {
         }
 
         private void switchTab(int tab) {
-            foreach (Control c in searchControls) {
-                this.Controls.Remove(c);
-                c.Dispose();
-            }
-            searchControls.Clear();
             foreach (Control c in activeControls) {
                 this.Controls.Remove(c);
             }

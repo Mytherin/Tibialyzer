@@ -305,9 +305,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Database\metadata.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Database\pluralMap.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

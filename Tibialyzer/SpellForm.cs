@@ -451,7 +451,7 @@ namespace Tibialyzer {
             int newwidth = 0;
             int y = baseY;
             if (currentVocation >= 0) {
-                y = baseY + MainForm.DisplayCreatureAttributeList(this.Controls, npcList[currentVocation], 10, baseY, out newwidth, null, npcControls, 0, 20, null, "Cost", goldCostFunction, sortHeader, sortedHeader, desc);
+                y = baseY + MainForm.DisplayCreatureAttributeList(this.Controls, npcList[currentVocation], 10, baseY, out newwidth, null, npcControls, 0, 10, null, "Cost", goldCostFunction, sortHeader, sortedHeader, desc);
             }
             this.Size = new Size(Math.Max(this.Size.Width, newwidth), y + 20);
         }
