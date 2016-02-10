@@ -191,6 +191,9 @@ C::NumpadPgDn
                 setSettingIfNotSet(settingObject + "Duration", 30);
                 setSettingIfNotSet(settingObject + "Group", 0);
             }
+            setSettingIfNotSet("StackAllItems", false);
+            setSettingIfNotSet("IgnoreLowExperience", false);
+            setSettingIfNotSet("IgnoreLowExperienceValue", 250);
         }
 
         public static void ResetSettingsToDefault() {

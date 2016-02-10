@@ -75,6 +75,12 @@
             this.header = new System.Windows.Forms.Label();
             this.mainTabs = new System.Windows.Forms.TabControl();
             this.mainPage = new System.Windows.Forms.TabPage();
+            this.label11 = new System.Windows.Forms.Label();
+            this.ignoreLowExperienceBox = new Tibialyzer.EnterTextBox();
+            this.ignoreLowExperienceButton = new Tibialyzer.PrettyCheckBox();
+            this.stackAllItemsCheckbox = new Tibialyzer.PrettyCheckBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.mainExecuteTibialyzerCommandLabel = new System.Windows.Forms.Label();
             this.saveDamageImageButton = new System.Windows.Forms.Label();
             this.saveLootImageButton = new System.Windows.Forms.Label();
@@ -675,6 +681,12 @@
             // 
             // mainPage
             // 
+            this.mainPage.Controls.Add(this.label11);
+            this.mainPage.Controls.Add(this.ignoreLowExperienceBox);
+            this.mainPage.Controls.Add(this.ignoreLowExperienceButton);
+            this.mainPage.Controls.Add(this.stackAllItemsCheckbox);
+            this.mainPage.Controls.Add(this.label10);
+            this.mainPage.Controls.Add(this.label9);
             this.mainPage.Controls.Add(this.mainExecuteTibialyzerCommandLabel);
             this.mainPage.Controls.Add(this.saveDamageImageButton);
             this.mainPage.Controls.Add(this.saveLootImageButton);
@@ -697,6 +709,87 @@
             this.mainPage.Text = "Main";
             this.mainPage.UseVisualStyleBackColor = true;
             // 
+            // label11
+            // 
+            this.label11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.label11.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.label11.Location = new System.Drawing.Point(3, 277);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(99, 23);
+            this.label11.TabIndex = 44;
+            this.label11.Text = "Exp Value";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // ignoreLowExperienceBox
+            // 
+            this.ignoreLowExperienceBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.ignoreLowExperienceBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ignoreLowExperienceBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
+            this.ignoreLowExperienceBox.Location = new System.Drawing.Point(101, 277);
+            this.ignoreLowExperienceBox.Name = "ignoreLowExperienceBox";
+            this.ignoreLowExperienceBox.Size = new System.Drawing.Size(198, 23);
+            this.ignoreLowExperienceBox.TabIndex = 43;
+            this.ignoreLowExperienceBox.TextChanged += new System.EventHandler(this.ignoreLowExperienceBox_TextChanged);
+            this.ignoreLowExperienceBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
+            this.ignoreLowExperienceBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
+            // 
+            // ignoreLowExperienceButton
+            // 
+            this.ignoreLowExperienceButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.ignoreLowExperienceButton.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ignoreLowExperienceButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.ignoreLowExperienceButton.Location = new System.Drawing.Point(3, 237);
+            this.ignoreLowExperienceButton.Name = "ignoreLowExperienceButton";
+            this.ignoreLowExperienceButton.Padding = new System.Windows.Forms.Padding(10);
+            this.ignoreLowExperienceButton.Size = new System.Drawing.Size(296, 40);
+            this.ignoreLowExperienceButton.TabIndex = 39;
+            this.ignoreLowExperienceButton.Text = "Ignore Low Experience Creatures";
+            this.ignoreLowExperienceButton.UseVisualStyleBackColor = false;
+            this.ignoreLowExperienceButton.CheckedChanged += new System.EventHandler(this.ignoreLowExperienceButton_CheckedChanged);
+            this.ignoreLowExperienceButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
+            this.ignoreLowExperienceButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
+            // 
+            // stackAllItemsCheckbox
+            // 
+            this.stackAllItemsCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.stackAllItemsCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stackAllItemsCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.stackAllItemsCheckbox.Location = new System.Drawing.Point(3, 197);
+            this.stackAllItemsCheckbox.Name = "stackAllItemsCheckbox";
+            this.stackAllItemsCheckbox.Padding = new System.Windows.Forms.Padding(10);
+            this.stackAllItemsCheckbox.Size = new System.Drawing.Size(296, 40);
+            this.stackAllItemsCheckbox.TabIndex = 38;
+            this.stackAllItemsCheckbox.Text = "Display All Items As Stackable";
+            this.stackAllItemsCheckbox.UseVisualStyleBackColor = false;
+            this.stackAllItemsCheckbox.CheckedChanged += new System.EventHandler(this.stackAllItemsCheckbox_CheckedChanged);
+            this.stackAllItemsCheckbox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
+            this.stackAllItemsCheckbox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
+            // 
+            // label10
+            // 
+            this.label10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
+            this.label10.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.label10.Location = new System.Drawing.Point(305, 100);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(226, 30);
+            this.label10.TabIndex = 37;
+            this.label10.Text = "Loot Options";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label9
+            // 
+            this.label9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
+            this.label9.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.label9.Location = new System.Drawing.Point(3, 167);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(296, 30);
+            this.label9.TabIndex = 36;
+            this.label9.Text = "Loot Display Options";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // mainExecuteTibialyzerCommandLabel
             // 
             this.mainExecuteTibialyzerCommandLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
@@ -714,7 +807,7 @@
             this.saveDamageImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.saveDamageImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveDamageImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.saveDamageImageButton.Location = new System.Drawing.Point(305, 125);
+            this.saveDamageImageButton.Location = new System.Drawing.Point(305, 166);
             this.saveDamageImageButton.Name = "saveDamageImageButton";
             this.saveDamageImageButton.Padding = new System.Windows.Forms.Padding(10);
             this.saveDamageImageButton.Size = new System.Drawing.Size(226, 39);
@@ -730,7 +823,7 @@
             this.saveLootImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.saveLootImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveLootImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.saveLootImageButton.Location = new System.Drawing.Point(305, 87);
+            this.saveLootImageButton.Location = new System.Drawing.Point(305, 128);
             this.saveLootImageButton.Name = "saveLootImageButton";
             this.saveLootImageButton.Padding = new System.Windows.Forms.Padding(10);
             this.saveLootImageButton.Size = new System.Drawing.Size(226, 38);
@@ -751,7 +844,7 @@
             this.selectClientProgramButton.Padding = new System.Windows.Forms.Padding(10);
             this.selectClientProgramButton.Size = new System.Drawing.Size(226, 38);
             this.selectClientProgramButton.TabIndex = 29;
-            this.selectClientProgramButton.Text = "Select Client";
+            this.selectClientProgramButton.Text = "Select Tibia Client";
             this.selectClientProgramButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.selectClientProgramButton.Click += new System.EventHandler(this.selectClientButton_Click);
             this.selectClientProgramButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
@@ -766,7 +859,7 @@
             this.mainOptionsLabel.Name = "mainOptionsLabel";
             this.mainOptionsLabel.Size = new System.Drawing.Size(226, 30);
             this.mainOptionsLabel.TabIndex = 28;
-            this.mainOptionsLabel.Text = "Options";
+            this.mainOptionsLabel.Text = "Global Settings";
             this.mainOptionsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // executeButton
@@ -3315,6 +3408,12 @@
         private System.Windows.Forms.Label label7;
         private EnterTextBox customCommandParameterBox;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label11;
+        private EnterTextBox ignoreLowExperienceBox;
+        private PrettyCheckBox ignoreLowExperienceButton;
+        private PrettyCheckBox stackAllItemsCheckbox;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
     }
 }
 

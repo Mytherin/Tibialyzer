@@ -109,6 +109,23 @@ namespace Tibialyzer {
             lock (MainForm.mainForm.hunts) {
                 bool raw = rawName == "raw";
                 bool all = raw || rawName == "all";
+                List<Creature> displayedCreatures = null;
+                if (!hunt.trackAllCreatures && hunt.trackedCreatures.Length > 0) {
+                    displayedCreatures = new List<Creature>();
+                    foreach (string creature in hunt.lootCreatures) {
+                        Creature cr = MainForm.getCreature(creature.ToLower());
+                        if (cr != null) {
+                            displayedCreatures.Add(cr);
+                        }
+                    }
+                } else if (SettingsManager.getSettingBool("IgnoreLowExperience")) {
+                    displayedCreatures = new List<Creature>();
+                    foreach (Creature cr in hunt.loot.killCount.Keys) {
+                        if (cr.experience >= SettingsManager.getSettingInt("IgnoreLowExperienceValue")) {
+                            displayedCreatures.Add(cr);
+                        }
+                    }
+                }
 
                 if (lootCreature != null) {
                     //the command is loot@<creature>, so we only display the kills and loot from the specified creature
@@ -118,14 +135,12 @@ namespace Tibialyzer {
                     } else {
                         creatureKills = new Dictionary<Creature, int>(); //empty dictionary
                     }
-                } else if (hunt.trackAllCreatures || hunt.trackedCreatures.Length == 0) {
+                } else if (displayedCreatures == null) {
                     creatureKills = hunt.loot.killCount; //display all creatures
                 } else {
                     // only display tracked creatures
                     creatureKills = new Dictionary<Creature, int>();
-                    foreach (string creature in hunt.lootCreatures) {
-                        Creature cr = MainForm.getCreature(creature.ToLower());
-                        if (cr == null) continue;
+                    foreach(Creature cr in displayedCreatures) {
                         if (!hunt.loot.killCount.ContainsKey(cr)) continue;
 
                         creatureKills.Add(cr, hunt.loot.killCount[cr]);
@@ -136,7 +151,7 @@ namespace Tibialyzer {
                 Dictionary<Item, int> itemCounts = new Dictionary<Item, int>();
                 foreach (KeyValuePair<Creature, Dictionary<Item, int>> kvp in hunt.loot.creatureLoot) {
                     if (lootCreature != null && kvp.Key != lootCreature) continue; // if lootCreature is specified, only consider loot from the specified creature
-                    if (!hunt.trackAllCreatures && hunt.trackedCreatures.Length > 0 && !hunt.lootCreatures.Contains(kvp.Key.GetName().ToLower())) continue;
+                    if (displayedCreatures != null && !displayedCreatures.Contains(kvp.Key)) continue;
                     foreach (KeyValuePair<Item, int> kvp2 in kvp.Value) {
                         Item item = kvp2.Key;
                         int value = kvp2.Value;
@@ -192,6 +207,13 @@ namespace Tibialyzer {
             this.SuspendForm();
             RefreshLoot();
             this.ResumeForm();
+        }
+
+        private bool TrackCreature(Creature cr) {
+            if (SettingsManager.getSettingBool("IgnoreLowExperience")) {
+                return cr.experience >= SettingsManager.getSettingInt("IgnoreLowExperienceValue");
+            }
+            return true;
         }
 
         public List<Control> createdControls = new List<Control>();
@@ -251,7 +273,7 @@ namespace Tibialyzer {
                         }
                     }
                     int mitems = 1;
-                    if (item.stackable || count > 100) mitems = Math.Min(count, 100);
+                    if (item.stackable || SettingsManager.getSettingBool("StackAllItems")) mitems = Math.Min(count, 100);
                     count -= mitems;
                     if (currentPage == page) {
                         PictureBox picture_box;

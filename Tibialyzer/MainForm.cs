@@ -688,6 +688,10 @@ namespace Tibialyzer {
             this.suspendedAnchorBox.SelectedIndex = Math.Min(Math.Max(SettingsManager.getSettingInt("SuspendedNotificationAnchor"), 0), 3);
             this.suspendedXOffsetBox.Text = SettingsManager.getSettingInt("SuspendedNotificationXOffset").ToString();
             this.suspendedYOffsetBox.Text = SettingsManager.getSettingInt("SuspendedNotificationYOffset").ToString();
+            this.stackAllItemsCheckbox.Checked = SettingsManager.getSettingBool("StackAllItems");
+            this.ignoreLowExperienceButton.Checked = SettingsManager.getSettingBool("IgnoreLowExperience");
+            this.ignoreLowExperienceBox.Enabled = this.ignoreLowExperienceButton.Checked;
+            this.ignoreLowExperienceBox.Text = SettingsManager.getSettingInt("IgnoreLowExperienceValue").ToString();
 
             popupSpecificItemBox.Items.Clear();
             foreach (string str in SettingsManager.getSetting("NotificationItems")) {
@@ -3404,6 +3408,27 @@ namespace Tibialyzer {
 
             customCommands[customCommandList.SelectedIndex].parameters = customCommandParameterBox.Text;
             SaveCommands();
+        }
+
+        private void stackAllItemsCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            SettingsManager.setSetting("StackAllItems", (sender as CheckBox).Checked);
+        }
+
+        private void ignoreLowExperienceButton_CheckedChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+
+            SettingsManager.setSetting("IgnoreLowExperience", (sender as CheckBox).Checked);
+            ignoreLowExperienceBox.Enabled = (sender as CheckBox).Checked;
+        }
+
+        private void ignoreLowExperienceBox_TextChanged(object sender, EventArgs e) {
+            if (prevent_settings_update) return;
+            int value;
+            if (int.TryParse(ignoreLowExperienceBox.Text, out value)) {
+                SettingsManager.setSetting("IgnoreLowExperienceValue", value);
+            }
         }
     }
 
