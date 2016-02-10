@@ -30,7 +30,7 @@ Tibialyzer is build using Visual Studio 2015. If you wish to build it yourself, 
 For a high level overview of the Tibialyzer code base, check the [Tibialyzer Code Readme](https://github.com/Mytherin/Tibialyzer/tree/master/Tibialyzer#important-files). As Tibialyzer is performance intensive, I recommend compiling with optimization flags (i.e. Release Build) if you are compiling a version that you intend to use.
 
 # Is Tibialyzer allowed? Isn't this against the rules?
-Tibialyzer does not do anything that is against the rules. [The Tibia rules](http://www.tibia.com/support/?subtopic=tibiarules&rule=3b) specify two rules with regard to external applications.
+Tibialyzer does not do anything that is against the rules. [The Tibia rules](https://secure.tibia.com/support/?subtopic=tibiarules&rule=3b) specify two rules with regard to external applications.
 
 > #### Manipulating the official client program. 
 >Manipulating the client program to try gaining an advantage compared to other players is not only extremely unfair but may also cause serious errors in the game. In such cases you cannot expect any assistance from CipSoft concerning level, skill, item or character loss due to manipulating their software or the game protocol. Also, manipulating the client program may lead to a punishment.
