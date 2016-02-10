@@ -50,6 +50,12 @@ namespace Tibialyzer {
         public string command;
     }
 
+    public class SystemCommand {
+        public string tibialyzer_command;
+        public string command;
+        public string parameters;
+    }
+
     public abstract class Attribute {
         public int MaxWidth;
     };

@@ -868,8 +868,68 @@ namespace Tibialyzer {
 
             screenshotDisplayList.ReadOnly = true;
             screenshotDisplayList.AttemptDeleteItem += ScreenshotDisplayList_AttemptDeleteItem;
+
+            customCommands.Clear();
+            foreach (string str in SettingsManager.getSetting("CustomCommands")) {
+                string[] split = str.Split('#');
+                if (split.Length <= 2) continue;
+                customCommands.Add(new SystemCommand { tibialyzer_command = split[0], command = split[1], parameters = split[2] });
+            }
+
+            if (customCommands.Count == 0) {
+                customCommands.Add(new SystemCommand { tibialyzer_command = "Unknown Command", command = "", parameters = "" });
+            }
+
+            customCommandList.Items.Clear();
+            foreach (SystemCommand c in customCommands) {
+                customCommandList.Items.Add(c.tibialyzer_command);
+            }
+            customCommandList.ItemsChanged += CustomCommandList_ItemsChanged;
+            customCommandList.ChangeTextOnly = true;
+            customCommandList.AttemptDeleteItem += CustomCommandList_AttemptDeleteItem;
+            customCommandList.AttemptNewItem += CustomCommandList_AttemptNewItem;
+            customCommandList.RefreshControl();
+            CustomCommandList_ItemsChanged(null, null);
+        }
+        
+        private void CustomCommandList_ItemsChanged(object sender, EventArgs e) {
+            for(int i = 0; i < customCommandList.Items.Count; i++) {
+                string command = customCommandList.Items[i].ToString();
+
+                customCommands[i].tibialyzer_command = command;
+            }
+            SaveCommands();
+        }
+        private void CustomCommandList_AttemptDeleteItem(object sender, EventArgs e) {
+            if (customCommandList.SelectedIndex < 0) return;
+            customCommands.RemoveAt(customCommandList.SelectedIndex);
+            RefreshCustomCommandList();
+            SaveCommands();
         }
 
+        private void CustomCommandList_AttemptNewItem(object sender, EventArgs e) {
+            customCommands.Add(new SystemCommand { tibialyzer_command = "", command = "", parameters = "" });
+            RefreshCustomCommandList();
+            SaveCommands();
+        }
+
+        private void RefreshCustomCommandList() {
+            int selectedIndex = Math.Min(customCommandList.SelectedIndex, customCommands.Count - 1);
+
+            customCommandList.Items.Clear();
+            foreach(SystemCommand c in customCommands) {
+                customCommandList.Items.Add(c.tibialyzer_command);
+            }
+            customCommandList.SelectedIndex = selectedIndex;
+        }
+
+        private void SaveCommands() {
+            List<string> commands = new List<string>();
+            foreach(SystemCommand c in customCommands) {
+                commands.Add(string.Format("{0}#{1}#{2}", c.tibialyzer_command, c.command, c.parameters));
+            }
+            SettingsManager.setSetting("CustomCommands", commands);
+        }
 
         private void CreateRatioDisplay(List<string> itemList, int baseX, int baseY, EventHandler itemClick, List<Control> labelControls) {
             int it = 0;
@@ -3449,6 +3509,28 @@ namespace Tibialyzer {
                     }
                 }
             }
+        }
+
+        private List<SystemCommand> customCommands = new List<SystemCommand>();
+        private void customCommandList_SelectedIndexChanged(object sender, EventArgs e) {
+            if (customCommandList.SelectedIndex < 0) return;
+
+            customCommandBox.Text = customCommands[customCommandList.SelectedIndex].command;
+            customCommandParameterBox.Text = customCommands[customCommandList.SelectedIndex].parameters;
+        }
+
+        private void customCommandBox_TextChanged(object sender, EventArgs e) {
+            if (customCommandList.SelectedIndex < 0) return;
+
+            customCommands[customCommandList.SelectedIndex].command = customCommandBox.Text;
+            SaveCommands();
+        }
+
+        private void customCommandParameterBox_TextChanged(object sender, EventArgs e) {
+            if (customCommandList.SelectedIndex < 0) return;
+
+            customCommands[customCommandList.SelectedIndex].parameters = customCommandParameterBox.Text;
+            SaveCommands();
         }
     }
 

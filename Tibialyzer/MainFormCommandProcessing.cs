@@ -630,6 +630,31 @@ namespace Tibialyzer {
                             found = true;
                         }
                     }
+                    // else try custom commands
+                    foreach(SystemCommand c in customCommands) {
+                        if (c.tibialyzer_command.Trim().Length > 0 && comp.StartsWith(c.tibialyzer_command + commandSymbol)) {
+                            string[] parameters = command.Split(commandSymbol);
+                            string systemCallParameters = c.parameters;
+                            int i = 0;
+                            while(true) {
+                                if (systemCallParameters.Contains("{" + i.ToString() + "}")) {
+                                    systemCallParameters = systemCallParameters.Replace("{" + i.ToString() + "}", parameters.Length > i + 1 ? parameters[i + 1].Trim() : "");
+                                } else {
+                                    break;
+                                }
+                                i++;
+                            }
+                            ProcessStartInfo procStartInfo = new ProcessStartInfo(c.command, systemCallParameters);
+
+                            procStartInfo.UseShellExecute = true;
+
+                            // Do not show the cmd window to the user.
+                            procStartInfo.CreateNoWindow = true;
+                            procStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                            Process.Start(procStartInfo);
+                            return true;
+                        }
+                    }
                     if (found) return true;
                     //if we get here we didn't find any command
                     return false;
