@@ -1100,8 +1100,10 @@ namespace Tibialyzer {
                 try {
                     success = ScanMemory();
                 } catch (Exception ex) {
-                    DisplayWarning(String.Format("Database Scan Error (Non-Fatal): {0}", ex.Message));
-                    Console.WriteLine(ex.Message);
+                    this.BeginInvoke((MethodInvoker)delegate {
+                        DisplayWarning(String.Format("Database Scan Error (Non-Fatal): {0}", ex.Message));
+                        Console.WriteLine(ex.Message);
+                    });
                 }
                 circleTimer.Dispose();
                 circleTimer = null;

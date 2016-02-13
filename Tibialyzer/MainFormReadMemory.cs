@@ -12,7 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -37,7 +37,13 @@ namespace Tibialyzer {
         public static string TibiaClientName = "Tibia";
         public static int TibiaProcessId = -1;
         public static Process GetTibiaProcess() {
-            if (TibiaProcessId >= 0) return Process.GetProcessById(TibiaProcessId);
+            if (TibiaProcessId >= 0) {
+                List<Process> ids = Process.GetProcesses().Where(x => x.Id == TibiaProcessId).ToList();
+                if (ids.Count > 0) {
+                    return ids[0];
+                }
+                TibiaProcessId = -1;
+            }
             Process[] p = Process.GetProcessesByName(TibiaClientName);
             if (p.Length > 0) return p[0];
             return null;
@@ -86,7 +92,7 @@ namespace Tibialyzer {
             public Dictionary<string, List<Tuple<string, string>>> commands = new Dictionary<string, List<Tuple<string, string>>>();
             public Dictionary<string, List<Tuple<string, string>>> urls = new Dictionary<string, List<Tuple<string, string>>>();
             public List<string> newAdvances = new List<string>();
-            public List<Tuple<Event,string>> eventMessages = new List<Tuple<Event, string>>();
+            public List<Tuple<Event, string>> eventMessages = new List<Tuple<Event, string>>();
             public Dictionary<string, List<string>> lookMessages = new Dictionary<string, List<string>>();
             public Dictionary<string, bool> deaths = new Dictionary<string, bool>();
             public Dictionary<string, List<string>> duplicateMessages = new Dictionary<string, List<string>>();
@@ -238,7 +244,7 @@ namespace Tibialyzer {
             for (i = 0; i < array.Length; i++) {
                 if (index < 1) {
                     if (i > array.Length - 6) break;
-                    
+
                     if (!checkRange(array, '0', '9', ref i)) continue;
                     if (!checkRange(array, '0', '9', ref i)) continue;
                     if (!checkDigit(array, ':', ref i)) continue;
@@ -376,7 +382,7 @@ namespace Tibialyzer {
             }
             string itemName = "";
             string[] split = item.Split(' ');
-            for(int i = 0; i < split.Length; i++) {
+            for (int i = 0; i < split.Length; i++) {
                 if (split[i].Length == 0) continue;
                 if ((split[i] == "a" || split[i] == "an") && itemName == "") continue;
                 if (isDigit(split[i][0])) {
@@ -423,7 +429,7 @@ namespace Tibialyzer {
         }
 
         private void deleteCreatureFromLog(Creature cr) {
-            lock(hunts) {
+            lock (hunts) {
                 if (activeHunt.loot.killCount.ContainsKey(cr)) {
                     activeHunt.loot.killCount.Remove(cr);
                 }
@@ -450,7 +456,7 @@ namespace Tibialyzer {
             var time = DateTime.Now;
             int hour = time.Hour;
             int minute = time.Minute;
-            while(clearMinutes > 60) {
+            while (clearMinutes > 60) {
                 hour--;
                 clearMinutes -= 60;
             }
@@ -461,7 +467,7 @@ namespace Tibialyzer {
                 minute = 60 + (minute - clearMinutes);
             }
             int stamp = getDayStamp();
-            while(hour < 0) {
+            while (hour < 0) {
                 hour += 24;
                 stamp--;
             }
@@ -471,7 +477,7 @@ namespace Tibialyzer {
             h.loot.logMessages.Clear();
             h.totalExp = 0;
             h.totalTime = 0;
-            foreach(string t in getLatestTimes(clearMinutes)) {
+            foreach (string t in getLatestTimes(clearMinutes)) {
                 if (totalExperienceResults.ContainsKey(t)) {
                     h.totalExp += totalExperienceResults[t];
                     h.totalTime += 60;
@@ -498,7 +504,7 @@ namespace Tibialyzer {
         }
 
         void resetHunt(Hunt h) {
-            lock(hunts) {
+            lock (hunts) {
                 h.loot.creatureLoot.Clear();
                 h.loot.killCount.Clear();
                 h.loot.logMessages.Clear();
@@ -516,7 +522,7 @@ namespace Tibialyzer {
         void deleteLogMessage(Hunt h, string logMessage) {
             string timeStamp = logMessage.Substring(0, 5);
             bool found = false;
-            lock(hunts) {
+            lock (hunts) {
                 if (h.loot.logMessages.ContainsKey(timeStamp)) {
                     if (h.loot.logMessages[timeStamp].Contains(logMessage)) {
                         h.loot.logMessages[timeStamp].Remove(logMessage);
@@ -528,7 +534,7 @@ namespace Tibialyzer {
                                 h.loot.killCount.Remove(cr);
                             }
                         }
-                        foreach(Tuple<Item, int> tpl in logMessageItems.Item2) {
+                        foreach (Tuple<Item, int> tpl in logMessageItems.Item2) {
                             if (h.loot.creatureLoot[cr].ContainsKey(tpl.Item1)) {
                                 h.loot.creatureLoot[cr][tpl.Item1] -= tpl.Item2;
                                 if (h.loot.creatureLoot[cr][tpl.Item1] <= 0) {
@@ -590,7 +596,7 @@ namespace Tibialyzer {
                 command.ExecuteNonQuery();
                 transaction.Commit();
             }
-            foreach(int id in _itemIdMap.Keys.ToArray().ToList()) {
+            foreach (int id in _itemIdMap.Keys.ToArray().ToList()) {
                 Item item = _itemIdMap[id];
                 item.discard = ((double)item.GetMaxValue() / (double)(item.capacity == 0 ? 1 : item.capacity)) < ratio;
             }
@@ -678,7 +684,7 @@ namespace Tibialyzer {
             string message = String.Format("{0} Loot of a {1}: {2} {3}", timestamp, cr.displayname.ToLower(), count, item.displayname.ToLower());
             SQLiteCommand command = new SQLiteCommand(String.Format("INSERT INTO \"{4}\" VALUES({0}, {1}, {2}, \"{3}\");", stamp, hour, minute, message.Replace("\"", "\\\""), activeHunt.GetTableName()), lootConn);
             command.ExecuteNonQuery();
-            lock(hunts) {
+            lock (hunts) {
                 if (!activeHunt.loot.logMessages.ContainsKey(timestamp)) activeHunt.loot.logMessages.Add(timestamp, new List<string>());
                 activeHunt.loot.logMessages[timestamp].Add(message);
                 if (!activeHunt.loot.creatureLoot.ContainsKey(cr)) {
@@ -719,7 +725,7 @@ namespace Tibialyzer {
 
         Dictionary<string, List<string>> globalMessages = new Dictionary<string, List<string>>();
         private void ParseLootMessages(Hunt h, Dictionary<string, List<string>> newDrops, List<Tuple<Creature, List<Tuple<Item, int>>>> newItems, bool commit = true, bool switchHunt = false, bool addEverything = false) {
-            lock(hunts) {
+            lock (hunts) {
 
                 SQLiteTransaction transaction = null;
                 if (commit) {
@@ -743,9 +749,9 @@ namespace Tibialyzer {
                                 // new log message, scan it for new items
                                 Tuple<Creature, List<Tuple<Item, int>>> resultList = ParseLootMessage(message);
                                 if (resultList == null) continue;
-                                
+
                                 Creature cr = resultList.Item1;
-                                
+
                                 if (switchHunt && commit) {
                                     foreach (Hunt potentialHunt in hunts) {
                                         if (potentialHunt.lootCreatures.Contains(cr.GetName().ToLower())) {
@@ -853,7 +859,7 @@ namespace Tibialyzer {
             o.expPerHour *= 4;
 
             // Parse event messages
-            foreach(Tuple<Event, string> tpl in res.eventMessages) {
+            foreach (Tuple<Event, string> tpl in res.eventMessages) {
                 if (!eventMessages.Contains(tpl.Item2)) {
                     eventMessages.Add(tpl.Item2);
                     o.newEventMessages.Add(tpl);
@@ -867,7 +873,7 @@ namespace Tibialyzer {
                 if (!totalLooks.ContainsKey(t)) totalLooks[t] = new List<string>();
                 if (currentMessages.Count > totalLooks[t].Count) {
                     List<string> unseenLooks = new List<string>();
-                    List<string> lookList = totalLooks[t].ToArray().ToList(); 
+                    List<string> lookList = totalLooks[t].ToArray().ToList();
                     foreach (string lookMessage in currentMessages) {
                         if (!totalLooks[t].Contains(lookMessage)) {
                             unseenLooks.Add(lookMessage);
@@ -882,7 +888,7 @@ namespace Tibialyzer {
             }
 
             // Update death information
-            foreach(KeyValuePair<string, bool> kvp in res.deaths) {
+            foreach (KeyValuePair<string, bool> kvp in res.deaths) {
                 if (!totalDeaths.ContainsKey(kvp.Key)) {
                     totalDeaths.Add(kvp.Key, false);
                 }
@@ -927,10 +933,10 @@ namespace Tibialyzer {
                     totalURLs[t] = currentURLs;
                 }
             }
-            
+
             ParseLootMessages(activeHunt, res.itemDrops, o.newItems, true, true);
             activeHunt.totalExp += newExperience;
-            
+
             readWatch.Stop();
             if (newExperience == 0) {
                 if (ticksSinceExperience < 120) {
@@ -1003,7 +1009,7 @@ namespace Tibialyzer {
         }
 
         private void FinalCleanup(ReadMemoryResults res) {
-            foreach(KeyValuePair<string, List<Tuple<string, string>>> kvp in res.commands) {
+            foreach (KeyValuePair<string, List<Tuple<string, string>>> kvp in res.commands) {
                 string time = kvp.Key;
                 if (res.itemDrops.ContainsKey(time)) {
                     foreach (Tuple<string, string> command in kvp.Value) {
@@ -1014,7 +1020,7 @@ namespace Tibialyzer {
                 }
             }
         }
-        
+
         private bool flashClient = true;
         private int ignoreStamp = 0;
         private void SearchChunk(List<string> chunk, ReadMemoryResults res) {
@@ -1025,7 +1031,7 @@ namespace Tibialyzer {
                 int hour = int.Parse(logMessage.Substring(0, 2));
                 int minute = int.Parse(logMessage.Substring(3, 2));
                 if (!stamps.Contains(getStamp(hour, minute))) continue; // the log message is not recent, so we skip parsing it
-                
+
                 if (flashClient) {
                     // there is some inconsistency with log messages, certain log messages use "12:00: Message.", others use "12:00 Message"
                     // if there is a : after the timestamp we remove it
@@ -1110,10 +1116,10 @@ namespace Tibialyzer {
                             levelAdvances.Add(logMessage);
                         }
                     } else {
-                        foreach(Event ev in eventIdMap.Values) {
-                            foreach(string evMessage in ev.eventMessages) {
+                        foreach (Event ev in eventIdMap.Values) {
+                            foreach (string evMessage in ev.eventMessages) {
                                 if (logMessage.Length == evMessage.Length + 6 && logMessage.ToLower().Contains(evMessage.ToLower().Trim())) {
-                                    res.eventMessages.Add(new Tuple<Event,string>(ev, logMessage));
+                                    res.eventMessages.Add(new Tuple<Event, string>(ev, logMessage));
                                 }
                             }
                         }
