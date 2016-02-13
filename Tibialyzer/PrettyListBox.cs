@@ -24,7 +24,7 @@ namespace Tibialyzer {
         private bool caret_flicker = true;
         private int caretOffset = 0;
         public PrettyListBox() {
-
+            this.MeasureItem += PrettyListBox_MeasureItem;
             this.DrawItem += PrettyListBox_DrawItem;
             this.KeyDown += PrettyListBox_KeyDown;
             this.KeyPress += PrettyListBox_KeyPress;
@@ -34,7 +34,8 @@ namespace Tibialyzer {
             flickerTimer = new System.Timers.Timer(250);
             flickerTimer.Elapsed += FlickerTimer_Elapsed;
         }
-        
+
+
         private void PrettyListBox_GotFocus(object sender, EventArgs e) {
             if (ReadOnly) return;
             lock (timerLock) {
@@ -162,6 +163,12 @@ namespace Tibialyzer {
             }
         }
 
+        private void PrettyListBox_MeasureItem(object sender, MeasureItemEventArgs e) {
+            PrettyListBox self = sender as PrettyListBox;
+            string str = self.Items[e.Index].ToString();
+            e.ItemWidth = self.Width;
+            e.ItemHeight = (int)e.Graphics.MeasureString(str, self.Font, e.ItemWidth, StringFormat.GenericDefault).Height;
+        }
 
         private static Brush HoverBrush = new SolidBrush(Color.FromArgb(43, 47, 51));
         private static Brush ColorBrush = new SolidBrush(MainForm.ButtonForeColor);

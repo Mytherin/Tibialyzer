@@ -580,6 +580,7 @@ namespace Tibialyzer {
             logMessageCollection.ReadOnly = true;
             logMessageCollection.TextAlign = HorizontalAlignment.Left;
             logMessageCollection.AttemptDeleteItem += LogMessageCollection_AttemptDeleteItem;
+            logMessageCollection.DrawMode = DrawMode.OwnerDrawVariable;
         }
 
         private void LogMessageCollection_AttemptDeleteItem(object sender, EventArgs e) {
