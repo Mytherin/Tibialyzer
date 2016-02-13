@@ -88,11 +88,11 @@
             this.selectClientProgramButton = new System.Windows.Forms.Label();
             this.mainOptionsLabel = new System.Windows.Forms.Label();
             this.executeButton = new System.Windows.Forms.Label();
-            this.issuesGuide = new System.Windows.Forms.Label();
-            this.popupsGuide = new System.Windows.Forms.Label();
-            this.commandsGuide = new System.Windows.Forms.Label();
+            this.issuesGuideButton = new System.Windows.Forms.Label();
+            this.popupsGuideButton = new System.Windows.Forms.Label();
+            this.lootGuideButton = new System.Windows.Forms.Label();
             this.mainGuidesLabel = new System.Windows.Forms.Label();
-            this.gettingStartedGuide = new System.Windows.Forms.Label();
+            this.gettingStartedGuideButton = new System.Windows.Forms.Label();
             this.nameListBox = new Tibialyzer.PrettyListBox();
             this.commandTextBox = new Tibialyzer.EnterTextBox();
             this.settingsPage = new System.Windows.Forms.TabPage();
@@ -695,11 +695,11 @@
             this.mainPage.Controls.Add(this.selectClientProgramButton);
             this.mainPage.Controls.Add(this.mainOptionsLabel);
             this.mainPage.Controls.Add(this.executeButton);
-            this.mainPage.Controls.Add(this.issuesGuide);
-            this.mainPage.Controls.Add(this.popupsGuide);
-            this.mainPage.Controls.Add(this.commandsGuide);
+            this.mainPage.Controls.Add(this.issuesGuideButton);
+            this.mainPage.Controls.Add(this.popupsGuideButton);
+            this.mainPage.Controls.Add(this.lootGuideButton);
             this.mainPage.Controls.Add(this.mainGuidesLabel);
-            this.mainPage.Controls.Add(this.gettingStartedGuide);
+            this.mainPage.Controls.Add(this.gettingStartedGuideButton);
             this.mainPage.Controls.Add(this.nameListBox);
             this.mainPage.Controls.Add(this.namesLabel);
             this.mainPage.Controls.Add(this.commandTextBox);
@@ -895,53 +895,53 @@
             this.executeButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.executeButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
             // 
-            // issuesGuide
+            // issuesGuideButton
             // 
-            this.issuesGuide.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.issuesGuide.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.issuesGuide.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.issuesGuide.Location = new System.Drawing.Point(402, 374);
-            this.issuesGuide.Name = "issuesGuide";
-            this.issuesGuide.Padding = new System.Windows.Forms.Padding(10);
-            this.issuesGuide.Size = new System.Drawing.Size(130, 40);
-            this.issuesGuide.TabIndex = 26;
-            this.issuesGuide.Text = "Issues";
-            this.issuesGuide.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.issuesGuide.Click += new System.EventHandler(this.issuesGuide_Click);
-            this.issuesGuide.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
-            this.issuesGuide.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
+            this.issuesGuideButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.issuesGuideButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.issuesGuideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.issuesGuideButton.Location = new System.Drawing.Point(402, 374);
+            this.issuesGuideButton.Name = "issuesGuideButton";
+            this.issuesGuideButton.Padding = new System.Windows.Forms.Padding(10);
+            this.issuesGuideButton.Size = new System.Drawing.Size(130, 40);
+            this.issuesGuideButton.TabIndex = 26;
+            this.issuesGuideButton.Text = "Issues";
+            this.issuesGuideButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.issuesGuideButton.Click += new System.EventHandler(this.issuesGuide_Click);
+            this.issuesGuideButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
+            this.issuesGuideButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
             // 
-            // popupsGuide
+            // popupsGuideButton
             // 
-            this.popupsGuide.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.popupsGuide.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.popupsGuide.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.popupsGuide.Location = new System.Drawing.Point(272, 374);
-            this.popupsGuide.Name = "popupsGuide";
-            this.popupsGuide.Padding = new System.Windows.Forms.Padding(10);
-            this.popupsGuide.Size = new System.Drawing.Size(130, 40);
-            this.popupsGuide.TabIndex = 25;
-            this.popupsGuide.Text = "Popups";
-            this.popupsGuide.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.popupsGuide.Click += new System.EventHandler(this.popupsGuide_Click);
-            this.popupsGuide.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
-            this.popupsGuide.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
+            this.popupsGuideButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.popupsGuideButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.popupsGuideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.popupsGuideButton.Location = new System.Drawing.Point(272, 374);
+            this.popupsGuideButton.Name = "popupsGuideButton";
+            this.popupsGuideButton.Padding = new System.Windows.Forms.Padding(10);
+            this.popupsGuideButton.Size = new System.Drawing.Size(130, 40);
+            this.popupsGuideButton.TabIndex = 25;
+            this.popupsGuideButton.Text = "Popups";
+            this.popupsGuideButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.popupsGuideButton.Click += new System.EventHandler(this.popupsGuide_Click);
+            this.popupsGuideButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
+            this.popupsGuideButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
             // 
-            // commandsGuide
+            // lootGuideButton
             // 
-            this.commandsGuide.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.commandsGuide.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.commandsGuide.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.commandsGuide.Location = new System.Drawing.Point(142, 374);
-            this.commandsGuide.Name = "commandsGuide";
-            this.commandsGuide.Padding = new System.Windows.Forms.Padding(10);
-            this.commandsGuide.Size = new System.Drawing.Size(130, 40);
-            this.commandsGuide.TabIndex = 24;
-            this.commandsGuide.Text = "Commands";
-            this.commandsGuide.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.commandsGuide.Click += new System.EventHandler(this.commandsGuide_Click);
-            this.commandsGuide.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
-            this.commandsGuide.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
+            this.lootGuideButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.lootGuideButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lootGuideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.lootGuideButton.Location = new System.Drawing.Point(142, 374);
+            this.lootGuideButton.Name = "lootGuideButton";
+            this.lootGuideButton.Padding = new System.Windows.Forms.Padding(10);
+            this.lootGuideButton.Size = new System.Drawing.Size(130, 40);
+            this.lootGuideButton.TabIndex = 24;
+            this.lootGuideButton.Text = "Loot";
+            this.lootGuideButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lootGuideButton.Click += new System.EventHandler(this.commandsGuide_Click);
+            this.lootGuideButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
+            this.lootGuideButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
             // 
             // mainGuidesLabel
             // 
@@ -955,21 +955,21 @@
             this.mainGuidesLabel.Text = "Guides";
             this.mainGuidesLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // gettingStartedGuide
+            // gettingStartedGuideButton
             // 
-            this.gettingStartedGuide.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.gettingStartedGuide.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gettingStartedGuide.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.gettingStartedGuide.Location = new System.Drawing.Point(9, 374);
-            this.gettingStartedGuide.Name = "gettingStartedGuide";
-            this.gettingStartedGuide.Padding = new System.Windows.Forms.Padding(10);
-            this.gettingStartedGuide.Size = new System.Drawing.Size(140, 40);
-            this.gettingStartedGuide.TabIndex = 22;
-            this.gettingStartedGuide.Text = "Getting Started";
-            this.gettingStartedGuide.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.gettingStartedGuide.Click += new System.EventHandler(this.gettingStartedGuide_Click);
-            this.gettingStartedGuide.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
-            this.gettingStartedGuide.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
+            this.gettingStartedGuideButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.gettingStartedGuideButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gettingStartedGuideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.gettingStartedGuideButton.Location = new System.Drawing.Point(9, 374);
+            this.gettingStartedGuideButton.Name = "gettingStartedGuideButton";
+            this.gettingStartedGuideButton.Padding = new System.Windows.Forms.Padding(10);
+            this.gettingStartedGuideButton.Size = new System.Drawing.Size(140, 40);
+            this.gettingStartedGuideButton.TabIndex = 22;
+            this.gettingStartedGuideButton.Text = "Getting Started";
+            this.gettingStartedGuideButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.gettingStartedGuideButton.Click += new System.EventHandler(this.gettingStartedGuide_Click);
+            this.gettingStartedGuideButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
+            this.gettingStartedGuideButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
             // 
             // nameListBox
             // 
@@ -3280,11 +3280,11 @@
         private System.Windows.Forms.TabPage browsePage;
         private System.Windows.Forms.TabPage helpPage;
         private PrettyListBox nameListBox;
-        private System.Windows.Forms.Label issuesGuide;
-        private System.Windows.Forms.Label popupsGuide;
-        private System.Windows.Forms.Label commandsGuide;
+        private System.Windows.Forms.Label issuesGuideButton;
+        private System.Windows.Forms.Label popupsGuideButton;
+        private System.Windows.Forms.Label lootGuideButton;
         private System.Windows.Forms.Label mainGuidesLabel;
-        private System.Windows.Forms.Label gettingStartedGuide;
+        private System.Windows.Forms.Label gettingStartedGuideButton;
         private System.Windows.Forms.Label executeButton;
         private System.Windows.Forms.Label mainOptionsLabel;
         private System.Windows.Forms.Label saveDamageImageButton;

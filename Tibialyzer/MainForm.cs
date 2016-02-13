@@ -477,6 +477,20 @@ namespace Tibialyzer {
             //explanationTooltip.SetToolTip(notificationLengthSlider, "The amount of time that rich notifications (loot@, creature@) remain on the screen before fading.");
             explanationTooltip.SetToolTip(downloadAutoHotkeyButton, "Download AutoHotkey to the temporary directory and launches an installer. Complete the installer to install AutoHotkey.");
             explanationTooltip.SetToolTip(scanningSpeedTrack, "Set the memory scanning speed of Tibialyzer. Lower settings drastically reduce CPU usage, but increase response time for Tibialyzer to respond to events in-game (such as in-game commands, look events and loot parsing).");
+            explanationTooltip.SetToolTip(stackAllItemsCheckbox, "In the loot@ view, display all items as if they were stackable.");
+            explanationTooltip.SetToolTip(ignoreLowExperienceButton, "In the loot@ view, do not display creatures that give less than {Exp Value} experience.");
+            explanationTooltip.SetToolTip(saveAllLootCheckbox, String.Format("Whenever you find loot, save the loot message to the file {0}.", bigLootFile));
+            explanationTooltip.SetToolTip(selectClientProgramButton, "Select the Tibia client to scan from. This should be either the C++ Client or the Flash Client, although you can select any program.");
+            explanationTooltip.SetToolTip(executeButton, "Execute a Tibialyzer command directly.");
+            explanationTooltip.SetToolTip(popupAnimationBox, "Whether or not popups should be animated or simply appear.");
+            explanationTooltip.SetToolTip(notificationAnchorBox, "The screen anchor to which the offsets should be applied.");
+            explanationTooltip.SetToolTip(notificationGroupBox, "The display group to which this notification type belongs. Only one notification can be active per group.");
+            explanationTooltip.SetToolTip(notificationDurationBox, "How long the notification should be alive before fading. If it is set to INF it will never fade away.");
+            explanationTooltip.SetToolTip(applyNotificationSettingsToAllButton, "Apply the settings of this notification type to all notifications.");
+            explanationTooltip.SetToolTip(popupSetValueButton, "Set it so popups appear when an item drops that is worth more than {Item Value}");
+            explanationTooltip.SetToolTip(popupSetGoldCapRatioButton, "Set it so popups appear when an item drops that has a gold/cap ratio higher than {Ratio}");
+            explanationTooltip.SetToolTip(popupTestButton, "Test if the specified loot message produces a popup.");
+            explanationTooltip.SetToolTip(selectUpgradeTibialyzerButton, "Import settings from a previous Tibialyzer. Select the directory in which the previous Tibialyzer is located.");
         }
 
         void initializePluralMap() {
@@ -2831,7 +2845,7 @@ namespace Tibialyzer {
                 if (TibiaClientName.ToLower().Contains("flash")) {
                     Process p = GetTibiaProcess();
                     writer.WriteLine("SetTitleMatchMode 2");
-                    writer.WriteLine(String.Format("#IfWinActive Tibia Flash Client", p.Id));
+                    writer.WriteLine(String.Format("#IfWinActive Tibia Flash Client", p == null ? 0 : p.Id));
                 } else {
                     writer.WriteLine("#IfWinActive ahk_class TibiaClient");
                 }
@@ -3224,19 +3238,19 @@ namespace Tibialyzer {
         }
 
         private void gettingStartedGuide_Click(object sender, EventArgs e) {
-
+            OpenUrl("https://github.com/Mytherin/Tibialyzer/wiki/Quick-Start-Guide");
         }
 
         private void commandsGuide_Click(object sender, EventArgs e) {
-
+            OpenUrl("https://github.com/Mytherin/Tibialyzer/wiki/Loot-Management-Guide");
         }
 
         private void popupsGuide_Click(object sender, EventArgs e) {
-
+            OpenUrl("https://github.com/Mytherin/Tibialyzer/wiki/Popup-Guide");
         }
 
         private void issuesGuide_Click(object sender, EventArgs e) {
-
+            OpenUrl("https://github.com/Mytherin/Tibialyzer/wiki/Issues");
         }
 
         private void unlockResetButton_Click(object sender, MouseEventArgs e) {
