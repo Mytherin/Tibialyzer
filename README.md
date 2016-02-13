@@ -1,5 +1,7 @@
 <img align="right" src="https://raw.githubusercontent.com/Mytherin/Tibialyzer/master/Images/tibiagroup.png" alt="Me and my Friends in Tibia, Left To Right: Mytherin, Amel Cyrom, Martincc">
 
+<span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=8PDDPCLPEAWC4" title="Donate to this project using Paypal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="PayPal donate button" /></a></span>
+
 # Tibialyzer
 
 Tibialyzer is an extension made for the MMORPG Tibia. It scans the server log and messages from the Tibia client in real-time by reading its memory, and gathers various statistics, such as loot found from creatures and damage dealt by party members. 
