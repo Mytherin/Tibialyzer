@@ -58,6 +58,7 @@ namespace Tibialyzer {
                     updatedItems.Add(tpl);
                 }
             }
+            updatedItems = updatedItems.OrderByDescending(o => o.Item1.GetMaxValue() * o.Item2).ToList();
 
             foreach (Tuple<Item, int> tpl in updatedItems) {
                 Item item = tpl.Item1;
