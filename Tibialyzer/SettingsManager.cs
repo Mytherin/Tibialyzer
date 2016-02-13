@@ -195,6 +195,7 @@ C::NumpadPgDn
             setSettingIfNotSet("IgnoreLowExperience", false);
             setSettingIfNotSet("IgnoreLowExperienceValue", 250);
             setSettingIfNotSet("AutomaticallyWriteLootToFile", true);
+            setSettingIfNotSet("NotificationConditions", "item.value >= 2000");
         }
 
         public static void ResetSettingsToDefault() {

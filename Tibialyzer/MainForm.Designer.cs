@@ -2175,6 +2175,7 @@
             this.popupConditionBox.Name = "popupConditionBox";
             this.popupConditionBox.Size = new System.Drawing.Size(277, 155);
             this.popupConditionBox.TabIndex = 57;
+            this.popupConditionBox.SelectedIndexChanged += new System.EventHandler(this.popupConditionBox_SelectedIndexChanged);
             // 
             // popupSpecificItemBox
             // 

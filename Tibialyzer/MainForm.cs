@@ -3495,6 +3495,10 @@ namespace Tibialyzer {
 
             SettingsManager.setSetting("AutomaticallyWriteLootToFile", (sender as CheckBox).Checked);
         }
+
+        private void popupConditionBox_SelectedIndexChanged(object sender, EventArgs e) {
+
+        }
     }
 
     public class Loot {
