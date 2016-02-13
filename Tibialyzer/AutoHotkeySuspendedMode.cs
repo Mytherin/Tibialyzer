@@ -58,6 +58,9 @@ namespace Tibialyzer {
 
         private void ShowTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
             if (alwaysShow) return;
+            if (MainForm.TibiaClientName != "Tibia") {
+                return;
+            }
             try {
                 // only show the suspended window when tibia is active
                 bool visible = GetActiveProcessFileName() == MainForm.GetTibiaProcess().ProcessName;

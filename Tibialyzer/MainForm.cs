@@ -2828,7 +2828,13 @@ namespace Tibialyzer {
             if (!SettingsManager.settingExists("AutoHotkeySettings")) return;
             using (StreamWriter writer = new StreamWriter(autohotkeyFile)) {
                 writer.WriteLine("#SingleInstance force");
-                writer.WriteLine("#IfWinActive ahk_class TibiaClient");
+                if (TibiaClientName.ToLower().Contains("flash")) {
+                    Process p = GetTibiaProcess();
+                    writer.WriteLine("SetTitleMatchMode 2");
+                    writer.WriteLine(String.Format("#IfWinActive Tibia Flash Client", p.Id));
+                } else {
+                    writer.WriteLine("#IfWinActive ahk_class TibiaClient");
+                }
                 foreach (string l in SettingsManager.getSetting("AutoHotkeySettings")) {
                     string line = l.ToLower();
                     if (line.Length == 0 || line[0] == ';') continue;
@@ -2848,6 +2854,10 @@ namespace Tibialyzer {
                     }
                 }
             }
+        }
+
+        public static void RestartAutoHotkey() {
+            mainForm.startAutoHotkey_Click(null, null);
         }
 
         private void startAutoHotkey_Click(object sender, EventArgs e) {
