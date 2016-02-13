@@ -131,6 +131,8 @@ namespace Tibialyzer {
             this.InitializeTabs();
             switchTab(0);
 
+            LootChanged += UpdateLootDisplay;
+
             if (!File.Exists(databaseFile)) {
                 ExitWithError("Fatal Error", String.Format("Could not find database file {0}.", databaseFile));
             }
@@ -224,8 +226,6 @@ namespace Tibialyzer {
             browseTypeBox.SelectedIndex = 0;
 
             this.Load += MainForm_Load;
-
-            LootChanged += UpdateLootDisplay;
 
             tibialyzerLogo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
 
@@ -693,8 +693,6 @@ namespace Tibialyzer {
             bool lootNotificationRich = SettingsManager.getSettingBool("UseRichNotificationType");
 
             this.popupAnimationBox.Checked = SettingsManager.getSettingBool("EnableSimpleNotificationAnimation");
-            this.scanningSpeedTrack.Value = Math.Min(Math.Max(SettingsManager.getSettingInt("ScanSpeed"), scanningSpeedTrack.Minimum), scanningSpeedTrack.Maximum);
-            this.scanSpeedDisplayLabel.Text = scanSpeedText[scanningSpeedTrack.Value];
             this.eventPopupBox.Checked = SettingsManager.getSettingBool("EnableEventNotifications");
             this.unrecognizedPopupBox.Checked = SettingsManager.getSettingBool("EnableUnrecognizedNotifications");
             this.copyAdvancesCheckbox.Checked = copyAdvances;
@@ -808,7 +806,12 @@ namespace Tibialyzer {
                     newAutoHotkeySettings.Add(str.Replace('#', ';'));
                 }
                 SettingsManager.setSetting("AutoHotkeySettings", newAutoHotkeySettings);
+
+                SettingsManager.setSetting("ScanSpeed", Math.Min(Math.Max(SettingsManager.getSettingInt("ScanSpeed") + 5, scanningSpeedTrack.Minimum), scanningSpeedTrack.Maximum));
             }
+
+            this.scanningSpeedTrack.Value = Math.Min(Math.Max(SettingsManager.getSettingInt("ScanSpeed"), scanningSpeedTrack.Minimum), scanningSpeedTrack.Maximum);
+            this.scanSpeedDisplayLabel.Text = scanSpeedText[scanningSpeedTrack.Value];
 
             string massiveString = "";
             foreach (string str in SettingsManager.getSetting("AutoHotkeySettings")) {
@@ -3064,6 +3067,9 @@ namespace Tibialyzer {
 
         private void selectClientButton_Click(object sender, EventArgs e) {
             SelectProcessForm form = new SelectProcessForm();
+            form.StartPosition = FormStartPosition.Manual;
+            
+            form.SetDesktopLocation(this.DesktopLocation.X + (this.Width - form.Width) / 2, this.DesktopLocation.Y + (this.Height - form.Height) / 2);
             form.Show();
         }
 

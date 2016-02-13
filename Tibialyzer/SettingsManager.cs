@@ -132,7 +132,7 @@ namespace Tibialyzer {
             return settings.ContainsKey(key) && settings[key].Count > 0;
         }
 
-        public static string defaultWASDSettings = @"# Suspend autohotkey mode with Ctrl+Enter
+        public static string defaultWASDSettings = @"; Suspend autohotkey mode with Ctrl+Enter
 Ctrl+Enter::Suspend
 ; Enable WASD Movement
 W::Up
@@ -170,7 +170,7 @@ C::NumpadPgDn
             setSettingIfNotSet("AutoScreenshotDeath", false);
             setSettingIfNotSet("EnableScreenshots", false);
             setSettingIfNotSet("Names", "Mytherin");
-            setSettingIfNotSet("ScanSpeed", "0");
+            setSettingIfNotSet("ScanSpeed", "5");
             setSettingIfNotSet("OutfitGenderMale", true);
             setSettingIfNotSet("RichNotificationXOffset", 30);
             setSettingIfNotSet("RichNotificationYOffset", 30);

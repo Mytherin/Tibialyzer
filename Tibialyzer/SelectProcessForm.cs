@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Drawing;
 
 namespace Tibialyzer {
     class SelectProcessForm : Form {
@@ -30,7 +31,7 @@ namespace Tibialyzer {
             // processList
             // 
             this.processList.FormattingEnabled = true;
-            this.processList.Location = new System.Drawing.Point(13, 31);
+            this.processList.Location = new System.Drawing.Point(258, 34);
             this.processList.Name = "processList";
             this.processList.Size = new System.Drawing.Size(195, 251);
             this.processList.TabIndex = 0;
@@ -46,7 +47,7 @@ namespace Tibialyzer {
             // 
             // selectButton
             // 
-            this.selectButton.Location = new System.Drawing.Point(13, 289);
+            this.selectButton.Location = new System.Drawing.Point(258, 291);
             this.selectButton.Name = "selectButton";
             this.selectButton.Size = new System.Drawing.Size(75, 23);
             this.selectButton.TabIndex = 2;
@@ -56,7 +57,7 @@ namespace Tibialyzer {
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(133, 288);
+            this.cancelButton.Location = new System.Drawing.Point(378, 289);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 3;
@@ -66,7 +67,7 @@ namespace Tibialyzer {
             // 
             // refreshButton
             // 
-            this.refreshButton.Location = new System.Drawing.Point(134, 5);
+            this.refreshButton.Location = new System.Drawing.Point(378, 5);
             this.refreshButton.Name = "refreshButton";
             this.refreshButton.Size = new System.Drawing.Size(75, 23);
             this.refreshButton.TabIndex = 4;
@@ -76,7 +77,7 @@ namespace Tibialyzer {
             // 
             // SelectProcessForm
             // 
-            this.ClientSize = new System.Drawing.Size(216, 313);
+            this.ClientSize = new System.Drawing.Size(456, 313);
             this.Controls.Add(this.refreshButton);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.selectButton);
@@ -89,7 +90,14 @@ namespace Tibialyzer {
 
         }
 
+        List<Control> removedControls = new List<Control>();
         private void refreshProcesses() {
+            foreach(Control c in removedControls) {
+                this.Controls.Remove(c);
+                c.Dispose();
+            }
+            removedControls.Clear();
+
             this.processList.Items.Clear();
             Process[] currentProcesses = Process.GetProcesses();
             processes = new List<Process>();
@@ -99,12 +107,52 @@ namespace Tibialyzer {
                     processes.Add(p);
                 }
             }
+
+            int x = label1.Location.X;
+            int y = label1.Location.Y + label1.Size.Height;
+            int index = 0;
+            foreach(Process p in processes) {
+                Icon ico = Icon.ExtractAssociatedIcon(p.MainModule.FileName);
+                PictureBox box = new PictureBox();
+                box.Image = ico.ToBitmap();
+                box.Location = new Point(x, y);
+                box.Size = new Size(32, 32);
+                box.SizeMode = PictureBoxSizeMode.Zoom;
+                box.Name = index.ToString();
+                box.Click += SelectProcess;
+                Controls.Add(box);
+                removedControls.Add(box);
+
+                Button label = new Button();
+                label.Text = p.ProcessName;
+                label.Location = new Point(x + 32, y);
+                label.Size = new Size(200, 32);
+                label.TextAlign = ContentAlignment.MiddleCenter;
+                label.Name = index.ToString();
+                label.Click += SelectProcess;
+                Controls.Add(label);
+                removedControls.Add(label);
+                index++;
+
+                y += 36;
+            }
+
             processes.AddRange(currentProcesses.ToList().OrderBy(o => o.ProcessName));
             foreach(Process p in processes) {
                 processList.Items.Add(p.ProcessName);
             }
         }
-        
+
+        private void SelectProcess(object sender, EventArgs e) {
+            int index = int.Parse((sender as Control).Name);
+
+            MainForm.TibiaClientName = this.processes[index].ProcessName;
+            MainForm.TibiaProcessId = this.processes[index].Id;
+            SettingsManager.setSetting("TibiaClientName", MainForm.TibiaClientName);
+
+            this.Close();
+        }
+
         private void selectButton_Click(object sender, EventArgs e) {
             if (this.processList.SelectedIndex < processes.Count) {
                 MainForm.TibiaClientName = this.processes[processList.SelectedIndex].ProcessName;
