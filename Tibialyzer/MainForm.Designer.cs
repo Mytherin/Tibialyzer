@@ -2280,6 +2280,8 @@
             this.applyConvertRatioButton.Text = "Apply";
             this.applyConvertRatioButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.applyConvertRatioButton.Click += new System.EventHandler(this.applyConvertRatioButton_Click);
+            this.applyConvertRatioButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
+            this.applyConvertRatioButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
             // 
             // convertStackableHeader
             // 
@@ -2317,6 +2319,8 @@
             this.applyDiscardRatioButton.Text = "Apply";
             this.applyDiscardRatioButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.applyDiscardRatioButton.Click += new System.EventHandler(this.applyDiscardRatioButton_Click);
+            this.applyDiscardRatioButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
+            this.applyDiscardRatioButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
             // 
             // convertUnstackableHeader
             // 
@@ -2352,6 +2356,8 @@
             this.customConvertRatioBox.Size = new System.Drawing.Size(253, 23);
             this.customConvertRatioBox.TabIndex = 77;
             this.customConvertRatioBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.customConvertRatioBox_KeyPress);
+            this.customConvertRatioBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
+            this.customConvertRatioBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
             // 
             // customDiscardRatioBox
             // 
@@ -2363,6 +2369,8 @@
             this.customDiscardRatioBox.Size = new System.Drawing.Size(253, 23);
             this.customDiscardRatioBox.TabIndex = 73;
             this.customDiscardRatioBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.customDiscardRatioBox_KeyPress);
+            this.customDiscardRatioBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
+            this.customDiscardRatioBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
             // 
             // autohotkeyPage
             // 
