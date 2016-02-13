@@ -112,9 +112,14 @@ namespace Tibialyzer {
             int y = label1.Location.Y + label1.Size.Height;
             int index = 0;
             foreach(Process p in processes) {
-                Icon ico = Icon.ExtractAssociatedIcon(p.MainModule.FileName);
+                Image image = null;
+                try {
+                    Icon ico = Icon.ExtractAssociatedIcon(p.MainModule.FileName);
+                    image = ico.ToBitmap();
+                } catch {
+                }
                 PictureBox box = new PictureBox();
-                box.Image = ico.ToBitmap();
+                box.Image = image;
                 box.Location = new Point(x, y);
                 box.Size = new Size(32, 32);
                 box.SizeMode = PictureBoxSizeMode.Zoom;
