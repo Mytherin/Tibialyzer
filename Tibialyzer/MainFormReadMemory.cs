@@ -443,6 +443,7 @@ namespace Tibialyzer {
                     transaction.Commit();
                 }
             }
+            LootChanged();
         }
 
         void clearOldLog(Hunt h, int clearMinutes = 10) {
@@ -493,6 +494,7 @@ namespace Tibialyzer {
                 logMessages[t].Add(line);
             }
             ParseLootMessages(h, logMessages, null, false, false, true);
+            LootChanged();
         }
 
         void resetHunt(Hunt h) {
@@ -508,6 +510,7 @@ namespace Tibialyzer {
             comm.ExecuteNonQuery();
             comm = new SQLiteCommand(String.Format("CREATE TABLE IF NOT EXISTS \"{0}\"(day INTEGER, hour INTEGER, minute INTEGER, message STRING);", huntTable), lootConn);
             comm.ExecuteNonQuery();
+            LootChanged();
         }
 
         void deleteLogMessage(Hunt h, string logMessage) {
@@ -545,6 +548,7 @@ namespace Tibialyzer {
                 comm = new SQLiteCommand(String.Format("DELETE FROM \"{0}\" WHERE day={1} AND hour={2} AND minute={3} AND message=\"{4}\"", huntTable, reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2), reader["message"].ToString()), lootConn);
                 comm.ExecuteNonQuery();
             }
+            LootChanged();
         }
 
         void saveLog(Hunt h, string logPath) {
@@ -573,6 +577,7 @@ namespace Tibialyzer {
                 logMessages[t].Add(line);
             }
             ParseLootMessages(h, logMessages, null, true, true);
+            LootChanged();
         }
 
         void setGoldRatio(double ratio) {
@@ -589,6 +594,7 @@ namespace Tibialyzer {
                 Item item = _itemIdMap[id];
                 item.discard = ((double)item.GetMaxValue() / (double)(item.capacity == 0 ? 1 : item.capacity)) < ratio;
             }
+            LootChanged();
         }
 
         void setConvertRatio(double ratio, bool stackable) {
@@ -607,24 +613,28 @@ namespace Tibialyzer {
                     item.convert_to_gold = ((double)item.GetMaxValue() / (double)(item.capacity == 0 ? 1 : item.capacity)) < ratio;
                 }
             }
+            LootChanged();
         }
 
         void setItemDiscard(Item item, bool discard) {
             item.discard = discard;
             SQLiteCommand command = new SQLiteCommand(String.Format("UPDATE Items SET discard={0} WHERE id={1}", item.discard ? 1 : 0, item.id), conn);
             command.ExecuteNonQuery();
+            LootChanged();
         }
 
         void setItemConvert(Item item, bool convert) {
             item.convert_to_gold = convert;
             SQLiteCommand command = new SQLiteCommand(String.Format("UPDATE Items SET convert_to_gold={0} WHERE id={1}", item.convert_to_gold ? 1 : 0, item.id), conn);
             command.ExecuteNonQuery();
+            LootChanged();
         }
 
         void setItemValue(Item item, long value) {
             item.actual_value = value;
             SQLiteCommand command = new SQLiteCommand(String.Format("UPDATE Items SET actual_value={0} WHERE id={1}", value, item.id), conn);
             command.ExecuteNonQuery();
+            LootChanged();
         }
 
         List<Tuple<string, string>> getRecentCommands(int type, int max_entries = 15) {
@@ -654,6 +664,7 @@ namespace Tibialyzer {
             foreach (Creature cr in deleteList) {
                 deleteCreatureFromLog(cr);
             }
+            LootChanged();
         }
 
         private void insertSkin(Creature cr, int count = 1) {
@@ -681,6 +692,7 @@ namespace Tibialyzer {
                 }
                 activeHunt.loot.creatureLoot[cr].Add(item, count);
             }
+            LootChanged();
         }
 
         public void addKillToHunt(Hunt h, Tuple<Creature, List<Tuple<Item, int>>> resultList, string t, string message, int stamp = 0, int hour = 0, int minute = 0, SQLiteTransaction transaction = null) {

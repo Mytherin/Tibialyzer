@@ -94,6 +94,9 @@ namespace Tibialyzer {
         private SQLiteConnection lootConn;
         static Dictionary<string, Image> creatureImages = new Dictionary<string, Image>();
 
+        public delegate void LootChangedHandler();
+        public event LootChangedHandler LootChanged;
+
         enum ScanningState { Scanning, NoTibia, Stuck };
         ScanningState current_state;
 
@@ -222,6 +225,8 @@ namespace Tibialyzer {
 
             this.Load += MainForm_Load;
 
+            LootChanged += UpdateLootDisplay;
+
             tibialyzerLogo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
 
             BackgroundWorker bw = new BackgroundWorker();
@@ -243,6 +248,17 @@ namespace Tibialyzer {
             this.current_state = ScanningState.NoTibia;
             this.loadTimerImage.Enabled = true;
             scan_tooltip.SetToolTip(this.loadTimerImage, "No Tibia Client Found...");
+        }
+
+        private void UpdateLootDisplay() {
+            for (int i = 0; i < NotificationFormGroups.Length; i++) {
+                if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is LootDropForm) {
+                    (NotificationFormGroups[i] as LootDropForm).UpdateLoot();
+                }
+            }
+            if (logButton.Enabled == false) {
+                refreshHuntLog(getSelectedHunt());
+            }
         }
 
         private void MainForm_Load(object sender, EventArgs e) {
@@ -2315,6 +2331,7 @@ namespace Tibialyzer {
         }
 
         void refreshHuntLog(Hunt h) {
+            if (h == null) return;
             const int maxLogLines = 250;
             List<string> timestamps = h.loot.logMessages.Keys.OrderByDescending(o => o).ToList();
             int count = 0;
@@ -3155,6 +3172,7 @@ namespace Tibialyzer {
 
         private void logButton_Click(object sender, MouseEventArgs e) {
             switchTab(3);
+            refreshHuntLog(getSelectedHunt());
         }
 
         private void notificationButton_Click(object sender, MouseEventArgs e) {

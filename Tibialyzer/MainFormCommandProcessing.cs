@@ -774,14 +774,7 @@ namespace Tibialyzer {
             if (parseMemoryResults != null) {
                 if (parseMemoryResults.newItems.Count > 0) {
                     this.Invoke((MethodInvoker)delegate {
-                        for (int i = 0; i < NotificationFormGroups.Length; i++) {
-                            if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is LootDropForm) {
-                                (NotificationFormGroups[i] as LootDropForm).UpdateLoot();
-                            }
-                        }
-                        if (logButton.Enabled == false) {
-                            refreshHuntLog(getSelectedHunt());
-                        }
+                        LootChanged();
                     });
                 }
                 foreach (Tuple<Creature, List<Tuple<Item, int>>> tpl in parseMemoryResults.newItems) {
