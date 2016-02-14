@@ -106,6 +106,12 @@ namespace Tibialyzer {
                 }
             }
 
+            Image creatureImage = cr.GetImage();
+            if (creatureImage.Size.Width <= creatureBox.Width && creatureImage.Size.Height <= creatureBox.Height) {
+                creatureBox.SizeMode = PictureBoxSizeMode.CenterImage;
+            } else {
+                creatureBox.SizeMode = PictureBoxSizeMode.Zoom;
+            }
             this.creatureBox.Image = cr.GetImage();
             this.creatureDropLabel.Text = String.Format("Loot of {0}.", cr.displayname);
         }
