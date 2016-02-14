@@ -244,6 +244,7 @@
             this.warningImageBox = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.upgradeButton = new System.Windows.Forms.Label();
+            this.detectFlashClientButton = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.screenshotBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.scanningSpeedTrack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tibialyzerLogo)).BeginInit();
@@ -682,6 +683,7 @@
             // 
             // mainPage
             // 
+            this.mainPage.Controls.Add(this.detectFlashClientButton);
             this.mainPage.Controls.Add(this.saveAllLootCheckbox);
             this.mainPage.Controls.Add(this.label11);
             this.mainPage.Controls.Add(this.ignoreLowExperienceBox);
@@ -789,7 +791,7 @@
             this.label10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label10.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label10.Location = new System.Drawing.Point(305, 100);
+            this.label10.Location = new System.Drawing.Point(305, 158);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(226, 30);
             this.label10.TabIndex = 37;
@@ -825,7 +827,7 @@
             this.saveDamageImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.saveDamageImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveDamageImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.saveDamageImageButton.Location = new System.Drawing.Point(305, 166);
+            this.saveDamageImageButton.Location = new System.Drawing.Point(305, 224);
             this.saveDamageImageButton.Name = "saveDamageImageButton";
             this.saveDamageImageButton.Padding = new System.Windows.Forms.Padding(10);
             this.saveDamageImageButton.Size = new System.Drawing.Size(226, 39);
@@ -841,7 +843,7 @@
             this.saveLootImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.saveLootImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveLootImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.saveLootImageButton.Location = new System.Drawing.Point(305, 128);
+            this.saveLootImageButton.Location = new System.Drawing.Point(305, 186);
             this.saveLootImageButton.Name = "saveLootImageButton";
             this.saveLootImageButton.Padding = new System.Windows.Forms.Padding(10);
             this.saveLootImageButton.Size = new System.Drawing.Size(226, 38);
@@ -3162,6 +3164,22 @@
             this.upgradeButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.upgradeButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
             // 
+            // detectFlashClientButton
+            // 
+            this.detectFlashClientButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.detectFlashClientButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.detectFlashClientButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.detectFlashClientButton.Location = new System.Drawing.Point(305, 87);
+            this.detectFlashClientButton.Name = "detectFlashClientButton";
+            this.detectFlashClientButton.Padding = new System.Windows.Forms.Padding(10);
+            this.detectFlashClientButton.Size = new System.Drawing.Size(226, 38);
+            this.detectFlashClientButton.TabIndex = 46;
+            this.detectFlashClientButton.Text = "Detect Flash Client";
+            this.detectFlashClientButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.detectFlashClientButton.Click += new System.EventHandler(this.detectFlashClientButton_Click);
+            this.detectFlashClientButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
+            this.detectFlashClientButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3442,6 +3460,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private PrettyCheckBox saveAllLootCheckbox;
+        private System.Windows.Forms.Label detectFlashClientButton;
     }
 }
 

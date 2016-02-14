@@ -127,7 +127,7 @@ namespace Tibialyzer {
                 Thread.Sleep(250);
                 return null;
             }
-            flashClient = TibiaClientName.ToLower().Contains("flash");
+            flashClient = TibiaClientName.ToLower().Contains("flash") || TibiaClientName.ToLower().Contains("chrome");
             IntPtr processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
             MEMORY_BASIC_INFORMATION mem_basic_info = new MEMORY_BASIC_INFORMATION();
             int bytesRead = 0;  // number of bytes read with ReadProcessMemory
@@ -172,8 +172,8 @@ namespace Tibialyzer {
             } catch {
                 return null;
             }
-            if (memorySegments.Count > 20) {
-                memorySegments.RemoveRange(0, 20);
+            if (memorySegments.Count > 10) {
+                memorySegments.RemoveRange(0, 10);
             } else {
                 memorySegments.Clear();
             }
