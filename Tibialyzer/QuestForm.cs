@@ -281,10 +281,10 @@ namespace Tibialyzer {
                         Match m = questRegex.Match(txt);
                         label.ForeColor = MainForm.label_text_color;
                         if (m != null && m.Groups.Count > 1) {
-                            string quest = m.Groups[1].Value;
-                            txt = txt.Replace(m.Groups[0].Value, quest);
-                            label.Name = MainForm.getQuest(quest.ToLower()).GetCommand();
-                            label.ForeColor = Color.FromArgb(105, 105, 255);
+                            string requiredQuestName = m.Groups[1].Value;
+                            txt = txt.Replace(m.Groups[0].Value, requiredQuestName);
+                            label.Name = MainForm.getQuest(requiredQuestName.ToLower()).GetCommand();
+                            label.ForeColor = Color.FromArgb(255, 70, 70);
                             label.Click += MissionButton_Click;
                         }
                         label.Text = txt == "" ? "" : "- " + txt;
