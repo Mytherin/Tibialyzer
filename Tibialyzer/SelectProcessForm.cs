@@ -118,6 +118,7 @@ namespace Tibialyzer {
                     image = ico.ToBitmap();
                 } catch {
                 }
+
                 PictureBox box = new PictureBox();
                 box.Image = image;
                 box.Location = new Point(x, y);
@@ -129,7 +130,12 @@ namespace Tibialyzer {
                 removedControls.Add(box);
 
                 Button label = new Button();
-                label.Text = p.ProcessName;
+                if (p.Id == MainForm.TibiaProcessId) {
+                    label.Text = p.ProcessName + " (Current)";
+                    label.Enabled = false;
+                } else {
+                    label.Text = p.ProcessName;
+                }
                 label.Location = new Point(x + 32, y);
                 label.Size = new Size(200, 32);
                 label.TextAlign = ContentAlignment.MiddleCenter;

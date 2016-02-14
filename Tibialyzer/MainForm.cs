@@ -3047,7 +3047,11 @@ namespace Tibialyzer {
         }
 
         private void popupTestButton_Click(object sender, EventArgs e) {
-            var parseResult = ParseLootMessage(popupTestLootBox.Text);
+            string message = popupTestLootBox.Text;
+            if (message[5] == ':') { //if the time stamp is in the form of hh:mm: (i.e. flash client format) remove the second colon
+                message = message.Remove(5, 1);
+            }
+            var parseResult = ParseLootMessage(message);
             if (parseResult != null) {
                 bool showNotification = ShowDropNotification(parseResult);
                 if (showNotification) {
@@ -3518,6 +3522,13 @@ namespace Tibialyzer {
             if (flashClient != null) {
                 TibiaClientName = flashClient.ProcessName;
                 TibiaProcessId = flashClient.Id;
+            }
+        }
+
+        private void popupTestLootBox_KeyPress(object sender, KeyPressEventArgs e) {
+            if (e.KeyChar == '\r') {
+                popupTestButton_Click(popupTestButton, null);
+                e.Handled = true;
             }
         }
     }
