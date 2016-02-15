@@ -782,6 +782,15 @@ namespace Tibialyzer {
                     List<Tuple<Item, int>> items = tpl.Item2;
                     bool showNotification = ShowDropNotification(tpl);
                     if (showNotification) {
+                        if (!SettingsManager.getSettingBool("UseRichNotificationType")) {
+                            Console.WriteLine("Rich Notification");
+                            ShowSimpleNotification(cr.displayname, cr.displayname + " dropped a valuable item.", cr.image);
+                        } else {
+                            this.Invoke((MethodInvoker)delegate {
+                                ShowSimpleNotification(new SimpleLootNotification(cr, items));
+                            });
+                        }
+
                         if (SettingsManager.getSettingBool("AutoScreenshotItemDrop")) {
                             // Take a screenshot if Tibialyzer is set to take screenshots of valuable loot
                             Bitmap screenshot = takeScreenshot();
@@ -804,14 +813,6 @@ namespace Tibialyzer {
                             notification.Dispose();
                             this.Invoke((MethodInvoker)delegate {
                                 saveScreenshot("Loot", screenshot);
-                            });
-                        }
-
-                        if (!SettingsManager.getSettingBool("UseRichNotificationType")) {
-                            ShowSimpleNotification(cr.displayname, cr.displayname + " dropped a valuable item.", cr.image);
-                        } else {
-                            this.Invoke((MethodInvoker)delegate {
-                                ShowSimpleNotification(new SimpleLootNotification(cr, items));
                             });
                         }
                     }
