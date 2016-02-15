@@ -171,7 +171,7 @@ namespace Tibialyzer {
             placeholderitem = LoadImage(@"Images\placeholder-item.png");
             placeholdernpc = LoadImage(@"Images\placeholder-npc.png");
             placeholdermount = LoadImage(@"Images\placeholder-mount.png");
-            placeholdercreature = LoadImage(@"Images\placeholder-spell.png");
+            placeholderspell = LoadImage(@"Images\placeholder-spell.png");
             utilityImages.Add("offline training", LoadImage(@"Images\offlinetraining.png"));
             utilityImages.Add("offline training melee", utilityImages["offline training"]);
             utilityImages.Add("offline training magic", LoadImage(@"Images\offlinetrainingmagic.png"));
