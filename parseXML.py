@@ -194,7 +194,7 @@ if not skipLoading:
             if not parseObject(title, attributes, c, getURL):
                 print('Object failed', title)
         elif wordCount(lcontent, '{{infobox key') == 1 or wordCount(lcontent, '{{infobox_key') == 1:
-            print('Key', title)
+            #print('Key', title)
             if not parseKey(title, attributes, c, keyItems, buyitems, sellitems, getURL):
                 print('Key failed', title)
     saveCache(True)
@@ -310,7 +310,7 @@ c.execute('DROP TABLE BuyItems')
 c.execute('CREATE TABLE BuyItems(itemid INTEGER, vendorid INTEGER, value INTEGER)')
 for itemid, npclist in iter(buyitems.items()):
     for npc,value in iter(npclist.items()):
-        c.execute('SELECT id FROM NPCs WHERE LOWER(name)=? OR LOWER(title)=?', (npc.strip().lower(),npc.strip().lower()))
+        c.execute('SELECT id FROM NPCs WHERE LOWER(name)=? OR LOWER(title)=? ORDER BY LOWER(title)=? DESC', (npc.strip().lower(),npc.strip().lower(),npc.strip().lower()))
         results = c.fetchall()
         if len(results) > 0:
             npcid = results[0][0]
@@ -322,7 +322,7 @@ c.execute('DROP TABLE SellItems')
 c.execute('CREATE TABLE SellItems(itemid INTEGER, vendorid INTEGER, value INTEGER)')
 for itemid, npclist in iter(sellitems.items()):
     for npc,value in iter(npclist.items()):
-        c.execute('SELECT id FROM NPCs WHERE LOWER(name)=? OR LOWER(title)=?', (npc.strip().lower(),npc.strip().lower()))
+        c.execute('SELECT id FROM NPCs WHERE LOWER(name)=? OR LOWER(title)=? ORDER BY LOWER(title)=? DESC', (npc.strip().lower(),npc.strip().lower(),npc.strip().lower()))
         results = c.fetchall()
         if len(results) > 0:
             npcid = results[0][0]
@@ -332,7 +332,7 @@ for itemid, npclist in iter(sellitems.items()):
 
 
 for itemid,currency in iter(currencymap.items()):
-    c.execute('SELECT id FROM Items WHERE LOWER(name)=? OR LOWER(title)=?', (currency.strip().lower(),currency.strip().lower()))
+    c.execute('SELECT id FROM Items WHERE LOWER(name)=? OR LOWER(title)=? ORDER BY LOWER(title)=? DESC', (currency.strip().lower(),currency.strip().lower(),currency.strip().lower()))
     results = c.fetchall()
     if len(results) > 0:
         currencyid = results[0][0]
@@ -345,13 +345,13 @@ c.execute('DROP TABLE QuestNPCs')
 c.execute('CREATE TABLE QuestNPCs(questid INTEGER, npcid INTEGER)')
 for questname, npcs in iter(questNPCs.items()):
     questname = questname.strip().lower()
-    c.execute('SELECT id FROM Quests WHERE LOWER(name)=? OR LOWER(title)=?', (questname, questname))
+    c.execute('SELECT id FROM Quests WHERE LOWER(name)=? OR LOWER(title)=? ORDER BY LOWER(title)=? DESC', (questname, questname,questname))
     results = c.fetchall()
     if len(results) > 0:
         questid = results[0][0]
         for npc in npcs:
             npc = npc.strip().lower()
-            c.execute('SELECT id FROM NPCs WHERE LOWER(name)=? OR LOWER(title)=?', (npc,npc))
+            c.execute('SELECT id FROM NPCs WHERE LOWER(name)=? OR LOWER(title)=? ORDER BY LOWER(title)=? DESC', (npc,npc,npc))
             results2 = c.fetchall()
             if len(results2) > 0:
                 npcid = results2[0][0]
@@ -373,7 +373,7 @@ for huntingplaceid,creaturelist in iter(huntcreatures.items()):
         _creature = creature.strip().lower().replace("_", " ")
         if _creature in creatureMap:
             _creature = creatureMap[_creature]
-        c.execute('SELECT id FROM Creatures WHERE LOWER(name)=? OR LOWER(title)=?', (_creature, _creature))
+        c.execute('SELECT id FROM Creatures WHERE LOWER(name)=? OR LOWER(title)=? ORDER BY LOWER(title)=? DESC', (_creature, _creature,_creature))
         results = c.fetchall()
         if len(results) > 0:
             creatureid = results[0][0]
@@ -424,13 +424,13 @@ for questid,items in iter(rewardItems.items()):
 
         if '|' in _item:
             _item = _item.split('|')[0]
-        c.execute('SELECT id FROM Items WHERE LOWER(name)=? OR LOWER(title)=?', (_item,_item))
+        c.execute('SELECT id FROM Items WHERE LOWER(name)=? OR LOWER(title)=? ORDER BY LOWER(title)=? DESC', (_item,_item,_item))
         results = c.fetchall()
         if len(results) > 0:
             itemid = results[0][0]
             c.execute('INSERT INTO QuestRewards(questid, itemid) VALUES (?,?)', (questid, itemid))
         else: 
-            c.execute('SELECT id FROM Outfits WHERE LOWER(name)=? OR LOWER(title)=?', (_item,_item))
+            c.execute('SELECT id FROM Outfits WHERE LOWER(name)=? OR LOWER(title)=? ORDER BY LOWER(title)=? DESC', (_item,_item,_item))
             results = c.fetchall()
             if len(results) > 0:
                 outfitid = results[0][0]
@@ -501,7 +501,7 @@ for questid,creatures in iter(questDangers.items()):
 
         if creatureList != None:
             for _cr in creatureList:
-                c.execute('SELECT id FROM Creatures WHERE LOWER(name)=? OR LOWER(title)=?', (_cr,_cr))
+                c.execute('SELECT id FROM Creatures WHERE LOWER(name)=? OR LOWER(title)=? ORDER BY LOWER(title)=? DESC', (_cr,_cr,_cr))
                 results = c.fetchall()
                 if len(results) > 0:
                     creatureid = results[0][0]
@@ -513,7 +513,7 @@ for questid,creatures in iter(questDangers.items()):
             if '|' in _creature: _creature = _creature.split('|')[0].strip()
             if _creature in creatureMap:
                 _creature = creatureMap[_creature]
-            c.execute('SELECT id FROM Creatures WHERE LOWER(name)=? OR LOWER(title)=?', (_creature,_creature))
+            c.execute('SELECT id FROM Creatures WHERE LOWER(name)=? OR LOWER(title)=? ORDER BY LOWER(title)=? DESC', (_creature,_creature,_creature))
             results = c.fetchall()
             if len(results) > 0:
                 creatureid = results[0][0]
@@ -528,12 +528,12 @@ for mountid,crlist in iter(mountStuff.items()):
     tamecreatureid = None
     for cr in crlist:
         _cr = cr.strip().lower()
-        c.execute('SELECT id FROM Creatures WHERE LOWER(name)=? OR LOWER(title)=?', (_cr,_cr))
+        c.execute('SELECT id FROM Creatures WHERE LOWER(name)=? OR LOWER(title)=? ORDER BY LOWER(title)=? DESC', (_cr,_cr,_cr))
         results = c.fetchall()
         if len(results) > 0:
             tamecreatureid = results[0][0]
         else:
-            c.execute('SELECT id FROM Items WHERE LOWER(name)=? OR LOWER(title)=?', (_cr,_cr))
+            c.execute('SELECT id FROM Items WHERE LOWER(name)=? OR LOWER(title)=? ORDER BY LOWER(title)=? DESC', (_cr,_cr,_cr))
             results = c.fetchall()
             if len(results) > 0:
                 tameitemid = results[0][0]
@@ -548,10 +548,10 @@ for mountid,crlist in iter(mountStuff.items()):
 # remove some hardcoded items that are known to be incorrect on the wiki
 removeFromDrops = {'demon': ['small stone', 'leather armor', 'bone', 'mouldy cheese']} # demons drop some goblin loot according to the wiki because of the Demon (Goblin) creature
 for crname,items in iter(removeFromDrops.items()):
-    c.execute('SELECT id FROM Creatures WHERE LOWER(name)=? OR LOWER(title)=?', (crname,crname))
+    c.execute('SELECT id FROM Creatures WHERE LOWER(name)=? OR LOWER(title)=? ORDER BY LOWER(title)=? DESC', (crname,crname,crname))
     creatureid = c.fetchall()[0][0]
     for itemname in items:
-    	c.execute('SELECT id FROM Items WHERE LOWER(name)=? OR LOWER(title)=?', (itemname,itemname))
+    	c.execute('SELECT id FROM Items WHERE LOWER(name)=? OR LOWER(title)=? ORDER BY LOWER(title)=? DESC', (itemname,itemname,itemname))
     	itemid = c.fetchall()[0][0]
     	c.execute('DELETE FROM CreatureDrops WHERE creatureid=? AND itemid=?', (creatureid, itemid))
 
