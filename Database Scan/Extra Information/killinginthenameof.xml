@@ -494,6 +494,17 @@
 					<Hunt>Mal'ouquah</Hunt>
 				</Hunts>
 			</Task>
+			<Task>
+				<Name>Demon Task</Name>
+				<Creature>Demon</Creature>
+				<Count>6666</Count>
+				<BossLocation>127.205,126.95,7</BossLocation>
+				<Hunts>
+					<Hunt>Demon Hell</Hunt>
+					<Hunt>Ferumbras Citadel</Hunt>
+					<Hunt>Magician_Quarter</Hunt>
+				</Hunts>
+			</Task>
 		</Tasks>
 	</TaskBracket>
 </KillingInTheNameOf>
