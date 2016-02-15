@@ -164,7 +164,12 @@ namespace Tibialyzer {
             item.look_text = reader.IsDBNull(9) ? String.Format("You see a {0}.", item.displayname) : reader.GetString(9);
             item.title = reader.GetString(10);
             item.currency = reader.IsDBNull(11) ? DATABASE_NULL : reader.GetInt32(11);
-            item.image = Image.FromStream(reader.GetStream(12));
+            try {
+                item.image = reader.IsDBNull(12) ? MainForm.placeholderitem : Image.FromStream(reader.GetStream(12));
+            } catch {
+                item.image = MainForm.placeholderitem;
+            }
+
             if (item.image.RawFormat.Guid == ImageFormat.Gif.Guid) {
                 int frames = item.image.GetFrameCount(FrameDimension.Time);
                 if (frames == 1) {
@@ -357,10 +362,11 @@ namespace Tibialyzer {
             cr.speed = reader.IsDBNull(22) ? DATABASE_NULL : reader.GetInt32(22);
             cr.armor = reader.IsDBNull(23) ? DATABASE_NULL : reader.GetInt32(23);
             cr.boss = reader.GetInt32(24) > 0;
-            if (reader.IsDBNull(25)) {
-                return null;
+            try {
+                cr.image = reader.IsDBNull(25) ? MainForm.placeholdercreature : Image.FromStream(reader.GetStream(25));
+            } catch {
+                cr.image = MainForm.placeholdercreature;
             }
-            cr.image = Image.FromStream(reader.GetStream(25));
 
 
 
@@ -465,7 +471,7 @@ namespace Tibialyzer {
                 npc.pos.y = reader.GetInt32(4);
                 npc.pos.z = reader.GetInt32(5);
             }
-            npc.image = Image.FromStream(reader.GetStream(6));
+            npc.image = reader.IsDBNull(6) ? MainForm.placeholdernpc : Image.FromStream(reader.GetStream(6));
             npc.job = reader.IsDBNull(7) ? "" : reader.GetString(7);
             if (npc.image.RawFormat.Guid == ImageFormat.Gif.Guid) {
                 int frames = npc.image.GetFrameCount(FrameDimension.Time);
@@ -718,7 +724,7 @@ namespace Tibialyzer {
             spell.paladin = reader.GetBoolean(11);
             spell.sorcerer = reader.GetBoolean(12);
             spell.druid = reader.GetBoolean(13);
-            spell.image = Image.FromStream(reader.GetStream(14));
+            spell.image = reader.IsDBNull(14) ? MainForm.placeholderspell : Image.FromStream(reader.GetStream(14));
 
 
             command = new SQLiteCommand(String.Format("SELECT npcid, knight, druid, paladin, sorcerer FROM SpellNPCs WHERE spellid={0}", spell.id), mainForm.conn);
@@ -799,7 +805,7 @@ namespace Tibialyzer {
             else mount.tamecreatureid = -1;
             mount.speed = reader.GetInt32(5);
             mount.tibiastore = reader.GetBoolean(6);
-            mount.image = Image.FromStream(reader.GetStream(7));
+            mount.image = reader.IsDBNull(7) ? MainForm.placeholdermount : Image.FromStream(reader.GetStream(7));
 
             return mount;
         }

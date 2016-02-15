@@ -62,6 +62,11 @@ namespace Tibialyzer {
         public static Image checkbox_no = null;
         public static Image infoIcon = null;
         public static Image nomapavailable = null;
+        public static Image placeholdercreature = null;
+        public static Image placeholderitem = null;
+        public static Image placeholdernpc = null;
+        public static Image placeholderspell = null;
+        public static Image placeholdermount = null;
         public static Dictionary<string, Image> vocationImages = new Dictionary<string, Image>();
         private bool keep_working = true;
         private static string databaseFile = @"Database\Database.db";
@@ -162,6 +167,11 @@ namespace Tibialyzer {
             tibia_store_image = LoadImage(@"Images\tibiastore.png");
             nomapavailable = LoadImage(@"Images\nomapavailable.png");
             checkbox_yes = LoadImage(@"Images\checkbox-checked.png");
+            placeholdercreature = LoadImage(@"Images\placeholder-creature.png");
+            placeholderitem = LoadImage(@"Images\placeholder-item.png");
+            placeholdernpc = LoadImage(@"Images\placeholder-npc.png");
+            placeholdermount = LoadImage(@"Images\placeholder-mount.png");
+            placeholdercreature = LoadImage(@"Images\placeholder-spell.png");
             utilityImages.Add("offline training", LoadImage(@"Images\offlinetraining.png"));
             utilityImages.Add("offline training melee", utilityImages["offline training"]);
             utilityImages.Add("offline training magic", LoadImage(@"Images\offlinetrainingmagic.png"));

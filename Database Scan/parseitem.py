@@ -76,7 +76,6 @@ def parseItem(title, attributes, c, buyitems, sellitems, currencymap, getURL):
         image = getImage(url, getURL, imageRegex2, properly_crop_item)
         if image == None or image == False:
             print('failed to get image for item', title)
-            return False
     match = lookRegex.search(itemHTML)
     look_text = None
     if match != None:

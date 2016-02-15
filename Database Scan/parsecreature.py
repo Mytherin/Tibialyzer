@@ -140,10 +140,6 @@ def parseCreature(title, attributes, c, creaturedrops, getURL):
         image = getImage(url, getURL, imageRegex2, crop_image)
         if image == None or image == False:
             print('failed to get image for creature', title)
-            return False
-
-    if physical == None:
-        print('pass', title)
 
     # add stuff to database
     c.execute('INSERT INTO Creatures (title,name,health,experience,maxdamage,summon,illusionable,pushable,pushes,physical,holy,death,fire,energy,ice,earth,drown,lifedrain,paralysable,senseinvis,image,abilities,speed,armor,boss) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
