@@ -368,18 +368,6 @@ namespace Tibialyzer {
         Tuple<string, int> preprocessItem(string item) {
             int count = 1;
             if (item == "nothing") return new Tuple<string, int>("nothing", 0);
-            if (item.Contains("platinum coin") || item.Contains("platinum coin") || item.Contains("crystal coin")) {
-                string coinName = "gold coin";
-                count = -1;
-                if (item.Contains("platinum coin")) {
-                    count = getCount(item) * 100;
-                } else if (item.Contains("gold coin")) {
-                    count = getCount(item);
-                } else if (item.Contains("crystal coin")) {
-                    count = getCount(item) * 10000;
-                }
-                if (count > 0) return new Tuple<string, int>(coinName, count);
-            }
             string itemName = "";
             string[] split = item.Split(' ');
             for (int i = 0; i < split.Length; i++) {
