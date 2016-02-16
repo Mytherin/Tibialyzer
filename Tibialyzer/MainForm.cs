@@ -36,38 +36,12 @@ using System.Xml;
 namespace Tibialyzer {
     public partial class MainForm : Form {
         public static MainForm mainForm;
-
-        public static List<string> vocations = new List<string> { "knight", "druid", "paladin", "sorcerer" };
-
+        
         private NotificationForm[] NotificationFormGroups = new NotificationForm[10];
 
         public static Color background_color = Color.FromArgb(0, 51, 102);
         public static double opacity = 0.8;
         public static bool transparent = true;
-        public static Image[] image_numbers = new Image[10];
-        public static Image tibia_store_image = null;
-        private static Image tibia_image = null;
-        public static Image back_image = null;
-        public static Image prevpage_image = null;
-        public static Image nextpage_image = null;
-        public static Image item_background = null;
-        public static Image cross_image = null;
-        public static Image[] star_image = new Image[6];
-        public static Image[] star_image_text = new Image[6];
-        public static Image mapup_image = null;
-        public static Image mapdown_image = null;
-        public static Image checkmark_yes = null;
-        public static Image checkmark_no = null;
-        public static Image checkbox_yes = null;
-        public static Image checkbox_no = null;
-        public static Image infoIcon = null;
-        public static Image nomapavailable = null;
-        public static Image placeholdercreature = null;
-        public static Image placeholderitem = null;
-        public static Image placeholdernpc = null;
-        public static Image placeholderspell = null;
-        public static Image placeholdermount = null;
-        public static Dictionary<string, Image> vocationImages = new Dictionary<string, Image>();
         private bool keep_working = true;
         private static string databaseFile = @"Database\Database.db";
         private static string lootDatabaseFile = @"Database\Loot.db";
@@ -104,11 +78,7 @@ namespace Tibialyzer {
 
         enum ScanningState { Scanning, NoTibia, Stuck };
         ScanningState current_state;
-
-        private Image loadingbar = null;
-        private Image loadingbarred = null;
-        private Image loadingbargray = null;
-
+        
         public Image LoadImage(string file) {
             Image image = null;
             if (!File.Exists(file)) {
@@ -121,8 +91,8 @@ namespace Tibialyzer {
             return image;
         }
 
-        public void ExitWithError(string title, string text, bool exit = true) {
-            MessageBox.Show(this, text, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        public static void ExitWithError(string title, string text, bool exit = true) {
+            MessageBox.Show(mainForm, text, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
             if (exit) {
                 System.Environment.Exit(1);
             }
@@ -152,58 +122,11 @@ namespace Tibialyzer {
             lootConn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", lootDatabaseFile));
             lootConn.Open();
 
-            back_image = LoadImage(@"Images\back.png");
-            prevpage_image = LoadImage(@"Images\prevpage.png");
-            nextpage_image = LoadImage(@"Images\nextpage.png");
-            cross_image = LoadImage(@"Images\cross.png");
-            tibia_image = LoadImage(@"Images\tibia.png");
-            mapup_image = LoadImage(@"Images\mapup.png");
-            mapdown_image = LoadImage(@"Images\mapdown.png");
-            checkmark_no = LoadImage(@"Images\checkmark-no.png");
-            checkmark_yes = LoadImage(@"Images\checkmark-yes.png");
-            checkbox_yes = LoadImage(@"Images\checkbox-checked.png");
-            checkbox_no = LoadImage(@"Images\checkbox-empty.png");
-            infoIcon = LoadImage(@"Images\defaulticon.png");
-            tibia_store_image = LoadImage(@"Images\tibiastore.png");
-            nomapavailable = LoadImage(@"Images\nomapavailable.png");
-            checkbox_yes = LoadImage(@"Images\checkbox-checked.png");
-            placeholdercreature = LoadImage(@"Images\placeholder-creature.png");
-            placeholderitem = LoadImage(@"Images\placeholder-item.png");
-            placeholdernpc = LoadImage(@"Images\placeholder-npc.png");
-            placeholdermount = LoadImage(@"Images\placeholder-mount.png");
-            placeholderspell = LoadImage(@"Images\placeholder-spell.png");
-            utilityImages.Add("offline training", LoadImage(@"Images\offlinetraining.png"));
-            utilityImages.Add("offline training melee", utilityImages["offline training"]);
-            utilityImages.Add("offline training magic", LoadImage(@"Images\offlinetrainingmagic.png"));
-            utilityImages.Add("offline training distance", LoadImage(@"Images\offlinetrainingdistance.png"));
-            utilityImages.Add("potion", LoadImage(@"Images\potionstore.png"));
-            utilityImages.Add("boat", LoadImage(@"Images\boat.png"));
-            utilityImages.Add("depot", LoadImage(@"Images\depot.png"));
-            utilityImages.Add("bank", LoadImage(@"Images\bank.png"));
-            utilityImages.Add("temple", LoadImage(@"Images\temple.png"));
-            utilityImages.Add("ore wagon", LoadImage(@"Images\orewagon.png"));
-            utilityImages.Add("whirlpool", LoadImage(@"Images\whirlpool.png"));
-            utilityImages.Add("post office", LoadImage(@"Images\postoffice.png"));
+            StyleManager.InitializeStyle();
 
-            item_background = LoadImage(@"Images\item_background.png");
-            for (int i = 0; i < 10; i++) {
-                image_numbers[i] = LoadImage(@"Images\" + i.ToString() + ".png");
-            }
-
-            vocationImages.Add("knight", LoadImage(@"Images\Knight.png"));
-            vocationImages.Add("paladin", LoadImage(@"Images\Paladin.png"));
-            vocationImages.Add("druid", LoadImage(@"Images\Druid.png"));
-            vocationImages.Add("sorcerer", LoadImage(@"Images\Sorcerer.png"));
 
             NotificationForm.Initialize();
             CreatureStatsForm.InitializeCreatureStats();
-
-            for (int i = 0; i < 5; i++) {
-                star_image[i] = LoadImage(@"Images\star" + i + ".png");
-                star_image_text[i] = LoadImage(@"Images\star" + i + "_text.png");
-            }
-            star_image[5] = LoadImage(@"Images\starunknown.png");
-            star_image_text[5] = LoadImage(@"Images\starunknown_text.png");
 
             prevent_settings_update = true;
             this.initializePluralMap();
@@ -249,12 +172,8 @@ namespace Tibialyzer {
             scan_tooltip.ReshowDelay = 0;
             scan_tooltip.ShowAlways = true;
             scan_tooltip.UseFading = true;
-
-            this.loadingbar = LoadImage(@"Images\scanningbar.gif");
-            this.loadingbarred = LoadImage(@"Images\scanningbar-red.gif");
-            this.loadingbargray = LoadImage(@"Images\scanningbar-gray.gif");
-
-            this.loadTimerImage.Image = this.loadingbarred;
+            
+            this.loadTimerImage.Image = StyleManager.GetImage("scanningbar-red.gif");
             this.current_state = ScanningState.NoTibia;
             this.loadTimerImage.Enabled = true;
             scan_tooltip.SetToolTip(this.loadTimerImage, "No Tibia Client Found...");
@@ -931,7 +850,7 @@ namespace Tibialyzer {
                 PictureBox pictureBox = new PictureBox();
                 pictureBox.Image = item.image;
                 pictureBox.Location = new Point(baseX + it * 52, baseY);
-                pictureBox.BackgroundImage = MainForm.item_background;
+                pictureBox.BackgroundImage = StyleManager.GetImage("item_background.png");
                 pictureBox.BackgroundImageLayout = ImageLayout.Zoom;
                 pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                 pictureBox.Size = new Size(48, 48);
@@ -1121,7 +1040,7 @@ namespace Tibialyzer {
                     if (this.current_state != ScanningState.Scanning) {
                         this.current_state = ScanningState.Scanning;
                         this.BeginInvoke((MethodInvoker)delegate {
-                            this.loadTimerImage.Image = this.loadingbar;
+                            this.loadTimerImage.Image = StyleManager.GetImage("scanningbar.gif");
                             this.loadTimerImage.Enabled = true;
                             scan_tooltip.SetToolTip(this.loadTimerImage, "Scanning Memory...");
                         });
@@ -1130,7 +1049,7 @@ namespace Tibialyzer {
                     if (this.current_state != ScanningState.NoTibia) {
                         this.current_state = ScanningState.NoTibia;
                         this.BeginInvoke((MethodInvoker)delegate {
-                            this.loadTimerImage.Image = this.loadingbarred;
+                            this.loadTimerImage.Image = StyleManager.GetImage("scanningbar-red.gif");
                             this.loadTimerImage.Enabled = true;
                             scan_tooltip.SetToolTip(this.loadTimerImage, "No Tibia Client Found...");
                         });
@@ -1143,7 +1062,7 @@ namespace Tibialyzer {
             if (this.current_state != ScanningState.Stuck) {
                 this.current_state = ScanningState.Stuck;
                 this.Invoke((MethodInvoker)delegate {
-                    this.loadTimerImage.Image = this.loadingbargray;
+                    this.loadTimerImage.Image = StyleManager.GetImage("scanningbar-gray.gif");
                     scan_tooltip.SetToolTip(this.loadTimerImage, "Waiting, possibly stuck...");
                     this.loadTimerImage.Enabled = false;
                 });
@@ -1824,7 +1743,7 @@ namespace Tibialyzer {
                 picture.Location = new Point(base_x - 24, size * (offset + 1) + base_y);
                 picture.BackColor = Color.Transparent;
                 if (obj.AsItem() != null) {
-                    picture.BackgroundImage = MainForm.item_background;
+                    picture.BackgroundImage = StyleManager.GetImage("item_background.png");
                 }
                 if (createdControls != null) {
                     createdControls.Add(picture);
@@ -1868,7 +1787,7 @@ namespace Tibialyzer {
                     } else if (attribute is ImageAttribute || attribute is BooleanAttribute) {
                         // create picturebox
                         picture = new PictureBox();
-                        picture.Image = (attribute is ImageAttribute) ? (attribute as ImageAttribute).value : ((attribute as BooleanAttribute).value ? MainForm.checkmark_yes : MainForm.checkmark_no);
+                        picture.Image = (attribute is ImageAttribute) ? (attribute as ImageAttribute).value : ((attribute as BooleanAttribute).value ? StyleManager.GetImage("checkmark-yes.png") : StyleManager.GetImage("checkmark-no.png"));
                         picture.Size = new Size(imageSize, imageSize);
                         picture.SizeMode = PictureBoxSizeMode.Zoom;
                         picture.Location = new Point(x + (val - imageSize) / 2, size * (offset + 1) + base_y);
@@ -1987,7 +1906,7 @@ namespace Tibialyzer {
                     image_box.Name = cr.GetCommand();
                     image_box.Click += executeNameCommand;
                     if (cr.AsItem() != null) {
-                        image_box.BackgroundImage = MainForm.item_background;
+                        image_box.BackgroundImage = StyleManager.GetImage("item_background.png");
                     }
                     controls.Add(image_box);
                     if (createdControls != null) createdControls.Add(image_box);

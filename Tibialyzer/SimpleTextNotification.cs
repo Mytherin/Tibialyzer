@@ -28,7 +28,7 @@ namespace Tibialyzer {
         public SimpleTextNotification(Image image, string title, string text) {
             this.InitializeComponent();
 
-            this.notificationImage.Image = image == null ? MainForm.infoIcon : image;
+            this.notificationImage.Image = image == null ? StyleManager.GetImage("defaulticon.png") : image;
             this.titleLabel.Text = title;
             this.textLabel.Text = text;
 

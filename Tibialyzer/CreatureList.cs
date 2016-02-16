@@ -134,7 +134,7 @@ namespace Tibialyzer {
                 PictureBox prevpage = new PictureBox();
                 prevpage.Location = new Point(10, base_y + y);
                 prevpage.Size = new Size(97, 23);
-                prevpage.Image = MainForm.prevpage_image;
+                prevpage.Image = StyleManager.GetImage("prevpage.png");
                 prevpage.BackColor = Color.Transparent;
                 prevpage.SizeMode = PictureBoxSizeMode.StretchImage;
                 prevpage.Click += Prevpage_Click;
@@ -147,7 +147,7 @@ namespace Tibialyzer {
                 nextpage.Location = new Point(10 + newWidth - 108, base_y + y);
                 nextpage.Size = new Size(98, 23);
                 nextpage.BackColor = Color.Transparent;
-                nextpage.Image = MainForm.nextpage_image;
+                nextpage.Image = StyleManager.GetImage("nextpage.png");
                 nextpage.SizeMode = PictureBoxSizeMode.StretchImage;
                 nextpage.Click += Nextpage_Click;
                 this.Controls.Add(nextpage);

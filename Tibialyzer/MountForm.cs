@@ -143,7 +143,7 @@ namespace Tibialyzer {
             if (mount.tibiastore) {
                 this.tameItemImageBox.Visible = false;
                 this.tameItemLabel.Visible = false;
-                this.tameCreatureImageBox.Image = MainForm.tibia_store_image;
+                this.tameCreatureImageBox.Image = StyleManager.GetImage("tibiastore.png");
                 this.tameCreatureLabel.Text = "Tibia Store";
                 this.tameCreatureImageBox.Location = new System.Drawing.Point(this.tameCreatureImageBox.Location.X, this.tameCreatureImageBox.Location.Y - 50);
                 this.tameCreatureLabel.Location = new System.Drawing.Point(this.tameCreatureLabel.Location.X, this.tameCreatureLabel.Location.Y - 50);

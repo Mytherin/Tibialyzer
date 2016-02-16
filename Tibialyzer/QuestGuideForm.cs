@@ -355,7 +355,7 @@ namespace Tibialyzer {
                             Target target = new Target();
                             string[] coordinate = setting[1].Split(',');
                             target.size = 12;
-                            target.image = MainForm.cross_image;
+                            target.image = StyleManager.GetImage("cross.png");
                             target.coordinate = new Coordinate(int.Parse(coordinate[0]), int.Parse(coordinate[1]), int.Parse(coordinate[2]));
                             targetList.Add(target);
                             break;

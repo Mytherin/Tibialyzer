@@ -69,7 +69,6 @@ namespace Tibialyzer {
         public static Dictionary<string, City> cityNameMap = new Dictionary<string, City>();
         private static Dictionary<int, Quest> questIdMap = new Dictionary<int, Quest>();
         private static Dictionary<string, Quest> questNameMap = new Dictionary<string, Quest>();
-        public static Dictionary<string, Image> utilityImages = new Dictionary<string, Image>();
         public static Dictionary<int, Event> eventIdMap = new Dictionary<int, Event>();
         private static List<Map> mapFiles = new List<Map>();
 
@@ -165,9 +164,9 @@ namespace Tibialyzer {
             item.title = reader.GetString(10);
             item.currency = reader.IsDBNull(11) ? DATABASE_NULL : reader.GetInt32(11);
             try {
-                item.image = reader.IsDBNull(12) ? MainForm.placeholderitem : Image.FromStream(reader.GetStream(12));
+                item.image = reader.IsDBNull(12) ? StyleManager.GetImage("placeholder-item.png") : Image.FromStream(reader.GetStream(12));
             } catch {
-                item.image = MainForm.placeholderitem;
+                item.image = StyleManager.GetImage("placeholder-item.png");
             }
 
             if (item.image.RawFormat.Guid == ImageFormat.Gif.Guid) {
@@ -363,9 +362,9 @@ namespace Tibialyzer {
             cr.armor = reader.IsDBNull(23) ? DATABASE_NULL : reader.GetInt32(23);
             cr.boss = reader.GetInt32(24) > 0;
             try {
-                cr.image = reader.IsDBNull(25) ? MainForm.placeholdercreature : Image.FromStream(reader.GetStream(25));
+                cr.image = reader.IsDBNull(25) ? StyleManager.GetImage("placeholder-creature.png") : Image.FromStream(reader.GetStream(25));
             } catch {
-                cr.image = MainForm.placeholdercreature;
+                cr.image = StyleManager.GetImage("placeholder-creature.png");
             }
 
 
@@ -471,7 +470,7 @@ namespace Tibialyzer {
                 npc.pos.y = reader.GetInt32(4);
                 npc.pos.z = reader.GetInt32(5);
             }
-            npc.image = reader.IsDBNull(6) ? MainForm.placeholdernpc : Image.FromStream(reader.GetStream(6));
+            npc.image = reader.IsDBNull(6) ? StyleManager.GetImage("placeholder-mount.png") : Image.FromStream(reader.GetStream(6));
             npc.job = reader.IsDBNull(7) ? "" : reader.GetString(7);
             if (npc.image.RawFormat.Guid == ImageFormat.Gif.Guid) {
                 int frames = npc.image.GetFrameCount(FrameDimension.Time);
@@ -724,7 +723,7 @@ namespace Tibialyzer {
             spell.paladin = reader.GetBoolean(11);
             spell.sorcerer = reader.GetBoolean(12);
             spell.druid = reader.GetBoolean(13);
-            spell.image = reader.IsDBNull(14) ? MainForm.placeholderspell : Image.FromStream(reader.GetStream(14));
+            spell.image = reader.IsDBNull(14) ? StyleManager.GetImage("placeholder-spell.png") : Image.FromStream(reader.GetStream(14));
 
 
             command = new SQLiteCommand(String.Format("SELECT npcid, knight, druid, paladin, sorcerer FROM SpellNPCs WHERE spellid={0}", spell.id), mainForm.conn);
@@ -805,7 +804,7 @@ namespace Tibialyzer {
             else mount.tamecreatureid = -1;
             mount.speed = reader.GetInt32(5);
             mount.tibiastore = reader.GetBoolean(6);
-            mount.image = reader.IsDBNull(7) ? MainForm.placeholdermount : Image.FromStream(reader.GetStream(7));
+            mount.image = reader.IsDBNull(7) ? StyleManager.GetImage("placeholder-mount.png") : Image.FromStream(reader.GetStream(7));
 
             return mount;
         }

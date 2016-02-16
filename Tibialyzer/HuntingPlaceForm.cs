@@ -344,14 +344,16 @@ namespace Tibialyzer {
             Bitmap bitmap = new Bitmap(experienceStarBox.Size.Width, experienceStarBox.Size.Height);
             Graphics gr = Graphics.FromImage(bitmap);
             for (int i = 0; i < (this.hunting_place.exp_quality < 0 ? 5 : Math.Min(this.hunting_place.exp_quality, 5)); i++) {
-                gr.DrawImage(MainForm.star_image[this.hunting_place.exp_quality < 0 ? 5 : this.hunting_place.exp_quality - 1], new Rectangle(i * experienceStarBox.Size.Width / 5, 0, experienceStarBox.Size.Width / 5, experienceStarBox.Size.Width / 5));
+                string huntQuality = this.hunting_place.exp_quality < 0 ? "unknown" : (this.hunting_place.exp_quality - 1).ToString();
+                gr.DrawImage(StyleManager.GetImage(String.Format("star{0}.png", huntQuality)), new Rectangle(i * experienceStarBox.Size.Width / 5, 0, experienceStarBox.Size.Width / 5, experienceStarBox.Size.Width / 5));
             }
             experienceStarBox.Image = bitmap;
 
             bitmap = new Bitmap(lootStarBox.Size.Width, lootStarBox.Size.Height);
             gr = Graphics.FromImage(bitmap);
             for (int i = 0; i < (this.hunting_place.loot_quality < 0 ? 5 : Math.Min(this.hunting_place.loot_quality, 5)); i++) {
-                gr.DrawImage(MainForm.star_image[this.hunting_place.loot_quality < 0 ? 5 : this.hunting_place.loot_quality - 1], new Rectangle(i * lootStarBox.Size.Width / 5, 0, lootStarBox.Size.Width / 5, lootStarBox.Size.Width / 5));
+                string huntQuality = this.hunting_place.loot_quality < 0 ? "unknown" : (this.hunting_place.loot_quality - 1).ToString();
+                gr.DrawImage(StyleManager.GetImage(String.Format("star{0}.png", huntQuality)), new Rectangle(i * lootStarBox.Size.Width / 5, 0, lootStarBox.Size.Width / 5, lootStarBox.Size.Width / 5));
             }
             lootStarBox.Image = bitmap;
 
@@ -361,10 +363,10 @@ namespace Tibialyzer {
 
             mapBox.Click -= c_Click;
 
-            this.mapUpLevel.Image = MainForm.mapup_image;
+            this.mapUpLevel.Image = StyleManager.GetImage("mapup.png");
             this.mapUpLevel.Click -= c_Click;
             this.mapUpLevel.Click += mapUpLevel_Click;
-            this.mapDownLevel.Image = MainForm.mapdown_image;
+            this.mapDownLevel.Image = StyleManager.GetImage("mapdown.png");
             this.mapDownLevel.Click -= c_Click;
             this.mapDownLevel.Click += mapDownLevel_Click;
             base.NotificationFinalize();
@@ -392,7 +394,7 @@ namespace Tibialyzer {
                     PictureBox prevpage = new PictureBox();
                     prevpage.Location = new Point(10, y);
                     prevpage.Size = new Size(97, 23);
-                    prevpage.Image = MainForm.prevpage_image;
+                    prevpage.Image = StyleManager.GetImage("prevpage.png");
                     prevpage.BackColor = Color.Transparent;
                     prevpage.SizeMode = PictureBoxSizeMode.Zoom;
                     prevpage.Click += Prevpage_Click;
@@ -405,7 +407,7 @@ namespace Tibialyzer {
                     nextpage.Location = new Point(Math.Max(newWidth, this.Size.Width) - 108, y);
                     nextpage.Size = new Size(98, 23);
                     nextpage.BackColor = Color.Transparent;
-                    nextpage.Image = MainForm.nextpage_image;
+                    nextpage.Image = StyleManager.GetImage("nextpage.png");
                     nextpage.SizeMode = PictureBoxSizeMode.Zoom;
                     nextpage.Click += Nextpage_Click;
                     this.Controls.Add(nextpage);
@@ -469,7 +471,7 @@ namespace Tibialyzer {
         private void UpdateMap() {
             Target target = new Target();
             target.coordinate = new Coordinate(targetCoordinate);
-            target.image = MainForm.cross_image;
+            target.image = StyleManager.GetImage("cross.png");
             target.size = 12;
 
             if (mapBox.map != null) {

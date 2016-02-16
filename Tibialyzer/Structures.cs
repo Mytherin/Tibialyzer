@@ -494,8 +494,10 @@ namespace Tibialyzer {
             return headers;
         }
         public override List<Attribute> GetAttributes() {
+            string expQuality = exp_quality < 0 ? "unknown" : (exp_quality - 1).ToString();
+            string lootQuality = loot_quality < 0 ? "unknown" : (loot_quality - 1).ToString();
             return new List<Attribute> { new StringAttribute(name, 120), new StringAttribute(level < 0 ? "-" : level.ToString(), 50),
-                new ImageAttribute(MainForm.star_image_text[exp_quality < 0 ? 5 : exp_quality - 1]), new ImageAttribute(MainForm.star_image_text[loot_quality < 0 ? 5 : loot_quality - 1]),
+                new ImageAttribute(StyleManager.GetImage(String.Format("star{0}_text.png", expQuality))), new ImageAttribute(StyleManager.GetImage(String.Format("star{0}_text.png", lootQuality))),
                 new StringAttribute(city, 100) };
         }
         public override string GetCommand() {

@@ -118,14 +118,14 @@ namespace Tibialyzer {
 
             for (int i = 0; i < decreaseBoxes.Count; i++) {
                 PictureBox box = decreaseBoxes[i];
-                box.Image = MainForm.mapdown_image;
+                box.Image = StyleManager.GetImage("mapdown.png");
                 box.Name = (-Math.Pow(10, i)).ToString();
                 box.Click += changeClick;
             }
 
             for (int i = 0; i < increaseBoxes.Count; i++) {
                 PictureBox box = increaseBoxes[i];
-                box.Image = MainForm.mapup_image;
+                box.Image = StyleManager.GetImage("mapup.png");
                 box.Name = (Math.Pow(10, i)).ToString();
                 box.Click += changeClick;
             }
@@ -772,7 +772,7 @@ namespace Tibialyzer {
             this.itemCategory.Font = f;
 
 
-            this.itemPictureBox.BackgroundImage = MainForm.item_background;
+            this.itemPictureBox.BackgroundImage = StyleManager.GetImage("item_background.png");
             this.lookText.Text = item.look_text;
             this.pickupBox.Checked = !item.discard;
             this.convertBox.Checked = item.convert_to_gold;
@@ -933,7 +933,7 @@ namespace Tibialyzer {
                     PictureBox prevpage = new PictureBox();
                     prevpage.Location = new Point(10, y);
                     prevpage.Size = new Size(97, 23);
-                    prevpage.Image = MainForm.prevpage_image;
+                    prevpage.Image = StyleManager.GetImage("prevpage.png");
                     prevpage.BackColor = Color.Transparent;
                     prevpage.SizeMode = PictureBoxSizeMode.Zoom;
                     prevpage.Click += Prevpage_Click; ;
@@ -946,7 +946,7 @@ namespace Tibialyzer {
                     nextpage.Location = new Point(newwidth - 108, y);
                     nextpage.Size = new Size(98, 23);
                     nextpage.BackColor = Color.Transparent;
-                    nextpage.Image = MainForm.nextpage_image;
+                    nextpage.Image = StyleManager.GetImage("nextpage.png");
                     nextpage.SizeMode = PictureBoxSizeMode.Zoom;
                     nextpage.Click += Nextpage_Click; ;
                     this.Controls.Add(nextpage);

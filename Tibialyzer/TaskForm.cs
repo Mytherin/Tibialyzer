@@ -254,8 +254,8 @@ namespace Tibialyzer {
             bossPictureBox.Click -= c_Click;
             mapUpLevel.Click -= c_Click;
             mapDownLevel.Click -= c_Click;
-            mapUpLevel.Image = MainForm.mapup_image;
-            mapDownLevel.Image = MainForm.mapdown_image;
+            mapUpLevel.Image = StyleManager.GetImage("mapup.png");
+            mapDownLevel.Image = StyleManager.GetImage("mapdown.png");
             mapBox.MapUpdated += MapBox_MapUpdated;
 
             pointsLabel.Text = task.taskpoints > 0 ? task.taskpoints.ToString() : "-";

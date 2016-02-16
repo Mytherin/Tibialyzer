@@ -342,20 +342,20 @@ namespace Tibialyzer {
             this.manaCostLabel.Text = spell.manacost.ToString();
             this.cooldownLabel.Text = spell.cooldown.ToString() + "s";
             this.levelLabel.Text = spell.levelrequired.ToString();
-            this.premiumBox.Image = spell.premium ? MainForm.checkmark_yes : MainForm.checkmark_no;
-            this.promotionBox.Image = spell.promotion ? MainForm.checkmark_yes : MainForm.checkmark_no;
+            this.premiumBox.Image = spell.premium ? StyleManager.GetImage("checkmark-yes.png") : StyleManager.GetImage("checkmark-no.png");
+            this.promotionBox.Image = spell.promotion ? StyleManager.GetImage("checkmark-yes.png") : StyleManager.GetImage("checkmark-no.png");
 
             if (this.spell.knight) {
-                this.knightBox.Image = MainForm.vocationImages["knight"];
+                this.knightBox.Image = StyleManager.GetImage("knight.png");
             }
             if (this.spell.paladin) {
-                this.paladinBox.Image = MainForm.vocationImages["paladin"];
+                this.paladinBox.Image = StyleManager.GetImage("paladin.png");
             }
             if (this.spell.sorcerer) {
-                this.sorcererBox.Image = MainForm.vocationImages["sorcerer"];
+                this.sorcererBox.Image = StyleManager.GetImage("sorcerer.png");
             }
             if (this.spell.druid) {
-                this.druidBox.Image = MainForm.vocationImages["druid"];
+                this.druidBox.Image = StyleManager.GetImage("druid.png");
             }
 
             string[] titles = new string[] { "Knight", "Druid", "Paladin", "Sorcerer" };

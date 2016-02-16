@@ -190,7 +190,7 @@ namespace Tibialyzer {
             wikiButton.Click -= c_Click;
 
             this.questTitle.Text = quest.name;
-            this.premiumBox.Image = quest.premium ? MainForm.checkmark_yes : MainForm.checkmark_no;
+            this.premiumBox.Image = quest.premium ? StyleManager.GetImage("checkmark-yes.png") : StyleManager.GetImage("checkmark-no.png");
             this.cityLabel.Text = quest.city == null ? "Unknown" : MainForm.ToTitle(quest.city);
             this.levelLabel.Text = quest.minlevel.ToString();
             this.legendLabel.Text = quest.legend;
@@ -256,7 +256,7 @@ namespace Tibialyzer {
                     y = y + MainForm.DisplayCreatureList(this.Controls, itemList, 10, y, this.Size.Width - 10, 1, null, 1, itemControls);
                     int itemnr = 0;
                     foreach (Control control in itemControls) {
-                        control.BackgroundImage = MainForm.item_background;
+                        control.BackgroundImage = StyleManager.GetImage("item_background.png");
                         int itemCount = requirements[itemnr].Item1;
                         Item item = requirements[itemnr].Item2;
                         

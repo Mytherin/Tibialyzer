@@ -234,10 +234,10 @@ namespace Tibialyzer {
 
             mapBox.Click -= c_Click;
 
-            this.mapUpLevel.Image = MainForm.mapup_image;
+            this.mapUpLevel.Image = StyleManager.GetImage("mapup.png");
             this.mapUpLevel.Click -= c_Click;
             this.mapUpLevel.Click += mapUpLevel_Click;
-            this.mapDownLevel.Image = MainForm.mapdown_image;
+            this.mapDownLevel.Image = StyleManager.GetImage("mapdown.png");
             this.mapDownLevel.Click -= c_Click;
             this.mapDownLevel.Click += mapDownLevel_Click;
 
@@ -307,7 +307,7 @@ namespace Tibialyzer {
                     PictureBox prevpage = new PictureBox();
                     prevpage.Location = new Point(10, y);
                     prevpage.Size = new Size(97, 23);
-                    prevpage.Image = MainForm.prevpage_image;
+                    prevpage.Image = StyleManager.GetImage("prevpage.png");
                     prevpage.BackColor = Color.Transparent;
                     prevpage.SizeMode = PictureBoxSizeMode.Zoom;
                     prevpage.Click += Prevpage_Click; ;
@@ -320,7 +320,7 @@ namespace Tibialyzer {
                     nextpage.Location = new Point(newwidth - 108, y);
                     nextpage.Size = new Size(98, 23);
                     nextpage.BackColor = Color.Transparent;
-                    nextpage.Image = MainForm.nextpage_image;
+                    nextpage.Image = StyleManager.GetImage("nextpage.png");
                     nextpage.SizeMode = PictureBoxSizeMode.Zoom;
                     nextpage.Click += Nextpage_Click; ;
                     this.Controls.Add(nextpage);

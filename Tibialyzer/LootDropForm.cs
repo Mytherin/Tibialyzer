@@ -94,9 +94,10 @@ namespace Tibialyzer {
                 int xoffset = 1, logamount = itemCount;
                 for (int i = 0; i < numbers; i++) {
                     int imagenr = logamount % 10;
-                    xoffset = xoffset + MainForm.image_numbers[imagenr].Width + (itemCount >= 1000 ? 0 : 1);
-                    gr.DrawImage(MainForm.image_numbers[imagenr],
-                        new Point(image.Width - xoffset, image.Height - MainForm.image_numbers[imagenr].Height - 3));
+                    Image imageNumber = StyleManager.GetImage(imagenr + ".png");
+                    xoffset = xoffset + imageNumber.Width + (itemCount >= 1000 ? 0 : 1);
+                    gr.DrawImage(imageNumber,
+                        new Point(image.Width - xoffset, image.Height - imageNumber.Height - 3));
                     logamount /= 10;
                 }
             }
@@ -304,7 +305,7 @@ namespace Tibialyzer {
                             }
 
                             picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
-                            picture_box.BackgroundImage = MainForm.item_background;
+                            picture_box.BackgroundImage = StyleManager.GetImage("item_background.png");
                             picture_box.Click += openItemBox;
                             long individualValue = Math.Max(item.actual_value, item.vendor_value);
                             value_tooltip.SetToolTip(picture_box, System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(item.displayname) + " value: " + (individualValue >= 0 ? (individualValue * mitems).ToString() : "Unknown"));
@@ -339,7 +340,7 @@ namespace Tibialyzer {
                 PictureBox prevpage = new PictureBox();
                 prevpage.Location = new Point(10, base_y + y);
                 prevpage.Size = new Size(97, 23);
-                prevpage.Image = MainForm.prevpage_image;
+                prevpage.Image = StyleManager.GetImage("prevpage.png");
                 prevpage.BackColor = Color.Transparent;
                 prevpage.SizeMode = PictureBoxSizeMode.StretchImage;
                 prevpage.Click += Prevpage_Click;
@@ -351,7 +352,7 @@ namespace Tibialyzer {
                 nextpage.Location = new Point(width_x - 108, base_y + y);
                 nextpage.Size = new Size(98, 23);
                 nextpage.BackColor = Color.Transparent;
-                nextpage.Image = MainForm.nextpage_image;
+                nextpage.Image = StyleManager.GetImage("nextpage.png");
                 nextpage.SizeMode = PictureBoxSizeMode.StretchImage;
                 nextpage.Click += Nextpage_Click;
                 this.Controls.Add(nextpage);

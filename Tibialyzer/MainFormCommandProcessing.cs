@@ -162,7 +162,7 @@ namespace Tibialyzer {
                 } else if (comp.StartsWith("exp" + MainForm.commandSymbol)) { //exp@
                     string title = "Experience";
                     string text = "Currently gaining " + (parseMemoryResults == null ? "unknown" : ((int)parseMemoryResults.expPerHour).ToString()) + " experience an hour.";
-                    Image image = tibia_image;
+                    Image image = StyleManager.GetImage("tibia.png");
                     if (!SettingsManager.getSettingBool("UseRichNotificationType")) {
                         ShowSimpleNotification(title, text, image);
                     } else {
@@ -439,7 +439,7 @@ namespace Tibialyzer {
                     } else {
                         List<TibiaObject> spellList = new List<TibiaObject>();
                         string title;
-                        if (vocationImages.Keys.Contains(parameter)) {
+                        if (Constants.vocations.Contains(parameter)) {
                             spellList = getSpellsForVocation(parameter);
                             title = ToTitle(parameter) + " Spells";
                         } else {
@@ -764,7 +764,7 @@ namespace Tibialyzer {
                 this.Invoke((MethodInvoker)delegate {
                     if (!ExecuteCommand(command, parseMemoryResults) && SettingsManager.getSettingBool("EnableUnrecognizedNotifications")) {
                         if (!SettingsManager.getSettingBool("UseRichNotificationType")) {
-                            ShowSimpleNotification("Unrecognized command", "Unrecognized command: " + command, tibia_image);
+                            ShowSimpleNotification("Unrecognized command", "Unrecognized command: " + command, StyleManager.GetImage("tibia.png"));
                         } else {
                             ShowSimpleNotification(new SimpleTextNotification(null, "Unrecognized command", "Unrecognized command: " + command));
                         }

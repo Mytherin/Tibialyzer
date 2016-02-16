@@ -44,7 +44,7 @@ namespace Tibialyzer {
             picture_box.TabStop = false;
             picture_box.Image = drop.max > 1 ? LootDropForm.DrawCountOnItem(dropItem, drop.max) : dropItem.GetImage();
             picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
-            picture_box.BackgroundImage = MainForm.item_background;
+            picture_box.BackgroundImage = StyleManager.GetImage("item_background.png");
             picture_box.Click += openItemBox;
             droprate_tooltip.SetToolTip(picture_box, prefix + dropItem.displayname + " is " + (drop.percentage >= 0 ? Math.Round(drop.percentage, 1).ToString() + "%." : "unknown."));
             this.Controls.Add(picture_box);
@@ -111,7 +111,7 @@ namespace Tibialyzer {
                 picture_box.TabStop = false;
                 picture_box.Image = skinItem.GetImage();
                 picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
-                picture_box.BackgroundImage = MainForm.item_background;
+                picture_box.BackgroundImage = StyleManager.GetImage("item_background.png");
                 picture_box.Click += openItemBox; droprate_tooltip.SetToolTip(picture_box, "You can skin this creature with the item " + skinItem.displayname + ".");
                 this.Controls.Add(picture_box);
 

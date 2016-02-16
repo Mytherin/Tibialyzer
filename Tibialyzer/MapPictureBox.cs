@@ -89,10 +89,10 @@ namespace Tibialyzer {
                 beginWidth = sourceWidth;
             }
             if (beginCoordinate.x == Coordinate.MaxWidth / 2 && beginCoordinate.y == Coordinate.MaxHeight / 2 && beginCoordinate.z == 7) {
-                if (this.Image != MainForm.nomapavailable && this.Image != null) {
+                if (this.Image != StyleManager.GetImage("nomapavailable.png") && this.Image != null) {
                     this.Image.Dispose();
                 }
-                this.Image = MainForm.nomapavailable;
+                this.Image = StyleManager.GetImage("nomapavailable.png");
                 this.SizeMode = PictureBoxSizeMode.Zoom;
                 return;
             }

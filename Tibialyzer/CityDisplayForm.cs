@@ -227,9 +227,9 @@ namespace Tibialyzer {
             questButton.Click -= c_Click;
             nextButton.Click -= c_Click;
             previousButton.Click -= c_Click;
-            this.mapUpLevel.Image = MainForm.mapup_image;
+            this.mapUpLevel.Image = StyleManager.GetImage("mapup.png");
             this.mapUpLevel.Click -= c_Click;
-            this.mapDownLevel.Image = MainForm.mapdown_image;
+            this.mapDownLevel.Image = StyleManager.GetImage("mapdown.png");
             this.mapDownLevel.Click -= c_Click;
 
             this.NotificationFinalize();
@@ -289,8 +289,8 @@ namespace Tibialyzer {
                     image = tibiaObjects[index].GetImage();
                     coordinate = new Coordinate((tibiaObjects[index] as NPC).pos);
                 } else {
-                    name = utilities[index].name;
-                    image = MainForm.utilityImages[name];
+                    name = utilities[index].name.Replace(" ", "");
+                    image = StyleManager.GetImage(name + ".png");
                     coordinate = new Coordinate(utilities[index].location);
                 }
 

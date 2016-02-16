@@ -109,7 +109,7 @@ namespace Tibialyzer {
             if (MainForm.mainForm.HasBack()) {
                 back_button = new PictureBox();
                 back_button.Location = new Point(5, 5);
-                back_button.Image = MainForm.back_image;
+                back_button.Image = StyleManager.GetImage("back.png");
                 back_button.Size = new Size(63, 22);
                 back_button.BackColor = Color.Transparent;
                 back_button.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
