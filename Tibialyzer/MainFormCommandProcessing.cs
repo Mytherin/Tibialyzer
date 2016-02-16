@@ -317,7 +317,7 @@ namespace Tibialyzer {
                     string[] splits = command.Split(commandSymbol);
                     string parameter = splits[1].Trim().ToLower();
                     int page = 0;
-                    if (splits.Length > 2 && int.TryParse(splits[2], out page)) ;
+                    if (splits.Length > 2 && int.TryParse(splits[2], out page)) { }
                     if (cities.Contains(parameter)) {
                         List<HuntingPlace> huntingPlaces = getHuntsInCity(parameter);
                         ShowCreatureList(huntingPlaces.ToList<TibiaObject>(), "Hunts in " + parameter, command);
@@ -432,7 +432,7 @@ namespace Tibialyzer {
                     string[] splits = command.Split(commandSymbol);
                     string parameter = splits[1].Trim().ToLower();
                     int initialVocation = -1;
-                    if (splits.Length > 2 && int.TryParse(splits[2], out initialVocation)) ;
+                    if (splits.Length > 2 && int.TryParse(splits[2], out initialVocation)) { }
                     Spell spell = getSpell(parameter);
                     if (spell != null) {
                         ShowSpellNotification(spell, initialVocation, command);
@@ -474,7 +474,7 @@ namespace Tibialyzer {
                     string[] splits = command.Split(commandSymbol);
                     string parameter = splits[1].Trim().ToLower();
                     int page = 0;
-                    if (splits.Length > 2 && int.TryParse(splits[2], out page)) ;
+                    if (splits.Length > 2 && int.TryParse(splits[2], out page)) { }
                     List<Quest> questList = new List<Quest>();
                     if (questNameMap.ContainsKey(parameter)) {
                         ShowQuestNotification(questNameMap[parameter], command);
@@ -515,7 +515,7 @@ namespace Tibialyzer {
                     string parameter = splits[1].Trim().ToLower();
                     int page = 0;
                     string mission = "";
-                    if (splits.Length > 2 && int.TryParse(splits[2], out page)) ;
+                    if (splits.Length > 2 && int.TryParse(splits[2], out page)) { }
                     if (splits.Length > 3) { mission = splits[3]; }
                     List<Quest> questList = new List<Quest>();
                     if (questNameMap.ContainsKey(parameter)) {
@@ -538,7 +538,7 @@ namespace Tibialyzer {
                     string[] splits = command.Split(commandSymbol);
                     string parameter = splits[1].Trim().ToLower();
                     int page = 0;
-                    if (splits.Length > 2 && int.TryParse(splits[2], out page)) ;
+                    if (splits.Length > 2 && int.TryParse(splits[2], out page)) { }
                     List<HuntingPlace> huntList = new List<HuntingPlace>();
                     HuntingPlace h = getHunt(parameter);
                     if (h != null) {
@@ -825,9 +825,9 @@ namespace Tibialyzer {
             string[] splits = command.Split(commandSymbol);
             string parameter = splits[1].Trim().ToLower();
             int currentPage = 0;
-            if (splits.Length > 2 && int.TryParse(splits[2], out currentPage)) ;
+            if (splits.Length > 2 && int.TryParse(splits[2], out currentPage)) { }
             int currentDisplay = -1;
-            if (splits.Length > 3 && int.TryParse(splits[3], out currentDisplay)) ;
+            if (splits.Length > 3 && int.TryParse(splits[3], out currentDisplay)) { }
             Item item = getItem(parameter);
             if (item == null) {
                 List<TibiaObject> items = searchItem(parameter);

@@ -1137,7 +1137,6 @@ namespace Tibialyzer {
                 }
                 return result;
             } else {
-                int count = 0;
                 return _npcIdMap.Values.Where(o => o.name.ToLower().Contains(str)).OrderBy(o => o.city).ToList<TibiaObject>();
             }
         }

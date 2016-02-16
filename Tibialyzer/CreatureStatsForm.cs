@@ -225,7 +225,6 @@ namespace Tibialyzer {
         public string RemoveTextInBrackets(string str) {
             string ss = "";
             int kk;
-            int j = 0;
             bool bracket = false;
             int items = 0;
             for (int i = 0; i < str.Length; i++) {
