@@ -228,59 +228,12 @@ namespace Tibialyzer {
                 if (index < 1) {
                     if (i > array.Length - 6) break;
 
-                    if (array[i] >= '0' && array[i] <= '9')
-                    {
-                        ++i;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-
-                    if (array[i] >= '0' && array[i] <= '9')
-                    {
-                        ++i;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-
-                    if (array[i] == ':')
-                    {
-                        ++i;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-
-                    if (array[i] >= '0' && array[i] <= '9')
-                    {
-                        ++i;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-
-                    if (array[i] >= '0' && array[i] <= '9')
-                    {
-                        ++i;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-
-                    if (array[i] == ' ' || array[i] == ':')
-                    {
-                        ++i;
-                    }
-                    else
-                    {
-                        continue;
-                    }
+                    if (array[i] >= '0' && array[i] <= '9') { ++i; } else { continue; }
+                    if (array[i] >= '0' && array[i] <= '9') { ++i; } else { continue; }
+                    if (array[i] == ':') { ++i; } else { continue; }
+                    if (array[i] >= '0' && array[i] <= '9') { ++i; } else { continue; }
+                    if (array[i] >= '0' && array[i] <= '9') { ++i; } else { continue; }
+                    if (array[i] == ' ' || array[i] == ':') { ++i; } else { continue; }
 
                     index = 1;
                     start = i - 6;
@@ -292,68 +245,13 @@ namespace Tibialyzer {
                     // in the flash client: skip any messages that end in </font>
                     // these are the messages that are displayed in the log, and they have annoying properties (duplicated many times, etc)
 
-                    if (array[i] == '<')
-                    {
-                        ++i;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-
-                    if (array[i] == '/')
-                    {
-                        ++i;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-
-                    if (array[i] == 'f')
-                    {
-                        ++i;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-
-                    if (array[i] == 'o')
-                    {
-                        ++i;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-
-                    if (array[i] == 'n')
-                    {
-                        ++i;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-
-                    if (array[i] == 't')
-                    {
-                        ++i;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-
-                    if (array[i] == '>')
-                    {
-                        ++i;
-                    }
-                    else
-                    {
-                        continue;
-                    }
+                    if (array[i] == '<') { ++i; } else { continue; }
+                    if (array[i] == '/') { ++i; } else { continue; }
+                    if (array[i] == 'f') { ++i; } else { continue; }
+                    if (array[i] == 'o') { ++i; } else { continue; }
+                    if (array[i] == 'n') { ++i; } else { continue; }
+                    if (array[i] == 't') { ++i; } else { continue; }
+                    if (array[i] == '>') { ++i; } else { continue; }
 
                     index = 0;
                 }

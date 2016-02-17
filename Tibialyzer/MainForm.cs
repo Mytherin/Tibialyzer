@@ -3423,14 +3423,14 @@ namespace Tibialyzer {
 
         private void detectFlashClientButton_Click(object sender, EventArgs e) {
             List<Process> candidateProcesses = new List<Process>();
-            foreach(Process p in Process.GetProcesses()) {
+            foreach (Process p in Process.GetProcesses()) {
                 if (p.ProcessName.ToLower().Contains("flash")) {
                     candidateProcesses.Add(p);
                 }
             }
             DateTime date = DateTime.Today;
             Process flashClient = null;
-            foreach(Process p in candidateProcesses) {
+            foreach (Process p in candidateProcesses) {
                 if (flashClient == null || p.StartTime > date) {
                     date = p.StartTime;
                     flashClient = p;
