@@ -36,7 +36,7 @@ using System.Xml;
 namespace Tibialyzer {
     public partial class MainForm : Form {
         public static MainForm mainForm;
-        
+
         private NotificationForm[] NotificationFormGroups = new NotificationForm[10];
 
         public static Color background_color = Color.FromArgb(0, 51, 102);
@@ -78,18 +78,6 @@ namespace Tibialyzer {
 
         enum ScanningState { Scanning, NoTibia, Stuck };
         ScanningState current_state;
-        
-        public Image LoadImage(string file) {
-            Image image = null;
-            if (!File.Exists(file)) {
-                ExitWithError("Fatal Error", String.Format("Could not find image {0}", file));
-            }
-            image = Image.FromFile(file);
-            if (image == null) {
-                ExitWithError("Fatal Error", String.Format("Failed to load image {0}", file));
-            }
-            return image;
-        }
 
         public static void ExitWithError(string title, string text, bool exit = true) {
             MessageBox.Show(mainForm, text, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -97,7 +85,7 @@ namespace Tibialyzer {
                 System.Environment.Exit(1);
             }
         }
-        
+
         public MainForm() {
             Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
             mainForm = this;
@@ -172,7 +160,7 @@ namespace Tibialyzer {
             scan_tooltip.ReshowDelay = 0;
             scan_tooltip.ShowAlways = true;
             scan_tooltip.UseFading = true;
-            
+
             this.loadTimerImage.Image = StyleManager.GetImage("scanningbar-red.gif");
             this.current_state = ScanningState.NoTibia;
             this.loadTimerImage.Enabled = true;
@@ -803,9 +791,9 @@ namespace Tibialyzer {
             customCommandList.RefreshControl();
             CustomCommandList_ItemsChanged(null, null);
         }
-        
+
         private void CustomCommandList_ItemsChanged(object sender, EventArgs e) {
-            for(int i = 0; i < customCommandList.Items.Count; i++) {
+            for (int i = 0; i < customCommandList.Items.Count; i++) {
                 string command = customCommandList.Items[i].ToString();
 
                 customCommands[i].tibialyzer_command = command;
@@ -829,7 +817,7 @@ namespace Tibialyzer {
             int selectedIndex = Math.Min(customCommandList.SelectedIndex, customCommands.Count - 1);
 
             customCommandList.Items.Clear();
-            foreach(SystemCommand c in customCommands) {
+            foreach (SystemCommand c in customCommands) {
                 customCommandList.Items.Add(c.tibialyzer_command);
             }
             customCommandList.SelectedIndex = selectedIndex;
@@ -837,7 +825,7 @@ namespace Tibialyzer {
 
         private void SaveCommands() {
             List<string> commands = new List<string>();
-            foreach(SystemCommand c in customCommands) {
+            foreach (SystemCommand c in customCommands) {
                 commands.Add(string.Format("{0}#{1}#{2}", c.tibialyzer_command, c.command, c.parameters));
             }
             SettingsManager.setSetting("CustomCommands", commands);
@@ -2218,7 +2206,7 @@ namespace Tibialyzer {
         private void executeCommand_Click(object sender, EventArgs e) {
             this.ExecuteCommand(commandTextBox.Text);
         }
-        
+
         private Hunt getActiveHunt() {
             return activeHunt;
         }
@@ -3027,7 +3015,7 @@ namespace Tibialyzer {
         private void selectClientButton_Click(object sender, EventArgs e) {
             SelectProcessForm form = new SelectProcessForm();
             form.StartPosition = FormStartPosition.Manual;
-            
+
             form.SetDesktopLocation(this.DesktopLocation.X + (this.Width - form.Width) / 2, this.DesktopLocation.Y + (this.Height - form.Height) / 2);
             form.Show();
         }
@@ -3366,7 +3354,7 @@ namespace Tibialyzer {
                     databaseConnection.Open();
                     SQLiteCommand comm = new SQLiteCommand("SELECT id, discard, convert_to_gold, actual_value FROM Items", databaseConnection);
                     SQLiteDataReader reader = comm.ExecuteReader();
-                    using(var transaction = mainForm.conn.BeginTransaction()) {
+                    using (var transaction = mainForm.conn.BeginTransaction()) {
                         while (reader.Read()) {
                             int itemid = reader.GetInt32(0);
                             bool discard = reader.GetBoolean(1);
