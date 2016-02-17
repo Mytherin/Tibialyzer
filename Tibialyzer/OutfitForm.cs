@@ -65,7 +65,7 @@ namespace Tibialyzer {
             this.obtainedLabel.AutoSize = true;
             this.obtainedLabel.BackColor = System.Drawing.Color.Transparent;
             this.obtainedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.obtainedLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.obtainedLabel.ForeColor = StyleManager.NotificationTextColor;
             this.obtainedLabel.Location = new System.Drawing.Point(12, 172);
             this.obtainedLabel.Name = "obtainedLabel";
             this.obtainedLabel.Size = new System.Drawing.Size(145, 16);
@@ -147,7 +147,7 @@ namespace Tibialyzer {
             this.outfitTitle.AutoSize = true;
             this.outfitTitle.BackColor = System.Drawing.Color.Transparent;
             this.outfitTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.outfitTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.outfitTitle.ForeColor = StyleManager.NotificationTextColor;
             this.outfitTitle.Location = new System.Drawing.Point(115, 9);
             this.outfitTitle.Name = "outfitTitle";
             this.outfitTitle.Size = new System.Drawing.Size(105, 20);

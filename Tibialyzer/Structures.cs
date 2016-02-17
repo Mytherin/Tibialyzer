@@ -66,7 +66,7 @@ namespace Tibialyzer {
         public StringAttribute(string value, int MaxWidth) {
             this.value = value;
             this.MaxWidth = MaxWidth;
-            this.color = MainForm.label_text_color;
+            this.color = StyleManager.NotificationTextColor;
         }
         public StringAttribute(string value, int MaxWidth, Color color) {
             this.value = value;
@@ -82,7 +82,7 @@ namespace Tibialyzer {
             this.value = value;
             this.command = command;
             this.MaxWidth = MaxWidth;
-            this.color = MainForm.label_text_color;
+            this.color = StyleManager.NotificationTextColor;
         }
         public CommandAttribute(string value, string command, int MaxWidth, Color color) {
             this.value = value;
@@ -662,7 +662,6 @@ namespace Tibialyzer {
             return String.Format("{0:0.#}", resval) + denom;
         }
 
-        public static Color GoldColor = Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(226)))), ((int)(((byte)(24)))));
         public override string GetName() { return title; }
         public override Image GetImage() {
             if (image == null) {
@@ -725,7 +724,7 @@ namespace Tibialyzer {
             if (range >= 0) att.Add(new StringAttribute(range.ToString(), 60));
             //if (vocation != "") att.Add(new StringAttribute(vocation, 100));
             if (attrib != "") att.Add(new StringAttribute(attrib, 120));
-            if (type != "") att.Add(new StringAttribute(type, 70, CreatureStatsForm.resistance_colors.ContainsKey(type) ? CreatureStatsForm.resistance_colors[type] : MainForm.label_text_color));
+            if (type != "") att.Add(new StringAttribute(type, 70, StyleManager.ElementExists(type) ? StyleManager.GetElementColor(type) : StyleManager.NotificationTextColor));
             att.Add(regularAttributes[1]);
             att.Add(regularAttributes[2]);
             return att;
@@ -736,7 +735,7 @@ namespace Tibialyzer {
         }
         public override List<Attribute> GetAttributes() {
             List<Attribute> attributeList = new List<Attribute> { new StringAttribute(title, 170),
-                new StringAttribute(GetMaxValue() > 0 ? GetMaxValueString() : "-", 50, GoldColor), new StringAttribute(capacity > 0 ? String.Format("{0:0.0} oz.", capacity) : "-", 70),
+                new StringAttribute(GetMaxValue() > 0 ? GetMaxValueString() : "-", 50, StyleManager.ItemGoldColor), new StringAttribute(capacity > 0 ? String.Format("{0:0.0} oz.", capacity) : "-", 70),
                 new CommandAttribute(category, "category" + MainForm.commandSymbol + category, 100)};
             return attributeList;
         }
@@ -859,10 +858,7 @@ namespace Tibialyzer {
             itemdrops = new List<ItemDrop>();
         }
         public override Creature AsCreature() { return this; }
-
-        private static Color HealthColor = Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(179)))), ((int)(((byte)(60)))));
-        public static Color BossColor = Color.FromArgb(205, 102, 102);
-
+        
         public int GetResistance(int index) {
             if (index == 0) {
                 return res_phys;
@@ -937,8 +933,8 @@ namespace Tibialyzer {
             return headers;
         }
         public override List<Attribute> GetAttributes() {
-            return new List<Attribute> { new StringAttribute(title, 200, boss ? BossColor : MainForm.label_text_color), new StringAttribute(experience > 0 ? experience.ToString() : "-", 60), new StringAttribute(health > 0 ? health.ToString() : "-", 60, HealthColor),
-            new StringAttribute(GetWeakness(), 60, CreatureStatsForm.resistance_colors[GetWeakness()]) };
+            return new List<Attribute> { new StringAttribute(title, 200, boss ? StyleManager.CreatureBossColor : StyleManager.NotificationTextColor), new StringAttribute(experience > 0 ? experience.ToString() : "-", 60), new StringAttribute(health > 0 ? health.ToString() : "-", 60, StyleManager.CreatureHealthColor),
+            new StringAttribute(GetWeakness(), 60, StyleManager.GetElementColor(GetWeakness())) };
         }
         public override string GetCommand() {
             return "creature" + MainForm.commandSymbol + title;

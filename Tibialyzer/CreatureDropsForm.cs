@@ -144,10 +144,10 @@ namespace Tibialyzer {
             this.statsButton.Name = this.creature.GetName().ToLower();
             this.huntButton.Name = this.creature.GetName().ToLower();
             // set background of actual form to transparent
-            this.BackColor = MainForm.background_color;
+            this.BackColor = StyleManager.NotificationBackgroundColor;
             this.Opacity = MainForm.opacity;
             if (MainForm.transparent) {
-                this.TransparencyKey = MainForm.background_color;
+                this.TransparencyKey = StyleManager.NotificationBackgroundColor; ;
                 this.Opacity = 1;
             }
             CombineItems();

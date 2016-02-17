@@ -121,7 +121,17 @@ namespace Tibialyzer {
             return Math.Sqrt(Math.Pow(a.rect.X - b.rect.X, 2) + Math.Pow(a.rect.Y - b.rect.Y, 2));
         }
 
-        private static List<Color> walkableColors = new List<Color> { Color.FromArgb(0, 204, 0), Color.FromArgb(153, 153, 153), Color.FromArgb(255, 204, 153), Color.FromArgb(153, 102, 51), Color.FromArgb(255, 255, 255), Color.FromArgb(153, 153, 153), Color.FromArgb(204, 255, 255), Color.FromArgb(255, 255, 0) };
+        private static List<Color> walkableColors = new List<Color> {
+            Color.FromArgb(0, 204, 0),
+            Color.FromArgb(153, 153, 153),
+            Color.FromArgb(255, 204, 153),
+            Color.FromArgb(153, 102, 51),
+            Color.FromArgb(255, 255, 255),
+            Color.FromArgb(153, 153, 153),
+            Color.FromArgb(204, 255, 255),
+            Color.FromArgb(255, 255, 0)
+        };
+
         public static bool isWalkable(Color color, List<Color> additionalWalkableColors) {
             return walkableColors.Contains(color) || additionalWalkableColors.Contains(color);
         }

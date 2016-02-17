@@ -826,7 +826,7 @@ namespace Tibialyzer {
                     Label label = new Label();
                     label.Text = headers[i];
                     label.Location = new Point(x, base_y);
-                    label.ForeColor = MainForm.label_text_color;
+                    label.ForeColor = StyleManager.NotificationTextColor;
                     label.BackColor = Color.Transparent;
                     label.Font = MainForm.text_font;
                     label.Size = new Size(90, 25);
@@ -859,10 +859,10 @@ namespace Tibialyzer {
         private Attribute SellPrice(TibiaObject obj) {
             int npcValue = item.sellItems.Find(o => o.npcid == (obj as LazyTibiaObject).id).price;
 
-            return new StringAttribute(String.Format("{0}", npcValue), 60, npcValue >= item.vendor_value ? Item.GoldColor : Creature.BossColor);
+            return new StringAttribute(String.Format("{0}", npcValue), 60, npcValue >= item.vendor_value ? StyleManager.ItemGoldColor : StyleManager.CreatureBossColor);
         }
         private Attribute BuyPrice(TibiaObject obj) {
-            return new StringAttribute(String.Format("{0}", item.buyItems.Find(o => o.npcid == (obj as LazyTibiaObject).id).price), 60, Item.GoldColor);
+            return new StringAttribute(String.Format("{0}", item.buyItems.Find(o => o.npcid == (obj as LazyTibiaObject).id).price), 60, StyleManager.ItemGoldColor);
         }
         private IComparable DropSort(TibiaObject obj) {
             float percentage = item.itemdrops.Find(o => o.creatureid == (obj as LazyTibiaObject).id).percentage;

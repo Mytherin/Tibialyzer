@@ -49,7 +49,7 @@
             this.totalValueLabel.AutoSize = true;
             this.totalValueLabel.BackColor = System.Drawing.Color.Transparent;
             this.totalValueLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.totalValueLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.totalValueLabel.ForeColor = StyleManager.NotificationTextColor;
             this.totalValueLabel.Location = new System.Drawing.Point(35, 116);
             this.totalValueLabel.Name = "totalValueLabel";
             this.totalValueLabel.Size = new System.Drawing.Size(96, 16);
@@ -61,7 +61,7 @@
             this.totalExpLabel.AutoSize = true;
             this.totalExpLabel.BackColor = System.Drawing.Color.Transparent;
             this.totalExpLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.totalExpLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.totalExpLabel.ForeColor = StyleManager.NotificationTextColor;
             this.totalExpLabel.Location = new System.Drawing.Point(35, 132);
             this.totalExpLabel.Name = "totalExpLabel";
             this.totalExpLabel.Size = new System.Drawing.Size(82, 16);
@@ -73,7 +73,7 @@
             this.totalTimeLabel.AutoSize = true;
             this.totalTimeLabel.BackColor = System.Drawing.Color.Transparent;
             this.totalTimeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.totalTimeLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.totalTimeLabel.ForeColor = StyleManager.NotificationTextColor;
             this.totalTimeLabel.Location = new System.Drawing.Point(35, 148);
             this.totalTimeLabel.Name = "totalTimeLabel";
             this.totalTimeLabel.Size = new System.Drawing.Size(87, 16);
@@ -84,7 +84,7 @@
             // 
             this.huntNameLabel.BackColor = System.Drawing.Color.Transparent;
             this.huntNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.huntNameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.huntNameLabel.ForeColor = StyleManager.NotificationTextColor;
             this.huntNameLabel.Location = new System.Drawing.Point(0, 9);
             this.huntNameLabel.Name = "huntNameLabel";
             this.huntNameLabel.Size = new System.Drawing.Size(348, 16);
@@ -109,7 +109,7 @@
             // 
             this.totalExpValue.BackColor = System.Drawing.Color.Transparent;
             this.totalExpValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.totalExpValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.totalExpValue.ForeColor = StyleManager.NotificationTextColor;
             this.totalExpValue.Location = new System.Drawing.Point(137, 132);
             this.totalExpValue.Name = "totalExpValue";
             this.totalExpValue.Size = new System.Drawing.Size(150, 16);
@@ -121,7 +121,7 @@
             // 
             this.totalTimeValue.BackColor = System.Drawing.Color.Transparent;
             this.totalTimeValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.totalTimeValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.totalTimeValue.ForeColor = StyleManager.NotificationTextColor;
             this.totalTimeValue.Location = new System.Drawing.Point(137, 148);
             this.totalTimeValue.Name = "totalTimeValue";
             this.totalTimeValue.Size = new System.Drawing.Size(150, 16);
@@ -134,7 +134,7 @@
             this.rawLootButton.BackColor = System.Drawing.Color.Transparent;
             this.rawLootButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.rawLootButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rawLootButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.rawLootButton.ForeColor = StyleManager.NotificationTextColor;
             this.rawLootButton.Location = new System.Drawing.Point(38, 178);
             this.rawLootButton.Name = "rawLootButton";
             this.rawLootButton.Size = new System.Drawing.Size(96, 25);
@@ -148,7 +148,7 @@
             this.allLootButton.BackColor = System.Drawing.Color.Transparent;
             this.allLootButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.allLootButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.allLootButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.allLootButton.ForeColor = StyleManager.NotificationTextColor;
             this.allLootButton.Location = new System.Drawing.Point(140, 178);
             this.allLootButton.Name = "allLootButton";
             this.allLootButton.Size = new System.Drawing.Size(96, 25);
@@ -162,7 +162,7 @@
             this.lootButton.BackColor = System.Drawing.Color.Transparent;
             this.lootButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lootButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lootButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.lootButton.ForeColor = StyleManager.NotificationTextColor;
             this.lootButton.Location = new System.Drawing.Point(240, 178);
             this.lootButton.Name = "lootButton";
             this.lootButton.Size = new System.Drawing.Size(96, 25);
@@ -176,7 +176,7 @@
             this.lootLarger.BackColor = System.Drawing.Color.Transparent;
             this.lootLarger.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lootLarger.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lootLarger.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.lootLarger.ForeColor = StyleManager.NotificationTextColor;
             this.lootLarger.Location = new System.Drawing.Point(303, 4);
             this.lootLarger.Name = "lootLarger";
             this.lootLarger.Padding = new System.Windows.Forms.Padding(2);
@@ -191,7 +191,7 @@
             this.lootSmaller.BackColor = System.Drawing.Color.Transparent;
             this.lootSmaller.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lootSmaller.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lootSmaller.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.lootSmaller.ForeColor = StyleManager.NotificationTextColor;
             this.lootSmaller.Location = new System.Drawing.Point(264, 4);
             this.lootSmaller.Name = "lootSmaller";
             this.lootSmaller.Padding = new System.Windows.Forms.Padding(2);

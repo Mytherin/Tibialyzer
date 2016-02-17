@@ -42,7 +42,7 @@
             this.huntButton.BackColor = System.Drawing.Color.Transparent;
             this.huntButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.huntButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.huntButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.huntButton.ForeColor = StyleManager.NotificationTextColor;
             this.huntButton.Location = new System.Drawing.Point(12, 155);
             this.huntButton.Name = "huntButton";
             this.huntButton.Padding = new System.Windows.Forms.Padding(2);
@@ -57,7 +57,7 @@
             this.statsButton.BackColor = System.Drawing.Color.Transparent;
             this.statsButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.statsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.statsButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.statsButton.ForeColor = StyleManager.NotificationTextColor;
             this.statsButton.Location = new System.Drawing.Point(12, 132);
             this.statsButton.Name = "statsButton";
             this.statsButton.Padding = new System.Windows.Forms.Padding(2);
@@ -72,7 +72,7 @@
             this.nameLabel.AutoSize = true;
             this.nameLabel.BackColor = System.Drawing.Color.Transparent;
             this.nameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.nameLabel.ForeColor = StyleManager.NotificationTextColor;
             this.nameLabel.Location = new System.Drawing.Point(30, 102);
             this.nameLabel.MaximumSize = new System.Drawing.Size(96, 0);
             this.nameLabel.Name = "nameLabel";

@@ -51,7 +51,7 @@ namespace Tibialyzer {
             chartArea1.Name = "ChartArea1";
             this.mChart.ChartAreas.Add(chartArea1);
             legend1.BackColor = System.Drawing.Color.Transparent;
-            legend1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            legend1.ForeColor = StyleManager.NotificationTextColor;
             legend1.Name = "Legend1";
             this.mChart.Legends.Add(legend1);
             this.mChart.Location = new System.Drawing.Point(0, -1);
@@ -61,7 +61,7 @@ namespace Tibialyzer {
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
             series1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             series1.LabelBackColor = System.Drawing.Color.Transparent;
-            series1.LabelBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            series1.LabelBorderColor = StyleManager.NotificationTextColor;
             series1.LabelBorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet;
             series1.LabelBorderWidth = 0;
             series1.LabelForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
@@ -77,7 +77,7 @@ namespace Tibialyzer {
             this.detailsButton.BackColor = System.Drawing.Color.Transparent;
             this.detailsButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.detailsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.detailsButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.detailsButton.ForeColor = StyleManager.NotificationTextColor;
             this.detailsButton.Location = new System.Drawing.Point(12, 291);
             this.detailsButton.Name = "detailsButton";
             this.detailsButton.Padding = new System.Windows.Forms.Padding(2);

@@ -170,10 +170,10 @@ namespace Tibialyzer {
             e.ItemHeight = (int)e.Graphics.MeasureString(str, self.Font, e.ItemWidth, StringFormat.GenericDefault).Height;
         }
 
-        private static Brush HoverBrush = new SolidBrush(Color.FromArgb(43, 47, 51));
-        private static Brush ColorBrush = new SolidBrush(MainForm.ButtonForeColor);
-        private static Brush HoverForeBrush = new SolidBrush(MainForm.HoverForeColor);
-        private static Brush ErrorBrush = new SolidBrush(Color.FromArgb(174, 33, 33));
+        private static Brush HoverBrush = new SolidBrush(StyleManager.MainFormHoverColor);
+        private static Brush ColorBrush = new SolidBrush(StyleManager.MainFormButtonForeColor);
+        private static Brush HoverForeBrush = new SolidBrush(StyleManager.MainFormHoverForeColor);
+        private static Brush ErrorBrush = new SolidBrush(StyleManager.MainFormErrorColor);
         private void PrettyListBox_DrawItem(object sender, DrawItemEventArgs e) {
             // Draw the background of the ListBox control for each item.
             e.DrawBackground();

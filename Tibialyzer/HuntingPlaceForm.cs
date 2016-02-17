@@ -70,7 +70,7 @@ namespace Tibialyzer {
             this.requirementLabel.AutoSize = true;
             this.requirementLabel.BackColor = System.Drawing.Color.Transparent;
             this.requirementLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.requirementLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.requirementLabel.ForeColor = StyleManager.NotificationTextColor;
             this.requirementLabel.Location = new System.Drawing.Point(37, 121);
             this.requirementLabel.Name = "requirementLabel";
             this.requirementLabel.Size = new System.Drawing.Size(104, 16);
@@ -82,7 +82,7 @@ namespace Tibialyzer {
             this.cityLabel.AutoSize = true;
             this.cityLabel.BackColor = System.Drawing.Color.Transparent;
             this.cityLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cityLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.cityLabel.ForeColor = StyleManager.NotificationTextColor;
             this.cityLabel.Location = new System.Drawing.Point(7, 58);
             this.cityLabel.Name = "cityLabel";
             this.cityLabel.Size = new System.Drawing.Size(34, 16);
@@ -95,7 +95,7 @@ namespace Tibialyzer {
             // 
             this.levelLabel.BackColor = System.Drawing.Color.Transparent;
             this.levelLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.levelLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.levelLabel.ForeColor = StyleManager.NotificationTextColor;
             this.levelLabel.Location = new System.Drawing.Point(111, 58);
             this.levelLabel.Name = "levelLabel";
             this.levelLabel.Size = new System.Drawing.Size(54, 16);
@@ -126,7 +126,7 @@ namespace Tibialyzer {
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.label1.ForeColor = StyleManager.NotificationTextColor;
             this.label1.Location = new System.Drawing.Point(111, 79);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(38, 16);
@@ -138,7 +138,7 @@ namespace Tibialyzer {
             this.experienceLabel.AutoSize = true;
             this.experienceLabel.BackColor = System.Drawing.Color.Transparent;
             this.experienceLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.experienceLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.experienceLabel.ForeColor = StyleManager.NotificationTextColor;
             this.experienceLabel.Location = new System.Drawing.Point(23, 77);
             this.experienceLabel.Name = "experienceLabel";
             this.experienceLabel.Size = new System.Drawing.Size(34, 16);
@@ -166,7 +166,7 @@ namespace Tibialyzer {
             this.creatureLabel.AutoSize = true;
             this.creatureLabel.BackColor = System.Drawing.Color.Transparent;
             this.creatureLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.creatureLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.creatureLabel.ForeColor = StyleManager.NotificationTextColor;
             this.creatureLabel.Location = new System.Drawing.Point(39, 211);
             this.creatureLabel.Name = "creatureLabel";
             this.creatureLabel.Size = new System.Drawing.Size(75, 16);
@@ -177,7 +177,7 @@ namespace Tibialyzer {
             // 
             this.huntingPlaceName.BackColor = System.Drawing.Color.Transparent;
             this.huntingPlaceName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.huntingPlaceName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.huntingPlaceName.ForeColor = StyleManager.NotificationTextColor;
             this.huntingPlaceName.Location = new System.Drawing.Point(6, 27);
             this.huntingPlaceName.Name = "huntingPlaceName";
             this.huntingPlaceName.Size = new System.Drawing.Size(158, 34);
@@ -199,7 +199,7 @@ namespace Tibialyzer {
             this.guideButton.BackColor = System.Drawing.Color.Transparent;
             this.guideButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.guideButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.guideButton.ForeColor = StyleManager.NotificationTextColor;
             this.guideButton.Location = new System.Drawing.Point(269, 209);
             this.guideButton.Name = "guideButton";
             this.guideButton.Padding = new System.Windows.Forms.Padding(2);
@@ -282,7 +282,7 @@ namespace Tibialyzer {
                 int count = 1;
                 foreach (Coordinate coordinate in this.hunting_place.coordinates) {
                     Label label = new Label();
-                    label.ForeColor = MainForm.label_text_color;
+                    label.ForeColor = StyleManager.NotificationTextColor;
                     label.BackColor = Color.Transparent;
                     label.Name = (count - 1).ToString();
                     label.Font = LootDropForm.loot_font;

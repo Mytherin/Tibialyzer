@@ -404,7 +404,7 @@ namespace Tibialyzer {
                         count.Location = new Point(base_x + x + xoffset, base_y + y + creature_size.Height);
                         count.AutoSize = true;
                         count.TextAlign = ContentAlignment.MiddleCenter;
-                        count.ForeColor = Color.FromArgb(191, 191, 191);
+                        count.ForeColor = StyleManager.NotificationTextColor;
                         count.BackColor = Color.Transparent;
 
                         picture_box = new PictureBox();

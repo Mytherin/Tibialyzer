@@ -196,7 +196,7 @@ namespace Tibialyzer {
                     Label label = new Label();
                     label.Text = headers[i];
                     label.Location = new Point(x, base_y);
-                    label.ForeColor = MainForm.label_text_color;
+                    label.ForeColor = StyleManager.NotificationTextColor;
                     label.BackColor = Color.Transparent;
                     label.Font = MainForm.text_font;
                     label.Size = new Size(90, 25);
@@ -247,13 +247,13 @@ namespace Tibialyzer {
         }
         private Attribute SellPrice(TibiaObject obj) {
             int npcValue = npc.sellItems.Find(o => o.itemid == (obj as LazyTibiaObject).id).price;
-            return new StringAttribute(npcValue.ToString(), 60, npcValue >= obj.AsItem().vendor_value ? Item.GoldColor : Creature.BossColor);
+            return new StringAttribute(npcValue.ToString(), 60, npcValue >= obj.AsItem().vendor_value ? StyleManager.ItemGoldColor : StyleManager.CreatureBossColor);
         }
         private IComparable SellSort(TibiaObject obj) {
             return npc.sellItems.Find(o => o.itemid == (obj as LazyTibiaObject).id).price;
         }
         private Attribute BuyPrice(TibiaObject obj) {
-            return new StringAttribute(String.Format("{0}", npc.buyItems.Find(o => o.itemid == (obj as LazyTibiaObject).id).price), 60, Item.GoldColor);
+            return new StringAttribute(String.Format("{0}", npc.buyItems.Find(o => o.itemid == (obj as LazyTibiaObject).id).price), 60, StyleManager.ItemGoldColor);
         }
         private IComparable BuySort(TibiaObject obj) {
             return npc.buyItems.Find(o => o.itemid == (obj as LazyTibiaObject).id).price;
@@ -266,7 +266,7 @@ namespace Tibialyzer {
             } else {
                 voc = voc.Substring(0, voc.Length - 1);
             }
-            return new StringAttribute(voc, 80, Item.GoldColor);
+            return new StringAttribute(voc, 80, StyleManager.ItemGoldColor);
         }
         private IComparable SpellSort(TibiaObject obj) {
             return (SpellVoc(obj) as StringAttribute).value;

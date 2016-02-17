@@ -94,7 +94,7 @@
             this.nameLabel.AutoSize = true;
             this.nameLabel.BackColor = System.Drawing.Color.Transparent;
             this.nameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.nameLabel.ForeColor = StyleManager.NotificationTextColor;
             this.nameLabel.Location = new System.Drawing.Point(27, 97);
             this.nameLabel.MaximumSize = new System.Drawing.Size(96, 0);
             this.nameLabel.Name = "nameLabel";
@@ -171,7 +171,7 @@
             this.expLabel.BackColor = System.Drawing.Color.Transparent;
             this.expLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.expLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.expLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.expLabel.ForeColor = StyleManager.NotificationTextColor;
             this.expLabel.Location = new System.Drawing.Point(9, 191);
             this.expLabel.Name = "expLabel";
             this.expLabel.Padding = new System.Windows.Forms.Padding(0, 2, 0, 2);
@@ -219,7 +219,7 @@
             // 
             this.summonableLabel.AutoSize = true;
             this.summonableLabel.BackColor = System.Drawing.Color.Transparent;
-            this.summonableLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.summonableLabel.ForeColor = StyleManager.NotificationTextColor;
             this.summonableLabel.Location = new System.Drawing.Point(290, 14);
             this.summonableLabel.Name = "summonableLabel";
             this.summonableLabel.Size = new System.Drawing.Size(68, 13);
@@ -240,7 +240,7 @@
             // 
             this.illusionableLabel.AutoSize = true;
             this.illusionableLabel.BackColor = System.Drawing.Color.Transparent;
-            this.illusionableLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.illusionableLabel.ForeColor = StyleManager.NotificationTextColor;
             this.illusionableLabel.Location = new System.Drawing.Point(290, 31);
             this.illusionableLabel.Name = "illusionableLabel";
             this.illusionableLabel.Size = new System.Drawing.Size(59, 13);
@@ -261,7 +261,7 @@
             // 
             this.invisibleLabel.AutoSize = true;
             this.invisibleLabel.BackColor = System.Drawing.Color.Transparent;
-            this.invisibleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.invisibleLabel.ForeColor = StyleManager.NotificationTextColor;
             this.invisibleLabel.Location = new System.Drawing.Point(290, 48);
             this.invisibleLabel.Name = "invisibleLabel";
             this.invisibleLabel.Size = new System.Drawing.Size(45, 13);
@@ -282,7 +282,7 @@
             // 
             this.paralysableLabel.AutoSize = true;
             this.paralysableLabel.BackColor = System.Drawing.Color.Transparent;
-            this.paralysableLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.paralysableLabel.ForeColor = StyleManager.NotificationTextColor;
             this.paralysableLabel.Location = new System.Drawing.Point(290, 65);
             this.paralysableLabel.Name = "paralysableLabel";
             this.paralysableLabel.Size = new System.Drawing.Size(61, 13);
@@ -303,7 +303,7 @@
             // 
             this.pushableLabel.AutoSize = true;
             this.pushableLabel.BackColor = System.Drawing.Color.Transparent;
-            this.pushableLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.pushableLabel.ForeColor = StyleManager.NotificationTextColor;
             this.pushableLabel.Location = new System.Drawing.Point(290, 82);
             this.pushableLabel.Name = "pushableLabel";
             this.pushableLabel.Size = new System.Drawing.Size(51, 13);
@@ -324,7 +324,7 @@
             // 
             this.pushesLabel.AutoSize = true;
             this.pushesLabel.BackColor = System.Drawing.Color.Transparent;
-            this.pushesLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.pushesLabel.ForeColor = StyleManager.NotificationTextColor;
             this.pushesLabel.Location = new System.Drawing.Point(290, 99);
             this.pushesLabel.Name = "pushesLabel";
             this.pushesLabel.Size = new System.Drawing.Size(42, 13);
@@ -336,7 +336,7 @@
             this.abilitiesLabel.AutoSize = true;
             this.abilitiesLabel.BackColor = System.Drawing.Color.Transparent;
             this.abilitiesLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.abilitiesLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.abilitiesLabel.ForeColor = StyleManager.NotificationTextColor;
             this.abilitiesLabel.Location = new System.Drawing.Point(171, 149);
             this.abilitiesLabel.MaximumSize = new System.Drawing.Size(200, 0);
             this.abilitiesLabel.Name = "abilitiesLabel";
@@ -349,7 +349,7 @@
             // 
             this.maxDamageLabel.BackColor = System.Drawing.Color.Transparent;
             this.maxDamageLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.maxDamageLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.maxDamageLabel.ForeColor = StyleManager.NotificationTextColor;
             this.maxDamageLabel.Location = new System.Drawing.Point(246, 133);
             this.maxDamageLabel.Name = "maxDamageLabel";
             this.maxDamageLabel.Size = new System.Drawing.Size(125, 13);
@@ -362,7 +362,7 @@
             this.label7.AutoSize = true;
             this.label7.BackColor = System.Drawing.Color.Transparent;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.label7.ForeColor = StyleManager.NotificationTextColor;
             this.label7.Location = new System.Drawing.Point(114, 149);
             this.label7.MaximumSize = new System.Drawing.Size(250, 0);
             this.label7.Name = "label7";
@@ -376,7 +376,7 @@
             this.statsButton.BackColor = System.Drawing.Color.Transparent;
             this.statsButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.statsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.statsButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.statsButton.ForeColor = StyleManager.NotificationTextColor;
             this.statsButton.Location = new System.Drawing.Point(9, 126);
             this.statsButton.Name = "statsButton";
             this.statsButton.Padding = new System.Windows.Forms.Padding(2);
@@ -391,7 +391,7 @@
             this.huntButton.BackColor = System.Drawing.Color.Transparent;
             this.huntButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.huntButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.huntButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.huntButton.ForeColor = StyleManager.NotificationTextColor;
             this.huntButton.Location = new System.Drawing.Point(9, 149);
             this.huntButton.Name = "huntButton";
             this.huntButton.Padding = new System.Windows.Forms.Padding(2);

@@ -50,7 +50,7 @@ namespace Tibialyzer {
             this.nameLabel.AutoSize = true;
             this.nameLabel.BackColor = System.Drawing.Color.Transparent;
             this.nameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.nameLabel.ForeColor = StyleManager.NotificationTextColor;
             this.nameLabel.Location = new System.Drawing.Point(13, 32);
             this.nameLabel.Name = "nameLabel";
             this.nameLabel.Size = new System.Drawing.Size(49, 16);
@@ -62,7 +62,7 @@ namespace Tibialyzer {
             this.commandLabel.AutoSize = true;
             this.commandLabel.BackColor = System.Drawing.Color.Transparent;
             this.commandLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.commandLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.commandLabel.ForeColor = StyleManager.NotificationTextColor;
             this.commandLabel.Location = new System.Drawing.Point(156, 32);
             this.commandLabel.Name = "commandLabel";
             this.commandLabel.Size = new System.Drawing.Size(77, 16);
@@ -103,7 +103,7 @@ namespace Tibialyzer {
                 playerLabel.Click += panel_Click;
                 playerLabel.Name = c.command;
                 playerLabel.Font = this.nameLabel.Font;
-                playerLabel.ForeColor = MainForm.label_text_color;
+                playerLabel.ForeColor = StyleManager.NotificationTextColor;
                 playerLabel.BackColor = Color.Transparent;
                 this.Controls.Add(playerLabel);
 
@@ -113,7 +113,7 @@ namespace Tibialyzer {
                 commandLabel.Click += panel_Click;
                 commandLabel.Name = c.command;
                 commandLabel.Font = this.nameLabel.Font;
-                commandLabel.ForeColor = MainForm.label_text_color;
+                commandLabel.ForeColor = StyleManager.NotificationTextColor;
                 commandLabel.Size = new Size(this.Size.Width - this.commandLabel.Location.X, 25);
                 commandLabel.AutoSize = true;
                 commandLabel.BackColor = Color.Transparent;

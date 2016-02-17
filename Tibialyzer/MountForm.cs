@@ -51,7 +51,7 @@ namespace Tibialyzer {
             // 
             this.tameItemLabel.BackColor = System.Drawing.Color.Transparent;
             this.tameItemLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tameItemLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.tameItemLabel.ForeColor = StyleManager.NotificationTextColor;
             this.tameItemLabel.Location = new System.Drawing.Point(118, 10);
             this.tameItemLabel.Name = "tameItemLabel";
             this.tameItemLabel.Size = new System.Drawing.Size(190, 20);
@@ -63,7 +63,7 @@ namespace Tibialyzer {
             // 
             this.tameCreatureLabel.BackColor = System.Drawing.Color.Transparent;
             this.tameCreatureLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tameCreatureLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.tameCreatureLabel.ForeColor = StyleManager.NotificationTextColor;
             this.tameCreatureLabel.Location = new System.Drawing.Point(118, 84);
             this.tameCreatureLabel.Name = "tameCreatureLabel";
             this.tameCreatureLabel.Size = new System.Drawing.Size(190, 20);
@@ -106,7 +106,7 @@ namespace Tibialyzer {
             this.mountTitle.AutoSize = true;
             this.mountTitle.BackColor = System.Drawing.Color.Transparent;
             this.mountTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mountTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.mountTitle.ForeColor = StyleManager.NotificationTextColor;
             this.mountTitle.Location = new System.Drawing.Point(8, 134);
             this.mountTitle.Name = "mountTitle";
             this.mountTitle.Size = new System.Drawing.Size(110, 20);

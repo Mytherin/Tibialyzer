@@ -32,14 +32,6 @@ namespace Tibialyzer {
         List<Regex> commentRegexes = new List<Regex> { new Regex(";[^\n]*") };
         List<Regex> specialTokenRegex = new List<Regex> { new Regex("#[^\n]*") };
         List<Regex> commandRegexes = new List<Regex> { new Regex("[a-z0-9]+@[a-z0-9]*") };
-        Color keywordColor = Color.FromArgb(25, 25, 112);
-        Color modifierColor = Color.FromArgb(178,34,34);
-        Color operatorColor = Color.FromArgb(31, 31, 31);
-        Color operatorBackColor = Color.FromArgb(191, 191, 191);
-        Color specialTokenColor = Color.FromArgb(64, 128, 176);
-        Color commentColor = Color.FromArgb(34, 139, 34);
-        Color commandColor = Color.FromArgb(140, 95, 20);
-
 
         [DllImport("user32.dll")]
         private static extern int SendMessage(IntPtr hwndLock, Int32 wMsg, Int32 wParam, ref Point pt);
@@ -137,12 +129,12 @@ namespace Tibialyzer {
             this.SelectionLength = end - start;
             this.SelectionColor = Color.Black;
 
-            modifyText(text, keywordStrings, keywordColor, Color.Empty, start, end);
-            modifyText(text, modifierStrings, modifierColor, Color.Empty, start, end);
-            modifyText(text, keywordRegexes, keywordColor, Color.Empty, start, end);
-            modifyText(text, commentRegexes, commentColor, Color.Empty, start, end);
-            modifyText(text, specialTokenRegex, specialTokenColor, Color.Empty, start, end);
-            modifyText(text, commandRegexes, commandColor, Color.Empty, start, end);
+            modifyText(text, keywordStrings, StyleManager.AutoHotkeyKeywordColor, Color.Empty, start, end);
+            modifyText(text, modifierStrings, StyleManager.AutoHotkeyModifierColor, Color.Empty, start, end);
+            modifyText(text, keywordRegexes, StyleManager.AutoHotkeyKeywordColor, Color.Empty, start, end);
+            modifyText(text, commentRegexes, StyleManager.AutoHotkeyCommentColor, Color.Empty, start, end);
+            modifyText(text, specialTokenRegex, StyleManager.AutoHotkeySpecialTokenColor, Color.Empty, start, end);
+            modifyText(text, commandRegexes, StyleManager.AutoHotkeyCommandColor, Color.Empty, start, end);
 
             this.SelectionStart = initialCursorPosition;
             this.SelectionLength = initialLength;

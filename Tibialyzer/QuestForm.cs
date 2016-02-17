@@ -59,7 +59,7 @@ namespace Tibialyzer {
             this.legendLabel.AutoSize = true;
             this.legendLabel.BackColor = System.Drawing.Color.Transparent;
             this.legendLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.legendLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.legendLabel.ForeColor = StyleManager.NotificationTextColor;
             this.legendLabel.Location = new System.Drawing.Point(12, 101);
             this.legendLabel.MaximumSize = new System.Drawing.Size(300, 60);
             this.legendLabel.Name = "legendLabel";
@@ -72,7 +72,7 @@ namespace Tibialyzer {
             // 
             this.cityLabel.BackColor = System.Drawing.Color.Transparent;
             this.cityLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cityLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.cityLabel.ForeColor = StyleManager.NotificationTextColor;
             this.cityLabel.Location = new System.Drawing.Point(161, 59);
             this.cityLabel.Name = "cityLabel";
             this.cityLabel.Size = new System.Drawing.Size(100, 16);
@@ -84,7 +84,7 @@ namespace Tibialyzer {
             // 
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.label3.ForeColor = StyleManager.NotificationTextColor;
             this.label3.Location = new System.Drawing.Point(259, 61);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(24, 13);
@@ -95,7 +95,7 @@ namespace Tibialyzer {
             // 
             this.levelLabel.BackColor = System.Drawing.Color.Transparent;
             this.levelLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.levelLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.levelLabel.ForeColor = StyleManager.NotificationTextColor;
             this.levelLabel.Location = new System.Drawing.Point(211, 43);
             this.levelLabel.Name = "levelLabel";
             this.levelLabel.Size = new System.Drawing.Size(50, 16);
@@ -107,7 +107,7 @@ namespace Tibialyzer {
             // 
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.label2.ForeColor = StyleManager.NotificationTextColor;
             this.label2.Location = new System.Drawing.Point(259, 45);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 13);
@@ -128,7 +128,7 @@ namespace Tibialyzer {
             // 
             this.summonableLabel.AutoSize = true;
             this.summonableLabel.BackColor = System.Drawing.Color.Transparent;
-            this.summonableLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.summonableLabel.ForeColor = StyleManager.NotificationTextColor;
             this.summonableLabel.Location = new System.Drawing.Point(259, 28);
             this.summonableLabel.Name = "summonableLabel";
             this.summonableLabel.Size = new System.Drawing.Size(47, 13);
@@ -139,7 +139,7 @@ namespace Tibialyzer {
             // 
             this.questTitle.BackColor = System.Drawing.Color.Transparent;
             this.questTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.questTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.questTitle.ForeColor = StyleManager.NotificationTextColor;
             this.questTitle.Location = new System.Drawing.Point(11, 30);
             this.questTitle.Name = "questTitle";
             this.questTitle.Size = new System.Drawing.Size(200, 16);
@@ -151,7 +151,7 @@ namespace Tibialyzer {
             this.wikiButton.BackColor = System.Drawing.Color.Transparent;
             this.wikiButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.wikiButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.wikiButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.wikiButton.ForeColor = StyleManager.NotificationTextColor;
             this.wikiButton.Location = new System.Drawing.Point(11, 53);
             this.wikiButton.Name = "wikiButton";
             this.wikiButton.Padding = new System.Windows.Forms.Padding(2);
@@ -213,7 +213,7 @@ namespace Tibialyzer {
                 missionButton.BackColor = System.Drawing.Color.Transparent;
                 missionButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
                 missionButton.Font = wikiButton.Font;
-                missionButton.ForeColor = MainForm.label_text_color;
+                missionButton.ForeColor = StyleManager.NotificationTextColor;
                 missionButton.Location = new System.Drawing.Point(x, y);
                 missionButton.Name = quest.questInstructions[missionName][0].specialCommand != null ? quest.questInstructions[missionName][0].specialCommand : "guide" + MainForm.commandSymbol + quest.name.ToLower() + MainForm.commandSymbol + "1" + MainForm.commandSymbol + missionName;
                 missionButton.Padding = new System.Windows.Forms.Padding(2);
@@ -234,7 +234,7 @@ namespace Tibialyzer {
                 Label label = new Label();
                 label.Text = "Requirements";
                 label.Location = new Point(5, y);
-                label.ForeColor = MainForm.label_text_color;
+                label.ForeColor = StyleManager.NotificationTextColor;
                 label.BackColor = Color.Transparent;
                 label.Font = questTitle.Font;
                 label.Size = new Size(this.Size.Width - 10, label.Height);
@@ -279,12 +279,12 @@ namespace Tibialyzer {
                         label = new Label();
                         string txt = text;
                         Match m = questRegex.Match(txt);
-                        label.ForeColor = MainForm.label_text_color;
+                        label.ForeColor = StyleManager.NotificationTextColor;
                         if (m != null && m.Groups.Count > 1) {
                             string requiredQuestName = m.Groups[1].Value;
                             txt = txt.Replace(m.Groups[0].Value, requiredQuestName);
                             label.Name = MainForm.getQuest(requiredQuestName.ToLower()).GetCommand();
-                            label.ForeColor = Color.FromArgb(255, 70, 70);
+                            label.ForeColor = StyleManager.ClickableLinkColor;
                             label.Click += MissionButton_Click;
                         }
                         label.Text = txt == "" ? "" : "- " + txt;
@@ -306,7 +306,7 @@ namespace Tibialyzer {
                 Label label = new Label();
                 label.Text = "Rewards";
                 label.Location = new Point(40, y);
-                label.ForeColor = MainForm.label_text_color;
+                label.ForeColor = StyleManager.NotificationTextColor;
                 label.BackColor = Color.Transparent;
                 label.Font = questTitle.Font;
                 this.Controls.Add(label);

@@ -92,7 +92,7 @@ namespace Tibialyzer {
             // 
             this.questTitle.BackColor = System.Drawing.Color.Transparent;
             this.questTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.questTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.questTitle.ForeColor = StyleManager.NotificationTextColor;
             this.questTitle.Location = new System.Drawing.Point(12, 30);
             this.questTitle.Name = "questTitle";
             this.questTitle.Size = new System.Drawing.Size(300, 16);
@@ -104,7 +104,7 @@ namespace Tibialyzer {
             this.nextButton.BackColor = System.Drawing.Color.Transparent;
             this.nextButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.nextButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nextButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.nextButton.ForeColor = StyleManager.NotificationTextColor;
             this.nextButton.Location = new System.Drawing.Point(216, 46);
             this.nextButton.Name = "nextButton";
             this.nextButton.Padding = new System.Windows.Forms.Padding(2);
@@ -120,7 +120,7 @@ namespace Tibialyzer {
             this.prevButton.BackColor = System.Drawing.Color.Transparent;
             this.prevButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.prevButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.prevButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.prevButton.ForeColor = StyleManager.NotificationTextColor;
             this.prevButton.Location = new System.Drawing.Point(114, 46);
             this.prevButton.Name = "prevButton";
             this.prevButton.Padding = new System.Windows.Forms.Padding(2);
@@ -136,7 +136,7 @@ namespace Tibialyzer {
             this.normalButton.BackColor = System.Drawing.Color.Transparent;
             this.normalButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.normalButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.normalButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.normalButton.ForeColor = StyleManager.NotificationTextColor;
             this.normalButton.Location = new System.Drawing.Point(272, 3);
             this.normalButton.Name = "normalButton";
             this.normalButton.Padding = new System.Windows.Forms.Padding(2);
@@ -151,7 +151,7 @@ namespace Tibialyzer {
             this.largeButton.BackColor = System.Drawing.Color.Transparent;
             this.largeButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.largeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.largeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.largeButton.ForeColor = StyleManager.NotificationTextColor;
             this.largeButton.Location = new System.Drawing.Point(311, 3);
             this.largeButton.Name = "largeButton";
             this.largeButton.Padding = new System.Windows.Forms.Padding(2);
@@ -166,7 +166,7 @@ namespace Tibialyzer {
             this.largestButton.BackColor = System.Drawing.Color.Transparent;
             this.largestButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.largestButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.largestButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.largestButton.ForeColor = StyleManager.NotificationTextColor;
             this.largestButton.Location = new System.Drawing.Point(350, 3);
             this.largestButton.Name = "largestButton";
             this.largestButton.Padding = new System.Windows.Forms.Padding(2);
@@ -258,7 +258,7 @@ namespace Tibialyzer {
                     Label label = new Label();
                     label.Text = description[0];
                     label.Location = new Point(5, y);
-                    label.ForeColor = MainForm.label_text_color;
+                    label.ForeColor = StyleManager.NotificationTextColor;
                     label.BackColor = Color.Transparent;
                     label.Font = requirementFont;
                     label.AutoSize = true;
@@ -466,7 +466,7 @@ namespace Tibialyzer {
                     }
                     Label label = new Label();
                     label.Location = new Point(x, y);
-                    label.ForeColor = MainForm.label_text_color;
+                    label.ForeColor = StyleManager.NotificationTextColor;
                     label.BackColor = Color.Transparent;
                     label.Font = requirementFont;
                     label.AutoSize = true;
@@ -488,7 +488,7 @@ namespace Tibialyzer {
             } else {
                 Label label = new Label();
                 label.Location = new Point(5, y);
-                label.ForeColor = MainForm.label_text_color;
+                label.ForeColor = StyleManager.NotificationTextColor;
                 label.BackColor = Color.Transparent;
                 label.Font = requirementFont;
                 string labelText = CreateLinks(label, description);
@@ -515,7 +515,7 @@ namespace Tibialyzer {
                     label.Name = split[0] + "@" + split[1];
                     label.Click += QuestTitle_Click;
                     linkText = linkText.Replace(linkText.Substring(startLink, endLink - startLink + 1), split[2]);
-                    label.ForeColor = Color.FromArgb(65, 105, 225);
+                    label.ForeColor = StyleManager.ClickableLinkColor;
                 }
             }
             return linkText;

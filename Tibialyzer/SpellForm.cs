@@ -83,7 +83,7 @@ namespace Tibialyzer {
             // 
             this.levelLabel.BackColor = System.Drawing.Color.Transparent;
             this.levelLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.levelLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.levelLabel.ForeColor = StyleManager.NotificationTextColor;
             this.levelLabel.Location = new System.Drawing.Point(229, 108);
             this.levelLabel.Name = "levelLabel";
             this.levelLabel.Size = new System.Drawing.Size(50, 16);
@@ -95,7 +95,7 @@ namespace Tibialyzer {
             // 
             this.label6.AutoSize = true;
             this.label6.BackColor = System.Drawing.Color.Transparent;
-            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.label6.ForeColor = StyleManager.NotificationTextColor;
             this.label6.Location = new System.Drawing.Point(277, 110);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(33, 13);
@@ -106,7 +106,7 @@ namespace Tibialyzer {
             // 
             this.cooldownLabel.BackColor = System.Drawing.Color.Transparent;
             this.cooldownLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cooldownLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.cooldownLabel.ForeColor = StyleManager.NotificationTextColor;
             this.cooldownLabel.Location = new System.Drawing.Point(229, 90);
             this.cooldownLabel.Name = "cooldownLabel";
             this.cooldownLabel.Size = new System.Drawing.Size(50, 16);
@@ -118,7 +118,7 @@ namespace Tibialyzer {
             // 
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.label2.ForeColor = StyleManager.NotificationTextColor;
             this.label2.Location = new System.Drawing.Point(277, 92);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(54, 13);
@@ -129,7 +129,7 @@ namespace Tibialyzer {
             // 
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.label3.ForeColor = StyleManager.NotificationTextColor;
             this.label3.Location = new System.Drawing.Point(277, 74);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(49, 13);
@@ -140,7 +140,7 @@ namespace Tibialyzer {
             // 
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.Color.Transparent;
-            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.label4.ForeColor = StyleManager.NotificationTextColor;
             this.label4.Location = new System.Drawing.Point(277, 56);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(54, 13);
@@ -161,7 +161,7 @@ namespace Tibialyzer {
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.label1.ForeColor = StyleManager.NotificationTextColor;
             this.label1.Location = new System.Drawing.Point(277, 38);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(54, 13);
@@ -182,7 +182,7 @@ namespace Tibialyzer {
             // 
             this.summonableLabel.AutoSize = true;
             this.summonableLabel.BackColor = System.Drawing.Color.Transparent;
-            this.summonableLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.summonableLabel.ForeColor = StyleManager.NotificationTextColor;
             this.summonableLabel.Location = new System.Drawing.Point(277, 20);
             this.summonableLabel.Name = "summonableLabel";
             this.summonableLabel.Size = new System.Drawing.Size(47, 13);
@@ -218,7 +218,7 @@ namespace Tibialyzer {
             this.spellWords.AutoSize = true;
             this.spellWords.BackColor = System.Drawing.Color.Transparent;
             this.spellWords.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.spellWords.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.spellWords.ForeColor = StyleManager.NotificationTextColor;
             this.spellWords.Location = new System.Drawing.Point(82, 49);
             this.spellWords.Name = "spellWords";
             this.spellWords.Size = new System.Drawing.Size(66, 16);
@@ -240,7 +240,7 @@ namespace Tibialyzer {
             this.spellTitle.AutoSize = true;
             this.spellTitle.BackColor = System.Drawing.Color.Transparent;
             this.spellTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.spellTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.spellTitle.ForeColor = StyleManager.NotificationTextColor;
             this.spellTitle.Location = new System.Drawing.Point(82, 29);
             this.spellTitle.Name = "spellTitle";
             this.spellTitle.Size = new System.Drawing.Size(86, 20);
@@ -334,9 +334,9 @@ namespace Tibialyzer {
             this.spellImageBox.Image = spell.GetImage();
             this.spellTitle.Text = spell.name;
             this.spellWords.Text = spell.words;
-            if (CreatureStatsForm.resistance_colors.ContainsKey(spell.element)) {
-                this.spellTitle.ForeColor = CreatureStatsForm.resistance_colors[spell.element];
-                this.spellWords.ForeColor = CreatureStatsForm.resistance_colors[spell.element];
+            if (StyleManager.ElementExists(spell.element)) {
+                this.spellTitle.ForeColor = StyleManager.GetElementColor(spell.element);
+                this.spellWords.ForeColor = StyleManager.GetElementColor(spell.element);
             }
             this.goldLabel.Text = spell.goldcost.ToString();
             this.manaCostLabel.Text = spell.manacost.ToString();
@@ -378,7 +378,7 @@ namespace Tibialyzer {
                     Label label = new Label();
                     label.Text = titles[i];
                     label.Location = new Point(x, y);
-                    label.ForeColor = MainForm.label_text_color;
+                    label.ForeColor = StyleManager.NotificationTextColor;
                     label.BackColor = Color.Transparent;
                     label.Font = MainForm.text_font;
                     label.Size = new Size(70, 25);
@@ -457,7 +457,7 @@ namespace Tibialyzer {
         }
 
         private Attribute goldCostFunction(TibiaObject obj) {
-            return new StringAttribute(spell.goldcost.ToString(), 50, Item.GoldColor);
+            return new StringAttribute(spell.goldcost.ToString(), 50, StyleManager.ItemGoldColor);
         }
 
         private string command_start = "npc" + MainForm.commandSymbol;

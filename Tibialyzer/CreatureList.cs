@@ -56,7 +56,7 @@ namespace Tibialyzer {
             this.listTitle.AutoSize = true;
             this.listTitle.BackColor = System.Drawing.Color.Transparent;
             this.listTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.listTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.listTitle.ForeColor = StyleManager.NotificationTextColor;
             this.listTitle.Location = new System.Drawing.Point(152, 32);
             this.listTitle.Name = "listTitle";
             this.listTitle.Size = new System.Drawing.Size(32, 16);
@@ -68,7 +68,7 @@ namespace Tibialyzer {
             this.toggleButton.BackColor = System.Drawing.Color.Transparent;
             this.toggleButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.toggleButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toggleButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.toggleButton.ForeColor = StyleManager.NotificationTextColor;
             this.toggleButton.Location = new System.Drawing.Point(244, 7);
             this.toggleButton.Name = "toggleButton";
             this.toggleButton.Padding = new System.Windows.Forms.Padding(2);

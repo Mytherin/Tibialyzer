@@ -72,7 +72,7 @@ namespace Tibialyzer {
             // 
             this.taskName.BackColor = System.Drawing.Color.Transparent;
             this.taskName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.taskName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.taskName.ForeColor = StyleManager.NotificationTextColor;
             this.taskName.Location = new System.Drawing.Point(4, 27);
             this.taskName.Name = "taskName";
             this.taskName.Size = new System.Drawing.Size(158, 34);
@@ -94,7 +94,7 @@ namespace Tibialyzer {
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.label1.ForeColor = StyleManager.NotificationTextColor;
             this.label1.Location = new System.Drawing.Point(7, 79);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(47, 15);
@@ -106,7 +106,7 @@ namespace Tibialyzer {
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.label2.ForeColor = StyleManager.NotificationTextColor;
             this.label2.Location = new System.Drawing.Point(7, 96);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(44, 15);
@@ -118,7 +118,7 @@ namespace Tibialyzer {
             this.bossInfoLabel.AutoSize = true;
             this.bossInfoLabel.BackColor = System.Drawing.Color.Transparent;
             this.bossInfoLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bossInfoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.bossInfoLabel.ForeColor = StyleManager.NotificationTextColor;
             this.bossInfoLabel.Location = new System.Drawing.Point(8, 114);
             this.bossInfoLabel.Name = "bossInfoLabel";
             this.bossInfoLabel.Size = new System.Drawing.Size(38, 15);
@@ -129,7 +129,7 @@ namespace Tibialyzer {
             // 
             this.pointsLabel.BackColor = System.Drawing.Color.Transparent;
             this.pointsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pointsLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.pointsLabel.ForeColor = StyleManager.NotificationTextColor;
             this.pointsLabel.Location = new System.Drawing.Point(92, 79);
             this.pointsLabel.Name = "pointsLabel";
             this.pointsLabel.Size = new System.Drawing.Size(70, 15);
@@ -141,7 +141,7 @@ namespace Tibialyzer {
             // 
             this.countLabel.BackColor = System.Drawing.Color.Transparent;
             this.countLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.countLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.countLabel.ForeColor = StyleManager.NotificationTextColor;
             this.countLabel.Location = new System.Drawing.Point(92, 96);
             this.countLabel.Name = "countLabel";
             this.countLabel.Size = new System.Drawing.Size(70, 15);
@@ -164,7 +164,7 @@ namespace Tibialyzer {
             // 
             this.bossNameLabel.BackColor = System.Drawing.Color.Transparent;
             this.bossNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bossNameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.bossNameLabel.ForeColor = StyleManager.NotificationTextColor;
             this.bossNameLabel.Location = new System.Drawing.Point(62, 133);
             this.bossNameLabel.MaximumSize = new System.Drawing.Size(100, 48);
             this.bossNameLabel.Name = "bossNameLabel";
@@ -178,7 +178,7 @@ namespace Tibialyzer {
             // 
             this.taskGroupLabel.BackColor = System.Drawing.Color.Transparent;
             this.taskGroupLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.taskGroupLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.taskGroupLabel.ForeColor = StyleManager.NotificationTextColor;
             this.taskGroupLabel.Location = new System.Drawing.Point(10, 53);
             this.taskGroupLabel.Name = "taskGroupLabel";
             this.taskGroupLabel.Size = new System.Drawing.Size(150, 15);
@@ -192,7 +192,7 @@ namespace Tibialyzer {
             this.creatureLabel.BackColor = System.Drawing.Color.Transparent;
             this.creatureLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.creatureLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.creatureLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.creatureLabel.ForeColor = StyleManager.NotificationTextColor;
             this.creatureLabel.Location = new System.Drawing.Point(13, 205);
             this.creatureLabel.Name = "creatureLabel";
             this.creatureLabel.Size = new System.Drawing.Size(96, 25);
@@ -206,7 +206,7 @@ namespace Tibialyzer {
             this.huntLabel.BackColor = System.Drawing.Color.Transparent;
             this.huntLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.huntLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.huntLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.huntLabel.ForeColor = StyleManager.NotificationTextColor;
             this.huntLabel.Location = new System.Drawing.Point(115, 205);
             this.huntLabel.Name = "huntLabel";
             this.huntLabel.Size = new System.Drawing.Size(96, 25);

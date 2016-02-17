@@ -36,8 +36,6 @@ namespace Tibialyzer {
         }
 
         private ToolTip resistance_tooltip = new ToolTip();
-        public static Dictionary<string, Color> resistance_colors = new Dictionary<string, Color>();
-        public static Dictionary<string, Image> resistance_images = new Dictionary<string, Image>();
         private System.Windows.Forms.PictureBox[] resistance_controls = new PictureBox[7];
         public Creature creature;
         public CreatureStatsForm() {
@@ -58,21 +56,7 @@ namespace Tibialyzer {
             resistance_controls[5] = resistanceLabel6;
             resistance_controls[6] = resistanceLabel7;
         }
-
-        public static void InitializeCreatureStats() {
-            resistance_colors.Add("Ice", Color.DodgerBlue);
-            resistance_colors.Add("Fire", Color.FromArgb(255,64,64));
-            resistance_colors.Add("Holy", Color.DarkOrange);
-            resistance_colors.Add("Phys", Color.DimGray);
-            resistance_colors.Add("Earth", Color.ForestGreen);
-            resistance_colors.Add("Death", Color.FromArgb(32, 32, 32));
-            resistance_colors.Add("Energy", Color.MidnightBlue);
-            //and images
-            foreach (string str in resistance_colors.Keys) {
-                resistance_images.Add(str, StyleManager.GetImage(str.ToLower() + ".png"));
-            }
-        }
-
+        
         private void AddResistances(List<Resistance> resistances) {
             List<Resistance> sorted_list = resistances.OrderByDescending(o => o.resistance).ToList();
             int i = 0;
@@ -82,11 +66,11 @@ namespace Tibialyzer {
                 // add a tooltip that displays the actual resistance when you mouseover
                 Bitmap bitmap = new Bitmap(19 + resistance.resistance, 19);
                 Graphics gr = Graphics.FromImage(bitmap);
-                using (Brush brush = new SolidBrush(resistance_colors[resistance.name])) {
+                using (Brush brush = new SolidBrush(StyleManager.GetElementColor(resistance.name))) {
                     gr.FillRectangle(brush, new Rectangle(19, 0, bitmap.Width - 19, bitmap.Height));
                 }
                 gr.DrawRectangle(Pens.Black, new Rectangle(19, 0, bitmap.Width - 20, bitmap.Height - 1));
-                gr.DrawImage(resistance_images[resistance.name], new Point(2, 2));
+                gr.DrawImage(StyleManager.GetElementImage(resistance.name), new Point(2, 2));
                 resistance_controls[i].Width = bitmap.Width;
                 resistance_controls[i].Height = bitmap.Height;
                 resistance_controls[i].Image = bitmap;
@@ -126,10 +110,10 @@ namespace Tibialyzer {
             // add resistances of creature in order
             AddResistances(resistances);
             // set background of actual form to transparent
-            this.BackColor = MainForm.background_color;
+            this.BackColor = StyleManager.NotificationBackgroundColor; ;
             this.Opacity = MainForm.opacity;
             if (MainForm.transparent) {
-                this.TransparencyKey = MainForm.background_color;
+                this.TransparencyKey = StyleManager.NotificationBackgroundColor; ;
                 this.Opacity = 1;
             }
             this.nameLabel.Text = MainForm.ToTitle(this.creature.displayname);

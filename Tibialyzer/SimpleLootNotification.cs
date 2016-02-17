@@ -131,7 +131,7 @@ namespace Tibialyzer {
             // 
             this.creatureDropLabel.AutoSize = true;
             this.creatureDropLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.creatureDropLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.creatureDropLabel.ForeColor = StyleManager.NotificationTextColor;
             this.creatureDropLabel.Location = new System.Drawing.Point(64, 3);
             this.creatureDropLabel.Name = "creatureDropLabel";
             this.creatureDropLabel.Size = new System.Drawing.Size(121, 13);

@@ -38,8 +38,7 @@ namespace Tibialyzer {
         public static MainForm mainForm;
 
         private NotificationForm[] NotificationFormGroups = new NotificationForm[10];
-
-        public static Color background_color = Color.FromArgb(0, 51, 102);
+        
         public static double opacity = 0.8;
         public static bool transparent = true;
         private bool keep_working = true;
@@ -50,7 +49,6 @@ namespace Tibialyzer {
         private static string autohotkeyFile = @"Database\autohotkey.ahk";
         public static string settingsFile = @"Database\settings.txt";
         public static string bigLootFile = @"Database\loot.txt";
-        public static Color label_text_color = Color.FromArgb(191, 191, 191);
         public static int max_creatures = 50;
         public List<string> new_names = null;
         private bool prevent_settings_update = false;
@@ -114,7 +112,6 @@ namespace Tibialyzer {
 
 
             NotificationForm.Initialize();
-            CreatureStatsForm.InitializeCreatureStats();
 
             prevent_settings_update = true;
             this.initializePluralMap();
@@ -851,7 +848,7 @@ namespace Tibialyzer {
                 label.Location = new Point(pictureBox.Location.X, pictureBox.Location.Y + pictureBox.Size.Height);
                 label.Font = new Font(FontFamily.GenericSansSerif, 10.0f, FontStyle.Bold);
                 label.Size = new Size(48, 24);
-                label.ForeColor = MainForm.ButtonColor;
+                label.ForeColor = StyleManager.MainFormButtonColor;
                 label.TextAlign = ContentAlignment.MiddleCenter;
                 label.Name = itemName;
                 labelControls.Add(label);
@@ -868,16 +865,16 @@ namespace Tibialyzer {
             this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + Math.Floor(ratio));
             UpdateDiscardDisplay();
         }
-
+        
         private List<Control> discardLabels = new List<Control>();
         private void UpdateDiscardDisplay() {
             foreach (Control c in discardLabels) {
                 string itemName = c.Name;
                 Item item = getItem(itemName);
                 if (item.discard) {
-                    c.BackColor = Color.FromArgb(174, 33, 33);
+                    c.BackColor = StyleManager.DatabaseDiscardColor;
                 } else {
-                    c.BackColor = Color.FromArgb(56, 156, 56);
+                    c.BackColor = StyleManager.DatabaseNoDiscardColor;
                 }
             }
         }
@@ -889,16 +886,16 @@ namespace Tibialyzer {
             this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + (item.stackable ? "1-" : "0-") + Math.Ceiling(ratio + 0.01));
             UpdateConvertDisplay();
         }
-
+        
         private List<Control> convertLabels = new List<Control>();
         private void UpdateConvertDisplay() {
             foreach (Control c in convertLabels) {
                 string itemName = c.Name;
                 Item item = getItem(itemName);
                 if (item.convert_to_gold) {
-                    c.BackColor = Item.GoldColor;
+                    c.BackColor = StyleManager.ItemGoldColor;
                 } else {
-                    c.BackColor = Color.FromArgb(76, 128, 176);
+                    c.BackColor = StyleManager.DatabaseNoConvertColor;
                 }
             }
         }
@@ -1450,9 +1447,7 @@ namespace Tibialyzer {
             return (int)((y - (double)sourceRectangle.Y) / (double)sourceRectangle.Height * (double)pictureRectangle.Height);
         }
 
-        public static Pen pathPen = new Pen(Color.FromArgb(25, 25, 25), 3);
-        public static Pen startPen = new Pen(Color.FromArgb(191, 191, 191), 2);
-        public static Pen endPen = new Pen(Color.FromArgb(34, 139, 34), 2);
+        public static Pen pathPen = new Pen(StyleManager.PathFinderPathColor, 3);
         public static MapPictureBox DrawRoute(Coordinate begin, Coordinate end, Size pictureBoxSize, Size minSize, Size maxSize, List<Color> additionalWalkableColors, List<Target> targetList = null) {
             if (end.x >= 0 && begin.z != end.z) {
                 throw new Exception("Can't draw route with different z-coordinates");
@@ -1694,7 +1689,7 @@ namespace Tibialyzer {
                 label.Name = k;
                 label.Text = k;
                 label.Location = new Point(x, base_y);
-                label.ForeColor = MainForm.label_text_color;
+                label.ForeColor = StyleManager.NotificationTextColor;
                 label.Size = new Size(val, size);
                 label.Font = MainForm.text_font;
                 label.BackColor = Color.Transparent;
@@ -2171,24 +2166,20 @@ namespace Tibialyzer {
             }
         }
 
-        private static Color hoverColor = Color.FromArgb(200, 55, 55);
-        private static Color normalColor = Color.FromArgb(172, 24, 24);
         private void closeButton_MouseEnter(object sender, EventArgs e) {
-            (sender as Control).BackColor = hoverColor;
+            (sender as Control).BackColor = StyleManager.CloseButtonHoverColor;
         }
 
         private void closeButton_MouseLeave(object sender, EventArgs e) {
-            (sender as Control).BackColor = normalColor;
+            (sender as Control).BackColor = StyleManager.CloseButtonNormalColor;
         }
-
-        private static Color minimizeHoverColor = Color.FromArgb(191, 191, 191);
-        private static Color minimizeNormalColor = Color.Transparent;
+        
         private void minimizeButton_MouseEnter(object sender, EventArgs e) {
-            (sender as Control).BackColor = minimizeHoverColor;
+            (sender as Control).BackColor = StyleManager.MinimizeButtonHoverColor;
         }
 
         private void minimizeButton_MouseLeave(object sender, EventArgs e) {
-            (sender as Control).BackColor = minimizeNormalColor;
+            (sender as Control).BackColor = StyleManager.MinimizeButtonNormalColor;
         }
 
         private void minimizeIcon_MouseDoubleClick(object sender, MouseEventArgs e) {
@@ -3024,18 +3015,14 @@ namespace Tibialyzer {
 
         }
 
-        public static Color HoverColor = Color.FromArgb(43, 47, 51);
-        public static Color ButtonColor = Color.FromArgb(51, 55, 59);
-        public static Color HoverForeColor = Color.FromArgb(190, 204, 217);
-        public static Color ButtonForeColor = Color.FromArgb(124, 133, 142);
         private void mainButton_MouseEnter(object sender, EventArgs e) {
-            (sender as Control).BackColor = HoverColor;
-            (sender as Control).ForeColor = HoverForeColor;
+            (sender as Control).BackColor = StyleManager.MainFormHoverColor;
+            (sender as Control).ForeColor = StyleManager.MainFormHoverForeColor;
         }
 
         private void mainButton_MouseLeave(object sender, EventArgs e) {
-            (sender as Control).BackColor = ButtonColor;
-            (sender as Control).ForeColor = ButtonForeColor;
+            (sender as Control).BackColor = StyleManager.MainFormButtonColor;
+            (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
         }
 
         private void backgroundLabel_Click(object sender, EventArgs e) {
@@ -3182,13 +3169,13 @@ namespace Tibialyzer {
                 resetSettingsButton.Text = "(Locked)";
                 (sender as Control).Text = "Unlock Reset Button";
                 unlockLabel.Text = "Unlock";
-                unlockLabel.BackColor = Color.FromArgb(152, 52, 52);
+                unlockLabel.BackColor = StyleManager.MainFormDangerColor;
             } else {
                 resetSettingsButton.Enabled = true;
                 resetSettingsButton.Text = "Reset Settings To Default";
                 (sender as Control).Text = "Lock Reset Button";
                 unlockLabel.Text = "Lock";
-                unlockLabel.BackColor = Color.FromArgb(76, 128, 176);
+                unlockLabel.BackColor = StyleManager.MainFormSafeColor;
             }
         }
 
