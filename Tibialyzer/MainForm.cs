@@ -43,7 +43,6 @@ namespace Tibialyzer {
         public static bool transparent = true;
         private bool keep_working = true;
         private static string databaseFile = @"Database\Database.db";
-        private static string lootDatabaseFile = @"Database\Loot.db";
         private static string nodeDatabase = @"Database\Nodes.db";
         private static string pluralMapFile = @"Database\pluralMap.txt";
         private static string autohotkeyFile = @"Database\autohotkey.ahk";
@@ -68,7 +67,6 @@ namespace Tibialyzer {
         private static StreamWriter fileWriter = null;
 
         private SQLiteConnection conn;
-        private SQLiteConnection lootConn;
         static Dictionary<string, Image> creatureImages = new Dictionary<string, Image>();
 
         public delegate void LootChangedHandler();
@@ -105,8 +103,7 @@ namespace Tibialyzer {
             conn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", databaseFile));
             conn.Open();
 
-            lootConn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", lootDatabaseFile));
-            lootConn.Open();
+            LootDatabaseManager.Initialize();
 
             StyleManager.InitializeStyle();
 
@@ -436,7 +433,7 @@ namespace Tibialyzer {
             int activeHuntIndex = 0, index = 0;
             List<int> dbTableIds = new List<int>();
             foreach (string str in SettingsManager.getSetting("Hunts")) {
-                SQLiteCommand command; SQLiteDataReader reader;
+                SQLiteDataReader reader;
                 Hunt hunt = new Hunt();
                 string[] splits = str.Split('#');
                 if (splits.Length >= 7) {
@@ -471,11 +468,9 @@ namespace Tibialyzer {
                     }
 
                     // create the hunt table if it does not exist
-                    command = new SQLiteCommand(String.Format("CREATE TABLE IF NOT EXISTS \"{0}\"(day INTEGER, hour INTEGER, minute INTEGER, message STRING);", hunt.GetTableName()), lootConn);
-                    command.ExecuteNonQuery();
+                    LootDatabaseManager.CreateHuntTable(hunt);
                     // load the data for the hunt from the database
-                    command = new SQLiteCommand(String.Format("SELECT message FROM \"{0}\" ORDER BY day, hour, minute;", hunt.GetTableName()), lootConn);
-                    reader = command.ExecuteReader();
+                    reader = LootDatabaseManager.GetHuntMessages(hunt);
                     while (reader.Read()) {
                         string message = reader["message"].ToString();
                         Tuple<Creature, List<Tuple<Item, int>>> resultList = ParseLootMessage(message);
@@ -554,7 +549,6 @@ namespace Tibialyzer {
         private void HuntList_AttemptNewItem(object sender, EventArgs e) {
             Hunt h = new Hunt();
             lock (hunts) {
-                SQLiteCommand command;
                 if (!nameExists("New Hunt")) {
                     h.name = "New Hunt";
                 } else {
@@ -564,12 +558,7 @@ namespace Tibialyzer {
                 }
 
                 h.dbtableid = 1;
-                while (true) {
-                    command = new SQLiteCommand(String.Format("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='{0}';", h.GetTableName()), lootConn);
-                    int value = int.Parse(command.ExecuteScalar().ToString());
-                    if (value == 0) {
-                        break;
-                    }
+                while (LootDatabaseManager.HuntTableExists(h)) {
                     h.dbtableid++;
                 }
             }
@@ -3307,24 +3296,22 @@ namespace Tibialyzer {
 
                     string lootDatabase = System.IO.Path.Combine(tibialyzerPath, "loot.db");
                     if (!File.Exists(lootDatabase)) {
-                        lootDatabase = System.IO.Path.Combine(tibialyzerPath, lootDatabaseFile);
+                        lootDatabase = System.IO.Path.Combine(tibialyzerPath, Constants.LootDatabaseFile);
                         if (!File.Exists(lootDatabase)) {
                             DisplayWarning("Could not find loot.db in upgrade path.");
                             return;
                         }
                     }
 
-                    lootConn.Close();
-                    lootConn.Dispose();
+                    LootDatabaseManager.Close();
                     try {
-                        File.Delete(lootDatabaseFile);
-                        File.Copy(lootDatabase, lootDatabaseFile);
+                        File.Delete(Constants.LootDatabaseFile);
+                        File.Copy(lootDatabase, Constants.LootDatabaseFile);
                     } catch (Exception ex) {
                         DisplayWarning(String.Format("Error modifying loot database: {0}", ex.Message));
                         return;
                     }
-                    lootConn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", lootDatabaseFile));
-                    lootConn.Open();
+                    LootDatabaseManager.Initialize();
 
                     initializeHunts();
 

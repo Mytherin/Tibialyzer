@@ -411,13 +411,11 @@ namespace Tibialyzer {
                 if (activeHunt.loot.creatureLoot.ContainsKey(cr)) {
                     activeHunt.loot.creatureLoot.Remove(cr);
                 }
-                using (var transaction = lootConn.BeginTransaction()) {
-                    SQLiteCommand command;
+                using (var transaction = LootDatabaseManager.BeginTransaction()) {
                     foreach (KeyValuePair<string, List<string>> kvp in activeHunt.loot.logMessages) {
                         foreach (string msg in kvp.Value) {
                             if (ParseCreatureFromLootMessage(msg) == cr) {
-                                command = new SQLiteCommand(String.Format("DELETE FROM \"{0}\" WHERE message=\"{1}\"", activeHunt.GetTableName(), msg.Replace("\"", "\\\"")), lootConn, transaction);
-                                command.ExecuteNonQuery();
+                                LootDatabaseManager.DeleteMessage(activeHunt, msg, transaction);
                             }
                         }
                     }
@@ -460,11 +458,9 @@ namespace Tibialyzer {
             }
 
 
-            SQLiteCommand comm = new SQLiteCommand(String.Format("DELETE FROM \"{0}\" WHERE day < {1} OR hour < {2} OR (hour == {2} AND minute < {3})", h.GetTableName(), stamp, hour, minute), lootConn);
-            comm.ExecuteNonQuery();
-
-            comm = new SQLiteCommand(String.Format("SELECT message FROM \"{0}\"", h.GetTableName()), lootConn);
-            SQLiteDataReader reader = comm.ExecuteReader();
+            LootDatabaseManager.DeleteMessagesBefore(h, stamp, hour, minute);
+            
+            SQLiteDataReader reader = LootDatabaseManager.GetHuntMessages(h);
             Dictionary<string, List<string>> logMessages = new Dictionary<string, List<string>>();
             while (reader.Read()) {
                 string line = reader["message"].ToString();
@@ -486,11 +482,8 @@ namespace Tibialyzer {
                 h.totalExp = 0;
                 h.totalTime = 0;
             }
-            string huntTable = h.GetTableName();
-            SQLiteCommand comm = new SQLiteCommand(String.Format("DROP TABLE IF EXISTS \"{0}\";", huntTable), lootConn);
-            comm.ExecuteNonQuery();
-            comm = new SQLiteCommand(String.Format("CREATE TABLE IF NOT EXISTS \"{0}\"(day INTEGER, hour INTEGER, minute INTEGER, message STRING);", huntTable), lootConn);
-            comm.ExecuteNonQuery();
+            LootDatabaseManager.DeleteHuntTable(h);
+            LootDatabaseManager.CreateHuntTable(h);
             LootChanged();
         }
 
@@ -522,13 +515,7 @@ namespace Tibialyzer {
                 }
             }
             if (!found) return;
-            string huntTable = h.GetTableName();
-            SQLiteCommand comm = new SQLiteCommand(String.Format("SELECT day,hour,minute,message FROM \"{0}\" WHERE message=\"{1}\"", huntTable, logMessage.Replace("\"", "\\\"")), lootConn);
-            SQLiteDataReader reader = comm.ExecuteReader();
-            if (reader.Read()) {
-                comm = new SQLiteCommand(String.Format("DELETE FROM \"{0}\" WHERE day={1} AND hour={2} AND minute={3} AND message=\"{4}\"", huntTable, reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2), reader["message"].ToString()), lootConn);
-                comm.ExecuteNonQuery();
-            }
+            LootDatabaseManager.DeleteMessage(h, logMessage, null);
             LootChanged();
         }
 
@@ -536,8 +523,7 @@ namespace Tibialyzer {
             StreamWriter streamWriter = new StreamWriter(logPath);
 
             // we load the data from the database instead of from the stored dictionary so it is ordered properly
-            SQLiteCommand comm = new SQLiteCommand(String.Format("SELECT message FROM \"{0}\"", h.GetTableName()), lootConn);
-            SQLiteDataReader reader = comm.ExecuteReader();
+            SQLiteDataReader reader = LootDatabaseManager.GetHuntMessages(h);
             while (reader.Read()) {
                 streamWriter.WriteLine(reader["message"].ToString());
             }
@@ -657,8 +643,7 @@ namespace Tibialyzer {
             Item item = getItem(cr.skin.dropitemid);
             if (item == null) return;
             string message = String.Format("{0} Loot of a {1}: {2} {3}", timestamp, cr.displayname.ToLower(), count, item.displayname.ToLower());
-            SQLiteCommand command = new SQLiteCommand(String.Format("INSERT INTO \"{4}\" VALUES({0}, {1}, {2}, \"{3}\");", stamp, hour, minute, message.Replace("\"", "\\\""), activeHunt.GetTableName()), lootConn);
-            command.ExecuteNonQuery();
+            LootDatabaseManager.InsertMessage(activeHunt, stamp, hour, minute, message);
             lock (hunts) {
                 if (!activeHunt.loot.logMessages.ContainsKey(timestamp)) activeHunt.loot.logMessages.Add(timestamp, new List<string>());
                 activeHunt.loot.logMessages[timestamp].Add(message);
@@ -692,9 +677,7 @@ namespace Tibialyzer {
             h.loot.logMessages[t].Add(message);
 
             if (transaction != null) {
-                string query = String.Format("INSERT INTO \"{4}\" VALUES({0}, {1}, {2}, \"{3}\");", stamp, hour, minute, message.Replace("\"", "\\\""), h.GetTableName());
-                SQLiteCommand command = new SQLiteCommand(query, lootConn);
-                command.ExecuteNonQuery();
+                LootDatabaseManager.InsertMessage(h, stamp, hour, minute, message);
             }
         }
 
@@ -704,7 +687,7 @@ namespace Tibialyzer {
 
                 SQLiteTransaction transaction = null;
                 if (commit) {
-                    transaction = lootConn.BeginTransaction();
+                    transaction = LootDatabaseManager.BeginTransaction();
                 }
 
                 int stamp = getDayStamp();
