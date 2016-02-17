@@ -216,27 +216,10 @@ namespace Tibialyzer {
             return strings;
         }
 
-
-        public static bool checkDigit(byte[] array, char result, ref int index) {
-            if (array[index] == result) {
-                index++;
-                return true;
-            }
-            return false;
-        }
-
-        public static bool checkRange(byte[] array, char min, char max, ref int index) {
-            if (array[index] >= min && array[index] <= max) {
-                index++;
-                return true;
-            }
-            return false;
-        }
-
-
         public static List<string> FindTimestampsFlash(byte[] array) {
             int index = 0;
-            List<string> strings = new List<string>();
+            var strings = new List<string>();
+
             // scan the memory for "timestamp values"
             // i.e. values that are like "xx:xx" where x = a number
             // we consider timestamps the "starting point" of a string, and the null terminator the "ending point"
@@ -245,12 +228,60 @@ namespace Tibialyzer {
                 if (index < 1) {
                     if (i > array.Length - 6) break;
 
-                    if (!checkRange(array, '0', '9', ref i)) continue;
-                    if (!checkRange(array, '0', '9', ref i)) continue;
-                    if (!checkDigit(array, ':', ref i)) continue;
-                    if (!checkRange(array, '0', '9', ref i)) continue;
-                    if (!checkRange(array, '0', '9', ref i)) continue;
-                    if (!(checkDigit(array, ' ', ref i) || checkDigit(array, ':', ref i))) continue;
+                    if (array[i] >= '0' && array[i] <= '9')
+                    {
+                        ++i;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    if (array[i] >= '0' && array[i] <= '9')
+                    {
+                        ++i;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    if (array[i] == ':')
+                    {
+                        ++i;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    if (array[i] >= '0' && array[i] <= '9')
+                    {
+                        ++i;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    if (array[i] >= '0' && array[i] <= '9')
+                    {
+                        ++i;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    if (array[i] == ' ' || array[i] == ':')
+                    {
+                        ++i;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
                     index = 1;
                     start = i - 6;
                 } else { // scan for the null terminator
@@ -260,16 +291,74 @@ namespace Tibialyzer {
                     }
                     // in the flash client: skip any messages that end in </font>
                     // these are the messages that are displayed in the log, and they have annoying properties (duplicated many times, etc)
-                    if (!checkDigit(array, '<', ref i)) continue;
-                    if (!checkDigit(array, '/', ref i)) continue;
-                    if (!checkDigit(array, 'f', ref i)) continue;
-                    if (!checkDigit(array, 'o', ref i)) continue;
-                    if (!checkDigit(array, 'n', ref i)) continue;
-                    if (!checkDigit(array, 't', ref i)) continue;
-                    if (!checkDigit(array, '>', ref i)) continue;
+
+                    if (array[i] == '<')
+                    {
+                        ++i;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    if (array[i] == '/')
+                    {
+                        ++i;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    if (array[i] == 'f')
+                    {
+                        ++i;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    if (array[i] == 'o')
+                    {
+                        ++i;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    if (array[i] == 'n')
+                    {
+                        ++i;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    if (array[i] == 't')
+                    {
+                        ++i;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    if (array[i] == '>')
+                    {
+                        ++i;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
                     index = 0;
                 }
             }
+
             return strings;
         }
 
