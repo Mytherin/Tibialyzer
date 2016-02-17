@@ -147,16 +147,14 @@ namespace Tibialyzer {
                             // read everything in the buffer above
                             ReadProcessMemory((int)processHandle, mem_basic_info.BaseAddress, buffer, mem_basic_info.RegionSize, ref bytesRead);
                             // scan the memory for strings that start with timestamps and end with the null terminator ('\0')
-                            List<string> strings;
+                            IEnumerable<string> timestampLines;
                             if (!flashClient) {
-                                strings = FindTimestamps(buffer);
+                                timestampLines = FindTimestamps(buffer);
                             } else {
-                                strings = FindTimestampsFlash(buffer);
+                                timestampLines = FindTimestampsFlash(buffer);
                             }
-                            if (strings.Count > 0) {
-                                // if any timestamp strings were found, scan the chunk for any messages
-                                SearchChunk(strings, results);
-                            } else {
+
+                            if (!SearchChunk(timestampLines, results)) {
                                 memorySegments.Add(mem_basic_info.BaseAddress);
                             }
                             // performance throttling sleep after every scan (depending on scanSpeed setting)
@@ -182,9 +180,8 @@ namespace Tibialyzer {
             return results;
         }
 
-        public static List<string> FindTimestamps(byte[] array) {
+        public static IEnumerable<string> FindTimestamps(byte[] array) {
             int index = 0;
-            List<string> strings = new List<string>();
             // scan the memory for "timestamp values"
             // i.e. values that are like "xx:xx" where x = a number
             // we consider timestamps the "starting point" of a string, and the null terminator the "ending point"
@@ -201,31 +198,31 @@ namespace Tibialyzer {
                     start -= 4;
                     string str = System.Text.Encoding.UTF8.GetString(array, start, (i - start));
                     if (isDigit(str[0]) && isDigit(str[1]) && isDigit(str[3]) && isDigit(str[4]) && str[2] == ':') {
-                        strings.Add(str);
+                        yield return str;
                     }
                     index = 0;
                 }
             }
             if (index == 5) {
                 start -= 4;
-                string str = System.Text.Encoding.UTF8.GetString(array, start, (i - start));
+                string str = Encoding.UTF8.GetString(array, start, (i - start));
                 if (isDigit(str[0]) && isDigit(str[1]) && isDigit(str[3]) && isDigit(str[4]) && str[2] == ':') {
-                    strings.Add(str);
+                    yield return str;
                 }
             }
-            return strings;
+
+            yield break;
         }
 
-        public static List<string> FindTimestampsFlash(byte[] array) {
-            int index = 0;
-            var strings = new List<string>();
+        public static IEnumerable<string> FindTimestampsFlash(byte[] array) {
+            bool stringBeginning = true;
 
             // scan the memory for "timestamp values"
             // i.e. values that are like "xx:xx" where x = a number
             // we consider timestamps the "starting point" of a string, and the null terminator the "ending point"
             int start = 0, i = 0;
             for (i = 0; i < array.Length; i++) {
-                if (index < 1) {
+                if (stringBeginning) {
                     if (i > array.Length - 6) break;
 
                     if (array[i] >= '0' && array[i] <= '9') { ++i; } else { continue; }
@@ -235,12 +232,12 @@ namespace Tibialyzer {
                     if (array[i] >= '0' && array[i] <= '9') { ++i; } else { continue; }
                     if (array[i] == ' ' || array[i] == ':') { ++i; } else { continue; }
 
-                    index = 1;
+                    stringBeginning = false;
                     start = i - 6;
                 } else { // scan for the null terminator
                     if (array[i] == '\0') {
-                        strings.Add(System.Text.Encoding.UTF8.GetString(array, start, (i - start)));
-                        index = 0;
+                        yield return Encoding.UTF8.GetString(array, start, (i - start));
+                        stringBeginning = true;
                     }
                     // in the flash client: skip any messages that end in </font>
                     // these are the messages that are displayed in the log, and they have annoying properties (duplicated many times, etc)
@@ -253,11 +250,11 @@ namespace Tibialyzer {
                     if (array[i] == 't') { ++i; } else { continue; }
                     if (array[i] == '>') { ++i; } else { continue; }
 
-                    index = 0;
+                    stringBeginning = false;
                 }
             }
 
-            return strings;
+            yield break;
         }
 
         private Tuple<int, int> parseTimeStamp(string stamp) {
@@ -981,10 +978,13 @@ namespace Tibialyzer {
 
         private bool flashClient = true;
         private int ignoreStamp = 0;
-        private void SearchChunk(List<string> chunk, ReadMemoryResults res) {
+        private bool SearchChunk(IEnumerable<string> chunk, ReadMemoryResults res) {
             List<int> stamps = getLatestStamps(3, ignoreStamp);
-            for (int it = 0; it < chunk.Count; it++) {
-                string logMessage = chunk[it];
+            bool chunksExist = false;
+            foreach (string it in chunk)
+            {
+                chunksExist = true;
+                string logMessage = it;
                 string t = logMessage.Substring(0, 5);
                 int hour = int.Parse(logMessage.Substring(0, 2));
                 int minute = int.Parse(logMessage.Substring(3, 2));
@@ -1084,6 +1084,8 @@ namespace Tibialyzer {
                     }
                 }
             }
+
+            return chunksExist;
         }
     }
 }
