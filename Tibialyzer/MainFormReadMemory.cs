@@ -215,42 +215,23 @@ namespace Tibialyzer {
         }
 
         public static IEnumerable<string> FindTimestampsFlash(byte[] array) {
-            bool stringBeginning = true;
-
             // scan the memory for "timestamp values"
             // i.e. values that are like "xx:xx" where x = a number
             // we consider timestamps the "starting point" of a string, and the null terminator the "ending point"
-            int start = 0, i = 0;
-            for (i = 0; i < array.Length; i++) {
-                if (stringBeginning) {
-                    if (i > array.Length - 6) break;
-
-                    if (array[i] >= '0' && array[i] <= '9') { ++i; } else { continue; }
-                    if (array[i] >= '0' && array[i] <= '9') { ++i; } else { continue; }
-                    if (array[i] == ':') { ++i; } else { continue; }
-                    if (array[i] >= '0' && array[i] <= '9') { ++i; } else { continue; }
-                    if (array[i] >= '0' && array[i] <= '9') { ++i; } else { continue; }
-                    if (array[i] == ' ' || array[i] == ':') { ++i; } else { continue; }
-
-                    stringBeginning = false;
-                    start = i - 6;
-                } else { // scan for the null terminator
-                    if (array[i] == '\0') {
-                        yield return Encoding.UTF8.GetString(array, start, (i - start));
-                        stringBeginning = true;
+            for (int i = 0; i < array.Length - 6; i++) {
+                if (array[i] >= '0' && array[i] <= '9'
+                    && array[i + 1] >= '0' && array[i + 1] <= '9'
+                    && array[i + 2] == ':'
+                    && array[i + 3] >= '0' && array[i + 3] <= '9'
+                    && array[i + 4] >= '0' && array[i + 4] <= '9'
+                    && (array[i + 5] == ' ' || array[i + 5] == ':')) {
+                    int start = i;
+                    i += 6;
+                    while (array[i] != '\0') {
+                        ++i;
                     }
-                    // in the flash client: skip any messages that end in </font>
-                    // these are the messages that are displayed in the log, and they have annoying properties (duplicated many times, etc)
 
-                    if (array[i] == '<') { ++i; } else { continue; }
-                    if (array[i] == '/') { ++i; } else { continue; }
-                    if (array[i] == 'f') { ++i; } else { continue; }
-                    if (array[i] == 'o') { ++i; } else { continue; }
-                    if (array[i] == 'n') { ++i; } else { continue; }
-                    if (array[i] == 't') { ++i; } else { continue; }
-                    if (array[i] == '>') { ++i; } else { continue; }
-
-                    stringBeginning = false;
+                    yield return Encoding.UTF8.GetString(array, start, i - start);
                 }
             }
 
