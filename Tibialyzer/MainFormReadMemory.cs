@@ -231,11 +231,29 @@ namespace Tibialyzer {
                         ++i;
                     }
 
-                    yield return Encoding.UTF8.GetString(array, start, i - start);
+                    if (!EndsWith(array, start, i, "</font></p>") && !EndsWith(array, start, i, "</font>")) {
+                        yield return Encoding.UTF8.GetString(array, start, i - start);
+                    }
                 }
             }
 
             yield break;
+        }
+
+        private static bool EndsWith(byte[] array, int start, int end, string text) {
+            int strLen = text.Length;
+
+            if (end - start < strLen) {
+                return false;
+            }
+
+            for (int i = 0; i < strLen; ++i) {
+                if (text[i] != array[end - strLen + i]) {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private Tuple<int, int> parseTimeStamp(string stamp) {
