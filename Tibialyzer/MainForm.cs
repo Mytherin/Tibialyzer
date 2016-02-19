@@ -48,8 +48,6 @@ namespace Tibialyzer {
         private static string autohotkeyFile = @"Database\autohotkey.ahk";
         public static string settingsFile = @"Database\settings.txt";
         public static string bigLootFile = @"Database\loot.txt";
-        public static int max_creatures = 50;
-        public List<string> new_names = null;
         private bool prevent_settings_update = false;
         private bool minimize_notification = true;
         static HashSet<string> cities = new HashSet<string>() { "ab'dendriel", "carlin", "kazordoon", "venore", "thais", "ankrahmun", "farmine", "gray beach", "liberty bay", "port hope", "rathleton", "roshamuul", "yalahar", "svargrond", "edron", "darashia", "rookgaard", "dawnport", "gray beach" };

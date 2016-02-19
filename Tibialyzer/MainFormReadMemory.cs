@@ -347,6 +347,50 @@ namespace Tibialyzer {
             return itemName;
         }
 
+        Dictionary<string, string> pluralSuffixes = new Dictionary<string, string> {
+            { "ches", "ch" },
+            { "shes", "sh" },
+            { "ies", "y" },
+            { "ves", "fe" },
+            { "oes", "o" },
+            { "zes", "z" },
+            { "s", "" }
+        };
+
+        Dictionary<string, string> pluralWords = new Dictionary<string, string> {
+            { "pieces of", "piece of" },
+            { "bunches of", "bunch of" },
+            { "haunches of", "haunch of" },
+            { "flasks of", "flask of" },
+            { "veins of", "vein of" },
+            { "bowls of", "bowl of" }
+        };
+
+        private string getSingularItem(string item) {
+            item = item.Trim().ToLower();
+            foreach (KeyValuePair<string, string> kvp in pluralWords) {
+                if (item.Contains(kvp.Key)) {
+                    return item.Replace(kvp.Key, kvp.Value);
+                }
+            }
+            foreach (KeyValuePair<string, string> kvp in pluralSuffixes) {
+                if (item.EndsWith(kvp.Key)) {
+                    return item.Substring(0, item.Length - kvp.Key.Length) + kvp.Value;
+                }
+            }
+            if (getItem(item) == null) {
+                string[] words = item.Split(' ');
+                if (words.Length > 1) {
+                    string word = getSingularItem(words[0]);
+                    if (word != words[0]) {
+                        return word + item.Substring(words[0].Length, item.Length - words[0].Length);
+                    }
+                }
+                Console.WriteLine(String.Format("Warning, could not find singular form of plural item: {0}", item));
+            }
+            return item;
+        }
+
         private Dictionary<string, string> pluralMap = new Dictionary<string, string>();
         Tuple<string, int> preprocessItem(string item) {
             int count = 1;
@@ -366,10 +410,8 @@ namespace Tibialyzer {
             if (count > 1) {
                 if (pluralMap.ContainsKey(itemName)) {
                     itemName = pluralMap[itemName];
-                } else if (itemName[itemName.Length - 1] == 's') {
-                    itemName = itemName.Substring(0, itemName.Length - 1);
                 } else {
-                    Console.WriteLine(String.Format("Warning, Item {0} has a count of {1}, but was not in plural map and does not end with the letter s.", itemName, count));
+                    itemName = getSingularItem(itemName);
                 }
             }
             return new Tuple<string, int>(itemName, count);

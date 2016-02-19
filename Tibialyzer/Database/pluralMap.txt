@@ -87,3 +87,6 @@ bunches of ripe rice=bunch of ripe rice
 candies=candy
 elven scouting glasses=elven scouting glass
 piles of grave earth=pile of grave earth
+gooey masses=gooey mass
+cookies=cookie
+mushroom pies=mushroom pie
