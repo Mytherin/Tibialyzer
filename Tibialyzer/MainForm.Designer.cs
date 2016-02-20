@@ -1351,7 +1351,7 @@
             this.label35.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label35.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label35.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label35.Location = new System.Drawing.Point(299, 228);
+            this.label35.Location = new System.Drawing.Point(299, 353);
             this.label35.Name = "label35";
             this.label35.Size = new System.Drawing.Size(238, 30);
             this.label35.TabIndex = 39;
@@ -1421,9 +1421,9 @@
             this.trackedCreatureList.ItemHeight = 20;
             this.trackedCreatureList.Items.AddRange(new object[] {
             ""});
-            this.trackedCreatureList.Location = new System.Drawing.Point(299, 258);
+            this.trackedCreatureList.Location = new System.Drawing.Point(299, 383);
             this.trackedCreatureList.Name = "trackedCreatureList";
-            this.trackedCreatureList.Size = new System.Drawing.Size(238, 215);
+            this.trackedCreatureList.Size = new System.Drawing.Size(238, 95);
             this.trackedCreatureList.TabIndex = 40;
             // 
             // gatherTrackedKillsBox
@@ -3186,7 +3186,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
-            this.BackColor = StyleManager.NotificationTextColor;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(655, 525);
             this.Controls.Add(this.upgradeButton);

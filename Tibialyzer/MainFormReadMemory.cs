@@ -302,7 +302,7 @@ namespace Tibialyzer {
             return stamps;
         }
 
-        static bool isDigit(char c) {
+        public static bool isDigit(char c) {
             return
                 c == '0' ||
                 c == '1' ||
@@ -315,23 +315,7 @@ namespace Tibialyzer {
                 c == '8' ||
                 c == '9';
         }
-
-        int getCount(string item) {
-            int begin = -1, end = -1;
-            for (int i = 0; i < item.Length; i++) {
-                if (isDigit(item[i])) {
-                    if (begin < 0) begin = i;
-                } else if (begin >= 0) {
-                    end = i;
-                    break;
-                }
-            }
-            if (begin >= 0) {
-                return int.Parse(item.Substring(begin, end - begin));
-            }
-            return 1;
-        }
-
+        
         string parseLookItem(string logMessage) {
             string[] splits = logMessage.Substring(14).Split('(')[0].Split('.')[0].Split(' ');
             string itemName = "";
@@ -352,7 +336,7 @@ namespace Tibialyzer {
             return itemName;
         }
 
-        Dictionary<string, string> pluralSuffixes = new Dictionary<string, string> {
+        private static Dictionary<string, string> pluralSuffixes = new Dictionary<string, string> {
             { "ches", "ch" },
             { "shes", "sh" },
             { "ies", "y" },
@@ -362,7 +346,7 @@ namespace Tibialyzer {
             { "s", "" }
         };
 
-        Dictionary<string, string> pluralWords = new Dictionary<string, string> {
+        private static Dictionary<string, string> pluralWords = new Dictionary<string, string> {
             { "pieces of", "piece of" },
             { "bunches of", "bunch of" },
             { "haunches of", "haunch of" },
@@ -371,7 +355,7 @@ namespace Tibialyzer {
             { "bowls of", "bowl of" }
         };
 
-        private string getSingularItem(string item) {
+        private static string getSingularItem(string item) {
             item = item.Trim().ToLower();
             foreach (KeyValuePair<string, string> kvp in pluralWords) {
                 if (item.Contains(kvp.Key)) {
@@ -396,8 +380,8 @@ namespace Tibialyzer {
             return item;
         }
 
-        private Dictionary<string, string> pluralMap = new Dictionary<string, string>();
-        Tuple<string, int> preprocessItem(string item) {
+        private static Dictionary<string, string> pluralMap = new Dictionary<string, string>();
+        public static Tuple<string, int> preprocessItem(string item) {
             int count = 1;
             if (item == "nothing") return new Tuple<string, int>("nothing", 0);
             string itemName = "";
@@ -441,127 +425,11 @@ namespace Tibialyzer {
             return stamps;
         }
 
-        private int getDayStamp() {
+        public static int getDayStamp() {
             var t = DateTime.Now;
             return t.Year * 400 + t.Month * 40 + t.Day;
         }
-
-        private void deleteCreatureFromLog(Creature cr) {
-            lock (hunts) {
-                if (activeHunt.loot.killCount.ContainsKey(cr)) {
-                    activeHunt.loot.killCount.Remove(cr);
-                }
-                if (activeHunt.loot.creatureLoot.ContainsKey(cr)) {
-                    activeHunt.loot.creatureLoot.Remove(cr);
-                }
-                using (var transaction = LootDatabaseManager.BeginTransaction()) {
-                    foreach (KeyValuePair<string, List<string>> kvp in activeHunt.loot.logMessages) {
-                        foreach (string msg in kvp.Value) {
-                            if (ParseCreatureFromLootMessage(msg) == cr) {
-                                LootDatabaseManager.DeleteMessage(activeHunt, msg, transaction);
-                            }
-                        }
-                    }
-                    transaction.Commit();
-                }
-            }
-            LootDatabaseManager.UpdateLoot();
-        }
-
-        void clearOldLog(Hunt h, int clearMinutes = 10) {
-            var time = DateTime.Now;
-            int hour = time.Hour;
-            int minute = time.Minute;
-            while (clearMinutes > 60) {
-                hour--;
-                clearMinutes -= 60;
-            }
-            if (minute >= clearMinutes) {
-                minute -= clearMinutes;
-            } else {
-                hour--;
-                minute = 60 + (minute - clearMinutes);
-            }
-            int stamp = getDayStamp();
-            while (hour < 0) {
-                hour += 24;
-                stamp--;
-            }
-
-            h.loot.creatureLoot.Clear();
-            h.loot.killCount.Clear();
-            h.loot.logMessages.Clear();
-            h.totalExp = 0;
-            h.totalTime = 0;
-            foreach (string t in getLatestTimes(clearMinutes)) {
-                if (totalExperienceResults.ContainsKey(t)) {
-                    h.totalExp += totalExperienceResults[t];
-                    h.totalTime += 60;
-                }
-            }
-
-
-            LootDatabaseManager.DeleteMessagesBefore(h, stamp, hour, minute);
-            
-            SQLiteDataReader reader = LootDatabaseManager.GetHuntMessages(h);
-            Dictionary<string, List<string>> logMessages = new Dictionary<string, List<string>>();
-            while (reader.Read()) {
-                string line = reader["message"].ToString();
-                if (line.Length < 15) continue;
-                string t = line.Substring(0, 5);
-                if (!(isDigit(t[0]) && isDigit(t[1]) && isDigit(t[3]) && isDigit(t[4]) && t[2] == ':')) continue; //not a valid timestamp
-                if (!logMessages.ContainsKey(t)) logMessages.Add(t, new List<string>());
-                logMessages[t].Add(line);
-            }
-            ParseLootMessages(h, logMessages, null, false, false, true);
-            LootDatabaseManager.UpdateLoot();
-        }
-
-        void resetHunt(Hunt h) {
-            lock (hunts) {
-                h.loot.creatureLoot.Clear();
-                h.loot.killCount.Clear();
-                h.loot.logMessages.Clear();
-                h.totalExp = 0;
-                h.totalTime = 0;
-            }
-            LootDatabaseManager.DeleteHuntTable(h);
-            LootDatabaseManager.CreateHuntTable(h);
-            LootDatabaseManager.UpdateLoot();
-        }
-
-        void deleteLogMessage(Hunt h, string logMessage) {
-            string timeStamp = logMessage.Substring(0, 5);
-            bool found = false;
-            lock (hunts) {
-                if (h.loot.logMessages.ContainsKey(timeStamp)) {
-                    if (h.loot.logMessages[timeStamp].Contains(logMessage)) {
-                        h.loot.logMessages[timeStamp].Remove(logMessage);
-                        var logMessageItems = ParseLootMessage(logMessage);
-                        Creature cr = logMessageItems.Item1;
-                        if (h.loot.killCount.ContainsKey(cr)) {
-                            h.loot.killCount[cr]--;
-                            if (h.loot.killCount[cr] == 0) {
-                                h.loot.killCount.Remove(cr);
-                            }
-                        }
-                        foreach (Tuple<Item, int> tpl in logMessageItems.Item2) {
-                            if (h.loot.creatureLoot[cr].ContainsKey(tpl.Item1)) {
-                                h.loot.creatureLoot[cr][tpl.Item1] -= tpl.Item2;
-                                if (h.loot.creatureLoot[cr][tpl.Item1] <= 0) {
-                                    h.loot.creatureLoot[cr].Remove(tpl.Item1);
-                                }
-                            }
-                        }
-                        found = true;
-                    }
-                }
-            }
-            if (!found) return;
-            LootDatabaseManager.DeleteMessage(h, logMessage, null);
-            LootDatabaseManager.UpdateLoot();
-        }
-
+        
         void saveLog(Hunt h, string logPath) {
             StreamWriter streamWriter = new StreamWriter(logPath);
 
@@ -575,7 +443,7 @@ namespace Tibialyzer {
         }
 
         void loadLog(Hunt h, string logPath) {
-            resetHunt(h);
+            HuntManager.resetHunt(h);
             StreamReader streamReader = new StreamReader(logPath);
             string line;
             Dictionary<string, List<string>> logMessages = new Dictionary<string, List<string>>();
@@ -608,18 +476,7 @@ namespace Tibialyzer {
             }
             return results;
         }
-
-        private void deleteCreatureWithThreshold(int killThreshold) {
-            List<Creature> deleteList = new List<Creature>();
-            foreach (KeyValuePair<Creature, int> kvp in activeHunt.loot.killCount) {
-                if (kvp.Value < killThreshold) deleteList.Add(kvp.Key);
-            }
-            foreach (Creature cr in deleteList) {
-                deleteCreatureFromLog(cr);
-            }
-            LootDatabaseManager.UpdateLoot();
-        }
-
+        
         private void insertSkin(Creature cr, int count = 1) {
             var time = DateTime.Now;
             int hour = time.Hour;
@@ -629,25 +486,13 @@ namespace Tibialyzer {
             Item item = StorageManager.getItem(cr.skin.dropitemid);
             if (item == null) return;
             string message = String.Format("{0} Loot of a {1}: {2} {3}", timestamp, cr.displayname.ToLower(), count, item.displayname.ToLower());
-            LootDatabaseManager.InsertMessage(activeHunt, stamp, hour, minute, message);
-            lock (hunts) {
-                if (!activeHunt.loot.logMessages.ContainsKey(timestamp)) activeHunt.loot.logMessages.Add(timestamp, new List<string>());
-                activeHunt.loot.logMessages[timestamp].Add(message);
-                if (!activeHunt.loot.creatureLoot.ContainsKey(cr)) {
-                    activeHunt.loot.creatureLoot.Add(cr, new Dictionary<Item, int>());
-                }
-                foreach (Item i in activeHunt.loot.creatureLoot[cr].Keys) {
-                    if (i.id == cr.skin.dropitemid) {
-                        activeHunt.loot.creatureLoot[cr][i] += count;
-                        return;
-                    }
-                }
-                activeHunt.loot.creatureLoot[cr].Add(item, count);
-            }
+            Hunt h = HuntManager.activeHunt;
+            LootDatabaseManager.InsertMessage(h, stamp, hour, minute, message);
+            HuntManager.AddSkin(h, message, cr, item, count, timestamp);
             LootDatabaseManager.UpdateLoot();
         }
 
-        public void addKillToHunt(Hunt h, Tuple<Creature, List<Tuple<Item, int>>> resultList, string t, string message, int stamp = 0, int hour = 0, int minute = 0, SQLiteTransaction transaction = null) {
+        public static void addKillToHunt(Hunt h, Tuple<Creature, List<Tuple<Item, int>>> resultList, string t, string message, int stamp = 0, int hour = 0, int minute = 0, SQLiteTransaction transaction = null) {
             Creature cr = resultList.Item1;
             if (!h.loot.creatureLoot.ContainsKey(cr)) h.loot.creatureLoot.Add(cr, new Dictionary<Item, int>());
             foreach (Tuple<Item, int> tpl in resultList.Item2) {
@@ -667,9 +512,9 @@ namespace Tibialyzer {
             }
         }
 
-        Dictionary<string, List<string>> globalMessages = new Dictionary<string, List<string>>();
-        private void ParseLootMessages(Hunt h, Dictionary<string, List<string>> newDrops, List<Tuple<Creature, List<Tuple<Item, int>>>> newItems, bool commit = true, bool switchHunt = false, bool addEverything = false) {
-            lock (hunts) {
+        public static Dictionary<string, List<string>> globalMessages = new Dictionary<string, List<string>>();
+        public static void ParseLootMessages(Hunt h, Dictionary<string, List<string>> newDrops, List<Tuple<Creature, List<Tuple<Item, int>>>> newItems, bool commit = true, bool switchHunt = false, bool addEverything = false) {
+            lock (HuntManager.hunts) {
 
                 SQLiteTransaction transaction = null;
                 if (commit) {
@@ -697,11 +542,11 @@ namespace Tibialyzer {
                                 Creature cr = resultList.Item1;
 
                                 if (switchHunt && commit) {
-                                    foreach (Hunt potentialHunt in hunts) {
+                                    foreach (Hunt potentialHunt in HuntManager.hunts) {
                                         if (potentialHunt.lootCreatures.Contains(cr.GetName().ToLower())) {
                                             if (potentialHunt.sideHunt) {
                                                 h = potentialHunt;
-                                                activeHunt = potentialHunt;
+                                                HuntManager.activeHunt = potentialHunt;
                                             } else if (potentialHunt.aggregateHunt && potentialHunt != h) {
                                                 addKillToHunt(potentialHunt, resultList, t, message, stamp, hour, minute, transaction);
                                             }
@@ -878,8 +723,8 @@ namespace Tibialyzer {
                 }
             }
 
-            ParseLootMessages(activeHunt, res.itemDrops, o.newItems, true, true);
-            activeHunt.totalExp += newExperience;
+            ParseLootMessages(HuntManager.activeHunt, res.itemDrops, o.newItems, true, true);
+            HuntManager.activeHunt.totalExp += newExperience;
 
             readWatch.Stop();
             if (newExperience == 0) {
@@ -890,14 +735,14 @@ namespace Tibialyzer {
                 ticksSinceExperience = 0;
             }
             if (ticksSinceExperience < 120) {
-                activeHunt.totalTime += readWatch.Elapsed.TotalSeconds;
+                HuntManager.activeHunt.totalTime += readWatch.Elapsed.TotalSeconds;
             }
             readWatch.Restart();
-            saveHunts();
+            HuntManager.SaveHunts();
             return o;
         }
 
-        public Creature ParseCreatureFromLootMessage(string message) {
+        public static Creature ParseCreatureFromLootMessage(string message) {
             string lootMessage = message.Substring(14);
             // split on : because the message is Loot of a x: a, b, c, d
             if (!lootMessage.Contains(':')) return null;
@@ -916,7 +761,7 @@ namespace Tibialyzer {
             }
         }
 
-        public Tuple<Creature, List<Tuple<Item, int>>> ParseLootMessage(string message) {
+        public static Tuple<Creature, List<Tuple<Item, int>>> ParseLootMessage(string message) {
             if (message.Length <= 14) return null;
             string lootMessage = message.Substring(14);
             // split on : because the message is Loot of a x: a, b, c, d

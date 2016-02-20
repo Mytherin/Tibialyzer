@@ -110,11 +110,11 @@ namespace Tibialyzer {
                     string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                     int killCount;
                     if (int.TryParse(parameter, out killCount)) {
-                        deleteCreatureWithThreshold(killCount);
+                        HuntManager.deleteCreatureWithThreshold(killCount);
                     } else {
                         Creature cr = StorageManager.getCreature(parameter);
                         if (cr != null) {
-                            deleteCreatureFromLog(cr);
+                            HuntManager.deleteCreatureFromLog(cr);
                         }
                     }
                 } else if (comp.StartsWith("skin" + MainForm.commandSymbol)) { //skin@
@@ -129,15 +129,7 @@ namespace Tibialyzer {
                     } else {
                         int.TryParse(parameter, out count);
                         // find creature with highest killcount with a skin and skin that
-                        int kills = -1;
-                        lock (hunts) {
-                            foreach (KeyValuePair<Creature, int> kvp in activeHunt.loot.killCount) {
-                                if (kvp.Value > kills && kvp.Key.skin != null) {
-                                    cr = kvp.Key;
-                                    kills = kvp.Value;
-                                }
-                            }
-                        }
+                        cr = HuntManager.GetHighestKillCreature(HuntManager.activeHunt);
                         if (cr != null) {
                             insertSkin(cr, count);
                         }
@@ -176,15 +168,12 @@ namespace Tibialyzer {
                         parameter = "";
                         screenshot_path = splits[2];
                     }
-
-
-                    Hunt currentHunt = activeHunt;
+                    
+                    Hunt currentHunt = HuntManager.activeHunt;
                     if (splits.Length >= 2 && splits[1] != "") {
-                        foreach (Hunt h in hunts) {
-                            if (h.name.ToLower().Contains(splits[1].ToLower())) {
-                                currentHunt = h;
-                                break;
-                            }
+                        Hunt h = HuntManager.GetHunt(splits[1]);
+                        if (h != null) {
+                            currentHunt = h;
                         }
                     }
                     // display loot notification
@@ -208,7 +197,7 @@ namespace Tibialyzer {
                         lootCreature = StorageManager.getCreature(creatureName);
                     }
 
-                    var tpl = LootDropForm.GenerateLootInformation(activeHunt, "", lootCreature);
+                    var tpl = LootDropForm.GenerateLootInformation(HuntManager.activeHunt, "", lootCreature);
                     var creatureKills = tpl.Item1;
                     var itemDrops = tpl.Item2;
 
@@ -233,21 +222,17 @@ namespace Tibialyzer {
                     string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
                     int time = 0;
                     if (parameter == "old") {
-                        clearOldLog(activeHunt);
+                        HuntManager.clearOldLog(HuntManager.activeHunt);
                     } else if (int.TryParse(parameter, out time) && time > 0) {
-                        clearOldLog(activeHunt, time);
+                        HuntManager.clearOldLog(HuntManager.activeHunt, time);
                     } else {
-                        lock (hunts) {
-                            foreach (Hunt h in hunts) {
-                                if (h.name.ToLower() == parameter.ToLower()) {
-                                    // reset@<hunt> resets the specified hunt
-                                    resetHunt(h);
-                                    return true;
-                                }
-                            }
+                        // reset@<hunt> resets the specified hunt
+                        if (parameter.Length > 0 && HuntManager.resetHunt(parameter)) {
+                            return true;
+                        } else {
+                            //reset@ deletes all loot from the currently active hunt
+                            HuntManager.resetHunt(HuntManager.activeHunt);
                         }
-                        //reset@ loot deletes all loot from the currently active hunt
-                        resetHunt(activeHunt);
                     }
                     refreshHunts();
                     ignoreStamp = createStamp();
@@ -265,15 +250,8 @@ namespace Tibialyzer {
                 } else if (comp.StartsWith("switch" + MainForm.commandSymbol)) { //switch@
                                                                                  // switch: switch to hunt
                     string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                    lock (hunts) {
-                        foreach (Hunt h in hunts) {
-                            if (h.name.ToLower().Contains(parameter)) {
-                                activeHunt = h;
-                                saveHunts();
-                                break;
-                            }
-                        }
-                    }
+                    HuntManager.SwitchHunt(parameter);
+                    HuntManager.SaveHunts();
                 } else if (comp.StartsWith("item" + MainForm.commandSymbol)) { //item@
                                                                                //show the item with all the NPCs that sell it
                     ShowItemNotification(command);
@@ -370,9 +348,9 @@ namespace Tibialyzer {
                         ShowCreatureList(StorageManager.searchNPC(parameter), "NPC List", command);
                     }
                 } else if (comp.StartsWith("savelog" + MainForm.commandSymbol)) {
-                    saveLog(activeHunt, command.Split(commandSymbol)[1].Trim().Replace("'", "\\'"));
+                    saveLog(HuntManager.activeHunt, command.Split(commandSymbol)[1].Trim().Replace("'", "\\'"));
                 } else if (comp.StartsWith("loadlog" + MainForm.commandSymbol)) {
-                    loadLog(activeHunt, command.Split(commandSymbol)[1].Trim().Replace("'", "\\'"));
+                    loadLog(HuntManager.activeHunt, command.Split(commandSymbol)[1].Trim().Replace("'", "\\'"));
                 } else if (comp.StartsWith("setdiscardgoldratio" + MainForm.commandSymbol)) {
                     double val;
                     if (double.TryParse(command.Split(commandSymbol)[1].Trim(), out val)) {

@@ -107,7 +107,7 @@ namespace Tibialyzer {
         public static Tuple<Dictionary<Creature, int>, List<Tuple<Item, int>>> GenerateLootInformation(Hunt hunt, string rawName, Creature lootCreature) {
             Dictionary<Creature, int> creatureKills;
             List<Tuple<Item, int>> itemDrops = new List<Tuple<Item, int>>();
-            lock (MainForm.mainForm.hunts) {
+            lock (HuntManager.hunts) {
                 bool raw = rawName == "raw";
                 bool all = raw || rawName == "all";
                 List<Creature> displayedCreatures = null;
