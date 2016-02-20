@@ -110,12 +110,7 @@ namespace Tibialyzer {
             // add resistances of creature in order
             AddResistances(resistances);
             // set background of actual form to transparent
-            this.BackColor = StyleManager.NotificationBackgroundColor; ;
-            this.Opacity = MainForm.opacity;
-            if (MainForm.transparent) {
-                this.TransparencyKey = StyleManager.NotificationBackgroundColor; ;
-                this.Opacity = 1;
-            }
+            this.BackColor = StyleManager.NotificationBackgroundColor;
             this.nameLabel.Text = MainForm.ToTitle(this.creature.displayname);
             Font f = StyleManager.FontList[0];
             Font prevFont = f;

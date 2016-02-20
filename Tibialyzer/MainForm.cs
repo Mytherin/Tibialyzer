@@ -39,8 +39,6 @@ namespace Tibialyzer {
 
         private NotificationForm[] NotificationFormGroups = new NotificationForm[10];
         
-        public static double opacity = 0.8;
-        public static bool transparent = true;
         private bool keep_working = true;
         private bool prevent_settings_update = false;
         private bool minimize_notification = true;        
@@ -1655,8 +1653,7 @@ namespace Tibialyzer {
                 }
                 if (currentPage == page) {
                     PictureBox image_box;
-                    if (transparent) image_box = new PictureBox();
-                    else image_box = new PictureBox();
+                    image_box = new PictureBox();
                     image_box.Image = image;
                     image_box.BackColor = Color.Transparent;
                     image_box.Size = new Size((int)(imageWidth * magnification), height);
