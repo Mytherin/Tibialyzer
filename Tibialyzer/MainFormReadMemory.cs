@@ -36,15 +36,26 @@ namespace Tibialyzer {
         public static string TibiaClientName = "Tibia";
         public static int TibiaProcessId = -1;
         public static Process GetTibiaProcess() {
+            Process[] p = GetTibiaProcesses();
+            if (p == null || p.Length == 0) return null;
+            return p[0];
+        }
+
+        public static Process[] GetTibiaProcesses() {
             if (TibiaProcessId >= 0) {
                 List<Process> ids = Process.GetProcesses().Where(x => x.Id == TibiaProcessId).ToList();
                 if (ids.Count > 0) {
-                    return ids[0];
+                    return new Process[1] { ids[0] };
                 }
                 TibiaProcessId = -1;
             }
             Process[] p = Process.GetProcessesByName(TibiaClientName);
-            if (p.Length > 0) return p[0];
+            if (p.Length > 0) {
+                if (TibiaClientName.ToLower().Contains("flash")) {
+                    return p;
+                }
+                return new Process[1] { p[0] };
+            }
             return null;
         }
 
@@ -112,6 +123,83 @@ namespace Tibialyzer {
             public int maxcount;
         };
 
+        Dictionary<int, List<long>> whitelistedAddresses = new Dictionary<int, List<long>>();
+
+        /// <summary>
+        /// Scan the memory for any chunks that are missing from the whitelist table
+        /// </summary>
+        private void ScanMissingChunks() {
+            SYSTEM_INFO sys_info = new SYSTEM_INFO();
+            GetSystemInfo(out sys_info);
+
+            IntPtr proc_min_address = sys_info.minimumApplicationAddress;
+            IntPtr proc_max_address = sys_info.maximumApplicationAddress;
+
+            long proc_min_address_l = (long)proc_min_address;
+            long proc_max_address_l = (long)proc_max_address;
+
+            long sys_min_address_l = (long)proc_min_address;
+
+
+            Process[] processes = GetTibiaProcesses();
+            if (processes == null || processes.Length == 0) {
+                // Tibia process could not be found, wait for a bit and return
+                Thread.Sleep(250);
+                return;
+            }
+            flashClient = TibiaClientName.ToLower().Contains("flash") || TibiaClientName.ToLower().Contains("chrome");
+            foreach(Process process in processes) {
+                if (!whitelistedAddresses.ContainsKey(process.Id)) whitelistedAddresses.Add(process.Id, new List<long>());
+                List<long> whitelist = whitelistedAddresses[process.Id];
+
+                proc_min_address_l = sys_min_address_l;
+
+                IntPtr processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
+                MEMORY_BASIC_INFORMATION mem_basic_info = new MEMORY_BASIC_INFORMATION();
+                int bytesRead = 0;  // number of bytes read with ReadProcessMemory
+                int scanSpeed = SettingsManager.getSettingInt("ScanSpeed");
+                try {
+                    while (proc_min_address_l < proc_max_address_l) {
+                        proc_min_address = new IntPtr(proc_min_address_l);
+                        // 28 = sizeof(MEMORY_BASIC_INFORMATION)
+                        VirtualQueryEx(processHandle, proc_min_address, out mem_basic_info, 28);
+
+                        long addr = (long)proc_min_address;
+                        // check if this memory chunk is accessible
+                        if (mem_basic_info.Protect == PAGE_READWRITE && mem_basic_info.State == MEM_COMMIT) {
+                            if (!whitelist.Contains(addr)) {
+                                byte[] buffer = new byte[mem_basic_info.RegionSize];
+
+                                // read everything in the buffer above
+                                ReadProcessMemory((int)processHandle, mem_basic_info.BaseAddress, buffer, mem_basic_info.RegionSize, ref bytesRead);
+                                // scan the memory for strings that start with timestamps and end with the null terminator ('\0')
+                                IEnumerable<string> timestampLines;
+                                if (!flashClient) {
+                                    timestampLines = Parser.FindTimestamps(buffer);
+                                } else {
+                                    timestampLines = Parser.FindTimestampsFlash(buffer);
+                                }
+
+                                // if there are any timestamps found, add the address to the list of whitelisted addresses
+                                foreach (string str in timestampLines) {
+                                    whitelist.Add(addr);
+                                    Console.WriteLine(whitelist.Count);
+                                    break;
+                                }
+
+                                // performance throttling sleep after every scan (depending on scanSpeed setting)
+                                Thread.Sleep(1 + scanSpeed);
+                            }
+                        }
+                        // move to the next memory chunk
+                        proc_min_address_l += mem_basic_info.RegionSize;
+                    }
+                } catch {
+                    return;
+                }
+            }
+        }
+
         private Dictionary<string, List<string>> totalLooks = new Dictionary<string, List<string>>();
         private HashSet<string> levelAdvances = new HashSet<string>();
         private Dictionary<int, MemoryChunkInformation> memorySegmentTimes = new Dictionary<int, MemoryChunkInformation>();
@@ -125,69 +213,60 @@ namespace Tibialyzer {
 
             long proc_min_address_l = (long)proc_min_address;
             long proc_max_address_l = (long)proc_max_address;
-            Process process = GetTibiaProcess();
-            if (process == null) {
+            Process[] processes = GetTibiaProcesses();
+            if (processes == null || processes.Length == 0) {
                 // Tibia process could not be found, wait for a bit and return
                 Thread.Sleep(250);
                 return null;
             }
-            flashClient = TibiaClientName.ToLower().Contains("flash") || TibiaClientName.ToLower().Contains("chrome");
-            IntPtr processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
-            MEMORY_BASIC_INFORMATION mem_basic_info = new MEMORY_BASIC_INFORMATION();
-            int bytesRead = 0;  // number of bytes read with ReadProcessMemory
             int scanSpeed = SettingsManager.getSettingInt("ScanSpeed");
             Stopwatch sw = Stopwatch.StartNew();
-            try {
-                results = new ReadMemoryResults();
-                while (proc_min_address_l < proc_max_address_l) {
-                    proc_min_address = new IntPtr(proc_min_address_l);
-                    // 28 = sizeof(MEMORY_BASIC_INFORMATION)
+            results = new ReadMemoryResults();
+            flashClient = TibiaClientName.ToLower().Contains("flash") || TibiaClientName.ToLower().Contains("chrome");
+            foreach(Process process in processes) {
+                if (!whitelistedAddresses.ContainsKey(process.Id)) continue;
+                List<long> whitelist = whitelistedAddresses[process.Id];
+
+                IntPtr processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
+                MEMORY_BASIC_INFORMATION mem_basic_info = new MEMORY_BASIC_INFORMATION();
+
+                int bytesRead = 0;  // number of bytes read with ReadProcessMemory
+                for (int i = 0; i < whitelist.Count; i++) {
+                    long addr = whitelist[i];
+                    if (addr < 0) continue;
+
+                    proc_min_address = new IntPtr(addr);
+
                     VirtualQueryEx(processHandle, proc_min_address, out mem_basic_info, 28);
 
-                    // check if this memory chunk is accessible
                     if (mem_basic_info.Protect == PAGE_READWRITE && mem_basic_info.State == MEM_COMMIT) {
-                        if (!memorySegmentTimes.ContainsKey(mem_basic_info.BaseAddress)) {
-                            memorySegmentTimes.Add(mem_basic_info.BaseAddress, new MemoryChunkInformation { count = 0, maxcount = 1 });
-                        }
-                        MemoryChunkInformation chunkInformation = memorySegmentTimes[mem_basic_info.BaseAddress];
-                        if (chunkInformation.count == 0) {
-                            byte[] buffer = new byte[mem_basic_info.RegionSize];
+                        byte[] buffer = new byte[mem_basic_info.RegionSize];
 
-                            // read everything in the buffer above
-                            ReadProcessMemory((int)processHandle, mem_basic_info.BaseAddress, buffer, mem_basic_info.RegionSize, ref bytesRead);
-                            // scan the memory for strings that start with timestamps and end with the null terminator ('\0')
-                            IEnumerable<string> timestampLines;
-                            if (!flashClient) {
-                                timestampLines = Parser.FindTimestamps(buffer);
-                            } else {
-                                timestampLines = Parser.FindTimestampsFlash(buffer);
-                            }
-
-                            if (!SearchChunk(timestampLines, results)) {
-                                chunkInformation.count = Constants.Random.Next(1, chunkInformation.maxcount);
-                                chunkInformation.maxcount = Math.Min(chunkInformation.maxcount + 1, 20);
-                            } else {
-                                chunkInformation.maxcount = 1;
-                            }
-                            // performance throttling sleep after every scan (depending on scanSpeed setting)
-                            if (scanSpeed > 0) {
-                                Thread.Sleep(scanSpeed);
-                            }
+                        // read everything in the buffer above
+                        ReadProcessMemory((int)processHandle, mem_basic_info.BaseAddress, buffer, mem_basic_info.RegionSize, ref bytesRead);
+                        // scan the memory for strings that start with timestamps and end with the null terminator ('\0')
+                        IEnumerable<string> timestampLines;
+                        if (!flashClient) {
+                            timestampLines = Parser.FindTimestamps(buffer);
                         } else {
-                            chunkInformation.count -= 1;
+                            timestampLines = Parser.FindTimestampsFlash(buffer);
+                        }
+
+                        if (!SearchChunk(timestampLines, results)) {
+                            whitelist[i] = -1;
+                        }
+
+                        // performance throttling sleep after every scan (depending on scanSpeed setting)
+                        if (scanSpeed > 0) {
+                            Thread.Sleep(scanSpeed);
                         }
                     }
-
-                    // move to the next memory chunk
-                    proc_min_address_l += mem_basic_info.RegionSize;
                 }
-            } catch {
-                return null;
+                process.Dispose();
             }
             sw.Stop();
             Console.WriteLine("Time taken: {0}ms", sw.Elapsed.TotalMilliseconds);
 
-            process.Dispose();
             FinalCleanup(results);
             return results;
         }
@@ -221,7 +300,7 @@ namespace Tibialyzer {
             }
             return stamps;
         }
-        
+
         private List<int> getLatestStamps(int count, int ignoreStamp = -1) {
             var time = DateTime.Now;
             int hour = time.Hour;
@@ -246,7 +325,7 @@ namespace Tibialyzer {
             var t = DateTime.Now;
             return t.Year * 400 + t.Month * 40 + t.Day;
         }
-        
+
         void saveLog(Hunt h, string logPath) {
             StreamWriter streamWriter = new StreamWriter(logPath);
 
@@ -293,7 +372,7 @@ namespace Tibialyzer {
             }
             return results;
         }
-        
+
         private void insertSkin(Creature cr, int count = 1) {
             var time = DateTime.Now;
             int hour = time.Hour;
@@ -328,7 +407,7 @@ namespace Tibialyzer {
                 LootDatabaseManager.InsertMessage(h, stamp, hour, minute, message);
             }
         }
-        
+
         private Stopwatch readWatch = new Stopwatch();
 
         double ticksSinceExperience = 120;
@@ -513,7 +592,7 @@ namespace Tibialyzer {
                 return null;
             }
         }
-        
+
         private void FinalCleanup(ReadMemoryResults res) {
             foreach (KeyValuePair<string, List<Tuple<string, string>>> kvp in res.commands) {
                 string time = kvp.Key;

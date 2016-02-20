@@ -116,6 +116,10 @@ namespace Tibialyzer {
             BackgroundWorker bw = new BackgroundWorker();
             bw.DoWork += bw_DoWork;
             bw.RunWorkerAsync();
+            
+            BackgroundWorker bwMissingChunks = new BackgroundWorker();
+            bwMissingChunks.DoWork += BwMissingChunks_DoWork;
+            bwMissingChunks.RunWorkerAsync();
 
             MaximumNotificationDuration = notificationDurationBox.Maximum;
             scan_tooltip.AutoPopDelay = 60000;
@@ -129,6 +133,7 @@ namespace Tibialyzer {
             this.loadTimerImage.Enabled = true;
             scan_tooltip.SetToolTip(this.loadTimerImage, "No Tibia Client Found...");
         }
+
 
         private void UpdateLootDisplay() {
             for (int i = 0; i < NotificationFormGroups.Length; i++) {
@@ -708,6 +713,12 @@ namespace Tibialyzer {
                         });
                     }
                 }
+            }
+        }
+        
+        private void BwMissingChunks_DoWork(object sender, DoWorkEventArgs e) {
+            while (true) {
+                ScanMissingChunks();
             }
         }
 
@@ -2987,20 +2998,10 @@ namespace Tibialyzer {
             List<Process> candidateProcesses = new List<Process>();
             foreach (Process p in Process.GetProcesses()) {
                 if (p.ProcessName.ToLower().Contains("flash")) {
-                    candidateProcesses.Add(p);
+                    TibiaClientName = p.ProcessName;
+                    TibiaProcessId = -1;
+                    break;
                 }
-            }
-            DateTime date = DateTime.Today;
-            Process flashClient = null;
-            foreach (Process p in candidateProcesses) {
-                if (flashClient == null || p.StartTime > date) {
-                    date = p.StartTime;
-                    flashClient = p;
-                }
-            }
-            if (flashClient != null) {
-                TibiaClientName = flashClient.ProcessName;
-                TibiaProcessId = flashClient.Id;
             }
         }
 
