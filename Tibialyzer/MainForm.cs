@@ -39,10 +39,8 @@ namespace Tibialyzer {
 
         private NotificationForm[] NotificationFormGroups = new NotificationForm[10];
         
-        private bool keep_working = true;
         private bool prevent_settings_update = false;
         private bool minimize_notification = true;        
-        public List<string> notification_items = new List<string>();
         private ToolTip scan_tooltip = new ToolTip();
         private Stack<TibialyzerCommand> command_stack = new Stack<TibialyzerCommand>();
         public static List<string> NotificationTypes = new List<string> { "Loot Notification", "Damage Notification", "Object List", "City Information", "Creature Loot Information", "Creature Stats Information", "Hunt Information", "Item Information", "NPC Information", "Outfit Information", "Quest Information", "Spell Information", "Quest/Hunt Directions", "Task Form" };
@@ -785,7 +783,7 @@ namespace Tibialyzer {
 
         System.Timers.Timer circleTimer = null;
         void bw_DoWork(object sender, DoWorkEventArgs e) {
-            while (keep_working) {
+            while (true) {
                 if (circleTimer == null) {
                     circleTimer = new System.Timers.Timer(10000);
                     circleTimer.Elapsed += circleTimer_Elapsed;
