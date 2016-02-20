@@ -371,6 +371,7 @@
             // 
             this.scanningSpeedTrack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.scanningSpeedTrack.Location = new System.Drawing.Point(6, 267);
+            this.scanningSpeedTrack.Maximum = 100;
             this.scanningSpeedTrack.Name = "scanningSpeedTrack";
             this.scanningSpeedTrack.Size = new System.Drawing.Size(528, 45);
             this.scanningSpeedTrack.TabIndex = 2;

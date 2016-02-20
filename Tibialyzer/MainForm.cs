@@ -407,7 +407,7 @@ namespace Tibialyzer {
             }
 
             this.scanningSpeedTrack.Value = Math.Min(Math.Max(SettingsManager.getSettingInt("ScanSpeed"), scanningSpeedTrack.Minimum), scanningSpeedTrack.Maximum);
-            this.scanSpeedDisplayLabel.Text = scanSpeedText[scanningSpeedTrack.Value];
+            this.scanSpeedDisplayLabel.Text = Constants.ScanSpeedText[scanningSpeedTrack.Value / 10] + String.Format("({0})", scanningSpeedTrack.Value);
 
             string massiveString = "";
             foreach (string str in SettingsManager.getSetting("AutoHotkeySettings")) {
@@ -2431,7 +2431,7 @@ namespace Tibialyzer {
         private void ShowSuspendedWindow(bool alwaysShow = false) {
             lock (suspendedLock) {
                 if (window != null) {
-                    window.CloseForm();
+                    window.Close();
                     window = null;
                 }
                 Screen screen;
@@ -2478,7 +2478,7 @@ namespace Tibialyzer {
         private void CloseSuspendedWindow() {
             lock(suspendedLock) {
                 if (window != null) {
-                    window.CloseForm();
+                    window.Close();
                     window = null;
                 }
             }
@@ -2490,14 +2490,12 @@ namespace Tibialyzer {
             shutdownAutoHotkey_Click(null, null);
             initializeSettings();
         }
-
-        public string[] scanSpeedText = { "Fastest (10)", "Fast (9)", "Fast (8)", "Fast (7)", "Medium (6)", "Medium (5)", "Medium (4)", "Slow (3)", "Slow (2)", "Slow (1)", "Slowest (0)" };
-
+        
         private void scanningSpeedTrack_Scroll(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
             SettingsManager.setSetting("ScanSpeed", scanningSpeedTrack.Value);
-            scanSpeedDisplayLabel.Text = scanSpeedText[scanningSpeedTrack.Value];
+            scanSpeedDisplayLabel.Text = Constants.ScanSpeedText[scanningSpeedTrack.Value / 10] + String.Format("({0})", scanningSpeedTrack.Value);
         }
 
         private void showLootButton_Click(object sender, EventArgs e) {

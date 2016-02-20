@@ -46,5 +46,8 @@ namespace Tibialyzer {
             { "veins of", "vein of" },
             { "bowls of", "bowl of" }
         };
+
+
+        public static string[] ScanSpeedText = { "Fastest", "Fast", "Fast", "Fast", "Medium", "Medium", "Medium", "Slow", "Slow", "Slow", "Slowest" };
     }
 }
