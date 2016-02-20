@@ -56,7 +56,7 @@ namespace Tibialyzer {
             if (split.Length >= 4) {
                 rawName = split[3];
             }
-            lootCreature = MainForm.getCreature(creatureName);
+            lootCreature = StorageManager.getCreature(creatureName);
             InitializeComponent();
             value_tooltip.AutoPopDelay = 60000;
             value_tooltip.InitialDelay = 500;
@@ -114,7 +114,7 @@ namespace Tibialyzer {
                 if (!hunt.trackAllCreatures && hunt.trackedCreatures.Length > 0) {
                     displayedCreatures = new List<Creature>();
                     foreach (string creature in hunt.lootCreatures) {
-                        Creature cr = MainForm.getCreature(creature.ToLower());
+                        Creature cr = StorageManager.getCreature(creature.ToLower());
                         if (cr != null) {
                             displayedCreatures.Add(cr);
                         }
@@ -179,15 +179,15 @@ namespace Tibialyzer {
                 // handle coin drops, we always convert the gold to the highest possible denomination (so if gold = 10K, we display a crystal coin)
                 long currentGold = extraGold;
                 if (currentGold > 10000) {
-                    itemDrops.Add(new Tuple<Item, int>(MainForm.getItem("crystal coin"), (int)(currentGold / 10000)));
+                    itemDrops.Add(new Tuple<Item, int>(StorageManager.getItem("crystal coin"), (int)(currentGold / 10000)));
                     currentGold = currentGold % 10000;
                 }
                 if (currentGold > 100) {
-                    itemDrops.Add(new Tuple<Item, int>(MainForm.getItem("platinum coin"), (int)(currentGold / 100)));
+                    itemDrops.Add(new Tuple<Item, int>(StorageManager.getItem("platinum coin"), (int)(currentGold / 100)));
                     currentGold = currentGold % 100;
                 }
                 if (currentGold > 0) {
-                    itemDrops.Add(new Tuple<Item, int>(MainForm.getItem("gold coin"), (int)(currentGold)));
+                    itemDrops.Add(new Tuple<Item, int>(StorageManager.getItem("gold coin"), (int)(currentGold)));
                 }
 
                 // now order by value so most valuable items are placed first
@@ -243,7 +243,7 @@ namespace Tibialyzer {
             foreach (KeyValuePair<Creature, int> tpl in creatures) {
                 double average = 0;
                 foreach (ItemDrop dr in tpl.Key.itemdrops) {
-                    Item it = MainForm.getItem(dr.itemid);
+                    Item it = StorageManager.getItem(dr.itemid);
                     if (!it.discard && it.GetMaxValue() > 0 && dr.percentage > 0) {
                         average += ((dr.min + dr.max) / 2.0) * (dr.percentage / 100.0) * it.GetMaxValue();
                     }

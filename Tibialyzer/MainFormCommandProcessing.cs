@@ -46,11 +46,11 @@ namespace Tibialyzer {
                 if (comp.StartsWith("creature" + MainForm.commandSymbol)) { //creature@
                     string[] split = command.Split(commandSymbol);
                     string parameter = split[1].Trim().ToLower();
-                    Creature cr = getCreature(parameter);
+                    Creature cr = StorageManager.getCreature(parameter);
                     if (cr != null) {
                         ShowCreatureDrops(cr, command);
                     } else {
-                        List<TibiaObject> creatures = searchCreature(parameter);
+                        List<TibiaObject> creatures = StorageManager.searchCreature(parameter);
                         if (creatures.Count == 1) {
                             ShowCreatureDrops(creatures[0].AsCreature(), command);
                         } else if (creatures.Count > 1) {
@@ -70,12 +70,12 @@ namespace Tibialyzer {
                             if (!totalLooks.ContainsKey(t)) continue;
                             foreach (string message in totalLooks[t]) {
                                 string itemName = parseLookItem(message).ToLower();
-                                Item item = getItem(itemName);
+                                Item item = StorageManager.getItem(itemName);
 
                                 if (item != null) {
                                     items.Add(item);
                                 } else {
-                                    Creature cr = getCreature(itemName);
+                                    Creature cr = StorageManager.getCreature(itemName);
                                     if (cr != null) {
                                         items.Add(cr);
                                     }
@@ -94,7 +94,7 @@ namespace Tibialyzer {
                     }
                 } else if (comp.StartsWith("stats" + MainForm.commandSymbol)) { //stats@
                     string name = command.Split(commandSymbol)[1].Trim().ToLower();
-                    Creature cr = getCreature(name);
+                    Creature cr = StorageManager.getCreature(name);
                     if (cr != null) {
                         ShowCreatureStats(cr, command);
                     }
@@ -112,7 +112,7 @@ namespace Tibialyzer {
                     if (int.TryParse(parameter, out killCount)) {
                         deleteCreatureWithThreshold(killCount);
                     } else {
-                        Creature cr = getCreature(parameter);
+                        Creature cr = StorageManager.getCreature(parameter);
                         if (cr != null) {
                             deleteCreatureFromLog(cr);
                         }
@@ -121,7 +121,7 @@ namespace Tibialyzer {
                     string[] split = command.Split(commandSymbol);
                     string parameter = split[1].Trim().ToLower();
                     int count = 1;
-                    Creature cr = getCreature(parameter);
+                    Creature cr = StorageManager.getCreature(parameter);
                     if (cr != null) {
                         if (split.Length > 2)
                             int.TryParse(split[2], out count);
@@ -144,8 +144,8 @@ namespace Tibialyzer {
                     }
                 } else if (comp.StartsWith("city" + MainForm.commandSymbol)) { //city@
                     string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                    if (cityNameMap.ContainsKey(parameter)) {
-                        City city = cityNameMap[parameter];
+                    if (StorageManager.cityNameMap.ContainsKey(parameter)) {
+                        City city = StorageManager.cityNameMap[parameter];
                         ShowCityDisplayForm(city, command);
                     }
                 } else if (comp.StartsWith("damage" + MainForm.commandSymbol)) { //damage@
@@ -205,7 +205,7 @@ namespace Tibialyzer {
                         Clipboard.SetText(damageString.Substring(0, damageString.Length - 2));
                         return true;
                     } else if (creatureName != "") {
-                        lootCreature = getCreature(creatureName);
+                        lootCreature = StorageManager.getCreature(creatureName);
                     }
 
                     var tpl = LootDropForm.GenerateLootInformation(activeHunt, "", lootCreature);
@@ -279,13 +279,13 @@ namespace Tibialyzer {
                     ShowItemNotification(command);
                 } else if (comp.StartsWith("task" + MainForm.commandSymbol)) { //task@
                     string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                    if (taskList.Keys.Contains(parameter)) {
-                        ShowCreatureList(taskList[parameter].ToList<TibiaObject>(), taskList[parameter][0].groupname, command);
+                    if (StorageManager.taskList.Keys.Contains(parameter)) {
+                        ShowCreatureList(StorageManager.taskList[parameter].ToList<TibiaObject>(), StorageManager.taskList[parameter][0].groupname, command);
                     } else {
                         int id = -1;
                         int.TryParse(parameter, out id);
                         List<TibiaObject> tasks = new List<TibiaObject>();
-                        foreach (KeyValuePair<string, List<Task>> kvp in taskList) {
+                        foreach (KeyValuePair<string, List<Task>> kvp in StorageManager.taskList) {
                             foreach (Task t in kvp.Value) {
                                 if (id >= 0 && t.id == id) {
                                     ShowTaskNotification(t, command);
@@ -307,7 +307,7 @@ namespace Tibialyzer {
                 } else if (comp.StartsWith("category" + MainForm.commandSymbol)) { //category@
                                                                                    // list all items with the specified category
                     string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                    List<TibiaObject> items = getItemsByCategory(parameter);
+                    List<TibiaObject> items = StorageManager.getItemsByCategory(parameter);
                     if (items.Count == 1) {
                         ShowItemNotification("item" + MainForm.commandSymbol + items[0].GetName().ToLower());
                     } else if (items.Count > 1) {
@@ -319,18 +319,18 @@ namespace Tibialyzer {
                     int page = 0;
                     if (splits.Length > 2 && int.TryParse(splits[2], out page)) { }
                     if (cities.Contains(parameter)) {
-                        List<HuntingPlace> huntingPlaces = getHuntsInCity(parameter);
+                        List<HuntingPlace> huntingPlaces = StorageManager.getHuntsInCity(parameter);
                         ShowCreatureList(huntingPlaces.ToList<TibiaObject>(), "Hunts in " + parameter, command);
                         return true;
                     }
-                    HuntingPlace h = getHunt(parameter);
+                    HuntingPlace h = StorageManager.getHunt(parameter);
                     if (h != null) {
                         ShowHuntingPlace(h, command);
                         return true;
                     }
-                    Creature cr = getCreature(parameter);
+                    Creature cr = StorageManager.getCreature(parameter);
                     if (cr != null) {
-                        List<HuntingPlace> huntingPlaces = getHuntsForCreature(cr.id);
+                        List<HuntingPlace> huntingPlaces = StorageManager.getHuntsForCreature(cr.id);
                         ShowCreatureList(huntingPlaces.ToList<TibiaObject>(), "Hunts containing creature " + ToTitle(parameter), command);
                         return true;
                     }
@@ -345,13 +345,13 @@ namespace Tibialyzer {
                         int.TryParse(split[1].Trim(), out maxlevel);
                     }
                     if (minlevel >= 0 && maxlevel >= 0) {
-                        List<HuntingPlace> huntingPlaces = getHuntsForLevels(minlevel, maxlevel);
+                        List<HuntingPlace> huntingPlaces = StorageManager.getHuntsForLevels(minlevel, maxlevel);
                         huntingPlaces = huntingPlaces.OrderBy(o => o.level).ToList();
                         ShowCreatureList(huntingPlaces.ToList<TibiaObject>(), "Hunts between levels " + minlevel.ToString() + "-" + maxlevel.ToString(), command);
                         return true;
                     } else {
                         string title;
-                        List<HuntingPlace> huntList = searchHunt(parameter);
+                        List<HuntingPlace> huntList = StorageManager.searchHunt(parameter);
                         title = "Hunts Containing \"" + parameter + "\"";
                         if (huntList.Count == 1) {
                             ShowHuntingPlace(huntList[0], command);
@@ -361,13 +361,13 @@ namespace Tibialyzer {
                     }
                 } else if (comp.StartsWith("npc" + MainForm.commandSymbol)) { //npc@
                     string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                    NPC npc = getNPC(parameter);
+                    NPC npc = StorageManager.getNPC(parameter);
                     if (npc != null) {
                         ShowNPCForm(npc, command);
                     } else if (cities.Contains(parameter)) {
-                        ShowCreatureList(getNPCWithCity(parameter), "NPC List", command);
+                        ShowCreatureList(StorageManager.getNPCWithCity(parameter), "NPC List", command);
                     } else {
-                        ShowCreatureList(searchNPC(parameter), "NPC List", command);
+                        ShowCreatureList(StorageManager.searchNPC(parameter), "NPC List", command);
                     }
                 } else if (comp.StartsWith("savelog" + MainForm.commandSymbol)) {
                     saveLog(activeHunt, command.Split(commandSymbol)[1].Trim().Replace("'", "\\'"));
@@ -376,7 +376,7 @@ namespace Tibialyzer {
                 } else if (comp.StartsWith("setdiscardgoldratio" + MainForm.commandSymbol)) {
                     double val;
                     if (double.TryParse(command.Split(commandSymbol)[1].Trim(), out val)) {
-                        setGoldRatio(val);
+                        StorageManager.setGoldRatio(val);
                     }
                 } else if (comp.StartsWith("wiki" + MainForm.commandSymbol)) {
                     string parameter = command.Split(commandSymbol)[1].Trim();
@@ -399,7 +399,7 @@ namespace Tibialyzer {
                     if (split[0] == "1") stackable = 1;
                     double val;
                     if (double.TryParse(split[1], out val)) {
-                        setConvertRatio(val, stackable == 1);
+                        StorageManager.setConvertRatio(val, stackable == 1);
                     }
                 } else if (comp.StartsWith("recent" + MainForm.commandSymbol) || comp.StartsWith("url" + MainForm.commandSymbol) || comp.StartsWith("last" + MainForm.commandSymbol)) {
                     bool url = comp.StartsWith("url" + MainForm.commandSymbol);
@@ -433,19 +433,19 @@ namespace Tibialyzer {
                     string parameter = splits[1].Trim().ToLower();
                     int initialVocation = -1;
                     if (splits.Length > 2 && int.TryParse(splits[2], out initialVocation)) { }
-                    Spell spell = getSpell(parameter);
+                    Spell spell = StorageManager.getSpell(parameter);
                     if (spell != null) {
                         ShowSpellNotification(spell, initialVocation, command);
                     } else {
                         List<TibiaObject> spellList = new List<TibiaObject>();
                         string title;
                         if (Constants.vocations.Contains(parameter)) {
-                            spellList = getSpellsForVocation(parameter);
+                            spellList = StorageManager.getSpellsForVocation(parameter);
                             title = ToTitle(parameter) + " Spells";
                         } else {
-                            spellList = searchSpell(parameter);
+                            spellList = StorageManager.searchSpell(parameter);
                             if (spellList.Count == 0) {
-                                spellList = searchSpellWords(parameter);
+                                spellList = StorageManager.searchSpellWords(parameter);
                             }
                             title = "Spells Containing \"" + parameter + "\"";
                         }
@@ -457,12 +457,12 @@ namespace Tibialyzer {
                     }
                 } else if (comp.StartsWith("outfit" + MainForm.commandSymbol)) { // outfit@
                     string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                    Outfit outfit = getOutfit(parameter);
+                    Outfit outfit = StorageManager.getOutfit(parameter);
                     if (outfit != null) {
                         ShowOutfitNotification(outfit, command);
                     } else {
                         string title;
-                        List<TibiaObject> outfitList = searchOutfit(parameter);
+                        List<TibiaObject> outfitList = StorageManager.searchOutfit(parameter);
                         title = "Outfits Containing \"" + parameter + "\"";
                         if (outfitList.Count == 1) {
                             ShowOutfitNotification(outfitList[0].AsOutfit(), command);
@@ -476,13 +476,13 @@ namespace Tibialyzer {
                     int page = 0;
                     if (splits.Length > 2 && int.TryParse(splits[2], out page)) { }
                     List<Quest> questList = new List<Quest>();
-                    if (questNameMap.ContainsKey(parameter)) {
-                        ShowQuestNotification(questNameMap[parameter], command);
+                    if (StorageManager.questNameMap.ContainsKey(parameter)) {
+                        ShowQuestNotification(StorageManager.questNameMap[parameter], command);
                     } else {
                         string title;
                         if (cities.Contains(parameter)) {
                             title = "Quests In " + parameter;
-                            foreach (Quest q in questIdMap.Values) {
+                            foreach (Quest q in StorageManager.questIdMap.Values) {
                                 if (q.city.ToLower() == parameter) {
                                     questList.Add(q);
                                 }
@@ -490,7 +490,7 @@ namespace Tibialyzer {
                         } else {
                             title = "Quests Containing \"" + parameter + "\"";
                             string[] splitStrings = parameter.Split(' ');
-                            foreach (Quest quest in questIdMap.Values) {
+                            foreach (Quest quest in StorageManager.questIdMap.Values) {
                                 bool found = true;
                                 foreach (string str in splitStrings) {
                                     if (!quest.name.ToLower().Contains(str)) {
@@ -518,11 +518,11 @@ namespace Tibialyzer {
                     if (splits.Length > 2 && int.TryParse(splits[2], out page)) { }
                     if (splits.Length > 3) { mission = splits[3]; }
                     List<Quest> questList = new List<Quest>();
-                    if (questNameMap.ContainsKey(parameter)) {
-                        ShowQuestGuideNotification(questNameMap[parameter], command, page, mission);
+                    if (StorageManager.questNameMap.ContainsKey(parameter)) {
+                        ShowQuestGuideNotification(StorageManager.questNameMap[parameter], command, page, mission);
                     } else {
                         string title;
-                        foreach (Quest quest in questIdMap.Values) {
+                        foreach (Quest quest in StorageManager.questIdMap.Values) {
                             if (quest.name.ToLower().Contains(parameter)) {
                                 questList.Add(quest);
                             }
@@ -540,12 +540,12 @@ namespace Tibialyzer {
                     int page = 0;
                     if (splits.Length > 2 && int.TryParse(splits[2], out page)) { }
                     List<HuntingPlace> huntList = new List<HuntingPlace>();
-                    HuntingPlace h = getHunt(parameter);
+                    HuntingPlace h = StorageManager.getHunt(parameter);
                     if (h != null) {
                         ShowHuntGuideNotification(h, command, page);
                     } else {
                         string title;
-                        huntList = searchHunt(parameter);
+                        huntList = StorageManager.searchHunt(parameter);
                         title = "Hunts Containing \"" + parameter + "\"";
                         if (huntList.Count == 1) {
                             ShowHuntGuideNotification(huntList[0], command, page);
@@ -555,12 +555,12 @@ namespace Tibialyzer {
                     }
                 } else if (comp.StartsWith("mount" + MainForm.commandSymbol)) { // mount@
                     string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                    Mount m = getMount(parameter);
+                    Mount m = StorageManager.getMount(parameter);
                     if (m != null) {
                         ShowMountNotification(m, command);
                     } else {
                         string title;
-                        List<TibiaObject> mountList = searchMount(parameter);
+                        List<TibiaObject> mountList = StorageManager.searchMount(parameter);
                         title = "Mounts Containing \"" + parameter + "\"";
                         if (mountList.Count == 1) {
                             ShowMountNotification(mountList[0].AsMount(), command);
@@ -570,27 +570,27 @@ namespace Tibialyzer {
                     }
                 } else if (comp.StartsWith("pickup" + MainForm.commandSymbol)) {
                     string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                    Item item = getItem(parameter);
+                    Item item = StorageManager.getItem(parameter);
                     if (item != null) {
-                        setItemDiscard(item, false);
+                        StorageManager.setItemDiscard(item, false);
                     }
                 } else if (comp.StartsWith("nopickup" + MainForm.commandSymbol)) {
                     string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                    Item item = getItem(parameter);
+                    Item item = StorageManager.getItem(parameter);
                     if (item != null) {
-                        setItemDiscard(item, true);
+                        StorageManager.setItemDiscard(item, true);
                     }
                 } else if (comp.StartsWith("convert" + MainForm.commandSymbol)) {
                     string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                    Item item = getItem(parameter);
+                    Item item = StorageManager.getItem(parameter);
                     if (item != null) {
-                        setItemConvert(item, true);
+                        StorageManager.setItemConvert(item, true);
                     }
                 } else if (comp.StartsWith("noconvert" + MainForm.commandSymbol)) {
                     string parameter = command.Split(commandSymbol)[1].Trim().ToLower();
-                    Item item = getItem(parameter);
+                    Item item = StorageManager.getItem(parameter);
                     if (item != null) {
-                        setItemConvert(item, false);
+                        StorageManager.setItemConvert(item, false);
                     }
                 } else if (comp.StartsWith("setval" + MainForm.commandSymbol)) {
                     string parameter = command.Split(commandSymbol)[1].Trim();
@@ -599,9 +599,9 @@ namespace Tibialyzer {
                     string item = split[0].Trim().ToLower().Replace("'", "\\'");
                     long value = 0;
                     if (long.TryParse(split[1].Trim(), out value)) {
-                        Item it = getItem(split[0]);
+                        Item it = StorageManager.getItem(split[0]);
                         if (it != null) {
-                            setItemValue(it, value);
+                            StorageManager.setItemValue(it, value);
                         }
                     }
                 } else if (comp.StartsWith("screenshot" + MainForm.commandSymbol)) {
@@ -611,16 +611,16 @@ namespace Tibialyzer {
                     foreach (string city in cities) {
                         if (comp.StartsWith(city + MainForm.commandSymbol)) {
                             string itemName = command.Split(commandSymbol)[1].Trim().ToLower();
-                            Item item = getItem(itemName);
+                            Item item = StorageManager.getItem(itemName);
                             if (item != null) {
-                                NPC npc = getNPCSellingItemInCity(item.id, city);
+                                NPC npc = StorageManager.getNPCSellingItemInCity(item.id, city);
                                 if (npc != null) {
                                     ShowNPCForm(npc, command);
                                 }
                             } else {
-                                Spell spell = getSpell(itemName);
+                                Spell spell = StorageManager.getSpell(itemName);
                                 if (spell != null) {
-                                    NPC npc = getNPCTeachingSpellInCity(spell.id, city);
+                                    NPC npc = StorageManager.getNPCTeachingSpellInCity(spell.id, city);
                                     if (npc != null) {
                                         ShowNPCForm(npc, command);
                                     }
@@ -718,7 +718,7 @@ namespace Tibialyzer {
                     if (SettingsManager.getSettingBool("EnableEventNotifications")) {
                         foreach (Tuple<Event, string> tpl in parseMemoryResults.newEventMessages) {
                             Event ev = tpl.Item1;
-                            Creature cr = getCreature(ev.creatureid);
+                            Creature cr = StorageManager.getCreature(ev.creatureid);
                             this.Invoke((MethodInvoker)delegate {
                                 if (!SettingsManager.getSettingBool("UseRichNotificationType")) {
                                     ShowSimpleNotification("Event in " + ev.location, tpl.Item2, cr.image);
@@ -735,18 +735,18 @@ namespace Tibialyzer {
             if (SettingsManager.getSettingBool("LookMode") && readMemoryResults != null) {
                 foreach (string msg in parseMemoryResults.newLooks) {
                     string itemName = parseLookItem(msg).ToLower();
-                    if (itemExists(itemName)) {
+                    if (StorageManager.itemExists(itemName)) {
                         this.Invoke((MethodInvoker)delegate {
                             this.ExecuteCommand("item@" + itemName);
                         });
-                    } else if (creatureExists(itemName) ||
-                        (itemName.Contains("dead ") && (itemName = itemName.Replace("dead ", "")) != null && creatureExists(itemName)) ||
-                        (itemName.Contains("slain ") && (itemName = itemName.Replace("slain ", "")) != null && creatureExists(itemName))) {
+                    } else if (StorageManager.creatureExists(itemName) ||
+                        (itemName.Contains("dead ") && (itemName = itemName.Replace("dead ", "")) != null && StorageManager.creatureExists(itemName)) ||
+                        (itemName.Contains("slain ") && (itemName = itemName.Replace("slain ", "")) != null && StorageManager.creatureExists(itemName))) {
                         this.Invoke((MethodInvoker)delegate {
                             this.ExecuteCommand("creature@" + itemName);
                         });
                     } else {
-                        NPC npc = getNPC(itemName);
+                        NPC npc = StorageManager.getNPC(itemName);
                         if (npc != null) {
                             this.Invoke((MethodInvoker)delegate {
                                 this.ExecuteCommand("npc@" + itemName);
@@ -774,7 +774,7 @@ namespace Tibialyzer {
             if (parseMemoryResults != null) {
                 if (parseMemoryResults.newItems.Count > 0) {
                     this.Invoke((MethodInvoker)delegate {
-                        LootChanged();
+                        LootDatabaseManager.UpdateLoot();
                     });
                 }
                 foreach (Tuple<Creature, List<Tuple<Item, int>>> tpl in parseMemoryResults.newItems) {
@@ -828,9 +828,9 @@ namespace Tibialyzer {
             if (splits.Length > 2 && int.TryParse(splits[2], out currentPage)) { }
             int currentDisplay = -1;
             if (splits.Length > 3 && int.TryParse(splits[3], out currentDisplay)) { }
-            Item item = getItem(parameter);
+            Item item = StorageManager.getItem(parameter);
             if (item == null) {
-                List<TibiaObject> items = searchItem(parameter);
+                List<TibiaObject> items = StorageManager.searchItem(parameter);
                 if (items.Count == 0) {
                     return;
                 } else if (items.Count > 1) {

@@ -197,7 +197,7 @@ namespace Tibialyzer {
 
             List<TibiaObject> rewards = new List<TibiaObject>();
             foreach(int reward in quest.rewardItems) {
-                Item item = MainForm.getItem(reward);
+                Item item = StorageManager.getItem(reward);
                 rewards.Add(item);
             }
             rewards = rewards.OrderByDescending(o => (o as Item).GetMaxValue()).ToList<TibiaObject>();
@@ -246,7 +246,7 @@ namespace Tibialyzer {
 
                     List<Tuple<int, Item>> requirements = new List<Tuple<int, Item>>();
                     foreach (Tuple<int, int> tpl in quest.questRequirements) {
-                        Item item = MainForm.getItem(tpl.Item2);
+                        Item item = StorageManager.getItem(tpl.Item2);
                         requirements.Add(new Tuple<int, Item>(tpl.Item1, item));
                     }
                     requirements = requirements.OrderBy(o => o.Item1 * o.Item2.GetMaxValue()).ToList();
@@ -283,7 +283,7 @@ namespace Tibialyzer {
                         if (m != null && m.Groups.Count > 1) {
                             string requiredQuestName = m.Groups[1].Value;
                             txt = txt.Replace(m.Groups[0].Value, requiredQuestName);
-                            label.Name = MainForm.getQuest(requiredQuestName.ToLower()).GetCommand();
+                            label.Name = StorageManager.getQuest(requiredQuestName.ToLower()).GetCommand();
                             label.ForeColor = StyleManager.ClickableLinkColor;
                             label.Click += MissionButton_Click;
                         }
@@ -320,7 +320,7 @@ namespace Tibialyzer {
 
                     List<TibiaObject> rewardOutfits = new List<TibiaObject>();
                     foreach (int reward in quest.rewardOutfits) {
-                        Outfit outfit = MainForm.getOutfit(reward);
+                        Outfit outfit = StorageManager.getOutfit(reward);
                         rewardOutfits.Add(outfit);
                     }
 

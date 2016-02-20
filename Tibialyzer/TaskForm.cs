@@ -272,7 +272,7 @@ namespace Tibialyzer {
                 bossInfoLabel.Visible = false;
             }
             mapBox.mapCoordinate = new Coordinate(task.bossposition);
-            mapBox.map = MainForm.getMap(task.bossposition.z);
+            mapBox.map = StorageManager.getMap(task.bossposition.z);
             mapBox.sourceWidth = mapBox.Width;
             mapBox.Click -= c_Click;
             mapBox.UpdateMap();
@@ -295,11 +295,11 @@ namespace Tibialyzer {
             List<TibiaObject> taskCreatures = new List<TibiaObject>();
             if (viewCreatures) {
                 foreach (int creatureid in task.creatures) {
-                    taskCreatures.Add(MainForm.getCreature(creatureid));
+                    taskCreatures.Add(StorageManager.getCreature(creatureid));
                 }
             } else {
                 foreach (int huntid in task.hunts) {
-                    taskCreatures.Add(MainForm.getHunt(huntid));
+                    taskCreatures.Add(StorageManager.getHunt(huntid));
                 }
             }
             int newWidth;

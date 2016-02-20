@@ -210,7 +210,7 @@ namespace Tibialyzer {
             this.femaleAddon3.Image = outfit.femaleImages[3];
 
             if (outfit.questid > 0) {
-                Quest quest = MainForm.getQuest(outfit.questid);
+                Quest quest = StorageManager.getQuest(outfit.questid);
                 this.obtainedLabel.Text = "Rewarded by " + quest.name;
                 obtainedCommand = "quest" + MainForm.commandSymbol + quest.name;
                 this.obtainedLabel.Click += ObtainedLabel_Click;

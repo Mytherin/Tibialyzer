@@ -51,7 +51,7 @@ namespace Tibialyzer {
             List<Tuple<Item, int>> updatedItems = new List<Tuple<Item, int>>();
             foreach (Tuple<Item, int> tpl in items) {
                 if (tpl.Item1.GetName().ToLower() == "gold coin" && tpl.Item2 > 100) {
-                    Item platinumCoin = MainForm.getItem("platinum coin");
+                    Item platinumCoin = StorageManager.getItem("platinum coin");
                     updatedItems.Add(new Tuple<Item, int>(platinumCoin, tpl.Item2 / 100));
                     updatedItems.Add(new Tuple<Item,int>(tpl.Item1, tpl.Item2 % 100));
                 } else {

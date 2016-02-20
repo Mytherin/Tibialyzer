@@ -175,7 +175,7 @@ namespace Tibialyzer {
             List<DamageObject> damageDealt = new List<DamageObject>();
             foreach (KeyValuePair<string, Tuple<int, int>> kvp in dps) {
                 string name = kvp.Key.Replace(".", "").Replace("a ", "").Replace("an ", "");
-                Creature cr = MainForm.getCreature(name);
+                Creature cr = StorageManager.getCreature(name);
                 if (filter != "all" && filter != "creature" && cr != null) continue;
                 if (filter == "creature" && cr == null) continue;
                 damageDealt.Add(new DamageObject() { name = name, totalDamage = kvp.Value.Item1, dps = (double)kvp.Value.Item1 / (double)(kvp.Value.Item2 * 60) });

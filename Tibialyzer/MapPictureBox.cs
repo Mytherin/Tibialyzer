@@ -98,8 +98,8 @@ namespace Tibialyzer {
             }
             if (mapCoordinate.z < 0) {
                 mapCoordinate.z = 0;
-            } else if (mapCoordinate.z >= MainForm.mapFilesCount) {
-                mapCoordinate.z = MainForm.mapFilesCount - 1;
+            } else if (mapCoordinate.z >= StorageManager.mapFilesCount) {
+                mapCoordinate.z = StorageManager.mapFilesCount - 1;
             }
             if (mapCoordinate.x - sourceWidth / 2 < 0) {
                 mapCoordinate.x = sourceWidth / 2;
@@ -121,7 +121,7 @@ namespace Tibialyzer {
                 if (mapCoordinate.z == zCoordinate) {
                     gr.DrawImage(map != null ? map.image : mapImage, new Rectangle(0, 0, bitmap.Width, bitmap.Height), sourceRectangle, GraphicsUnit.Pixel);
                 } else {
-                    Map m = MainForm.getMap(mapCoordinate.z);
+                    Map m = StorageManager.getMap(mapCoordinate.z);
                     if (otherMap != null && m != otherMap) {
                         otherMap.Dispose();
                     }

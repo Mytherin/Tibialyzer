@@ -4,6 +4,8 @@ using System.Data.SQLite;
 namespace Tibialyzer {
     class LootDatabaseManager {
         private static SQLiteConnection lootConn;
+        public delegate void LootChangedHandler();
+        public static event LootChangedHandler LootChanged;
 
         public static void Initialize() {
             lootConn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", Constants.LootDatabaseFile));
@@ -13,6 +15,10 @@ namespace Tibialyzer {
         public static void Close() {
             lootConn.Close();
             lootConn.Dispose();
+        }
+
+        public static void UpdateLoot() {
+            LootChanged();
         }
 
         public static void CreateHuntTable(Hunt hunt) {

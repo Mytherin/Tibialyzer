@@ -34,7 +34,7 @@ namespace Tibialyzer {
         
         private void DisplayItem(ItemDrop drop, int base_x, int base_y, int x, int y, Size item_size, ToolTip droprate_tooltip, int dropbar_height, string prefix = "Drop rate of ") {
 
-            Item dropItem = MainForm.getItem(drop.itemid);
+            Item dropItem = StorageManager.getItem(drop.itemid);
             // the main picture of the item
             PictureBox picture_box = new PictureBox();
             picture_box.Location = new System.Drawing.Point(base_x + x, base_y + y);
@@ -101,7 +101,7 @@ namespace Tibialyzer {
             }
 
             if (creature.skin != null) {
-                Item skinItem = MainForm.getItem(creature.skin.skinitemid);
+                Item skinItem = StorageManager.getItem(creature.skin.skinitemid);
                 ItemDrop skinDrop = new ItemDrop();
                 PictureBox picture_box = new PictureBox();
                 picture_box.Location = new System.Drawing.Point(20, this.huntButton.Location.Y + this.huntButton.Size.Height + 10);

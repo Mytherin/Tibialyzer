@@ -197,7 +197,7 @@ namespace Tibialyzer {
             return new List<string> { "Name", "Prem", "Store", "Quest Name" };
         }
         public override List<Attribute> GetAttributes() {
-            Quest q = MainForm.getQuest(questid);
+            Quest q = StorageManager.getQuest(questid);
             return new List<Attribute> { new StringAttribute(name, 140), new BooleanAttribute(premium), new BooleanAttribute(tibiastore), new StringAttribute(q == null ? "-" : q.name, 100) };
         }
         public override string GetCommand() {
@@ -216,7 +216,7 @@ namespace Tibialyzer {
                 return tibiastore;
             }
             if (hash == hashes[3]) {
-                Quest q = MainForm.getQuest(questid);
+                Quest q = StorageManager.getQuest(questid);
                 if (q == null) return "";
                 return q.name;
             }
@@ -244,8 +244,8 @@ namespace Tibialyzer {
             return headers;
         }
         public override List<Attribute> GetAttributes() {
-            Item i = MainForm.getItem(tameitemid);
-            Creature cr = MainForm.getCreature(tamecreatureid);
+            Item i = StorageManager.getItem(tameitemid);
+            Creature cr = StorageManager.getCreature(tamecreatureid);
             string itemName = i == null ? "-" : MainForm.ToTitle(i.displayname);
             string creatureName = cr == null ? "-" : MainForm.ToTitle(cr.displayname);
             return new List<Attribute> { new StringAttribute(name, 120), new StringAttribute(itemName, 80), new StringAttribute(creatureName, 80), new BooleanAttribute(tibiastore) };
@@ -260,12 +260,12 @@ namespace Tibialyzer {
                 return name;
             }
             if (header == hashes[1]) {
-                Item i = MainForm.getItem(tameitemid);
+                Item i = StorageManager.getItem(tameitemid);
                 if (i == null) return "";
                 return i.displayname;
             }
             if (header == hashes[2]) {
-                Creature cr = MainForm.getCreature(tamecreatureid);
+                Creature cr = StorageManager.getCreature(tamecreatureid);
                 if (cr == null) return "";
                 return cr.displayname;
             }
@@ -329,7 +329,7 @@ namespace Tibialyzer {
             if (this.rewardItems.Count > 0) {
                 List<Item> items = new List<Item>();
                 foreach (int i in this.rewardItems) {
-                    Item item = MainForm.getItem(i);
+                    Item item = StorageManager.getItem(i);
                     items.Add(item);
                 }
                 return items.OrderByDescending(o => o.GetMaxValue()).First();
@@ -339,7 +339,7 @@ namespace Tibialyzer {
 
         public Image GetRewardImage() {
             if (this.rewardOutfits.Count > 0) {
-                Outfit o = MainForm.getOutfit(this.rewardOutfits[0]);
+                Outfit o = StorageManager.getOutfit(this.rewardOutfits[0]);
                 return o.GetImage();
             } else if (this.rewardItems.Count > 0) {
                 Item it = GetRewardItem();
@@ -352,7 +352,7 @@ namespace Tibialyzer {
             if (this.questDangers.Count > 0) {
                 List<Creature> creatures = new List<Creature>();
                 foreach (int i in this.questDangers) {
-                    Creature cr = MainForm.getCreature(i);
+                    Creature cr = StorageManager.getCreature(i);
                     creatures.Add(cr);
                 }
                 return creatures.OrderByDescending(o => o.experience).First();
@@ -665,7 +665,7 @@ namespace Tibialyzer {
         public override string GetName() { return title; }
         public override Image GetImage() {
             if (image == null) {
-                MainForm.loadItemImage(id);
+                StorageManager.loadItemImage(id);
             }
             return image;
         }
@@ -925,7 +925,7 @@ namespace Tibialyzer {
         public override string GetName() { return title; }
         public override Image GetImage() {
             if (image == null) {
-                MainForm.loadCreatureImage(id);
+                StorageManager.loadCreatureImage(id);
             }
             return image;
         }
@@ -977,7 +977,7 @@ namespace Tibialyzer {
 
         public Creature GetBoss() {
             if (bossid < 0) return null;
-            return MainForm.getCreature(bossid);
+            return StorageManager.getCreature(bossid);
         }
 
         public override string GetName() {
@@ -985,7 +985,7 @@ namespace Tibialyzer {
         }
         
         public override Image GetImage() {
-            Creature cr = MainForm.getCreature(creatures[0]);
+            Creature cr = StorageManager.getCreature(creatures[0]);
             return cr.GetImage();
         }
         public override List<string> GetAttributeHeaders() {
@@ -1105,22 +1105,22 @@ namespace Tibialyzer {
             if (tibiaObject == null) {
                 switch (type) {
                     case TibiaObjectType.Creature:
-                        tibiaObject = MainForm.getCreature(id);
+                        tibiaObject = StorageManager.getCreature(id);
                         break;
                     case TibiaObjectType.Item:
-                        tibiaObject = MainForm.getItem(id);
+                        tibiaObject = StorageManager.getItem(id);
                         break;
                     case TibiaObjectType.NPC:
-                        tibiaObject = MainForm.getNPC(id);
+                        tibiaObject = StorageManager.getNPC(id);
                         break;
                     case TibiaObjectType.Mount:
-                        tibiaObject = MainForm.getMount(id);
+                        tibiaObject = StorageManager.getMount(id);
                         break;
                     case TibiaObjectType.Outfit:
-                        tibiaObject = MainForm.getOutfit(id);
+                        tibiaObject = StorageManager.getOutfit(id);
                         break;
                     case TibiaObjectType.Spell:
-                        tibiaObject = MainForm.getSpell(id);
+                        tibiaObject = StorageManager.getSpell(id);
                         break;
                 }
             }

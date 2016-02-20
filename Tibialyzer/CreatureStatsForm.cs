@@ -134,7 +134,7 @@ namespace Tibialyzer {
             double averageGold = 0;
             foreach(ItemDrop itemDrop in creature.itemdrops) {
                 if (itemDrop.percentage > 0) {
-                    Item item = MainForm.getItem(itemDrop.itemid);
+                    Item item = StorageManager.getItem(itemDrop.itemid);
                     averageGold += ((itemDrop.max + itemDrop.min) / 2.0) * itemDrop.percentage * item.GetMaxValue() / 100;
                 }
             }
@@ -183,7 +183,7 @@ namespace Tibialyzer {
             base.NotificationInitialize();
 
             List<Task> involvedTasks = new List<Task>();
-            foreach(KeyValuePair<string, List<Task>> kvp in MainForm.taskList) {
+            foreach(KeyValuePair<string, List<Task>> kvp in StorageManager.taskList) {
                 foreach(Task t in kvp.Value) {
                     if (t.bossid == creature.id) {
                         involvedTasks.Add(t);

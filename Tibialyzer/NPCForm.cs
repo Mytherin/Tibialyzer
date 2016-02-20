@@ -216,7 +216,7 @@ namespace Tibialyzer {
             }
             base_y += 25;
 
-            Map m = MainForm.getMap(npc.pos.z);
+            Map m = StorageManager.getMap(npc.pos.z);
 
             mapBox.map = m;
             mapBox.mapImage = null;

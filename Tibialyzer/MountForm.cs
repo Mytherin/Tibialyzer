@@ -148,8 +148,8 @@ namespace Tibialyzer {
                 this.tameCreatureImageBox.Location = new System.Drawing.Point(this.tameCreatureImageBox.Location.X, this.tameCreatureImageBox.Location.Y - 50);
                 this.tameCreatureLabel.Location = new System.Drawing.Point(this.tameCreatureLabel.Location.X, this.tameCreatureLabel.Location.Y - 50);
             } else if (mount.tamecreatureid > 0 && mount.tameitemid > 0) {
-                Creature tameCreature = MainForm.getCreature(mount.tamecreatureid);
-                Item tameItem = MainForm.getItem(mount.tameitemid);
+                Creature tameCreature = StorageManager.getCreature(mount.tamecreatureid);
+                Item tameItem = StorageManager.getItem(mount.tameitemid);
 
                 this.tameCreatureImageBox.Image = tameCreature.image;
                 this.tameCreatureLabel.Text = MainForm.ToTitle(tameCreature.displayname);

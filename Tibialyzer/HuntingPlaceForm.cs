@@ -381,7 +381,7 @@ namespace Tibialyzer {
 
             List<TibiaObject> creatures = new List<TibiaObject>();
             foreach (int creatureid in hunting_place.creatures) {
-                Creature cr = MainForm.getCreature(creatureid);
+                Creature cr = StorageManager.getCreature(creatureid);
                 creatures.Add(cr);
             }
 
@@ -477,7 +477,7 @@ namespace Tibialyzer {
             if (mapBox.map != null) {
                 mapBox.map.Dispose();
             }
-            mapBox.map = MainForm.getMap(targetCoordinate.z);
+            mapBox.map = StorageManager.getMap(targetCoordinate.z);
             mapBox.targets.Clear();
             mapBox.targets.Add(target);
             mapBox.mapCoordinate = new Coordinate(targetCoordinate);

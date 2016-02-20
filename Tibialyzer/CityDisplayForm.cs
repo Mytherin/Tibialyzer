@@ -332,7 +332,7 @@ namespace Tibialyzer {
 
         private void npcButton_Click(object sender, EventArgs e) {
             this.SuspendForm();
-            List<TibiaObject> npcs = MainForm.getNPCWithCity(city.name.ToLower());
+            List<TibiaObject> npcs = StorageManager.getNPCWithCity(city.name.ToLower());
             int listHeight = InitializeList(null, npcs);
 
             this.Size = new Size(this.Size.Width, Math.Max(listHeight, baseHeight));

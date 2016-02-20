@@ -1,5 +1,4 @@
-
-// Copyright 2016 Mark Raasveldt
+﻿// Copyright 2016 Mark Raasveldt
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,25 +13,14 @@
 // limitations under the License.
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Diagnostics;
-using System.Numerics;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Net;
-using System.Text.RegularExpressions;
 using System.Data.SQLite;
 
 namespace Tibialyzer {
-    public partial class MainForm : Form {
+    class StorageManager {
         private static Object ItemLock = new Object();
         private static Dictionary<string, Item> _itemNameMap = new Dictionary<string, Item>();
         private static Dictionary<int, Item> _itemIdMap = new Dictionary<int, Item>();
@@ -67,18 +55,205 @@ namespace Tibialyzer {
 
         public static Dictionary<int, City> cityIdMap = new Dictionary<int, City>();
         public static Dictionary<string, City> cityNameMap = new Dictionary<string, City>();
-        private static Dictionary<int, Quest> questIdMap = new Dictionary<int, Quest>();
-        private static Dictionary<string, Quest> questNameMap = new Dictionary<string, Quest>();
+        public static Dictionary<int, Quest> questIdMap = new Dictionary<int, Quest>();
+        public static Dictionary<string, Quest> questNameMap = new Dictionary<string, Quest>();
         public static Dictionary<int, Event> eventIdMap = new Dictionary<int, Event>();
-        private static List<Map> mapFiles = new List<Map>();
+        public static List<Map> mapFiles = new List<Map>();
 
-        private static List<HelpCommand> helpCommands = new List<HelpCommand>();
+        public static List<HelpCommand> helpCommands = new List<HelpCommand>();
+
+        private static SQLiteConnection conn;
+
+        public static int DATABASE_NULL = -127;
+        public static string DATABASE_STRING_NULL = "";
+        public static void InitializeStorage() {
+            conn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", Constants.DatabaseFile));
+            conn.Open();
+
+            SQLiteCommand command;
+            SQLiteDataReader reader;
+            // Quests
+            command = new SQLiteCommand("SELECT id, title, name, minlevel, premium, city, legend FROM Quests", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                Quest quest = new Quest();
+                quest.id = reader.GetInt32(0);
+                quest.title = reader.GetString(1);
+                quest.name = reader.GetString(2);
+                quest.minlevel = reader.GetInt32(3);
+                quest.premium = reader.GetBoolean(4);
+                quest.city = reader.IsDBNull(5) ? "-" : reader.GetString(5);
+                quest.legend = reader.IsDBNull(6) ? "No legend available." : reader.GetString(6);
+                if (quest.legend == "..." || quest.legend == "")
+                    quest.legend = "No legend available.";
+
+                questIdMap.Add(quest.id, quest);
+                questNameMap.Add(quest.name.ToLower(), quest);
+            }
+
+            // Quest Rewards
+            command = new SQLiteCommand("SELECT questid, itemid FROM QuestRewards", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                questIdMap[reader.GetInt32(0)].rewardItems.Add(reader.GetInt32(1));
+            }
+
+            // Quest Outfits
+            command = new SQLiteCommand("SELECT questid, outfitid FROM QuestOutfits", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                int questid = reader.GetInt32(0);
+                int outfitid = reader.GetInt32(1);
+                questIdMap[questid].rewardOutfits.Add(outfitid);
+            }
+
+            // Quest Dangers
+            command = new SQLiteCommand("SELECT questid, creatureid FROM QuestDangers", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                questIdMap[reader.GetInt32(0)].questDangers.Add(reader.GetInt32(1));
+            }
+
+            // Quest Item Requirements
+            command = new SQLiteCommand("SELECT questid, count, itemid FROM QuestItemRequirements", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                questIdMap[reader.GetInt32(0)].questRequirements.Add(new Tuple<int, int>(reader.GetInt32(1), reader.GetInt32(2)));
+            }
+
+            // Quest Additional Requirements
+            command = new SQLiteCommand("SELECT questid, requirementtext FROM QuestAdditionalRequirements", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                questIdMap[reader.GetInt32(0)].additionalRequirements.Add(reader.GetString(1));
+            }
+
+            // Quest Instructions
+            command = new SQLiteCommand("SELECT questid, beginx, beginy, beginz, endx, endy, endz, description, ordering, missionname, settings FROM QuestInstructions ORDER BY ordering", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                QuestInstruction instruction = new QuestInstruction();
+                instruction.questid = reader.GetInt32(0);
+                instruction.begin = new Coordinate(reader.GetInt32(1), reader.GetInt32(2), reader.GetInt32(3));
+                if (reader.IsDBNull(4)) {
+                    instruction.end = new Coordinate(DATABASE_NULL, DATABASE_NULL, reader.GetInt32(6));
+                } else {
+                    instruction.end = new Coordinate(reader.GetInt32(4), reader.GetInt32(5), reader.GetInt32(6));
+                }
+                instruction.description = reader.IsDBNull(7) ? "" : reader.GetString(7);
+                instruction.ordering = reader.GetInt32(8);
+                instruction.settings = reader.IsDBNull(10) ? null : reader.GetString(10);
+                string missionName = reader.IsDBNull(9) ? "Guide" : reader.GetString(9);
+
+                Quest quest = questIdMap[instruction.questid];
+
+                if (!quest.questInstructions.ContainsKey(missionName))
+                    quest.questInstructions.Add(missionName, new List<QuestInstruction>());
+                quest.questInstructions[missionName].Add(instruction);
+            }
+            // Cities
+            command = new SQLiteCommand("SELECT id, name, x, y, z FROM Cities", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                City city = new City();
+                city.id = reader.GetInt32(0);
+                city.name = reader.GetString(1).ToLower();
+                city.location = new Coordinate(reader.GetInt32(2), reader.GetInt32(3), reader.GetInt32(4));
+
+                cityIdMap.Add(city.id, city);
+                cityNameMap.Add(city.name, city);
+            }
+            // City Utilities
+            command = new SQLiteCommand("SELECT cityid,name,x,y,z FROM CityUtilities", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                int cityid = reader.GetInt32(0);
+                Utility utility = new Utility();
+                utility.name = reader.GetString(1).ToLower();
+                utility.location = new Coordinate(reader.GetInt32(2), reader.GetInt32(3), reader.GetInt32(4));
+
+                cityIdMap[cityid].utilities.Add(utility);
+            }
+            // Events
+            command = new SQLiteCommand("SELECT id, title, location, creatureid FROM Events", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                int eventid = reader.GetInt32(0);
+                Event ev = new Event();
+                ev.id = eventid;
+                ev.title = reader.GetString(1);
+                ev.location = reader.GetString(2);
+                ev.creatureid = reader.GetInt32(3);
+                eventIdMap.Add(eventid, ev);
+            }
+            // Event Messages
+            command = new SQLiteCommand("SELECT eventid,message FROM EventMessages ", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                Event ev = eventIdMap[reader.GetInt32(0)];
+                ev.eventMessages.Add(reader.GetString(1));
+            }
+            // Task Groups
+            command = new SQLiteCommand("SELECT id,name FROM TaskGroups", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                int id = reader.GetInt32(0);
+                string name = reader.GetString(1);
+                taskList.Add(name.ToLower(), new List<Task>());
+                taskGroups.Add(id, name);
+                questNameMap["killing in the name of... quest"].questInstructions.Add(name, new List<QuestInstruction> { new QuestInstruction { specialCommand = "task" + MainForm.commandSymbol + name } });
+            }
+            // Tasks
+            command = new SQLiteCommand("SELECT id,groupid,count,taskpoints,bossid,bossx,bossy,bossz,name FROM Tasks", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                Task task = new Task();
+                task.id = reader.GetInt32(0);
+                task.groupid = reader.GetInt32(1);
+                task.groupname = taskGroups[task.groupid];
+                task.count = reader.GetInt32(2);
+                task.taskpoints = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
+                task.bossid = reader.IsDBNull(4) ? DATABASE_NULL : reader.GetInt32(4);
+                task.bossposition = new Coordinate();
+                task.bossposition.x = reader.IsDBNull(5) ? task.bossposition.x : reader.GetInt32(5);
+                task.bossposition.y = reader.IsDBNull(6) ? task.bossposition.y : reader.GetInt32(6);
+                task.bossposition.z = reader.IsDBNull(7) ? task.bossposition.z : reader.GetInt32(7);
+                task.name = reader.GetString(8);
+
+                // Task Creatures
+                SQLiteCommand command2 = new SQLiteCommand(String.Format("SELECT creatureid FROM TaskCreatures WHERE taskid={0}", task.id), conn);
+                SQLiteDataReader reader2 = command2.ExecuteReader();
+                while (reader2.Read()) {
+                    task.creatures.Add(reader2.GetInt32(0));
+                }
+                command2 = new SQLiteCommand(String.Format("SELECT huntingplaceid FROM TaskHunts WHERE taskid={0}", task.id), conn);
+                reader2 = command2.ExecuteReader();
+                while (reader2.Read()) {
+                    task.hunts.Add(reader2.GetInt32(0));
+                }
+                taskList[task.groupname.ToLower()].Add(task);
+            }
+            command = new SQLiteCommand("SELECT command, description FROM CommandHelp", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                helpCommands.Add(new HelpCommand { command = reader["command"].ToString(), description = reader["description"].ToString() });
+            }
+
+            // Maps
+            command = new SQLiteCommand("SELECT z FROM WorldMap", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                Map m = new Map();
+                m.z = reader.GetInt32(0);
+                StorageManager.mapFiles.Add(m);
+            }
+        }
 
         public static int mapFilesCount { get { return mapFiles.Count; } }
 
         public static Map getMap(int z) {
             if (mapFiles[z].references == 0) {
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT image FROM WorldMap WHERE z={0}", z), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT image FROM WorldMap WHERE z={0}", z), conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 reader.Read();
                 Image image = Image.FromStream(reader.GetStream(0));
@@ -98,7 +273,7 @@ namespace Tibialyzer {
             }
             if (itemsLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Items WHERE LOWER(name)='{1}';", _itemProperties, name.Replace("\'", "\'\'")), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Items WHERE LOWER(name)='{1}';", _itemProperties, name.Replace("\'", "\'\'")), conn);
             Item item = createItem(command.ExecuteReader());
             return registerItem(item);
         }
@@ -109,7 +284,7 @@ namespace Tibialyzer {
             }
             if (itemsLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Items WHERE id={1};", _itemProperties, id), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Items WHERE id={1};", _itemProperties, id), conn);
             Item item = createItem(command.ExecuteReader());
             return registerItem(item);
         }
@@ -136,7 +311,7 @@ namespace Tibialyzer {
                 _itemIdMap[itemid].convert_to_gold = convert;
                 _itemIdMap[itemid].actual_value = value;
             }
-            SQLiteCommand command = new SQLiteCommand(String.Format("UPDATE Items SET discard={1},convert_to_gold={2},actual_value={3} WHERE id={0}", itemid, discard ? 1 : 0, convert ? 1 : 0, value), mainForm.conn, transaction);
+            SQLiteCommand command = new SQLiteCommand(String.Format("UPDATE Items SET discard={1},convert_to_gold={2},actual_value={3} WHERE id={0}", itemid, discard ? 1 : 0, convert ? 1 : 0, value), conn, transaction);
             command.ExecuteNonQuery();
         }
 
@@ -179,7 +354,7 @@ namespace Tibialyzer {
                 }
             }
 
-            command = new SQLiteCommand(String.Format("SELECT vendorid, value FROM SellItems WHERE itemid={0}", item.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT vendorid, value FROM SellItems WHERE itemid={0}", item.id), conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 ItemSold sellItem = new ItemSold();
@@ -188,7 +363,7 @@ namespace Tibialyzer {
                 sellItem.price = reader.GetInt32(1);
                 item.sellItems.Add(sellItem);
             }
-            command = new SQLiteCommand(String.Format("SELECT vendorid, value FROM BuyItems WHERE itemid={0}", item.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT vendorid, value FROM BuyItems WHERE itemid={0}", item.id), conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 ItemSold buyItem = new ItemSold();
@@ -197,7 +372,7 @@ namespace Tibialyzer {
                 buyItem.price = reader.GetInt32(1);
                 item.buyItems.Add(buyItem);
             }
-            command = new SQLiteCommand(String.Format("SELECT creatureid, percentage, min, max FROM CreatureDrops WHERE itemid={0}", item.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT creatureid, percentage, min, max FROM CreatureDrops WHERE itemid={0}", item.id), conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 ItemDrop itemDrop = new ItemDrop();
@@ -215,16 +390,16 @@ namespace Tibialyzer {
 
                 item.itemdrops.Add(itemDrop);
             }
-            command = new SQLiteCommand(String.Format("SELECT questid FROM QuestRewards WHERE itemid={0}", item.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT questid FROM QuestRewards WHERE itemid={0}", item.id), conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 item.rewardedBy.Add(getQuest(reader.GetInt32(0)));
             }
-            command = new SQLiteCommand(String.Format("SELECT property, value FROM ItemProperties WHERE itemid={0}", item.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT property, value FROM ItemProperties WHERE itemid={0}", item.id), conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 string property = reader.GetString(0);
-                switch(property) {
+                switch (property) {
                     case "Voc":
                         item.vocation = reader.GetString(1);
                         break;
@@ -267,7 +442,7 @@ namespace Tibialyzer {
         public static void loadItemImage(int id) {
             Item it = getItem(id);
             if (it.image == null) {
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT image FROM Items WHERE id={0};", id), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT image FROM Items WHERE id={0};", id), conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read()) {
                     it.image = Image.FromStream(reader.GetStream(0));
@@ -293,7 +468,7 @@ namespace Tibialyzer {
             }
             if (creaturesLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Creatures WHERE LOWER(name)='{1}';", _creatureProperties, name.Replace("\'", "\'\'")), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Creatures WHERE LOWER(name)='{1}';", _creatureProperties, name.Replace("\'", "\'\'")), conn);
             Creature cr = createCreature(command.ExecuteReader());
             return registerCreature(cr);
         }
@@ -304,7 +479,7 @@ namespace Tibialyzer {
             }
             if (creaturesLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Creatures WHERE id={1};", _creatureProperties, id), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Creatures WHERE id={1};", _creatureProperties, id), conn);
             Creature cr = createCreature(command.ExecuteReader());
             return registerCreature(cr);
         }
@@ -369,7 +544,7 @@ namespace Tibialyzer {
 
 
 
-            command = new SQLiteCommand(String.Format("SELECT skinitemid, knifeitemid, percentage FROM Skins WHERE creatureid={0}", cr.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT skinitemid, knifeitemid, percentage FROM Skins WHERE creatureid={0}", cr.id), conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 Skin skin = new Skin();
@@ -379,7 +554,7 @@ namespace Tibialyzer {
                 cr.skin = skin;
             }
 
-            command = new SQLiteCommand(String.Format("SELECT itemid, percentage, min, max FROM CreatureDrops WHERE creatureid={0}", cr.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT itemid, percentage, min, max FROM CreatureDrops WHERE creatureid={0}", cr.id), conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 ItemDrop itemDrop = new ItemDrop();
@@ -403,7 +578,7 @@ namespace Tibialyzer {
         public static void loadCreatureImage(int id) {
             Creature cr = getCreature(id);
             if (cr.image == null) {
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT image FROM Creatures WHERE id={0};", id), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT image FROM Creatures WHERE id={0};", id), conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read()) {
                     cr.image = Image.FromStream(reader.GetStream(0));
@@ -420,7 +595,7 @@ namespace Tibialyzer {
             }
             if (itemsLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM NPCs WHERE LOWER(name)='{1}';", _npcProperties, name.Replace("\'", "\'\'")), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM NPCs WHERE LOWER(name)='{1}';", _npcProperties, name.Replace("\'", "\'\'")), conn);
             NPC npc = createNPC(command.ExecuteReader());
             return registerNPC(npc);
         }
@@ -431,7 +606,7 @@ namespace Tibialyzer {
             }
             if (npcsLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM NPCs WHERE id={1};", _npcProperties, id), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM NPCs WHERE id={1};", _npcProperties, id), conn);
             NPC npc = createNPC(command.ExecuteReader());
             return registerNPC(npc);
         }
@@ -484,7 +659,7 @@ namespace Tibialyzer {
 
             // special case for rashid: change location based on day of the week
             if (npc != null && npc.name == "Rashid") {
-                command = new SQLiteCommand(String.Format("SELECT city, x, y, z FROM RashidPositions WHERE day='{0}'", DateTime.Now.DayOfWeek.ToString()), mainForm.conn);
+                command = new SQLiteCommand(String.Format("SELECT city, x, y, z FROM RashidPositions WHERE day='{0}'", DateTime.Now.DayOfWeek.ToString()), conn);
                 reader = command.ExecuteReader();
                 if (reader.Read()) {
                     npc.city = reader["city"].ToString();
@@ -493,7 +668,7 @@ namespace Tibialyzer {
                     npc.pos.z = reader.GetInt32(3);
                 }
             }
-            command = new SQLiteCommand(String.Format("SELECT itemid, value FROM SellItems WHERE vendorid={0}", npc.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT itemid, value FROM SellItems WHERE vendorid={0}", npc.id), conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 ItemSold sellItem = new ItemSold();
@@ -502,7 +677,7 @@ namespace Tibialyzer {
                 sellItem.price = reader.GetInt32(1);
                 npc.sellItems.Add(sellItem);
             }
-            command = new SQLiteCommand(String.Format("SELECT itemid, value FROM BuyItems WHERE vendorid={0}", npc.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT itemid, value FROM BuyItems WHERE vendorid={0}", npc.id), conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 ItemSold buyItem = new ItemSold();
@@ -511,7 +686,7 @@ namespace Tibialyzer {
                 buyItem.price = reader.GetInt32(1);
                 npc.buyItems.Add(buyItem);
             }
-            command = new SQLiteCommand(String.Format("SELECT spellid,knight,druid,paladin,sorcerer FROM SpellNPCs WHERE npcid={0}", npc.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT spellid,knight,druid,paladin,sorcerer FROM SpellNPCs WHERE npcid={0}", npc.id), conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 SpellTaught t = new SpellTaught();
@@ -524,14 +699,14 @@ namespace Tibialyzer {
                 npc.spellsTaught.Add(t);
             }
 
-            command = new SQLiteCommand(String.Format("SELECT DISTINCT questid FROM QuestNPCs WHERE npcid={0}", npc.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT DISTINCT questid FROM QuestNPCs WHERE npcid={0}", npc.id), conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 Quest q = getQuest(reader.GetInt32(0));
                 npc.involvedQuests.Add(q);
             }
 
-            command = new SQLiteCommand(String.Format("SELECT destination,cost,notes FROM NPCDestinations WHERE npcid={0}", npc.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT destination,cost,notes FROM NPCDestinations WHERE npcid={0}", npc.id), conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 Transport t = new Transport();
@@ -552,7 +727,7 @@ namespace Tibialyzer {
             }
             if (huntsLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM HuntingPlaces WHERE LOWER(name)='{1}';", _huntProperties, name.Replace("\'", "\'\'")), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM HuntingPlaces WHERE LOWER(name)='{1}';", _huntProperties, name.Replace("\'", "\'\'")), conn);
             HuntingPlace hunt = createHunt(command.ExecuteReader());
             return registerHunt(hunt);
         }
@@ -563,7 +738,7 @@ namespace Tibialyzer {
             }
             if (huntsLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM HuntingPlaces WHERE id={1};", _huntProperties, id), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM HuntingPlaces WHERE id={1};", _huntProperties, id), conn);
             HuntingPlace hunt = createHunt(command.ExecuteReader());
             return registerHunt(hunt);
         }
@@ -614,7 +789,7 @@ namespace Tibialyzer {
             huntingPlace.city = reader["city"].ToString();
 
             // Hunting place coordinates
-            command = new SQLiteCommand(String.Format("SELECT x, y, z FROM HuntingPlaceCoordinates WHERE huntingplaceid={0}", huntingPlace.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT x, y, z FROM HuntingPlaceCoordinates WHERE huntingplaceid={0}", huntingPlace.id), conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 Coordinate c = new Coordinate();
@@ -624,7 +799,7 @@ namespace Tibialyzer {
                 huntingPlace.coordinates.Add(c);
             }
             // Hunting place directions
-            command = new SQLiteCommand(String.Format("SELECT beginx, beginy, beginz,endx, endy, endz, ordering, description, settings FROM HuntDirections WHERE huntingplaceid={0} ORDER BY ordering", huntingPlace.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT beginx, beginy, beginz,endx, endy, endz, ordering, description, settings FROM HuntDirections WHERE huntingplaceid={0} ORDER BY ordering", huntingPlace.id), conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 Directions d = new Directions();
@@ -638,14 +813,14 @@ namespace Tibialyzer {
             }
 
             // Hunting place creatures
-            command = new SQLiteCommand(String.Format("SELECT creatureid FROM HuntingPlaceCreatures WHERE huntingplaceid={0}", huntingPlace.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT creatureid FROM HuntingPlaceCreatures WHERE huntingplaceid={0}", huntingPlace.id), conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 int creatureid = reader.GetInt32(0);
                 huntingPlace.creatures.Add(creatureid);
             }
             // Hunting place requirements
-            command = new SQLiteCommand(String.Format("SELECT questid, requirementtext FROM HuntRequirements WHERE huntingplaceid={0}", huntingPlace.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT questid, requirementtext FROM HuntRequirements WHERE huntingplaceid={0}", huntingPlace.id), conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 Requirements r = new Requirements();
@@ -667,7 +842,7 @@ namespace Tibialyzer {
             }
             if (spellsLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Spells WHERE LOWER(name)='{1}';", _spellProperties, name.Replace("\'", "\'\'")), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Spells WHERE LOWER(name)='{1}';", _spellProperties, name.Replace("\'", "\'\'")), conn);
             Spell s = createSpell(command.ExecuteReader());
             return registerSpell(s);
         }
@@ -678,7 +853,7 @@ namespace Tibialyzer {
             }
             if (spellsLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Spells WHERE id={1};", _spellProperties, id), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Spells WHERE id={1};", _spellProperties, id), conn);
             Spell s = createSpell(command.ExecuteReader());
             return registerSpell(s);
         }
@@ -726,7 +901,7 @@ namespace Tibialyzer {
             spell.image = reader.IsDBNull(14) ? StyleManager.GetImage("placeholder-spell.png") : Image.FromStream(reader.GetStream(14));
 
 
-            command = new SQLiteCommand(String.Format("SELECT npcid, knight, druid, paladin, sorcerer FROM SpellNPCs WHERE spellid={0}", spell.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT npcid, knight, druid, paladin, sorcerer FROM SpellNPCs WHERE spellid={0}", spell.id), conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 SpellTaught t = new SpellTaught();
@@ -752,7 +927,7 @@ namespace Tibialyzer {
             }
             if (mountsLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Mounts WHERE LOWER(name)='{1}';", _mountProperties, name.Replace("\'", "\'\'")), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Mounts WHERE LOWER(name)='{1}';", _mountProperties, name.Replace("\'", "\'\'")), conn);
             Mount m = createMount(command.ExecuteReader());
             return registerMount(m);
         }
@@ -763,7 +938,7 @@ namespace Tibialyzer {
             }
             if (mountsLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Mounts WHERE id={1};", _mountProperties, id), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Mounts WHERE id={1};", _mountProperties, id), conn);
             Mount m = createMount(command.ExecuteReader());
             return registerMount(m);
         }
@@ -818,7 +993,7 @@ namespace Tibialyzer {
             }
             if (outfitsLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Outfits WHERE LOWER(name)='{1}';", _outfitProperties, name.Replace("\'", "\'\'")), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Outfits WHERE LOWER(name)='{1}';", _outfitProperties, name.Replace("\'", "\'\'")), conn);
             Outfit o = createOutfit(command.ExecuteReader());
             return registerOutfit(o);
         }
@@ -829,7 +1004,7 @@ namespace Tibialyzer {
             }
             if (outfitsLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Outfits WHERE id={1};", _outfitProperties, id), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Outfits WHERE id={1};", _outfitProperties, id), conn);
             Outfit o = createOutfit(command.ExecuteReader());
             return registerOutfit(o);
         }
@@ -869,7 +1044,7 @@ namespace Tibialyzer {
             outfit.tibiastore = reader.GetBoolean(4);
 
             // Outfit Images
-            command = new SQLiteCommand(String.Format("SELECT male, addon, image FROM OutfitImages WHERE outfitid={0}", outfit.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT male, addon, image FROM OutfitImages WHERE outfitid={0}", outfit.id), conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 bool male = reader.GetBoolean(0);
@@ -883,7 +1058,7 @@ namespace Tibialyzer {
                 }
             }
 
-            command = new SQLiteCommand(String.Format("SELECT questid FROM QuestOutfits WHERE outfitid={0}", outfit.id), mainForm.conn);
+            command = new SQLiteCommand(String.Format("SELECT questid FROM QuestOutfits WHERE outfitid={0}", outfit.id), conn);
             reader = command.ExecuteReader();
             while (reader.Read()) {
                 outfit.questid = reader.GetInt32(0);
@@ -901,7 +1076,7 @@ namespace Tibialyzer {
             }
             if (worldObjectsLoaded) return null;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM WorldObjects WHERE LOWER(title)='{1}';", _worldObjectProperties, name.Replace("\'", "\'\'")), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM WorldObjects WHERE LOWER(title)='{1}';", _worldObjectProperties, name.Replace("\'", "\'\'")), conn);
             WorldObject o = createWorldObject(command.ExecuteReader());
             return registerWorldObject(o);
         }
@@ -934,6 +1109,80 @@ namespace Tibialyzer {
 
         #endregion
 
+
+
+        public static void setGoldRatio(double ratio) {
+            ratio -= 0.00001;
+            using (var transaction = conn.BeginTransaction()) {
+                SQLiteCommand command;
+                command = new SQLiteCommand("UPDATE Items SET discard=0;", conn, transaction);
+                command.ExecuteNonQuery();
+                command = new SQLiteCommand(String.Format("UPDATE Items SET discard=1 WHERE (MAX(vendor_value, actual_value) / capacity) < {0};", ratio.ToString()), conn, transaction);
+                command.ExecuteNonQuery();
+                transaction.Commit();
+            }
+            foreach (int id in _itemIdMap.Keys.ToArray().ToList()) {
+                Item item = _itemIdMap[id];
+                item.discard = ((double)item.GetMaxValue() / (double)(item.capacity == 0 ? 1 : item.capacity)) < ratio;
+            }
+            LootDatabaseManager.UpdateLoot();
+        }
+
+        public static void setConvertRatio(double ratio, bool stackable) {
+            ratio -= 0.00001;
+            using (var transaction = conn.BeginTransaction()) {
+                SQLiteCommand command;
+                command = new SQLiteCommand(String.Format("UPDATE Items SET convert_to_gold=0 WHERE stackable={0};", stackable ? 1 : 0), conn, transaction);
+                command.ExecuteNonQuery();
+                command = new SQLiteCommand(String.Format("UPDATE Items SET convert_to_gold=1 WHERE stackable={0} AND MAX(vendor_value, actual_value) / capacity < {1};", stackable ? 1 : 0, ratio.ToString(System.Globalization.CultureInfo.InvariantCulture)), conn, transaction);
+                command.ExecuteNonQuery();
+                transaction.Commit();
+            }
+            foreach (int id in _itemIdMap.Keys.ToArray().ToList()) {
+                Item item = _itemIdMap[id];
+                if (item.stackable == stackable) {
+                    item.convert_to_gold = ((double)item.GetMaxValue() / (double)(item.capacity == 0 ? 1 : item.capacity)) < ratio;
+                }
+            }
+            LootDatabaseManager.UpdateLoot();
+        }
+
+        public static void setItemDiscard(Item item, bool discard) {
+            item.discard = discard;
+            SQLiteCommand command = new SQLiteCommand(String.Format("UPDATE Items SET discard={0} WHERE id={1}", item.discard ? 1 : 0, item.id), conn);
+            command.ExecuteNonQuery();
+            LootDatabaseManager.UpdateLoot();
+        }
+
+        public static void setItemConvert(Item item, bool convert) {
+            item.convert_to_gold = convert;
+            SQLiteCommand command = new SQLiteCommand(String.Format("UPDATE Items SET convert_to_gold={0} WHERE id={1}", item.convert_to_gold ? 1 : 0, item.id), conn);
+            command.ExecuteNonQuery();
+            LootDatabaseManager.UpdateLoot();
+        }
+
+        public static void setItemValue(Item item, long value) {
+            item.actual_value = value;
+            SQLiteCommand command = new SQLiteCommand(String.Format("UPDATE Items SET actual_value={0} WHERE id={1}", value, item.id), conn);
+            command.ExecuteNonQuery();
+            LootDatabaseManager.UpdateLoot();
+        }
+
+        public static void UpdateDatabase(SQLiteConnection databaseConnection) {
+            SQLiteCommand comm = new SQLiteCommand("SELECT id, discard, convert_to_gold, actual_value FROM Items", databaseConnection);
+            SQLiteDataReader reader = comm.ExecuteReader();
+            using (var transaction = conn.BeginTransaction()) {
+                while (reader.Read()) {
+                    int itemid = reader.GetInt32(0);
+                    bool discard = reader.GetBoolean(1);
+                    bool convert = reader.GetBoolean(2);
+                    long value = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt64(3);
+                    UpdateItem(itemid, discard, convert, value, transaction);
+                }
+                transaction.Commit();
+            }
+        }
+
         public static Quest getQuest(string name) {
             name = name.ToLower().Trim();
             if (!questNameMap.ContainsKey(name)) return null;
@@ -948,7 +1197,7 @@ namespace Tibialyzer {
         public static List<TibiaObject> getNPCWithCity(string city) {
             city = city.ToLower();
             if (!npcsLoaded) {
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM NPCs WHERE LOWER(city)='{0}';", city.Replace("\'", "\'\'")), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM NPCs WHERE LOWER(city)='{0}';", city.Replace("\'", "\'\'")), conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 List<TibiaObject> result = new List<TibiaObject>();
                 while (reader.Read()) {
@@ -963,7 +1212,7 @@ namespace Tibialyzer {
         public static List<HuntingPlace> getHuntsInCity(string city) {
             city = city.ToLower();
             if (!huntsLoaded) {
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM HuntingPlaces WHERE LOWER(city)='{0}';", city.Replace("\'", "\'\'")), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM HuntingPlaces WHERE LOWER(city)='{0}';", city.Replace("\'", "\'\'")), conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 List<HuntingPlace> result = new List<HuntingPlace>();
                 while (reader.Read()) {
@@ -977,7 +1226,7 @@ namespace Tibialyzer {
         }
         public static List<HuntingPlace> getHuntsForLevels(int minlevel, int maxlevel) {
             if (!huntsLoaded) {
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM HuntingPlaces WHERE level >= {0} AND level <= {1};", minlevel, maxlevel), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM HuntingPlaces WHERE level >= {0} AND level <= {1};", minlevel, maxlevel), conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 List<HuntingPlace> result = new List<HuntingPlace>();
                 while (reader.Read()) {
@@ -993,7 +1242,7 @@ namespace Tibialyzer {
         public static List<HuntingPlace> getHuntsForCreature(int creatureid) {
             List<HuntingPlace> huntingPlaces = new List<HuntingPlace>();
             if (!huntsLoaded) {
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT HuntingPlaces.id FROM HuntingPlaces INNER JOIN HuntingPlaceCreatures ON HuntingPlaces.id=HuntingPlaceCreatures.huntingplaceid AND HuntingPlaceCreatures.creatureid={0}", creatureid), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT HuntingPlaces.id FROM HuntingPlaces INNER JOIN HuntingPlaceCreatures ON HuntingPlaces.id=HuntingPlaceCreatures.huntingplaceid AND HuntingPlaceCreatures.creatureid={0}", creatureid), conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read()) {
                     huntingPlaces.Add(getHunt(reader.GetInt32(0)));
@@ -1015,12 +1264,12 @@ namespace Tibialyzer {
             if (!(npcsLoaded && itemsLoaded)) {
                 SQLiteCommand command;
                 SQLiteDataReader reader;
-                command = new SQLiteCommand(String.Format("SELECT NPCs.id FROM BuyItems INNER JOIN NPCs ON NPCs.id=BuyItems.vendorid AND LOWER(NPCs.city)='{0}' AND BuyItems.itemid={1}", city.Replace("\'", "\'\'"), itemid), mainForm.conn);
+                command = new SQLiteCommand(String.Format("SELECT NPCs.id FROM BuyItems INNER JOIN NPCs ON NPCs.id=BuyItems.vendorid AND LOWER(NPCs.city)='{0}' AND BuyItems.itemid={1}", city.Replace("\'", "\'\'"), itemid), conn);
                 reader = command.ExecuteReader();
                 while (reader.Read()) {
                     return getNPC(reader.GetInt32(0));
                 }
-                command = new SQLiteCommand(String.Format("SELECT NPCs.id FROM SellItems INNER JOIN NPCs ON NPCs.id=SellItems.vendorid AND LOWER(NPCs.city)='{0}' AND SellItems.itemid={1}", city.Replace("\'", "\'\'"), itemid), mainForm.conn);
+                command = new SQLiteCommand(String.Format("SELECT NPCs.id FROM SellItems INNER JOIN NPCs ON NPCs.id=SellItems.vendorid AND LOWER(NPCs.city)='{0}' AND SellItems.itemid={1}", city.Replace("\'", "\'\'"), itemid), conn);
                 reader = command.ExecuteReader();
                 while (reader.Read()) {
                     return getNPC(reader.GetInt32(0));
@@ -1041,7 +1290,7 @@ namespace Tibialyzer {
             if (!(npcsLoaded && spellsLoaded)) {
                 SQLiteCommand command;
                 SQLiteDataReader reader;
-                command = new SQLiteCommand(String.Format("SELECT NPCs.id FROM SpellNPCs INNER JOIN NPCs ON NPCs.id=SpellNPCs.npcid AND LOWER(NPCs.city)='{0}' AND SpellNPCs.spellid={1}", city.Replace("\'", "\'\'"), spellid), mainForm.conn);
+                command = new SQLiteCommand(String.Format("SELECT NPCs.id FROM SpellNPCs INNER JOIN NPCs ON NPCs.id=SpellNPCs.npcid AND LOWER(NPCs.city)='{0}' AND SpellNPCs.spellid={1}", city.Replace("\'", "\'\'"), spellid), conn);
                 reader = command.ExecuteReader();
                 while (reader.Read()) {
                     return getNPC(reader.GetInt32(0));
@@ -1062,7 +1311,7 @@ namespace Tibialyzer {
             vocation = vocation.ToLower();
             if (!spellsLoaded) {
                 List<TibiaObject> result = new List<TibiaObject>();
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Spells WHERE {0}=1 ORDER BY levelrequired;", vocation), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Spells WHERE {0}=1 ORDER BY levelrequired;", vocation), conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read()) {
                     result.Add(new LazyTibiaObject { id = reader.GetInt32(0), type = TibiaObjectType.Spell });
@@ -1081,7 +1330,7 @@ namespace Tibialyzer {
             }
             if (itemsLoaded) return false;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Items WHERE LOWER(name)='{0}';", str.Replace("\'", "\'\'")), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Items WHERE LOWER(name)='{0}';", str.Replace("\'", "\'\'")), conn);
 
             return command.ExecuteScalar() != null;
         }
@@ -1093,7 +1342,7 @@ namespace Tibialyzer {
             }
             if (creaturesLoaded) return false;
 
-            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Creatures WHERE LOWER(name)='{0}';", str.Replace("\'", "\'\'")), mainForm.conn);
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Creatures WHERE LOWER(name)='{0}';", str.Replace("\'", "\'\'")), conn);
 
             return command.ExecuteScalar() != null;
         }
@@ -1101,7 +1350,7 @@ namespace Tibialyzer {
         public static List<TibiaObject> searchItem(string str) {
             if (!itemsLoaded) {
                 List<TibiaObject> result = new List<TibiaObject>();
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Items WHERE LOWER(name) LIKE '%{0}%' OR LOWER(title) LIKE '%{0}%' AND category IS NOT NULL ORDER BY category,actual_value;", str.Replace("\'", "\'\'")), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Items WHERE LOWER(name) LIKE '%{0}%' OR LOWER(title) LIKE '%{0}%' AND category IS NOT NULL ORDER BY category,actual_value;", str.Replace("\'", "\'\'")), conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read()) {
                     result.Add(new LazyTibiaObject { id = reader.GetInt32(0), type = TibiaObjectType.Item });
@@ -1115,7 +1364,7 @@ namespace Tibialyzer {
             str = str.ToLower();
             if (!creaturesLoaded) {
                 List<TibiaObject> result = new List<TibiaObject>();
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Creatures WHERE LOWER(name) LIKE '%{0}%' OR LOWER(title) LIKE '%{0}%' ORDER BY experience;", str.Replace("\'", "\'\'")), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Creatures WHERE LOWER(name) LIKE '%{0}%' OR LOWER(title) LIKE '%{0}%' ORDER BY experience;", str.Replace("\'", "\'\'")), conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read()) {
                     result.Add(new LazyTibiaObject { id = reader.GetInt32(0), type = TibiaObjectType.Creature });
@@ -1129,7 +1378,7 @@ namespace Tibialyzer {
             str = str.ToLower();
             if (!npcsLoaded) {
                 List<TibiaObject> result = new List<TibiaObject>();
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM NPCs WHERE LOWER(name) LIKE '%{0}%' ORDER BY city;", str.Replace("\'", "\'\'")), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM NPCs WHERE LOWER(name) LIKE '%{0}%' ORDER BY city;", str.Replace("\'", "\'\'")), conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read()) {
                     result.Add(new LazyTibiaObject { id = reader.GetInt32(0), type = TibiaObjectType.NPC });
@@ -1143,7 +1392,7 @@ namespace Tibialyzer {
             str = str.ToLower();
             if (!huntsLoaded) {
                 List<HuntingPlace> result = new List<HuntingPlace>();
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM HuntingPlaces WHERE LOWER(name) LIKE '%{0}%';", str.Replace("\'", "\'\'")), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM HuntingPlaces WHERE LOWER(name) LIKE '%{0}%';", str.Replace("\'", "\'\'")), conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read()) {
                     result.Add(getHunt(reader.GetInt32(0)));
@@ -1157,7 +1406,7 @@ namespace Tibialyzer {
             str = str.ToLower();
             if (!spellsLoaded) {
                 List<TibiaObject> result = new List<TibiaObject>();
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Spells WHERE LOWER(name) LIKE '%{0}%' ORDER BY levelrequired;", str.Replace("\'", "\'\'")), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Spells WHERE LOWER(name) LIKE '%{0}%' ORDER BY levelrequired;", str.Replace("\'", "\'\'")), conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read()) {
                     result.Add(new LazyTibiaObject { id = reader.GetInt32(0), type = TibiaObjectType.Spell });
@@ -1171,7 +1420,7 @@ namespace Tibialyzer {
             str = str.ToLower();
             if (!spellsLoaded) {
                 List<TibiaObject> result = new List<TibiaObject>();
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Spells WHERE LOWER(words) LIKE '%{0}%' ORDER BY levelrequired;", str.Replace("\'", "\'\'")), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Spells WHERE LOWER(words) LIKE '%{0}%' ORDER BY levelrequired;", str.Replace("\'", "\'\'")), conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read()) {
                     result.Add(new LazyTibiaObject { id = reader.GetInt32(0), type = TibiaObjectType.Spell });
@@ -1190,7 +1439,7 @@ namespace Tibialyzer {
             str = str.ToLower();
             if (!mountsLoaded) {
                 List<TibiaObject> result = new List<TibiaObject>();
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Mounts WHERE LOWER(name) LIKE '%{0}%';", str.Replace("\'", "\'\'")), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Mounts WHERE LOWER(name) LIKE '%{0}%';", str.Replace("\'", "\'\'")), conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read()) {
                     result.Add(new LazyTibiaObject { id = reader.GetInt32(0), type = TibiaObjectType.Mount });
@@ -1204,7 +1453,7 @@ namespace Tibialyzer {
             str = str.ToLower();
             if (!outfitsLoaded) {
                 List<TibiaObject> result = new List<TibiaObject>();
-                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Outfits WHERE LOWER(name) LIKE '%{0}%';", str.Replace("\'", "\'\'")), mainForm.conn);
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Outfits WHERE LOWER(name) LIKE '%{0}%';", str.Replace("\'", "\'\'")), conn);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read()) {
                     result.Add(new LazyTibiaObject { id = reader.GetInt32(0), type = TibiaObjectType.Outfit });
@@ -1214,18 +1463,18 @@ namespace Tibialyzer {
                 return _outfitIdMap.Values.Where(o => o.name.ToLower().Contains(str)).ToList<TibiaObject>();
             }
         }
-        
+
         public static List<TibiaObject> getItemsByCategory(string str) {
             str = str.ToLower();
             if (!itemsLoaded) {
                 List<TibiaObject> result = new List<TibiaObject>();
                 SQLiteCommand command;
                 SQLiteDataReader reader;
-                command = new SQLiteCommand(String.Format("SELECT category FROM Items WHERE LOWER(category) LIKE '%{0}%' LIMIT 1", str.Replace("\'", "\'\'")), mainForm.conn);
+                command = new SQLiteCommand(String.Format("SELECT category FROM Items WHERE LOWER(category) LIKE '%{0}%' LIMIT 1", str.Replace("\'", "\'\'")), conn);
                 reader = command.ExecuteReader();
                 if (reader.Read()) {
                     string category = reader.GetString(0).ToLower();
-                    command = new SQLiteCommand(String.Format("SELECT id FROM Items WHERE LOWER(category)='{0}';", category.Replace("\'", "\'\'")), mainForm.conn);
+                    command = new SQLiteCommand(String.Format("SELECT id FROM Items WHERE LOWER(category)='{0}';", category.Replace("\'", "\'\'")), conn);
                     reader = command.ExecuteReader();
                     while (reader.Read()) {
                         result.Add(new LazyTibiaObject { id = reader.GetInt32(0), type = TibiaObjectType.Item });
@@ -1237,5 +1486,6 @@ namespace Tibialyzer {
                 return _itemIdMap.Values.Where(o => o.category.ToLower().Contains(str)).ToList<TibiaObject>();
             }
         }
+
     }
 }

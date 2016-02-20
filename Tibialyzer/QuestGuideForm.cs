@@ -363,19 +363,19 @@ namespace Tibialyzer {
                             Image image = null;
                             switch (setting[1].ToLower()) {
                                 case "item":
-                                    image = MainForm.getItem(setting[2]).image;
+                                    image = StorageManager.getItem(setting[2]).image;
                                     break;
                                 case "npc":
-                                    image = MainForm.getNPC(setting[2]).image;
+                                    image = StorageManager.getNPC(setting[2]).image;
                                     break;
                                 case "cr":
-                                    image = MainForm.getCreature(setting[2]).image;
+                                    image = StorageManager.getCreature(setting[2]).image;
                                     break;
                                 case "spell":
-                                    image = MainForm.getSpell(setting[2]).image;
+                                    image = StorageManager.getSpell(setting[2]).image;
                                     break;
                                 case "object":
-                                    image = MainForm.getWorldObject(setting[2]).image;
+                                    image = StorageManager.getWorldObject(setting[2]).image;
                                     break;
                                 default:
                                     throw new Exception("Unknown image type " + setting[1] + ".");
@@ -432,15 +432,15 @@ namespace Tibialyzer {
                             string command = "";
                             Image image = null;
                             if (splits[0].ToLower() == "cr") {
-                                Creature cr = MainForm.getCreature(imageString);
+                                Creature cr = StorageManager.getCreature(imageString);
                                 image = cr.GetImage();
                                 command = "creature" + MainForm.commandSymbol + cr.GetName().ToLower();
                             } else if (splits[0].ToLower() == "npc") {
-                                NPC npc = MainForm.getNPC(imageString);
+                                NPC npc = StorageManager.getNPC(imageString);
                                 image = npc.GetImage();
                                 command = "npc" + MainForm.commandSymbol + npc.GetName().ToLower();
                             } else if (splits[0].ToLower() == "item") {
-                                Item item = MainForm.getItem(imageString);
+                                Item item = StorageManager.getItem(imageString);
                                 image = item.GetImage();
                                 command = "item" + MainForm.commandSymbol + item.GetName().ToLower();
                             }

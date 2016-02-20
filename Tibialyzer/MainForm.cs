@@ -42,7 +42,6 @@ namespace Tibialyzer {
         public static double opacity = 0.8;
         public static bool transparent = true;
         private bool keep_working = true;
-        private static string databaseFile = @"Database\Database.db";
         private static string nodeDatabase = @"Database\Nodes.db";
         private static string pluralMapFile = @"Database\pluralMap.txt";
         private static string autohotkeyFile = @"Database\autohotkey.ahk";
@@ -64,12 +63,8 @@ namespace Tibialyzer {
 
         private static StreamWriter fileWriter = null;
 
-        private SQLiteConnection conn;
         static Dictionary<string, Image> creatureImages = new Dictionary<string, Image>();
-
-        public delegate void LootChangedHandler();
-        public event LootChangedHandler LootChanged;
-
+        
         enum ScanningState { Scanning, NoTibia, Stuck };
         ScanningState current_state;
 
@@ -88,19 +83,16 @@ namespace Tibialyzer {
             this.InitializeTabs();
             switchTab(0);
 
-            LootChanged += UpdateLootDisplay;
+            LootDatabaseManager.LootChanged += UpdateLootDisplay;
 
-            if (!File.Exists(databaseFile)) {
-                ExitWithError("Fatal Error", String.Format("Could not find database file {0}.", databaseFile));
+            if (!File.Exists(Constants.DatabaseFile)) {
+                ExitWithError("Fatal Error", String.Format("Could not find database file {0}.", Constants.DatabaseFile));
             }
 
             if (!File.Exists(nodeDatabase)) {
                 ExitWithError("Fatal Error", String.Format("Could not find database file {0}.", nodeDatabase));
             }
-
-            conn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", databaseFile));
-            conn.Open();
-
+            
             LootDatabaseManager.Initialize();
 
             StyleManager.InitializeStyle();
@@ -111,15 +103,14 @@ namespace Tibialyzer {
             prevent_settings_update = true;
             this.initializePluralMap();
             try {
-                this.loadDatabaseData();
+                StorageManager.InitializeStorage();
             } catch (Exception e) {
-                ExitWithError("Fatal Error", String.Format("Corrupted database {0}.\nMessage: {1}", databaseFile, e.Message));
+                ExitWithError("Fatal Error", String.Format("Corrupted database {0}.\nMessage: {1}", Constants.DatabaseFile, e.Message));
             }
             SettingsManager.LoadSettings(settingsFile);
             MainForm.initializeFonts();
             this.initializeHunts();
             this.initializeSettings();
-            this.initializeMaps();
             this.initializeTooltips();
             try {
                 Pathfinder.LoadFromDatabase(nodeDatabase);
@@ -185,179 +176,6 @@ namespace Tibialyzer {
         public static void initializeFonts() {
             for (int i = 7; i < 20; i++) {
                 fontList.Add(new System.Drawing.Font("Microsoft Sans Serif", i, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0))));
-            }
-        }
-
-        public static int DATABASE_NULL = -127;
-        public static string DATABASE_STRING_NULL = "";
-        private void loadDatabaseData() {
-            SQLiteCommand command;
-            SQLiteDataReader reader;
-            // Quests
-            command = new SQLiteCommand("SELECT id, title, name, minlevel, premium, city, legend FROM Quests", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                Quest quest = new Quest();
-                quest.id = reader.GetInt32(0);
-                quest.title = reader.GetString(1);
-                quest.name = reader.GetString(2);
-                quest.minlevel = reader.GetInt32(3);
-                quest.premium = reader.GetBoolean(4);
-                quest.city = reader.IsDBNull(5) ? "-" : reader.GetString(5);
-                quest.legend = reader.IsDBNull(6) ? "No legend available." : reader.GetString(6);
-                if (quest.legend == "..." || quest.legend == "")
-                    quest.legend = "No legend available.";
-
-                questIdMap.Add(quest.id, quest);
-                questNameMap.Add(quest.name.ToLower(), quest);
-            }
-
-            // Quest Rewards
-            command = new SQLiteCommand("SELECT questid, itemid FROM QuestRewards", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                questIdMap[reader.GetInt32(0)].rewardItems.Add(reader.GetInt32(1));
-            }
-
-            // Quest Outfits
-            command = new SQLiteCommand("SELECT questid, outfitid FROM QuestOutfits", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                int questid = reader.GetInt32(0);
-                int outfitid = reader.GetInt32(1);
-                questIdMap[questid].rewardOutfits.Add(outfitid);
-            }
-
-            // Quest Dangers
-            command = new SQLiteCommand("SELECT questid, creatureid FROM QuestDangers", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                questIdMap[reader.GetInt32(0)].questDangers.Add(reader.GetInt32(1));
-            }
-
-            // Quest Item Requirements
-            command = new SQLiteCommand("SELECT questid, count, itemid FROM QuestItemRequirements", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                questIdMap[reader.GetInt32(0)].questRequirements.Add(new Tuple<int, int>(reader.GetInt32(1), reader.GetInt32(2)));
-            }
-
-            // Quest Additional Requirements
-            command = new SQLiteCommand("SELECT questid, requirementtext FROM QuestAdditionalRequirements", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                questIdMap[reader.GetInt32(0)].additionalRequirements.Add(reader.GetString(1));
-            }
-
-            // Quest Instructions
-            command = new SQLiteCommand("SELECT questid, beginx, beginy, beginz, endx, endy, endz, description, ordering, missionname, settings FROM QuestInstructions ORDER BY ordering", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                QuestInstruction instruction = new QuestInstruction();
-                instruction.questid = reader.GetInt32(0);
-                instruction.begin = new Coordinate(reader.GetInt32(1), reader.GetInt32(2), reader.GetInt32(3));
-                if (reader.IsDBNull(4)) {
-                    instruction.end = new Coordinate(DATABASE_NULL, DATABASE_NULL, reader.GetInt32(6));
-                } else {
-                    instruction.end = new Coordinate(reader.GetInt32(4), reader.GetInt32(5), reader.GetInt32(6));
-                }
-                instruction.description = reader.IsDBNull(7) ? "" : reader.GetString(7);
-                instruction.ordering = reader.GetInt32(8);
-                instruction.settings = reader.IsDBNull(10) ? null : reader.GetString(10);
-                string missionName = reader.IsDBNull(9) ? "Guide" : reader.GetString(9);
-
-                Quest quest = questIdMap[instruction.questid];
-
-                if (!quest.questInstructions.ContainsKey(missionName))
-                    quest.questInstructions.Add(missionName, new List<QuestInstruction>());
-                quest.questInstructions[missionName].Add(instruction);
-            }
-            // Cities
-            command = new SQLiteCommand("SELECT id, name, x, y, z FROM Cities", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                City city = new City();
-                city.id = reader.GetInt32(0);
-                city.name = reader.GetString(1).ToLower();
-                city.location = new Coordinate(reader.GetInt32(2), reader.GetInt32(3), reader.GetInt32(4));
-
-                cityIdMap.Add(city.id, city);
-                cityNameMap.Add(city.name, city);
-            }
-            // City Utilities
-            command = new SQLiteCommand("SELECT cityid,name,x,y,z FROM CityUtilities", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                int cityid = reader.GetInt32(0);
-                Utility utility = new Utility();
-                utility.name = reader.GetString(1).ToLower();
-                utility.location = new Coordinate(reader.GetInt32(2), reader.GetInt32(3), reader.GetInt32(4));
-
-                cityIdMap[cityid].utilities.Add(utility);
-            }
-            // Events
-            command = new SQLiteCommand("SELECT id, title, location, creatureid FROM Events", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                int eventid = reader.GetInt32(0);
-                Event ev = new Event();
-                ev.id = eventid;
-                ev.title = reader.GetString(1);
-                ev.location = reader.GetString(2);
-                ev.creatureid = reader.GetInt32(3);
-                eventIdMap.Add(eventid, ev);
-            }
-            // Event Messages
-            command = new SQLiteCommand("SELECT eventid,message FROM EventMessages ", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                Event ev = eventIdMap[reader.GetInt32(0)];
-                ev.eventMessages.Add(reader.GetString(1));
-            }
-            // Task Groups
-            command = new SQLiteCommand("SELECT id,name FROM TaskGroups", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                int id = reader.GetInt32(0);
-                string name = reader.GetString(1);
-                taskList.Add(name.ToLower(), new List<Task>());
-                taskGroups.Add(id, name);
-                questNameMap["killing in the name of... quest"].questInstructions.Add(name, new List<QuestInstruction> { new QuestInstruction { specialCommand = "task" + MainForm.commandSymbol + name } });
-            }
-            // Tasks
-            command = new SQLiteCommand("SELECT id,groupid,count,taskpoints,bossid,bossx,bossy,bossz,name FROM Tasks", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                Task task = new Task();
-                task.id = reader.GetInt32(0);
-                task.groupid = reader.GetInt32(1);
-                task.groupname = taskGroups[task.groupid];
-                task.count = reader.GetInt32(2);
-                task.taskpoints = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt32(3);
-                task.bossid = reader.IsDBNull(4) ? DATABASE_NULL : reader.GetInt32(4);
-                task.bossposition = new Coordinate();
-                task.bossposition.x = reader.IsDBNull(5) ? task.bossposition.x : reader.GetInt32(5);
-                task.bossposition.y = reader.IsDBNull(6) ? task.bossposition.y : reader.GetInt32(6);
-                task.bossposition.z = reader.IsDBNull(7) ? task.bossposition.z : reader.GetInt32(7);
-                task.name = reader.GetString(8);
-
-                // Task Creatures
-                SQLiteCommand command2 = new SQLiteCommand(String.Format("SELECT creatureid FROM TaskCreatures WHERE taskid={0}", task.id), conn);
-                SQLiteDataReader reader2 = command2.ExecuteReader();
-                while (reader2.Read()) {
-                    task.creatures.Add(reader2.GetInt32(0));
-                }
-                command2 = new SQLiteCommand(String.Format("SELECT huntingplaceid FROM TaskHunts WHERE taskid={0}", task.id), conn);
-                reader2 = command2.ExecuteReader();
-                while (reader2.Read()) {
-                    task.hunts.Add(reader2.GetInt32(0));
-                }
-                taskList[task.groupname.ToLower()].Add(task);
-            }
-            command = new SQLiteCommand("SELECT command, description FROM CommandHelp", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                helpCommands.Add(new HelpCommand { command = reader["command"].ToString(), description = reader["description"].ToString() });
             }
         }
 
@@ -633,7 +451,7 @@ namespace Tibialyzer {
                 popupSpecificItemBox.Items.Add(str);
             }
             popupSpecificItemBox.ItemsChanged += PopupSpecificItemBox_ItemsChanged;
-            popupSpecificItemBox.verifyItem = MainForm.itemExists;
+            popupSpecificItemBox.verifyItem = StorageManager.itemExists;
             popupSpecificItemBox.RefreshControl();
 
             nameListBox.Items.Clear();
@@ -644,7 +462,7 @@ namespace Tibialyzer {
             nameListBox.ItemsChanged += NameListBox_ItemsChanged;
 
             trackedCreatureList.ItemsChanged += TrackedCreatureList_ItemsChanged;
-            trackedCreatureList.verifyItem = creatureExists;
+            trackedCreatureList.verifyItem = StorageManager.creatureExists;
 
             notificationTypeList.ReadOnly = true;
             this.screenshotAdvanceBox.Checked = SettingsManager.getSettingBool("AutoScreenshotAdvance");
@@ -818,7 +636,7 @@ namespace Tibialyzer {
         private void CreateRatioDisplay(List<string> itemList, int baseX, int baseY, EventHandler itemClick, List<Control> labelControls) {
             int it = 0;
             foreach (string itemName in itemList) {
-                Item item = getItem(itemName);
+                Item item = StorageManager.getItem(itemName);
                 PictureBox pictureBox = new PictureBox();
                 pictureBox.Image = item.image;
                 pictureBox.Location = new Point(baseX + it * 52, baseY);
@@ -847,7 +665,7 @@ namespace Tibialyzer {
         }
         private void UpdateDiscardRatio(object sender, EventArgs e) {
             string itemName = (sender as Control).Name;
-            Item item = getItem(itemName);
+            Item item = StorageManager.getItem(itemName);
             double ratio = item.GetMaxValue() / item.capacity;
             this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + Math.Floor(ratio));
             UpdateDiscardDisplay();
@@ -857,7 +675,7 @@ namespace Tibialyzer {
         private void UpdateDiscardDisplay() {
             foreach (Control c in discardLabels) {
                 string itemName = c.Name;
-                Item item = getItem(itemName);
+                Item item = StorageManager.getItem(itemName);
                 if (item.discard) {
                     c.BackColor = StyleManager.DatabaseDiscardColor;
                 } else {
@@ -868,7 +686,7 @@ namespace Tibialyzer {
 
         private void UpdateConvertRatio(object sender, EventArgs e) {
             string itemName = (sender as Control).Name;
-            Item item = getItem(itemName);
+            Item item = StorageManager.getItem(itemName);
             double ratio = item.GetMaxValue() / item.capacity;
             this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + (item.stackable ? "1-" : "0-") + Math.Ceiling(ratio + 0.01));
             UpdateConvertDisplay();
@@ -878,7 +696,7 @@ namespace Tibialyzer {
         private void UpdateConvertDisplay() {
             foreach (Control c in convertLabels) {
                 string itemName = c.Name;
-                Item item = getItem(itemName);
+                Item item = StorageManager.getItem(itemName);
                 if (item.convert_to_gold) {
                     c.BackColor = StyleManager.ItemGoldColor;
                 } else {
@@ -1061,15 +879,8 @@ namespace Tibialyzer {
             return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(str);
         }
 
-        private void initializeMaps() {
-            SQLiteCommand command = new SQLiteCommand("SELECT z FROM WorldMap", conn);
-            SQLiteDataReader reader = command.ExecuteReader();
-            while (reader.Read()) {
-                Map m = new Map();
-                m.z = reader.GetInt32(0);
-                mapFiles.Add(m);
-            }
-        }
+        /*private void initializeMaps() {
+        }*/
 
         private void ShowSimpleNotification(string title, string text, Image image) {
             notifyIcon1.BalloonTipText = text;
@@ -1456,7 +1267,7 @@ namespace Tibialyzer {
                             Math.Min(Math.Max(end.z, minSize.Height), maxSize.Height));
                         pictureBox.Size = pictureBoxSize;
                     }
-                    Map map = getMap(begin.z);
+                    Map map = StorageManager.getMap(begin.z);
                     pictureBox.map = map;
                     pictureBox.sourceWidth = end.z;
                     pictureBox.mapCoordinate = new Coordinate(begin.x, begin.y, begin.z);
@@ -1483,7 +1294,7 @@ namespace Tibialyzer {
                 if (collisionBounds.Count == 0) collisionBounds = null;
             }
 
-            Map m = getMap(begin.z);
+            Map m = StorageManager.getMap(begin.z);
             DijkstraPoint result = Dijkstra.FindRoute(m.image, new Point(begin.x, begin.y), new Point(end.x, end.y), collisionBounds, additionalWalkableColors);
             if (result == null) {
                 throw new Exception("Couldn't find route.");
@@ -1948,25 +1759,25 @@ namespace Tibialyzer {
                     string searchTerm = browseTextBox.Text;
                     switch (browseTypeBox.SelectedIndex) {
                         case 0:
-                            creatureObjects = searchCreature(searchTerm);
+                            creatureObjects = StorageManager.searchCreature(searchTerm);
                             break;
                         case 1:
-                            creatureObjects = searchItem(searchTerm);
+                            creatureObjects = StorageManager.searchItem(searchTerm);
                             break;
                         case 2:
-                            creatureObjects = searchNPC(searchTerm);
+                            creatureObjects = StorageManager.searchNPC(searchTerm);
                             break;
                         case 3:
-                            creatureObjects = searchHunt(searchTerm).ToList<TibiaObject>();
+                            creatureObjects = StorageManager.searchHunt(searchTerm).ToList<TibiaObject>();
                             break;
                         case 4:
-                            creatureObjects = searchQuest(searchTerm);
+                            creatureObjects = StorageManager.searchQuest(searchTerm);
                             break;
                         case 5:
-                            creatureObjects = searchMount(searchTerm);
+                            creatureObjects = StorageManager.searchMount(searchTerm);
                             break;
                         case 6:
-                            creatureObjects = searchOutfit(searchTerm);
+                            creatureObjects = StorageManager.searchOutfit(searchTerm);
                             break;
                     }
                     refreshItems(creaturePanel, creaturePanel.Controls, creatureObjects, creatureSortedHeader, creatureDesc, sortCreatures);
@@ -2016,7 +1827,7 @@ namespace Tibialyzer {
                 mainForm.Invoke((MethodInvoker)delegate {
                     string helpText = searchCommandHelpBox.Text.ToLower();
                     commands.Clear();
-                    foreach (HelpCommand command in helpCommands) {
+                    foreach (HelpCommand command in StorageManager.helpCommands) {
                         if (helpText == "" || command.command.ToLower().Contains(helpText) || command.description.ToLower().Contains(helpText)) {
                             commands.Add(command);
                         }
@@ -2318,15 +2129,15 @@ namespace Tibialyzer {
             List<TibiaObject> creatureObjects = new List<TibiaObject>();
             foreach (string cr in creatures) {
                 string name = cr.ToLower();
-                Creature cc = getCreature(name);
+                Creature cc = StorageManager.getCreature(name);
                 if (cc != null && !creatureObjects.Contains(cc)) {
                     creatureObjects.Add(cc);
                     h.lootCreatures.Add(name);
                 } else if (cc == null) {
-                    HuntingPlace hunt = getHunt(name);
+                    HuntingPlace hunt = StorageManager.getHunt(name);
                     if (hunt != null) {
                         foreach (int creatureid in hunt.creatures) {
-                            cc = getCreature(creatureid);
+                            cc = StorageManager.getCreature(creatureid);
                             if (cc != null && !creatureObjects.Any(item => item.GetName() == name)) {
                                 creatureObjects.Add(cc);
                                 h.lootCreatures.Add(cc.GetName());
@@ -3316,7 +3127,7 @@ namespace Tibialyzer {
 
                     string database = System.IO.Path.Combine(tibialyzerPath, "database.db");
                     if (!File.Exists(database)) {
-                        database = System.IO.Path.Combine(tibialyzerPath, databaseFile);
+                        database = System.IO.Path.Combine(tibialyzerPath, Constants.DatabaseFile);
                         if (!File.Exists(database)) {
                             DisplayWarning("Could not find database.db in upgrade path.");
                             return;
@@ -3324,18 +3135,7 @@ namespace Tibialyzer {
                     }
                     SQLiteConnection databaseConnection = new SQLiteConnection(String.Format("Data Source={0};Version=3;", database));
                     databaseConnection.Open();
-                    SQLiteCommand comm = new SQLiteCommand("SELECT id, discard, convert_to_gold, actual_value FROM Items", databaseConnection);
-                    SQLiteDataReader reader = comm.ExecuteReader();
-                    using (var transaction = mainForm.conn.BeginTransaction()) {
-                        while (reader.Read()) {
-                            int itemid = reader.GetInt32(0);
-                            bool discard = reader.GetBoolean(1);
-                            bool convert = reader.GetBoolean(2);
-                            long value = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt64(3);
-                            MainForm.UpdateItem(itemid, discard, convert, value, transaction);
-                        }
-                        transaction.Commit();
-                    }
+                    StorageManager.UpdateDatabase(databaseConnection);
                 }
             }
         }

@@ -9,5 +9,6 @@ namespace Tibialyzer {
         public static Random Random = new Random();
         public static List<string> vocations = new List<string> { "knight", "druid", "paladin", "sorcerer" };
         public static string LootDatabaseFile = @"Database\Loot.db";
+        public static string DatabaseFile = @"Database\Database.db";
     }
 }

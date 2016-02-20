@@ -343,9 +343,9 @@ namespace Tibialyzer {
                 itemName = itemName == "" ? split : itemName + " " + split;
             }
             if (pluralMap.ContainsKey(itemName)) itemName = pluralMap[itemName];
-            if (!itemExists(itemName) && itemName.Length > 0) {
+            if (!StorageManager.itemExists(itemName) && itemName.Length > 0) {
                 string singular = itemName.Substring(0, itemName.Length - 1);
-                if (itemExists(singular)) {
+                if (StorageManager.itemExists(singular)) {
                     itemName = singular;
                 }
             }
@@ -383,7 +383,7 @@ namespace Tibialyzer {
                     return item.Substring(0, item.Length - kvp.Key.Length) + kvp.Value;
                 }
             }
-            if (getItem(item) == null) {
+            if (StorageManager.getItem(item) == null) {
                 string[] words = item.Split(' ');
                 if (words.Length > 1) {
                     string word = getSingularItem(words[0]);
@@ -465,7 +465,7 @@ namespace Tibialyzer {
                     transaction.Commit();
                 }
             }
-            LootChanged();
+            LootDatabaseManager.UpdateLoot();
         }
 
         void clearOldLog(Hunt h, int clearMinutes = 10) {
@@ -514,7 +514,7 @@ namespace Tibialyzer {
                 logMessages[t].Add(line);
             }
             ParseLootMessages(h, logMessages, null, false, false, true);
-            LootChanged();
+            LootDatabaseManager.UpdateLoot();
         }
 
         void resetHunt(Hunt h) {
@@ -527,7 +527,7 @@ namespace Tibialyzer {
             }
             LootDatabaseManager.DeleteHuntTable(h);
             LootDatabaseManager.CreateHuntTable(h);
-            LootChanged();
+            LootDatabaseManager.UpdateLoot();
         }
 
         void deleteLogMessage(Hunt h, string logMessage) {
@@ -559,7 +559,7 @@ namespace Tibialyzer {
             }
             if (!found) return;
             LootDatabaseManager.DeleteMessage(h, logMessage, null);
-            LootChanged();
+            LootDatabaseManager.UpdateLoot();
         }
 
         void saveLog(Hunt h, string logPath) {
@@ -587,64 +587,7 @@ namespace Tibialyzer {
                 logMessages[t].Add(line);
             }
             ParseLootMessages(h, logMessages, null, true, true);
-            LootChanged();
-        }
-
-        void setGoldRatio(double ratio) {
-            ratio -= 0.00001;
-            using (var transaction = conn.BeginTransaction()) {
-                SQLiteCommand command;
-                command = new SQLiteCommand("UPDATE Items SET discard=0;", conn, transaction);
-                command.ExecuteNonQuery();
-                command = new SQLiteCommand(String.Format("UPDATE Items SET discard=1 WHERE (MAX(vendor_value, actual_value) / capacity) < {0};", ratio.ToString()), conn, transaction);
-                command.ExecuteNonQuery();
-                transaction.Commit();
-            }
-            foreach (int id in _itemIdMap.Keys.ToArray().ToList()) {
-                Item item = _itemIdMap[id];
-                item.discard = ((double)item.GetMaxValue() / (double)(item.capacity == 0 ? 1 : item.capacity)) < ratio;
-            }
-            LootChanged();
-        }
-
-        void setConvertRatio(double ratio, bool stackable) {
-            ratio -= 0.00001;
-            using (var transaction = conn.BeginTransaction()) {
-                SQLiteCommand command;
-                command = new SQLiteCommand(String.Format("UPDATE Items SET convert_to_gold=0 WHERE stackable={0};", stackable ? 1 : 0), conn, transaction);
-                command.ExecuteNonQuery();
-                command = new SQLiteCommand(String.Format("UPDATE Items SET convert_to_gold=1 WHERE stackable={0} AND MAX(vendor_value, actual_value) / capacity < {1};", stackable ? 1 : 0, ratio.ToString(System.Globalization.CultureInfo.InvariantCulture)), conn, transaction);
-                command.ExecuteNonQuery();
-                transaction.Commit();
-            }
-            foreach (int id in _itemIdMap.Keys.ToArray().ToList()) {
-                Item item = _itemIdMap[id];
-                if (item.stackable == stackable) {
-                    item.convert_to_gold = ((double)item.GetMaxValue() / (double)(item.capacity == 0 ? 1 : item.capacity)) < ratio;
-                }
-            }
-            LootChanged();
-        }
-
-        void setItemDiscard(Item item, bool discard) {
-            item.discard = discard;
-            SQLiteCommand command = new SQLiteCommand(String.Format("UPDATE Items SET discard={0} WHERE id={1}", item.discard ? 1 : 0, item.id), conn);
-            command.ExecuteNonQuery();
-            LootChanged();
-        }
-
-        void setItemConvert(Item item, bool convert) {
-            item.convert_to_gold = convert;
-            SQLiteCommand command = new SQLiteCommand(String.Format("UPDATE Items SET convert_to_gold={0} WHERE id={1}", item.convert_to_gold ? 1 : 0, item.id), conn);
-            command.ExecuteNonQuery();
-            LootChanged();
-        }
-
-        void setItemValue(Item item, long value) {
-            item.actual_value = value;
-            SQLiteCommand command = new SQLiteCommand(String.Format("UPDATE Items SET actual_value={0} WHERE id={1}", value, item.id), conn);
-            command.ExecuteNonQuery();
-            LootChanged();
+            LootDatabaseManager.UpdateLoot();
         }
 
         List<Tuple<string, string>> getRecentCommands(int type, int max_entries = 15) {
@@ -674,7 +617,7 @@ namespace Tibialyzer {
             foreach (Creature cr in deleteList) {
                 deleteCreatureFromLog(cr);
             }
-            LootChanged();
+            LootDatabaseManager.UpdateLoot();
         }
 
         private void insertSkin(Creature cr, int count = 1) {
@@ -683,7 +626,7 @@ namespace Tibialyzer {
             int minute = time.Minute;
             int stamp = getDayStamp();
             string timestamp = String.Format("{0}:{1}", (hour < 10 ? "0" + hour.ToString() : hour.ToString()), (minute < 10 ? "0" + minute.ToString() : minute.ToString()));
-            Item item = getItem(cr.skin.dropitemid);
+            Item item = StorageManager.getItem(cr.skin.dropitemid);
             if (item == null) return;
             string message = String.Format("{0} Loot of a {1}: {2} {3}", timestamp, cr.displayname.ToLower(), count, item.displayname.ToLower());
             LootDatabaseManager.InsertMessage(activeHunt, stamp, hour, minute, message);
@@ -701,7 +644,7 @@ namespace Tibialyzer {
                 }
                 activeHunt.loot.creatureLoot[cr].Add(item, count);
             }
-            LootChanged();
+            LootDatabaseManager.UpdateLoot();
         }
 
         public void addKillToHunt(Hunt h, Tuple<Creature, List<Tuple<Item, int>>> resultList, string t, string message, int stamp = 0, int hour = 0, int minute = 0, SQLiteTransaction transaction = null) {
@@ -964,7 +907,7 @@ namespace Tibialyzer {
             if (creature[0] == 'a') {
                 creature = creature.Split(new char[] { ' ' }, 2)[1];
             }
-            Creature cr = getCreature(creature.ToLower());
+            Creature cr = StorageManager.getCreature(creature.ToLower());
             if (cr != null) {
                 return cr;
             } else {
@@ -984,7 +927,7 @@ namespace Tibialyzer {
             if (creature[0] == 'a') {
                 creature = creature.Split(new char[] { ' ' }, 2)[1];
             }
-            Creature cr = getCreature(creature.ToLower());
+            Creature cr = StorageManager.getCreature(creature.ToLower());
             if (cr == null) {
                 Console.WriteLine(String.Format("Warning, creature {0} was not found in the database.", creature));
                 return null;
@@ -998,7 +941,7 @@ namespace Tibialyzer {
                 string itemName = processedItem.Item1.Trim();
                 if (itemName == "nothing") continue;
                 int itemCount = processedItem.Item2;
-                Item it = getItem(itemName);
+                Item it = StorageManager.getItem(itemName);
                 if (it == null) {
                     Console.WriteLine(String.Format("Warning, item {0} was not found in the database.", itemName));
                     return null;
@@ -1120,7 +1063,7 @@ namespace Tibialyzer {
                             levelAdvances.Add(logMessage);
                         }
                     } else {
-                        foreach (Event ev in eventIdMap.Values) {
+                        foreach (Event ev in StorageManager.eventIdMap.Values) {
                             foreach (string evMessage in ev.eventMessages) {
                                 if (logMessage.Length == evMessage.Length + 6 && logMessage.ToLower().Contains(evMessage.ToLower().Trim())) {
                                     res.eventMessages.Add(new Tuple<Event, string>(ev, logMessage));
