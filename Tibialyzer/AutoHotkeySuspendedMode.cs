@@ -24,7 +24,6 @@ using System.Windows.Forms;
 namespace Tibialyzer {
     class AutoHotkeySuspendedMode : SimpleNotification {
         private System.Windows.Forms.Label typeModeLabel;
-        private object closeLock = new object();
         System.Timers.Timer showTimer = null;
         private bool alwaysShow = false;
 
@@ -33,7 +32,7 @@ namespace Tibialyzer {
             this.alwaysShow = alwaysShow;
             this.InitializeSimpleNotification(false, false);
 
-            showTimer = new System.Timers.Timer(10);
+            showTimer = new System.Timers.Timer(50);
             showTimer.Elapsed += ShowTimer_Elapsed;
             showTimer.Enabled = true;
         }
@@ -51,31 +50,21 @@ namespace Tibialyzer {
             Process p = Process.GetProcessById((int)pid);
             return p.ProcessName;
         }
-
-        public void CloseForm() {
-            lock(closeLock) {
-                showTimer.Dispose();
-                showTimer = null;
-                this.Close();
-            }
-        }
-
+        
         private void ShowTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
             if (alwaysShow) return;
             if (MainForm.TibiaClientName != "Tibia") {
                 return;
             }
             try {
-                lock(closeLock) {
-                    if (showTimer == null || this.IsDisposed || this.Disposing) {
-                        return;
-                    }
-                    // only show the suspended window when tibia is active
-                    bool visible = GetActiveProcessFileName() == MainForm.GetTibiaProcess().ProcessName;
-                    this.BeginInvoke((MethodInvoker)delegate {
-                        this.Visible = visible;
-                    });
+                if (showTimer == null || this.IsDisposed || this.Disposing) {
+                    return;
                 }
+                // only show the suspended window when tibia is active
+                bool visible = GetActiveProcessFileName() == MainForm.GetTibiaProcess().ProcessName;
+                this.BeginInvoke((MethodInvoker)delegate {
+                    this.Visible = visible;
+                });
             } catch {
 
             }
