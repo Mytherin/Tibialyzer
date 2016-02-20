@@ -6,5 +6,6 @@ using System.Threading.Tasks;
 
 namespace Tibialyzer {
     public class HuntManager {
+
     }
 }

@@ -318,7 +318,7 @@ namespace Tibialyzer {
                     string parameter = splits[1].Trim().ToLower();
                     int page = 0;
                     if (splits.Length > 2 && int.TryParse(splits[2], out page)) { }
-                    if (cities.Contains(parameter)) {
+                    if (Constants.cities.Contains(parameter)) {
                         List<HuntingPlace> huntingPlaces = StorageManager.getHuntsInCity(parameter);
                         ShowCreatureList(huntingPlaces.ToList<TibiaObject>(), "Hunts in " + parameter, command);
                         return true;
@@ -364,7 +364,7 @@ namespace Tibialyzer {
                     NPC npc = StorageManager.getNPC(parameter);
                     if (npc != null) {
                         ShowNPCForm(npc, command);
-                    } else if (cities.Contains(parameter)) {
+                    } else if (Constants.cities.Contains(parameter)) {
                         ShowCreatureList(StorageManager.getNPCWithCity(parameter), "NPC List", command);
                     } else {
                         ShowCreatureList(StorageManager.searchNPC(parameter), "NPC List", command);
@@ -480,7 +480,7 @@ namespace Tibialyzer {
                         ShowQuestNotification(StorageManager.questNameMap[parameter], command);
                     } else {
                         string title;
-                        if (cities.Contains(parameter)) {
+                        if (Constants.cities.Contains(parameter)) {
                             title = "Quests In " + parameter;
                             foreach (Quest q in StorageManager.questIdMap.Values) {
                                 if (q.city.ToLower() == parameter) {
@@ -608,7 +608,7 @@ namespace Tibialyzer {
                     saveScreenshot("Screenshot", takeScreenshot());
                 } else {
                     bool found = false;
-                    foreach (string city in cities) {
+                    foreach (string city in Constants.cities) {
                         if (comp.StartsWith(city + MainForm.commandSymbol)) {
                             string itemName = command.Split(commandSymbol)[1].Trim().ToLower();
                             Item item = StorageManager.getItem(itemName);

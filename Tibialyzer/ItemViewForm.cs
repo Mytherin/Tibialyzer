@@ -747,9 +747,9 @@ namespace Tibialyzer {
             }
 
             this.itemName.Text = c.TextInfo.ToTitleCase(item.displayname);
-            Font f = MainForm.fontList[0];
-            for (int i = 0; i < MainForm.fontList.Count; i++) {
-                Font font = MainForm.fontList[i];
+            Font f = StyleManager.FontList[0];
+            for (int i = 0; i < StyleManager.FontList.Count; i++) {
+                Font font = StyleManager.FontList[i];
                 int width = TextRenderer.MeasureText(this.itemName.Text, font).Width;
                 if (width < itemName.MaximumSize.Width) {
                     f = font;
@@ -759,9 +759,9 @@ namespace Tibialyzer {
             }
             this.itemName.Font = f;
             this.itemCategory.Text = item.category;
-            f = MainForm.fontList[0];
-            for (int i = 0; i < MainForm.fontList.Count; i++) {
-                Font font = MainForm.fontList[i];
+            f = StyleManager.FontList[0];
+            for (int i = 0; i < StyleManager.FontList.Count; i++) {
+                Font font = StyleManager.FontList[i];
                 Size size = TextRenderer.MeasureText(this.itemCategory.Text, font);
                 if (size.Width < itemCategory.MaximumSize.Width && size.Height < itemCategory.MaximumSize.Height) {
                     f = font;
@@ -828,12 +828,12 @@ namespace Tibialyzer {
                     label.Location = new Point(x, base_y);
                     label.ForeColor = StyleManager.NotificationTextColor;
                     label.BackColor = Color.Transparent;
-                    label.Font = MainForm.text_font;
+                    label.Font = StyleManager.TextFont;
                     label.Size = new Size(90, 25);
                     label.TextAlign = ContentAlignment.MiddleCenter;
                     label.BorderStyle = BorderStyle.FixedSingle;
                     label.Name = i.ToString();
-                    label.Click += toggleObjectDisplay; ;
+                    label.Click += toggleObjectDisplay;
                     objectControls[i] = label;
                     this.Controls.Add(label);
                     if (currentControlList < 0 || currentControlList > headers.Length) {

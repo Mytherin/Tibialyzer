@@ -152,10 +152,10 @@ namespace Tibialyzer {
             }
             CombineItems();
             this.nameLabel.Text = MainForm.ToTitle(this.creature.displayname);
-            Font f = MainForm.fontList[0];
+            Font f = StyleManager.FontList[0];
             Font prevFont = f;
-            for(int i = 0; i < MainForm.fontList.Count; i++) {
-                Font font = MainForm.fontList[i];
+            for(int i = 0; i < StyleManager.FontList.Count; i++) {
+                Font font = StyleManager.FontList[i];
                 int width = TextRenderer.MeasureText(this.nameLabel.Text, font).Width;
                 if (width < this.mainImage.Size.Width) {
                     f = prevFont;

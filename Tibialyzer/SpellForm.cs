@@ -380,7 +380,7 @@ namespace Tibialyzer {
                     label.Location = new Point(x, y);
                     label.ForeColor = StyleManager.NotificationTextColor;
                     label.BackColor = Color.Transparent;
-                    label.Font = MainForm.text_font;
+                    label.Font = StyleManager.TextFont;
                     label.Size = new Size(70, 25);
                     label.TextAlign = ContentAlignment.MiddleCenter;
                     x += 70;

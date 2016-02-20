@@ -42,29 +42,17 @@ namespace Tibialyzer {
         public static double opacity = 0.8;
         public static bool transparent = true;
         private bool keep_working = true;
-        private static string nodeDatabase = @"Database\Nodes.db";
-        private static string pluralMapFile = @"Database\pluralMap.txt";
-        private static string autohotkeyFile = @"Database\autohotkey.ahk";
-        public static string settingsFile = @"Database\settings.txt";
-        public static string bigLootFile = @"Database\loot.txt";
         private bool prevent_settings_update = false;
-        private bool minimize_notification = true;
-        static HashSet<string> cities = new HashSet<string>() { "ab'dendriel", "carlin", "kazordoon", "venore", "thais", "ankrahmun", "farmine", "gray beach", "liberty bay", "port hope", "rathleton", "roshamuul", "yalahar", "svargrond", "edron", "darashia", "rookgaard", "dawnport", "gray beach" };
+        private bool minimize_notification = true;        
         public List<string> notification_items = new List<string>();
         private ToolTip scan_tooltip = new ToolTip();
         private Stack<TibialyzerCommand> command_stack = new Stack<TibialyzerCommand>();
         public static List<string> NotificationTypes = new List<string> { "Loot Notification", "Damage Notification", "Object List", "City Information", "Creature Loot Information", "Creature Stats Information", "Hunt Information", "Item Information", "NPC Information", "Outfit Information", "Quest Information", "Spell Information", "Quest/Hunt Directions", "Task Form" };
         public static List<string> NotificationTestCommands = new List<string> { "loot@", "damage@", "creature@quara", "city@venore", "creature@demon", "stats@dragon lord", "hunt@formorgar mines", "item@heroic axe", "npc@rashid", "outfit@brotherhood", "quest@killing in the name of", "spell@light healing", "guide@desert dungeon quest", "task@crystal spider" };
         public static List<Type> NotificationTypeObjects = new List<Type>() { typeof(LootDropForm), typeof(DamageChart), typeof(CreatureList), typeof(CityDisplayForm), typeof(CreatureDropsForm), typeof(CreatureStatsForm), typeof(HuntingPlaceForm), typeof(ItemViewForm), typeof(NPCForm), typeof(OutfitForm), typeof(QuestForm), typeof(SpellForm), typeof(QuestGuideForm), typeof(TaskForm) };
-
-        public static List<Font> fontList = new List<Font>();
-
-        public static Font text_font = new Font(FontFamily.GenericSansSerif, 9, FontStyle.Bold);
-
-        private static StreamWriter fileWriter = null;
-
-        static Dictionary<string, Image> creatureImages = new Dictionary<string, Image>();
         
+        private static StreamWriter fileWriter = null;
+                
         enum ScanningState { Scanning, NoTibia, Stuck };
         ScanningState current_state;
 
@@ -89,15 +77,12 @@ namespace Tibialyzer {
                 ExitWithError("Fatal Error", String.Format("Could not find database file {0}.", Constants.DatabaseFile));
             }
 
-            if (!File.Exists(nodeDatabase)) {
-                ExitWithError("Fatal Error", String.Format("Could not find database file {0}.", nodeDatabase));
+            if (!File.Exists(Constants.NodeDatabase)) {
+                ExitWithError("Fatal Error", String.Format("Could not find database file {0}.", Constants.NodeDatabase));
             }
             
             LootDatabaseManager.Initialize();
-
             StyleManager.InitializeStyle();
-
-
             NotificationForm.Initialize();
 
             prevent_settings_update = true;
@@ -107,15 +92,14 @@ namespace Tibialyzer {
             } catch (Exception e) {
                 ExitWithError("Fatal Error", String.Format("Corrupted database {0}.\nMessage: {1}", Constants.DatabaseFile, e.Message));
             }
-            SettingsManager.LoadSettings(settingsFile);
-            MainForm.initializeFonts();
+            SettingsManager.LoadSettings(Constants.SettingsFile);
             this.initializeHunts();
             this.initializeSettings();
             this.initializeTooltips();
             try {
-                Pathfinder.LoadFromDatabase(nodeDatabase);
+                Pathfinder.LoadFromDatabase(Constants.NodeDatabase);
             } catch (Exception e) {
-                ExitWithError("Fatal Error", String.Format("Corrupted database {0}.\nMessage: {1}", nodeDatabase, e.Message));
+                ExitWithError("Fatal Error", String.Format("Corrupted database {0}.\nMessage: {1}", Constants.NodeDatabase, e.Message));
             }
             prevent_settings_update = false;
 
@@ -123,7 +107,7 @@ namespace Tibialyzer {
                 startAutoHotkey_Click(null, null);
             }
 
-            fileWriter = new StreamWriter(bigLootFile, true);
+            fileWriter = new StreamWriter(Constants.BigLootFile, true);
 
             ignoreStamp = createStamp();
 
@@ -172,13 +156,7 @@ namespace Tibialyzer {
                 return cp;
             }
         }
-
-        public static void initializeFonts() {
-            for (int i = 7; i < 20; i++) {
-                fontList.Add(new System.Drawing.Font("Microsoft Sans Serif", i, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0))));
-            }
-        }
-
+        
         private void initializeTooltips() {
             explanationTooltip.SetToolTip(saveDamageImageButton, "Saves an image of the damage chart (damage@) to a file.");
             explanationTooltip.SetToolTip(saveLootImageButton, "Saves an image of the loot command (loot@) to a file.");
@@ -206,7 +184,7 @@ namespace Tibialyzer {
             explanationTooltip.SetToolTip(scanningSpeedTrack, "Set the memory scanning speed of Tibialyzer. Lower settings drastically reduce CPU usage, but increase response time for Tibialyzer to respond to events in-game (such as in-game commands, look events and loot parsing).");
             explanationTooltip.SetToolTip(stackAllItemsCheckbox, "In the loot@ view, display all items as if they were stackable.");
             explanationTooltip.SetToolTip(ignoreLowExperienceButton, "In the loot@ view, do not display creatures that give less than {Exp Value} experience.");
-            explanationTooltip.SetToolTip(saveAllLootCheckbox, String.Format("Whenever you find loot, save the loot message to the file {0}.", bigLootFile));
+            explanationTooltip.SetToolTip(saveAllLootCheckbox, String.Format("Whenever you find loot, save the loot message to the file {0}.", Constants.BigLootFile));
             explanationTooltip.SetToolTip(selectClientProgramButton, "Select the Tibia client to scan from. This should be either the C++ Client or the Flash Client, although you can select any program.");
             explanationTooltip.SetToolTip(executeButton, "Execute a Tibialyzer command directly.");
             explanationTooltip.SetToolTip(popupAnimationBox, "Whether or not popups should be animated or simply appear.");
@@ -221,8 +199,8 @@ namespace Tibialyzer {
         }
 
         void initializePluralMap() {
-            if (File.Exists(pluralMapFile)) {
-                using (StreamReader reader = new StreamReader(pluralMapFile)) {
+            if (File.Exists(Constants.PluralMapFile)) {
+                using (StreamReader reader = new StreamReader(Constants.PluralMapFile)) {
                     string line;
                     while ((line = reader.ReadLine()) != null) {
                         if (line.Contains('=')) {
@@ -1453,10 +1431,10 @@ namespace Tibialyzer {
                         sortValues[header] = Math.Max(sortValues[header], i);
                     }
                     if (removedAttributes != null && removedAttributes.Contains(header)) continue;
-                    int width = TextRenderer.MeasureText(header, MainForm.text_font).Width + 10;
+                    int width = TextRenderer.MeasureText(header, StyleManager.TextFont).Width + 10;
                     if (attribute is StringAttribute || attribute is CommandAttribute) {
                         string text = attribute is StringAttribute ? (attribute as StringAttribute).value : (attribute as CommandAttribute).value;
-                        width = Math.Max(TextRenderer.MeasureText(text, MainForm.text_font).Width, width);
+                        width = Math.Max(TextRenderer.MeasureText(text, StyleManager.TextFont).Width, width);
                     } else if (attribute is ImageAttribute) {
                         width = Math.Max((attribute as ImageAttribute).value == null ? 0 : (attribute as ImageAttribute).value.Width, width);
                     } else if (attribute is BooleanAttribute) {
@@ -1466,7 +1444,7 @@ namespace Tibialyzer {
                     }
                     width = Math.Min(width, attribute.MaxWidth);
                     if (!totalAttributes.ContainsKey(header)) {
-                        int headerWidth = TextRenderer.MeasureText(header, MainForm.text_font).Width;
+                        int headerWidth = TextRenderer.MeasureText(header, StyleManager.TextFont).Width;
                         totalAttributes.Add(header, Math.Max(headerWidth, width));
                     } else if (totalAttributes[header] < width) {
                         totalAttributes[header] = width;
@@ -1489,7 +1467,7 @@ namespace Tibialyzer {
                 label.Location = new Point(x, base_y);
                 label.ForeColor = StyleManager.NotificationTextColor;
                 label.Size = new Size(val, size);
-                label.Font = MainForm.text_font;
+                label.Font = StyleManager.TextFont;
                 label.BackColor = Color.Transparent;
                 label.TextAlign = ContentAlignment.MiddleCenter;
                 label.BorderStyle = BorderStyle.FixedSingle;
@@ -1557,7 +1535,7 @@ namespace Tibialyzer {
                         label.Text = text;
                         label.ForeColor = color;
                         label.Size = new Size(val, size);
-                        label.Font = MainForm.text_font;
+                        label.Font = StyleManager.TextFont;
                         label.Location = new Point(x, size * (offset + 1) + base_y);
                         label.BackColor = Color.Transparent;
                         if (createdControls != null) {
@@ -2548,7 +2526,7 @@ namespace Tibialyzer {
 
         private void writeToAutoHotkeyFile() {
             if (!SettingsManager.settingExists("AutoHotkeySettings")) return;
-            using (StreamWriter writer = new StreamWriter(autohotkeyFile)) {
+            using (StreamWriter writer = new StreamWriter(Constants.AutohotkeyFile)) {
                 writer.WriteLine("#SingleInstance force");
                 if (TibiaClientName.ToLower().Contains("flash")) {
                     Process p = GetTibiaProcess();
@@ -2585,7 +2563,7 @@ namespace Tibialyzer {
         private void startAutoHotkey_Click(object sender, EventArgs e) {
             ClearWarning(autoHotkeyWarning);
             writeToAutoHotkeyFile();
-            System.Diagnostics.Process.Start(autohotkeyFile);
+            System.Diagnostics.Process.Start(Constants.AutohotkeyFile);
         }
 
         private void shutdownAutoHotkey_Click(object sender, EventArgs e) {
@@ -3094,7 +3072,7 @@ namespace Tibialyzer {
                 string settings = System.IO.Path.Combine(tibialyzerPath, "settings.txt");
                 lock (hunts) {
                     if (!File.Exists(settings)) {
-                        settings = System.IO.Path.Combine(tibialyzerPath, settingsFile);
+                        settings = System.IO.Path.Combine(tibialyzerPath, Constants.SettingsFile);
                         if (!File.Exists(settings)) {
                             DisplayWarning("Could not find settings.txt in upgrade path.");
                             return;

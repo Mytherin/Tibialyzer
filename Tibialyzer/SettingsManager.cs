@@ -35,7 +35,7 @@ namespace Tibialyzer {
         public static void SaveSettings() {
             try {
                 lock (settings) {
-                    using (StreamWriter file = new StreamWriter(MainForm.settingsFile)) {
+                    using (StreamWriter file = new StreamWriter(Constants.SettingsFile)) {
                         foreach (KeyValuePair<string, List<string>> pair in settings) {
                             file.WriteLine("@" + pair.Key);
                             foreach (string str in pair.Value) {

@@ -330,9 +330,9 @@ namespace Tibialyzer {
 
             //y = MainForm.DisplayCreatureList(this.Controls, creatures, 10, base_y, this.Size.Width, 4, null, 0.8f);
 
-            Font f = MainForm.fontList[0];
-            for (int i = 0; i < MainForm.fontList.Count; i++) {
-                Font font = MainForm.fontList[i];
+            Font f = StyleManager.FontList[0];
+            for (int i = 0; i < StyleManager.FontList.Count; i++) {
+                Font font = StyleManager.FontList[i];
                 int width = TextRenderer.MeasureText(this.huntingPlaceName.Text, font).Width;
                 if (width < this.huntingPlaceName.Size.Width) {
                     f = font;

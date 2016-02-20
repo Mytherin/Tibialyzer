@@ -5,6 +5,7 @@ using System.IO;
 
 namespace Tibialyzer {    
     class StyleManager {
+        #region UI Colors
         public static Color NotificationBackgroundColor = Color.FromArgb(0, 51, 102);
         public static Color NotificationTextColor = Color.FromArgb(191, 191, 191);
 
@@ -50,11 +51,23 @@ namespace Tibialyzer {
 
         public static Color CreatureHealthColor = Color.FromArgb(60, 179, 60);
         public static Color CreatureBossColor = Color.FromArgb(205, 102, 102);
+        #endregion
+
+        #region UI Fonts
+        public static List<Font> FontList = new List<Font>();
+
+        public static Font TextFont = new Font(FontFamily.GenericSansSerif, 9, FontStyle.Bold);
+        #endregion
 
         private static Dictionary<string, Image> images = new Dictionary<string, Image>();
         public static void InitializeStyle() {
+            // Load Images
             foreach(string image in Directory.GetFiles(@"Images\")) {
                 LoadImage(image, image.Split('\\')[1]);
+            }
+            // Generate Fonts of different sizes
+            for (int i = 7; i < 20; i++) {
+                FontList.Add(new System.Drawing.Font("Microsoft Sans Serif", i, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0))));
             }
             Initialized = true;
         }

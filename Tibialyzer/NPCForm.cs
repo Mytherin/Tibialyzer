@@ -144,9 +144,9 @@ namespace Tibialyzer {
             NotificationInitialize();
             npcImage.Image = npc.GetImage();
             creatureName.Text = MainForm.ToTitle(npc.city);
-            Font f = MainForm.fontList[0];
-            for (int i = 0; i < MainForm.fontList.Count; i++) {
-                Font font = MainForm.fontList[i];
+            Font f = StyleManager.FontList[0];
+            for (int i = 0; i < StyleManager.FontList.Count; i++) {
+                Font font = StyleManager.FontList[i];
                 Size size = TextRenderer.MeasureText(this.creatureName.Text, font);
                 if (size.Width < creatureName.MaximumSize.Width && size.Height < creatureName.MaximumSize.Height) {
                     f = font;
@@ -198,7 +198,7 @@ namespace Tibialyzer {
                     label.Location = new Point(x, base_y);
                     label.ForeColor = StyleManager.NotificationTextColor;
                     label.BackColor = Color.Transparent;
-                    label.Font = MainForm.text_font;
+                    label.Font = StyleManager.TextFont;
                     label.Size = new Size(90, 25);
                     label.TextAlign = ContentAlignment.MiddleCenter;
                     label.BorderStyle = BorderStyle.FixedSingle;
