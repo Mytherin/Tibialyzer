@@ -532,8 +532,7 @@ namespace Tibialyzer {
         private bool SearchChunk(IEnumerable<string> chunk, ReadMemoryResults res) {
             List<int> stamps = getLatestStamps(3, ignoreStamp);
             bool chunksExist = false;
-            foreach (string it in chunk)
-            {
+            foreach (string it in chunk) {
                 chunksExist = true;
                 string logMessage = it;
                 string t = logMessage.Substring(0, 5);

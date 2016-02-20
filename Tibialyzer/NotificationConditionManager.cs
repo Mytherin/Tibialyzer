@@ -58,7 +58,7 @@ namespace Tibialyzer {
             if (cr != null) {
                 command = new SQLiteCommand(String.Format("INSERT INTO creature (name, exp, hp) VALUES (\"{0}\",{1},{2})", cr.GetName().Replace("\"", "\\\""), cr.experience, cr.health), connection);
                 command.ExecuteNonQuery();
-                if (dropInformation.Item2 != null) {
+                if (dropInformation.Item2 != null && dropInformation.Item2.Count > 0) {
                     foreach (Tuple<Item, int> tpl in dropInformation.Item2) {
                         Item it = tpl.Item1;
                         int count = tpl.Item2;
@@ -66,6 +66,9 @@ namespace Tibialyzer {
                         command = new SQLiteCommand(String.Format("INSERT INTO item (name, value, capacity, count) VALUES (\"{0}\",{1},{2},{3})", it.GetName().Replace("\"", "\\\""), it.GetMaxValue(), it.capacity.ToString(CultureInfo.InvariantCulture), count), connection);
                         command.ExecuteNonQuery();
                     }
+                } else {
+                    command = new SQLiteCommand(String.Format("INSERT INTO item (name, value, capacity, count) VALUES (\"nothing\",0,1,1)"), connection);
+                    command.ExecuteNonQuery();
                 }
             }
 
