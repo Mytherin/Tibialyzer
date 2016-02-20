@@ -47,7 +47,7 @@ namespace Tibialyzer {
         public static List<string> NotificationTestCommands = new List<string> { "loot@", "damage@", "creature@quara", "city@venore", "creature@demon", "stats@dragon lord", "hunt@formorgar mines", "item@heroic axe", "npc@rashid", "outfit@brotherhood", "quest@killing in the name of", "spell@light healing", "guide@desert dungeon quest", "task@crystal spider" };
         public static List<Type> NotificationTypeObjects = new List<Type>() { typeof(LootDropForm), typeof(DamageChart), typeof(CreatureList), typeof(CityDisplayForm), typeof(CreatureDropsForm), typeof(CreatureStatsForm), typeof(HuntingPlaceForm), typeof(ItemViewForm), typeof(NPCForm), typeof(OutfitForm), typeof(QuestForm), typeof(SpellForm), typeof(QuestGuideForm), typeof(TaskForm) };
         
-        private static StreamWriter fileWriter = null;
+        public static StreamWriter fileWriter = null;
                 
         enum ScanningState { Scanning, NoTibia, Stuck };
         ScanningState current_state;
@@ -80,9 +80,9 @@ namespace Tibialyzer {
             LootDatabaseManager.Initialize();
             StyleManager.InitializeStyle();
             NotificationForm.Initialize();
+            Parser.Initialize();
 
             prevent_settings_update = true;
-            this.initializePluralMap();
             try {
                 StorageManager.InitializeStorage();
             } catch (Exception e) {
@@ -194,22 +194,6 @@ namespace Tibialyzer {
             explanationTooltip.SetToolTip(selectUpgradeTibialyzerButton, "Import settings from a previous Tibialyzer. Select the directory in which the previous Tibialyzer is located.");
         }
 
-        void initializePluralMap() {
-            if (File.Exists(Constants.PluralMapFile)) {
-                using (StreamReader reader = new StreamReader(Constants.PluralMapFile)) {
-                    string line;
-                    while ((line = reader.ReadLine()) != null) {
-                        if (line.Contains('=')) {
-                            string[] split = line.Split('=');
-                            if (!pluralMap.ContainsKey(split[0])) {
-                                pluralMap.Add(split[0], split[1]);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         public void InitializeHuntDisplay(int activeHuntIndex) {
             skip_hunt_refresh = true;
             
@@ -257,7 +241,7 @@ namespace Tibialyzer {
         private void showPopupButton_Click(object sender, EventArgs e) {
             if (logMessageCollection.SelectedIndex >= 0) {
                 string message = logMessageCollection.Items[logMessageCollection.SelectedIndex].ToString();
-                var result = ParseLootMessage(message);
+                var result = Parser.ParseLootMessage(message);
                 if (result != null) {
                     ShowSimpleNotification(new SimpleLootNotification(result.Item1, result.Item2));
                 }
@@ -2447,7 +2431,7 @@ namespace Tibialyzer {
         private void ShowSuspendedWindow(bool alwaysShow = false) {
             lock (suspendedLock) {
                 if (window != null) {
-                    window.Close();
+                    window.CloseForm();
                     window = null;
                 }
                 Screen screen;
@@ -2492,13 +2476,9 @@ namespace Tibialyzer {
             }
         }
         private void CloseSuspendedWindow() {
-            lock (suspendedLock) {
-                if (window != null && !window.IsDisposed) {
-                    try {
-                        window.Close();
-                    } catch {
-
-                    }
+            lock(suspendedLock) {
+                if (window != null) {
+                    window.CloseForm();
                     window = null;
                 }
             }
@@ -2570,7 +2550,7 @@ namespace Tibialyzer {
             if (message[5] == ':') { //if the time stamp is in the form of hh:mm: (i.e. flash client format) remove the second colon
                 message = message.Remove(5, 1);
             }
-            var parseResult = ParseLootMessage(message);
+            var parseResult = Parser.ParseLootMessage(message);
             if (parseResult != null) {
                 bool showNotification = ShowDropNotification(parseResult);
                 if (showNotification) {

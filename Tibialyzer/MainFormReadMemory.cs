@@ -33,7 +33,6 @@ using System.Data.SQLite;
 
 namespace Tibialyzer {
     public partial class MainForm : Form {
-
         public static string TibiaClientName = "Tibia";
         public static int TibiaProcessId = -1;
         public static Process GetTibiaProcess() {
@@ -108,9 +107,14 @@ namespace Tibialyzer {
             public bool death = false;
         }
 
+        class MemoryChunkInformation {
+            public int count;
+            public int maxcount;
+        };
+
         private Dictionary<string, List<string>> totalLooks = new Dictionary<string, List<string>>();
         private HashSet<string> levelAdvances = new HashSet<string>();
-        private Dictionary<int, int> memorySegmentTimes = new Dictionary<int, int>();
+        private Dictionary<int, MemoryChunkInformation> memorySegmentTimes = new Dictionary<int, MemoryChunkInformation>();
         private ReadMemoryResults ReadMemory() {
             ReadMemoryResults results = null;
             SYSTEM_INFO sys_info = new SYSTEM_INFO();
@@ -143,9 +147,10 @@ namespace Tibialyzer {
                     // check if this memory chunk is accessible
                     if (mem_basic_info.Protect == PAGE_READWRITE && mem_basic_info.State == MEM_COMMIT) {
                         if (!memorySegmentTimes.ContainsKey(mem_basic_info.BaseAddress)) {
-                            memorySegmentTimes.Add(mem_basic_info.BaseAddress, 0);
+                            memorySegmentTimes.Add(mem_basic_info.BaseAddress, new MemoryChunkInformation { count = 0, maxcount = 1 });
                         }
-                        if (memorySegmentTimes[mem_basic_info.BaseAddress] == 0) {
+                        MemoryChunkInformation chunkInformation = memorySegmentTimes[mem_basic_info.BaseAddress];
+                        if (chunkInformation.count == 0) {
                             byte[] buffer = new byte[mem_basic_info.RegionSize];
 
                             // read everything in the buffer above
@@ -153,21 +158,23 @@ namespace Tibialyzer {
                             // scan the memory for strings that start with timestamps and end with the null terminator ('\0')
                             IEnumerable<string> timestampLines;
                             if (!flashClient) {
-                                timestampLines = FindTimestamps(buffer);
+                                timestampLines = Parser.FindTimestamps(buffer);
                             } else {
-                                timestampLines = FindTimestampsFlash(buffer);
+                                timestampLines = Parser.FindTimestampsFlash(buffer);
                             }
 
                             if (!SearchChunk(timestampLines, results)) {
-                                int baseValue = (int)Math.Ceiling(Math.Log(mem_basic_info.RegionSize));
-                                memorySegmentTimes[mem_basic_info.BaseAddress] = Constants.Random.Next(1, 3 * baseValue);
+                                chunkInformation.count = Constants.Random.Next(1, chunkInformation.maxcount);
+                                chunkInformation.maxcount = Math.Min(chunkInformation.maxcount + 1, 20);
+                            } else {
+                                chunkInformation.maxcount = 1;
                             }
                             // performance throttling sleep after every scan (depending on scanSpeed setting)
                             if (scanSpeed > 0) {
                                 Thread.Sleep(scanSpeed);
                             }
                         } else {
-                            memorySegmentTimes[mem_basic_info.BaseAddress] -= 1;
+                            chunkInformation.count -= 1;
                         }
                     }
 
@@ -183,93 +190,6 @@ namespace Tibialyzer {
             process.Dispose();
             FinalCleanup(results);
             return results;
-        }
-
-        public static IEnumerable<string> FindTimestamps(byte[] array) {
-            int index = 0;
-            // scan the memory for "timestamp values"
-            // i.e. values that are like "xx:xx" where x = a number
-            // we consider timestamps the "starting point" of a string, and the null terminator the "ending point"
-            int start = 0, i = 0;
-            for (i = 0; i < array.Length; i++) {
-                if (index < 5) {
-                    if (array[i] > 47 && array[i] < 59) { // digits are 47-57, colon is 58
-                        index++;
-                        start = i;
-                    } else {
-                        index = 0;
-                    }
-                } else if (array[i] == 0) { // scan for the null terminator
-                    start -= 4;
-                    string str = System.Text.Encoding.UTF8.GetString(array, start, (i - start));
-                    if (isDigit(str[0]) && isDigit(str[1]) && isDigit(str[3]) && isDigit(str[4]) && str[2] == ':') {
-                        yield return str;
-                    }
-                    index = 0;
-                }
-            }
-            if (index == 5) {
-                start -= 4;
-                string str = Encoding.UTF8.GetString(array, start, (i - start));
-                if (isDigit(str[0]) && isDigit(str[1]) && isDigit(str[3]) && isDigit(str[4]) && str[2] == ':') {
-                    yield return str;
-                }
-            }
-
-            yield break;
-        }
-
-        public static IEnumerable<string> FindTimestampsFlash(byte[] array) {
-            // scan the memory for "timestamp values"
-            // i.e. values that are like "xx:xx" where x = a number
-            // we consider timestamps the "starting point" of a string, and the null terminator the "ending point"
-            for (int i = 0; i < array.Length - 6; i++) {
-                if (array[i] >= '0' && array[i] <= '9'
-                    && array[i + 1] >= '0' && array[i + 1] <= '9'
-                    && array[i + 2] == ':'
-                    && array[i + 3] >= '0' && array[i + 3] <= '9'
-                    && array[i + 4] >= '0' && array[i + 4] <= '9'
-                    && (array[i + 5] == ' ' || array[i + 5] == ':')) {
-                    int start = i;
-                    i += 6;
-                    while (array[i] != '\0') {
-                        ++i;
-                    }
-
-                    if (!EndsWith(array, start, i, "</font></p>") && !EndsWith(array, start, i, "</font>")) {
-                        yield return Encoding.UTF8.GetString(array, start, i - start);
-                    }
-                }
-            }
-
-            yield break;
-        }
-
-        private static bool EndsWith(byte[] array, int start, int end, string text) {
-            int strLen = text.Length;
-
-            if (end - start < strLen) {
-                return false;
-            }
-
-            for (int i = 0; i < strLen; ++i) {
-                if (text[i] != array[end - strLen + i]) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private Tuple<int, int> parseTimeStamp(string stamp) {
-            if (stamp.Length < 5) return null;
-            try {
-                int hour = int.Parse(stamp.Substring(0, 2));
-                int minute = int.Parse(stamp.Substring(3, 2));
-                return new Tuple<int, int>(hour, minute);
-            } catch {
-                return null;
-            }
         }
 
         private int createStamp() {
@@ -301,110 +221,7 @@ namespace Tibialyzer {
             }
             return stamps;
         }
-
-        public static bool isDigit(char c) {
-            return
-                c == '0' ||
-                c == '1' ||
-                c == '2' ||
-                c == '3' ||
-                c == '4' ||
-                c == '5' ||
-                c == '6' ||
-                c == '7' ||
-                c == '8' ||
-                c == '9';
-        }
         
-        string parseLookItem(string logMessage) {
-            string[] splits = logMessage.Substring(14).Split('(')[0].Split('.')[0].Split(' ');
-            string itemName = "";
-            foreach (string split in splits) {
-                if (split.Length == 0) continue;
-                if (split == "that") break;
-                if (itemName == "" && (split == "a" || split == "an")) continue;
-                if (isDigit(split[0])) continue;
-                itemName = itemName == "" ? split : itemName + " " + split;
-            }
-            if (pluralMap.ContainsKey(itemName)) itemName = pluralMap[itemName];
-            if (!StorageManager.itemExists(itemName) && itemName.Length > 0) {
-                string singular = itemName.Substring(0, itemName.Length - 1);
-                if (StorageManager.itemExists(singular)) {
-                    itemName = singular;
-                }
-            }
-            return itemName;
-        }
-
-        private static Dictionary<string, string> pluralSuffixes = new Dictionary<string, string> {
-            { "ches", "ch" },
-            { "shes", "sh" },
-            { "ies", "y" },
-            { "ves", "fe" },
-            { "oes", "o" },
-            { "zes", "z" },
-            { "s", "" }
-        };
-
-        private static Dictionary<string, string> pluralWords = new Dictionary<string, string> {
-            { "pieces of", "piece of" },
-            { "bunches of", "bunch of" },
-            { "haunches of", "haunch of" },
-            { "flasks of", "flask of" },
-            { "veins of", "vein of" },
-            { "bowls of", "bowl of" }
-        };
-
-        private static string getSingularItem(string item) {
-            item = item.Trim().ToLower();
-            foreach (KeyValuePair<string, string> kvp in pluralWords) {
-                if (item.Contains(kvp.Key)) {
-                    return item.Replace(kvp.Key, kvp.Value);
-                }
-            }
-            foreach (KeyValuePair<string, string> kvp in pluralSuffixes) {
-                if (item.EndsWith(kvp.Key)) {
-                    return item.Substring(0, item.Length - kvp.Key.Length) + kvp.Value;
-                }
-            }
-            if (StorageManager.getItem(item) == null) {
-                string[] words = item.Split(' ');
-                if (words.Length > 1) {
-                    string word = getSingularItem(words[0]);
-                    if (word != words[0]) {
-                        return word + item.Substring(words[0].Length, item.Length - words[0].Length);
-                    }
-                }
-                Console.WriteLine(String.Format("Warning, could not find singular form of plural item: {0}", item));
-            }
-            return item;
-        }
-
-        private static Dictionary<string, string> pluralMap = new Dictionary<string, string>();
-        public static Tuple<string, int> preprocessItem(string item) {
-            int count = 1;
-            if (item == "nothing") return new Tuple<string, int>("nothing", 0);
-            string itemName = "";
-            string[] split = item.Split(' ');
-            for (int i = 0; i < split.Length; i++) {
-                if (split[i].Length == 0) continue;
-                if ((split[i] == "a" || split[i] == "an") && itemName == "") continue;
-                if (isDigit(split[i][0])) {
-                    if (int.TryParse(split[i], out count)) {
-                        continue;
-                    }
-                }
-                itemName = itemName == "" ? split[i] : itemName + " " + split[i];
-            }
-            if (count > 1) {
-                if (pluralMap.ContainsKey(itemName)) {
-                    itemName = pluralMap[itemName];
-                } else {
-                    itemName = getSingularItem(itemName);
-                }
-            }
-            return new Tuple<string, int>(itemName, count);
-        }
         private List<int> getLatestStamps(int count, int ignoreStamp = -1) {
             var time = DateTime.Now;
             int hour = time.Hour;
@@ -450,11 +267,11 @@ namespace Tibialyzer {
             while ((line = streamReader.ReadLine()) != null) {
                 if (line.Length < 15) continue;
                 string t = line.Substring(0, 5);
-                if (!(isDigit(t[0]) && isDigit(t[1]) && isDigit(t[3]) && isDigit(t[4]) && t[2] == ':')) continue; //not a valid timestamp
+                if (!(t[0].isDigit() && t[1].isDigit() && t[3].isDigit() && t[4].isDigit() && t[2] == ':')) continue; //not a valid timestamp
                 if (!logMessages.ContainsKey(t)) logMessages.Add(t, new List<string>());
                 logMessages[t].Add(line);
             }
-            ParseLootMessages(h, logMessages, null, true, true);
+            Parser.ParseLootMessages(h, logMessages, null, true, true);
             LootDatabaseManager.UpdateLoot();
         }
 
@@ -511,71 +328,7 @@ namespace Tibialyzer {
                 LootDatabaseManager.InsertMessage(h, stamp, hour, minute, message);
             }
         }
-
-        public static Dictionary<string, List<string>> globalMessages = new Dictionary<string, List<string>>();
-        public static void ParseLootMessages(Hunt h, Dictionary<string, List<string>> newDrops, List<Tuple<Creature, List<Tuple<Item, int>>>> newItems, bool commit = true, bool switchHunt = false, bool addEverything = false) {
-            lock (HuntManager.hunts) {
-
-                SQLiteTransaction transaction = null;
-                if (commit) {
-                    transaction = LootDatabaseManager.BeginTransaction();
-                }
-
-                int stamp = getDayStamp();
-                Dictionary<string, List<string>> itemDrops = addEverything ? new Dictionary<string, List<string>>() : globalMessages;
-                // now the big one: parse the log messages and check the dropped items
-                foreach (KeyValuePair<string, List<string>> kvp in newDrops) {
-                    string t = kvp.Key;
-                    List<string> itemList = kvp.Value;
-                    if (!itemDrops.ContainsKey(t)) {
-                        itemDrops.Add(t, new List<string>());
-                    }
-                    if (itemList.Count > itemDrops[t].Count) {
-                        int hour = int.Parse(t.Substring(0, 2));
-                        int minute = int.Parse(t.Substring(3, 2));
-                        foreach (string message in itemList) {
-                            if (!itemDrops[t].Contains(message)) {
-                                // new log message, scan it for new items
-                                Tuple<Creature, List<Tuple<Item, int>>> resultList = ParseLootMessage(message);
-                                if (resultList == null) continue;
-
-                                Creature cr = resultList.Item1;
-
-                                if (switchHunt && commit) {
-                                    foreach (Hunt potentialHunt in HuntManager.hunts) {
-                                        if (potentialHunt.lootCreatures.Contains(cr.GetName().ToLower())) {
-                                            if (potentialHunt.sideHunt) {
-                                                h = potentialHunt;
-                                                HuntManager.activeHunt = potentialHunt;
-                                            } else if (potentialHunt.aggregateHunt && potentialHunt != h) {
-                                                addKillToHunt(potentialHunt, resultList, t, message, stamp, hour, minute, transaction);
-                                            }
-                                        }
-                                    }
-                                }
-
-                                addKillToHunt(h, resultList, t, message, stamp, hour, minute, transaction);
-                                if (fileWriter != null && SettingsManager.getSettingBool("AutomaticallyWriteLootToFile")) {
-                                    fileWriter.WriteLine(message);
-                                    fileWriter.Flush();
-                                }
-
-                                if (newItems != null) {
-                                    newItems.Add(resultList);
-                                }
-                            } else {
-                                itemDrops[t].Remove(message);
-                            }
-                        }
-                        itemDrops[t] = itemList;
-                    }
-                }
-                if (transaction != null) {
-                    transaction.Commit();
-                }
-            }
-        }
-
+        
         private Stopwatch readWatch = new Stopwatch();
 
         double ticksSinceExperience = 120;
@@ -723,7 +476,7 @@ namespace Tibialyzer {
                 }
             }
 
-            ParseLootMessages(HuntManager.activeHunt, res.itemDrops, o.newItems, true, true);
+            Parser.ParseLootMessages(HuntManager.activeHunt, res.itemDrops, o.newItems, true, true);
             HuntManager.activeHunt.totalExp += newExperience;
 
             readWatch.Stop();
@@ -760,43 +513,7 @@ namespace Tibialyzer {
                 return null;
             }
         }
-
-        public static Tuple<Creature, List<Tuple<Item, int>>> ParseLootMessage(string message) {
-            if (message.Length <= 14) return null;
-            string lootMessage = message.Substring(14);
-            // split on : because the message is Loot of a x: a, b, c, d
-            if (!lootMessage.Contains(':')) return null;
-            string[] matches = lootMessage.Split(':');
-            string creature = matches[0];
-            // non-boss creatures start with 'a' (e.g. 'Loot of a wyvern'); remove the 'a'
-            if (creature[0] == 'a') {
-                creature = creature.Split(new char[] { ' ' }, 2)[1];
-            }
-            Creature cr = StorageManager.getCreature(creature.ToLower());
-            if (cr == null) {
-                Console.WriteLine(String.Format("Warning, creature {0} was not found in the database.", creature));
-                return null;
-            }
-            // now parse the individual items, they are comma separated
-            List<Tuple<Item, int>> itemList = new List<Tuple<Item, int>>();
-            string[] items = matches[1].Split(',');
-            foreach (string item in items) {
-                // process the item to find out how much dropped and to convert to singular form (e.g. '4 small amethysts' => ('small amethyst', 4))
-                Tuple<string, int> processedItem = preprocessItem(item);
-                string itemName = processedItem.Item1.Trim();
-                if (itemName == "nothing") continue;
-                int itemCount = processedItem.Item2;
-                Item it = StorageManager.getItem(itemName);
-                if (it == null) {
-                    Console.WriteLine(String.Format("Warning, item {0} was not found in the database.", itemName));
-                    return null;
-                } else {
-                    itemList.Add(new Tuple<Item, int>(it, itemCount));
-                }
-            }
-            return new Tuple<Creature, List<Tuple<Item, int>>>(cr, itemList);
-        }
-
+        
         private void FinalCleanup(ReadMemoryResults res) {
             foreach (KeyValuePair<string, List<Tuple<string, string>>> kvp in res.commands) {
                 string time = kvp.Key;

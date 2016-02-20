@@ -69,7 +69,7 @@ namespace Tibialyzer {
                         foreach (string t in times) {
                             if (!totalLooks.ContainsKey(t)) continue;
                             foreach (string message in totalLooks[t]) {
-                                string itemName = parseLookItem(message).ToLower();
+                                string itemName = Parser.parseLookItem(message).ToLower();
                                 Item item = StorageManager.getItem(itemName);
 
                                 if (item != null) {
@@ -712,7 +712,7 @@ namespace Tibialyzer {
 
             if (SettingsManager.getSettingBool("LookMode") && readMemoryResults != null) {
                 foreach (string msg in parseMemoryResults.newLooks) {
-                    string itemName = parseLookItem(msg).ToLower();
+                    string itemName = Parser.parseLookItem(msg).ToLower();
                     if (StorageManager.itemExists(itemName)) {
                         this.Invoke((MethodInvoker)delegate {
                             this.ExecuteCommand("item@" + itemName);

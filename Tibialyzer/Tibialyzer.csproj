@@ -91,6 +91,7 @@
     <Compile Include="DamageChart.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="HelperFunctions.cs" />
     <Compile Include="HuntManager.cs" />
     <Compile Include="LootDatabaseManager.cs" />
     <Compile Include="MapPictureBox.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="OutfitForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Parser.cs" />
     <Compile Include="Pathfinder.cs" />
     <Compile Include="NotificationConditionManager.cs" />
     <Compile Include="PrettyCheckbox.cs">

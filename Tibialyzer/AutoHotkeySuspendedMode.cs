@@ -24,22 +24,18 @@ using System.Windows.Forms;
 namespace Tibialyzer {
     class AutoHotkeySuspendedMode : SimpleNotification {
         private System.Windows.Forms.Label typeModeLabel;
+        private object closeLock = new object();
         System.Timers.Timer showTimer = null;
         private bool alwaysShow = false;
 
         public AutoHotkeySuspendedMode(bool alwaysShow) {
             this.InitializeComponent();
-            this.FormClosing += AutoHotkeySuspendedMode_FormClosing;
             this.alwaysShow = alwaysShow;
             this.InitializeSimpleNotification(false, false);
 
             showTimer = new System.Timers.Timer(10);
-            showTimer.Elapsed += ShowTimer_Elapsed; ;
+            showTimer.Elapsed += ShowTimer_Elapsed;
             showTimer.Enabled = true;
-        }
-
-        private void AutoHotkeySuspendedMode_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e) {
-            this.showTimer.Dispose();
         }
 
         [DllImport("user32.dll")]
@@ -56,17 +52,30 @@ namespace Tibialyzer {
             return p.ProcessName;
         }
 
+        public void CloseForm() {
+            lock(closeLock) {
+                showTimer.Dispose();
+                showTimer = null;
+                this.Close();
+            }
+        }
+
         private void ShowTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
             if (alwaysShow) return;
             if (MainForm.TibiaClientName != "Tibia") {
                 return;
             }
             try {
-                // only show the suspended window when tibia is active
-                bool visible = GetActiveProcessFileName() == MainForm.GetTibiaProcess().ProcessName;
-                this.Invoke((MethodInvoker)delegate {
-                    this.Visible = visible;
-                });
+                lock(closeLock) {
+                    if (showTimer == null || this.IsDisposed || this.Disposing) {
+                        return;
+                    }
+                    // only show the suspended window when tibia is active
+                    bool visible = GetActiveProcessFileName() == MainForm.GetTibiaProcess().ProcessName;
+                    this.BeginInvoke((MethodInvoker)delegate {
+                        this.Visible = visible;
+                    });
+                }
             } catch {
 
             }

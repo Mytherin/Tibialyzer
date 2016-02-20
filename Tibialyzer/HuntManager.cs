@@ -59,7 +59,7 @@ namespace Tibialyzer {
                     reader = LootDatabaseManager.GetHuntMessages(hunt);
                     while (reader.Read()) {
                         string message = reader["message"].ToString();
-                        Tuple<Creature, List<Tuple<Item, int>>> resultList = MainForm.ParseLootMessage(message);
+                        Tuple<Creature, List<Tuple<Item, int>>> resultList = Parser.ParseLootMessage(message);
                         if (resultList == null) continue;
 
                         string t = message.Substring(0, 5);
@@ -211,11 +211,11 @@ namespace Tibialyzer {
                 string line = reader["message"].ToString();
                 if (line.Length < 15) continue;
                 string t = line.Substring(0, 5);
-                if (!(MainForm.isDigit(t[0]) && MainForm.isDigit(t[1]) && MainForm.isDigit(t[3]) && MainForm.isDigit(t[4]) && t[2] == ':')) continue; //not a valid timestamp
+                if (!(t[0].isDigit() && t[1].isDigit() && t[3].isDigit() && t[4].isDigit() && t[2] == ':')) continue; //not a valid timestamp
                 if (!logMessages.ContainsKey(t)) logMessages.Add(t, new List<string>());
                 logMessages[t].Add(line);
             }
-            MainForm.ParseLootMessages(h, logMessages, null, false, false, true);
+            Parser.ParseLootMessages(h, logMessages, null, false, false, true);
             LootDatabaseManager.UpdateLoot();
         }
 
@@ -303,7 +303,7 @@ namespace Tibialyzer {
                 if (h.loot.logMessages.ContainsKey(timeStamp)) {
                     if (h.loot.logMessages[timeStamp].Contains(logMessage)) {
                         h.loot.logMessages[timeStamp].Remove(logMessage);
-                        var logMessageItems = MainForm.ParseLootMessage(logMessage);
+                        var logMessageItems = Parser.ParseLootMessage(logMessage);
                         Creature cr = logMessageItems.Item1;
                         if (h.loot.killCount.ContainsKey(cr)) {
                             h.loot.killCount[cr]--;
