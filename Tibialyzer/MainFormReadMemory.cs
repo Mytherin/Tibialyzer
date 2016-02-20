@@ -110,7 +110,7 @@ namespace Tibialyzer {
 
         private Dictionary<string, List<string>> totalLooks = new Dictionary<string, List<string>>();
         private HashSet<string> levelAdvances = new HashSet<string>();
-        List<int> memorySegments = new List<int>();
+        private Dictionary<int, int> memorySegmentTimes = new Dictionary<int, int>();
         private ReadMemoryResults ReadMemory() {
             ReadMemoryResults results = null;
             SYSTEM_INFO sys_info = new SYSTEM_INFO();
@@ -132,6 +132,7 @@ namespace Tibialyzer {
             MEMORY_BASIC_INFORMATION mem_basic_info = new MEMORY_BASIC_INFORMATION();
             int bytesRead = 0;  // number of bytes read with ReadProcessMemory
             int scanSpeed = SettingsManager.getSettingInt("ScanSpeed");
+            Stopwatch sw = Stopwatch.StartNew();
             try {
                 results = new ReadMemoryResults();
                 while (proc_min_address_l < proc_max_address_l) {
@@ -141,7 +142,10 @@ namespace Tibialyzer {
 
                     // check if this memory chunk is accessible
                     if (mem_basic_info.Protect == PAGE_READWRITE && mem_basic_info.State == MEM_COMMIT) {
-                        if (!memorySegments.Contains(mem_basic_info.BaseAddress)) {
+                        if (!memorySegmentTimes.ContainsKey(mem_basic_info.BaseAddress)) {
+                            memorySegmentTimes.Add(mem_basic_info.BaseAddress, 0);
+                        }
+                        if (memorySegmentTimes[mem_basic_info.BaseAddress] == 0) {
                             byte[] buffer = new byte[mem_basic_info.RegionSize];
 
                             // read everything in the buffer above
@@ -155,12 +159,15 @@ namespace Tibialyzer {
                             }
 
                             if (!SearchChunk(timestampLines, results)) {
-                                memorySegments.Add(mem_basic_info.BaseAddress);
+                                int baseValue = (int)Math.Ceiling(Math.Log(mem_basic_info.RegionSize));
+                                memorySegmentTimes[mem_basic_info.BaseAddress] = Constants.Random.Next(1, 3 * baseValue);
                             }
                             // performance throttling sleep after every scan (depending on scanSpeed setting)
                             if (scanSpeed > 0) {
                                 Thread.Sleep(scanSpeed);
                             }
+                        } else {
+                            memorySegmentTimes[mem_basic_info.BaseAddress] -= 1;
                         }
                     }
 
@@ -170,11 +177,9 @@ namespace Tibialyzer {
             } catch {
                 return null;
             }
-            if (memorySegments.Count > 10) {
-                memorySegments.RemoveRange(0, 10);
-            } else {
-                memorySegments.Clear();
-            }
+            sw.Stop();
+            Console.WriteLine("Time taken: {0}ms", sw.Elapsed.TotalMilliseconds);
+
             process.Dispose();
             FinalCleanup(results);
             return results;
