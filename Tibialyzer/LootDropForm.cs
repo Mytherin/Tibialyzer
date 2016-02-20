@@ -522,18 +522,13 @@ namespace Tibialyzer {
             this.Refresh();
             this.refreshTimer();
         }
-
-        private bool clicked = false;
+        
         void openItemBox(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("item" + MainForm.commandSymbol + (sender as Control).Name);
         }
 
         void openCreatureDrops(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             if (creatures.Keys.Count == 1) {
                 MainForm.mainForm.ExecuteCommand("creature" + MainForm.commandSymbol + (sender as Control).Name);
             } else {

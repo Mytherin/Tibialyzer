@@ -520,18 +520,13 @@ namespace Tibialyzer {
             }
             return linkText;
         }
-
-        private bool clicked = false;
+        
         private void itemClick(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("item" + MainForm.commandSymbol + (sender as Control).Name);
         }
 
         private void QuestTitle_Click(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand((sender as Control).Name);
         }

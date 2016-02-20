@@ -461,10 +461,7 @@ namespace Tibialyzer {
         }
 
         private string command_start = "npc" + MainForm.commandSymbol;
-        private bool clicked = false;
         private void npcClick(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand(command_start + (sender as Control).Name);
         }

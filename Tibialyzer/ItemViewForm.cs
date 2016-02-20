@@ -972,22 +972,15 @@ namespace Tibialyzer {
         }
 
         private string command_start = "npc" + MainForm.commandSymbol;
-        private bool clicked = false;
         void openItemBox(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand(command_start + (sender as Control).Name);
-            clicked = false;
         }
 
         private string switch_start = "drop" + MainForm.commandSymbol;
         private void statsButton_Click(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand(switch_start + (sender as Control).Name);
-            clicked = false;
         }
 
         private bool skip_event = false;

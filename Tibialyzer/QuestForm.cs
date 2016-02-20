@@ -333,17 +333,12 @@ namespace Tibialyzer {
             this.ResumeLayout(false);
         }
         
-        private bool clicked = false;
         private void outfitClick(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("outfit" + MainForm.commandSymbol + (sender as Control).Name);
         }
 
         private void itemClick(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("item" + MainForm.commandSymbol + (sender as Control).Name);
         }

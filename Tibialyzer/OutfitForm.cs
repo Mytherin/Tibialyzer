@@ -225,10 +225,7 @@ namespace Tibialyzer {
         }
 
         private string obtainedCommand = null;
-        private bool clicked = false;
         private void ObtainedLabel_Click(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand(obtainedCommand);
         }

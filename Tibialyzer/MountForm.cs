@@ -176,18 +176,13 @@ namespace Tibialyzer {
             base.NotificationFinalize();
             this.ResumeLayout(false);
         }
-
-        private bool clicked = false;
+        
         private void TameItemImageBox_Click(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("item@" + (sender as Control).Name);
         }
 
         private void TameCreatureImageBox_Click(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("creature@" + (sender as Control).Name);
         }

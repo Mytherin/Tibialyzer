@@ -234,18 +234,13 @@ namespace Tibialyzer {
             }
             return ss;
         }
-
-        private bool clicked = false;
+        
         private void statsButton_Click(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("creature" + MainForm.commandSymbol + (sender as Control).Name);
         }
 
         private void huntButton_Click(object sender, EventArgs e) {
-            if (clicked) return;
-            clicked = true;
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("hunt" + MainForm.commandSymbol + (sender as Control).Name);
         }
