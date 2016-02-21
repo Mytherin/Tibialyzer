@@ -81,11 +81,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoHotkeyManager.cs" />
-    <Compile Include="CommandManager.cs" />
-    <Compile Include="NotificationManager.cs" />
-    <Compile Include="GlobalDataManager.cs" />
-    <Compile Include="PopupManager.cs" />
+    <Compile Include="Managers\AutoHotkeyManager.cs" />
+    <Compile Include="Managers\CommandManager.cs" />
+    <Compile Include="Managers\NotificationManager.cs" />
+    <Compile Include="Managers\GlobalDataManager.cs" />
+    <Compile Include="Managers\PopupManager.cs" />
     <Compile Include="Popups\AutoHotkeySuspendedMode.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,9 +127,9 @@
     <Compile Include="Controls\RichTextBoxAutoHotkey.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ProcessManager.cs" />
-    <Compile Include="ScanningManager.cs" />
-    <Compile Include="ScreenshotManager.cs" />
+    <Compile Include="Managers\ProcessManager.cs" />
+    <Compile Include="Managers\ScanningManager.cs" />
+    <Compile Include="Managers\ScreenshotManager.cs" />
     <Compile Include="SelectProcessForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -183,7 +183,7 @@
     <Compile Include="Notifications\CreatureStatsForm.Designer.cs">
       <DependentUpon>CreatureStatsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ReadMemoryManager.cs" />
+    <Compile Include="Managers\ReadMemoryManager.cs" />
     <Compile Include="NotificationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -223,7 +223,7 @@
     <Compile Include="Controls\TransparentLabel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="TimestampManager.cs" />
+    <Compile Include="Managers\TimestampManager.cs" />
     <EmbeddedResource Include="Popups\AutoHotkeySuspendedMode.resx">
       <DependentUpon>AutoHotkeySuspendedMode.cs</DependentUpon>
     </EmbeddedResource>
