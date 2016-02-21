@@ -19,6 +19,5 @@ namespace Tibialyzer {
                 c == '8' ||
                 c == '9';
         }
-
     }
 }

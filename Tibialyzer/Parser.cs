@@ -39,20 +39,13 @@ namespace Tibialyzer {
                     } else {
                         index = 0;
                     }
-                } else if (array[i] == 0) { // scan for the null terminator
+                } else if (array[i] == 0 || i == array.Length - 1) { // scan for the null terminator
                     start -= 4;
                     string str = System.Text.Encoding.UTF8.GetString(array, start, (i - start));
                     if (str[0].isDigit() && str[1].isDigit() && str[3].isDigit() && str[4].isDigit() && str[2] == ':') {
                         yield return str;
                     }
                     index = 0;
-                }
-            }
-            if (index == 5) {
-                start -= 4;
-                string str = Encoding.UTF8.GetString(array, start, (i - start));
-                if (str[0].isDigit() && str[1].isDigit() && str[3].isDigit() && str[4].isDigit() && str[2] == ':') {
-                    yield return str;
                 }
             }
 
