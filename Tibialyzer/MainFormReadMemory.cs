@@ -233,62 +233,7 @@ namespace Tibialyzer {
             FinalCleanup(results);
             return results;
         }
-
-        private int createStamp() {
-            var time = DateTime.Now;
-            int hour = time.Hour;
-            int minute = time.Minute;
-            return getStamp(hour, minute);
-
-        }
-
-        private int getStamp(int hour, int minute) { return hour * 60 + minute; }
-
-        private List<string> getLatestTimes(int count, int ignoreStamp = -1) {
-            var time = DateTime.Now;
-            int hour = time.Hour;
-            int minute = time.Minute;
-            List<string> stamps = new List<string>();
-            for (int i = 0; i < count; i++) {
-                if (getStamp(hour, minute) == ignoreStamp) return stamps;
-
-                stamps.Add(string.Format("{0}:{1}", (hour < 10 ? "0" + hour.ToString() : hour.ToString()), (minute < 10 ? "0" + minute.ToString() : minute.ToString())));
-
-                if (minute == 0) {
-                    hour = hour > 0 ? hour - 1 : 23;
-                    minute = 59;
-                } else {
-                    minute = minute - 1;
-                }
-            }
-            return stamps;
-        }
-
-        private List<int> getLatestStamps(int count, int ignoreStamp = -1) {
-            var time = DateTime.Now;
-            int hour = time.Hour;
-            int minute = time.Minute;
-            List<int> stamps = new List<int>();
-            for (int i = 0; i < count; i++) {
-                int stamp = getStamp(hour, minute);
-                stamps.Add(stamp);
-                if (stamp == ignoreStamp) return stamps;
-
-                if (minute == 0) {
-                    hour = hour > 0 ? hour - 1 : 23;
-                    minute = 59;
-                } else {
-                    minute = minute - 1;
-                }
-            }
-            return stamps;
-        }
-
-        public static int getDayStamp() {
-            var t = DateTime.Now;
-            return t.Year * 400 + t.Month * 40 + t.Day;
-        }
-
+        
         void saveLog(Hunt h, string logPath) {
             StreamWriter streamWriter = new StreamWriter(logPath);
 
@@ -318,7 +263,7 @@ namespace Tibialyzer {
         }
 
         List<Tuple<string, string>> getRecentCommands(int type, int max_entries = 15) {
-            List<string> times = getLatestTimes(5);
+            List<string> times = TimestampManager.getLatestTimes(5);
             times.Reverse();
 
             Dictionary<string, List<Tuple<string, string>>> dict = type == 0 ? totalCommands : totalURLs;
@@ -340,7 +285,7 @@ namespace Tibialyzer {
             var time = DateTime.Now;
             int hour = time.Hour;
             int minute = time.Minute;
-            int stamp = getDayStamp();
+            int stamp = TimestampManager.getDayStamp();
             string timestamp = String.Format("{0}:{1}", (hour < 10 ? "0" + hour.ToString() : hour.ToString()), (minute < 10 ? "0" + minute.ToString() : minute.ToString()));
             Item item = StorageManager.getItem(cr.skin.dropitemid);
             if (item == null) return;
@@ -404,7 +349,7 @@ namespace Tibialyzer {
                 }
             }
             // now that we have updated the damage results, fill in the DPS meter, we use damage from the last 15 minutes for this
-            List<string> times = getLatestTimes(15);
+            List<string> times = TimestampManager.getLatestTimes(15);
             foreach (KeyValuePair<string, Dictionary<string, int>> kvp in totalDamageResults) {
                 string player = kvp.Key;
                 int damage = 0;
@@ -572,7 +517,7 @@ namespace Tibialyzer {
         private bool flashClient = true;
         private int ignoreStamp = 0;
         private bool SearchChunk(IEnumerable<string> chunk, ReadMemoryResults res) {
-            List<int> stamps = getLatestStamps(3, ignoreStamp);
+            List<int> stamps = TimestampManager.getLatestStamps(3, ignoreStamp);
             bool chunksExist = false;
             foreach (string it in chunk) {
                 chunksExist = true;
@@ -580,7 +525,7 @@ namespace Tibialyzer {
                 string t = logMessage.Substring(0, 5);
                 int hour = int.Parse(logMessage.Substring(0, 2));
                 int minute = int.Parse(logMessage.Substring(3, 2));
-                if (!stamps.Contains(getStamp(hour, minute))) continue; // the log message is not recent, so we skip parsing it
+                if (!stamps.Contains(TimestampManager.getStamp(hour, minute))) continue; // the log message is not recent, so we skip parsing it
 
                 if (flashClient) {
                     // there is some inconsistency with log messages, certain log messages use "12:00: Message.", others use "12:00 Message"

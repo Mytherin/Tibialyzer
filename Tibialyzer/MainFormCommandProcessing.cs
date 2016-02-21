@@ -64,7 +64,7 @@ namespace Tibialyzer {
                     } else if (parameter == "off") {
                         SettingsManager.setSetting("LookMode", "False");
                     } else {
-                        List<string> times = getLatestTimes(5);
+                        List<string> times = TimestampManager.getLatestTimes(5);
                         List<TibiaObject> items = new List<TibiaObject>();
                         foreach (string t in times) {
                             if (!totalLooks.ContainsKey(t)) continue;
@@ -235,7 +235,7 @@ namespace Tibialyzer {
                         }
                     }
                     refreshHunts();
-                    ignoreStamp = createStamp();
+                    ignoreStamp = TimestampManager.createStamp();
                 } else if (comp.StartsWith("refresh" + MainForm.commandSymbol)) { //refresh@
                                                                                   // refresh: refresh duration on current form, or if no current form, repeat last command without removing it from stack
                                                                                   /*if (tooltipForm != null && !tooltipForm.IsDisposed) {

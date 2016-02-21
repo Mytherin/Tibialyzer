@@ -202,7 +202,7 @@ namespace Tibialyzer {
                 hour--;
                 minute = 60 + (minute - clearMinutes);
             }
-            int stamp = MainForm.getDayStamp();
+            int stamp = TimestampManager.getDayStamp();
             while (hour < 0) {
                 hour += 24;
                 stamp--;

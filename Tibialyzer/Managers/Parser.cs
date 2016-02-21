@@ -187,7 +187,7 @@ namespace Tibialyzer {
                     transaction = LootDatabaseManager.BeginTransaction();
                 }
 
-                int stamp = MainForm.getDayStamp();
+                int stamp = TimestampManager.getDayStamp();
                 Dictionary<string, List<string>> itemDrops = addEverything ? new Dictionary<string, List<string>>() : globalMessages;
                 // now the big one: parse the log messages and check the dropped items
                 foreach (KeyValuePair<string, List<string>> kvp in newDrops) {

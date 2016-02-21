@@ -106,7 +106,7 @@ namespace Tibialyzer {
 
             fileWriter = new StreamWriter(Constants.BigLootFile, true);
 
-            ignoreStamp = createStamp();
+            ignoreStamp = TimestampManager.createStamp();
 
             browseTypeBox.SelectedIndex = 0;
 
@@ -231,7 +231,7 @@ namespace Tibialyzer {
         }
 
         public void SetHuntTime(Hunt h, int clearMinutes) {
-            foreach (string t in getLatestTimes(clearMinutes)) {
+            foreach (string t in TimestampManager.getLatestTimes(clearMinutes)) {
                 if (totalExperienceResults.ContainsKey(t)) {
                     h.totalExp += totalExperienceResults[t];
                     h.totalTime += 60;
