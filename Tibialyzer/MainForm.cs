@@ -89,6 +89,7 @@ namespace Tibialyzer {
                 ExitWithError("Fatal Error", String.Format("Corrupted database {0}.\nMessage: {1}", Constants.DatabaseFile, e.Message));
             }
             SettingsManager.LoadSettings(Constants.SettingsFile);
+            ProcessManager.Initialize();
             this.initializeSettings();
             this.initializeTooltips();
             try {
@@ -351,9 +352,7 @@ namespace Tibialyzer {
             CreateRatioDisplay(MainForm.convertUnstackableItemList, convertUnstackableHeader.Location.X + 10, convertUnstackableHeader.Location.Y + convertUnstackableHeader.Size.Height + 8, UpdateConvertRatio, convertLabels);
             CreateRatioDisplay(MainForm.convertStackableItemList, convertStackableHeader.Location.X + 10, convertStackableHeader.Location.Y + convertStackableHeader.Size.Height + 8, UpdateConvertRatio, convertLabels);
             UpdateConvertDisplay();
-
-            TibiaClientName = SettingsManager.settingExists("TibiaClientName") ? SettingsManager.getSettingString("TibiaClientName") : TibiaClientName;
-
+            
             screenshotPathBox.Text = SettingsManager.getSettingString("ScreenshotPath");
             refreshScreenshots();
 
@@ -769,7 +768,7 @@ namespace Tibialyzer {
         private void ShowSimpleNotification(SimpleNotification f) {
             int position_x = 0, position_y = 0;
             Screen screen;
-            Process tibia_process = GetTibiaProcess();
+            Process tibia_process = ProcessManager.GetTibiaProcess();
             if (tibia_process == null) {
                 screen = Screen.FromControl(this);
             } else {
@@ -909,7 +908,7 @@ namespace Tibialyzer {
             }
             int position_x = 0, position_y = 0;
             Screen screen;
-            Process tibia_process = GetTibiaProcess();
+            Process tibia_process = ProcessManager.GetTibiaProcess();
             if (tibia_process == null) {
                 screen = Screen.FromControl(this);
             } else {
@@ -2147,7 +2146,7 @@ namespace Tibialyzer {
         static extern bool GetWindowRect(IntPtr hWnd, ref RECT Rect);
 
         Bitmap takeScreenshot() {
-            Process tibia_process = GetTibiaProcess();
+            Process tibia_process = ProcessManager.GetTibiaProcess();
             if (tibia_process == null) return null; //no tibia to take screenshot of
 
             RECT Rect = new RECT();
@@ -2358,8 +2357,8 @@ namespace Tibialyzer {
             if (!SettingsManager.settingExists("AutoHotkeySettings")) return;
             using (StreamWriter writer = new StreamWriter(Constants.AutohotkeyFile)) {
                 writer.WriteLine("#SingleInstance force");
-                if (TibiaClientName.ToLower().Contains("flash")) {
-                    Process p = GetTibiaProcess();
+                if (ProcessManager.IsFlashClient()) {
+                    Process p = ProcessManager.GetTibiaProcess();
                     writer.WriteLine("SetTitleMatchMode 2");
                     writer.WriteLine(String.Format("#IfWinActive Tibia Flash Client", p == null ? 0 : p.Id));
                 } else {
@@ -2446,7 +2445,7 @@ namespace Tibialyzer {
                     window = null;
                 }
                 Screen screen;
-                Process tibia_process = GetTibiaProcess();
+                Process tibia_process = ProcessManager.GetTibiaProcess();
                 if (tibia_process == null) {
                     screen = Screen.FromControl(this);
                 } else {
@@ -2995,14 +2994,7 @@ namespace Tibialyzer {
         }
 
         private void detectFlashClientButton_Click(object sender, EventArgs e) {
-            List<Process> candidateProcesses = new List<Process>();
-            foreach (Process p in Process.GetProcesses()) {
-                if (p.ProcessName.ToLower().Contains("flash")) {
-                    TibiaClientName = p.ProcessName;
-                    TibiaProcessId = -1;
-                    break;
-                }
-            }
+            ProcessManager.DetectFlashClient();
         }
 
         private void popupTestLootBox_KeyPress(object sender, KeyPressEventArgs e) {

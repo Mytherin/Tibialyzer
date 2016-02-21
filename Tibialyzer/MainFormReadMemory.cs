@@ -32,32 +32,6 @@ using System.Data.SQLite;
 
 namespace Tibialyzer {
     public partial class MainForm : Form {
-        public static string TibiaClientName = "Tibia";
-        public static int TibiaProcessId = -1;
-        public static Process GetTibiaProcess() {
-            Process[] p = GetTibiaProcesses();
-            if (p == null || p.Length == 0) return null;
-            return p[0];
-        }
-
-        public static Process[] GetTibiaProcesses() {
-            if (TibiaProcessId >= 0) {
-                List<Process> ids = Process.GetProcesses().Where(x => x.Id == TibiaProcessId).ToList();
-                if (ids.Count > 0) {
-                    return new Process[1] { ids[0] };
-                }
-                TibiaProcessId = -1;
-            }
-            Process[] p = Process.GetProcessesByName(TibiaClientName);
-            if (p.Length > 0) {
-                if (TibiaClientName.ToLower().Contains("flash")) {
-                    return p;
-                }
-                return new Process[1] { p[0] };
-            }
-            return null;
-        }
-
         //based on http://www.codeproject.com/Articles/716227/Csharp-How-to-Scan-a-Process-Memory
         const int PROCESS_QUERY_INFORMATION = 0x0400;
         const int MEM_COMMIT = 0x00001000;
@@ -135,14 +109,14 @@ namespace Tibialyzer {
             long sys_min_address_l = (long)proc_min_address;
 
 
-            Process[] processes = GetTibiaProcesses();
+            Process[] processes = ProcessManager.GetTibiaProcesses();
             if (processes == null || processes.Length == 0) {
                 // Tibia process could not be found, wait for a bit and return
                 Thread.Sleep(250);
                 return;
             }
-            flashClient = TibiaClientName.ToLower().Contains("flash") || TibiaClientName.ToLower().Contains("chrome");
-            foreach(Process process in processes) {
+            flashClient = ProcessManager.IsFlashClient();
+            foreach (Process process in processes) {
                 if (!whitelistedAddresses.ContainsKey(process.Id)) whitelistedAddresses.Add(process.Id, new List<long>());
                 List<long> whitelist = whitelistedAddresses[process.Id];
 
@@ -205,7 +179,7 @@ namespace Tibialyzer {
 
             long proc_min_address_l = (long)proc_min_address;
             long proc_max_address_l = (long)proc_max_address;
-            Process[] processes = GetTibiaProcesses();
+            Process[] processes = ProcessManager.GetTibiaProcesses();
             if (processes == null || processes.Length == 0) {
                 // Tibia process could not be found, wait for a bit and return
                 Thread.Sleep(250);
@@ -213,7 +187,7 @@ namespace Tibialyzer {
             }
             int scanSpeed = SettingsManager.getSettingInt("ScanSpeed");
             results = new ReadMemoryResults();
-            flashClient = TibiaClientName.ToLower().Contains("flash") || TibiaClientName.ToLower().Contains("chrome");
+            flashClient = ProcessManager.IsFlashClient();
             foreach(Process process in processes) {
                 if (!whitelistedAddresses.ContainsKey(process.Id)) continue;
                 List<long> whitelist = whitelistedAddresses[process.Id];

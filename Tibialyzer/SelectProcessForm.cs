@@ -130,7 +130,7 @@ namespace Tibialyzer {
                 removedControls.Add(box);
 
                 Button label = new Button();
-                if (p.Id == MainForm.TibiaProcessId) {
+                if (p.Id == ProcessManager.TibiaProcessId) {
                     label.Text = p.ProcessName + " (Current)";
                     label.Enabled = false;
                 } else {
@@ -157,18 +157,14 @@ namespace Tibialyzer {
         private void SelectProcess(object sender, EventArgs e) {
             int index = int.Parse((sender as Control).Name);
 
-            MainForm.TibiaClientName = this.processes[index].ProcessName;
-            MainForm.TibiaProcessId = this.processes[index].Id;
-            SettingsManager.setSetting("TibiaClientName", MainForm.TibiaClientName);
+            ProcessManager.SelectProcess(processes[index]);
 
             this.Close();
         }
 
         private void selectButton_Click(object sender, EventArgs e) {
             if (this.processList.SelectedIndex < processes.Count) {
-                MainForm.TibiaClientName = this.processes[processList.SelectedIndex].ProcessName;
-                MainForm.TibiaProcessId = this.processes[processList.SelectedIndex].Id;
-                SettingsManager.setSetting("TibiaClientName", MainForm.TibiaClientName);
+                ProcessManager.SelectProcess(this.processes[processList.SelectedIndex]);
             }
             this.Close();
         }

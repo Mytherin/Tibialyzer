@@ -81,6 +81,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoHotkeyManager.cs" />
     <Compile Include="Popups\AutoHotkeySuspendedMode.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,6 +123,7 @@
     <Compile Include="Controls\RichTextBoxAutoHotkey.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ProcessManager.cs" />
     <Compile Include="SelectProcessForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -220,6 +222,7 @@
     <Compile Include="Controls\TransparentLabel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="TimestampManager.cs" />
     <EmbeddedResource Include="Popups\AutoHotkeySuspendedMode.resx">
       <DependentUpon>AutoHotkeySuspendedMode.cs</DependentUpon>
     </EmbeddedResource>
