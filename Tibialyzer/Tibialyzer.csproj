@@ -81,80 +81,80 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoHotkeySuspendedMode.cs">
+    <Compile Include="Popups\AutoHotkeySuspendedMode.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CityDisplayForm.cs">
+    <Compile Include="Notifications\CityDisplayForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Constants.cs" />
-    <Compile Include="DamageChart.cs">
+    <Compile Include="Notifications\DamageChart.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="HelperFunctions.cs" />
-    <Compile Include="HuntManager.cs" />
-    <Compile Include="LootDatabaseManager.cs" />
-    <Compile Include="MapPictureBox.cs" />
-    <Compile Include="MountForm.cs">
+    <Compile Include="Managers\HuntManager.cs" />
+    <Compile Include="Managers\LootDatabaseManager.cs" />
+    <Compile Include="Controls\MapPictureBox.cs" />
+    <Compile Include="Notifications\MountForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="OutfitForm.cs">
+    <Compile Include="Notifications\OutfitForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Parser.cs" />
-    <Compile Include="Pathfinder.cs" />
-    <Compile Include="NotificationConditionManager.cs" />
-    <Compile Include="PrettyCheckbox.cs">
+    <Compile Include="Managers\Parser.cs" />
+    <Compile Include="Managers\Pathfinder.cs" />
+    <Compile Include="Managers\NotificationConditionManager.cs" />
+    <Compile Include="Controls\PrettyCheckbox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="PrettyDropDownList.cs">
+    <Compile Include="Controls\PrettyDropDownList.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="PrettyListBox.cs">
+    <Compile Include="Controls\PrettyListBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="QuestForm.cs">
+    <Compile Include="Notifications\QuestForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="QuestGuideForm.cs">
+    <Compile Include="Notifications\QuestGuideForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RichTextBoxAutoHotkey.cs">
+    <Compile Include="Controls\RichTextBoxAutoHotkey.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="SelectProcessForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SettingsManager.cs" />
-    <Compile Include="SimpleLootNotification.cs">
+    <Compile Include="Managers\SettingsManager.cs" />
+    <Compile Include="Popups\SimpleLootNotification.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SimpleNotification.cs">
+    <Compile Include="Popups\SimpleNotification.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SimpleTextNotification.cs">
+    <Compile Include="Popups\SimpleTextNotification.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SpellForm.cs">
+    <Compile Include="Notifications\SpellForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="StorageManager.cs" />
-    <Compile Include="EnterTextBox.cs">
+    <Compile Include="Managers\StorageManager.cs" />
+    <Compile Include="Controls\EnterTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CreatureList.cs">
+    <Compile Include="Notifications\CreatureList.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ItemViewForm.cs">
+    <Compile Include="Notifications\ItemViewForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ListNotification.cs">
+    <Compile Include="Notifications\ListNotification.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LootDropForm.cs">
+    <Compile Include="Notifications\LootDropForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LootDropForm.Designer.cs">
+    <Compile Include="Notifications\LootDropForm.Designer.cs">
       <DependentUpon>LootDropForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
@@ -163,16 +163,16 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CreatureDropsForm.cs">
+    <Compile Include="Notifications\CreatureDropsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CreatureDropsForm.Designer.cs">
+    <Compile Include="Notifications\CreatureDropsForm.Designer.cs">
       <DependentUpon>CreatureDropsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CreatureStatsForm.cs">
+    <Compile Include="Notifications\CreatureStatsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CreatureStatsForm.Designer.cs">
+    <Compile Include="Notifications\CreatureStatsForm.Designer.cs">
       <DependentUpon>CreatureStatsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainFormCommandProcessing.cs">
@@ -184,10 +184,10 @@
     <Compile Include="NotificationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="HuntingPlaceForm.cs">
+    <Compile Include="Notifications\HuntingPlaceForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NPCForm.cs">
+    <Compile Include="Notifications\NPCForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Program.cs" />
@@ -210,59 +210,59 @@
     <Compile Include="Structures\Task.cs" />
     <Compile Include="Structures\TibiaObject.cs" />
     <Compile Include="Structures\WorldObject.cs" />
-    <Compile Include="StyleManager.cs" />
-    <Compile Include="TaskForm.cs">
+    <Compile Include="Managers\StyleManager.cs" />
+    <Compile Include="Notifications\TaskForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TransparentChart.cs">
+    <Compile Include="Controls\TransparentChart.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="TransparentLabel.cs">
+    <Compile Include="Controls\TransparentLabel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <EmbeddedResource Include="AutoHotkeySuspendedMode.resx">
+    <EmbeddedResource Include="Popups\AutoHotkeySuspendedMode.resx">
       <DependentUpon>AutoHotkeySuspendedMode.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CityDisplayForm.resx">
+    <EmbeddedResource Include="Notifications\CityDisplayForm.resx">
       <DependentUpon>CityDisplayForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DamageChart.resx">
+    <EmbeddedResource Include="Notifications\DamageChart.resx">
       <DependentUpon>DamageChart.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CreatureList.resx">
+    <EmbeddedResource Include="Notifications\CreatureList.resx">
       <DependentUpon>CreatureList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CreatureStatsForm.resx">
+    <EmbeddedResource Include="Notifications\CreatureStatsForm.resx">
       <DependentUpon>CreatureStatsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ItemViewForm.resx">
+    <EmbeddedResource Include="Notifications\ItemViewForm.resx">
       <DependentUpon>ItemViewForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ListNotification.resx">
+    <EmbeddedResource Include="Notifications\ListNotification.resx">
       <DependentUpon>ListNotification.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LootDropForm.resx">
+    <EmbeddedResource Include="Notifications\LootDropForm.resx">
       <DependentUpon>LootDropForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CreatureDropsForm.resx">
+    <EmbeddedResource Include="Notifications\CreatureDropsForm.resx">
       <DependentUpon>CreatureDropsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MountForm.resx">
+    <EmbeddedResource Include="Notifications\MountForm.resx">
       <DependentUpon>MountForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NotificationForm.resx">
       <DependentUpon>NotificationForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="HuntingPlaceForm.resx">
+    <EmbeddedResource Include="Notifications\HuntingPlaceForm.resx">
       <DependentUpon>HuntingPlaceForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NPCForm.resx">
+    <EmbeddedResource Include="Notifications\NPCForm.resx">
       <DependentUpon>NPCForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="OutfitForm.resx">
+    <EmbeddedResource Include="Notifications\OutfitForm.resx">
       <DependentUpon>OutfitForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -275,28 +275,28 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="QuestForm.resx">
+    <EmbeddedResource Include="Notifications\QuestForm.resx">
       <DependentUpon>QuestForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="QuestGuideForm.resx">
+    <EmbeddedResource Include="Notifications\QuestGuideForm.resx">
       <DependentUpon>QuestGuideForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SelectProcessForm.resx">
       <DependentUpon>SelectProcessForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SimpleLootNotification.resx">
+    <EmbeddedResource Include="Popups\SimpleLootNotification.resx">
       <DependentUpon>SimpleLootNotification.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SimpleNotification.resx">
+    <EmbeddedResource Include="Popups\SimpleNotification.resx">
       <DependentUpon>SimpleNotification.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SimpleTextNotification.resx">
+    <EmbeddedResource Include="Popups\SimpleTextNotification.resx">
       <DependentUpon>SimpleTextNotification.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SpellForm.resx">
+    <EmbeddedResource Include="Notifications\SpellForm.resx">
       <DependentUpon>SpellForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TaskForm.resx">
+    <EmbeddedResource Include="Notifications\TaskForm.resx">
       <DependentUpon>TaskForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Database\Database.db">
