@@ -316,9 +316,9 @@
             this.notificationAnchorBox.SelectedIndexChanged += new System.EventHandler(this.notificationAnchorBox_SelectedIndexChanged);
             this.notificationAnchorBox.MouseEnter += new System.EventHandler(ControlMouseEnter);
             this.notificationAnchorBox.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            // 
+            //
             // TabBase
-            // 
+            //
             this.Controls.Add(selectedWindowLabel);
             this.Controls.Add(notificationDurationLabel);
             this.Controls.Add(notificationDurationBox);

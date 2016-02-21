@@ -175,7 +175,7 @@ namespace Tibialyzer {
             customCommands[customCommandList.SelectedIndex].parameters = customCommandParameterBox.Text;
             SaveCommands();
         }
-        
+
         private void ControlMouseEnter(object sender, EventArgs e) {
             (sender as Control).BackColor = StyleManager.MainFormHoverColor;
             (sender as Control).ForeColor = StyleManager.MainFormHoverForeColor;

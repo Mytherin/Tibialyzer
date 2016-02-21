@@ -16,7 +16,7 @@ namespace Tibialyzer {
             InitializeSettings();
             InitializeTooltips();
         }
-        
+
         public void InitializeSettings() {
             CreateRatioDisplay(Constants.DisplayItemList, discardItemsHeader.Location.X + 10, discardItemsHeader.Location.Y + discardItemsHeader.Size.Height + 8, UpdateDiscardRatio, discardLabels);
             UpdateDiscardDisplay();
@@ -28,7 +28,7 @@ namespace Tibialyzer {
         public void InitializeTooltips() {
 
         }
-        
+
         private void CreateRatioDisplay(List<string> itemList, int baseX, int baseY, EventHandler itemClick, List<Control> labelControls) {
             int it = 0;
             foreach (string itemName in itemList) {

@@ -82,9 +82,9 @@
             this.browseTypeBox.Size = new System.Drawing.Size(144, 24);
             this.browseTypeBox.TabIndex = 54;
             this.browseTypeBox.SelectedIndexChanged += new System.EventHandler(this.browseSelectionBox_SelectedIndexChanged);
-            // 
+            //
             // TabBase
-            // 
+            //
             this.Controls.Add(browseTextBox);
             this.Controls.Add(creaturePanel);
             this.Controls.Add(searchDatabaseHeader);

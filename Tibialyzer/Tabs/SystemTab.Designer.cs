@@ -151,9 +151,9 @@
             this.label4.TabIndex = 55;
             this.label4.Text = "Import Settings From Previous Tibialyzer";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // TabBase
-            // 
+            //
             this.Controls.Add(customCommandParameterBox);
             this.Controls.Add(label8);
             this.Controls.Add(customCommandBox);

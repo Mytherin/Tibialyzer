@@ -149,9 +149,9 @@
             this.customDiscardRatioBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.customDiscardRatioBox_KeyPress);
             this.customDiscardRatioBox.MouseEnter += new System.EventHandler(ControlMouseEnter);
             this.customDiscardRatioBox.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            // 
+            //
             // TabBase
-            // 
+            //
             this.Controls.Add(label5);
             this.Controls.Add(applyConvertRatioButton);
             this.Controls.Add(convertStackableHeader);

@@ -46,9 +46,9 @@
             this.namesLabel = new System.Windows.Forms.Label();
             this.commandTextBox = new Tibialyzer.EnterTextBox();
             this.SuspendLayout();
-            // 
+            //
             // detectFlashClientButton
-            // 
+            //
             this.detectFlashClientButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.detectFlashClientButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.detectFlashClientButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -62,9 +62,9 @@
             this.detectFlashClientButton.Click += new System.EventHandler(this.detectFlashClientButton_Click);
             this.detectFlashClientButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.detectFlashClientButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // saveAllLootCheckbox
-            // 
+            //
             this.saveAllLootCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.saveAllLootCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveAllLootCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -78,9 +78,9 @@
             this.saveAllLootCheckbox.CheckedChanged += new System.EventHandler(this.saveAllLootCheckbox_CheckedChanged);
             this.saveAllLootCheckbox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.saveAllLootCheckbox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // expValueLabel
-            // 
+            //
             this.expValueLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.expValueLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.expValueLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -90,9 +90,9 @@
             this.expValueLabel.TabIndex = 44;
             this.expValueLabel.Text = "Exp Value";
             this.expValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // ignoreLowExperienceBox
-            // 
+            //
             this.ignoreLowExperienceBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.ignoreLowExperienceBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ignoreLowExperienceBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -103,9 +103,9 @@
             this.ignoreLowExperienceBox.TextChanged += new System.EventHandler(this.ignoreLowExperienceBox_TextChanged);
             this.ignoreLowExperienceBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.ignoreLowExperienceBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // ignoreLowExperienceButton
-            // 
+            //
             this.ignoreLowExperienceButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.ignoreLowExperienceButton.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ignoreLowExperienceButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -119,9 +119,9 @@
             this.ignoreLowExperienceButton.CheckedChanged += new System.EventHandler(this.ignoreLowExperienceButton_CheckedChanged);
             this.ignoreLowExperienceButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.ignoreLowExperienceButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // stackAllItemsCheckbox
-            // 
+            //
             this.stackAllItemsCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.stackAllItemsCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.stackAllItemsCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -135,9 +135,9 @@
             this.stackAllItemsCheckbox.CheckedChanged += new System.EventHandler(this.stackAllItemsCheckbox_CheckedChanged);
             this.stackAllItemsCheckbox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.stackAllItemsCheckbox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // lootOptionsHeaderLabel
-            // 
+            //
             this.lootOptionsHeaderLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.lootOptionsHeaderLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lootOptionsHeaderLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -147,9 +147,9 @@
             this.lootOptionsHeaderLabel.TabIndex = 37;
             this.lootOptionsHeaderLabel.Text = "Loot Options";
             this.lootOptionsHeaderLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label9
-            // 
+            //
             this.label9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label9.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -159,9 +159,9 @@
             this.label9.TabIndex = 36;
             this.label9.Text = "Loot Display Options";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // mainExecuteTibialyzerCommandLabel
-            // 
+            //
             this.mainExecuteTibialyzerCommandLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.mainExecuteTibialyzerCommandLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mainExecuteTibialyzerCommandLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -171,9 +171,9 @@
             this.mainExecuteTibialyzerCommandLabel.TabIndex = 35;
             this.mainExecuteTibialyzerCommandLabel.Text = "Execute Tibialyzer Command";
             this.mainExecuteTibialyzerCommandLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // saveDamageImageButton
-            // 
+            //
             this.saveDamageImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.saveDamageImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveDamageImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -187,9 +187,9 @@
             this.saveDamageImageButton.Click += new System.EventHandler(this.damageButton_Click);
             this.saveDamageImageButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.saveDamageImageButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // saveLootImageButton
-            // 
+            //
             this.saveLootImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.saveLootImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveLootImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -203,9 +203,9 @@
             this.saveLootImageButton.Click += new System.EventHandler(this.saveLootImage_Click);
             this.saveLootImageButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.saveLootImageButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // selectClientProgramButton
-            // 
+            //
             this.selectClientProgramButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.selectClientProgramButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.selectClientProgramButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -219,9 +219,9 @@
             this.selectClientProgramButton.Click += new System.EventHandler(this.selectClientButton_Click);
             this.selectClientProgramButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.selectClientProgramButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // mainOptionsLabel
-            // 
+            //
             this.mainOptionsLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.mainOptionsLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mainOptionsLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -231,9 +231,9 @@
             this.mainOptionsLabel.TabIndex = 28;
             this.mainOptionsLabel.Text = "Global Settings";
             this.mainOptionsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // executeButton
-            // 
+            //
             this.executeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.executeButton.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.executeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -246,9 +246,9 @@
             this.executeButton.Click += new System.EventHandler(this.executeCommand_Click);
             this.executeButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.executeButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // issuesGuideButton
-            // 
+            //
             this.issuesGuideButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.issuesGuideButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.issuesGuideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -262,9 +262,9 @@
             this.issuesGuideButton.Click += new System.EventHandler(this.issuesGuide_Click);
             this.issuesGuideButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.issuesGuideButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // popupsGuideButton
-            // 
+            //
             this.popupsGuideButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupsGuideButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupsGuideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -278,9 +278,9 @@
             this.popupsGuideButton.Click += new System.EventHandler(this.popupsGuide_Click);
             this.popupsGuideButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.popupsGuideButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // lootGuideButton
-            // 
+            //
             this.lootGuideButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.lootGuideButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lootGuideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -294,9 +294,9 @@
             this.lootGuideButton.Click += new System.EventHandler(this.commandsGuide_Click);
             this.lootGuideButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.lootGuideButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // mainGuidesLabel
-            // 
+            //
             this.mainGuidesLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.mainGuidesLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mainGuidesLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -306,9 +306,9 @@
             this.mainGuidesLabel.TabIndex = 23;
             this.mainGuidesLabel.Text = "Guides";
             this.mainGuidesLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // gettingStartedGuideButton
-            // 
+            //
             this.gettingStartedGuideButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.gettingStartedGuideButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gettingStartedGuideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -322,9 +322,9 @@
             this.gettingStartedGuideButton.Click += new System.EventHandler(this.gettingStartedGuide_Click);
             this.gettingStartedGuideButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.gettingStartedGuideButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // nameListBox
-            // 
+            //
             this.nameListBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.nameListBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nameListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
@@ -340,9 +340,9 @@
             this.nameListBox.Name = "nameListBox";
             this.nameListBox.Size = new System.Drawing.Size(296, 115);
             this.nameListBox.TabIndex = 0;
-            // 
+            //
             // namesLabel
-            // 
+            //
             this.namesLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.namesLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.namesLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -352,9 +352,9 @@
             this.namesLabel.TabIndex = 1;
             this.namesLabel.Text = "Character Names";
             this.namesLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // commandTextBox
-            // 
+            //
             this.commandTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.commandTextBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.commandTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -365,9 +365,9 @@
             this.commandTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.commandTextBox_KeyPress);
             this.commandTextBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.commandTextBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // MainTab
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;

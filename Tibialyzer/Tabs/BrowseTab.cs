@@ -15,7 +15,7 @@ namespace Tibialyzer {
             InitializeSettings();
             InitializeTooltips();
         }
-        
+
         public void InitializeSettings() {
             browseTypeBox.SelectedIndex = 0;
         }
@@ -96,7 +96,7 @@ namespace Tibialyzer {
             }
             refreshItems(creaturePanel, creaturePanel.Controls, browseObjects, browseSortedHeader, browseDesc, sortBrowse);
         }
-        
+
         private void refreshItems(Control suspend, Control.ControlCollection controls, List<TibiaObject> tibiaObjects, string sortedHeader, bool desc, EventHandler eventHandler, int maxItems = 20) {
             int maxWidth = 0;
 

@@ -43,9 +43,9 @@
             this.popupTypeBox = new Tibialyzer.PrettyDropDownList();
             ((System.ComponentModel.ISupportInitialize)(this.scanningSpeedTrack)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // unlockLabel
-            // 
+            //
             this.unlockLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(56)))), ((int)(((byte)(65)))));
             this.unlockLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.unlockLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -55,9 +55,9 @@
             this.unlockLabel.TabIndex = 34;
             this.unlockLabel.Text = "Unlock ";
             this.unlockLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // unlockResetButton
-            // 
+            //
             this.unlockResetButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.unlockResetButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.unlockResetButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -71,9 +71,9 @@
             this.unlockResetButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.unlockResetButton_Click);
             this.unlockResetButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.unlockResetButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // resetSettingsButton
-            // 
+            //
             this.resetSettingsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.resetSettingsButton.Enabled = false;
             this.resetSettingsButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -88,9 +88,9 @@
             this.resetSettingsButton.Click += new System.EventHandler(this.resetToDefaultButton_Click);
             this.resetSettingsButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.resetSettingsButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // resetSettingsLabel
-            // 
+            //
             this.resetSettingsLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.resetSettingsLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.resetSettingsLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -100,9 +100,9 @@
             this.resetSettingsLabel.TabIndex = 31;
             this.resetSettingsLabel.Text = "Reset Settings To Default";
             this.resetSettingsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label29
-            // 
+            //
             this.label29.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label29.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label29.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -112,9 +112,9 @@
             this.label29.TabIndex = 30;
             this.label29.Text = "Default Outfit Gender";
             this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label67
-            // 
+            //
             this.label67.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label67.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label67.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -124,9 +124,9 @@
             this.label67.TabIndex = 48;
             this.label67.Text = "Popup Options";
             this.label67.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // settingsOptionsHeader
-            // 
+            //
             this.settingsOptionsHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.settingsOptionsHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.settingsOptionsHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -136,9 +136,9 @@
             this.settingsOptionsHeader.TabIndex = 29;
             this.settingsOptionsHeader.Text = "Options";
             this.settingsOptionsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // scanSpeedDisplayLabel
-            // 
+            //
             this.scanSpeedDisplayLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.scanSpeedDisplayLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.scanSpeedDisplayLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -148,9 +148,9 @@
             this.scanSpeedDisplayLabel.TabIndex = 25;
             this.scanSpeedDisplayLabel.Text = "Fastest";
             this.scanSpeedDisplayLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // scanSpeedLabel
-            // 
+            //
             this.scanSpeedLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.scanSpeedLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.scanSpeedLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -160,9 +160,9 @@
             this.scanSpeedLabel.TabIndex = 24;
             this.scanSpeedLabel.Text = "Scanning Speed";
             this.scanSpeedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // scanningSpeedTrack
-            // 
+            //
             this.scanningSpeedTrack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.scanningSpeedTrack.Location = new System.Drawing.Point(6, 267);
             this.scanningSpeedTrack.Maximum = 100;
@@ -172,9 +172,9 @@
             this.scanningSpeedTrack.Scroll += new System.EventHandler(this.scanningSpeedTrack_Scroll);
             this.scanningSpeedTrack.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.scanningSpeedTrack.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // label68
-            // 
+            //
             this.label68.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label68.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label68.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -184,9 +184,9 @@
             this.label68.TabIndex = 52;
             this.label68.Text = "Popup Type";
             this.label68.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // lookModeCheckbox
-            // 
+            //
             this.lookModeCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.lookModeCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lookModeCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -200,9 +200,9 @@
             this.lookModeCheckbox.CheckedChanged += new System.EventHandler(this.lookCheckBox_CheckedChanged);
             this.lookModeCheckbox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.lookModeCheckbox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // outfitGenderCheckbox
-            // 
+            //
             this.outfitGenderCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.outfitGenderCheckbox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.outfitGenderCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -218,9 +218,9 @@
             this.outfitGenderCheckbox.SelectedIndexChanged += new System.EventHandler(this.outfitGenderBox_SelectedIndexChanged);
             this.outfitGenderCheckbox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.outfitGenderCheckbox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // copyAdvancesCheckbox
-            // 
+            //
             this.copyAdvancesCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.copyAdvancesCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.copyAdvancesCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -234,9 +234,9 @@
             this.copyAdvancesCheckbox.CheckedChanged += new System.EventHandler(this.advanceCopyCheckbox_CheckedChanged);
             this.copyAdvancesCheckbox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.copyAdvancesCheckbox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // popupAnimationBox
-            // 
+            //
             this.popupAnimationBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupAnimationBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupAnimationBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -250,9 +250,9 @@
             this.popupAnimationBox.CheckedChanged += new System.EventHandler(this.enableSimpleNotificationAnimations_CheckedChanged);
             this.popupAnimationBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.popupAnimationBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // eventPopupBox
-            // 
+            //
             this.eventPopupBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.eventPopupBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.eventPopupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -266,9 +266,9 @@
             this.eventPopupBox.CheckedChanged += new System.EventHandler(this.eventNotificationEnable_CheckedChanged);
             this.eventPopupBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.eventPopupBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // unrecognizedPopupBox
-            // 
+            //
             this.unrecognizedPopupBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.unrecognizedPopupBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.unrecognizedPopupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -282,9 +282,9 @@
             this.unrecognizedPopupBox.CheckedChanged += new System.EventHandler(this.unrecognizedCommandNotification_CheckedChanged);
             this.unrecognizedPopupBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.unrecognizedPopupBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // popupTypeBox
-            // 
+            //
             this.popupTypeBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupTypeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.popupTypeBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -300,9 +300,9 @@
             this.popupTypeBox.SelectedIndexChanged += new System.EventHandler(this.notificationTypeBox_SelectedIndexChanged);
             this.popupTypeBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.popupTypeBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // SettingsTab
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;

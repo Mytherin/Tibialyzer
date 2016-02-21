@@ -16,7 +16,7 @@ namespace Tibialyzer {
             InitializeSettings();
             InitializeTooltips();
         }
-        
+
         public void InitializeSettings() {
             logMessageCollection.ReadOnly = true;
             logMessageCollection.TextAlign = HorizontalAlignment.Left;

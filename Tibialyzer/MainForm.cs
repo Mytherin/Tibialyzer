@@ -43,7 +43,7 @@ namespace Tibialyzer {
         public static StreamWriter fileWriter = null;
 
         private static List<TabInterface> Tabs = new List<TabInterface>();
-        
+
         public static void ExitWithError(string title, string text, bool exit = true) {
             MessageBox.Show(mainForm, text, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
             if (exit) {
@@ -55,7 +55,7 @@ namespace Tibialyzer {
             Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
             mainForm = this;
             InitializeComponent();
-            
+
             SettingsManager.LoadSettings(Constants.SettingsFile);
 
             LootDatabaseManager.LootChanged += NotificationManager.UpdateLootDisplay;
@@ -104,7 +104,7 @@ namespace Tibialyzer {
             this.Load += MainForm_Load;
 
             fileWriter = new StreamWriter(Constants.BigLootFile, true);
-            
+
             tibialyzerLogo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
 
             ScanningManager.StartScanning();
@@ -129,7 +129,7 @@ namespace Tibialyzer {
                 return cp;
             }
         }
-        
+
         public void SetScanningImage(string image, string text, bool enabled) {
             this.loadTimerImage.Image = StyleManager.GetImage(image);
             scan_tooltip.SetToolTip(this.loadTimerImage, text);
@@ -153,10 +153,10 @@ namespace Tibialyzer {
             explanationTooltip.SetToolTip(goldCapRatioCheckbox, "When an item that has at least this gold/cap ratio drops, a notification is displayed.");*/
             //explanationTooltip.SetToolTip(specificNotificationCheckbox, "When any item that is specified in the box below drops, a notification is displayed informing you of the dropped item.");
             //explanationTooltip.SetToolTip(notificationLengthSlider, "The amount of time that rich notifications (loot@, creature@) remain on the screen before fading.");
-            
 
 
-            
+
+
         }
 
         public void UpdateLogDisplay() {
@@ -164,13 +164,13 @@ namespace Tibialyzer {
                 refreshHuntLog(getSelectedHunt());
             }
         }
-        
+
         public void InitializeHuntDisplay(int activeHuntIndex) {
             (Tabs[2] as HuntsTab).InitializeHuntDisplay(activeHuntIndex);
         }
 
         public void initializeSettings() {
-            SettingsManager.ApplyDefaultSettings();            
+            SettingsManager.ApplyDefaultSettings();
             // convert legacy settings
             bool legacy = false;
             if (SettingsManager.settingExists("NotificationGoldRatio") || SettingsManager.settingExists("NotificationValue")) {
@@ -263,7 +263,7 @@ namespace Tibialyzer {
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
-        
+
         public static Pen pathPen = new Pen(StyleManager.PathFinderPathColor, 3);
         public static MapPictureBox DrawRoute(Coordinate begin, Coordinate end, Size pictureBoxSize, Size minSize, Size maxSize, List<Color> additionalWalkableColors, List<Target> targetList = null) {
             if (end.x >= 0 && begin.z != end.z) {
@@ -731,7 +731,7 @@ namespace Tibialyzer {
             y = y + height;
             return y;
         }
-        
+
         public static void OpenUrl(string str) {
             // Weird command prompt escape characters
             str = str.Trim().Replace(" ", "%20").Replace("&", "^&").Replace("|", "^|").Replace("(", "^(").Replace(")", "^)");
@@ -962,16 +962,16 @@ namespace Tibialyzer {
             (sender as Control).BackColor = StyleManager.MainFormButtonColor;
             (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
         }
-        
+
         private void warningImageBox_MouseDown(object sender, MouseEventArgs e) {
             (sender as Control).Visible = false;
         }
         #endregion
-                
+
         public void refreshHunts() {
             (Tabs[2] as HuntsTab).refreshHunts();
         }
-        
+
         public Hunt getSelectedHunt() {
             PrettyListBox huntList = (Tabs[2] as HuntsTab).GetHuntList();
             if (huntList.SelectedIndex < 0) return null;
@@ -981,10 +981,10 @@ namespace Tibialyzer {
         public void refreshHuntLog(Hunt h) {
             (Tabs[3] as LogsTab).refreshHuntLog(h);
         }
-        
+
         public bool skip_hunt_refresh = false;
         public bool switch_hunt = false;
-        
+
         public void refreshScreenshots() {
             (Tabs[8] as ScreenshotTab).refreshScreenshots();
         }

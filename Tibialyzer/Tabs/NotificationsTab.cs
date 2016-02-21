@@ -15,7 +15,7 @@ namespace Tibialyzer {
             InitializeSettings();
             InitializeTooltips();
         }
-        
+
         public void InitializeSettings() {
             notificationTypeList.ReadOnly = true;
 
@@ -120,11 +120,11 @@ namespace Tibialyzer {
                 SettingsManager.setSetting(settingObject + "Group", groupnr);
             }
         }
-        
+
         private void clearNotificationDisplayButton_Click(object sender, EventArgs e) {
             CommandManager.ExecuteCommand("close@");
         }
-        
+
         private void ControlMouseEnter(object sender, EventArgs e) {
             (sender as Control).BackColor = StyleManager.MainFormHoverColor;
             (sender as Control).ForeColor = StyleManager.MainFormHoverForeColor;

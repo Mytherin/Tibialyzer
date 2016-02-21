@@ -15,7 +15,7 @@ namespace Tibialyzer {
             InitializeSettings();
             InitializeTooltips();
         }
-        
+
         public void InitializeSettings() {
 
         }
@@ -27,7 +27,7 @@ namespace Tibialyzer {
         public void LoadHelpTab() {
             HelpTimer_Elapsed(null, null);
         }
-        
+
         private void refreshItems(Control suspend, Control.ControlCollection controls, List<TibiaObject> tibiaObjects, string sortedHeader, bool desc, EventHandler eventHandler, int maxItems = 20) {
             int maxWidth = 0;
 

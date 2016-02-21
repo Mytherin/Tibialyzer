@@ -220,9 +220,9 @@
             this.screenshotDisplayList.Size = new System.Drawing.Size(219, 454);
             this.screenshotDisplayList.TabIndex = 45;
             this.screenshotDisplayList.SelectedIndexChanged += new System.EventHandler(this.screenshotList_SelectedIndexChanged);
-            // 
+            //
             // TabBase
-            // 
+            //
             this.Controls.Add(screenshotBox);
             this.Controls.Add(changeScreenshotDirectoryButton);
             this.Controls.Add(openScreenshotDirectoryButton);

@@ -236,9 +236,9 @@
             this.huntList.Size = new System.Drawing.Size(290, 155);
             this.huntList.TabIndex = 2;
             this.huntList.SelectedIndexChanged += new System.EventHandler(this.huntBox_SelectedIndexChanged);
-            // 
+            //
             // TabBase
-            // 
+            //
             this.Controls.Add(lootDisplayHeader);
             this.Controls.Add(showHuntLootButton);
             this.Controls.Add(label35);

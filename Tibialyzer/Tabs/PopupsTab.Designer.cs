@@ -363,9 +363,9 @@
             this.popupAnchorBox.SelectedIndexChanged += new System.EventHandler(this.simpleAnchor_SelectedIndexChanged);
             this.popupAnchorBox.MouseEnter += new System.EventHandler(ControlMouseEnter);
             this.popupAnchorBox.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            // 
+            //
             // TabBase
-            // 
+            //
             this.Controls.Add(popupSetGoldCapRatioButton);
             this.Controls.Add(popupGoldCapRatioBox);
             this.Controls.Add(label3);

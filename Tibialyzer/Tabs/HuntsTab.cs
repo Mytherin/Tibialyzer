@@ -15,7 +15,7 @@ namespace Tibialyzer {
             InitializeSettings();
             InitializeTooltips();
         }
-        
+
         public void InitializeSettings() {
             trackedCreatureList.ItemsChanged += TrackedCreatureList_ItemsChanged;
             trackedCreatureList.verifyItem = StorageManager.creatureExists;
@@ -46,7 +46,7 @@ namespace Tibialyzer {
             huntList.AttemptDeleteItem += HuntList_AttemptDeleteItem;
             huntList.AttemptNewItem += HuntList_AttemptNewItem;
         }
-        
+
         private void HuntList_AttemptNewItem(object sender, EventArgs e) {
             HuntManager.CreateNewHunt();
             refreshHunts();
@@ -66,7 +66,7 @@ namespace Tibialyzer {
                 h.name = (sender as PrettyListBox).Items[(sender as PrettyListBox).SelectedIndex].ToString();
             }
         }
-        
+
         public PrettyListBox GetHuntList() {
             return huntList;
         }
@@ -171,7 +171,7 @@ namespace Tibialyzer {
 
             HuntManager.SaveHunts();
         }
-        
+
         private void TrackedCreatureList_ItemsChanged(object sender, EventArgs e) {
             if (MainForm.mainForm.switch_hunt) return;
             Hunt h = getSelectedHunt();
@@ -184,7 +184,7 @@ namespace Tibialyzer {
             HuntManager.SaveHunts();
             refreshHuntImages(h);
         }
-        
+
         private void startupHuntCheckbox_CheckedChanged(object sender, EventArgs e) {
             if (MainForm.mainForm.switch_hunt) return;
             Hunt h = getSelectedHunt();

@@ -61,9 +61,9 @@
             this.searchCommandHelpBox.TextChanged += new System.EventHandler(this.helpSearchBox_TextChanged);
             this.searchCommandHelpBox.MouseEnter += new System.EventHandler(ControlMouseEnter);
             this.searchCommandHelpBox.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            // 
+            //
             // TabBase
-            // 
+            //
             this.Controls.Add(helpPanel);
             this.Controls.Add(searchCommandsHeader);
             this.Controls.Add(searchCommandHelpBox);

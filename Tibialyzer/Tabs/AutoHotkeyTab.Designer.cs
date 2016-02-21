@@ -327,9 +327,9 @@
             this.autoHotkeyGridSettings.TabIndex = 5;
             this.autoHotkeyGridSettings.Text = "";
             this.autoHotkeyGridSettings.TextChanged += new System.EventHandler(this.autoHotkeyGridSettings_TextChanged);
-            // 
+            //
             // TabBase
-            // 
+            //
             this.Controls.Add(downloadBar);
             this.Controls.Add(closeSuspendedWindowButton);
             this.Controls.Add(suspendedTestButton);

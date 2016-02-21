@@ -15,7 +15,7 @@ namespace Tibialyzer {
             InitializeSettings();
             InitializeTooltips();
         }
-        
+
         public void InitializeSettings() {
             this.popupAnimationBox.Checked = SettingsManager.getSettingBool("EnableSimpleNotificationAnimation");
             this.eventPopupBox.Checked = SettingsManager.getSettingBool("EnableEventNotifications");
@@ -91,7 +91,7 @@ namespace Tibialyzer {
 
             SettingsManager.setSetting("OutfitGenderMale", ((sender as ComboBox).SelectedIndex == 0).ToString());
         }
-        
+
         private void eventNotificationEnable_CheckedChanged(object sender, EventArgs e) {
             if (MainForm.prevent_settings_update) return;
 
@@ -109,7 +109,7 @@ namespace Tibialyzer {
 
             SettingsManager.setSetting("EnableSimpleNotificationAnimation", (sender as CheckBox).Checked);
         }
-        
+
         private void advanceCopyCheckbox_CheckedChanged(object sender, EventArgs e) {
             if (MainForm.prevent_settings_update) return;
 

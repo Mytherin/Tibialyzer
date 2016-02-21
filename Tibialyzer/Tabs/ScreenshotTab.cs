@@ -17,7 +17,7 @@ namespace Tibialyzer {
             InitializeSettings();
             InitializeTooltips();
         }
-        
+
         public void InitializeSettings() {
             this.screenshotAdvanceBox.Checked = SettingsManager.getSettingBool("AutoScreenshotAdvance");
             this.screenshotRareBox.Checked = SettingsManager.getSettingBool("AutoScreenshotItemDrop");
@@ -178,7 +178,7 @@ namespace Tibialyzer {
                 (sender as Control).Size = new Size(534, 497);
             }
         }
-        
+
         private void ControlMouseEnter(object sender, EventArgs e) {
             (sender as Control).BackColor = StyleManager.MainFormHoverColor;
             (sender as Control).ForeColor = StyleManager.MainFormHoverForeColor;

@@ -166,9 +166,9 @@
             this.logMessageCollection.Name = "logMessageCollection";
             this.logMessageCollection.Size = new System.Drawing.Size(534, 221);
             this.logMessageCollection.TabIndex = 46;
-            // 
+            //
             // TabBase
-            // 
+            //
             this.Controls.Add(showPopupButton);
             this.Controls.Add(showAllLootButton);
             this.Controls.Add(label33);
