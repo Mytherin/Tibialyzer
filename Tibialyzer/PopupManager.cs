@@ -125,5 +125,18 @@ namespace Tibialyzer {
             notificationStack.Remove(notification);
         }
 
+        public static bool ShowDropNotification(Tuple<Creature, List<Tuple<Item, int>>> tpl) {
+            bool showNotification = NotificationConditionManager.ResolveConditions(tpl);
+            bool showNotificationSpecific = false;
+            foreach (Tuple<Item, int> tpl2 in tpl.Item2) {
+                Item item = tpl2.Item1;
+                showNotificationSpecific = SettingsManager.getSetting("NotificationItems").Contains(item.displayname.ToLower());
+                if (showNotificationSpecific) {
+                    showNotification = true;
+                    break;
+                }
+            }
+            return showNotification;
+        }
     }
 }

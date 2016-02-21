@@ -2023,7 +2023,7 @@ namespace Tibialyzer {
             }
             var parseResult = Parser.ParseLootMessage(message);
             if (parseResult != null) {
-                bool showNotification = ShowDropNotification(parseResult);
+                bool showNotification = PopupManager.ShowDropNotification(parseResult);
                 if (showNotification) {
                     this.Invoke((MethodInvoker)delegate {
                         PopupManager.ShowSimpleNotification(new SimpleLootNotification(parseResult.Item1, parseResult.Item2));

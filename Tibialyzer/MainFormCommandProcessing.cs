@@ -35,21 +35,7 @@ namespace Tibialyzer {
     public partial class MainForm : Form {
         public static ParseMemoryResults lastResults;
         public static bool shownException = false;
-
-        private bool ShowDropNotification(Tuple<Creature, List<Tuple<Item, int>>> tpl) {
-            bool showNotification = NotificationConditionManager.ResolveConditions(tpl);
-            bool showNotificationSpecific = false;
-            foreach (Tuple<Item, int> tpl2 in tpl.Item2) {
-                Item item = tpl2.Item1;
-                showNotificationSpecific = SettingsManager.getSetting("NotificationItems").Contains(item.displayname.ToLower());
-                if (showNotificationSpecific) {
-                    showNotification = true;
-                    break;
-                }
-            }
-            return showNotification;
-        }
-
+        
         public bool ScanMemory() {
             ReadMemoryResults readMemoryResults = ReadMemory();
             ParseMemoryResults parseMemoryResults = ParseLogResults(readMemoryResults);
@@ -149,7 +135,7 @@ namespace Tibialyzer {
                 foreach (Tuple<Creature, List<Tuple<Item, int>>> tpl in parseMemoryResults.newItems) {
                     Creature cr = tpl.Item1;
                     List<Tuple<Item, int>> items = tpl.Item2;
-                    bool showNotification = ShowDropNotification(tpl);
+                    bool showNotification = PopupManager.ShowDropNotification(tpl);
                     if (showNotification) {
                         if (!SettingsManager.getSettingBool("UseRichNotificationType")) {
                             Console.WriteLine("Rich Notification");
