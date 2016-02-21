@@ -18,19 +18,31 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Tibialyzer {
-    static class HelperFunctions {
-        public static bool isDigit(this char c) {
-            return
-                c == '0' ||
-                c == '1' ||
-                c == '2' ||
-                c == '3' ||
-                c == '4' ||
-                c == '5' ||
-                c == '6' ||
-                c == '7' ||
-                c == '8' ||
-                c == '9';
+    public class Coordinate {
+        public int x;
+        public int y;
+        public int z;
+
+        public const int MaxWidth = 2048;
+        public const int MaxHeight = 2048;
+
+        public Coordinate() {
+            this.x = MaxWidth / 2;
+            this.y = MaxHeight / 2;
+            this.z = 7;
+        }
+
+        public Coordinate(Coordinate coordinate) {
+            this.x = coordinate.x;
+            this.y = coordinate.y;
+            this.z = coordinate.z;
+        }
+
+        public Coordinate(int x, int y, int z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
         }
     }
+
 }

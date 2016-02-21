@@ -11,26 +11,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Tibialyzer {
-    static class HelperFunctions {
-        public static bool isDigit(this char c) {
-            return
-                c == '0' ||
-                c == '1' ||
-                c == '2' ||
-                c == '3' ||
-                c == '4' ||
-                c == '5' ||
-                c == '6' ||
-                c == '7' ||
-                c == '8' ||
-                c == '9';
+    public class WorldObject : TibiaObject {
+        public string title;
+        public string name;
+        public Image image;
+
+        public override string GetName() { return name; }
+        public override Image GetImage() { return image; }
+        public override List<string> GetAttributeHeaders() {
+            return new List<string> { "Name" };
+        }
+        public override List<Attribute> GetAttributes() {
+            return new List<Attribute> { new StringAttribute(name, 120) };
+        }
+        public override string GetCommand() {
+            return "worldobject" + MainForm.commandSymbol + name;
         }
     }
 }

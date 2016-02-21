@@ -1,4 +1,3 @@
-
 // Copyright 2016 Mark Raasveldt
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -178,7 +177,6 @@ namespace Tibialyzer {
                                 // if there are any timestamps found, add the address to the list of whitelisted addresses
                                 foreach (string str in timestampLines) {
                                     whitelist.Add(addr);
-                                    Console.WriteLine(whitelist.Count);
                                     break;
                                 }
 

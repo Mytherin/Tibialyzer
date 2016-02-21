@@ -3012,11 +3012,4 @@ namespace Tibialyzer {
             }
         }
     }
-
-    public class TibialyzerCommand {
-        public string command;
-        public TibialyzerCommand(string command) {
-            this.command = command;
-        }
-    }
 }

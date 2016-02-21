@@ -139,7 +139,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="StorageManager.cs" />
-    <Compile Include="Structures.cs" />
     <Compile Include="EnterTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -193,6 +192,24 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Structures\Attributes.cs" />
+    <Compile Include="Structures\City.cs" />
+    <Compile Include="Structures\Commands.cs" />
+    <Compile Include="Structures\Coordinate.cs" />
+    <Compile Include="Structures\Creature.cs" />
+    <Compile Include="Structures\Event.cs" />
+    <Compile Include="Structures\HuntingPlace.cs" />
+    <Compile Include="Structures\Item.cs" />
+    <Compile Include="Structures\LazyTibiaObject.cs" />
+    <Compile Include="Structures\Map.cs" />
+    <Compile Include="Structures\Mount.cs" />
+    <Compile Include="Structures\NPC.cs" />
+    <Compile Include="Structures\Outfit.cs" />
+    <Compile Include="Structures\Quest.cs" />
+    <Compile Include="Structures\Spell.cs" />
+    <Compile Include="Structures\Task.cs" />
+    <Compile Include="Structures\TibiaObject.cs" />
+    <Compile Include="Structures\WorldObject.cs" />
     <Compile Include="StyleManager.cs" />
     <Compile Include="TaskForm.cs">
       <SubType>Form</SubType>
