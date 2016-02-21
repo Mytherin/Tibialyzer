@@ -577,7 +577,7 @@ namespace Tibialyzer {
                         }
                     }
                     // else try custom commands
-                    foreach (SystemCommand c in MainForm.mainForm.customCommands) {
+                    foreach (SystemCommand c in MainForm.mainForm.GetCustomCommands()) {
                         if (c.tibialyzer_command.Trim().Length > 0 && comp.StartsWith(c.tibialyzer_command + Constants.CommandSymbol)) {
                             string[] parameters = command.Split(Constants.CommandSymbol);
                             string systemCallParameters = c.parameters;

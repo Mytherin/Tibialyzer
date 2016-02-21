@@ -224,6 +224,85 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Managers\TimestampManager.cs" />
+    <Compile Include="Tabs\MainTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\MainTab.Designer.cs">
+      <DependentUpon>MainTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\SettingsTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\SettingsTab.Designer.cs">
+      <DependentUpon>SettingsTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\HuntsTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\HuntsTab.Designer.cs">
+      <DependentUpon>HuntsTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\LogsTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\LogsTab.Designer.cs">
+      <DependentUpon>LogsTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\NotificationsTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\NotificationsTab.Designer.cs">
+      <DependentUpon>NotificationsTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\PopupsTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\PopupsTab.Designer.cs">
+      <DependentUpon>PopupsTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\DatabaseTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\DatabaseTab.Designer.cs">
+      <DependentUpon>DatabaseTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\AutoHotkeyTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\AutoHotkeyTab.Designer.cs">
+      <DependentUpon>AutoHotkeyTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\ScreenshotTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\ScreenshotTab.Designer.cs">
+      <DependentUpon>ScreenshotTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\BrowseTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\BrowseTab.Designer.cs">
+      <DependentUpon>BrowseTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\HelpTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\HelpTab.Designer.cs">
+      <DependentUpon>HelpTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\SystemTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\SystemTab.Designer.cs">
+      <DependentUpon>SystemTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\TabBase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\TabBase.Designer.cs">
+      <DependentUpon>TabBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\TabInterface.cs" />
     <EmbeddedResource Include="Popups\AutoHotkeySuspendedMode.resx">
       <DependentUpon>AutoHotkeySuspendedMode.cs</DependentUpon>
     </EmbeddedResource>
@@ -302,6 +381,45 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Notifications\TaskForm.resx">
       <DependentUpon>TaskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\MainTab.resx">
+      <DependentUpon>MainTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\SettingsTab.resx">
+      <DependentUpon>SettingsTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\HuntsTab.resx">
+      <DependentUpon>HuntsTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\LogsTab.resx">
+      <DependentUpon>LogsTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\NotificationsTab.resx">
+      <DependentUpon>NotificationsTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\PopupsTab.resx">
+      <DependentUpon>PopupsTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\DatabaseTab.resx">
+      <DependentUpon>DatabaseTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\AutoHotkeyTab.resx">
+      <DependentUpon>AutoHotkeyTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\ScreenshotTab.resx">
+      <DependentUpon>ScreenshotTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\BrowseTab.resx">
+      <DependentUpon>BrowseTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\HelpTab.resx">
+      <DependentUpon>HelpTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\SystemTab.resx">
+      <DependentUpon>SystemTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\TabBase.resx">
+      <DependentUpon>TabBase.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Database\Database.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

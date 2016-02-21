@@ -74,7 +74,7 @@ namespace Tibialyzer {
         protected void NotificationInitialize() {
             this.BackgroundImage = background_image;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            if (notificationDuration != MainForm.MaximumNotificationDuration) {
+            if (notificationDuration != Constants.MaximumNotificationDuration) {
                 closeTimer = new System.Timers.Timer(1000 * notificationDuration);
                 closeTimer.Elapsed += new System.Timers.ElapsedEventHandler(CloseNotification);
                 closeTimer.Enabled = true;

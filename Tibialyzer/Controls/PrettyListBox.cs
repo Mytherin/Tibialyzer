@@ -9,7 +9,7 @@ using System.ComponentModel;
 
 namespace Tibialyzer {
     public delegate bool VerifyItem(string item);
-    class PrettyListBox : ListBox {
+    public class PrettyListBox : ListBox {
         public event EventHandler ItemsChanged;
         public event EventHandler AttemptDeleteItem;
         public event EventHandler AttemptNewItem;
