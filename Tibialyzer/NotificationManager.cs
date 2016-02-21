@@ -179,7 +179,7 @@ namespace Tibialyzer {
             ShowNotification(f, command);
         }
 
-        public static void ShowDamageMeter(Dictionary<string, Tuple<int, int>> dps, string comm, string filter = "", string screenshot_path = "") {
+        public static void ShowDamageMeter(Dictionary<string, DamageResult> dps, string comm, string filter = "", string screenshot_path = "") {
             DamageChart f = new DamageChart();
             f.dps = dps;
             f.filter = filter;

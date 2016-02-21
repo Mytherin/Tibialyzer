@@ -41,19 +41,16 @@ namespace Tibialyzer {
                     } else {
                         List<string> times = TimestampManager.getLatestTimes(5);
                         List<TibiaObject> items = new List<TibiaObject>();
-                        foreach (string t in times) {
-                            if (!MainForm.totalLooks.ContainsKey(t)) continue;
-                            foreach (string message in MainForm.totalLooks[t]) {
-                                string itemName = Parser.parseLookItem(message).ToLower();
-                                Item item = StorageManager.getItem(itemName);
+                        foreach (string message in GlobalDataManager.GetLookInformation(times)) {
+                            string itemName = Parser.parseLookItem(message).ToLower();
+                            Item item = StorageManager.getItem(itemName);
 
-                                if (item != null) {
-                                    items.Add(item);
-                                } else {
-                                    Creature cr = StorageManager.getCreature(itemName);
-                                    if (cr != null) {
-                                        items.Add(cr);
-                                    }
+                            if (item != null) {
+                                items.Add(item);
+                            } else {
+                                Creature cr = StorageManager.getCreature(itemName);
+                                if (cr != null) {
+                                    items.Add(cr);
                                 }
                             }
                         }
@@ -355,7 +352,7 @@ namespace Tibialyzer {
                     int type = url ? 1 : 0;
                     string parameter = command.Split(Constants.CommandSymbol)[1].Trim().ToLower();
                     if (comp.StartsWith("last" + Constants.CommandSymbol)) parameter = "1";
-                    List<Command> command_list = MainForm.mainForm.getRecentCommands(type).Select(o => new Command() { player = o.Item1, command = o.Item2 }).ToList();
+                    List<Command> command_list = GlobalDataManager.GetRecentCommands(type).Select(o => new Command() { player = o.Item1, command = o.Item2 }).ToList();
                     command_list.Reverse();
                     int number;
                     //recent@<number> opens the last <number> command, so recent@1 opens the last command

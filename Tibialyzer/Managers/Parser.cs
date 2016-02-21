@@ -17,6 +17,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Data.SQLite;
+using System.Diagnostics;
 
 namespace Tibialyzer {
     class Parser {
@@ -36,6 +37,68 @@ namespace Tibialyzer {
                     }
                 }
             }
+        }
+
+
+        private static Stopwatch readWatch = new Stopwatch();
+        private static double ticksSinceExperience = 120;
+        public static ParseMemoryResults ParseLogResults(ReadMemoryResults res) {
+            if (res == null) return null;
+            ParseMemoryResults o = new ParseMemoryResults();
+            // first we add the new parsed damage logs to the totalDamageResults
+            GlobalDataManager.UpdateDamageInformation(res.damageDealt);
+            // now that we have updated the damage results, fill in the DPS meter, we use damage from the last 15 minutes for this
+            List<string> times = TimestampManager.getLatestTimes(15);
+            GlobalDataManager.GenerateDamageResults(o.damagePerSecond, times);
+
+            // similar to damage, we keep a totalExperienceResults list
+            // first update it with the new information
+            int newExperience = GlobalDataManager.UpdateExperience(res.exp);
+
+            // now compute the experience per hour
+            // we use the same formula Tibia itself does so we get the same value
+            // this formula is basically, take the experience in the last 15 minutes and multiply it by 4
+            o.expPerHour = GlobalDataManager.GetTotalExperience(times).Item1;
+
+            // Parse event messages
+            foreach(Tuple<Event, string> newEvent in GlobalDataManager.UpdateEventInformation(res.eventMessages)) {
+                o.newEventMessages.Add(newEvent);
+            }
+
+            // Update the look information
+            foreach(string newLook in GlobalDataManager.UpdateLookInformation(res.lookMessages)) {
+                o.newLooks.Add(newLook);
+            }
+
+            // Update death information
+            o.death = GlobalDataManager.UpdateDeaths(res.deaths);
+
+            // now parse any new commands given by users
+            foreach(string newCommand in GlobalDataManager.UpdateCommands(res.commands)) {
+                o.newCommands.Add(newCommand);
+            }
+
+            // check new urls
+            GlobalDataManager.UpdateURLs(res.urls);
+
+
+            Parser.ParseLootMessages(HuntManager.activeHunt, res.itemDrops, o.newItems, true, true);
+            HuntManager.activeHunt.totalExp += newExperience;
+
+            readWatch.Stop();
+            if (newExperience == 0) {
+                if (ticksSinceExperience < 120) {
+                    ticksSinceExperience += readWatch.Elapsed.TotalSeconds;
+                }
+            } else {
+                ticksSinceExperience = 0;
+            }
+            if (ticksSinceExperience < 120) {
+                HuntManager.activeHunt.totalTime += readWatch.Elapsed.TotalSeconds;
+            }
+            readWatch.Restart();
+            HuntManager.SaveHunts();
+            return o;
         }
 
         public static IEnumerable<string> FindTimestamps(byte[] array) {
@@ -276,6 +339,25 @@ namespace Tibialyzer {
                 }
             }
             return new Tuple<Creature, List<Tuple<Item, int>>>(cr, itemList);
+        }
+
+        public static Creature ParseCreatureFromLootMessage(string message) {
+            string lootMessage = message.Substring(14);
+            // split on : because the message is Loot of a x: a, b, c, d
+            if (!lootMessage.Contains(':')) return null;
+            string[] matches = lootMessage.Split(':');
+            string creature = matches[0];
+            // non-boss creatures start with 'a' (e.g. 'Loot of a wyvern'); remove the 'a'
+            if (creature[0] == 'a') {
+                creature = creature.Split(new char[] { ' ' }, 2)[1];
+            }
+            Creature cr = StorageManager.getCreature(creature.ToLower());
+            if (cr != null) {
+                return cr;
+            } else {
+                Console.WriteLine(String.Format("Warning, creature {0} was not found in the database.", creature));
+                return null;
+            }
         }
     }
 }

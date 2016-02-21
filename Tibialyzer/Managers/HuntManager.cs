@@ -214,7 +214,7 @@ namespace Tibialyzer {
             h.loot.logMessages.Clear();
             h.totalExp = 0;
             h.totalTime = 0;
-            MainForm.mainForm.SetHuntTime(h, clearMinutes);
+            HuntManager.SetHuntTime(h, clearMinutes);
 
 
             LootDatabaseManager.DeleteMessagesBefore(h, stamp, hour, minute);
@@ -353,7 +353,7 @@ namespace Tibialyzer {
                 using (var transaction = LootDatabaseManager.BeginTransaction()) {
                     foreach (KeyValuePair<string, List<string>> kvp in activeHunt.loot.logMessages) {
                         foreach (string msg in kvp.Value) {
-                            if (MainForm.ParseCreatureFromLootMessage(msg) == cr) {
+                            if (Parser.ParseCreatureFromLootMessage(msg) == cr) {
                                 LootDatabaseManager.DeleteMessage(activeHunt, msg, transaction);
                             }
                         }
@@ -454,6 +454,12 @@ namespace Tibialyzer {
             if (transaction != null) {
                 LootDatabaseManager.InsertMessage(h, stamp, hour, minute, message);
             }
+        }
+
+        public static void SetHuntTime(Hunt h, int clearMinutes) {
+            var expInformation = GlobalDataManager.GetTotalExperience(TimestampManager.getLatestTimes(clearMinutes));
+            h.totalExp = expInformation.Item1;
+            h.totalTime = expInformation.Item2 * 60;
         }
     }
 

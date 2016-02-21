@@ -213,15 +213,6 @@ namespace Tibialyzer {
             }
         }
 
-        public void SetHuntTime(Hunt h, int clearMinutes) {
-            foreach (string t in TimestampManager.getLatestTimes(clearMinutes)) {
-                if (totalExperienceResults.ContainsKey(t)) {
-                    h.totalExp += totalExperienceResults[t];
-                    h.totalTime += 60;
-                }
-            }
-        }
-
         private void showAllLootButton_Click(object sender, EventArgs e) {
             Hunt h = getSelectedHunt();
             CommandManager.ExecuteCommand("loot" + Constants.CommandSymbol + (h == null ? "" : h.name));

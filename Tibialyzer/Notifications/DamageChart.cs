@@ -25,7 +25,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 namespace Tibialyzer {
     class DamageChart : NotificationForm {
         private TransparentChart mChart;
-        public Dictionary<string, Tuple<int, int>> dps;
+        public Dictionary<string, DamageResult> dps;
         public bool graph = true;
         private Label detailsButton;
         public string filter = "";
@@ -171,14 +171,14 @@ namespace Tibialyzer {
         }
 
 
-        public static List<DamageObject> GenerateDamageInformation(Dictionary<string, Tuple<int, int>> dps, string filter) {
+        public static List<DamageObject> GenerateDamageInformation(Dictionary<string, DamageResult> dps, string filter) {
             List<DamageObject> damageDealt = new List<DamageObject>();
-            foreach (KeyValuePair<string, Tuple<int, int>> kvp in dps) {
+            foreach (KeyValuePair<string, DamageResult> kvp in dps) {
                 string name = kvp.Key.Replace(".", "").Replace("a ", "").Replace("an ", "");
                 Creature cr = StorageManager.getCreature(name);
                 if (filter != "all" && filter != "creature" && cr != null) continue;
                 if (filter == "creature" && cr == null) continue;
-                damageDealt.Add(new DamageObject() { name = name, totalDamage = kvp.Value.Item1, dps = (double)kvp.Value.Item1 / (double)(kvp.Value.Item2 * 60) });
+                damageDealt.Add(new DamageObject() { name = name, totalDamage = kvp.Value.totalDamage, dps = kvp.Value.damagePerSecond });
             }
             if (damageDealt.Count == 0) {
                 damageDealt.Add(new DamageObject() { name = "Mytherin", dps = 50, totalDamage = 501 });

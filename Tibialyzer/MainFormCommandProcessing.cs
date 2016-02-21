@@ -38,7 +38,7 @@ namespace Tibialyzer {
 
         public bool ScanMemory() {
             ReadMemoryResults readMemoryResults = ReadMemory();
-            ParseMemoryResults parseMemoryResults = ParseLogResults(readMemoryResults);
+            ParseMemoryResults parseMemoryResults = Parser.ParseLogResults(readMemoryResults);
 
             if (parseMemoryResults != null) {
                 lastResults = parseMemoryResults;

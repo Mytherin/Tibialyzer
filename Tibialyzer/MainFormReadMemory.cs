@@ -44,8 +44,13 @@ namespace Tibialyzer {
         public Dictionary<string, List<string>> duplicateMessages = new Dictionary<string, List<string>>();
     }
 
+    public class DamageResult {
+        public int totalDamage;
+        public double damagePerSecond;
+    }
+
     public class ParseMemoryResults {
-        public Dictionary<string, Tuple<int, int>> damagePerSecond = new Dictionary<string, Tuple<int, int>>();
+        public Dictionary<string, DamageResult> damagePerSecond = new Dictionary<string, DamageResult>();
         public List<string> newCommands = new List<string>();
         public List<string> newLooks = new List<string>();
         public List<Tuple<Creature, List<Tuple<Item, int>>>> newItems = new List<Tuple<Creature, List<Tuple<Item, int>>>>();
@@ -168,8 +173,6 @@ namespace Tibialyzer {
             }
         }
 
-        public static Dictionary<string, List<string>> totalLooks = new Dictionary<string, List<string>>();
-        private HashSet<string> levelAdvances = new HashSet<string>();
         private ReadMemoryResults ReadMemory() {
             ReadMemoryResults results = null;
             SYSTEM_INFO sys_info = new SYSTEM_INFO();
@@ -233,210 +236,6 @@ namespace Tibialyzer {
 
             FinalCleanup(results);
             return results;
-        }
-        
-        public List<Tuple<string, string>> getRecentCommands(int type, int max_entries = 15) {
-            List<string> times = TimestampManager.getLatestTimes(5);
-            times.Reverse();
-
-            Dictionary<string, List<Tuple<string, string>>> dict = type == 0 ? totalCommands : totalURLs;
-
-            List<Tuple<string, string>> results = new List<Tuple<string, string>>();
-            foreach (string t in times) {
-                if (dict.ContainsKey(t)) {
-                    foreach (Tuple<string, string> tpl in dict[t]) {
-                        if (tpl.Item2.ToLower().Contains("recent") || tpl.Item2.ToLower().Contains("last")) continue;
-                        results.Add(tpl);
-                        if (results.Count >= max_entries) return results;
-                    }
-                }
-            }
-            return results;
-        }
-        
-        private Stopwatch readWatch = new Stopwatch();
-
-        double ticksSinceExperience = 120;
-
-        private Dictionary<string, List<string>> totalItemDrops = new Dictionary<string, List<string>>();
-        private Dictionary<string, List<Tuple<string, string>>> totalCommands = new Dictionary<string, List<Tuple<string, string>>>();
-        private Dictionary<string, Dictionary<string, int>> totalDamageResults = new Dictionary<string, Dictionary<string, int>>();
-        private Dictionary<string, List<Tuple<string, string>>> totalURLs = new Dictionary<string, List<Tuple<string, string>>>();
-        private Dictionary<string, int> totalExperienceResults = new Dictionary<string, int>();
-        private Dictionary<string, bool> totalDeaths = new Dictionary<string, bool>();
-        private HashSet<string> eventMessages = new HashSet<string>();
-        private ParseMemoryResults ParseLogResults(ReadMemoryResults res) {
-            if (res == null) return null;
-            ParseMemoryResults o = new ParseMemoryResults();
-            // first we add the new parsed damage logs to the totalDamageResults
-            foreach (KeyValuePair<string, Dictionary<string, int>> kvp in res.damageDealt) {
-                string player = kvp.Key;
-                Dictionary<string, int> playerDamage = kvp.Value;
-                if (!totalDamageResults.ContainsKey(player)) totalDamageResults.Add(player, new Dictionary<string, int>());
-                foreach (KeyValuePair<string, int> kvp2 in playerDamage) {
-                    string timestamp = kvp2.Key;
-                    int damage = kvp2.Value;
-                    // if the damage for the given timestamp does not exist yet, add it
-                    if (!totalDamageResults[player].ContainsKey(timestamp)) totalDamageResults[player].Add(timestamp, damage);
-                    // if it does exist, select the biggest of the two
-                    // the reason we select the biggest of the two is:
-                    // - if the timestamp is 'the current time', totalDamageResults may hold an old value, so we update it
-                    // - if timestamp is old, a part of the log for the time could have already been removed (because the log was full)
-                    //    so the 'new' damage is only part of the damage for this timestamp
-                    else if (totalDamageResults[player][timestamp] < damage) totalDamageResults[player][timestamp] = damage;
-                }
-            }
-            // now that we have updated the damage results, fill in the DPS meter, we use damage from the last 15 minutes for this
-            List<string> times = TimestampManager.getLatestTimes(15);
-            foreach (KeyValuePair<string, Dictionary<string, int>> kvp in totalDamageResults) {
-                string player = kvp.Key;
-                int damage = 0;
-                int minutes = 0;
-                foreach (string t in times) {
-                    if (totalDamageResults[player].ContainsKey(t)) {
-                        damage += totalDamageResults[player][t];
-                        minutes++;
-                    }
-                }
-                if (damage > 0) {
-                    o.damagePerSecond.Add(player, new Tuple<int, int>(damage, minutes));
-                }
-            }
-
-            // similar to damage, we keep a totalExperienceResults list
-            // first update it with the new information
-            int newExperience = 0;
-            foreach (KeyValuePair<string, int> kvp in res.exp) {
-                string time = kvp.Key;
-                int experience = kvp.Value;
-                if (!totalExperienceResults.ContainsKey(time)) {
-                    totalExperienceResults.Add(time, experience);
-                    newExperience += experience;
-                } else if (totalExperienceResults[time] < experience) {
-                    newExperience += experience - totalExperienceResults[time];
-                    totalExperienceResults[time] = experience;
-                }
-            }
-            // now compute the experience per hour
-            // we use the same formula Tibia itself does so we get the same value
-            // this formula is basically, take the experience in the last 15 minutes and multiply it by 4
-            foreach (string t in times) {
-                if (totalExperienceResults.ContainsKey(t)) o.expPerHour += totalExperienceResults[t];
-            }
-            o.expPerHour *= 4;
-
-            // Parse event messages
-            foreach (Tuple<Event, string> tpl in res.eventMessages) {
-                if (!eventMessages.Contains(tpl.Item2)) {
-                    eventMessages.Add(tpl.Item2);
-                    o.newEventMessages.Add(tpl);
-                }
-            }
-
-            // Update the look information
-            foreach (KeyValuePair<string, List<string>> kvp in res.lookMessages) {
-                string t = kvp.Key;
-                List<string> currentMessages = kvp.Value;
-                if (!totalLooks.ContainsKey(t)) totalLooks[t] = new List<string>();
-                if (currentMessages.Count > totalLooks[t].Count) {
-                    List<string> unseenLooks = new List<string>();
-                    List<string> lookList = totalLooks[t].ToArray().ToList();
-                    foreach (string lookMessage in currentMessages) {
-                        if (!totalLooks[t].Contains(lookMessage)) {
-                            unseenLooks.Add(lookMessage);
-                            o.newLooks.Add(lookMessage);
-                        } else {
-                            totalLooks[t].Remove(lookMessage);
-                        }
-                    }
-                    lookList.AddRange(unseenLooks);
-                    totalLooks[t] = lookList;
-                }
-            }
-
-            // Update death information
-            foreach (KeyValuePair<string, bool> kvp in res.deaths) {
-                if (!totalDeaths.ContainsKey(kvp.Key)) {
-                    totalDeaths.Add(kvp.Key, false);
-                }
-                if (kvp.Value && !totalDeaths[kvp.Key]) {
-                    o.death = true;
-                    totalDeaths[kvp.Key] = true;
-                }
-            }
-
-            // now parse any new commands given by users
-            foreach (KeyValuePair<string, List<Tuple<string, string>>> kvp in res.commands) {
-                string t = kvp.Key;
-                List<Tuple<string, string>> currentCommands = kvp.Value;
-                if (!totalCommands.ContainsKey(t)) totalCommands[t] = new List<Tuple<string, string>>();
-                if (currentCommands.Count > totalCommands[t].Count) {
-                    List<Tuple<string, string>> unseenCommands = new List<Tuple<string, string>>();
-                    List<Tuple<string, string>> commandsList = totalCommands[t].ToArray().ToList(); // create a copy of the list
-                    foreach (Tuple<string, string> command in currentCommands) {
-                        if (!totalCommands[t].Contains(command)) {
-                            unseenCommands.Add(command);
-                            string player = command.Item1;
-                            string cmd = command.Item2;
-                            if (SettingsManager.getSetting("Names").Contains(player)) {
-                                o.newCommands.Add(cmd);
-                            }
-                        } else {
-                            totalCommands[t].Remove(command);
-                        }
-                    }
-                    commandsList.AddRange(unseenCommands);
-                    totalCommands[t] = commandsList;
-                }
-            }
-
-            // check new urls
-            foreach (KeyValuePair<string, List<Tuple<string, string>>> kvp in res.urls) {
-                string t = kvp.Key;
-                List<Tuple<string, string>> currentURLs = kvp.Value;
-                if (!totalURLs.ContainsKey(t)) {
-                    totalURLs.Add(t, currentURLs);
-                } else if (currentURLs.Count > totalURLs[t].Count) {
-                    totalURLs[t] = currentURLs;
-                }
-            }
-
-            Parser.ParseLootMessages(HuntManager.activeHunt, res.itemDrops, o.newItems, true, true);
-            HuntManager.activeHunt.totalExp += newExperience;
-
-            readWatch.Stop();
-            if (newExperience == 0) {
-                if (ticksSinceExperience < 120) {
-                    ticksSinceExperience += readWatch.Elapsed.TotalSeconds;
-                }
-            } else {
-                ticksSinceExperience = 0;
-            }
-            if (ticksSinceExperience < 120) {
-                HuntManager.activeHunt.totalTime += readWatch.Elapsed.TotalSeconds;
-            }
-            readWatch.Restart();
-            HuntManager.SaveHunts();
-            return o;
-        }
-
-        public static Creature ParseCreatureFromLootMessage(string message) {
-            string lootMessage = message.Substring(14);
-            // split on : because the message is Loot of a x: a, b, c, d
-            if (!lootMessage.Contains(':')) return null;
-            string[] matches = lootMessage.Split(':');
-            string creature = matches[0];
-            // non-boss creatures start with 'a' (e.g. 'Loot of a wyvern'); remove the 'a'
-            if (creature[0] == 'a') {
-                creature = creature.Split(new char[] { ' ' }, 2)[1];
-            }
-            Creature cr = StorageManager.getCreature(creature.ToLower());
-            if (cr != null) {
-                return cr;
-            } else {
-                Console.WriteLine(String.Format("Warning, creature {0} was not found in the database.", creature));
-                return null;
-            }
         }
 
         private void FinalCleanup(ReadMemoryResults res) {
@@ -544,9 +343,10 @@ namespace Tibialyzer {
                         else res.damageDealt[player][t] = res.damageDealt[player][t] + damage;
                     } else if (logMessage.Substring(5, 14) == " You advanced " && logMessage.ToLower().Contains("level")) {
                         // advancement log message (You advanced from level x to level x + 1.)
-                        if (logMessage[logMessage.Length - 1] == '.' && !levelAdvances.Contains(logMessage)) {
-                            res.newAdvances.Add(logMessage);
-                            levelAdvances.Add(logMessage);
+                        if (logMessage[logMessage.Length - 1] == '.') {
+                            if (GlobalDataManager.AddLevelAdvance(logMessage)) {
+                                res.newAdvances.Add(logMessage);
+                            }
                         }
                     } else {
                         foreach (Event ev in StorageManager.eventIdMap.Values) {
