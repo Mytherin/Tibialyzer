@@ -14,7 +14,7 @@ namespace Tibialyzer {
         public static bool ExecuteCommand(string command, ParseMemoryResults parseMemoryResults = null) {
             try {
                 if (parseMemoryResults == null) {
-                    parseMemoryResults = MainForm.lastResults;
+                    parseMemoryResults = ScanningManager.lastResults;
                 }
                 string comp = command.Trim().ToLower();
                 Console.WriteLine(command);
