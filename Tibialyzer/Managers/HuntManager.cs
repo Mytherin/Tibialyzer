@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.SQLite;
 using System.Globalization;
+using System.IO;
 
 namespace Tibialyzer {
     public class HuntManager {
@@ -389,6 +390,35 @@ namespace Tibialyzer {
                 }
                 activeHunt.loot.creatureLoot[cr].Add(item, count);
             }
+        }
+
+
+        public static void SaveLog(Hunt h, string logPath) {
+            StreamWriter streamWriter = new StreamWriter(logPath);
+
+            // we load the data from the database instead of from the stored dictionary so it is ordered properly
+            SQLiteDataReader reader = LootDatabaseManager.GetHuntMessages(h);
+            while (reader.Read()) {
+                streamWriter.WriteLine(reader["message"].ToString());
+            }
+            streamWriter.Flush();
+            streamWriter.Close();
+        }
+
+        public static void LoadLog(Hunt h, string logPath) {
+            resetHunt(h);
+            StreamReader streamReader = new StreamReader(logPath);
+            string line;
+            Dictionary<string, List<string>> logMessages = new Dictionary<string, List<string>>();
+            while ((line = streamReader.ReadLine()) != null) {
+                if (line.Length < 15) continue;
+                string t = line.Substring(0, 5);
+                if (!(t[0].isDigit() && t[1].isDigit() && t[3].isDigit() && t[4].isDigit() && t[2] == ':')) continue; //not a valid timestamp
+                if (!logMessages.ContainsKey(t)) logMessages.Add(t, new List<string>());
+                logMessages[t].Add(line);
+            }
+            Parser.ParseLootMessages(h, logMessages, null, true, true);
+            LootDatabaseManager.UpdateLoot();
         }
     }
 

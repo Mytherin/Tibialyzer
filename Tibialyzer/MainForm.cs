@@ -115,9 +115,7 @@ namespace Tibialyzer {
             scan_tooltip.ShowAlways = true;
             scan_tooltip.UseFading = true;
 
-            this.loadTimerImage.Image = StyleManager.GetImage("scanningbar-red.gif");
-            this.loadTimerImage.Enabled = true;
-            scan_tooltip.SetToolTip(this.loadTimerImage, "No Tibia Client Found...");
+            SetScanningImage("scanningbar-red.gif", "No Tibia Client Found...", true);
         }
 
         private void MainForm_Load(object sender, EventArgs e) {
@@ -1330,7 +1328,7 @@ namespace Tibialyzer {
             }
             DialogResult result = dialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK) {
-                saveLog(getSelectedHunt(), dialog.FileName);
+                HuntManager.SaveLog(getSelectedHunt(), dialog.FileName);
             }
         }
 
@@ -1346,7 +1344,7 @@ namespace Tibialyzer {
             dialog.Title = "Import Log File";
             DialogResult result = dialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK) {
-                loadLog(getSelectedHunt(), dialog.FileName);
+                HuntManager.LoadLog(getSelectedHunt(), dialog.FileName);
                 refreshHunts();
             }
         }
@@ -1841,7 +1839,6 @@ namespace Tibialyzer {
             SettingsManager.setSetting("ShutdownAutohotkeyOnExit", (sender as CheckBox).Checked.ToString());
         }
 
-        static string autoHotkeyURL = "http://ahkscript.org/download/ahk-install.exe";
         private void downloadAutoHotkey_Click(object sender, EventArgs e) {
             WebClient client = new WebClient();
 
@@ -1850,7 +1847,7 @@ namespace Tibialyzer {
 
             downloadBar.Visible = true;
 
-            client.DownloadDataAsync(new Uri(autoHotkeyURL));
+            client.DownloadDataAsync(new Uri(Constants.AutoHotkeyURL));
         }
 
         private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e) {

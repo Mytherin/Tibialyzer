@@ -319,9 +319,9 @@ namespace Tibialyzer {
                         NotificationManager.ShowCreatureList(StorageManager.searchNPC(parameter), "NPC List", command);
                     }
                 } else if (comp.StartsWith("savelog" + Constants.CommandSymbol)) {
-                    MainForm.mainForm.saveLog(HuntManager.activeHunt, command.Split(Constants.CommandSymbol)[1].Trim().Replace("'", "\\'"));
+                    HuntManager.SaveLog(HuntManager.activeHunt, command.Split(Constants.CommandSymbol)[1].Trim().Replace("'", "\\'"));
                 } else if (comp.StartsWith("loadlog" + Constants.CommandSymbol)) {
-                    MainForm.mainForm.loadLog(HuntManager.activeHunt, command.Split(Constants.CommandSymbol)[1].Trim().Replace("'", "\\'"));
+                    HuntManager.LoadLog(HuntManager.activeHunt, command.Split(Constants.CommandSymbol)[1].Trim().Replace("'", "\\'"));
                 } else if (comp.StartsWith("setdiscardgoldratio" + Constants.CommandSymbol)) {
                     double val;
                     if (double.TryParse(command.Split(Constants.CommandSymbol)[1].Trim(), out val)) {

@@ -70,5 +70,7 @@ namespace Tibialyzer {
         public static List<Type> NotificationTypeObjects = new List<Type>() { typeof(LootDropForm), typeof(DamageChart), typeof(CreatureList), typeof(CityDisplayForm), typeof(CreatureDropsForm), typeof(CreatureStatsForm), typeof(HuntingPlaceForm), typeof(ItemViewForm), typeof(NPCForm), typeof(OutfitForm), typeof(QuestForm), typeof(SpellForm), typeof(QuestGuideForm), typeof(TaskForm) };
 
         public static List<string> ImageExtensions = new List<string> { ".jpg", ".bmp", ".gif", ".png" };
+
+        public static string AutoHotkeyURL = "http://ahkscript.org/download/ahk-install.exe";
     }
 }
