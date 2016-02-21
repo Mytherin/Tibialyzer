@@ -305,13 +305,14 @@ namespace Tibialyzer {
             return item;
         }
 
-        private static void UpdateItem(int itemid, bool discard, bool convert, long value, SQLiteTransaction transaction) {
-            if (_itemIdMap.ContainsKey(itemid)) {
-                _itemIdMap[itemid].discard = discard;
-                _itemIdMap[itemid].convert_to_gold = convert;
-                _itemIdMap[itemid].actual_value = value;
+        private static void UpdateItem(string title, bool discard, bool convert, long value, SQLiteTransaction transaction) {
+            if (_itemNameMap.ContainsKey(title)) {
+                Item item = _itemNameMap[title];
+                item.discard = discard;
+                item.convert_to_gold = convert;
+                item.actual_value = value;
             }
-            SQLiteCommand command = new SQLiteCommand(String.Format("UPDATE Items SET discard={1},convert_to_gold={2},actual_value={3} WHERE id={0}", itemid, discard ? 1 : 0, convert ? 1 : 0, value), conn, transaction);
+            SQLiteCommand command = new SQLiteCommand(String.Format("UPDATE Items SET discard={1},convert_to_gold={2},actual_value={3} WHERE LOWER(title)=\"{0}\"", title.Replace("\"", "\\\""), discard ? 1 : 0, convert ? 1 : 0, value), conn, transaction);
             command.ExecuteNonQuery();
         }
 
@@ -1169,15 +1170,15 @@ namespace Tibialyzer {
         }
 
         public static void UpdateDatabase(SQLiteConnection databaseConnection) {
-            SQLiteCommand comm = new SQLiteCommand("SELECT id, discard, convert_to_gold, actual_value FROM Items", databaseConnection);
+            SQLiteCommand comm = new SQLiteCommand("SELECT title, discard, convert_to_gold, actual_value FROM Items", databaseConnection);
             SQLiteDataReader reader = comm.ExecuteReader();
             using (var transaction = conn.BeginTransaction()) {
                 while (reader.Read()) {
-                    int itemid = reader.GetInt32(0);
+                    string title = reader["title"].ToString().ToLower();
                     bool discard = reader.GetBoolean(1);
                     bool convert = reader.GetBoolean(2);
                     long value = reader.IsDBNull(3) ? DATABASE_NULL : reader.GetInt64(3);
-                    UpdateItem(itemid, discard, convert, value, transaction);
+                    UpdateItem(title, discard, convert, value, transaction);
                 }
                 transaction.Commit();
             }
