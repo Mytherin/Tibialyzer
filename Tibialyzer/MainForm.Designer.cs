@@ -486,7 +486,6 @@
             this.backgroundLabel.Name = "backgroundLabel";
             this.backgroundLabel.Size = new System.Drawing.Size(102, 525);
             this.backgroundLabel.TabIndex = 5;
-            this.backgroundLabel.Click += new System.EventHandler(this.backgroundLabel_Click);
             //
             // label18
             //
@@ -2195,7 +2194,6 @@
             this.popupConditionBox.Name = "popupConditionBox";
             this.popupConditionBox.Size = new System.Drawing.Size(277, 155);
             this.popupConditionBox.TabIndex = 57;
-            this.popupConditionBox.SelectedIndexChanged += new System.EventHandler(this.popupConditionBox_SelectedIndexChanged);
             //
             // popupSpecificItemBox
             //

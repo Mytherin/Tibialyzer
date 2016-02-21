@@ -2488,10 +2488,6 @@ namespace Tibialyzer {
             form.Show();
         }
 
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e) {
-
-        }
-
         private void mainButton_MouseEnter(object sender, EventArgs e) {
             (sender as Control).BackColor = StyleManager.MainFormHoverColor;
             (sender as Control).ForeColor = StyleManager.MainFormHoverForeColor;
@@ -2500,10 +2496,6 @@ namespace Tibialyzer {
         private void mainButton_MouseLeave(object sender, EventArgs e) {
             (sender as Control).BackColor = StyleManager.MainFormButtonColor;
             (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
-        }
-
-        private void backgroundLabel_Click(object sender, EventArgs e) {
-
         }
 
         private List<Control> activeControls = new List<Control>();
@@ -2655,7 +2647,6 @@ namespace Tibialyzer {
                 unlockLabel.BackColor = StyleManager.MainFormSafeColor;
             }
         }
-
 
         private string selectedNotificationObject() {
             return notificationTypeList.Items[notificationTypeList.SelectedIndex].ToString().Replace(" ", ""); ;
@@ -2865,10 +2856,6 @@ namespace Tibialyzer {
             if (prevent_settings_update) return;
 
             SettingsManager.setSetting("AutomaticallyWriteLootToFile", (sender as CheckBox).Checked);
-        }
-
-        private void popupConditionBox_SelectedIndexChanged(object sender, EventArgs e) {
-
         }
 
         private void detectFlashClientButton_Click(object sender, EventArgs e) {
