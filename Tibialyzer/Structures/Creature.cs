@@ -146,7 +146,7 @@ namespace Tibialyzer {
             new StringAttribute(GetWeakness(), 60, StyleManager.GetElementColor(GetWeakness())) };
         }
         public override string GetCommand() {
-            return "creature" + MainForm.commandSymbol + title;
+            return "creature" + Constants.CommandSymbol + title;
         }
         static List<string> headers = new List<string> { "Name", "Exp", "HP", "Weak" };
         static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode(), headers[3].GetHashCode() };

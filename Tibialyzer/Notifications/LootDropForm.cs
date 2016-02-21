@@ -525,14 +525,14 @@ namespace Tibialyzer {
 
         void openItemBox(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
-            MainForm.mainForm.ExecuteCommand("item" + MainForm.commandSymbol + (sender as Control).Name);
+            CommandManager.ExecuteCommand("item" + Constants.CommandSymbol + (sender as Control).Name);
         }
 
         void openCreatureDrops(object sender, EventArgs e) {
             if (creatures.Keys.Count == 1) {
-                MainForm.mainForm.ExecuteCommand("creature" + MainForm.commandSymbol + (sender as Control).Name);
+                CommandManager.ExecuteCommand("creature" + Constants.CommandSymbol + (sender as Control).Name);
             } else {
-                MainForm.mainForm.ExecuteCommand(String.Format("loot{0}{1}{0}{2}{0}{3}", MainForm.commandSymbol, huntName, (sender as Control).Name, rawName));
+                CommandManager.ExecuteCommand(String.Format("loot{0}{1}{0}{2}{0}{3}", Constants.CommandSymbol, huntName, (sender as Control).Name, rawName));
             }
         }
 
@@ -560,7 +560,7 @@ namespace Tibialyzer {
         }
 
         private void UpdateCommand() {
-            this.command.command = String.Format("loot{0}{1}{0}{2}{0}{3}", MainForm.commandSymbol, huntName, lootCreature == null ? "" : lootCreature.GetName(), rawName);
+            this.command.command = String.Format("loot{0}{1}{0}{2}{0}{3}", Constants.CommandSymbol, huntName, lootCreature == null ? "" : lootCreature.GetName(), rawName);
         }
 
         private void changeSize(int modification) {

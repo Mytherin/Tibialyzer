@@ -413,8 +413,8 @@ namespace Tibialyzer {
         List<Control> npcControls = new List<Control>();
 
         void updateCommand() {
-            string[] split = command.command.Split(MainForm.commandSymbol);
-            command.command = split[0] + MainForm.commandSymbol + split[1] + MainForm.commandSymbol + currentVocation.ToString();
+            string[] split = command.command.Split(Constants.CommandSymbol);
+            command.command = split[0] + Constants.CommandSymbol + split[1] + Constants.CommandSymbol + currentVocation.ToString();
         }
 
         private string sortedHeader = null;
@@ -460,10 +460,10 @@ namespace Tibialyzer {
             return new StringAttribute(spell.goldcost.ToString(), 50, StyleManager.ItemGoldColor);
         }
 
-        private string command_start = "npc" + MainForm.commandSymbol;
+        private string command_start = "npc" + Constants.CommandSymbol;
         private void npcClick(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
-            MainForm.mainForm.ExecuteCommand(command_start + (sender as Control).Name);
+            CommandManager.ExecuteCommand(command_start + (sender as Control).Name);
         }
     }
 }

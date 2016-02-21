@@ -66,7 +66,7 @@ namespace Tibialyzer {
                 new StringAttribute(city, 100) };
         }
         public override string GetCommand() {
-            return "hunt" + MainForm.commandSymbol + name;
+            return "hunt" + Constants.CommandSymbol + name;
         }
         static List<string> headers = new List<string> { "Name", "Level", "Exp", "Loot", "City" };
         static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode(), headers[3].GetHashCode(), headers[4].GetHashCode() };

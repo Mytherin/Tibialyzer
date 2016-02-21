@@ -143,7 +143,7 @@ namespace Tibialyzer {
             this.SuspendForm();
             NotificationInitialize();
             npcImage.Image = npc.GetImage();
-            creatureName.Text = MainForm.ToTitle(npc.city);
+            creatureName.Text = npc.city.ToTitle();
             Font f = StyleManager.FontList[0];
             for (int i = 0; i < StyleManager.FontList.Count; i++) {
                 Font font = StyleManager.FontList[i];
@@ -273,8 +273,8 @@ namespace Tibialyzer {
         }
 
         void updateCommand() {
-            string[] split = command.command.Split(MainForm.commandSymbol);
-            command.command = split[0] + MainForm.commandSymbol + split[1] + MainForm.commandSymbol + currentPage.ToString() + MainForm.commandSymbol + currentControlList.ToString();
+            string[] split = command.command.Split(Constants.CommandSymbol);
+            command.command = split[0] + Constants.CommandSymbol + split[1] + Constants.CommandSymbol + currentPage.ToString() + Constants.CommandSymbol + currentControlList.ToString();
         }
 
         private List<Control> controlList = new List<Control>();
@@ -380,7 +380,7 @@ namespace Tibialyzer {
 
         private void creatureName_Click(object sender, EventArgs e) {
             string city = npc.city;
-            MainForm.mainForm.ExecuteCommand("city" + MainForm.commandSymbol + city);
+            CommandManager.ExecuteCommand("city" + Constants.CommandSymbol + city);
         }
     }
 }

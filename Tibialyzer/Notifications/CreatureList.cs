@@ -41,8 +41,8 @@ namespace Tibialyzer {
             InitializeComponent();
         }
         void updateCommand() {
-            string[] split = command.command.Split(MainForm.commandSymbol);
-            command.command = split[0] + MainForm.commandSymbol + split[1] + MainForm.commandSymbol + currentPage.ToString() + MainForm.commandSymbol + ((int)displayType).ToString() + MainForm.commandSymbol + (desc ? 1 : 0) + (sortedHeader != null ? MainForm.commandSymbol + sortedHeader : "");
+            string[] split = command.command.Split(Constants.CommandSymbol);
+            command.command = split[0] + Constants.CommandSymbol + split[1] + Constants.CommandSymbol + currentPage.ToString() + Constants.CommandSymbol + ((int)displayType).ToString() + Constants.CommandSymbol + (desc ? 1 : 0) + (sortedHeader != null ? Constants.CommandSymbol + sortedHeader : "");
         }
 
         private void InitializeComponent() {

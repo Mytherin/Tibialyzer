@@ -32,5 +32,9 @@ namespace Tibialyzer {
                 c == '8' ||
                 c == '9';
         }
+
+        public static string ToTitle(this string str) {
+            return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(str);
+        }
     }
 }

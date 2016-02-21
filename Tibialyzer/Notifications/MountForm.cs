@@ -152,9 +152,9 @@ namespace Tibialyzer {
                 Item tameItem = StorageManager.getItem(mount.tameitemid);
 
                 this.tameCreatureImageBox.Image = tameCreature.image;
-                this.tameCreatureLabel.Text = MainForm.ToTitle(tameCreature.displayname);
+                this.tameCreatureLabel.Text = tameCreature.displayname.ToTitle();
                 this.tameItemImageBox.Image = tameItem.image;
-                this.tameItemLabel.Text = MainForm.ToTitle(tameItem.displayname);
+                this.tameItemLabel.Text = tameItem.displayname.ToTitle();
 
                 tameCreatureImageBox.Name = tameCreature.GetName();
                 tameCreatureLabel.Name = tameCreature.GetName();
@@ -179,12 +179,12 @@ namespace Tibialyzer {
 
         private void TameItemImageBox_Click(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
-            MainForm.mainForm.ExecuteCommand("item@" + (sender as Control).Name);
+            CommandManager.ExecuteCommand("item@" + (sender as Control).Name);
         }
 
         private void TameCreatureImageBox_Click(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
-            MainForm.mainForm.ExecuteCommand("creature@" + (sender as Control).Name);
+            CommandManager.ExecuteCommand("creature@" + (sender as Control).Name);
         }
     }
 }

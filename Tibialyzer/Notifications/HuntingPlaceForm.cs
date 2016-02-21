@@ -263,7 +263,7 @@ namespace Tibialyzer {
             NotificationInitialize();
             if (hunting_place == null) return;
             this.cityLabel.Text = hunting_place.city;
-            this.huntingPlaceName.Text = MainForm.ToTitle(hunting_place.name);
+            this.huntingPlaceName.Text = hunting_place.name.ToTitle();
             this.levelLabel.Text = hunting_place.level < 0 ? "--" : hunting_place.level.ToString();
 
             if (hunting_place.directions.Count == 0) {
@@ -449,17 +449,17 @@ namespace Tibialyzer {
         protected void openCreatureMenu(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
             string name = (sender as Control).Name;
-            MainForm.mainForm.ExecuteCommand("creature" + MainForm.commandSymbol + name.ToLower());
+            CommandManager.ExecuteCommand("creature" + Constants.CommandSymbol + name.ToLower());
         }
         private void openQuest(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
             string name = (sender as Control).Name;
-            MainForm.mainForm.ExecuteCommand("quest" + MainForm.commandSymbol + name.ToLower());
+            CommandManager.ExecuteCommand("quest" + Constants.CommandSymbol + name.ToLower());
         }
         private void guideButton_Click(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
             string name = (sender as Control).Name;
-            MainForm.mainForm.ExecuteCommand("direction" + MainForm.commandSymbol + hunting_place.name.ToLower());
+            CommandManager.ExecuteCommand("direction" + Constants.CommandSymbol + hunting_place.name.ToLower());
         }
 
         void label_Click(object sender, EventArgs e) {
@@ -498,7 +498,7 @@ namespace Tibialyzer {
         }
 
         private void cityLabel_Click(object sender, EventArgs e) {
-            MainForm.mainForm.ExecuteCommand("city" + MainForm.commandSymbol + this.hunting_place.city);
+            CommandManager.ExecuteCommand("city" + Constants.CommandSymbol + this.hunting_place.city);
         }
     }
 }

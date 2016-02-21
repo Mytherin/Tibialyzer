@@ -434,15 +434,15 @@ namespace Tibialyzer {
                             if (splits[0].ToLower() == "cr") {
                                 Creature cr = StorageManager.getCreature(imageString);
                                 image = cr.GetImage();
-                                command = "creature" + MainForm.commandSymbol + cr.GetName().ToLower();
+                                command = "creature" + Constants.CommandSymbol + cr.GetName().ToLower();
                             } else if (splits[0].ToLower() == "npc") {
                                 NPC npc = StorageManager.getNPC(imageString);
                                 image = npc.GetImage();
-                                command = "npc" + MainForm.commandSymbol + npc.GetName().ToLower();
+                                command = "npc" + Constants.CommandSymbol + npc.GetName().ToLower();
                             } else if (splits[0].ToLower() == "item") {
                                 Item item = StorageManager.getItem(imageString);
                                 image = item.GetImage();
-                                command = "item" + MainForm.commandSymbol + item.GetName().ToLower();
+                                command = "item" + Constants.CommandSymbol + item.GetName().ToLower();
                             }
                             PictureBox pictureBox = new PictureBox();
                             pictureBox.Location = new Point(x, y);
@@ -523,17 +523,17 @@ namespace Tibialyzer {
 
         private void itemClick(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
-            MainForm.mainForm.ExecuteCommand("item" + MainForm.commandSymbol + (sender as Control).Name);
+            CommandManager.ExecuteCommand("item" + Constants.CommandSymbol + (sender as Control).Name);
         }
 
         private void QuestTitle_Click(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
-            MainForm.mainForm.ExecuteCommand((sender as Control).Name);
+            CommandManager.ExecuteCommand((sender as Control).Name);
         }
 
         void updateCommand() {
-            string[] split = command.command.Split(MainForm.commandSymbol);
-            command.command = split[0] + MainForm.commandSymbol + split[1] + MainForm.commandSymbol + (currentPage + 1) + (quest != null && missionName != null ? MainForm.commandSymbol + missionName : "");
+            string[] split = command.command.Split(Constants.CommandSymbol);
+            command.command = split[0] + Constants.CommandSymbol + split[1] + Constants.CommandSymbol + (currentPage + 1) + (quest != null && missionName != null ? Constants.CommandSymbol + missionName : "");
         }
 
 
@@ -552,7 +552,7 @@ namespace Tibialyzer {
 
             if (quest != null) {
                 this.questTitle.Text = quest.title;
-                this.questTitle.Name = "quest" + MainForm.commandSymbol + quest.name;
+                this.questTitle.Name = "quest" + Constants.CommandSymbol + quest.name;
                 if (initialMission != "" && quest.questInstructions.ContainsKey(initialMission)) {
                     select(initialMission);
                 } else {
@@ -560,7 +560,7 @@ namespace Tibialyzer {
                 }
             } else {
                 this.questTitle.Text = hunt.name;
-                this.questTitle.Name = "hunt" + MainForm.commandSymbol + hunt.name;
+                this.questTitle.Name = "hunt" + Constants.CommandSymbol + hunt.name;
             }
             this.questTitle.Click += QuestTitle_Click;
             while (--initialPage > 0 && next()) ;

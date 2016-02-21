@@ -85,10 +85,10 @@ namespace Tibialyzer {
         }
         public override List<Attribute> GetAttributes() {
             return new List<Attribute> { new StringAttribute(name, 120),
-                new StringAttribute(MainForm.ToTitle(city), 80) };
+                new StringAttribute(city.ToTitle(), 80) };
         }
         public override string GetCommand() {
-            return "npc" + MainForm.commandSymbol + name;
+            return "npc" + Constants.CommandSymbol + name;
         }
         static List<string> headers = new List<string> { "Name", "City" };
         static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode() };

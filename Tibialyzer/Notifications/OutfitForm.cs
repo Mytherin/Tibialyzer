@@ -212,7 +212,7 @@ namespace Tibialyzer {
             if (outfit.questid > 0) {
                 Quest quest = StorageManager.getQuest(outfit.questid);
                 this.obtainedLabel.Text = "Rewarded by " + quest.name;
-                obtainedCommand = "quest" + MainForm.commandSymbol + quest.name;
+                obtainedCommand = "quest" + Constants.CommandSymbol + quest.name;
                 this.obtainedLabel.Click += ObtainedLabel_Click;
             } else if (outfit.tibiastore) {
                 this.obtainedLabel.Text = "Purchased from the Tibia Store.";
@@ -227,7 +227,7 @@ namespace Tibialyzer {
         private string obtainedCommand = null;
         private void ObtainedLabel_Click(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
-            MainForm.mainForm.ExecuteCommand(obtainedCommand);
+            CommandManager.ExecuteCommand(obtainedCommand);
         }
     }
 }

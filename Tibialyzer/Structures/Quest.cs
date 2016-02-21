@@ -102,10 +102,10 @@ namespace Tibialyzer {
             return headers;
         }
         public override List<Attribute> GetAttributes() {
-            return new List<Attribute> { new StringAttribute(name, 140), new StringAttribute(minlevel.ToString(), 50), new StringAttribute(premium ? "Yes" : "No", 50, premium ? Color.SeaGreen : Color.RoyalBlue), new StringAttribute(MainForm.ToTitle(city), 100) };
+            return new List<Attribute> { new StringAttribute(name, 140), new StringAttribute(minlevel.ToString(), 50), new StringAttribute(premium ? "Yes" : "No", 50, premium ? Color.SeaGreen : Color.RoyalBlue), new StringAttribute(city.ToTitle(), 100) };
         }
         public override string GetCommand() {
-            return "quest" + MainForm.commandSymbol + name;
+            return "quest" + Constants.CommandSymbol + name;
         }
         static List<string> headers = new List<string> { "Name", "Level", "Prem", "City" };
         static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode(), headers[3].GetHashCode() };

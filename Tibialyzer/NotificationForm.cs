@@ -106,7 +106,7 @@ namespace Tibialyzer {
         }
 
         protected void NotificationFinalize() {
-            if (MainForm.mainForm.HasBack()) {
+            if (NotificationManager.HasBack()) {
                 back_button = new PictureBox();
                 back_button.Location = new Point(5, 5);
                 back_button.Image = StyleManager.GetImage("back.png");
@@ -121,7 +121,7 @@ namespace Tibialyzer {
         }
 
         void back_button_Click(object sender, EventArgs e) {
-            MainForm.mainForm.Back();
+            NotificationManager.Back();
             this.ReturnFocusToTibia();
         }
 

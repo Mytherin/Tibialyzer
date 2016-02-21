@@ -201,7 +201,7 @@ namespace Tibialyzer {
                 string name = reader.GetString(1);
                 taskList.Add(name.ToLower(), new List<Task>());
                 taskGroups.Add(id, name);
-                questNameMap["killing in the name of... quest"].questInstructions.Add(name, new List<QuestInstruction> { new QuestInstruction { specialCommand = "task" + MainForm.commandSymbol + name } });
+                questNameMap["killing in the name of... quest"].questInstructions.Add(name, new List<QuestInstruction> { new QuestInstruction { specialCommand = "task" + Constants.CommandSymbol + name } });
             }
             // Tasks
             command = new SQLiteCommand("SELECT id,groupid,count,taskpoints,bossid,bossx,bossy,bossz,name FROM Tasks", conn);

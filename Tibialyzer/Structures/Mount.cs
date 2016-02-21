@@ -38,12 +38,12 @@ namespace Tibialyzer {
         public override List<Attribute> GetAttributes() {
             Item i = StorageManager.getItem(tameitemid);
             Creature cr = StorageManager.getCreature(tamecreatureid);
-            string itemName = i == null ? "-" : MainForm.ToTitle(i.displayname);
-            string creatureName = cr == null ? "-" : MainForm.ToTitle(cr.displayname);
+            string itemName = i == null ? "-" : i.displayname.ToTitle();
+            string creatureName = cr == null ? "-" : cr.displayname.ToTitle();
             return new List<Attribute> { new StringAttribute(name, 120), new StringAttribute(itemName, 80), new StringAttribute(creatureName, 80), new BooleanAttribute(tibiastore) };
         }
         public override string GetCommand() {
-            return "mount" + MainForm.commandSymbol + title;
+            return "mount" + Constants.CommandSymbol + title;
         }
         static List<string> headers = new List<string> { "Name", "Tame", "Creature", "Store" };
         static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode(), headers[3].GetHashCode() };

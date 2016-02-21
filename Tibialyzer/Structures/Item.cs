@@ -147,11 +147,11 @@ namespace Tibialyzer {
         public override List<Attribute> GetAttributes() {
             List<Attribute> attributeList = new List<Attribute> { new StringAttribute(title, 170),
                 new StringAttribute(GetMaxValue() > 0 ? GetMaxValueString() : "-", 50, StyleManager.ItemGoldColor), new StringAttribute(capacity > 0 ? String.Format("{0:0.0} oz.", capacity) : "-", 70),
-                new CommandAttribute(category, "category" + MainForm.commandSymbol + category, 100)};
+                new CommandAttribute(category, "category" + Constants.CommandSymbol + category, 100)};
             return attributeList;
         }
         public override string GetCommand() {
-            return "item" + MainForm.commandSymbol + title;
+            return "item" + Constants.CommandSymbol + title;
         }
         static List<string> headers = new List<string> { "Name", "Value", "Cap", "Category" };
         static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode(), headers[3].GetHashCode() };

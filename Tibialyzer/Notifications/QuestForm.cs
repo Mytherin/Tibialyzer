@@ -191,7 +191,7 @@ namespace Tibialyzer {
 
             this.questTitle.Text = quest.name;
             this.premiumBox.Image = quest.premium ? StyleManager.GetImage("checkmark-yes.png") : StyleManager.GetImage("checkmark-no.png");
-            this.cityLabel.Text = quest.city == null ? "Unknown" : MainForm.ToTitle(quest.city);
+            this.cityLabel.Text = quest.city == null ? "Unknown" : quest.city.ToTitle();
             this.levelLabel.Text = quest.minlevel.ToString();
             this.legendLabel.Text = quest.legend;
 
@@ -215,7 +215,7 @@ namespace Tibialyzer {
                 missionButton.Font = wikiButton.Font;
                 missionButton.ForeColor = StyleManager.NotificationTextColor;
                 missionButton.Location = new System.Drawing.Point(x, y);
-                missionButton.Name = quest.questInstructions[missionName][0].specialCommand != null ? quest.questInstructions[missionName][0].specialCommand : "guide" + MainForm.commandSymbol + quest.name.ToLower() + MainForm.commandSymbol + "1" + MainForm.commandSymbol + missionName;
+                missionButton.Name = quest.questInstructions[missionName][0].specialCommand != null ? quest.questInstructions[missionName][0].specialCommand : "guide" + Constants.CommandSymbol + quest.name.ToLower() + Constants.CommandSymbol + "1" + Constants.CommandSymbol + missionName;
                 missionButton.Padding = new System.Windows.Forms.Padding(2);
                 missionButton.Text = missionName;
                 missionButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -335,15 +335,15 @@ namespace Tibialyzer {
 
         private void outfitClick(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
-            MainForm.mainForm.ExecuteCommand("outfit" + MainForm.commandSymbol + (sender as Control).Name);
+            CommandManager.ExecuteCommand("outfit" + Constants.CommandSymbol + (sender as Control).Name);
         }
 
         private void itemClick(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
-            MainForm.mainForm.ExecuteCommand("item" + MainForm.commandSymbol + (sender as Control).Name);
+            CommandManager.ExecuteCommand("item" + Constants.CommandSymbol + (sender as Control).Name);
         }
         private void MissionButton_Click(object sender, EventArgs e) {
-            MainForm.mainForm.ExecuteCommand((sender as Control).Name);
+            CommandManager.ExecuteCommand((sender as Control).Name);
         }
 
         private void wikiButton_Click(object sender, EventArgs e) {

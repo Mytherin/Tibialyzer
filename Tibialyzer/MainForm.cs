@@ -37,16 +37,9 @@ namespace Tibialyzer {
     public partial class MainForm : Form {
         public static MainForm mainForm;
 
-        private NotificationForm[] NotificationFormGroups = new NotificationForm[10];
-
         private bool prevent_settings_update = false;
         private bool minimize_notification = true;
         private ToolTip scan_tooltip = new ToolTip();
-        private Stack<TibialyzerCommand> command_stack = new Stack<TibialyzerCommand>();
-        public static List<string> NotificationTypes = new List<string> { "Loot Notification", "Damage Notification", "Object List", "City Information", "Creature Loot Information", "Creature Stats Information", "Hunt Information", "Item Information", "NPC Information", "Outfit Information", "Quest Information", "Spell Information", "Quest/Hunt Directions", "Task Form" };
-        public static List<string> NotificationTestCommands = new List<string> { "loot@", "damage@", "creature@quara", "city@venore", "creature@demon", "stats@dragon lord", "hunt@formorgar mines", "item@heroic axe", "npc@rashid", "outfit@brotherhood", "quest@killing in the name of", "spell@light healing", "guide@desert dungeon quest", "task@crystal spider" };
-        public static List<Type> NotificationTypeObjects = new List<Type>() { typeof(LootDropForm), typeof(DamageChart), typeof(CreatureList), typeof(CityDisplayForm), typeof(CreatureDropsForm), typeof(CreatureStatsForm), typeof(HuntingPlaceForm), typeof(ItemViewForm), typeof(NPCForm), typeof(OutfitForm), typeof(QuestForm), typeof(SpellForm), typeof(QuestGuideForm), typeof(TaskForm) };
-
         public static StreamWriter fileWriter = null;
 
         public static void ExitWithError(string title, string text, bool exit = true) {
@@ -64,7 +57,8 @@ namespace Tibialyzer {
             this.InitializeTabs();
             switchTab(0);
 
-            LootDatabaseManager.LootChanged += UpdateLootDisplay;
+            LootDatabaseManager.LootChanged += NotificationManager.UpdateLootDisplay;
+            LootDatabaseManager.LootChanged += UpdateLogDisplay;
 
             if (!File.Exists(Constants.DatabaseFile)) {
                 ExitWithError("Fatal Error", String.Format("Could not find database file {0}.", Constants.DatabaseFile));
@@ -123,18 +117,6 @@ namespace Tibialyzer {
             this.loadTimerImage.Image = StyleManager.GetImage("scanningbar-red.gif");
             this.loadTimerImage.Enabled = true;
             scan_tooltip.SetToolTip(this.loadTimerImage, "No Tibia Client Found...");
-        }
-
-
-        private void UpdateLootDisplay() {
-            for (int i = 0; i < NotificationFormGroups.Length; i++) {
-                if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is LootDropForm) {
-                    (NotificationFormGroups[i] as LootDropForm).UpdateLoot();
-                }
-            }
-            if (logButton.Enabled == false) {
-                refreshHuntLog(getSelectedHunt());
-            }
         }
 
         private void MainForm_Load(object sender, EventArgs e) {
@@ -196,6 +178,12 @@ namespace Tibialyzer {
             explanationTooltip.SetToolTip(selectUpgradeTibialyzerButton, "Import settings from a previous Tibialyzer. Select the directory in which the previous Tibialyzer is located.");
         }
 
+        public void UpdateLogDisplay() {
+            if (logButton.Enabled == false) {
+                refreshHuntLog(getSelectedHunt());
+            }
+        }
+
         public void InitializeHuntDisplay(int activeHuntIndex) {
             skip_hunt_refresh = true;
 
@@ -237,7 +225,7 @@ namespace Tibialyzer {
 
         private void showAllLootButton_Click(object sender, EventArgs e) {
             Hunt h = getSelectedHunt();
-            this.ExecuteCommand("loot" + MainForm.commandSymbol + (h == null ? "" : h.name));
+            CommandManager.ExecuteCommand("loot" + Constants.CommandSymbol + (h == null ? "" : h.name));
         }
 
         private void showPopupButton_Click(object sender, EventArgs e) {
@@ -381,7 +369,7 @@ namespace Tibialyzer {
                 int anchor = Math.Min(Math.Max(SettingsManager.getSettingInt("RichNotificationAnchor"), 0), 3);
                 int xOffset = SettingsManager.getSettingInt("RichNotificationXOffset") == -1 ? 30 : SettingsManager.getSettingInt("RichNotificationXOffset");
                 int yOffset = SettingsManager.getSettingInt("RichNotificationYOffset") == -1 ? 30 : SettingsManager.getSettingInt("RichNotificationYOffset");
-                foreach (string obj in NotificationTypes) {
+                foreach (string obj in Constants.NotificationTypes) {
                     string settingObject = obj.Replace(" ", "");
                     SettingsManager.setSetting(settingObject + "Anchor", anchor);
                     SettingsManager.setSetting(settingObject + "XOffset", xOffset);
@@ -418,7 +406,7 @@ namespace Tibialyzer {
 
 
             notificationTypeList.Items.Clear();
-            foreach (string str in NotificationTypes) {
+            foreach (string str in Constants.NotificationTypes) {
                 notificationTypeList.Items.Add(str);
             }
             notificationTypeList.SelectedIndex = 0;
@@ -530,7 +518,7 @@ namespace Tibialyzer {
             string itemName = (sender as Control).Name;
             Item item = StorageManager.getItem(itemName);
             double ratio = item.GetMaxValue() / item.capacity;
-            this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + Math.Floor(ratio));
+            CommandManager.ExecuteCommand("setdiscardgoldratio" + Constants.CommandSymbol + Math.Floor(ratio));
             UpdateDiscardDisplay();
         }
 
@@ -551,7 +539,7 @@ namespace Tibialyzer {
             string itemName = (sender as Control).Name;
             Item item = StorageManager.getItem(itemName);
             double ratio = item.GetMaxValue() / item.capacity;
-            this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + (item.stackable ? "1-" : "0-") + Math.Ceiling(ratio + 0.01));
+            CommandManager.ExecuteCommand("setconvertgoldratio" + Constants.CommandSymbol + (item.stackable ? "1-" : "0-") + Math.Ceiling(ratio + 0.01));
             UpdateConvertDisplay();
         }
 
@@ -572,7 +560,7 @@ namespace Tibialyzer {
         private void applyDiscardRatioButton_Click(object sender, EventArgs e) {
             double ratio;
             if (double.TryParse(customDiscardRatioBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out ratio)) {
-                this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + Math.Floor(ratio));
+                CommandManager.ExecuteCommand("setdiscardgoldratio" + Constants.CommandSymbol + Math.Floor(ratio));
                 UpdateDiscardDisplay();
             }
         }
@@ -587,8 +575,8 @@ namespace Tibialyzer {
         private void applyConvertRatioButton_Click(object sender, EventArgs e) {
             double ratio;
             if (double.TryParse(customConvertRatioBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out ratio)) {
-                this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "0-" + Math.Floor(ratio));
-                this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + "1-" + Math.Floor(ratio));
+                CommandManager.ExecuteCommand("setconvertgoldratio" + Constants.CommandSymbol + "0-" + Math.Floor(ratio));
+                CommandManager.ExecuteCommand("setconvertgoldratio" + Constants.CommandSymbol + "1-" + Math.Floor(ratio));
                 UpdateConvertDisplay();
             }
         }
@@ -669,7 +657,7 @@ namespace Tibialyzer {
                 }
             }
         }
-        
+
         private string lastWarning;
         public void DisplayWarning(string message) {
             warningImageBox.Visible = true;
@@ -685,11 +673,7 @@ namespace Tibialyzer {
             }
         }
 
-        public static string ToTitle(string str) {
-            return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(str);
-        }
-
-        private void ShowSimpleNotification(string title, string text, Image image) {
+        public void ShowSimpleNotification(string title, string text, Image image) {
             notifyIcon1.BalloonTipText = text;
             notifyIcon1.BalloonTipTitle = title;
             notifyIcon1.Icon = Icon.FromHandle(((Bitmap)image).GetHicon());
@@ -699,7 +683,7 @@ namespace Tibialyzer {
         bool clearSimpleNotifications = false;
         int notificationSpacing = 5;
         List<SimpleNotification> notificationStack = new List<SimpleNotification>();
-        private void ShowSimpleNotification(SimpleNotification f) {
+        public void ShowSimpleNotification(SimpleNotification f) {
             int position_x = 0, position_y = 0;
             Screen screen;
             Process tibia_process = ProcessManager.GetTibiaProcess();
@@ -764,7 +748,7 @@ namespace Tibialyzer {
             f.Show();
         }
 
-        private void ClearSimpleNotifications() {
+        public void ClearSimpleNotifications() {
             clearSimpleNotifications = true;
             foreach (SimpleNotification f in notificationStack) {
                 f.ClearTimers();
@@ -797,232 +781,6 @@ namespace Tibialyzer {
                 }
             }
             notificationStack.Remove(notification);
-        }
-
-        private void ShowNotification(NotificationForm f, string command, string screenshot_path = "") {
-            if (f == null) return;
-
-            if (screenshot_path == "") {
-                TibialyzerCommand cmd = new TibialyzerCommand(command);
-                command_stack.Push(cmd);
-                f.command = cmd;
-            }
-            f.Visible = false;
-            int richX = -1;
-            int richY = -1;
-            int anchor = 0;
-            int duration = 5;
-            int group = 0;
-            for (int it = 0; it < NotificationTypeObjects.Count; it++) {
-                if (f.GetType() == NotificationTypeObjects[it]) {
-                    string settingObject = NotificationTypes[it].Replace(" ", "");
-                    richX = SettingsManager.getSettingInt(settingObject + "XOffset");
-                    richY = SettingsManager.getSettingInt(settingObject + "YOffset");
-                    anchor = SettingsManager.getSettingInt(settingObject + "Anchor");
-                    duration = SettingsManager.getSettingInt(settingObject + "Duration");
-                    group = Math.Min(Math.Max(SettingsManager.getSettingInt(settingObject + "Group"), 0), 9);
-                    break;
-                }
-            }
-            f.notificationDuration = duration;
-            f.LoadForm();
-            if (screenshot_path != "") {
-                Bitmap bitmap = new Bitmap(f.Width, f.Height);
-                f.DrawToBitmap(bitmap, new Rectangle(0, 0, f.Width, f.Height));
-                foreach (Control c in f.Controls) {
-                    c.DrawToBitmap(bitmap, new Rectangle(new Point(Math.Min(Math.Max(c.Location.X, 0), f.Width), Math.Min(Math.Max(c.Location.Y, 0), f.Height)), c.Size));
-                }
-                bitmap.Save(screenshot_path);
-                bitmap.Dispose();
-                f.Dispose();
-                return;
-            }
-            if (NotificationFormGroups[group] != null) {
-                NotificationFormGroups[group].close();
-            }
-            int position_x = 0, position_y = 0;
-            Screen screen;
-            Process tibia_process = ProcessManager.GetTibiaProcess();
-            if (tibia_process == null) {
-                screen = Screen.FromControl(this);
-            } else {
-                screen = Screen.FromHandle(tibia_process.MainWindowHandle);
-            }
-
-            int xOffset = richX == -1 ? 30 : richX;
-            int yOffset = richY == -1 ? 30 : richY;
-            switch (anchor) {
-                case 3:
-                    position_x = screen.WorkingArea.Right - xOffset - f.Width;
-                    position_y = screen.WorkingArea.Bottom - yOffset - f.Height;
-                    break;
-                case 2:
-                    position_x = screen.WorkingArea.Left + xOffset;
-                    position_y = screen.WorkingArea.Bottom - yOffset - f.Height;
-                    break;
-                case 1:
-                    position_x = screen.WorkingArea.Right - xOffset - f.Width;
-                    position_y = screen.WorkingArea.Top + yOffset;
-                    break;
-                default:
-                    position_x = screen.WorkingArea.Left + xOffset;
-                    position_y = screen.WorkingArea.Top + yOffset;
-                    break;
-            }
-
-            f.StartPosition = FormStartPosition.Manual;
-            f.SetDesktopLocation(position_x, position_y);
-            f.TopMost = true;
-            f.Show();
-            NotificationFormGroups[group] = f;
-        }
-
-        public void Back() {
-            if (command_stack.Count <= 1) return;
-            command_stack.Pop(); // remove the current command
-            string command = command_stack.Pop().command;
-            this.ExecuteCommand(command);
-        }
-
-        public bool HasBack() {
-            return command_stack.Count > 1;
-        }
-
-        private void ShowCreatureDrops(Creature c, string comm) {
-            if (c == null) return;
-            CreatureDropsForm f = new CreatureDropsForm();
-            f.creature = c;
-
-            ShowNotification(f, comm);
-        }
-
-        private void ShowCreatureStats(Creature c, string comm) {
-            if (c == null) return;
-            CreatureStatsForm f = new CreatureStatsForm();
-            f.creature = c;
-
-            ShowNotification(f, comm);
-        }
-        private void ShowCreatureList(List<TibiaObject> c, string title, string command, bool conditionalAttributes = false) {
-            if (c == null) return;
-            string[] split = command.Split(commandSymbol);
-            string parameter = split[1].Trim().ToLower();
-            int page = 0;
-            int displayType = 0;
-            bool desc = false;
-            string sortedHeader = null;
-
-            if (split.Length > 2 && int.TryParse(split[2], out page)) { }
-            if (split.Length > 3 && int.TryParse(split[3], out displayType)) { }
-            if (split.Length > 4) { desc = split[4] == "1"; }
-            if (split.Length > 5) { sortedHeader = split[5]; }
-            CreatureList f = new CreatureList(page, displayType == 1 ? DisplayType.Images : DisplayType.Details, sortedHeader, desc);
-            f.addConditionalAttributes = conditionalAttributes;
-            f.objects = c;
-            f.title = title;
-
-            ShowNotification(f, command);
-        }
-
-        private void ShowItemView(Item i, int currentPage, int currentDisplay, string comm) {
-            if (i == null) return;
-            ItemViewForm f = new ItemViewForm(currentPage, currentDisplay);
-            f.item = i;
-
-            ShowNotification(f, comm);
-        }
-
-        private void ShowNPCForm(NPC c, string command) {
-            if (c == null) return;
-            string[] split = command.Split(commandSymbol);
-            int page = 0;
-            int currentDisplay = -1;
-            if (split.Length > 2 && int.TryParse(split[2], out page)) { }
-            if (split.Length > 3 && int.TryParse(split[3], out currentDisplay)) { }
-            NPCForm f = new NPCForm(page, currentDisplay);
-            f.npc = c;
-
-            ShowNotification(f, command);
-        }
-
-        private void ShowDamageMeter(Dictionary<string, Tuple<int, int>> dps, string comm, string filter = "", string screenshot_path = "") {
-            DamageChart f = new DamageChart();
-            f.dps = dps;
-            f.filter = filter;
-
-            ShowNotification(f, comm, screenshot_path);
-        }
-
-        private void ShowLootDrops(Hunt h, string comm, string screenshot_path) {
-            LootDropForm ldf = new LootDropForm(comm);
-            ldf.hunt = h;
-
-            ShowNotification(ldf, comm, screenshot_path);
-        }
-
-        private void ShowHuntingPlace(HuntingPlace h, string comm) {
-            HuntingPlaceForm f = new HuntingPlaceForm();
-            f.hunting_place = h;
-
-            ShowNotification(f, comm);
-        }
-
-        private void ShowSpellNotification(Spell spell, int initialVocation, string comm) {
-            SpellForm f = new SpellForm(spell, initialVocation);
-
-            ShowNotification(f, comm);
-        }
-
-        private void ShowOutfitNotification(Outfit outfit, string comm) {
-            OutfitForm f = new OutfitForm(outfit);
-
-            ShowNotification(f, comm);
-        }
-        private void ShowQuestNotification(Quest quest, string comm) {
-            QuestForm f = new QuestForm(quest);
-
-            ShowNotification(f, comm);
-        }
-
-        private void ShowHuntGuideNotification(HuntingPlace hunt, string comm, int page) {
-            if (hunt.directions.Count == 0) return;
-            QuestGuideForm f = new QuestGuideForm(hunt);
-            f.initialPage = page;
-
-            ShowNotification(f, comm);
-        }
-
-        private void ShowTaskNotification(Task task, string comm) {
-            TaskForm f = new TaskForm(task);
-
-            ShowNotification(f, comm);
-        }
-
-        private void ShowQuestGuideNotification(Quest quest, string comm, int page, string mission) {
-            if (quest.questInstructions.Count == 0) return;
-            QuestGuideForm f = new QuestGuideForm(quest);
-            f.initialPage = page;
-            f.initialMission = mission;
-
-            ShowNotification(f, comm);
-        }
-        private void ShowMountNotification(Mount mount, string comm) {
-            MountForm f = new MountForm(mount);
-
-            ShowNotification(f, comm);
-        }
-        private void ShowCityDisplayForm(City city, string comm) {
-            CityDisplayForm f = new CityDisplayForm();
-            f.city = city;
-
-            ShowNotification(f, comm);
-        }
-
-        private void ShowListNotification(List<Command> commands, int type, string comm) {
-            ListNotification f = new ListNotification(commands);
-            f.type = type;
-
-            ShowNotification(f, comm);
         }
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e) {
@@ -1413,7 +1171,7 @@ namespace Tibialyzer {
         }
 
         private static void executeNameCommand(object sender, EventArgs e) {
-            mainForm.ExecuteCommand((sender as Control).Name);
+            CommandManager.ExecuteCommand((sender as Control).Name);
         }
 
         public static int DisplayCreatureList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, int max_x, int spacing, Func<TibiaObject, string> tooltip_function = null, float magnification = 1.0f, List<Control> createdControls = null, int page = 0, int pageheight = 10000, PageInfo pageInfo = null, int currentDisplay = -1) {
@@ -1499,12 +1257,12 @@ namespace Tibialyzer {
                     if (createdControls != null) createdControls.Add(image_box);
                     image_box.Image = image;
                     if (tooltip_function == null) {
-                        value_tooltip.SetToolTip(image_box, MainForm.ToTitle(name));
+                        value_tooltip.SetToolTip(image_box, name.ToTitle());
                     } else {
                         string prefix = "";
                         if (cr.AsNPC() != null) {
                             NPC npc = cr is NPC ? cr as NPC : (cr as LazyTibiaObject).getTibiaObject() as NPC;
-                            prefix = MainForm.ToTitle(name) + " (" + MainForm.ToTitle(npc.city) + ")\n";
+                            prefix = name.ToTitle() + " (" + npc.city.ToTitle() + ")\n";
                         }
                         value_tooltip.SetToolTip(image_box, prefix + tooltip_function(cr));
                     }
@@ -1662,12 +1420,12 @@ namespace Tibialyzer {
 
         void ShowCreatureInformation(object sender, EventArgs e) {
             string creature_name = (sender as Control).Name;
-            this.ExecuteCommand("creature" + MainForm.commandSymbol + creature_name);
+            CommandManager.ExecuteCommand("creature" + Constants.CommandSymbol + creature_name);
         }
 
         void ShowItemInformation(object sender, EventArgs e) {
             string item_name = (sender as Control).Name;
-            this.ExecuteCommand("item" + MainForm.commandSymbol + item_name);
+            CommandManager.ExecuteCommand("item" + Constants.CommandSymbol + item_name);
         }
 
         private void exportLogButton_Click(object sender, MouseEventArgs e) {
@@ -1689,7 +1447,7 @@ namespace Tibialyzer {
         private void resetButton_Click(object sender, MouseEventArgs e) {
             Hunt h = getSelectedHunt();
             if (h != null) {
-                ExecuteCommand("reset" + MainForm.commandSymbol + h.name);
+                CommandManager.ExecuteCommand("reset" + Constants.CommandSymbol + h.name);
             }
         }
 
@@ -1717,7 +1475,7 @@ namespace Tibialyzer {
             }
             DialogResult result = dialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK) {
-                this.ExecuteCommand("loot" + MainForm.commandSymbol + "screenshot" + MainForm.commandSymbol + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/"));
+                CommandManager.ExecuteCommand("loot" + Constants.CommandSymbol + "screenshot" + Constants.CommandSymbol + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/"));
             }
 
         }
@@ -1736,7 +1494,7 @@ namespace Tibialyzer {
             }
             DialogResult result = dialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK) {
-                this.ExecuteCommand("damage" + MainForm.commandSymbol + "screenshot" + MainForm.commandSymbol + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/"));
+                CommandManager.ExecuteCommand("damage" + Constants.CommandSymbol + "screenshot" + Constants.CommandSymbol + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/"));
             }
         }
 
@@ -1793,13 +1551,13 @@ namespace Tibialyzer {
 
         private void commandTextBox_KeyPress(object sender, KeyPressEventArgs e) {
             if (e.KeyChar == '\r') {
-                this.ExecuteCommand((sender as TextBox).Text);
+                CommandManager.ExecuteCommand((sender as TextBox).Text);
                 e.Handled = true;
             }
         }
 
         private void executeCommand_Click(object sender, EventArgs e) {
-            this.ExecuteCommand(commandTextBox.Text);
+            CommandManager.ExecuteCommand(commandTextBox.Text);
         }
 
         private Hunt getActiveHunt() {
@@ -2079,7 +1837,7 @@ namespace Tibialyzer {
         [DllImport("user32.dll", SetLastError = true)]
         static extern bool GetWindowRect(IntPtr hWnd, ref RECT Rect);
 
-        Bitmap takeScreenshot() {
+        public Bitmap takeScreenshot() {
             Process tibia_process = ProcessManager.GetTibiaProcess();
             if (tibia_process == null) return null; //no tibia to take screenshot of
 
@@ -2094,7 +1852,7 @@ namespace Tibialyzer {
 
         }
 
-        void saveScreenshot(string name, Bitmap bitmap) {
+        public void saveScreenshot(string name, Bitmap bitmap) {
             if (bitmap == null) return;
             string path = SettingsManager.getSettingString("ScreenshotPath");
             if (path == null) return;
@@ -2289,7 +2047,7 @@ namespace Tibialyzer {
                 // This messages is send by AutoHotkey to execute a command
                 string command = Marshal.PtrToStringUni(m.LParam);
                 if (command != null) {
-                    if (this.ExecuteCommand(command)) {
+                    if (CommandManager.ExecuteCommand(command)) {
                         return; //if the passed along string is a command, we have executed it successfully
                     }
                 }
@@ -2326,7 +2084,7 @@ namespace Tibialyzer {
         private void showLootButton_Click(object sender, EventArgs e) {
             Hunt h = getSelectedHunt();
             if (h != null) {
-                ExecuteCommand("loot" + MainForm.commandSymbol + h.name);
+                CommandManager.ExecuteCommand("loot" + Constants.CommandSymbol + h.name);
             }
         }
 
@@ -2355,11 +2113,11 @@ namespace Tibialyzer {
         }
 
         private void simpleTestDisplay_Click(object sender, EventArgs e) {
-            MainForm.mainForm.ExecuteCommand("exp@");
+            CommandManager.ExecuteCommand("exp@");
         }
 
         private void clearNotifications_Click(object sender, EventArgs e) {
-            MainForm.mainForm.ExecuteCommand("close@");
+            CommandManager.ExecuteCommand("close@");
         }
 
         private void enableSimpleNotificationAnimations_CheckedChanged(object sender, EventArgs e) {
@@ -2654,7 +2412,7 @@ namespace Tibialyzer {
             int groupnr = Math.Max(Math.Min(SettingsManager.getSettingInt(selectedSettingObject + "Group"), 9), 0);
             int sliderValue = Math.Max(Math.Min(notificationLength, notificationDurationBox.Maximum), notificationDurationBox.Minimum);
 
-            foreach (string str in NotificationTypes) {
+            foreach (string str in Constants.NotificationTypes) {
                 string settingObject = str.Replace(" ", "");
                 SettingsManager.setSetting(settingObject + "Anchor", anchor);
                 SettingsManager.setSetting(settingObject + "XOffset", xOffset);
@@ -2665,12 +2423,12 @@ namespace Tibialyzer {
         }
 
         private void testNotificationDisplayButton_Click(object sender, EventArgs e) {
-            string command = NotificationTestCommands[notificationTypeList.SelectedIndex];
-            MainForm.mainForm.ExecuteCommand(command);
+            string command = Constants.NotificationTestCommands[notificationTypeList.SelectedIndex];
+            CommandManager.ExecuteCommand(command);
         }
 
         private void clearNotificationDisplayButton_Click(object sender, EventArgs e) {
-            MainForm.mainForm.ExecuteCommand("close@");
+            CommandManager.ExecuteCommand("close@");
         }
 
         private void warningImageBox_MouseDown(object sender, MouseEventArgs e) {
@@ -2746,7 +2504,7 @@ namespace Tibialyzer {
             }
         }
 
-        private List<SystemCommand> customCommands = new List<SystemCommand>();
+        public List<SystemCommand> customCommands = new List<SystemCommand>();
         private void customCommandList_SelectedIndexChanged(object sender, EventArgs e) {
             if (customCommandList.SelectedIndex < 0) return;
 

@@ -54,11 +54,11 @@ namespace Tibialyzer {
                 new StringAttribute(GetName(), 150),
                 new StringAttribute(count.ToString(), 60),
                 new StringAttribute(taskpoints >= 0 ? taskpoints.ToString() : "-", 60),
-                new CommandAttribute(groupname, "task" + MainForm.commandSymbol + groupname, 120),
+                new CommandAttribute(groupname, "task" + Constants.CommandSymbol + groupname, 120),
             };
         }
         public override string GetCommand() {
-            return "task" + MainForm.commandSymbol + id;
+            return "task" + Constants.CommandSymbol + id;
         }
         static List<string> headers = new List<string> { "Name", "Count", "Points", "Group" };
         static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode(), headers[3].GetHashCode() };

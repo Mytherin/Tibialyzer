@@ -210,7 +210,7 @@ namespace Tibialyzer {
             this.SuspendForm();
             base.NotificationInitialize();
 
-            this.cityNameLabel.Text = MainForm.ToTitle(city.name);
+            this.cityNameLabel.Text = city.name.ToTitle();
             mapBox = MainForm.DrawRoute(city.location, new Coordinate(-1,-1,mapSize.Width), mapSize, mapSize, mapSize, new List<Color>(), new List<Target>());
             mapBox.Location = new Point(5, cityNameLabel.Location.Y + cityNameLabel.Height);
             mapBox.MapUpdated += ResetTimer;
@@ -243,7 +243,7 @@ namespace Tibialyzer {
                 mapBox.UpdateMap();
             } else {
                 NPC npc = npcList[int.Parse((sender as Control).Name)] as NPC;
-                MainForm.mainForm.ExecuteCommand("npc" + MainForm.commandSymbol + npc.name);
+                CommandManager.ExecuteCommand("npc" + Constants.CommandSymbol + npc.name);
             }
         }
 
@@ -308,7 +308,7 @@ namespace Tibialyzer {
                 utilityBox.Click += UtilityBox_Click;
                 utilityBox.Name = index.ToString();
                 utilityBox.SizeMode = PictureBoxSizeMode.Zoom;
-                nameTooltip.SetToolTip(utilityBox, MainForm.ToTitle(name));
+                nameTooltip.SetToolTip(utilityBox, name.ToTitle());
                 controlList.Add(utilityBox);
                 this.Controls.Add(utilityBox);
 
@@ -343,11 +343,11 @@ namespace Tibialyzer {
         }
 
         private void huntButton_Click(object sender, EventArgs e) {
-            MainForm.mainForm.ExecuteCommand("hunt" + MainForm.commandSymbol + city.name);
+            CommandManager.ExecuteCommand("hunt" + Constants.CommandSymbol + city.name);
         }
 
         private void questButton_Click(object sender, EventArgs e) {
-            MainForm.mainForm.ExecuteCommand("quest" + MainForm.commandSymbol + city.name);
+            CommandManager.ExecuteCommand("quest" + Constants.CommandSymbol + city.name);
         }
 
         private void utilityButton_Click(object sender, EventArgs e) {

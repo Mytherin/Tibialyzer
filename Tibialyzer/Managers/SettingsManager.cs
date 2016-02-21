@@ -196,7 +196,7 @@ C::NumpadPgDn
             setSettingIfNotSet("SuspendedNotificationYOffset", 10);
             setSettingIfNotSet("SuspendedNotificationAnchor", 1);
             setSettingIfNotSet("TibiaClientName", "Tibia");
-            foreach (string obj in MainForm.NotificationTypes) {
+            foreach (string obj in Constants.NotificationTypes) {
                 string settingObject = obj.Replace(" ", "");
                 setSettingIfNotSet(settingObject + "Anchor", 0);
                 setSettingIfNotSet(settingObject + "XOffset", 30);

@@ -29,7 +29,7 @@ namespace Tibialyzer {
             return new List<Attribute> { new StringAttribute(name, 120) };
         }
         public override string GetCommand() {
-            return "worldobject" + MainForm.commandSymbol + name;
+            return "worldobject" + Constants.CommandSymbol + name;
         }
     }
 }

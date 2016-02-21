@@ -31,6 +31,29 @@ using System.Text.RegularExpressions;
 using System.Data.SQLite;
 
 namespace Tibialyzer {
+    public class ReadMemoryResults {
+        public Dictionary<string, List<string>> itemDrops = new Dictionary<string, List<string>>();
+        public Dictionary<string, int> exp = new Dictionary<string, int>();
+        public Dictionary<string, Dictionary<string, int>> damageDealt = new Dictionary<string, Dictionary<string, int>>();
+        public Dictionary<string, List<Tuple<string, string>>> commands = new Dictionary<string, List<Tuple<string, string>>>();
+        public Dictionary<string, List<Tuple<string, string>>> urls = new Dictionary<string, List<Tuple<string, string>>>();
+        public List<string> newAdvances = new List<string>();
+        public List<Tuple<Event, string>> eventMessages = new List<Tuple<Event, string>>();
+        public Dictionary<string, List<string>> lookMessages = new Dictionary<string, List<string>>();
+        public Dictionary<string, bool> deaths = new Dictionary<string, bool>();
+        public Dictionary<string, List<string>> duplicateMessages = new Dictionary<string, List<string>>();
+    }
+
+    public class ParseMemoryResults {
+        public Dictionary<string, Tuple<int, int>> damagePerSecond = new Dictionary<string, Tuple<int, int>>();
+        public List<string> newCommands = new List<string>();
+        public List<string> newLooks = new List<string>();
+        public List<Tuple<Creature, List<Tuple<Item, int>>>> newItems = new List<Tuple<Creature, List<Tuple<Item, int>>>>();
+        public List<Tuple<Event, string>> newEventMessages = new List<Tuple<Event, string>>();
+        public int expPerHour = 0;
+        public bool death = false;
+    }
+
     public partial class MainForm : Form {
         //based on http://www.codeproject.com/Articles/716227/Csharp-How-to-Scan-a-Process-Memory
         const int PROCESS_QUERY_INFORMATION = 0x0400;
@@ -67,29 +90,6 @@ namespace Tibialyzer {
         public static extern bool ReadProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
         [DllImport("kernel32.dll", SetLastError = true)]
         static extern int VirtualQueryEx(IntPtr hProcess, IntPtr lpAddress, out MEMORY_BASIC_INFORMATION lpBuffer, uint dwLength);
-
-        public class ReadMemoryResults {
-            public Dictionary<string, List<string>> itemDrops = new Dictionary<string, List<string>>();
-            public Dictionary<string, int> exp = new Dictionary<string, int>();
-            public Dictionary<string, Dictionary<string, int>> damageDealt = new Dictionary<string, Dictionary<string, int>>();
-            public Dictionary<string, List<Tuple<string, string>>> commands = new Dictionary<string, List<Tuple<string, string>>>();
-            public Dictionary<string, List<Tuple<string, string>>> urls = new Dictionary<string, List<Tuple<string, string>>>();
-            public List<string> newAdvances = new List<string>();
-            public List<Tuple<Event, string>> eventMessages = new List<Tuple<Event, string>>();
-            public Dictionary<string, List<string>> lookMessages = new Dictionary<string, List<string>>();
-            public Dictionary<string, bool> deaths = new Dictionary<string, bool>();
-            public Dictionary<string, List<string>> duplicateMessages = new Dictionary<string, List<string>>();
-        }
-
-        public class ParseMemoryResults {
-            public Dictionary<string, Tuple<int, int>> damagePerSecond = new Dictionary<string, Tuple<int, int>>();
-            public List<string> newCommands = new List<string>();
-            public List<string> newLooks = new List<string>();
-            public List<Tuple<Creature, List<Tuple<Item, int>>>> newItems = new List<Tuple<Creature, List<Tuple<Item, int>>>>();
-            public List<Tuple<Event, string>> newEventMessages = new List<Tuple<Event, string>>();
-            public int expPerHour = 0;
-            public bool death = false;
-        }
 
         private static Dictionary<int, List<long>> whitelistedAddresses = new Dictionary<int, List<long>>();
 
@@ -161,13 +161,14 @@ namespace Tibialyzer {
                         // move to the next memory chunk
                         proc_min_address_l += mem_basic_info.RegionSize;
                     }
-                } catch {
+                } catch(Exception ex) {
+                    Console.WriteLine(ex.Message);
                     return;
                 }
             }
         }
 
-        private Dictionary<string, List<string>> totalLooks = new Dictionary<string, List<string>>();
+        public static Dictionary<string, List<string>> totalLooks = new Dictionary<string, List<string>>();
         private HashSet<string> levelAdvances = new HashSet<string>();
         private ReadMemoryResults ReadMemory() {
             ReadMemoryResults results = null;
@@ -234,7 +235,7 @@ namespace Tibialyzer {
             return results;
         }
 
-        void saveLog(Hunt h, string logPath) {
+        public void saveLog(Hunt h, string logPath) {
             StreamWriter streamWriter = new StreamWriter(logPath);
 
             // we load the data from the database instead of from the stored dictionary so it is ordered properly
@@ -246,7 +247,7 @@ namespace Tibialyzer {
             streamWriter.Close();
         }
 
-        void loadLog(Hunt h, string logPath) {
+        public void loadLog(Hunt h, string logPath) {
             HuntManager.resetHunt(h);
             StreamReader streamReader = new StreamReader(logPath);
             string line;
@@ -262,7 +263,7 @@ namespace Tibialyzer {
             LootDatabaseManager.UpdateLoot();
         }
 
-        List<Tuple<string, string>> getRecentCommands(int type, int max_entries = 15) {
+        public List<Tuple<string, string>> getRecentCommands(int type, int max_entries = 15) {
             List<string> times = TimestampManager.getLatestTimes(5);
             times.Reverse();
 
@@ -281,7 +282,7 @@ namespace Tibialyzer {
             return results;
         }
 
-        private void insertSkin(Creature cr, int count = 1) {
+        public void insertSkin(Creature cr, int count = 1) {
             var time = DateTime.Now;
             int hour = time.Hour;
             int minute = time.Minute;
@@ -515,7 +516,7 @@ namespace Tibialyzer {
         }
 
         private static bool flashClient = true;
-        private static int ignoreStamp = 0;
+        public static int ignoreStamp = 0;
         private bool SearchChunk(IEnumerable<string> chunk, ReadMemoryResults res) {
             List<int> stamps = TimestampManager.getLatestStamps(3, ignoreStamp);
             bool chunksExist = false;

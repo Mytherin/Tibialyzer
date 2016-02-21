@@ -65,7 +65,7 @@ namespace Tibialyzer {
             return new List<Attribute> { new StringAttribute(name, 140), new StringAttribute(words, 100), new StringAttribute(manacost >= 0 ? manacost.ToString() : "-", 50, ManaCostColor), new StringAttribute(levelrequired > 0 ? levelrequired.ToString() : "-", 50) };
         }
         public override string GetCommand() {
-            return "spell" + MainForm.commandSymbol + name;
+            return "spell" + Constants.CommandSymbol + name;
         }
         static List<string> headers = new List<string> { "Name", "Words", "Mana", "Level" };
         static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode(), headers[3].GetHashCode() };

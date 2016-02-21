@@ -111,7 +111,7 @@ namespace Tibialyzer {
             AddResistances(resistances);
             // set background of actual form to transparent
             this.BackColor = StyleManager.NotificationBackgroundColor;
-            this.nameLabel.Text = MainForm.ToTitle(this.creature.displayname);
+            this.nameLabel.Text = this.creature.displayname.ToTitle();
             Font f = StyleManager.FontList[0];
             Font prevFont = f;
             for (int i = 0; i < StyleManager.FontList.Count; i++) {
@@ -232,12 +232,12 @@ namespace Tibialyzer {
 
         private void statsButton_Click(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
-            MainForm.mainForm.ExecuteCommand("creature" + MainForm.commandSymbol + (sender as Control).Name);
+            CommandManager.ExecuteCommand("creature" + Constants.CommandSymbol + (sender as Control).Name);
         }
 
         private void huntButton_Click(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
-            MainForm.mainForm.ExecuteCommand("hunt" + MainForm.commandSymbol + (sender as Control).Name);
+            CommandManager.ExecuteCommand("hunt" + Constants.CommandSymbol + (sender as Control).Name);
         }
     }
 }

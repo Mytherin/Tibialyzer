@@ -312,11 +312,11 @@ namespace Tibialyzer {
         }
 
         private void bossNameLabel_Click(object sender, EventArgs e) {
-            MainForm.mainForm.ExecuteCommand("creature" + MainForm.commandSymbol + task.GetBoss().GetName());
+            CommandManager.ExecuteCommand("creature" + Constants.CommandSymbol + task.GetBoss().GetName());
         }
 
         private void bossPictureBox_Click(object sender, EventArgs e) {
-            MainForm.mainForm.ExecuteCommand("creature" + MainForm.commandSymbol + task.GetBoss().GetName());
+            CommandManager.ExecuteCommand("creature" + Constants.CommandSymbol + task.GetBoss().GetName());
         }
 
         private void mapUpLevel_Click(object sender, EventArgs e) {
@@ -330,7 +330,7 @@ namespace Tibialyzer {
         }
 
         private void taskGroupLabel_Click(object sender, EventArgs e) {
-            MainForm.mainForm.ExecuteCommand("task" + MainForm.commandSymbol + task.groupname);
+            CommandManager.ExecuteCommand("task" + Constants.CommandSymbol + task.groupname);
         }
 
         private void creatureLabel_Click(object sender, EventArgs e) {

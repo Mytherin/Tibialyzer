@@ -117,7 +117,7 @@ namespace Tibialyzer {
         }
 
         private void openItem_Click(object sender, EventArgs e) {
-            MainForm.mainForm.ExecuteCommand("item" + MainForm.commandSymbol + (sender as Control).Name);
+            CommandManager.ExecuteCommand("item" + Constants.CommandSymbol + (sender as Control).Name);
         }
 
         private void InitializeComponent() {
@@ -165,7 +165,7 @@ namespace Tibialyzer {
         }
 
         private void creatureBox_Click(object sender, EventArgs e) {
-            MainForm.mainForm.ExecuteCommand("creature" + MainForm.commandSymbol + creature.GetName());
+            CommandManager.ExecuteCommand("creature" + Constants.CommandSymbol + creature.GetName());
         }
     }
 }

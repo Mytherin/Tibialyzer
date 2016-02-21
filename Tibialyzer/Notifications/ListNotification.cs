@@ -130,7 +130,7 @@ namespace Tibialyzer {
 
         public static void OpenCommand(string command, int type) {
             if (type == 0) {
-                MainForm.mainForm.ExecuteCommand(command);
+                CommandManager.ExecuteCommand(command);
             } else if (type == 1) {
                 MainForm.OpenUrl(command);
             }

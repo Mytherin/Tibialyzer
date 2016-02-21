@@ -151,7 +151,7 @@ namespace Tibialyzer {
         private void changeClick(object sender, EventArgs e) {
             long change = long.Parse((sender as Control).Name);
             long modifiedValue = Math.Max(Math.Max(item.actual_value, 0) + change, 0);
-            MainForm.mainForm.ExecuteCommand("setval" + MainForm.commandSymbol + item.GetName() + "=" + modifiedValue);
+            CommandManager.ExecuteCommand("setval" + Constants.CommandSymbol + item.GetName() + "=" + modifiedValue);
             updateValue();
         }
 
@@ -884,8 +884,8 @@ namespace Tibialyzer {
         }
 
         void updateCommand() {
-            string[] split = command.command.Split(MainForm.commandSymbol);
-            command.command = split[0] + MainForm.commandSymbol + split[1] + MainForm.commandSymbol + currentPage.ToString() + MainForm.commandSymbol + currentControlList.ToString();
+            string[] split = command.command.Split(Constants.CommandSymbol);
+            command.command = split[0] + Constants.CommandSymbol + split[1] + Constants.CommandSymbol + currentPage.ToString() + Constants.CommandSymbol + currentControlList.ToString();
         }
 
         private string sortedHeader = null;
@@ -971,16 +971,16 @@ namespace Tibialyzer {
             this.ResumeForm();
         }
 
-        private string command_start = "npc" + MainForm.commandSymbol;
+        private string command_start = "npc" + Constants.CommandSymbol;
         void openItemBox(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
-            MainForm.mainForm.ExecuteCommand(command_start + (sender as Control).Name);
+            CommandManager.ExecuteCommand(command_start + (sender as Control).Name);
         }
 
-        private string switch_start = "drop" + MainForm.commandSymbol;
+        private string switch_start = "drop" + Constants.CommandSymbol;
         private void statsButton_Click(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
-            MainForm.mainForm.ExecuteCommand(switch_start + (sender as Control).Name);
+            CommandManager.ExecuteCommand(switch_start + (sender as Control).Name);
         }
 
         private bool skip_event = false;
@@ -988,20 +988,20 @@ namespace Tibialyzer {
             if (skip_event) return;
             bool is_checked = (sender as CheckBox).Checked;
             this.ReturnFocusToTibia();
-            if (is_checked) MainForm.mainForm.ExecuteCommand("pickup" + MainForm.commandSymbol + item.GetName());
-            else MainForm.mainForm.ExecuteCommand("nopickup" + MainForm.commandSymbol + item.GetName());
+            if (is_checked) CommandManager.ExecuteCommand("pickup" + Constants.CommandSymbol + item.GetName());
+            else CommandManager.ExecuteCommand("nopickup" + Constants.CommandSymbol + item.GetName());
         }
 
         private void convertBox_CheckedChanged(object sender, EventArgs e) {
             if (skip_event) return;
             bool is_checked = (sender as CheckBox).Checked;
             this.ReturnFocusToTibia();
-            if (is_checked) MainForm.mainForm.ExecuteCommand("convert" + MainForm.commandSymbol + item.GetName());
-            else MainForm.mainForm.ExecuteCommand("noconvert" + MainForm.commandSymbol + item.GetName());
+            if (is_checked) CommandManager.ExecuteCommand("convert" + Constants.CommandSymbol + item.GetName());
+            else CommandManager.ExecuteCommand("noconvert" + Constants.CommandSymbol + item.GetName());
         }
 
         private void itemCategory_Click(object sender, EventArgs e) {
-            MainForm.mainForm.ExecuteCommand("category" + MainForm.commandSymbol + item.category);
+            CommandManager.ExecuteCommand("category" + Constants.CommandSymbol + item.category);
         }
     }
 }

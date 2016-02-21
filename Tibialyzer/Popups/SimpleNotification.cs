@@ -21,7 +21,7 @@ using System.Drawing;
 using System.Windows.Forms;
 
 namespace Tibialyzer {
-    class SimpleNotification : Form {
+    public class SimpleNotification : Form {
         System.Timers.Timer moveTimer = null;
         public int targetPositionX = 0, targetPositionY = 0;
         System.Timers.Timer closeTimer = null;
