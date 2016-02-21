@@ -21,6 +21,10 @@ namespace Tibialyzer {
     }
 
     class UIManager {
+        public static void Initialize() {
+            CreateHelpMenu();
+        }
+
         public static Pen pathPen = new Pen(StyleManager.PathFinderPathColor, 3);
         public static MapPictureBox DrawRoute(Coordinate begin, Coordinate end, Size pictureBoxSize, Size minSize, Size maxSize, List<Color> additionalWalkableColors, List<Target> targetList = null) {
             if (end.x >= 0 && begin.z != end.z) {
@@ -489,6 +493,51 @@ namespace Tibialyzer {
             tooltip.ShowAlways = true;
             tooltip.UseFading = true;
             return tooltip;
+        }
+
+        private static List<Control> helpMenu = new List<Control>();
+        private static void CreateHelpMenu() {
+            Label label;
+            label = new Label();
+            label.BackColor = StyleManager.MainFormButtonColor;
+            label.Font = StyleManager.MainFormLabelFontSmall;
+            label.ForeColor = StyleManager.MainFormButtonForeColor;
+            label.Size = new System.Drawing.Size(170, 15);
+            label.Text = "Enter: New Item";
+            label.Name = "newitem";
+            label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            helpMenu.Add(label);
+            label = new Label();
+            label.BackColor = StyleManager.MainFormButtonColor;
+            label.Font = StyleManager.MainFormLabelFontSmall;
+            label.ForeColor = StyleManager.MainFormButtonForeColor;
+            label.Size = new System.Drawing.Size(170, 15);
+            label.Text = "Delete: Delete Item";
+            label.Name = "deleteitem";
+            label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            helpMenu.Add(label);
+            label = new Label();
+            label.BackColor = StyleManager.MainFormButtonColor;
+            label.Font = StyleManager.MainFormLabelFontSmall;
+            label.ForeColor = StyleManager.MainFormButtonForeColor;
+            label.Size = new System.Drawing.Size(170, 15);
+            label.Text = "Ctrl+Backsp: Erase Item";
+            label.Name = "modifyitem";
+            label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            helpMenu.Add(label);
+            label = new Label();
+            label.BackColor = StyleManager.MainFormButtonColor;
+            label.Font = StyleManager.MainFormLabelFontSmall;
+            label.ForeColor = StyleManager.MainFormButtonForeColor;
+            label.Size = new System.Drawing.Size(170, 15);
+            label.Text = "Ctrl+C/V: Copy/Paste";
+            label.Name = "modifyitem";
+            label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            helpMenu.Add(label);
+        }
+
+        public static List<Control> GetHelpMenu() {
+            return helpMenu;
         }
     }
 }

@@ -24,11 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             this.detectFlashClientButton = new System.Windows.Forms.Label();
-            this.saveAllLootCheckbox = new Tibialyzer.PrettyCheckBox();
             this.expValueLabel = new System.Windows.Forms.Label();
-            this.ignoreLowExperienceBox = new Tibialyzer.EnterTextBox();
-            this.ignoreLowExperienceButton = new Tibialyzer.PrettyCheckBox();
-            this.stackAllItemsCheckbox = new Tibialyzer.PrettyCheckBox();
             this.lootOptionsHeaderLabel = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.mainExecuteTibialyzerCommandLabel = new System.Windows.Forms.Label();
@@ -42,8 +38,12 @@
             this.lootGuideButton = new System.Windows.Forms.Label();
             this.mainGuidesLabel = new System.Windows.Forms.Label();
             this.gettingStartedGuideButton = new System.Windows.Forms.Label();
-            this.nameListBox = new Tibialyzer.PrettyListBox();
             this.namesLabel = new System.Windows.Forms.Label();
+            this.saveAllLootCheckbox = new Tibialyzer.PrettyCheckBox();
+            this.ignoreLowExperienceBox = new Tibialyzer.EnterTextBox();
+            this.ignoreLowExperienceButton = new Tibialyzer.PrettyCheckBox();
+            this.stackAllItemsCheckbox = new Tibialyzer.PrettyCheckBox();
+            this.nameListBox = new Tibialyzer.PrettyListBox();
             this.commandTextBox = new Tibialyzer.EnterTextBox();
             this.SuspendLayout();
             //
@@ -63,22 +63,6 @@
             this.detectFlashClientButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.detectFlashClientButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             //
-            // saveAllLootCheckbox
-            //
-            this.saveAllLootCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.saveAllLootCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saveAllLootCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.saveAllLootCheckbox.Location = new System.Drawing.Point(3, 300);
-            this.saveAllLootCheckbox.Name = "saveAllLootCheckbox";
-            this.saveAllLootCheckbox.Padding = new System.Windows.Forms.Padding(10);
-            this.saveAllLootCheckbox.Size = new System.Drawing.Size(296, 40);
-            this.saveAllLootCheckbox.TabIndex = 45;
-            this.saveAllLootCheckbox.Text = "Automatically Write Loot To File";
-            this.saveAllLootCheckbox.UseVisualStyleBackColor = false;
-            this.saveAllLootCheckbox.CheckedChanged += new System.EventHandler(this.saveAllLootCheckbox_CheckedChanged);
-            this.saveAllLootCheckbox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.saveAllLootCheckbox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            //
             // expValueLabel
             //
             this.expValueLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -90,51 +74,6 @@
             this.expValueLabel.TabIndex = 44;
             this.expValueLabel.Text = "Exp Value";
             this.expValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
-            // ignoreLowExperienceBox
-            //
-            this.ignoreLowExperienceBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.ignoreLowExperienceBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ignoreLowExperienceBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
-            this.ignoreLowExperienceBox.Location = new System.Drawing.Point(101, 277);
-            this.ignoreLowExperienceBox.Name = "ignoreLowExperienceBox";
-            this.ignoreLowExperienceBox.Size = new System.Drawing.Size(198, 23);
-            this.ignoreLowExperienceBox.TabIndex = 43;
-            this.ignoreLowExperienceBox.TextChanged += new System.EventHandler(this.ignoreLowExperienceBox_TextChanged);
-            this.ignoreLowExperienceBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.ignoreLowExperienceBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            //
-            // ignoreLowExperienceButton
-            //
-            this.ignoreLowExperienceButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.ignoreLowExperienceButton.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ignoreLowExperienceButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.ignoreLowExperienceButton.Location = new System.Drawing.Point(3, 237);
-            this.ignoreLowExperienceButton.Name = "ignoreLowExperienceButton";
-            this.ignoreLowExperienceButton.Padding = new System.Windows.Forms.Padding(10);
-            this.ignoreLowExperienceButton.Size = new System.Drawing.Size(296, 40);
-            this.ignoreLowExperienceButton.TabIndex = 39;
-            this.ignoreLowExperienceButton.Text = "Ignore Low Experience Creatures";
-            this.ignoreLowExperienceButton.UseVisualStyleBackColor = false;
-            this.ignoreLowExperienceButton.CheckedChanged += new System.EventHandler(this.ignoreLowExperienceButton_CheckedChanged);
-            this.ignoreLowExperienceButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.ignoreLowExperienceButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            //
-            // stackAllItemsCheckbox
-            //
-            this.stackAllItemsCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.stackAllItemsCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.stackAllItemsCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.stackAllItemsCheckbox.Location = new System.Drawing.Point(3, 197);
-            this.stackAllItemsCheckbox.Name = "stackAllItemsCheckbox";
-            this.stackAllItemsCheckbox.Padding = new System.Windows.Forms.Padding(10);
-            this.stackAllItemsCheckbox.Size = new System.Drawing.Size(296, 40);
-            this.stackAllItemsCheckbox.TabIndex = 38;
-            this.stackAllItemsCheckbox.Text = "Display All Items As Stackable";
-            this.stackAllItemsCheckbox.UseVisualStyleBackColor = false;
-            this.stackAllItemsCheckbox.CheckedChanged += new System.EventHandler(this.stackAllItemsCheckbox_CheckedChanged);
-            this.stackAllItemsCheckbox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.stackAllItemsCheckbox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             //
             // lootOptionsHeaderLabel
             //
@@ -323,6 +262,79 @@
             this.gettingStartedGuideButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.gettingStartedGuideButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             //
+            // namesLabel
+            //
+            this.namesLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
+            this.namesLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.namesLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.namesLabel.Location = new System.Drawing.Point(3, 19);
+            this.namesLabel.Name = "namesLabel";
+            this.namesLabel.Size = new System.Drawing.Size(296, 30);
+            this.namesLabel.TabIndex = 1;
+            this.namesLabel.Text = "Character Names";
+            this.namesLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            //
+            // saveAllLootCheckbox
+            //
+            this.saveAllLootCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.saveAllLootCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.saveAllLootCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.saveAllLootCheckbox.Location = new System.Drawing.Point(3, 300);
+            this.saveAllLootCheckbox.Name = "saveAllLootCheckbox";
+            this.saveAllLootCheckbox.Padding = new System.Windows.Forms.Padding(10);
+            this.saveAllLootCheckbox.Size = new System.Drawing.Size(296, 40);
+            this.saveAllLootCheckbox.TabIndex = 45;
+            this.saveAllLootCheckbox.Text = "Automatically Write Loot To File";
+            this.saveAllLootCheckbox.UseVisualStyleBackColor = false;
+            this.saveAllLootCheckbox.CheckedChanged += new System.EventHandler(this.saveAllLootCheckbox_CheckedChanged);
+            this.saveAllLootCheckbox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.saveAllLootCheckbox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            //
+            // ignoreLowExperienceBox
+            //
+            this.ignoreLowExperienceBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.ignoreLowExperienceBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ignoreLowExperienceBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
+            this.ignoreLowExperienceBox.Location = new System.Drawing.Point(101, 277);
+            this.ignoreLowExperienceBox.Name = "ignoreLowExperienceBox";
+            this.ignoreLowExperienceBox.Size = new System.Drawing.Size(198, 23);
+            this.ignoreLowExperienceBox.TabIndex = 43;
+            this.ignoreLowExperienceBox.TextChanged += new System.EventHandler(this.ignoreLowExperienceBox_TextChanged);
+            this.ignoreLowExperienceBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.ignoreLowExperienceBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            //
+            // ignoreLowExperienceButton
+            //
+            this.ignoreLowExperienceButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.ignoreLowExperienceButton.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ignoreLowExperienceButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.ignoreLowExperienceButton.Location = new System.Drawing.Point(3, 237);
+            this.ignoreLowExperienceButton.Name = "ignoreLowExperienceButton";
+            this.ignoreLowExperienceButton.Padding = new System.Windows.Forms.Padding(10);
+            this.ignoreLowExperienceButton.Size = new System.Drawing.Size(296, 40);
+            this.ignoreLowExperienceButton.TabIndex = 39;
+            this.ignoreLowExperienceButton.Text = "Ignore Low Experience Creatures";
+            this.ignoreLowExperienceButton.UseVisualStyleBackColor = false;
+            this.ignoreLowExperienceButton.CheckedChanged += new System.EventHandler(this.ignoreLowExperienceButton_CheckedChanged);
+            this.ignoreLowExperienceButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.ignoreLowExperienceButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            //
+            // stackAllItemsCheckbox
+            //
+            this.stackAllItemsCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.stackAllItemsCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stackAllItemsCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.stackAllItemsCheckbox.Location = new System.Drawing.Point(3, 197);
+            this.stackAllItemsCheckbox.Name = "stackAllItemsCheckbox";
+            this.stackAllItemsCheckbox.Padding = new System.Windows.Forms.Padding(10);
+            this.stackAllItemsCheckbox.Size = new System.Drawing.Size(296, 40);
+            this.stackAllItemsCheckbox.TabIndex = 38;
+            this.stackAllItemsCheckbox.Text = "Display All Items As Stackable";
+            this.stackAllItemsCheckbox.UseVisualStyleBackColor = false;
+            this.stackAllItemsCheckbox.CheckedChanged += new System.EventHandler(this.stackAllItemsCheckbox_CheckedChanged);
+            this.stackAllItemsCheckbox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.stackAllItemsCheckbox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            //
             // nameListBox
             //
             this.nameListBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -340,18 +352,6 @@
             this.nameListBox.Name = "nameListBox";
             this.nameListBox.Size = new System.Drawing.Size(296, 115);
             this.nameListBox.TabIndex = 0;
-            //
-            // namesLabel
-            //
-            this.namesLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.namesLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.namesLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.namesLabel.Location = new System.Drawing.Point(3, 19);
-            this.namesLabel.Name = "namesLabel";
-            this.namesLabel.Size = new System.Drawing.Size(296, 30);
-            this.namesLabel.TabIndex = 1;
-            this.namesLabel.Text = "Character Names";
-            this.namesLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             //
             // commandTextBox
             //

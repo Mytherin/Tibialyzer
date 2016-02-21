@@ -41,6 +41,7 @@ namespace Tibialyzer {
         public static Color MainFormHoverForeColor = Color.FromArgb(190, 204, 217);
         public static Color MainFormButtonForeColor = Color.FromArgb(124, 133, 142);
         public static Color MainFormDangerColor = Color.FromArgb(152, 52, 52);
+        public static Color MainFormSmallDangerColor = Color.FromArgb(186, 158, 29);
         public static Color MainFormSafeColor = Color.FromArgb(76, 128, 176);
         public static Color MainFormErrorColor = Color.FromArgb(174, 33, 33);
 
@@ -70,6 +71,8 @@ namespace Tibialyzer {
         public static List<Font> FontList = new List<Font>();
 
         public static Font TextFont = new Font(FontFamily.GenericSansSerif, 9, FontStyle.Bold);
+        public static Font MainFormLabelFont = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        public static Font MainFormLabelFontSmall = new System.Drawing.Font("Verdana", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
         #endregion
 
         private static Dictionary<string, Image> images = new Dictionary<string, Image>();

@@ -23,11 +23,30 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.SuspendLayout();
-            ///
-            /// selectedWindowLabel
-            ///
             this.selectedWindowLabel = new System.Windows.Forms.Label();
+            this.notificationDurationLabel = new System.Windows.Forms.Label();
+            this.notificationDurationBox = new System.Windows.Forms.TrackBar();
+            this.label47 = new System.Windows.Forms.Label();
+            this.label46 = new System.Windows.Forms.Label();
+            this.label45 = new System.Windows.Forms.Label();
+            this.applyNotificationSettingsToAllButton = new System.Windows.Forms.Label();
+            this.clearNotificationDisplayButton = new System.Windows.Forms.Label();
+            this.testNotificationDisplayButton = new System.Windows.Forms.Label();
+            this.label41 = new System.Windows.Forms.Label();
+            this.label40 = new System.Windows.Forms.Label();
+            this.label39 = new System.Windows.Forms.Label();
+            this.label37 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
+            this.notificationTypeList = new Tibialyzer.PrettyListBox();
+            this.notificationGroupBox = new Tibialyzer.PrettyDropDownList();
+            this.notificationYOffsetBox = new Tibialyzer.EnterTextBox();
+            this.notificationXOffsetBox = new Tibialyzer.EnterTextBox();
+            this.notificationAnchorBox = new Tibialyzer.PrettyDropDownList();
+            ((System.ComponentModel.ISupportInitialize)(this.notificationDurationBox)).BeginInit();
+            this.SuspendLayout();
+            //
+            // selectedWindowLabel
+            //
             this.selectedWindowLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(128)))), ((int)(((byte)(176)))));
             this.selectedWindowLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.selectedWindowLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -37,10 +56,9 @@
             this.selectedWindowLabel.TabIndex = 55;
             this.selectedWindowLabel.Text = "Loot Window";
             this.selectedWindowLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            ///
-            /// notificationDurationLabel
-            ///
-            this.notificationDurationLabel = new System.Windows.Forms.Label();
+            //
+            // notificationDurationLabel
+            //
             this.notificationDurationLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.notificationDurationLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.notificationDurationLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -50,10 +68,9 @@
             this.notificationDurationLabel.TabIndex = 54;
             this.notificationDurationLabel.Text = "Notification Length";
             this.notificationDurationLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            ///
-            /// notificationDurationBox
-            ///
-            this.notificationDurationBox = new System.Windows.Forms.TrackBar();
+            //
+            // notificationDurationBox
+            //
             this.notificationDurationBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.notificationDurationBox.LargeChange = 50;
             this.notificationDurationBox.Location = new System.Drawing.Point(284, 243);
@@ -65,12 +82,11 @@
             this.notificationDurationBox.TabIndex = 53;
             this.notificationDurationBox.Value = 5;
             this.notificationDurationBox.Scroll += new System.EventHandler(this.notificationDurationBox_Scroll);
-            this.notificationDurationBox.MouseEnter += new System.EventHandler(ControlMouseEnter);
-            this.notificationDurationBox.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            ///
-            /// label47
-            ///
-            this.label47 = new System.Windows.Forms.Label();
+            this.notificationDurationBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.notificationDurationBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            //
+            // label47
+            //
             this.label47.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label47.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label47.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -80,10 +96,9 @@
             this.label47.TabIndex = 52;
             this.label47.Text = "Notification Type List";
             this.label47.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            ///
-            /// label46
-            ///
-            this.label46 = new System.Windows.Forms.Label();
+            //
+            // label46
+            //
             this.label46.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label46.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label46.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -93,10 +108,9 @@
             this.label46.TabIndex = 50;
             this.label46.Text = "Display Group";
             this.label46.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            ///
-            /// label45
-            ///
-            this.label45 = new System.Windows.Forms.Label();
+            //
+            // label45
+            //
             this.label45.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(56)))), ((int)(((byte)(65)))));
             this.label45.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label45.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -106,10 +120,9 @@
             this.label45.TabIndex = 48;
             this.label45.Text = "Overwrite Settings";
             this.label45.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            ///
-            /// applyNotificationSettingsToAllButton
-            ///
-            this.applyNotificationSettingsToAllButton = new System.Windows.Forms.Label();
+            //
+            // applyNotificationSettingsToAllButton
+            //
             this.applyNotificationSettingsToAllButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.applyNotificationSettingsToAllButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.applyNotificationSettingsToAllButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -121,12 +134,11 @@
             this.applyNotificationSettingsToAllButton.Text = "Apply These Settings To All";
             this.applyNotificationSettingsToAllButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.applyNotificationSettingsToAllButton.Click += new System.EventHandler(this.applyNotificationSettingsToAllButton_Click);
-            this.applyNotificationSettingsToAllButton.MouseEnter += new System.EventHandler(ControlMouseEnter);
-            this.applyNotificationSettingsToAllButton.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            ///
-            /// clearNotificationDisplayButton
-            ///
-            this.clearNotificationDisplayButton = new System.Windows.Forms.Label();
+            this.applyNotificationSettingsToAllButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.applyNotificationSettingsToAllButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            //
+            // clearNotificationDisplayButton
+            //
             this.clearNotificationDisplayButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.clearNotificationDisplayButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.clearNotificationDisplayButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -138,12 +150,11 @@
             this.clearNotificationDisplayButton.Text = "Clear Display";
             this.clearNotificationDisplayButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.clearNotificationDisplayButton.Click += new System.EventHandler(this.clearNotificationDisplayButton_Click);
-            this.clearNotificationDisplayButton.MouseEnter += new System.EventHandler(ControlMouseEnter);
-            this.clearNotificationDisplayButton.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            ///
-            /// testNotificationDisplayButton
-            ///
-            this.testNotificationDisplayButton = new System.Windows.Forms.Label();
+            this.clearNotificationDisplayButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.clearNotificationDisplayButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            //
+            // testNotificationDisplayButton
+            //
             this.testNotificationDisplayButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.testNotificationDisplayButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.testNotificationDisplayButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -155,12 +166,11 @@
             this.testNotificationDisplayButton.Text = "Test Display";
             this.testNotificationDisplayButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.testNotificationDisplayButton.Click += new System.EventHandler(this.testNotificationDisplayButton_Click);
-            this.testNotificationDisplayButton.MouseEnter += new System.EventHandler(ControlMouseEnter);
-            this.testNotificationDisplayButton.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            ///
-            /// label41
-            ///
-            this.label41 = new System.Windows.Forms.Label();
+            this.testNotificationDisplayButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.testNotificationDisplayButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            //
+            // label41
+            //
             this.label41.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label41.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label41.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -170,10 +180,9 @@
             this.label41.TabIndex = 38;
             this.label41.Text = "Testing";
             this.label41.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            ///
-            /// label40
-            ///
-            this.label40 = new System.Windows.Forms.Label();
+            //
+            // label40
+            //
             this.label40.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.label40.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label40.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -183,10 +192,9 @@
             this.label40.TabIndex = 37;
             this.label40.Text = "Y Offset";
             this.label40.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            ///
-            /// label39
-            ///
-            this.label39 = new System.Windows.Forms.Label();
+            //
+            // label39
+            //
             this.label39.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.label39.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label39.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -196,10 +204,9 @@
             this.label39.TabIndex = 35;
             this.label39.Text = "X Offset";
             this.label39.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            ///
-            /// label37
-            ///
-            this.label37 = new System.Windows.Forms.Label();
+            //
+            // label37
+            //
             this.label37.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label37.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label37.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -209,10 +216,9 @@
             this.label37.TabIndex = 33;
             this.label37.Text = "Position (Offset)";
             this.label37.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            ///
-            /// label36
-            ///
-            this.label36 = new System.Windows.Forms.Label();
+            //
+            // label36
+            //
             this.label36.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label36.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label36.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -222,10 +228,9 @@
             this.label36.TabIndex = 32;
             this.label36.Text = "Anchor";
             this.label36.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            ///
-            /// notificationTypeList
-            ///
-            this.notificationTypeList = new Tibialyzer.PrettyListBox();
+            //
+            // notificationTypeList
+            //
             this.notificationTypeList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.notificationTypeList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.notificationTypeList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
@@ -240,10 +245,9 @@
             this.notificationTypeList.Size = new System.Drawing.Size(275, 355);
             this.notificationTypeList.TabIndex = 51;
             this.notificationTypeList.SelectedIndexChanged += new System.EventHandler(this.notificationTypeList_SelectedIndexChanged);
-            ///
-            /// notificationGroupBox
-            ///
-            this.notificationGroupBox = new Tibialyzer.PrettyDropDownList();
+            //
+            // notificationGroupBox
+            //
             this.notificationGroupBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.notificationGroupBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.notificationGroupBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -265,12 +269,11 @@
             this.notificationGroupBox.Size = new System.Drawing.Size(250, 24);
             this.notificationGroupBox.TabIndex = 49;
             this.notificationGroupBox.SelectedIndexChanged += new System.EventHandler(this.groupSelectionList_SelectedIndexChanged);
-            this.notificationGroupBox.MouseEnter += new System.EventHandler(ControlMouseEnter);
-            this.notificationGroupBox.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            ///
-            /// notificationYOffsetBox
-            ///
-            this.notificationYOffsetBox = new Tibialyzer.EnterTextBox();
+            this.notificationGroupBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.notificationGroupBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            //
+            // notificationYOffsetBox
+            //
             this.notificationYOffsetBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.notificationYOffsetBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.notificationYOffsetBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -279,12 +282,11 @@
             this.notificationYOffsetBox.Size = new System.Drawing.Size(152, 23);
             this.notificationYOffsetBox.TabIndex = 36;
             this.notificationYOffsetBox.TextChanged += new System.EventHandler(this.notificationYOffsetBox_TextChanged);
-            this.notificationYOffsetBox.MouseEnter += new System.EventHandler(ControlMouseEnter);
-            this.notificationYOffsetBox.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            ///
-            /// notificationXOffsetBox
-            ///
-            this.notificationXOffsetBox = new Tibialyzer.EnterTextBox();
+            this.notificationYOffsetBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.notificationYOffsetBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            //
+            // notificationXOffsetBox
+            //
             this.notificationXOffsetBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.notificationXOffsetBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.notificationXOffsetBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -293,12 +295,11 @@
             this.notificationXOffsetBox.Size = new System.Drawing.Size(152, 23);
             this.notificationXOffsetBox.TabIndex = 34;
             this.notificationXOffsetBox.TextChanged += new System.EventHandler(this.notificationXOffsetBox_TextChanged);
-            this.notificationXOffsetBox.MouseEnter += new System.EventHandler(ControlMouseEnter);
-            this.notificationXOffsetBox.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            ///
-            /// notificationAnchorBox
-            ///
-            this.notificationAnchorBox = new Tibialyzer.PrettyDropDownList();
+            this.notificationXOffsetBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.notificationXOffsetBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            //
+            // notificationAnchorBox
+            //
             this.notificationAnchorBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.notificationAnchorBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.notificationAnchorBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -314,38 +315,40 @@
             this.notificationAnchorBox.Size = new System.Drawing.Size(250, 24);
             this.notificationAnchorBox.TabIndex = 31;
             this.notificationAnchorBox.SelectedIndexChanged += new System.EventHandler(this.notificationAnchorBox_SelectedIndexChanged);
-            this.notificationAnchorBox.MouseEnter += new System.EventHandler(ControlMouseEnter);
-            this.notificationAnchorBox.MouseLeave += new System.EventHandler(ControlMouseLeave);
+            this.notificationAnchorBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.notificationAnchorBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             //
-            // TabBase
+            // NotificationsTab
             //
-            this.Controls.Add(selectedWindowLabel);
-            this.Controls.Add(notificationDurationLabel);
-            this.Controls.Add(notificationDurationBox);
-            this.Controls.Add(label47);
-            this.Controls.Add(label46);
-            this.Controls.Add(label45);
-            this.Controls.Add(applyNotificationSettingsToAllButton);
-            this.Controls.Add(clearNotificationDisplayButton);
-            this.Controls.Add(testNotificationDisplayButton);
-            this.Controls.Add(label41);
-            this.Controls.Add(label40);
-            this.Controls.Add(label39);
-            this.Controls.Add(label37);
-            this.Controls.Add(label36);
-            this.Controls.Add(notificationTypeList);
-            this.Controls.Add(notificationGroupBox);
-            this.Controls.Add(notificationYOffsetBox);
-            this.Controls.Add(notificationXOffsetBox);
-            this.Controls.Add(notificationAnchorBox);
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(538, 514);
+            this.Controls.Add(this.selectedWindowLabel);
+            this.Controls.Add(this.notificationDurationLabel);
+            this.Controls.Add(this.notificationDurationBox);
+            this.Controls.Add(this.label47);
+            this.Controls.Add(this.label46);
+            this.Controls.Add(this.label45);
+            this.Controls.Add(this.applyNotificationSettingsToAllButton);
+            this.Controls.Add(this.clearNotificationDisplayButton);
+            this.Controls.Add(this.testNotificationDisplayButton);
+            this.Controls.Add(this.label41);
+            this.Controls.Add(this.label40);
+            this.Controls.Add(this.label39);
+            this.Controls.Add(this.label37);
+            this.Controls.Add(this.label36);
+            this.Controls.Add(this.notificationTypeList);
+            this.Controls.Add(this.notificationGroupBox);
+            this.Controls.Add(this.notificationYOffsetBox);
+            this.Controls.Add(this.notificationXOffsetBox);
+            this.Controls.Add(this.notificationAnchorBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "TabBase";
+            this.Name = "NotificationsTab";
             this.Text = "TabBase";
+            ((System.ComponentModel.ISupportInitialize)(this.notificationDurationBox)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

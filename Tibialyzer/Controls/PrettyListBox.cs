@@ -30,11 +30,57 @@ namespace Tibialyzer {
             this.KeyPress += PrettyListBox_KeyPress;
             this.ItemsChanged += PrettyListBox_ItemsChanged;
             this.GotFocus += PrettyListBox_GotFocus;
+            this.MouseLeave += PrettyListBox_MouseLeave;
+            this.MouseHover += PrettyListBox_MouseHover;
 
             flickerTimer = new System.Timers.Timer(250);
             flickerTimer.Elapsed += FlickerTimer_Elapsed;
         }
 
+        private bool hover = false;
+        private void PrettyListBox_MouseHover(object sender, EventArgs e) {
+            if (!hover) {
+                hover = true;
+                Control parent = (sender as Control).Parent;
+                Point mousePoint = parent.PointToClient(Cursor.Position);
+                int offset = 0;
+                foreach (Control c in UIManager.GetHelpMenu()) {
+                    switch (c.Name) {
+                        case "newitem":
+                            if (ReadOnly && AttemptNewItem == null) {
+                                continue;
+                            }
+                            break;
+                        case "deleteitem":
+                            if (ReadOnly && AttemptDeleteItem == null) {
+                                continue;
+                            }
+                            break;
+                        case "modifyitem":
+                            if (ReadOnly) {
+                                continue;
+                            }
+                            break;
+
+                    }
+                    c.Location = new Point(mousePoint.X + 5, mousePoint.Y + offset * c.Height);
+                    offset += 1;
+                    (sender as Control).Parent.Controls.Add(c);
+                    c.BringToFront();
+                }
+            (sender as Control).Parent.Refresh();
+            }
+        }
+
+        private void PrettyListBox_MouseLeave(object sender, EventArgs e) {
+            if (hover) {
+                hover = false;
+                foreach (Control c in UIManager.GetHelpMenu()) {
+                    (sender as Control).Parent.Controls.Remove(c);
+                }
+            (sender as Control).Parent.Refresh();
+            }
+        }
 
         private void PrettyListBox_GotFocus(object sender, EventArgs e) {
             if (ReadOnly) return;
