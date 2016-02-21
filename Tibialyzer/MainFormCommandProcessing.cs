@@ -35,7 +35,7 @@ namespace Tibialyzer {
     public partial class MainForm : Form {
         public static ParseMemoryResults lastResults;
         public static bool shownException = false;
-        
+
         public bool ScanMemory() {
             ReadMemoryResults readMemoryResults = ReadMemory();
             ParseMemoryResults parseMemoryResults = ParseLogResults(readMemoryResults);
@@ -46,7 +46,7 @@ namespace Tibialyzer {
             if (readMemoryResults != null && readMemoryResults.newAdvances.Count > 0) {
                 if (SettingsManager.getSettingBool("AutoScreenshotAdvance")) {
                     this.Invoke((MethodInvoker)delegate {
-                        saveScreenshot("Advance", takeScreenshot());
+                        ScreenshotManager.saveScreenshot("Advance", ScreenshotManager.takeScreenshot());
                     });
                 }
                 if (SettingsManager.getSettingBool("CopyAdvances")) {
@@ -62,7 +62,7 @@ namespace Tibialyzer {
             if (parseMemoryResults != null && parseMemoryResults.death) {
                 if (SettingsManager.getSettingBool("AutoScreenshotDeath")) {
                     this.Invoke((MethodInvoker)delegate {
-                        saveScreenshot("Death", takeScreenshot());
+                        ScreenshotManager.saveScreenshot("Death", ScreenshotManager.takeScreenshot());
                     });
                 }
                 parseMemoryResults.death = false;
@@ -148,7 +148,7 @@ namespace Tibialyzer {
 
                         if (SettingsManager.getSettingBool("AutoScreenshotItemDrop")) {
                             // Take a screenshot if Tibialyzer is set to take screenshots of valuable loot
-                            Bitmap screenshot = takeScreenshot();
+                            Bitmap screenshot = ScreenshotManager.takeScreenshot();
                             if (screenshot == null) continue;
                             // Add a notification to the screenshot
                             SimpleLootNotification screenshotNotification = new SimpleLootNotification(cr, items);
@@ -167,7 +167,7 @@ namespace Tibialyzer {
                             }
                             notification.Dispose();
                             this.Invoke((MethodInvoker)delegate {
-                                saveScreenshot("Loot", screenshot);
+                                ScreenshotManager.saveScreenshot("Loot", screenshot);
                             });
                         }
                     }

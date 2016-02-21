@@ -554,7 +554,7 @@ namespace Tibialyzer {
                         }
                     }
                 } else if (comp.StartsWith("screenshot" + Constants.CommandSymbol)) {
-                    MainForm.mainForm.saveScreenshot("Screenshot", MainForm.mainForm.takeScreenshot());
+                    ScreenshotManager.saveScreenshot("Screenshot", ScreenshotManager.takeScreenshot());
                 } else {
                     bool found = false;
                     foreach (string city in Constants.cities) {
