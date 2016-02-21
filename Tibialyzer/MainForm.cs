@@ -100,7 +100,7 @@ namespace Tibialyzer {
             prevent_settings_update = false;
 
             if (SettingsManager.getSettingBool("StartAutohotkeyAutomatically")) {
-                startAutoHotkey_Click(null, null);
+                AutoHotkeyManager.StartAutohotkey();
             }
             HuntManager.Initialize();
 
@@ -352,7 +352,7 @@ namespace Tibialyzer {
             CreateRatioDisplay(MainForm.convertUnstackableItemList, convertUnstackableHeader.Location.X + 10, convertUnstackableHeader.Location.Y + convertUnstackableHeader.Size.Height + 8, UpdateConvertRatio, convertLabels);
             CreateRatioDisplay(MainForm.convertStackableItemList, convertStackableHeader.Location.X + 10, convertStackableHeader.Location.Y + convertStackableHeader.Size.Height + 8, UpdateConvertRatio, convertLabels);
             UpdateConvertDisplay();
-            
+
             screenshotPathBox.Text = SettingsManager.getSettingString("ScreenshotPath");
             refreshScreenshots();
 
@@ -742,7 +742,7 @@ namespace Tibialyzer {
             }
         }
 
-        private void ClearWarning(string message) {
+        public void ClearWarning(string message) {
             if (lastWarning == message) {
                 warningImageBox.Visible = false;
             }
@@ -751,9 +751,6 @@ namespace Tibialyzer {
         public static string ToTitle(string str) {
             return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(str);
         }
-
-        /*private void initializeMaps() {
-        }*/
 
         private void ShowSimpleNotification(string title, string text, Image image) {
             notifyIcon1.BalloonTipText = text;
@@ -2327,91 +2324,29 @@ namespace Tibialyzer {
             downloadBar.Visible = false;
         }
 
-        private string modifyKeyString(string value) {
-            if (value.Contains("alt+")) {
-                value = value.Replace("alt+", "!");
-            }
-            if (value.Contains("ctrl+")) {
-                value = value.Replace("ctrl+", "^");
-            }
-            if (value.Contains("shift+")) {
-                value = value.Replace("shift+", "+");
-            }
-            if (value.Contains("command=")) {
-                string[] split = value.Split(new string[] { "command=" }, StringSplitOptions.None);
-                value = split[0] + "SendMessage, 0xC, 0, \"" + split[1] + "\",,Tibialyzer"; //command is send through the WM_SETTEXT message
-            }
-
-            return value;
-        }
-
-        private string autoHotkeyWarning = "Warning: Modified AutoHotkey settings have not taken effect. Restart AutoHotkey to apply changes.";
         private void autoHotkeyGridSettings_TextChanged(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
-            SettingsManager.setSetting("AutoHotkeySettings", autoHotkeyGridSettings.Text.Split('\n').ToList());
-            DisplayWarning(autoHotkeyWarning);
-        }
-
-        private void writeToAutoHotkeyFile() {
-            if (!SettingsManager.settingExists("AutoHotkeySettings")) return;
-            using (StreamWriter writer = new StreamWriter(Constants.AutohotkeyFile)) {
-                writer.WriteLine("#SingleInstance force");
-                if (ProcessManager.IsFlashClient()) {
-                    Process p = ProcessManager.GetTibiaProcess();
-                    writer.WriteLine("SetTitleMatchMode 2");
-                    writer.WriteLine(String.Format("#IfWinActive Tibia Flash Client", p == null ? 0 : p.Id));
-                } else {
-                    writer.WriteLine("#IfWinActive ahk_class TibiaClient");
-                }
-                foreach (string l in SettingsManager.getSetting("AutoHotkeySettings")) {
-                    string line = l.ToLower();
-                    if (line.Length == 0 || line[0] == ';') continue;
-                    if (line.Contains("suspend")) {
-                        // if the key is set to suspend the hotkey layout, we set it up so it sends a message to us
-                        writer.WriteLine(modifyKeyString(line.ToLower().Split(new string[] { "suspend" }, StringSplitOptions.None)[0]));
-                        writer.WriteLine("suspend");
-                        writer.WriteLine("if (A_IsSuspended)");
-                        // message 32 is suspend
-                        writer.WriteLine("PostMessage, 0x317,32,32,,Tibialyzer");
-                        writer.WriteLine("else");
-                        // message 33 is not suspended
-                        writer.WriteLine("PostMessage, 0x317,33,33,,Tibialyzer");
-                        writer.WriteLine("return");
-                    } else {
-                        writer.WriteLine(modifyKeyString(line));
-                    }
-                }
-            }
-        }
-
-        public static void RestartAutoHotkey() {
-            mainForm.startAutoHotkey_Click(null, null);
+            AutoHotkeyManager.UpdateSettings(autoHotkeyGridSettings.Text.Split('\n').ToList());
         }
 
         private void startAutoHotkey_Click(object sender, EventArgs e) {
-            ClearWarning(autoHotkeyWarning);
-            writeToAutoHotkeyFile();
-            System.Diagnostics.Process.Start(Constants.AutohotkeyFile);
+            AutoHotkeyManager.StartAutohotkey();
         }
 
         private void shutdownAutoHotkey_Click(object sender, EventArgs e) {
-            foreach (var process in Process.GetProcessesByName("AutoHotkey")) {
-                process.Kill();
-            }
-            CloseSuspendedWindow();
+            AutoHotkeyManager.ShutdownAutohotkey();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
             if (SettingsManager.getSettingBool("ShutdownAutohotkeyOnExit")) {
-                shutdownAutoHotkey_Click(null, null);
+                AutoHotkeyManager.ShutdownAutohotkey();
             }
             if (fileWriter != null) {
                 fileWriter.Close();
             }
         }
 
-        AutoHotkeySuspendedMode window = null;
         protected override void WndProc(ref Message m) {
             if (m.Msg == 0xC) {
                 // This messages is send by AutoHotkey to execute a command
@@ -2428,76 +2363,19 @@ namespace Tibialyzer {
                 int wParam = m.WParam.ToInt32();
                 if (wParam == 32) {
                     // 32 signifies we have entered suspended mode, so we warn the user with a popup
-                    ShowSuspendedWindow();
+                    AutoHotkeyManager.ShowSuspendedWindow();
                 } else if (wParam == 33) {
                     // 33 signifies we are not suspended, destroy the suspended window (if it exists)
-                    CloseSuspendedWindow();
+                    AutoHotkeyManager.CloseSuspendedWindow();
                 }
             }
             base.WndProc(ref m);
         }
 
-        private object suspendedLock = new object();
-        private void ShowSuspendedWindow(bool alwaysShow = false) {
-            lock (suspendedLock) {
-                if (window != null) {
-                    window.Close();
-                    window = null;
-                }
-                Screen screen;
-                Process tibia_process = ProcessManager.GetTibiaProcess();
-                if (tibia_process == null) {
-                    screen = Screen.FromControl(this);
-                } else {
-                    screen = Screen.FromHandle(tibia_process.MainWindowHandle);
-                }
-                window = new AutoHotkeySuspendedMode(alwaysShow);
-                int position_x = 0, position_y = 0;
-
-                int suspendedX = SettingsManager.getSettingInt("SuspendedNotificationXOffset");
-                int suspendedY = SettingsManager.getSettingInt("SuspendedNotificationYOffset");
-
-                int xOffset = suspendedX < 0 ? 10 : suspendedX;
-                int yOffset = suspendedY < 0 ? 10 : suspendedY;
-                int anchor = SettingsManager.getSettingInt("SuspendedNotificationAnchor");
-                switch (anchor) {
-                    case 3:
-                        position_x = screen.WorkingArea.Right - xOffset - window.Width;
-                        position_y = screen.WorkingArea.Bottom - yOffset - window.Height;
-                        break;
-                    case 2:
-                        position_x = screen.WorkingArea.Left + xOffset;
-                        position_y = screen.WorkingArea.Bottom - yOffset - window.Height;
-                        break;
-                    case 0:
-                        position_x = screen.WorkingArea.Left + xOffset;
-                        position_y = screen.WorkingArea.Top + yOffset;
-                        break;
-                    default:
-                        position_x = screen.WorkingArea.Right - xOffset - window.Width;
-                        position_y = screen.WorkingArea.Top + yOffset;
-                        break;
-                }
-
-                window.StartPosition = FormStartPosition.Manual;
-                window.SetDesktopLocation(position_x, position_y);
-                window.TopMost = true;
-                window.Show();
-            }
-        }
-        private void CloseSuspendedWindow() {
-            lock(suspendedLock) {
-                if (window != null) {
-                    window.Close();
-                    window = null;
-                }
-            }
-        }
-
         private void resetToDefaultButton_Click(object sender, EventArgs e) {
             SettingsManager.ResetSettingsToDefault();
             SettingsManager.SaveSettings();
-            shutdownAutoHotkey_Click(null, null);
+            AutoHotkeyManager.ShutdownAutohotkey();
             initializeSettings();
         }
 
@@ -2573,11 +2451,11 @@ namespace Tibialyzer {
         }
 
         private void suspendedTest_Click(object sender, EventArgs e) {
-            ShowSuspendedWindow(true);
+            AutoHotkeyManager.ShowSuspendedWindow(true);
         }
 
         private void closeSuspendedWindow_Click(object sender, EventArgs e) {
-            CloseSuspendedWindow();
+            AutoHotkeyManager.CloseSuspendedWindow();
         }
 
         private void suspendedAnchor_SelectedIndexChanged(object sender, EventArgs e) {

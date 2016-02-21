@@ -26,7 +26,7 @@ namespace Tibialyzer {
         public string command;
         public string parameters;
     }
-    
+
     public class TibialyzerCommand {
         public string command;
         public TibialyzerCommand(string command) {

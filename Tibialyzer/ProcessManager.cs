@@ -46,7 +46,7 @@ namespace Tibialyzer {
                 }
             }
         }
-        
+
         public static void SelectProcess(Process process) {
             TibiaClientName = process.ProcessName;
             TibiaProcessId = process.Id;

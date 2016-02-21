@@ -90,7 +90,7 @@ namespace Tibialyzer {
             public int expPerHour = 0;
             public bool death = false;
         }
-        
+
         Dictionary<int, List<long>> whitelistedAddresses = new Dictionary<int, List<long>>();
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace Tibialyzer {
             FinalCleanup(results);
             return results;
         }
-        
+
         void saveLog(Hunt h, string logPath) {
             StreamWriter streamWriter = new StreamWriter(logPath);
 
