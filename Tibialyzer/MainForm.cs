@@ -95,11 +95,10 @@ namespace Tibialyzer {
                 AutoHotkeyManager.StartAutohotkey();
             }
             HuntManager.Initialize();
+            ReadMemoryManager.Initialize();
 
             fileWriter = new StreamWriter(Constants.BigLootFile, true);
-
-            ignoreStamp = TimestampManager.createStamp();
-
+        
             browseTypeBox.SelectedIndex = 0;
 
             this.Load += MainForm_Load;

@@ -186,7 +186,7 @@
     <Compile Include="MainFormCommandProcessing.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainFormReadMemory.cs" />
+    <Compile Include="ReadMemoryManager.cs" />
     <Compile Include="NotificationForm.cs">
       <SubType>Form</SubType>
     </Compile>

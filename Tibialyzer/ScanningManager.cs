@@ -26,7 +26,7 @@ namespace Tibialyzer {
 
         private static void ScanMissingChunks(object sender, DoWorkEventArgs e) {
             while (true) {
-                MainForm.ScanMissingChunks();
+                ReadMemoryManager.ScanMissingChunks();
             }
         }
 

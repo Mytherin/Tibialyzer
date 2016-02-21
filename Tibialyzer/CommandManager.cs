@@ -203,7 +203,7 @@ namespace Tibialyzer {
                         }
                     }
                     MainForm.mainForm.refreshHunts();
-                    MainForm.ignoreStamp = TimestampManager.createStamp();
+                    ReadMemoryManager.ignoreStamp = TimestampManager.createStamp();
                 } else if (comp.StartsWith("refresh" + Constants.CommandSymbol)) { //refresh@
                                                                                    // refresh: refresh duration on current form, or if no current form, repeat last command without removing it from stack
                                                                                    /*if (tooltipForm != null && !tooltipForm.IsDisposed) {

@@ -37,7 +37,7 @@ namespace Tibialyzer {
         public static bool shownException = false;
 
         public bool ScanMemory() {
-            ReadMemoryResults readMemoryResults = ReadMemory();
+            ReadMemoryResults readMemoryResults = ReadMemoryManager.ReadMemory();
             ParseMemoryResults parseMemoryResults = Parser.ParseLogResults(readMemoryResults);
 
             if (parseMemoryResults != null) {

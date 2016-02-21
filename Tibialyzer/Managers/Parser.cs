@@ -182,7 +182,7 @@ namespace Tibialyzer {
             }
             if (pluralMap.ContainsKey(itemName)) itemName = pluralMap[itemName];
             if (!StorageManager.itemExists(itemName) && itemName.Length > 0) {
-                string singular = itemName.Substring(0, itemName.Length - 1);
+                string singular = getSingularItem(itemName);
                 if (StorageManager.itemExists(singular)) {
                     itemName = singular;
                 }

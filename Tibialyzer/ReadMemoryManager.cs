@@ -59,7 +59,14 @@ namespace Tibialyzer {
         public bool death = false;
     }
 
-    public partial class MainForm : Form {
+    public static class ReadMemoryManager {
+        private static bool flashClient = true;
+        public static int ignoreStamp = 0;
+
+        public static void Initialize() {
+            ignoreStamp = TimestampManager.createStamp();
+        }
+
         //based on http://www.codeproject.com/Articles/716227/Csharp-How-to-Scan-a-Process-Memory
         const int PROCESS_QUERY_INFORMATION = 0x0400;
         const int MEM_COMMIT = 0x00001000;
@@ -173,7 +180,7 @@ namespace Tibialyzer {
             }
         }
 
-        private ReadMemoryResults ReadMemory() {
+        public static ReadMemoryResults ReadMemory() {
             ReadMemoryResults results = null;
             SYSTEM_INFO sys_info = new SYSTEM_INFO();
             GetSystemInfo(out sys_info);
@@ -238,7 +245,7 @@ namespace Tibialyzer {
             return results;
         }
 
-        private void FinalCleanup(ReadMemoryResults res) {
+        private static void FinalCleanup(ReadMemoryResults res) {
             foreach (KeyValuePair<string, List<Tuple<string, string>>> kvp in res.commands) {
                 string time = kvp.Key;
                 if (res.itemDrops.ContainsKey(time)) {
@@ -251,9 +258,7 @@ namespace Tibialyzer {
             }
         }
 
-        private static bool flashClient = true;
-        public static int ignoreStamp = 0;
-        private bool SearchChunk(IEnumerable<string> chunk, ReadMemoryResults res) {
+        private static bool SearchChunk(IEnumerable<string> chunk, ReadMemoryResults res) {
             List<int> stamps = TimestampManager.getLatestStamps(3, ignoreStamp);
             bool chunksExist = false;
             foreach (string it in chunk) {

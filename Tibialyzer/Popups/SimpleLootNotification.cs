@@ -80,18 +80,6 @@ namespace Tibialyzer {
                     picture_box.TabStop = false;
                     picture_box.Click += openItem_Click;
                     if (item.stackable) {
-                        /*
-                        Bitmap image = LootDropForm.GetStackImage(item.image, mitems, item);
-                        Graphics gr = Graphics.FromImage(image);
-                        int numbers = (int)Math.Floor(Math.Log(mitems, 10)) + 1;
-                        int xoffset = 1, logamount = mitems;
-                        for (int i = 0; i < numbers; i++) {
-                            int imagenr = logamount % 10;
-                            xoffset = xoffset + MainForm.image_numbers[imagenr].Width + 1;
-                            gr.DrawImage(MainForm.image_numbers[imagenr],
-                                new Point(image.Width - xoffset, image.Height - MainForm.image_numbers[imagenr].Height - 3));
-                            logamount /= 10;
-                        }*/
                         picture_box.Image = LootDropForm.DrawCountOnItem(item, mitems);
                     } else {
                         picture_box.Image = item.GetImage();
