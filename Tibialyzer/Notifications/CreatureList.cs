@@ -114,13 +114,13 @@ namespace Tibialyzer {
             }
             int base_y = this.listTitle.Location.Y + this.listTitle.Height + 10;
             int newWidth = 352;
-            MainForm.PageInfo pageInfo = new MainForm.PageInfo(false, false);
+            PageInfo pageInfo = new PageInfo(false, false);
 
             int y;
             if (displayType == DisplayType.Details) {
-                y = MainForm.DisplayCreatureAttributeList(this.Controls, objects, 10, base_y, out newWidth, null, createdControls, currentPage, 20, pageInfo, null, null, sortHeader, sortedHeader, desc, null, null, addConditionalAttributes);
+                y = UIManager.DisplayCreatureAttributeList(this.Controls, objects, 10, base_y, out newWidth, null, createdControls, currentPage, 20, pageInfo, null, null, sortHeader, sortedHeader, desc, null, null, addConditionalAttributes);
             } else {
-                y = MainForm.DisplayCreatureList(this.Controls, objects, 10, base_y, 344, 4, null, 1, createdControls, currentPage, 600, pageInfo, currentDisplay);
+                y = UIManager.DisplayCreatureList(this.Controls, objects, 10, base_y, 344, 4, null, 1, createdControls, currentPage, 600, pageInfo, currentDisplay);
                 if (currentDisplay >= 0) {
                     currentDisplay = -1;
                     currentPage = pageInfo.currentPage;

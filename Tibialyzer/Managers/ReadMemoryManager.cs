@@ -105,6 +105,8 @@ namespace Tibialyzer {
 
         private static Dictionary<int, List<long>> whitelistedAddresses = new Dictionary<int, List<long>>();
 
+        private static bool initialScan = true;
+
         /// <summary>
         /// Scan the memory for any chunks that are missing from the whitelist table
         /// </summary>
@@ -167,7 +169,11 @@ namespace Tibialyzer {
                                 }
 
                                 // performance throttling sleep after every scan (depending on scanSpeed setting)
-                                Thread.Sleep(10 + scanSpeed);
+                                if (!initialScan) {
+                                    Thread.Sleep(10 + scanSpeed);
+                                } else if (scanSpeed > 50) {
+                                    Thread.Sleep(scanSpeed - 50);
+                                }
                             }
                         }
                         // move to the next memory chunk
@@ -178,6 +184,7 @@ namespace Tibialyzer {
                     return;
                 }
             }
+            initialScan = false;
         }
 
         public static ReadMemoryResults ReadMemory() {

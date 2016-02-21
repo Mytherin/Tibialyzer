@@ -23,7 +23,7 @@ namespace Tibialyzer {
 
 
         public void InitializeTooltips() {
-            ToolTip tooltip = MainForm.CreateTooltip();
+            ToolTip tooltip = UIManager.CreateTooltip();
 
             tooltip.SetToolTip(setActiveHuntButton, "Sets the currently selected hunt as the active hunt. Any creatures killed will be added to the currently active hunt. ");
             tooltip.SetToolTip(displayAllCreaturesBox, "In the loot@ command, only creatures specified in the box below are shown if this is selected.");
@@ -125,7 +125,7 @@ namespace Tibialyzer {
                 if (magnification > maxMagnification) magnification = maxMagnification;
             }
             creatureImagePanel.Controls.Clear();
-            MainForm.DisplayCreatureList(creatureImagePanel.Controls, creatureObjects, 0, 0, creatureImagePanel.Width, spacing, null, magnification);
+            UIManager.DisplayCreatureList(creatureImagePanel.Controls, creatureObjects, 0, 0, creatureImagePanel.Width, spacing, null, magnification);
         }
         private Hunt getSelectedHunt() {
             if (huntList.SelectedIndex < 0) return null;

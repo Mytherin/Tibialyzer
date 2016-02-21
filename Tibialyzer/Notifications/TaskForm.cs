@@ -303,7 +303,7 @@ namespace Tibialyzer {
                 }
             }
             int newWidth;
-            int y = MainForm.DisplayCreatureAttributeList(this.Controls, taskCreatures, 5, baseHeight, out newWidth, null, createdControls);
+            int y = UIManager.DisplayCreatureAttributeList(this.Controls, taskCreatures, 5, baseHeight, out newWidth, null, createdControls);
             this.Size = new System.Drawing.Size(Math.Max(newWidth, baseWidth), baseHeight + y);
         }
 

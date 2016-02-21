@@ -34,7 +34,7 @@ namespace Tibialyzer {
         }
 
         public void InitializeTooltips() {
-            ToolTip tooltip = MainForm.CreateTooltip();
+            ToolTip tooltip = UIManager.CreateTooltip();
 
             tooltip.SetToolTip(downloadAutoHotkeyButton, "Download AutoHotkey to the temporary directory and launches an installer. Complete the installer to install AutoHotkey.");
         }

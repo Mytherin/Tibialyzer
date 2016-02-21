@@ -37,7 +37,7 @@ namespace Tibialyzer {
                 c.Dispose();
             }
             controls.Clear();
-            MainForm.DisplayCreatureAttributeList(controls, tibiaObjects, 0, 10, out maxWidth, null, null, 0, maxItems, null, null, null, eventHandler, sortedHeader, desc);
+            UIManager.DisplayCreatureAttributeList(controls, tibiaObjects, 0, 10, out maxWidth, null, null, 0, maxItems, null, null, null, eventHandler, sortedHeader, desc);
             NotificationForm.ResumeDrawing(suspend);
             this.ResumeLayout(false);
         }

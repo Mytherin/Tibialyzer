@@ -29,7 +29,7 @@ namespace Tibialyzer {
         }
 
         public void InitializeTooltips() {
-            ToolTip tooltip = MainForm.CreateTooltip();
+            ToolTip tooltip = UIManager.CreateTooltip();
 
             tooltip.SetToolTip(lookModeCheckbox, "When you look (shift+click) at an item, creature or npc in-game, Tibialyzer will automatically open a box displaying information about that object.");
             tooltip.SetToolTip(outfitGenderCheckbox, "Outfit gender displayed in outfit@ searches.");

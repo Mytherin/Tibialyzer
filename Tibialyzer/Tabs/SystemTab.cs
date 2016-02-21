@@ -45,7 +45,7 @@ namespace Tibialyzer {
         }
 
         public void InitializeTooltips() {
-            ToolTip tooltip = MainForm.CreateTooltip();
+            ToolTip tooltip = UIManager.CreateTooltip();
 
             tooltip.SetToolTip(selectUpgradeTibialyzerButton, "Import settings from a previous Tibialyzer. Select the directory in which the previous Tibialyzer is located.");
         }

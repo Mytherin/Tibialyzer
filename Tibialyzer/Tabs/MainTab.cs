@@ -33,7 +33,7 @@ namespace Tibialyzer {
         }
 
         public void InitializeTooltips() {
-            ToolTip tooltip = MainForm.CreateTooltip();
+            ToolTip tooltip = UIManager.CreateTooltip();
 
             tooltip.SetToolTip(saveDamageImageButton, "Saves an image of the damage chart (damage@) to a file.");
             tooltip.SetToolTip(saveLootImageButton, "Saves an image of the loot command (loot@) to a file.");

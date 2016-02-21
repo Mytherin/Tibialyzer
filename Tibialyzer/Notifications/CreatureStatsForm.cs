@@ -193,7 +193,7 @@ namespace Tibialyzer {
             if (involvedTasks.Count > 0) {
                 int baseY = this.Size.Height;
                 int newWidth = 0;
-                int y = MainForm.DisplayCreatureAttributeList(Controls, involvedTasks.ToList<TibiaObject>(), 10, baseY, out newWidth);
+                int y = UIManager.DisplayCreatureAttributeList(Controls, involvedTasks.ToList<TibiaObject>(), 10, baseY, out newWidth);
                 this.Size = new Size(Math.Max(newWidth, Size.Width), baseY + y);
             }
 

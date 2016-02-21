@@ -303,6 +303,7 @@
       <DependentUpon>TabBase.cs</DependentUpon>
     </Compile>
     <Compile Include="Tabs\TabInterface.cs" />
+    <Compile Include="Managers\UIManager.cs" />
     <EmbeddedResource Include="Popups\AutoHotkeySuspendedMode.resx">
       <DependentUpon>AutoHotkeySuspendedMode.cs</DependentUpon>
     </EmbeddedResource>

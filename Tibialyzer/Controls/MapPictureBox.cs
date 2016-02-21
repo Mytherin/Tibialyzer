@@ -136,7 +136,7 @@ namespace Tibialyzer {
                             points.Add(new Point(convertx(node.point.X), converty(node.point.Y)));
                             node = node.previous;
                         }
-                        gr.DrawLines(MainForm.pathPen, points.ToArray());
+                        gr.DrawLines(UIManager.pathPen, points.ToArray());
                     }
                 }
 

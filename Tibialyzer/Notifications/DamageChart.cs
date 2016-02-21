@@ -133,7 +133,7 @@ namespace Tibialyzer {
                 this.mChart.Series[0].Points.Clear();
                 this.mChart.Visible = false;
                 int newWidth = 0;
-                int y = MainForm.DisplayCreatureAttributeList(Controls, damageDealt.ToList<TibiaObject>(), 5, 25, out newWidth, null, controlList, 0, 20, null, null, null, sortFunction, sortedHeader, desc);
+                int y = UIManager.DisplayCreatureAttributeList(Controls, damageDealt.ToList<TibiaObject>(), 5, 25, out newWidth, null, controlList, 0, 20, null, null, null, sortFunction, sortedHeader, desc);
 
                 this.Size = new Size(Math.Max(startX, newWidth), Math.Max(startY, 25 + y));
             }

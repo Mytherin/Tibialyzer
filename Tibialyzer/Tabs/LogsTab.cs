@@ -24,7 +24,7 @@ namespace Tibialyzer {
             logMessageCollection.DrawMode = DrawMode.OwnerDrawVariable;
         }
         public void InitializeTooltips() {
-            ToolTip tooltip = MainForm.CreateTooltip();
+            ToolTip tooltip = UIManager.CreateTooltip();
 
             tooltip.SetToolTip(clearLog, "WARNING: Clears the active hunt, removing all loot from it.");
             tooltip.SetToolTip(saveLogToFileButton, "Saves all the log messages of the currently selected hunt to a file.");

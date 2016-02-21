@@ -211,7 +211,7 @@ namespace Tibialyzer {
             base.NotificationInitialize();
 
             this.cityNameLabel.Text = city.name.ToTitle();
-            mapBox = MainForm.DrawRoute(city.location, new Coordinate(-1,-1,mapSize.Width), mapSize, mapSize, mapSize, new List<Color>(), new List<Target>());
+            mapBox = UIManager.DrawRoute(city.location, new Coordinate(-1,-1,mapSize.Width), mapSize, mapSize, mapSize, new List<Color>(), new List<Target>());
             mapBox.Location = new Point(5, cityNameLabel.Location.Y + cityNameLabel.Height);
             mapBox.MapUpdated += ResetTimer;
             this.Controls.Add(mapBox);

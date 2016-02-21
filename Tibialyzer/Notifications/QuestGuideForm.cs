@@ -392,7 +392,7 @@ namespace Tibialyzer {
                 targetList = null;
             }
 
-            MapPictureBox map = MainForm.DrawRoute(begin, end, variableSize ? new Size(0, 0) : new Size(mapSize, mapSize), minSize, new Size(mapSize, mapSize), additionalWalkableColors, targetList);
+            MapPictureBox map = UIManager.DrawRoute(begin, end, variableSize ? new Size(0, 0) : new Size(mapSize, mapSize), minSize, new Size(mapSize, mapSize), additionalWalkableColors, targetList);
             width = map.Width + 5;
             if (!noText) {
                 map.Location = new Point(this.Size.Width - (map.Width + 5), y);

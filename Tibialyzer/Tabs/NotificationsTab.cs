@@ -29,7 +29,7 @@ namespace Tibialyzer {
         }
 
         public void InitializeTooltips() {
-            ToolTip tooltip = MainForm.CreateTooltip();
+            ToolTip tooltip = UIManager.CreateTooltip();
 
             tooltip.SetToolTip(notificationAnchorBox, "The screen anchor to which the offsets should be applied.");
             tooltip.SetToolTip(notificationGroupBox, "The display group to which this notification type belongs. Only one notification can be active per group.");

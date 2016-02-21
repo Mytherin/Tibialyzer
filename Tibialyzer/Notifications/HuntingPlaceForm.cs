@@ -328,7 +328,7 @@ namespace Tibialyzer {
             baseY = this.creatureLabel.Location.Y + this.creatureLabel.Height + 5;
 
 
-            //y = MainForm.DisplayCreatureList(this.Controls, creatures, 10, base_y, this.Size.Width, 4, null, 0.8f);
+            //y = UIManager.DisplayCreatureList(this.Controls, creatures, 10, base_y, this.Size.Width, 4, null, 0.8f);
 
             Font f = StyleManager.FontList[0];
             for (int i = 0; i < StyleManager.FontList.Count; i++) {
@@ -385,9 +385,9 @@ namespace Tibialyzer {
                 creatures.Add(cr);
             }
 
-            MainForm.PageInfo pageInfo = new MainForm.PageInfo(false, false);
+            PageInfo pageInfo = new PageInfo(false, false);
             int newWidth;
-            int y = baseY + MainForm.DisplayCreatureAttributeList(this.Controls, creatures, 10, baseY, out newWidth, null, creatureControls, currentPage, 10, pageInfo, null, null, sortFunction, sortedHeader, desc);
+            int y = baseY + UIManager.DisplayCreatureAttributeList(this.Controls, creatures, 10, baseY, out newWidth, null, creatureControls, currentPage, 10, pageInfo, null, null, sortFunction, sortedHeader, desc);
 
             if (pageInfo.prevPage || pageInfo.nextPage) {
                 if (pageInfo.prevPage) {

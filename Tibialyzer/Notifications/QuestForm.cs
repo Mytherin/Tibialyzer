@@ -253,7 +253,7 @@ namespace Tibialyzer {
                     List<TibiaObject> itemList = requirements.Select(o => o.Item2).ToList<TibiaObject>();
 
                     List<Control> itemControls = new List<Control>();
-                    y = y + MainForm.DisplayCreatureList(this.Controls, itemList, 10, y, this.Size.Width - 10, 1, null, 1, itemControls);
+                    y = y + UIManager.DisplayCreatureList(this.Controls, itemList, 10, y, this.Size.Width - 10, 1, null, 1, itemControls);
                     int itemnr = 0;
                     foreach (Control control in itemControls) {
                         control.BackgroundImage = StyleManager.GetImage("item_background.png");
@@ -313,7 +313,7 @@ namespace Tibialyzer {
                 y += 25;
                 if (rewards.Count > 0) {
                     List<Control> itemControls = new List<Control>();
-                    y = y + MainForm.DisplayCreatureList(this.Controls, rewards, 10, y, this.Size.Width - 10, 1, null, 1, itemControls);
+                    y = y + UIManager.DisplayCreatureList(this.Controls, rewards, 10, y, this.Size.Width - 10, 1, null, 1, itemControls);
                 }
                 if (quest.rewardOutfits.Count > 0) {
                     List<Control> outfitControls = new List<Control>();
@@ -324,7 +324,7 @@ namespace Tibialyzer {
                         rewardOutfits.Add(outfit);
                     }
 
-                    y = y + MainForm.DisplayCreatureList(this.Controls, rewardOutfits, 10, y, this.Size.Width - 10, 4, null, 1, outfitControls);
+                    y = y + UIManager.DisplayCreatureList(this.Controls, rewardOutfits, 10, y, this.Size.Width - 10, 4, null, 1, outfitControls);
                 }
             }
             this.Size = new Size(this.Size.Width, y + 20);
