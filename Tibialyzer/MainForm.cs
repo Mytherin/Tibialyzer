@@ -60,6 +60,8 @@ namespace Tibialyzer {
 
             LootDatabaseManager.LootChanged += NotificationManager.UpdateLootDisplay;
             LootDatabaseManager.LootChanged += UpdateLogDisplay;
+            GlobalDataManager.ExperienceChanged += NotificationManager.UpdateExperienceDisplay;
+            GlobalDataManager.DamageChanged += NotificationManager.UpdateDamageDisplay;
 
             if (!File.Exists(Constants.DatabaseFile)) {
                 ExitWithError("Fatal Error", String.Format("Could not find database file {0}.", Constants.DatabaseFile));
@@ -134,7 +136,7 @@ namespace Tibialyzer {
             scan_tooltip.SetToolTip(this.loadTimerImage, text);
             this.loadTimerImage.Enabled = enabled;
         }
-        
+
         public void UpdateLogDisplay() {
             if (logButton.Enabled == false) {
                 refreshHuntLog(getSelectedHunt());

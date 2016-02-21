@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 
 namespace Tibialyzer {
     class GlobalDataManager {
-        class DamageData {
+        public class DamageData {
             public Dictionary<string, int> damagePerMinute;
             public int totalDamage;
         }
+
+        public delegate void DataChangedHandler();
+        public static event DataChangedHandler ExperienceChanged;
+        public static event DataChangedHandler DamageChanged;
 
         private static Dictionary<string, List<string>> totalItemDrops = new Dictionary<string, List<string>>();
         private static Dictionary<string, List<Tuple<string, string>>> totalCommands = new Dictionary<string, List<Tuple<string, string>>>();
@@ -20,6 +24,12 @@ namespace Tibialyzer {
         private static HashSet<string> eventMessages = new HashSet<string>();
         private static HashSet<string> levelAdvances = new HashSet<string>();
         private static Dictionary<string, List<string>> totalLooks = new Dictionary<string, List<string>>();
+
+        public static void UpdateDamage() {
+            if (DamageChanged != null) {
+                DamageChanged();
+            }
+        }
 
         public static int UpdateExperience(Dictionary<string, int> newExperience) {
             int exp = 0;
@@ -35,6 +45,9 @@ namespace Tibialyzer {
                         totalExperienceResults[time] = experience;
                     }
                 }
+            }
+            if (exp > 0 && ExperienceChanged != null) {
+                ExperienceChanged();
             }
             return exp;
         }
@@ -69,7 +82,8 @@ namespace Tibialyzer {
             return newDeath;
         }
 
-        public static void UpdateDamageInformation(Dictionary<string, Dictionary<string, int>> damageDealt) {
+        public static bool UpdateDamageInformation(Dictionary<string, Dictionary<string, int>> damageDealt) {
+            bool newDamage = false;
             lock (totalDamageResults) {
                 foreach (KeyValuePair<string, Dictionary<string, int>> kvp in damageDealt) {
                     string player = kvp.Key;
@@ -83,6 +97,7 @@ namespace Tibialyzer {
                         if (!data.damagePerMinute.ContainsKey(timestamp)) {
                             data.damagePerMinute.Add(timestamp, damage);
                             data.totalDamage += damage;
+                            newDamage = true;
                         }
                         // if it does exist, select the biggest of the two
                         // the reason we select the biggest of the two is:
@@ -92,10 +107,12 @@ namespace Tibialyzer {
                         else if (data.damagePerMinute[timestamp] < damage) {
                             data.totalDamage += damage - data.damagePerMinute[timestamp];
                             data.damagePerMinute[timestamp] = damage;
+                            newDamage = true;
                         }
                     }
                 }
             }
+            return newDamage;
         }
 
         public static void GenerateDamageResults(Dictionary<string, DamageResult> damageResults, List<string> times) {
@@ -236,6 +253,15 @@ namespace Tibialyzer {
                     foreach (string message in totalLooks[t]) {
                         yield return message;
                     }
+                }
+            }
+            yield break;
+        }
+
+        public static IEnumerable<KeyValuePair<string, int>> GetExperience() {
+            lock(totalExperienceResults) {
+                foreach(KeyValuePair<string, int> kvp in totalExperienceResults) {
+                    yield return kvp;
                 }
             }
             yield break;

@@ -46,7 +46,7 @@ namespace Tibialyzer {
             if (res == null) return null;
             ParseMemoryResults o = new ParseMemoryResults();
             // first we add the new parsed damage logs to the totalDamageResults
-            GlobalDataManager.UpdateDamageInformation(res.damageDealt);
+            o.newDamage = GlobalDataManager.UpdateDamageInformation(res.damageDealt);
             // now that we have updated the damage results, fill in the DPS meter, we use damage from the last 15 minutes for this
             List<string> times = TimestampManager.getLatestTimes(15);
             GlobalDataManager.GenerateDamageResults(o.damagePerSecond, times);

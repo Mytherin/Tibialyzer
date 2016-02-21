@@ -140,6 +140,21 @@ namespace Tibialyzer {
             refreshTimer();
         }
 
+        public void UpdateDamage() {
+            try {
+                this.dps = ScanningManager.lastResults.damagePerSecond;
+                damageDealt = GenerateDamageInformation(dps, filter);
+                for(int i = 0; i < damageDealt.Count; i++) {
+                    damageDealt[i].color = Constants.ChartColors[i % Constants.ChartColors.Count];
+                }
+                this.Invoke((MethodInvoker)delegate {
+                    refreshDamageChart();
+                });
+            } catch {
+
+            }
+        }
+
         private string sortedHeader = "Total Damage";
         private bool desc = true;
         public void sortFunction(object sender, EventArgs e) {

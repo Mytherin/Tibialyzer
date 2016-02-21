@@ -57,6 +57,7 @@ namespace Tibialyzer {
         public List<Tuple<Event, string>> newEventMessages = new List<Tuple<Event, string>>();
         public int expPerHour = 0;
         public bool death = false;
+        public bool newDamage = false;
     }
 
     public static class ReadMemoryManager {

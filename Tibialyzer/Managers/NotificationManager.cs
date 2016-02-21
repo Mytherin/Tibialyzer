@@ -187,6 +187,13 @@ namespace Tibialyzer {
             ShowNotification(f, comm, screenshot_path);
         }
 
+        public static void ShowExperienceChartNotification(string comm) {
+            ExperienceChart f = new ExperienceChart();
+
+            ShowNotification(f, comm);
+        }
+
+
         public static void ShowLootDrops(Hunt h, string comm, string screenshot_path) {
             LootDropForm ldf = new LootDropForm(comm);
             ldf.hunt = h;
@@ -274,6 +281,22 @@ namespace Tibialyzer {
             for (int i = 0; i < NotificationFormGroups.Length; i++) {
                 if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is LootDropForm) {
                     (NotificationFormGroups[i] as LootDropForm).UpdateLoot();
+                }
+            }
+        }
+
+        public static void UpdateExperienceDisplay() {
+            for (int i = 0; i < NotificationFormGroups.Length; i++) {
+                if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is ExperienceChart) {
+                    (NotificationFormGroups[i] as ExperienceChart).UpdateExperience();
+                }
+            }
+        }
+
+        public static void UpdateDamageDisplay() {
+            for (int i = 0; i < NotificationFormGroups.Length; i++) {
+                if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is DamageChart) {
+                    (NotificationFormGroups[i] as DamageChart).UpdateDamage();
                 }
             }
         }

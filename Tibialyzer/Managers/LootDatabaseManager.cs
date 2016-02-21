@@ -18,7 +18,9 @@ namespace Tibialyzer {
         }
 
         public static void UpdateLoot() {
-            LootChanged();
+            if (LootChanged != null) {
+                LootChanged();
+            }
         }
 
         public static void CreateHuntTable(Hunt hunt) {

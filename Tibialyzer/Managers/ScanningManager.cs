@@ -85,7 +85,11 @@ namespace Tibialyzer {
 
             if (parseMemoryResults != null) {
                 lastResults = parseMemoryResults;
+                if (parseMemoryResults.newDamage) {
+                    GlobalDataManager.UpdateDamage();
+                }
             }
+
             if (readMemoryResults != null && readMemoryResults.newAdvances.Count > 0) {
                 if (SettingsManager.getSettingBool("AutoScreenshotAdvance")) {
                     MainForm.mainForm.Invoke((MethodInvoker)delegate {

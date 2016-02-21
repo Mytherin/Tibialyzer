@@ -119,6 +119,10 @@ namespace Tibialyzer {
                         }
                         NotificationManager.ShowDamageMeter(parseMemoryResults.damagePerSecond, command, parameter, screenshot_path);
                     }
+                } else if (comp.StartsWith("experience" + Constants.CommandSymbol)) { //experience@
+                    if (parseMemoryResults != null) {
+                        NotificationManager.ShowExperienceChartNotification(command);
+                    }
                 } else if (comp.StartsWith("exp" + Constants.CommandSymbol)) { //exp@
                     string title = "Experience";
                     string text = "Currently gaining " + (parseMemoryResults == null ? "unknown" : ((int)parseMemoryResults.expPerHour).ToString()) + " experience an hour.";

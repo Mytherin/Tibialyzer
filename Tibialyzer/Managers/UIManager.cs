@@ -113,7 +113,7 @@ namespace Tibialyzer {
 
             return pictureBox;
         }
-        
+
         enum HeaderType { Numeric = 0, String = 1 };
         private static IComparable CoerceTypes(IComparable value, HeaderType type) {
             if (type == HeaderType.Numeric) {
@@ -480,7 +480,7 @@ namespace Tibialyzer {
         private static void executeNameCommand(object sender, EventArgs e) {
             CommandManager.ExecuteCommand((sender as Control).Name);
         }
-        
+
         public static ToolTip CreateTooltip() {
             ToolTip tooltip = new ToolTip();
             tooltip.AutoPopDelay = 60000;
