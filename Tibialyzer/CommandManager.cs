@@ -76,7 +76,7 @@ namespace Tibialyzer {
                 } else if (comp.StartsWith("close" + Constants.CommandSymbol)) { //close@
                                                                                  // close all notifications
                     NotificationManager.ClearNotifications();
-                    MainForm.mainForm.ClearSimpleNotifications();
+                    PopupManager.ClearSimpleNotifications();
                 } else if (comp.StartsWith("delete" + Constants.CommandSymbol)) { //delete@
                     string parameter = command.Split(Constants.CommandSymbol)[1].Trim().ToLower();
                     int killCount;
@@ -127,9 +127,9 @@ namespace Tibialyzer {
                     string text = "Currently gaining " + (parseMemoryResults == null ? "unknown" : ((int)parseMemoryResults.expPerHour).ToString()) + " experience an hour.";
                     Image image = StyleManager.GetImage("tibia.png");
                     if (!SettingsManager.getSettingBool("UseRichNotificationType")) {
-                        MainForm.mainForm.ShowSimpleNotification(title, text, image);
+                        PopupManager.ShowSimpleNotification(title, text, image);
                     } else {
-                        MainForm.mainForm.ShowSimpleNotification(new SimpleTextNotification(null, title, text));
+                        PopupManager.ShowSimpleNotification(new SimpleTextNotification(null, title, text));
                     }
                 } else if (comp.StartsWith("loot" + Constants.CommandSymbol)) { //loot@
                     string[] splits = command.Split(Constants.CommandSymbol);

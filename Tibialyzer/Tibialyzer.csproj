@@ -84,6 +84,7 @@
     <Compile Include="AutoHotkeyManager.cs" />
     <Compile Include="CommandManager.cs" />
     <Compile Include="NotificationManager.cs" />
+    <Compile Include="PopupManager.cs" />
     <Compile Include="Popups\AutoHotkeySuspendedMode.cs">
       <SubType>Form</SubType>
     </Compile>

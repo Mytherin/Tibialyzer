@@ -90,9 +90,9 @@ namespace Tibialyzer {
                             Creature cr = StorageManager.getCreature(ev.creatureid);
                             this.Invoke((MethodInvoker)delegate {
                                 if (!SettingsManager.getSettingBool("UseRichNotificationType")) {
-                                    ShowSimpleNotification("Event in " + ev.location, tpl.Item2, cr.image);
+                                    PopupManager.ShowSimpleNotification("Event in " + ev.location, tpl.Item2, cr.image);
                                 } else {
-                                    ShowSimpleNotification(new SimpleTextNotification(cr.image, "Event in " + ev.location, tpl.Item2));
+                                    PopupManager.ShowSimpleNotification(new SimpleTextNotification(cr.image, "Event in " + ev.location, tpl.Item2));
                                 }
                             });
                         }
@@ -133,9 +133,9 @@ namespace Tibialyzer {
                 this.Invoke((MethodInvoker)delegate {
                     if (!CommandManager.ExecuteCommand(command, parseMemoryResults) && SettingsManager.getSettingBool("EnableUnrecognizedNotifications")) {
                         if (!SettingsManager.getSettingBool("UseRichNotificationType")) {
-                            ShowSimpleNotification("Unrecognized command", "Unrecognized command: " + command, StyleManager.GetImage("tibia.png"));
+                            PopupManager.ShowSimpleNotification("Unrecognized command", "Unrecognized command: " + command, StyleManager.GetImage("tibia.png"));
                         } else {
-                            ShowSimpleNotification(new SimpleTextNotification(null, "Unrecognized command", "Unrecognized command: " + command));
+                            PopupManager.ShowSimpleNotification(new SimpleTextNotification(null, "Unrecognized command", "Unrecognized command: " + command));
                         }
                     }
                 });
@@ -153,10 +153,10 @@ namespace Tibialyzer {
                     if (showNotification) {
                         if (!SettingsManager.getSettingBool("UseRichNotificationType")) {
                             Console.WriteLine("Rich Notification");
-                            ShowSimpleNotification(cr.displayname, cr.displayname + " dropped a valuable item.", cr.image);
+                            PopupManager.ShowSimpleNotification(cr.displayname, cr.displayname + " dropped a valuable item.", cr.image);
                         } else {
                             this.Invoke((MethodInvoker)delegate {
-                                ShowSimpleNotification(new SimpleLootNotification(cr, items));
+                                PopupManager.ShowSimpleNotification(new SimpleLootNotification(cr, items));
                             });
                         }
 
