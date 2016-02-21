@@ -659,7 +659,7 @@ namespace Tibialyzer {
             return showNotification;
         }
 
-        private bool ScanMemory() {
+        public bool ScanMemory() {
             ReadMemoryResults readMemoryResults = ReadMemory();
             ParseMemoryResults parseMemoryResults = ParseLogResults(readMemoryResults);
 

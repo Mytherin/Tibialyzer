@@ -91,12 +91,12 @@ namespace Tibialyzer {
             public bool death = false;
         }
 
-        Dictionary<int, List<long>> whitelistedAddresses = new Dictionary<int, List<long>>();
+        private static Dictionary<int, List<long>> whitelistedAddresses = new Dictionary<int, List<long>>();
 
         /// <summary>
         /// Scan the memory for any chunks that are missing from the whitelist table
         /// </summary>
-        private void ScanMissingChunks() {
+        public static void ScanMissingChunks() {
             SYSTEM_INFO sys_info = new SYSTEM_INFO();
             GetSystemInfo(out sys_info);
 
@@ -514,8 +514,8 @@ namespace Tibialyzer {
             }
         }
 
-        private bool flashClient = true;
-        private int ignoreStamp = 0;
+        private static bool flashClient = true;
+        private static int ignoreStamp = 0;
         private bool SearchChunk(IEnumerable<string> chunk, ReadMemoryResults res) {
             List<int> stamps = TimestampManager.getLatestStamps(3, ignoreStamp);
             bool chunksExist = false;

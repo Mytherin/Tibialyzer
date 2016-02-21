@@ -49,9 +49,6 @@ namespace Tibialyzer {
 
         public static StreamWriter fileWriter = null;
 
-        enum ScanningState { Scanning, NoTibia, Stuck };
-        ScanningState current_state;
-
         public static void ExitWithError(string title, string text, bool exit = true) {
             MessageBox.Show(mainForm, text, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
             if (exit) {
@@ -114,13 +111,7 @@ namespace Tibialyzer {
 
             tibialyzerLogo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
 
-            BackgroundWorker bw = new BackgroundWorker();
-            bw.DoWork += bw_DoWork;
-            bw.RunWorkerAsync();
-
-            BackgroundWorker bwMissingChunks = new BackgroundWorker();
-            bwMissingChunks.DoWork += BwMissingChunks_DoWork;
-            bwMissingChunks.RunWorkerAsync();
+            ScanningManager.StartScanning();
 
             MaximumNotificationDuration = notificationDurationBox.Maximum;
             scan_tooltip.AutoPopDelay = 60000;
@@ -130,7 +121,6 @@ namespace Tibialyzer {
             scan_tooltip.UseFading = true;
 
             this.loadTimerImage.Image = StyleManager.GetImage("scanningbar-red.gif");
-            this.current_state = ScanningState.NoTibia;
             this.loadTimerImage.Enabled = true;
             scan_tooltip.SetToolTip(this.loadTimerImage, "No Tibia Client Found...");
         }
@@ -157,6 +147,12 @@ namespace Tibialyzer {
                 cp.ExStyle |= 0x02000000;  // Turn on WS_EX_COMPOSITED
                 return cp;
             }
+        }
+
+        public void SetScanningImage(string image, string text, bool enabled) {
+            this.loadTimerImage.Image = StyleManager.GetImage(image);
+            scan_tooltip.SetToolTip(this.loadTimerImage, text);
+            this.loadTimerImage.Enabled = enabled;
         }
 
         private void initializeTooltips() {
@@ -673,66 +669,7 @@ namespace Tibialyzer {
                 }
             }
         }
-
-        System.Timers.Timer circleTimer = null;
-        void bw_DoWork(object sender, DoWorkEventArgs e) {
-            while (true) {
-                if (circleTimer == null) {
-                    circleTimer = new System.Timers.Timer(10000);
-                    circleTimer.Elapsed += circleTimer_Elapsed;
-                    circleTimer.Enabled = true;
-                }
-                bool success = false;
-                try {
-                    success = ScanMemory();
-                } catch (Exception ex) {
-                    this.BeginInvoke((MethodInvoker)delegate {
-                        DisplayWarning(String.Format("Database Scan Error (Non-Fatal): {0}", ex.Message));
-                        Console.WriteLine(ex.Message);
-                    });
-                }
-                circleTimer.Dispose();
-                circleTimer = null;
-                if (success) {
-                    if (this.current_state != ScanningState.Scanning) {
-                        this.current_state = ScanningState.Scanning;
-                        this.BeginInvoke((MethodInvoker)delegate {
-                            this.loadTimerImage.Image = StyleManager.GetImage("scanningbar.gif");
-                            this.loadTimerImage.Enabled = true;
-                            scan_tooltip.SetToolTip(this.loadTimerImage, "Scanning Memory...");
-                        });
-                    }
-                } else {
-                    if (this.current_state != ScanningState.NoTibia) {
-                        this.current_state = ScanningState.NoTibia;
-                        this.BeginInvoke((MethodInvoker)delegate {
-                            this.loadTimerImage.Image = StyleManager.GetImage("scanningbar-red.gif");
-                            this.loadTimerImage.Enabled = true;
-                            scan_tooltip.SetToolTip(this.loadTimerImage, "No Tibia Client Found...");
-                        });
-                    }
-                }
-            }
-        }
-
-        private void BwMissingChunks_DoWork(object sender, DoWorkEventArgs e) {
-            while (true) {
-                ScanMissingChunks();
-            }
-        }
-
-        void circleTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
-            if (this.current_state != ScanningState.Stuck) {
-                this.current_state = ScanningState.Stuck;
-                this.Invoke((MethodInvoker)delegate {
-                    this.loadTimerImage.Image = StyleManager.GetImage("scanningbar-gray.gif");
-                    scan_tooltip.SetToolTip(this.loadTimerImage, "Waiting, possibly stuck...");
-                    this.loadTimerImage.Enabled = false;
-                });
-            }
-        }
-
-
+        
         private string lastWarning;
         public void DisplayWarning(string message) {
             warningImageBox.Visible = true;

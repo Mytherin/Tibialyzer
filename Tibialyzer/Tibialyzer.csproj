@@ -124,6 +124,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ProcessManager.cs" />
+    <Compile Include="ScanningManager.cs" />
     <Compile Include="SelectProcessForm.cs">
       <SubType>Form</SubType>
     </Compile>
