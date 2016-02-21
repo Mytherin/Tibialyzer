@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,18 +49,18 @@ namespace Tibialyzer {
             ((System.ComponentModel.ISupportInitialize)(this.mapUpLevel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapDownLevel)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // mapBox
-            // 
+            //
             this.mapBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.mapBox.Location = new System.Drawing.Point(121, 12);
             this.mapBox.Name = "mapBox";
             this.mapBox.Size = new System.Drawing.Size(195, 190);
             this.mapBox.TabIndex = 0;
             this.mapBox.TabStop = false;
-            // 
+            //
             // npcImage
-            // 
+            //
             this.npcImage.BackColor = System.Drawing.Color.Transparent;
             this.npcImage.Location = new System.Drawing.Point(12, 45);
             this.npcImage.Name = "npcImage";
@@ -68,9 +68,9 @@ namespace Tibialyzer {
             this.npcImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.npcImage.TabIndex = 1;
             this.npcImage.TabStop = false;
-            // 
+            //
             // creatureName
-            // 
+            //
             this.creatureName.BackColor = System.Drawing.Color.Transparent;
             this.creatureName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.creatureName.ForeColor = System.Drawing.SystemColors.ControlLight;
@@ -82,25 +82,25 @@ namespace Tibialyzer {
             this.creatureName.Text = "Rashid";
             this.creatureName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.creatureName.Click += new System.EventHandler(this.creatureName_Click);
-            // 
+            //
             // mapUpLevel
-            // 
+            //
             this.mapUpLevel.Location = new System.Drawing.Point(121, 13);
             this.mapUpLevel.Name = "mapUpLevel";
             this.mapUpLevel.Size = new System.Drawing.Size(21, 21);
             this.mapUpLevel.TabIndex = 3;
             this.mapUpLevel.TabStop = false;
-            // 
+            //
             // mapDownLevel
-            // 
+            //
             this.mapDownLevel.Location = new System.Drawing.Point(121, 34);
             this.mapDownLevel.Name = "mapDownLevel";
             this.mapDownLevel.Size = new System.Drawing.Size(21, 21);
             this.mapDownLevel.TabIndex = 4;
             this.mapDownLevel.TabStop = false;
-            // 
+            //
             // NPCForm
-            // 
+            //
             this.ClientSize = new System.Drawing.Size(328, 209);
             this.Controls.Add(this.mapDownLevel);
             this.Controls.Add(this.mapUpLevel);

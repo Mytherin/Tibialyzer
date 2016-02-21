@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -43,9 +43,9 @@ namespace Tibialyzer {
             this.detailsButton = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.mChart)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // mChart
-            // 
+            //
             this.mChart.BackColor = System.Drawing.Color.Transparent;
             chartArea1.BackColor = System.Drawing.Color.Transparent;
             chartArea1.Name = "ChartArea1";
@@ -71,9 +71,9 @@ namespace Tibialyzer {
             this.mChart.Size = new System.Drawing.Size(448, 320);
             this.mChart.TabIndex = 0;
             this.mChart.Text = "Damage Chart";
-            // 
+            //
             // detailsButton
-            // 
+            //
             this.detailsButton.BackColor = System.Drawing.Color.Transparent;
             this.detailsButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.detailsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -86,9 +86,9 @@ namespace Tibialyzer {
             this.detailsButton.Text = "Details";
             this.detailsButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.detailsButton.Click += new System.EventHandler(this.detailsButton_Click);
-            // 
+            //
             // DamageChart
-            // 
+            //
             this.ClientSize = new System.Drawing.Size(450, 321);
             this.Controls.Add(this.detailsButton);
             this.Controls.Add(this.mChart);

@@ -91,7 +91,7 @@ namespace Tibialyzer {
             activeHunt = hunts[activeHuntIndex];
             MainForm.mainForm.InitializeHuntDisplay(activeHuntIndex);
         }
-        
+
         public static void resetHunt(Hunt h) {
             lock (hunts) {
                 h.loot.creatureLoot.Clear();
@@ -281,7 +281,7 @@ namespace Tibialyzer {
                 }
             }
         }
-        
+
         public static Creature GetHighestKillCreature(Hunt h) {
             Creature cr = null;
             int kills = -1;
@@ -349,7 +349,7 @@ namespace Tibialyzer {
             }
             LootDatabaseManager.UpdateLoot();
         }
-        
+
         public static void deleteCreatureWithThreshold(int killThreshold) {
             List<Creature> deleteList = new List<Creature>();
             foreach (KeyValuePair<Creature, int> kvp in activeHunt.loot.killCount) {

@@ -27,26 +27,26 @@ namespace Tibialyzer {
             this.cancelButton = new System.Windows.Forms.Button();
             this.refreshButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
+            //
             // processList
-            // 
+            //
             this.processList.FormattingEnabled = true;
             this.processList.Location = new System.Drawing.Point(258, 34);
             this.processList.Name = "processList";
             this.processList.Size = new System.Drawing.Size(195, 251);
             this.processList.TabIndex = 0;
-            // 
+            //
             // label1
-            // 
+            //
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(8, 13);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(121, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "Select Tibia Application.";
-            // 
+            //
             // selectButton
-            // 
+            //
             this.selectButton.Location = new System.Drawing.Point(258, 291);
             this.selectButton.Name = "selectButton";
             this.selectButton.Size = new System.Drawing.Size(75, 23);
@@ -54,9 +54,9 @@ namespace Tibialyzer {
             this.selectButton.Text = "Select";
             this.selectButton.UseVisualStyleBackColor = true;
             this.selectButton.Click += new System.EventHandler(this.selectButton_Click);
-            // 
+            //
             // cancelButton
-            // 
+            //
             this.cancelButton.Location = new System.Drawing.Point(378, 289);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
@@ -64,9 +64,9 @@ namespace Tibialyzer {
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
-            // 
+            //
             // refreshButton
-            // 
+            //
             this.refreshButton.Location = new System.Drawing.Point(378, 5);
             this.refreshButton.Name = "refreshButton";
             this.refreshButton.Size = new System.Drawing.Size(75, 23);
@@ -74,9 +74,9 @@ namespace Tibialyzer {
             this.refreshButton.Text = "Refresh";
             this.refreshButton.UseVisualStyleBackColor = true;
             this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
-            // 
+            //
             // SelectProcessForm
-            // 
+            //
             this.ClientSize = new System.Drawing.Size(456, 313);
             this.Controls.Add(this.refreshButton);
             this.Controls.Add(this.cancelButton);

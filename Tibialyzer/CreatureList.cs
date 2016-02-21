@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -50,9 +50,9 @@ namespace Tibialyzer {
             this.listTitle = new System.Windows.Forms.Label();
             this.toggleButton = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
+            //
             // listTitle
-            // 
+            //
             this.listTitle.AutoSize = true;
             this.listTitle.BackColor = System.Drawing.Color.Transparent;
             this.listTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -62,9 +62,9 @@ namespace Tibialyzer {
             this.listTitle.Size = new System.Drawing.Size(32, 16);
             this.listTitle.TabIndex = 14;
             this.listTitle.Text = "List";
-            // 
+            //
             // toggleButton
-            // 
+            //
             this.toggleButton.BackColor = System.Drawing.Color.Transparent;
             this.toggleButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.toggleButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -77,9 +77,9 @@ namespace Tibialyzer {
             this.toggleButton.Text = "Icons";
             this.toggleButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.toggleButton.Click += new System.EventHandler(this.toggleButton_Click);
-            // 
+            //
             // CreatureList
-            // 
+            //
             this.ClientSize = new System.Drawing.Size(352, 76);
             this.Controls.Add(this.toggleButton);
             this.Controls.Add(this.listTitle);
@@ -91,7 +91,7 @@ namespace Tibialyzer {
             this.PerformLayout();
 
         }
-        
+
         public void sortHeader(object sender, EventArgs e) {
             if (sortedHeader == (sender as Control).Name) {
                 desc = !desc;
@@ -185,7 +185,7 @@ namespace Tibialyzer {
 
             this.listTitle.Text = title;
             this.listTitle.Location = new Point(this.Size.Width / 2 - this.listTitle.Width / 2, this.listTitle.Location.Y);
-            
+
             this.NotificationFinalize();
             this.ResumeForm();
         }

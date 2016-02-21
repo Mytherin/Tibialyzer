@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 
-namespace Tibialyzer {    
+namespace Tibialyzer {
     class StyleManager {
         #region UI Colors
         public static Color NotificationBackgroundColor = Color.FromArgb(0, 51, 102);
@@ -38,7 +38,7 @@ namespace Tibialyzer {
         public static Color ElementEarthColor = Color.ForestGreen;
         public static Color ElementDeathColor = Color.FromArgb(32, 32, 32);
         public static Color ElementEnergyColor = Color.MidnightBlue;
-        
+
         public static Color DatabaseDiscardColor = Color.FromArgb(174, 33, 33);
         public static Color DatabaseNoDiscardColor = Color.FromArgb(56, 156, 56);
         public static Color DatabaseNoConvertColor = Color.FromArgb(76, 128, 176);

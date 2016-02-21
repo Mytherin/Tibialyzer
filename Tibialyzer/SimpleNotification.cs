@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,7 +25,7 @@ namespace Tibialyzer {
         System.Timers.Timer moveTimer = null;
         public int targetPositionX = 0, targetPositionY = 0;
         System.Timers.Timer closeTimer = null;
-        
+
         protected void InitializeSimpleNotification(bool movement = true, bool destroy = true) {
             this.Click += c_Click;
             foreach (Control c in this.Controls) {
@@ -43,7 +43,7 @@ namespace Tibialyzer {
                 closeTimer.Enabled = true;
             }
         }
-        
+
 
         private void MoveTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
             int desktopX = this.DesktopLocation.X;
@@ -136,9 +136,9 @@ namespace Tibialyzer {
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SimpleNotification));
             this.SuspendLayout();
-            // 
+            //
             // SimpleNotification
-            // 
+            //
             this.ClientSize = new System.Drawing.Size(284, 261);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SimpleNotification";

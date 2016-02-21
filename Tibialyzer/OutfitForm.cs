@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -59,9 +59,9 @@ namespace Tibialyzer {
             ((System.ComponentModel.ISupportInitialize)(this.maleAddon1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maleAddon0)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // obtainedLabel
-            // 
+            //
             this.obtainedLabel.AutoSize = true;
             this.obtainedLabel.BackColor = System.Drawing.Color.Transparent;
             this.obtainedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -71,9 +71,9 @@ namespace Tibialyzer {
             this.obtainedLabel.Size = new System.Drawing.Size(145, 16);
             this.obtainedLabel.TabIndex = 9;
             this.obtainedLabel.Text = "Rewarded By Quest";
-            // 
+            //
             // femaleAddon3
-            // 
+            //
             this.femaleAddon3.BackColor = System.Drawing.Color.Transparent;
             this.femaleAddon3.Location = new System.Drawing.Point(226, 102);
             this.femaleAddon3.Name = "femaleAddon3";
@@ -81,9 +81,9 @@ namespace Tibialyzer {
             this.femaleAddon3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.femaleAddon3.TabIndex = 8;
             this.femaleAddon3.TabStop = false;
-            // 
+            //
             // femaleAddon2
-            // 
+            //
             this.femaleAddon2.BackColor = System.Drawing.Color.Transparent;
             this.femaleAddon2.Location = new System.Drawing.Point(156, 102);
             this.femaleAddon2.Name = "femaleAddon2";
@@ -91,9 +91,9 @@ namespace Tibialyzer {
             this.femaleAddon2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.femaleAddon2.TabIndex = 7;
             this.femaleAddon2.TabStop = false;
-            // 
+            //
             // femaleAddon1
-            // 
+            //
             this.femaleAddon1.BackColor = System.Drawing.Color.Transparent;
             this.femaleAddon1.Location = new System.Drawing.Point(86, 102);
             this.femaleAddon1.Name = "femaleAddon1";
@@ -101,9 +101,9 @@ namespace Tibialyzer {
             this.femaleAddon1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.femaleAddon1.TabIndex = 6;
             this.femaleAddon1.TabStop = false;
-            // 
+            //
             // femaleAddon0
-            // 
+            //
             this.femaleAddon0.BackColor = System.Drawing.Color.Transparent;
             this.femaleAddon0.Location = new System.Drawing.Point(16, 102);
             this.femaleAddon0.Name = "femaleAddon0";
@@ -111,9 +111,9 @@ namespace Tibialyzer {
             this.femaleAddon0.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.femaleAddon0.TabIndex = 5;
             this.femaleAddon0.TabStop = false;
-            // 
+            //
             // maleAddon3
-            // 
+            //
             this.maleAddon3.BackColor = System.Drawing.Color.Transparent;
             this.maleAddon3.Location = new System.Drawing.Point(226, 32);
             this.maleAddon3.Name = "maleAddon3";
@@ -121,9 +121,9 @@ namespace Tibialyzer {
             this.maleAddon3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.maleAddon3.TabIndex = 4;
             this.maleAddon3.TabStop = false;
-            // 
+            //
             // maleAddon2
-            // 
+            //
             this.maleAddon2.BackColor = System.Drawing.Color.Transparent;
             this.maleAddon2.Location = new System.Drawing.Point(156, 32);
             this.maleAddon2.Name = "maleAddon2";
@@ -131,9 +131,9 @@ namespace Tibialyzer {
             this.maleAddon2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.maleAddon2.TabIndex = 3;
             this.maleAddon2.TabStop = false;
-            // 
+            //
             // maleAddon1
-            // 
+            //
             this.maleAddon1.BackColor = System.Drawing.Color.Transparent;
             this.maleAddon1.Location = new System.Drawing.Point(86, 32);
             this.maleAddon1.Name = "maleAddon1";
@@ -141,9 +141,9 @@ namespace Tibialyzer {
             this.maleAddon1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.maleAddon1.TabIndex = 2;
             this.maleAddon1.TabStop = false;
-            // 
+            //
             // outfitTitle
-            // 
+            //
             this.outfitTitle.AutoSize = true;
             this.outfitTitle.BackColor = System.Drawing.Color.Transparent;
             this.outfitTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -153,9 +153,9 @@ namespace Tibialyzer {
             this.outfitTitle.Size = new System.Drawing.Size(105, 20);
             this.outfitTitle.TabIndex = 1;
             this.outfitTitle.Text = "Outfit Name";
-            // 
+            //
             // maleAddon0
-            // 
+            //
             this.maleAddon0.BackColor = System.Drawing.Color.Transparent;
             this.maleAddon0.Location = new System.Drawing.Point(16, 32);
             this.maleAddon0.Name = "maleAddon0";
@@ -163,9 +163,9 @@ namespace Tibialyzer {
             this.maleAddon0.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.maleAddon0.TabIndex = 0;
             this.maleAddon0.TabStop = false;
-            // 
+            //
             // OutfitForm
-            // 
+            //
             this.ClientSize = new System.Drawing.Size(314, 199);
             this.Controls.Add(this.obtainedLabel);
             this.Controls.Add(this.femaleAddon3);
@@ -195,7 +195,7 @@ namespace Tibialyzer {
 
         public override void LoadForm() {
             if (outfit == null) return;
-            
+
             this.SuspendLayout();
             NotificationInitialize();
 

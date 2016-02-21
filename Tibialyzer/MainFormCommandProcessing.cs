@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -168,7 +168,7 @@ namespace Tibialyzer {
                         parameter = "";
                         screenshot_path = splits[2];
                     }
-                    
+
                     Hunt currentHunt = HuntManager.activeHunt;
                     if (splits.Length >= 2 && splits[1] != "") {
                         Hunt h = HuntManager.GetHunt(splits[1]);
@@ -394,7 +394,7 @@ namespace Tibialyzer {
                             return true;
                         }
                     } else {
-                        //recent@<player> opens the last 
+                        //recent@<player> opens the last
                         bool found = false;
                         foreach (Command comm in command_list) {
                             if (comm.player.ToLower() == parameter) {

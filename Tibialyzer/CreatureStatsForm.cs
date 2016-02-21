@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,7 +46,7 @@ namespace Tibialyzer {
             resistance_tooltip.ReshowDelay = 500;
             resistance_tooltip.ShowAlways = true;
             resistance_tooltip.UseFading = true;
-            
+
             // add colors for every resistance
             resistance_controls[0] = resistanceLabel1;
             resistance_controls[1] = resistanceLabel2;
@@ -56,7 +56,7 @@ namespace Tibialyzer {
             resistance_controls[5] = resistanceLabel6;
             resistance_controls[6] = resistanceLabel7;
         }
-        
+
         private void AddResistances(List<Resistance> resistances) {
             List<Resistance> sorted_list = resistances.OrderByDescending(o => o.resistance).ToList();
             int i = 0;
@@ -141,7 +141,7 @@ namespace Tibialyzer {
                 goldstring = ((long)averageGold / 1000000).ToString() + "M";
             }
             this.averageGoldLabel.Text = "Average Gold: " + goldstring;
-            
+
             this.maxDamageLabel.Text = "Max Damage: " + (this.creature.maxdamage >= 0 ? this.creature.maxdamage.ToString() : "-");
             this.abilitiesLabel.Text = RemoveTextInBrackets(this.creature.abilities.Replace(", ", "\n"));
             this.abilitiesLabel.BorderStyle = BorderStyle.FixedSingle;
@@ -229,7 +229,7 @@ namespace Tibialyzer {
             }
             return ss;
         }
-        
+
         private void statsButton_Click(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("creature" + MainForm.commandSymbol + (sender as Control).Name);

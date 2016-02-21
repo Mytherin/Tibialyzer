@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,7 +31,7 @@ namespace Tibialyzer {
         public CreatureDropsForm() {
             InitializeComponent();
         }
-        
+
         private void DisplayItem(ItemDrop drop, int base_x, int base_y, int x, int y, Size item_size, ToolTip droprate_tooltip, int dropbar_height, string prefix = "Drop rate of ") {
 
             Item dropItem = StorageManager.getItem(drop.itemid);
@@ -128,7 +128,7 @@ namespace Tibialyzer {
             }
             this.Refresh();
         }
-        
+
         void openItemBox(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("item" + MainForm.commandSymbol + (sender as Control).Name);

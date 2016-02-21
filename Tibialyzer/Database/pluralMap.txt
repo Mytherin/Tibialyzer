@@ -1,4 +1,4 @@
-﻿#assorted 
+﻿#assorted
 nails=nail
 skulls=skull
 #gems
@@ -33,7 +33,7 @@ bolts=bolt
 drill bolts=drill bolt
 infernal bolts=infernal bolt
 piercing bolts=piercing bolt
-power bolts=power bolt 
+power bolts=power bolt
 prismatic bolts=prismatic bolt
 vortex bolts=vortex bolt
 #spears

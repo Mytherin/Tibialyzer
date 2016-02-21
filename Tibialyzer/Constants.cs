@@ -19,7 +19,7 @@ namespace Tibialyzer {
         public static string NodeDatabase = @"Database\Nodes.db";
         //! Location of the plural map file; this file contains a map of plural items that don't follow the normal plural rules
         public static string PluralMapFile = @"Database\pluralMap.txt";
-        //! Location of where to put the generated autohotkey script; Tibialyzer generates an autohotkey script and launches it 
+        //! Location of where to put the generated autohotkey script; Tibialyzer generates an autohotkey script and launches it
         public static string AutohotkeyFile = @"Database\autohotkey.ahk";
         //! Location of the settings file; this is where Tibialyzer stores all the settings of the player
         public static string SettingsFile = @"Database\settings.txt";

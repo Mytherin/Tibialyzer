@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -188,7 +188,7 @@ namespace Tibialyzer {
                                 }
 
                                 // performance throttling sleep after every scan (depending on scanSpeed setting)
-                                Thread.Sleep(1 + scanSpeed);
+                                Thread.Sleep(10 + scanSpeed);
                             }
                         }
                         // move to the next memory chunk
@@ -433,7 +433,7 @@ namespace Tibialyzer {
                     // if the damage for the given timestamp does not exist yet, add it
                     if (!totalDamageResults[player].ContainsKey(timestamp)) totalDamageResults[player].Add(timestamp, damage);
                     // if it does exist, select the biggest of the two
-                    // the reason we select the biggest of the two is: 
+                    // the reason we select the biggest of the two is:
                     // - if the timestamp is 'the current time', totalDamageResults may hold an old value, so we update it
                     // - if timestamp is old, a part of the log for the time could have already been removed (because the log was full)
                     //    so the 'new' damage is only part of the damage for this timestamp

@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -50,7 +50,7 @@ namespace Tibialyzer {
             Process p = Process.GetProcessById((int)pid);
             return p.ProcessName;
         }
-        
+
         private void ShowTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
             if (alwaysShow) return;
             if (MainForm.TibiaClientName != "Tibia") {
@@ -73,9 +73,9 @@ namespace Tibialyzer {
         private void InitializeComponent() {
             this.typeModeLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
+            //
             // typeModeLabel
-            // 
+            //
             this.typeModeLabel.AutoSize = true;
             this.typeModeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.typeModeLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
@@ -84,9 +84,9 @@ namespace Tibialyzer {
             this.typeModeLabel.Size = new System.Drawing.Size(218, 42);
             this.typeModeLabel.TabIndex = 0;
             this.typeModeLabel.Text = "Suspended";
-            // 
+            //
             // AutoHotkeySuspendedMode
-            // 
+            //
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
             this.ClientSize = new System.Drawing.Size(236, 61);
             this.Controls.Add(this.typeModeLabel);

@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -87,9 +87,9 @@ namespace Tibialyzer {
             this.largeButton = new System.Windows.Forms.Label();
             this.largestButton = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
+            //
             // questTitle
-            // 
+            //
             this.questTitle.BackColor = System.Drawing.Color.Transparent;
             this.questTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.questTitle.ForeColor = StyleManager.NotificationTextColor;
@@ -98,9 +98,9 @@ namespace Tibialyzer {
             this.questTitle.Size = new System.Drawing.Size(300, 16);
             this.questTitle.TabIndex = 5;
             this.questTitle.Text = "Quest Name";
-            // 
+            //
             // nextButton
-            // 
+            //
             this.nextButton.BackColor = System.Drawing.Color.Transparent;
             this.nextButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.nextButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -114,9 +114,9 @@ namespace Tibialyzer {
             this.nextButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.nextButton.Visible = false;
             this.nextButton.Click += new System.EventHandler(this.nextButton_Click);
-            // 
+            //
             // prevButton
-            // 
+            //
             this.prevButton.BackColor = System.Drawing.Color.Transparent;
             this.prevButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.prevButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -130,9 +130,9 @@ namespace Tibialyzer {
             this.prevButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.prevButton.Visible = false;
             this.prevButton.Click += new System.EventHandler(this.prevButton_Click);
-            // 
+            //
             // normalButton
-            // 
+            //
             this.normalButton.BackColor = System.Drawing.Color.Transparent;
             this.normalButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.normalButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -145,9 +145,9 @@ namespace Tibialyzer {
             this.normalButton.Text = "+";
             this.normalButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.normalButton.Click += new System.EventHandler(this.normalButton_Click);
-            // 
+            //
             // largeButton
-            // 
+            //
             this.largeButton.BackColor = System.Drawing.Color.Transparent;
             this.largeButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.largeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -160,9 +160,9 @@ namespace Tibialyzer {
             this.largeButton.Text = "++";
             this.largeButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.largeButton.Click += new System.EventHandler(this.largeButton_Click);
-            // 
+            //
             // largestButton
-            // 
+            //
             this.largestButton.BackColor = System.Drawing.Color.Transparent;
             this.largestButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.largestButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -175,9 +175,9 @@ namespace Tibialyzer {
             this.largestButton.Text = "+++";
             this.largestButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.largestButton.Click += new System.EventHandler(this.largestButton_Click);
-            // 
+            //
             // QuestGuideForm
-            // 
+            //
             this.ClientSize = new System.Drawing.Size(392, 75);
             this.Controls.Add(this.normalButton);
             this.Controls.Add(this.largeButton);
@@ -317,7 +317,7 @@ namespace Tibialyzer {
 
             refreshTimer();
         }
-        
+
         private void select(string mission) {
             missionName = mission;
             questInstructionList = quest.questInstructions[mission];
@@ -520,7 +520,7 @@ namespace Tibialyzer {
             }
             return linkText;
         }
-        
+
         private void itemClick(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("item" + MainForm.commandSymbol + (sender as Control).Name);
@@ -542,7 +542,7 @@ namespace Tibialyzer {
             if (quest != null && quest.questInstructions.Count == 0) return;
             this.SuspendLayout();
             NotificationInitialize();
-            
+
 
             this.nextButton.Click -= c_Click;
             this.prevButton.Click -= c_Click;
@@ -595,7 +595,7 @@ namespace Tibialyzer {
                 instructionIndex--;
                 if (instructionIndex == 0) {
                     instructionIndex = 1;
-                } 
+                }
 
                 if (this.quest != null) {
                     this.questInstruction = this.questInstructionList[instructionIndex - 1];

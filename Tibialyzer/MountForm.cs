@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,9 +46,9 @@ namespace Tibialyzer {
             ((System.ComponentModel.ISupportInitialize)(this.tameItemImageBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mountImageBox)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // tameItemLabel
-            // 
+            //
             this.tameItemLabel.BackColor = System.Drawing.Color.Transparent;
             this.tameItemLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tameItemLabel.ForeColor = StyleManager.NotificationTextColor;
@@ -58,9 +58,9 @@ namespace Tibialyzer {
             this.tameItemLabel.TabIndex = 9;
             this.tameItemLabel.Text = "Tame Item";
             this.tameItemLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
+            //
             // tameCreatureLabel
-            // 
+            //
             this.tameCreatureLabel.BackColor = System.Drawing.Color.Transparent;
             this.tameCreatureLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tameCreatureLabel.ForeColor = StyleManager.NotificationTextColor;
@@ -70,9 +70,9 @@ namespace Tibialyzer {
             this.tameCreatureLabel.TabIndex = 8;
             this.tameCreatureLabel.Text = "Tame Creature";
             this.tameCreatureLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
+            //
             // tameCreatureImageBox
-            // 
+            //
             this.tameCreatureImageBox.BackColor = System.Drawing.Color.Transparent;
             this.tameCreatureImageBox.Location = new System.Drawing.Point(222, 110);
             this.tameCreatureImageBox.Name = "tameCreatureImageBox";
@@ -80,9 +80,9 @@ namespace Tibialyzer {
             this.tameCreatureImageBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.tameCreatureImageBox.TabIndex = 7;
             this.tameCreatureImageBox.TabStop = false;
-            // 
+            //
             // tameItemImageBox
-            // 
+            //
             this.tameItemImageBox.BackColor = System.Drawing.Color.Transparent;
             this.tameItemImageBox.Location = new System.Drawing.Point(254, 33);
             this.tameItemImageBox.Name = "tameItemImageBox";
@@ -90,9 +90,9 @@ namespace Tibialyzer {
             this.tameItemImageBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.tameItemImageBox.TabIndex = 6;
             this.tameItemImageBox.TabStop = false;
-            // 
+            //
             // mountImageBox
-            // 
+            //
             this.mountImageBox.BackColor = System.Drawing.Color.Transparent;
             this.mountImageBox.Location = new System.Drawing.Point(12, 32);
             this.mountImageBox.Name = "mountImageBox";
@@ -100,9 +100,9 @@ namespace Tibialyzer {
             this.mountImageBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.mountImageBox.TabIndex = 4;
             this.mountImageBox.TabStop = false;
-            // 
+            //
             // mountTitle
-            // 
+            //
             this.mountTitle.AutoSize = true;
             this.mountTitle.BackColor = System.Drawing.Color.Transparent;
             this.mountTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -112,9 +112,9 @@ namespace Tibialyzer {
             this.mountTitle.Size = new System.Drawing.Size(110, 20);
             this.mountTitle.TabIndex = 3;
             this.mountTitle.Text = "Mount Name";
-            // 
+            //
             // MountForm
-            // 
+            //
             this.ClientSize = new System.Drawing.Size(318, 213);
             this.Controls.Add(this.tameItemLabel);
             this.Controls.Add(this.tameCreatureLabel);
@@ -176,7 +176,7 @@ namespace Tibialyzer {
             base.NotificationFinalize();
             this.ResumeLayout(false);
         }
-        
+
         private void TameItemImageBox_Click(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("item@" + (sender as Control).Name);

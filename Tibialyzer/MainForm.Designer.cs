@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -265,25 +265,25 @@
             this.upgradeTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.warningImageBox)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // notifyIcon1
-            // 
+            //
             this.notifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
-            // 
+            //
             // helpPanel
-            // 
+            //
             this.helpPanel.AutoScroll = true;
             this.helpPanel.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.helpPanel.Location = new System.Drawing.Point(6, 73);
             this.helpPanel.Name = "helpPanel";
             this.helpPanel.Size = new System.Drawing.Size(531, 424);
             this.helpPanel.TabIndex = 8;
-            // 
+            //
             // creaturePanel
-            // 
+            //
             this.creaturePanel.AutoScroll = true;
             this.creaturePanel.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.creaturePanel.Location = new System.Drawing.Point(3, 73);
@@ -291,9 +291,9 @@
             this.creaturePanel.Size = new System.Drawing.Size(534, 421);
             this.creaturePanel.TabIndex = 2;
             this.creaturePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
-            // 
+            //
             // screenshotBox
-            // 
+            //
             this.screenshotBox.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.screenshotBox.Location = new System.Drawing.Point(227, 49);
             this.screenshotBox.Name = "screenshotBox";
@@ -302,17 +302,17 @@
             this.screenshotBox.TabIndex = 0;
             this.screenshotBox.TabStop = false;
             this.screenshotBox.Click += new System.EventHandler(this.screenshotBox_Click);
-            // 
+            //
             // downloadBar
-            // 
+            //
             this.downloadBar.Location = new System.Drawing.Point(333, 75);
             this.downloadBar.Name = "downloadBar";
             this.downloadBar.Size = new System.Drawing.Size(204, 23);
             this.downloadBar.TabIndex = 2;
             this.downloadBar.Visible = false;
-            // 
+            //
             // clearLog
-            // 
+            //
             this.clearLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.clearLog.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.clearLog.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -326,9 +326,9 @@
             this.clearLog.MouseDown += new System.Windows.Forms.MouseEventHandler(this.resetButton_Click);
             this.clearLog.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.clearLog.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // loadLogFromFileButton
-            // 
+            //
             this.loadLogFromFileButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.loadLogFromFileButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.loadLogFromFileButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -342,9 +342,9 @@
             this.loadLogFromFileButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.importLogFile_Click);
             this.loadLogFromFileButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.loadLogFromFileButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // saveLogToFileButton
-            // 
+            //
             this.saveLogToFileButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.saveLogToFileButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveLogToFileButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -358,17 +358,17 @@
             this.saveLogToFileButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.exportLogButton_Click);
             this.saveLogToFileButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.saveLogToFileButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // creatureImagePanel
-            // 
+            //
             this.creatureImagePanel.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.creatureImagePanel.Location = new System.Drawing.Point(6, 384);
             this.creatureImagePanel.Name = "creatureImagePanel";
             this.creatureImagePanel.Size = new System.Drawing.Size(287, 94);
             this.creatureImagePanel.TabIndex = 16;
-            // 
+            //
             // scanningSpeedTrack
-            // 
+            //
             this.scanningSpeedTrack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.scanningSpeedTrack.Location = new System.Drawing.Point(6, 267);
             this.scanningSpeedTrack.Maximum = 100;
@@ -378,9 +378,9 @@
             this.scanningSpeedTrack.Scroll += new System.EventHandler(this.scanningSpeedTrack_Scroll);
             this.scanningSpeedTrack.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.scanningSpeedTrack.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // tibialyzerLogo
-            // 
+            //
             this.tibialyzerLogo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.tibialyzerLogo.Image = ((System.Drawing.Image)(resources.GetObject("tibialyzerLogo.Image")));
             this.tibialyzerLogo.InitialImage = null;
@@ -390,9 +390,9 @@
             this.tibialyzerLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.tibialyzerLogo.TabIndex = 18;
             this.tibialyzerLogo.TabStop = false;
-            // 
+            //
             // namesLabel
-            // 
+            //
             this.namesLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.namesLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.namesLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -402,9 +402,9 @@
             this.namesLabel.TabIndex = 1;
             this.namesLabel.Text = "Character Names";
             this.namesLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // closeButton
-            // 
+            //
             this.closeButton.AutoSize = true;
             this.closeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
             this.closeButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -417,9 +417,9 @@
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             this.closeButton.MouseEnter += new System.EventHandler(this.closeButton_MouseEnter);
             this.closeButton.MouseLeave += new System.EventHandler(this.closeButton_MouseLeave);
-            // 
+            //
             // minimizeButton
-            // 
+            //
             this.minimizeButton.AutoSize = true;
             this.minimizeButton.BackColor = System.Drawing.Color.Transparent;
             this.minimizeButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -432,18 +432,18 @@
             this.minimizeButton.Click += new System.EventHandler(this.minimizeButton_Click);
             this.minimizeButton.MouseEnter += new System.EventHandler(this.minimizeButton_MouseEnter);
             this.minimizeButton.MouseLeave += new System.EventHandler(this.minimizeButton_MouseLeave);
-            // 
+            //
             // minimizeIcon
-            // 
+            //
             this.minimizeIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.minimizeIcon.BalloonTipText = "Tibialyzer is now minimized.";
             this.minimizeIcon.BalloonTipTitle = "Tibialyzer";
             this.minimizeIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("minimizeIcon.Icon")));
             this.minimizeIcon.Text = "Tibialyzer";
             this.minimizeIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.minimizeIcon_MouseDoubleClick);
-            // 
+            //
             // loadTimerImage
-            // 
+            //
             this.loadTimerImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.loadTimerImage.Enabled = false;
             this.loadTimerImage.Location = new System.Drawing.Point(0, 2);
@@ -452,19 +452,19 @@
             this.loadTimerImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.loadTimerImage.TabIndex = 3;
             this.loadTimerImage.TabStop = false;
-            // 
+            //
             // openFileDialog1
-            // 
+            //
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
+            //
             // explanationTooltip
-            // 
+            //
             this.explanationTooltip.AutoPopDelay = 150000;
             this.explanationTooltip.InitialDelay = 500;
             this.explanationTooltip.ReshowDelay = 100;
-            // 
+            //
             // mainButton
-            // 
+            //
             this.mainButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.mainButton.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mainButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -477,9 +477,9 @@
             this.mainButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mainButton_Click);
             this.mainButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.mainButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // backgroundLabel
-            // 
+            //
             this.backgroundLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.backgroundLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.backgroundLabel.Location = new System.Drawing.Point(0, 0);
@@ -487,18 +487,18 @@
             this.backgroundLabel.Size = new System.Drawing.Size(102, 525);
             this.backgroundLabel.TabIndex = 5;
             this.backgroundLabel.Click += new System.EventHandler(this.backgroundLabel_Click);
-            // 
+            //
             // label18
-            // 
+            //
             this.label18.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
             this.label18.Location = new System.Drawing.Point(0, 92);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(102, 5);
             this.label18.TabIndex = 7;
             this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // generalButton
-            // 
+            //
             this.generalButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.generalButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.generalButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -511,9 +511,9 @@
             this.generalButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.generalButton_Click);
             this.generalButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.generalButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // notificationButton
-            // 
+            //
             this.notificationButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.notificationButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.notificationButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -526,9 +526,9 @@
             this.notificationButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.notificationButton_Click);
             this.notificationButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.notificationButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // popupButton
-            // 
+            //
             this.popupButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -541,9 +541,9 @@
             this.popupButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.popupButton_Click);
             this.popupButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.popupButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // databaseButton
-            // 
+            //
             this.databaseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.databaseButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.databaseButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -556,9 +556,9 @@
             this.databaseButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.databaseButton_Click);
             this.databaseButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.databaseButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // autoHotkeyButton
-            // 
+            //
             this.autoHotkeyButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.autoHotkeyButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.autoHotkeyButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -571,9 +571,9 @@
             this.autoHotkeyButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.autoHotkeyButton_Click);
             this.autoHotkeyButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.autoHotkeyButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // screenshotButton
-            // 
+            //
             this.screenshotButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.screenshotButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.screenshotButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -586,18 +586,18 @@
             this.screenshotButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.screenshotButton_Click);
             this.screenshotButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.screenshotButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // label21
-            // 
+            //
             this.label21.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
             this.label21.Location = new System.Drawing.Point(0, 311);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(102, 5);
             this.label21.TabIndex = 15;
             this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // browseButton
-            // 
+            //
             this.browseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.browseButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.browseButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -610,18 +610,18 @@
             this.browseButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.browseButton_Click);
             this.browseButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.browseButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // label19
-            // 
+            //
             this.label19.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
             this.label19.Location = new System.Drawing.Point(0, 341);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(102, 5);
             this.label19.TabIndex = 17;
             this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // helpButton
-            // 
+            //
             this.helpButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.helpButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.helpButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -634,9 +634,9 @@
             this.helpButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.helpButton_Click);
             this.helpButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.helpButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // huntButton
-            // 
+            //
             this.huntButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.huntButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.huntButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -649,9 +649,9 @@
             this.huntButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.huntButton_Click);
             this.huntButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.huntButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // header
-            // 
+            //
             this.header.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.header.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.header.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -661,9 +661,9 @@
             this.header.TabIndex = 20;
             this.header.Text = "Tibialyzer";
             this.header.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // mainTabs
-            // 
+            //
             this.mainTabs.Controls.Add(this.mainPage);
             this.mainTabs.Controls.Add(this.settingsPage);
             this.mainTabs.Controls.Add(this.huntsPage);
@@ -681,9 +681,9 @@
             this.mainTabs.SelectedIndex = 0;
             this.mainTabs.Size = new System.Drawing.Size(548, 523);
             this.mainTabs.TabIndex = 21;
-            // 
+            //
             // mainPage
-            // 
+            //
             this.mainPage.Controls.Add(this.detectFlashClientButton);
             this.mainPage.Controls.Add(this.saveAllLootCheckbox);
             this.mainPage.Controls.Add(this.label11);
@@ -713,9 +713,9 @@
             this.mainPage.TabIndex = 0;
             this.mainPage.Text = "Main";
             this.mainPage.UseVisualStyleBackColor = true;
-            // 
+            //
             // detectFlashClientButton
-            // 
+            //
             this.detectFlashClientButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.detectFlashClientButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.detectFlashClientButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -729,9 +729,9 @@
             this.detectFlashClientButton.Click += new System.EventHandler(this.detectFlashClientButton_Click);
             this.detectFlashClientButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.detectFlashClientButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // saveAllLootCheckbox
-            // 
+            //
             this.saveAllLootCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.saveAllLootCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveAllLootCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -745,9 +745,9 @@
             this.saveAllLootCheckbox.CheckedChanged += new System.EventHandler(this.saveAllLootCheckbox_CheckedChanged);
             this.saveAllLootCheckbox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.saveAllLootCheckbox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // label11
-            // 
+            //
             this.label11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.label11.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -757,9 +757,9 @@
             this.label11.TabIndex = 44;
             this.label11.Text = "Exp Value";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // ignoreLowExperienceBox
-            // 
+            //
             this.ignoreLowExperienceBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.ignoreLowExperienceBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ignoreLowExperienceBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -770,9 +770,9 @@
             this.ignoreLowExperienceBox.TextChanged += new System.EventHandler(this.ignoreLowExperienceBox_TextChanged);
             this.ignoreLowExperienceBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.ignoreLowExperienceBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // ignoreLowExperienceButton
-            // 
+            //
             this.ignoreLowExperienceButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.ignoreLowExperienceButton.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ignoreLowExperienceButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -786,9 +786,9 @@
             this.ignoreLowExperienceButton.CheckedChanged += new System.EventHandler(this.ignoreLowExperienceButton_CheckedChanged);
             this.ignoreLowExperienceButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.ignoreLowExperienceButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // stackAllItemsCheckbox
-            // 
+            //
             this.stackAllItemsCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.stackAllItemsCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.stackAllItemsCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -802,9 +802,9 @@
             this.stackAllItemsCheckbox.CheckedChanged += new System.EventHandler(this.stackAllItemsCheckbox_CheckedChanged);
             this.stackAllItemsCheckbox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.stackAllItemsCheckbox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // label10
-            // 
+            //
             this.label10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label10.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -814,9 +814,9 @@
             this.label10.TabIndex = 37;
             this.label10.Text = "Loot Options";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label9
-            // 
+            //
             this.label9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label9.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -826,9 +826,9 @@
             this.label9.TabIndex = 36;
             this.label9.Text = "Loot Display Options";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // mainExecuteTibialyzerCommandLabel
-            // 
+            //
             this.mainExecuteTibialyzerCommandLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.mainExecuteTibialyzerCommandLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mainExecuteTibialyzerCommandLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -838,9 +838,9 @@
             this.mainExecuteTibialyzerCommandLabel.TabIndex = 35;
             this.mainExecuteTibialyzerCommandLabel.Text = "Execute Tibialyzer Command";
             this.mainExecuteTibialyzerCommandLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // saveDamageImageButton
-            // 
+            //
             this.saveDamageImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.saveDamageImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveDamageImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -854,9 +854,9 @@
             this.saveDamageImageButton.Click += new System.EventHandler(this.damageButton_Click);
             this.saveDamageImageButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.saveDamageImageButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // saveLootImageButton
-            // 
+            //
             this.saveLootImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.saveLootImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveLootImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -870,9 +870,9 @@
             this.saveLootImageButton.Click += new System.EventHandler(this.saveLootImage_Click);
             this.saveLootImageButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.saveLootImageButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // selectClientProgramButton
-            // 
+            //
             this.selectClientProgramButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.selectClientProgramButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.selectClientProgramButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -886,9 +886,9 @@
             this.selectClientProgramButton.Click += new System.EventHandler(this.selectClientButton_Click);
             this.selectClientProgramButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.selectClientProgramButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // mainOptionsLabel
-            // 
+            //
             this.mainOptionsLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.mainOptionsLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mainOptionsLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -898,9 +898,9 @@
             this.mainOptionsLabel.TabIndex = 28;
             this.mainOptionsLabel.Text = "Global Settings";
             this.mainOptionsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // executeButton
-            // 
+            //
             this.executeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.executeButton.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.executeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -913,9 +913,9 @@
             this.executeButton.Click += new System.EventHandler(this.executeCommand_Click);
             this.executeButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.executeButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // issuesGuideButton
-            // 
+            //
             this.issuesGuideButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.issuesGuideButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.issuesGuideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -929,9 +929,9 @@
             this.issuesGuideButton.Click += new System.EventHandler(this.issuesGuide_Click);
             this.issuesGuideButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.issuesGuideButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // popupsGuideButton
-            // 
+            //
             this.popupsGuideButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupsGuideButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupsGuideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -945,9 +945,9 @@
             this.popupsGuideButton.Click += new System.EventHandler(this.popupsGuide_Click);
             this.popupsGuideButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.popupsGuideButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // lootGuideButton
-            // 
+            //
             this.lootGuideButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.lootGuideButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lootGuideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -961,9 +961,9 @@
             this.lootGuideButton.Click += new System.EventHandler(this.commandsGuide_Click);
             this.lootGuideButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.lootGuideButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // mainGuidesLabel
-            // 
+            //
             this.mainGuidesLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.mainGuidesLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mainGuidesLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -973,9 +973,9 @@
             this.mainGuidesLabel.TabIndex = 23;
             this.mainGuidesLabel.Text = "Guides";
             this.mainGuidesLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // gettingStartedGuideButton
-            // 
+            //
             this.gettingStartedGuideButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.gettingStartedGuideButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gettingStartedGuideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -989,9 +989,9 @@
             this.gettingStartedGuideButton.Click += new System.EventHandler(this.gettingStartedGuide_Click);
             this.gettingStartedGuideButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.gettingStartedGuideButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // nameListBox
-            // 
+            //
             this.nameListBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.nameListBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.nameListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
@@ -1007,9 +1007,9 @@
             this.nameListBox.Name = "nameListBox";
             this.nameListBox.Size = new System.Drawing.Size(296, 115);
             this.nameListBox.TabIndex = 0;
-            // 
+            //
             // commandTextBox
-            // 
+            //
             this.commandTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.commandTextBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.commandTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -1020,9 +1020,9 @@
             this.commandTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.commandTextBox_KeyPress);
             this.commandTextBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.commandTextBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // settingsPage
-            // 
+            //
             this.settingsPage.Controls.Add(this.unlockLabel);
             this.settingsPage.Controls.Add(this.unlockResetButton);
             this.settingsPage.Controls.Add(this.resetSettingsButton);
@@ -1050,9 +1050,9 @@
             this.settingsPage.UseVisualStyleBackColor = true;
             this.settingsPage.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.settingsPage.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // unlockLabel
-            // 
+            //
             this.unlockLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(56)))), ((int)(((byte)(65)))));
             this.unlockLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.unlockLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1062,9 +1062,9 @@
             this.unlockLabel.TabIndex = 34;
             this.unlockLabel.Text = "Unlock ";
             this.unlockLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // unlockResetButton
-            // 
+            //
             this.unlockResetButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.unlockResetButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.unlockResetButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -1078,9 +1078,9 @@
             this.unlockResetButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.unlockResetButton_Click);
             this.unlockResetButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.unlockResetButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // resetSettingsButton
-            // 
+            //
             this.resetSettingsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.resetSettingsButton.Enabled = false;
             this.resetSettingsButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1095,9 +1095,9 @@
             this.resetSettingsButton.Click += new System.EventHandler(this.resetToDefaultButton_Click);
             this.resetSettingsButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.resetSettingsButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // resetSettingsLabel
-            // 
+            //
             this.resetSettingsLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.resetSettingsLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.resetSettingsLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1107,9 +1107,9 @@
             this.resetSettingsLabel.TabIndex = 31;
             this.resetSettingsLabel.Text = "Reset Settings To Default";
             this.resetSettingsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label29
-            // 
+            //
             this.label29.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label29.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label29.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1119,9 +1119,9 @@
             this.label29.TabIndex = 30;
             this.label29.Text = "Default Outfit Gender";
             this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label67
-            // 
+            //
             this.label67.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label67.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label67.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1131,9 +1131,9 @@
             this.label67.TabIndex = 48;
             this.label67.Text = "Popup Options";
             this.label67.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label28
-            // 
+            //
             this.label28.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label28.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label28.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1143,9 +1143,9 @@
             this.label28.TabIndex = 29;
             this.label28.Text = "Options";
             this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // scanSpeedDisplayLabel
-            // 
+            //
             this.scanSpeedDisplayLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.scanSpeedDisplayLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.scanSpeedDisplayLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1155,9 +1155,9 @@
             this.scanSpeedDisplayLabel.TabIndex = 25;
             this.scanSpeedDisplayLabel.Text = "Fastest";
             this.scanSpeedDisplayLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // scanSpeedLabel
-            // 
+            //
             this.scanSpeedLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.scanSpeedLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.scanSpeedLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1167,9 +1167,9 @@
             this.scanSpeedLabel.TabIndex = 24;
             this.scanSpeedLabel.Text = "Scanning Speed";
             this.scanSpeedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label68
-            // 
+            //
             this.label68.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label68.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label68.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1179,9 +1179,9 @@
             this.label68.TabIndex = 52;
             this.label68.Text = "Popup Type";
             this.label68.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // lookModeCheckbox
-            // 
+            //
             this.lookModeCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.lookModeCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lookModeCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -1195,9 +1195,9 @@
             this.lookModeCheckbox.CheckedChanged += new System.EventHandler(this.lookCheckBox_CheckedChanged);
             this.lookModeCheckbox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.lookModeCheckbox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // outfitGenderCheckbox
-            // 
+            //
             this.outfitGenderCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.outfitGenderCheckbox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.outfitGenderCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1213,9 +1213,9 @@
             this.outfitGenderCheckbox.SelectedIndexChanged += new System.EventHandler(this.outfitGenderBox_SelectedIndexChanged);
             this.outfitGenderCheckbox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.outfitGenderCheckbox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // copyAdvancesCheckbox
-            // 
+            //
             this.copyAdvancesCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.copyAdvancesCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.copyAdvancesCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -1229,9 +1229,9 @@
             this.copyAdvancesCheckbox.CheckedChanged += new System.EventHandler(this.advanceCopyCheckbox_CheckedChanged);
             this.copyAdvancesCheckbox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.copyAdvancesCheckbox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // popupAnimationBox
-            // 
+            //
             this.popupAnimationBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupAnimationBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupAnimationBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -1245,9 +1245,9 @@
             this.popupAnimationBox.CheckedChanged += new System.EventHandler(this.enableSimpleNotificationAnimations_CheckedChanged);
             this.popupAnimationBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.popupAnimationBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // eventPopupBox
-            // 
+            //
             this.eventPopupBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.eventPopupBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.eventPopupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -1261,9 +1261,9 @@
             this.eventPopupBox.CheckedChanged += new System.EventHandler(this.eventNotificationEnable_CheckedChanged);
             this.eventPopupBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.eventPopupBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // unrecognizedPopupBox
-            // 
+            //
             this.unrecognizedPopupBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.unrecognizedPopupBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.unrecognizedPopupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -1277,9 +1277,9 @@
             this.unrecognizedPopupBox.CheckedChanged += new System.EventHandler(this.unrecognizedCommandNotification_CheckedChanged);
             this.unrecognizedPopupBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.unrecognizedPopupBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // popupTypeBox
-            // 
+            //
             this.popupTypeBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupTypeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.popupTypeBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1295,9 +1295,9 @@
             this.popupTypeBox.SelectedIndexChanged += new System.EventHandler(this.notificationTypeBox_SelectedIndexChanged);
             this.popupTypeBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.popupTypeBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // huntsPage
-            // 
+            //
             this.huntsPage.Controls.Add(this.label22);
             this.huntsPage.Controls.Add(this.showHuntLootButton);
             this.huntsPage.Controls.Add(this.label35);
@@ -1318,9 +1318,9 @@
             this.huntsPage.TabIndex = 2;
             this.huntsPage.Text = "Hunts";
             this.huntsPage.UseVisualStyleBackColor = true;
-            // 
+            //
             // label22
-            // 
+            //
             this.label22.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label22.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label22.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1330,9 +1330,9 @@
             this.label22.TabIndex = 42;
             this.label22.Text = "Loot Display";
             this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // showHuntLootButton
-            // 
+            //
             this.showHuntLootButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.showHuntLootButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showHuntLootButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -1346,9 +1346,9 @@
             this.showHuntLootButton.Click += new System.EventHandler(this.showLootButton_Click);
             this.showHuntLootButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.showHuntLootButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // label35
-            // 
+            //
             this.label35.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label35.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label35.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1358,9 +1358,9 @@
             this.label35.TabIndex = 39;
             this.label35.Text = "Creature List";
             this.label35.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label34
-            // 
+            //
             this.label34.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label34.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label34.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1370,9 +1370,9 @@
             this.label34.TabIndex = 35;
             this.label34.Text = "Tracked Creatures";
             this.label34.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // setActiveHuntButton
-            // 
+            //
             this.setActiveHuntButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.setActiveHuntButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.setActiveHuntButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -1386,9 +1386,9 @@
             this.setActiveHuntButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.activeHuntButton_Click);
             this.setActiveHuntButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.setActiveHuntButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // label32
-            // 
+            //
             this.label32.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label32.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label32.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1398,9 +1398,9 @@
             this.label32.TabIndex = 32;
             this.label32.Text = "Options";
             this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // huntListLabel
-            // 
+            //
             this.huntListLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.huntListLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.huntListLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1410,9 +1410,9 @@
             this.huntListLabel.TabIndex = 3;
             this.huntListLabel.Text = "List of Hunts";
             this.huntListLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // trackedCreatureList
-            // 
+            //
             this.trackedCreatureList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.trackedCreatureList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.trackedCreatureList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
@@ -1426,9 +1426,9 @@
             this.trackedCreatureList.Name = "trackedCreatureList";
             this.trackedCreatureList.Size = new System.Drawing.Size(238, 95);
             this.trackedCreatureList.TabIndex = 40;
-            // 
+            //
             // gatherTrackedKillsBox
-            // 
+            //
             this.gatherTrackedKillsBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.gatherTrackedKillsBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gatherTrackedKillsBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -1442,9 +1442,9 @@
             this.gatherTrackedKillsBox.CheckedChanged += new System.EventHandler(this.aggregateHuntBox_CheckedChanged);
             this.gatherTrackedKillsBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.gatherTrackedKillsBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // switchOnKillBox
-            // 
+            //
             this.switchOnKillBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.switchOnKillBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.switchOnKillBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -1458,9 +1458,9 @@
             this.switchOnKillBox.CheckedChanged += new System.EventHandler(this.sideHuntBox_CheckedChanged);
             this.switchOnKillBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.switchOnKillBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // displayAllCreaturesBox
-            // 
+            //
             this.displayAllCreaturesBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.displayAllCreaturesBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.displayAllCreaturesBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -1474,9 +1474,9 @@
             this.displayAllCreaturesBox.CheckedChanged += new System.EventHandler(this.trackCreaturesCheckbox_CheckedChanged);
             this.displayAllCreaturesBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.displayAllCreaturesBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // clearHuntOnStartupBox
-            // 
+            //
             this.clearHuntOnStartupBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.clearHuntOnStartupBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.clearHuntOnStartupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -1490,9 +1490,9 @@
             this.clearHuntOnStartupBox.CheckedChanged += new System.EventHandler(this.startupHuntCheckbox_CheckedChanged);
             this.clearHuntOnStartupBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.clearHuntOnStartupBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // huntList
-            // 
+            //
             this.huntList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.huntList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.huntList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
@@ -1507,9 +1507,9 @@
             this.huntList.Size = new System.Drawing.Size(290, 155);
             this.huntList.TabIndex = 2;
             this.huntList.SelectedIndexChanged += new System.EventHandler(this.huntBox_SelectedIndexChanged);
-            // 
+            //
             // logSettings
-            // 
+            //
             this.logSettings.Controls.Add(this.showPopupButton);
             this.logSettings.Controls.Add(this.showAllLootButton);
             this.logSettings.Controls.Add(this.label33);
@@ -1525,9 +1525,9 @@
             this.logSettings.TabIndex = 9;
             this.logSettings.Text = "Log";
             this.logSettings.UseVisualStyleBackColor = true;
-            // 
+            //
             // showPopupButton
-            // 
+            //
             this.showPopupButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.showPopupButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showPopupButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -1541,9 +1541,9 @@
             this.showPopupButton.Click += new System.EventHandler(this.showPopupButton_Click);
             this.showPopupButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.showPopupButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // showAllLootButton
-            // 
+            //
             this.showAllLootButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.showAllLootButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showAllLootButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -1557,9 +1557,9 @@
             this.showAllLootButton.Click += new System.EventHandler(this.showAllLootButton_Click);
             this.showAllLootButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.showAllLootButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // label33
-            // 
+            //
             this.label33.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(56)))), ((int)(((byte)(65)))));
             this.label33.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label33.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1569,9 +1569,9 @@
             this.label33.TabIndex = 47;
             this.label33.Text = "Delete";
             this.label33.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label31
-            // 
+            //
             this.label31.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label31.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label31.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1581,9 +1581,9 @@
             this.label31.TabIndex = 45;
             this.label31.Text = "Log Messages";
             this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label38
-            // 
+            //
             this.label38.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label38.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label38.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1593,9 +1593,9 @@
             this.label38.TabIndex = 44;
             this.label38.Text = "Export";
             this.label38.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // logMessageCollection
-            // 
+            //
             this.logMessageCollection.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.logMessageCollection.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.logMessageCollection.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
@@ -1609,9 +1609,9 @@
             this.logMessageCollection.Name = "logMessageCollection";
             this.logMessageCollection.Size = new System.Drawing.Size(534, 221);
             this.logMessageCollection.TabIndex = 46;
-            // 
+            //
             // notificationsPage
-            // 
+            //
             this.notificationsPage.Controls.Add(this.selectedWindowLabel);
             this.notificationsPage.Controls.Add(this.notificationDurationLabel);
             this.notificationsPage.Controls.Add(this.notificationDurationBox);
@@ -1637,9 +1637,9 @@
             this.notificationsPage.TabIndex = 3;
             this.notificationsPage.Text = "Notifications";
             this.notificationsPage.UseVisualStyleBackColor = true;
-            // 
+            //
             // selectedWindowLabel
-            // 
+            //
             this.selectedWindowLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(128)))), ((int)(((byte)(176)))));
             this.selectedWindowLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.selectedWindowLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1649,9 +1649,9 @@
             this.selectedWindowLabel.TabIndex = 55;
             this.selectedWindowLabel.Text = "Loot Window";
             this.selectedWindowLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // notificationDurationLabel
-            // 
+            //
             this.notificationDurationLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.notificationDurationLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.notificationDurationLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1661,9 +1661,9 @@
             this.notificationDurationLabel.TabIndex = 54;
             this.notificationDurationLabel.Text = "Notification Length";
             this.notificationDurationLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // notificationDurationBox
-            // 
+            //
             this.notificationDurationBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.notificationDurationBox.LargeChange = 50;
             this.notificationDurationBox.Location = new System.Drawing.Point(284, 243);
@@ -1677,9 +1677,9 @@
             this.notificationDurationBox.Scroll += new System.EventHandler(this.notificationDurationBox_Scroll);
             this.notificationDurationBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.notificationDurationBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // label47
-            // 
+            //
             this.label47.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label47.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label47.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1689,9 +1689,9 @@
             this.label47.TabIndex = 52;
             this.label47.Text = "Notification Type List";
             this.label47.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label46
-            // 
+            //
             this.label46.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label46.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label46.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1701,9 +1701,9 @@
             this.label46.TabIndex = 50;
             this.label46.Text = "Display Group";
             this.label46.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label45
-            // 
+            //
             this.label45.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(56)))), ((int)(((byte)(65)))));
             this.label45.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label45.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1713,9 +1713,9 @@
             this.label45.TabIndex = 48;
             this.label45.Text = "Overwrite Settings";
             this.label45.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // applyNotificationSettingsToAllButton
-            // 
+            //
             this.applyNotificationSettingsToAllButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.applyNotificationSettingsToAllButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.applyNotificationSettingsToAllButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -1729,9 +1729,9 @@
             this.applyNotificationSettingsToAllButton.Click += new System.EventHandler(this.applyNotificationSettingsToAllButton_Click);
             this.applyNotificationSettingsToAllButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.applyNotificationSettingsToAllButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // clearNotificationDisplayButton
-            // 
+            //
             this.clearNotificationDisplayButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.clearNotificationDisplayButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.clearNotificationDisplayButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -1745,9 +1745,9 @@
             this.clearNotificationDisplayButton.Click += new System.EventHandler(this.clearNotificationDisplayButton_Click);
             this.clearNotificationDisplayButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.clearNotificationDisplayButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // testNotificationDisplayButton
-            // 
+            //
             this.testNotificationDisplayButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.testNotificationDisplayButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.testNotificationDisplayButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -1761,9 +1761,9 @@
             this.testNotificationDisplayButton.Click += new System.EventHandler(this.testNotificationDisplayButton_Click);
             this.testNotificationDisplayButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.testNotificationDisplayButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // label41
-            // 
+            //
             this.label41.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label41.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label41.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1773,9 +1773,9 @@
             this.label41.TabIndex = 38;
             this.label41.Text = "Testing";
             this.label41.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label40
-            // 
+            //
             this.label40.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.label40.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label40.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -1785,9 +1785,9 @@
             this.label40.TabIndex = 37;
             this.label40.Text = "Y Offset";
             this.label40.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label39
-            // 
+            //
             this.label39.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.label39.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label39.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -1797,9 +1797,9 @@
             this.label39.TabIndex = 35;
             this.label39.Text = "X Offset";
             this.label39.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label37
-            // 
+            //
             this.label37.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label37.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label37.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1809,9 +1809,9 @@
             this.label37.TabIndex = 33;
             this.label37.Text = "Position (Offset)";
             this.label37.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label36
-            // 
+            //
             this.label36.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label36.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label36.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1821,9 +1821,9 @@
             this.label36.TabIndex = 32;
             this.label36.Text = "Anchor";
             this.label36.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // notificationTypeList
-            // 
+            //
             this.notificationTypeList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.notificationTypeList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.notificationTypeList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
@@ -1838,9 +1838,9 @@
             this.notificationTypeList.Size = new System.Drawing.Size(275, 355);
             this.notificationTypeList.TabIndex = 51;
             this.notificationTypeList.SelectedIndexChanged += new System.EventHandler(this.notificationTypeList_SelectedIndexChanged);
-            // 
+            //
             // notificationGroupBox
-            // 
+            //
             this.notificationGroupBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.notificationGroupBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.notificationGroupBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1864,9 +1864,9 @@
             this.notificationGroupBox.SelectedIndexChanged += new System.EventHandler(this.groupSelectionList_SelectedIndexChanged);
             this.notificationGroupBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.notificationGroupBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // notificationYOffsetBox
-            // 
+            //
             this.notificationYOffsetBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.notificationYOffsetBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.notificationYOffsetBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -1877,9 +1877,9 @@
             this.notificationYOffsetBox.TextChanged += new System.EventHandler(this.notificationYOffsetBox_TextChanged);
             this.notificationYOffsetBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.notificationYOffsetBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // notificationXOffsetBox
-            // 
+            //
             this.notificationXOffsetBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.notificationXOffsetBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.notificationXOffsetBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -1890,9 +1890,9 @@
             this.notificationXOffsetBox.TextChanged += new System.EventHandler(this.notificationXOffsetBox_TextChanged);
             this.notificationXOffsetBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.notificationXOffsetBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // notificationAnchorBox
-            // 
+            //
             this.notificationAnchorBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.notificationAnchorBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.notificationAnchorBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -1910,9 +1910,9 @@
             this.notificationAnchorBox.SelectedIndexChanged += new System.EventHandler(this.notificationAnchorBox_SelectedIndexChanged);
             this.notificationAnchorBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.notificationAnchorBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // popupsPage
-            // 
+            //
             this.popupsPage.Controls.Add(this.popupSetGoldCapRatioButton);
             this.popupsPage.Controls.Add(this.popupGoldCapRatioBox);
             this.popupsPage.Controls.Add(this.label3);
@@ -1942,9 +1942,9 @@
             this.popupsPage.TabIndex = 4;
             this.popupsPage.Text = "Popups";
             this.popupsPage.UseVisualStyleBackColor = true;
-            // 
+            //
             // popupSetGoldCapRatioButton
-            // 
+            //
             this.popupSetGoldCapRatioButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupSetGoldCapRatioButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupSetGoldCapRatioButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -1957,9 +1957,9 @@
             this.popupSetGoldCapRatioButton.Click += new System.EventHandler(this.popupSetGoldCapRatioButton_Click);
             this.popupSetGoldCapRatioButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.popupSetGoldCapRatioButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // popupGoldCapRatioBox
-            // 
+            //
             this.popupGoldCapRatioBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupGoldCapRatioBox.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupGoldCapRatioBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -1971,9 +1971,9 @@
             this.popupGoldCapRatioBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.popupGoldCapRatioBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.popupGoldCapRatioBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // label3
-            // 
+            //
             this.label3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label3.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -1983,9 +1983,9 @@
             this.label3.TabIndex = 64;
             this.label3.Text = "Gold/Cap Ratio Popup";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // popupSetValueButton
-            // 
+            //
             this.popupSetValueButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupSetValueButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupSetValueButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -1998,9 +1998,9 @@
             this.popupSetValueButton.Click += new System.EventHandler(this.setValuePopupButton_Click);
             this.popupSetValueButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.popupSetValueButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // popupValueBox
-            // 
+            //
             this.popupValueBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupValueBox.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupValueBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -2012,9 +2012,9 @@
             this.popupValueBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.popupValueBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.popupValueBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // label1
-            // 
+            //
             this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label1.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2024,9 +2024,9 @@
             this.label1.TabIndex = 61;
             this.label1.Text = "Item Value Popup";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // popupTestButton
-            // 
+            //
             this.popupTestButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupTestButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupTestButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2039,9 +2039,9 @@
             this.popupTestButton.Click += new System.EventHandler(this.popupTestButton_Click);
             this.popupTestButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.popupTestButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // label99
-            // 
+            //
             this.label99.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label99.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label99.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2051,9 +2051,9 @@
             this.label99.TabIndex = 58;
             this.label99.Text = "Test Popup Message";
             this.label99.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label70
-            // 
+            //
             this.label70.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label70.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label70.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2063,9 +2063,9 @@
             this.label70.TabIndex = 55;
             this.label70.Text = "Popup Conditions";
             this.label70.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label69
-            // 
+            //
             this.label69.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label69.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label69.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2075,9 +2075,9 @@
             this.label69.TabIndex = 54;
             this.label69.Text = "Popup Items";
             this.label69.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // popupClearDisplayButton
-            // 
+            //
             this.popupClearDisplayButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupClearDisplayButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupClearDisplayButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2090,9 +2090,9 @@
             this.popupClearDisplayButton.Click += new System.EventHandler(this.clearNotifications_Click);
             this.popupClearDisplayButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.popupClearDisplayButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // popupTestNotificationButton
-            // 
+            //
             this.popupTestNotificationButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupTestNotificationButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupTestNotificationButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2105,9 +2105,9 @@
             this.popupTestNotificationButton.Click += new System.EventHandler(this.simpleTestDisplay_Click);
             this.popupTestNotificationButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.popupTestNotificationButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // label66
-            // 
+            //
             this.label66.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label66.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label66.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2117,9 +2117,9 @@
             this.label66.TabIndex = 45;
             this.label66.Text = "Testing";
             this.label66.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label56
-            // 
+            //
             this.label56.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.label56.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label56.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2129,9 +2129,9 @@
             this.label56.TabIndex = 44;
             this.label56.Text = "Y Offset";
             this.label56.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label61
-            // 
+            //
             this.label61.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.label61.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label61.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2141,9 +2141,9 @@
             this.label61.TabIndex = 42;
             this.label61.Text = "X Offset";
             this.label61.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label62
-            // 
+            //
             this.label62.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label62.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label62.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2153,9 +2153,9 @@
             this.label62.TabIndex = 40;
             this.label62.Text = "Position (Offset)";
             this.label62.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label63
-            // 
+            //
             this.label63.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label63.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label63.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2165,9 +2165,9 @@
             this.label63.TabIndex = 39;
             this.label63.Text = "Anchor";
             this.label63.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // popupTestLootBox
-            // 
+            //
             this.popupTestLootBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupTestLootBox.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupTestLootBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -2179,9 +2179,9 @@
             this.popupTestLootBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.popupTestLootBox_KeyPress);
             this.popupTestLootBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.popupTestLootBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // popupConditionBox
-            // 
+            //
             this.popupConditionBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupConditionBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.popupConditionBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
@@ -2196,9 +2196,9 @@
             this.popupConditionBox.Size = new System.Drawing.Size(277, 155);
             this.popupConditionBox.TabIndex = 57;
             this.popupConditionBox.SelectedIndexChanged += new System.EventHandler(this.popupConditionBox_SelectedIndexChanged);
-            // 
+            //
             // popupSpecificItemBox
-            // 
+            //
             this.popupSpecificItemBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupSpecificItemBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.popupSpecificItemBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
@@ -2212,9 +2212,9 @@
             this.popupSpecificItemBox.Name = "popupSpecificItemBox";
             this.popupSpecificItemBox.Size = new System.Drawing.Size(250, 155);
             this.popupSpecificItemBox.TabIndex = 56;
-            // 
+            //
             // popupYOffsetBox
-            // 
+            //
             this.popupYOffsetBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupYOffsetBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupYOffsetBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -2225,9 +2225,9 @@
             this.popupYOffsetBox.TextChanged += new System.EventHandler(this.simpleYOffset_TextChanged);
             this.popupYOffsetBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.popupYOffsetBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // popupXOffsetBox
-            // 
+            //
             this.popupXOffsetBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupXOffsetBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupXOffsetBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -2238,9 +2238,9 @@
             this.popupXOffsetBox.TextChanged += new System.EventHandler(this.simpleXOffset_TextChanged);
             this.popupXOffsetBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.popupXOffsetBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // popupAnchorBox
-            // 
+            //
             this.popupAnchorBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupAnchorBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.popupAnchorBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -2258,9 +2258,9 @@
             this.popupAnchorBox.SelectedIndexChanged += new System.EventHandler(this.simpleAnchor_SelectedIndexChanged);
             this.popupAnchorBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.popupAnchorBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // databasePage
-            // 
+            //
             this.databasePage.Controls.Add(this.label5);
             this.databasePage.Controls.Add(this.applyConvertRatioButton);
             this.databasePage.Controls.Add(this.convertStackableHeader);
@@ -2276,9 +2276,9 @@
             this.databasePage.TabIndex = 5;
             this.databasePage.Text = "Database";
             this.databasePage.UseVisualStyleBackColor = true;
-            // 
+            //
             // label5
-            // 
+            //
             this.label5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label5.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2288,9 +2288,9 @@
             this.label5.TabIndex = 79;
             this.label5.Text = "Custom Convert Ratio";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // applyConvertRatioButton
-            // 
+            //
             this.applyConvertRatioButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.applyConvertRatioButton.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.applyConvertRatioButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2303,9 +2303,9 @@
             this.applyConvertRatioButton.Click += new System.EventHandler(this.applyConvertRatioButton_Click);
             this.applyConvertRatioButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.applyConvertRatioButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // convertStackableHeader
-            // 
+            //
             this.convertStackableHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.convertStackableHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.convertStackableHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2315,9 +2315,9 @@
             this.convertStackableHeader.TabIndex = 76;
             this.convertStackableHeader.Text = "Convert Items To Gold (Stackable)";
             this.convertStackableHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label20
-            // 
+            //
             this.label20.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label20.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label20.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2327,9 +2327,9 @@
             this.label20.TabIndex = 75;
             this.label20.Text = "Custom Discard Ratio";
             this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // applyDiscardRatioButton
-            // 
+            //
             this.applyDiscardRatioButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.applyDiscardRatioButton.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.applyDiscardRatioButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2342,9 +2342,9 @@
             this.applyDiscardRatioButton.Click += new System.EventHandler(this.applyDiscardRatioButton_Click);
             this.applyDiscardRatioButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.applyDiscardRatioButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // convertUnstackableHeader
-            // 
+            //
             this.convertUnstackableHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.convertUnstackableHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.convertUnstackableHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2354,9 +2354,9 @@
             this.convertUnstackableHeader.TabIndex = 71;
             this.convertUnstackableHeader.Text = "Convert Items To Gold (Unstackable)";
             this.convertUnstackableHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // discardItemsHeader
-            // 
+            //
             this.discardItemsHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.discardItemsHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.discardItemsHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2366,9 +2366,9 @@
             this.discardItemsHeader.TabIndex = 51;
             this.discardItemsHeader.Text = "Discard Items - Click To Set Discard Ratio";
             this.discardItemsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // customConvertRatioBox
-            // 
+            //
             this.customConvertRatioBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.customConvertRatioBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.customConvertRatioBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -2379,9 +2379,9 @@
             this.customConvertRatioBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.customConvertRatioBox_KeyPress);
             this.customConvertRatioBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.customConvertRatioBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // customDiscardRatioBox
-            // 
+            //
             this.customDiscardRatioBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.customDiscardRatioBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.customDiscardRatioBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -2392,9 +2392,9 @@
             this.customDiscardRatioBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.customDiscardRatioBox_KeyPress);
             this.customDiscardRatioBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.customDiscardRatioBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // autohotkeyPage
-            // 
+            //
             this.autohotkeyPage.Controls.Add(this.downloadBar);
             this.autohotkeyPage.Controls.Add(this.closeSuspendedWindowButton);
             this.autohotkeyPage.Controls.Add(this.suspendedTestButton);
@@ -2422,9 +2422,9 @@
             this.autohotkeyPage.TabIndex = 6;
             this.autohotkeyPage.Text = "Autohotkey";
             this.autohotkeyPage.UseVisualStyleBackColor = true;
-            // 
+            //
             // closeSuspendedWindowButton
-            // 
+            //
             this.closeSuspendedWindowButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.closeSuspendedWindowButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.closeSuspendedWindowButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2437,9 +2437,9 @@
             this.closeSuspendedWindowButton.Click += new System.EventHandler(this.closeSuspendedWindow_Click);
             this.closeSuspendedWindowButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.closeSuspendedWindowButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // suspendedTestButton
-            // 
+            //
             this.suspendedTestButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.suspendedTestButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.suspendedTestButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2452,9 +2452,9 @@
             this.suspendedTestButton.Click += new System.EventHandler(this.suspendedTest_Click);
             this.suspendedTestButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.suspendedTestButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // label92
-            // 
+            //
             this.label92.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label92.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label92.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2464,9 +2464,9 @@
             this.label92.TabIndex = 59;
             this.label92.Text = "Testing";
             this.label92.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // shutdownAutoHotkeyButton
-            // 
+            //
             this.shutdownAutoHotkeyButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.shutdownAutoHotkeyButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.shutdownAutoHotkeyButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2480,9 +2480,9 @@
             this.shutdownAutoHotkeyButton.Click += new System.EventHandler(this.shutdownAutoHotkey_Click);
             this.shutdownAutoHotkeyButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.shutdownAutoHotkeyButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // startAutoHotkeyButton
-            // 
+            //
             this.startAutoHotkeyButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.startAutoHotkeyButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.startAutoHotkeyButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2495,9 +2495,9 @@
             this.startAutoHotkeyButton.Click += new System.EventHandler(this.startAutoHotkey_Click);
             this.startAutoHotkeyButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.startAutoHotkeyButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // downloadAutoHotkeyButton
-            // 
+            //
             this.downloadAutoHotkeyButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.downloadAutoHotkeyButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.downloadAutoHotkeyButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2511,9 +2511,9 @@
             this.downloadAutoHotkeyButton.Click += new System.EventHandler(this.downloadAutoHotkey_Click);
             this.downloadAutoHotkeyButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.downloadAutoHotkeyButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // label88
-            // 
+            //
             this.label88.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label88.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label88.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2523,9 +2523,9 @@
             this.label88.TabIndex = 53;
             this.label88.Text = "Start";
             this.label88.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label84
-            // 
+            //
             this.label84.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.label84.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label84.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2535,9 +2535,9 @@
             this.label84.TabIndex = 52;
             this.label84.Text = "Y Offset";
             this.label84.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label85
-            // 
+            //
             this.label85.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.label85.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label85.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2547,9 +2547,9 @@
             this.label85.TabIndex = 50;
             this.label85.Text = "X Offset";
             this.label85.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label86
-            // 
+            //
             this.label86.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label86.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label86.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2559,9 +2559,9 @@
             this.label86.TabIndex = 48;
             this.label86.Text = "Position (Offset)";
             this.label86.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label87
-            // 
+            //
             this.label87.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label87.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label87.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2571,9 +2571,9 @@
             this.label87.TabIndex = 47;
             this.label87.Text = "Anchor";
             this.label87.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label15
-            // 
+            //
             this.label15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label15.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label15.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2583,9 +2583,9 @@
             this.label15.TabIndex = 45;
             this.label15.Text = "Options";
             this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label27
-            // 
+            //
             this.label27.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label27.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label27.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2595,9 +2595,9 @@
             this.label27.TabIndex = 44;
             this.label27.Text = "Download";
             this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label26
-            // 
+            //
             this.label26.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label26.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label26.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2607,9 +2607,9 @@
             this.label26.TabIndex = 43;
             this.label26.Text = "AutoHotkey Script";
             this.label26.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // suspendedXOffsetBox
-            // 
+            //
             this.suspendedXOffsetBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.suspendedXOffsetBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.suspendedXOffsetBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -2620,9 +2620,9 @@
             this.suspendedXOffsetBox.TextChanged += new System.EventHandler(this.suspendedXOffset_TextChanged);
             this.suspendedXOffsetBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.suspendedXOffsetBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // suspendedYOffsetBox
-            // 
+            //
             this.suspendedYOffsetBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.suspendedYOffsetBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.suspendedYOffsetBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -2633,9 +2633,9 @@
             this.suspendedYOffsetBox.TextChanged += new System.EventHandler(this.suspendedYOffset_TextChanged);
             this.suspendedYOffsetBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.suspendedYOffsetBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // exitScriptOnShutdownBox
-            // 
+            //
             this.exitScriptOnShutdownBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.exitScriptOnShutdownBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.exitScriptOnShutdownBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2649,9 +2649,9 @@
             this.exitScriptOnShutdownBox.CheckedChanged += new System.EventHandler(this.shutdownOnExit_CheckedChanged);
             this.exitScriptOnShutdownBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.exitScriptOnShutdownBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // startScriptOnStartupBox
-            // 
+            //
             this.startScriptOnStartupBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.startScriptOnStartupBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.startScriptOnStartupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2665,9 +2665,9 @@
             this.startScriptOnStartupBox.CheckedChanged += new System.EventHandler(this.startAutohotkeyScript_CheckedChanged);
             this.startScriptOnStartupBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.startScriptOnStartupBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // suspendedAnchorBox
-            // 
+            //
             this.suspendedAnchorBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.suspendedAnchorBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.suspendedAnchorBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -2685,9 +2685,9 @@
             this.suspendedAnchorBox.SelectedIndexChanged += new System.EventHandler(this.suspendedAnchor_SelectedIndexChanged);
             this.suspendedAnchorBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.suspendedAnchorBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // autoHotkeyGridSettings
-            // 
+            //
             this.autoHotkeyGridSettings.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.autoHotkeyGridSettings.Location = new System.Drawing.Point(3, 54);
             this.autoHotkeyGridSettings.Name = "autoHotkeyGridSettings";
@@ -2695,9 +2695,9 @@
             this.autoHotkeyGridSettings.TabIndex = 5;
             this.autoHotkeyGridSettings.Text = resources.GetString("autoHotkeyGridSettings.Text");
             this.autoHotkeyGridSettings.TextChanged += new System.EventHandler(this.autoHotkeyGridSettings_TextChanged);
-            // 
+            //
             // Screenshot
-            // 
+            //
             this.Screenshot.Controls.Add(this.screenshotBox);
             this.Screenshot.Controls.Add(this.changeScreenshotDirectoryButton);
             this.Screenshot.Controls.Add(this.openScreenshotDirectoryButton);
@@ -2717,9 +2717,9 @@
             this.Screenshot.TabIndex = 10;
             this.Screenshot.Text = "Screen";
             this.Screenshot.UseVisualStyleBackColor = true;
-            // 
+            //
             // changeScreenshotDirectoryButton
-            // 
+            //
             this.changeScreenshotDirectoryButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.changeScreenshotDirectoryButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.changeScreenshotDirectoryButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2733,9 +2733,9 @@
             this.changeScreenshotDirectoryButton.Click += new System.EventHandler(this.screenshotBrowse_Click);
             this.changeScreenshotDirectoryButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.changeScreenshotDirectoryButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // openScreenshotDirectoryButton
-            // 
+            //
             this.openScreenshotDirectoryButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.openScreenshotDirectoryButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.openScreenshotDirectoryButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2749,9 +2749,9 @@
             this.openScreenshotDirectoryButton.Click += new System.EventHandler(this.openInExplorer_Click);
             this.openScreenshotDirectoryButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.openScreenshotDirectoryButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // label96
-            // 
+            //
             this.label96.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label96.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label96.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2761,9 +2761,9 @@
             this.label96.TabIndex = 48;
             this.label96.Text = "Screenshot Options";
             this.label96.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label95
-            // 
+            //
             this.label95.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label95.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label95.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2773,9 +2773,9 @@
             this.label95.TabIndex = 47;
             this.label95.Text = "Screenshot Directory";
             this.label95.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // screenshotTitleLabel
-            // 
+            //
             this.screenshotTitleLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(128)))), ((int)(((byte)(176)))));
             this.screenshotTitleLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.screenshotTitleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2785,9 +2785,9 @@
             this.screenshotTitleLabel.TabIndex = 46;
             this.screenshotTitleLabel.Text = "Screenshot";
             this.screenshotTitleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // screenshotListLabel
-            // 
+            //
             this.screenshotListLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.screenshotListLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.screenshotListLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2797,9 +2797,9 @@
             this.screenshotListLabel.TabIndex = 44;
             this.screenshotListLabel.Text = "Screenshot List";
             this.screenshotListLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // screenshotRareBox
-            // 
+            //
             this.screenshotRareBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.screenshotRareBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.screenshotRareBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2813,9 +2813,9 @@
             this.screenshotRareBox.CheckedChanged += new System.EventHandler(this.autoScreenshotDrop_CheckedChanged);
             this.screenshotRareBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.screenshotRareBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // screenshotDeathBox
-            // 
+            //
             this.screenshotDeathBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.screenshotDeathBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.screenshotDeathBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2829,9 +2829,9 @@
             this.screenshotDeathBox.CheckedChanged += new System.EventHandler(this.autoScreenshotDrop_CheckedChanged);
             this.screenshotDeathBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.screenshotDeathBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // screenshotAdvanceBox
-            // 
+            //
             this.screenshotAdvanceBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.screenshotAdvanceBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.screenshotAdvanceBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2845,9 +2845,9 @@
             this.screenshotAdvanceBox.CheckedChanged += new System.EventHandler(this.autoScreenshot_CheckedChanged);
             this.screenshotAdvanceBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.screenshotAdvanceBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // enableScreenshotCheckbox
-            // 
+            //
             this.enableScreenshotCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.enableScreenshotCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.enableScreenshotCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -2861,9 +2861,9 @@
             this.enableScreenshotCheckbox.CheckedChanged += new System.EventHandler(this.enableScreenshotBox_CheckedChanged);
             this.enableScreenshotCheckbox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.enableScreenshotCheckbox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // screenshotPathBox
-            // 
+            //
             this.screenshotPathBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.screenshotPathBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.screenshotPathBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -2872,9 +2872,9 @@
             this.screenshotPathBox.ReadOnly = true;
             this.screenshotPathBox.Size = new System.Drawing.Size(311, 23);
             this.screenshotPathBox.TabIndex = 49;
-            // 
+            //
             // screenshotDisplayList
-            // 
+            //
             this.screenshotDisplayList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.screenshotDisplayList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.screenshotDisplayList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
@@ -2889,9 +2889,9 @@
             this.screenshotDisplayList.Size = new System.Drawing.Size(219, 454);
             this.screenshotDisplayList.TabIndex = 45;
             this.screenshotDisplayList.SelectedIndexChanged += new System.EventHandler(this.screenshotList_SelectedIndexChanged);
-            // 
+            //
             // browsePage
-            // 
+            //
             this.browsePage.Controls.Add(this.browseTextBox);
             this.browsePage.Controls.Add(this.creaturePanel);
             this.browsePage.Controls.Add(this.label101);
@@ -2902,9 +2902,9 @@
             this.browsePage.TabIndex = 7;
             this.browsePage.Text = "Browse";
             this.browsePage.UseVisualStyleBackColor = true;
-            // 
+            //
             // browseTextBox
-            // 
+            //
             this.browseTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.browseTextBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.browseTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -2913,9 +2913,9 @@
             this.browseTextBox.Size = new System.Drawing.Size(390, 23);
             this.browseTextBox.TabIndex = 55;
             this.browseTextBox.TextChanged += new System.EventHandler(this.creatureSearch_TextChanged);
-            // 
+            //
             // label101
-            // 
+            //
             this.label101.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label101.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label101.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2925,9 +2925,9 @@
             this.label101.TabIndex = 53;
             this.label101.Text = "Search Database";
             this.label101.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // browseTypeBox
-            // 
+            //
             this.browseTypeBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.browseTypeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.browseTypeBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -2946,9 +2946,9 @@
             this.browseTypeBox.Size = new System.Drawing.Size(144, 24);
             this.browseTypeBox.TabIndex = 54;
             this.browseTypeBox.SelectedIndexChanged += new System.EventHandler(this.browseSelectionBox_SelectedIndexChanged);
-            // 
+            //
             // helpPage
-            // 
+            //
             this.helpPage.Controls.Add(this.helpPanel);
             this.helpPage.Controls.Add(this.label102);
             this.helpPage.Controls.Add(this.searchCommandHelpBox);
@@ -2958,9 +2958,9 @@
             this.helpPage.TabIndex = 8;
             this.helpPage.Text = "Help";
             this.helpPage.UseVisualStyleBackColor = true;
-            // 
+            //
             // label102
-            // 
+            //
             this.label102.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label102.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label102.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -2970,9 +2970,9 @@
             this.label102.TabIndex = 54;
             this.label102.Text = "Search Commands";
             this.label102.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // searchCommandHelpBox
-            // 
+            //
             this.searchCommandHelpBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.searchCommandHelpBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.searchCommandHelpBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -2983,9 +2983,9 @@
             this.searchCommandHelpBox.TextChanged += new System.EventHandler(this.helpSearchBox_TextChanged);
             this.searchCommandHelpBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.searchCommandHelpBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // upgradeTab
-            // 
+            //
             this.upgradeTab.Controls.Add(this.customCommandParameterBox);
             this.upgradeTab.Controls.Add(this.label8);
             this.upgradeTab.Controls.Add(this.customCommandBox);
@@ -3001,9 +3001,9 @@
             this.upgradeTab.TabIndex = 11;
             this.upgradeTab.Text = "Upgrade";
             this.upgradeTab.UseVisualStyleBackColor = true;
-            // 
+            //
             // customCommandParameterBox
-            // 
+            //
             this.customCommandParameterBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.customCommandParameterBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.customCommandParameterBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -3014,9 +3014,9 @@
             this.customCommandParameterBox.TextChanged += new System.EventHandler(this.customCommandParameterBox_TextChanged);
             this.customCommandParameterBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.customCommandParameterBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // label8
-            // 
+            //
             this.label8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label8.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -3026,9 +3026,9 @@
             this.label8.TabIndex = 62;
             this.label8.Text = "Parameters";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // customCommandBox
-            // 
+            //
             this.customCommandBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.customCommandBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.customCommandBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -3039,9 +3039,9 @@
             this.customCommandBox.TextChanged += new System.EventHandler(this.customCommandBox_TextChanged);
             this.customCommandBox.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.customCommandBox.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // customCommandName
-            // 
+            //
             this.customCommandName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(128)))), ((int)(((byte)(176)))));
             this.customCommandName.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.customCommandName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -3051,9 +3051,9 @@
             this.customCommandName.TabIndex = 60;
             this.customCommandName.Text = "Command Information";
             this.customCommandName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label7
-            // 
+            //
             this.label7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label7.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -3063,9 +3063,9 @@
             this.label7.TabIndex = 59;
             this.label7.Text = "System Command";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label6
-            // 
+            //
             this.label6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label6.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -3075,9 +3075,9 @@
             this.label6.TabIndex = 58;
             this.label6.Text = "Custom Commands";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // customCommandList
-            // 
+            //
             this.customCommandList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.customCommandList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.customCommandList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
@@ -3092,9 +3092,9 @@
             this.customCommandList.Size = new System.Drawing.Size(230, 135);
             this.customCommandList.TabIndex = 57;
             this.customCommandList.SelectedIndexChanged += new System.EventHandler(this.customCommandList_SelectedIndexChanged);
-            // 
+            //
             // selectUpgradeTibialyzerButton
-            // 
+            //
             this.selectUpgradeTibialyzerButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.selectUpgradeTibialyzerButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.selectUpgradeTibialyzerButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -3108,9 +3108,9 @@
             this.selectUpgradeTibialyzerButton.Click += new System.EventHandler(this.selectUpgradeTibialyzerButton_Click);
             this.selectUpgradeTibialyzerButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.selectUpgradeTibialyzerButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // label4
-            // 
+            //
             this.label4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label4.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -3120,18 +3120,18 @@
             this.label4.TabIndex = 55;
             this.label4.Text = "Import Settings From Previous Tibialyzer";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label30
-            // 
+            //
             this.label30.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
             this.label30.Location = new System.Drawing.Point(0, 62);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(102, 5);
             this.label30.TabIndex = 22;
             this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // logButton
-            // 
+            //
             this.logButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.logButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -3144,9 +3144,9 @@
             this.logButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.logButton_Click);
             this.logButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.logButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // warningImageBox
-            // 
+            //
             this.warningImageBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.warningImageBox.Image = ((System.Drawing.Image)(resources.GetObject("warningImageBox.Image")));
             this.warningImageBox.Location = new System.Drawing.Point(27, 463);
@@ -3157,18 +3157,18 @@
             this.warningImageBox.TabStop = false;
             this.warningImageBox.Visible = false;
             this.warningImageBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.warningImageBox_MouseDown);
-            // 
+            //
             // label2
-            // 
+            //
             this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
             this.label2.Location = new System.Drawing.Point(0, 373);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(102, 5);
             this.label2.TabIndex = 25;
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // upgradeButton
-            // 
+            //
             this.upgradeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.upgradeButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.upgradeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -3181,9 +3181,9 @@
             this.upgradeButton.Click += new System.EventHandler(this.upgradeButton_Click);
             this.upgradeButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.upgradeButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            // 
+            //
             // MainForm
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;

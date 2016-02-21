@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -233,7 +233,7 @@ namespace Tibialyzer {
             int max_x = SettingsManager.getSettingInt("LootFormWidth");
             if (max_x < minLootWidth) max_x = minLootWidth;
             int width_x = max_x + item_spacing * 2;
-            
+
             long total_value = 0;
             int currentPage = 0;
             bool prevPage = page > 0;
@@ -417,7 +417,7 @@ namespace Tibialyzer {
                         picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
                         picture_box.Click += openCreatureDrops;
                         picture_box.BackColor = Color.Transparent;
-                        
+
                         this.Controls.Add(picture_box);
                         this.Controls.Add(count);
                     }
@@ -522,7 +522,7 @@ namespace Tibialyzer {
             this.Refresh();
             this.refreshTimer();
         }
-        
+
         void openItemBox(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("item" + MainForm.commandSymbol + (sender as Control).Name);

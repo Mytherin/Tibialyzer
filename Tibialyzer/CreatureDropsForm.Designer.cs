@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,7 +20,7 @@
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-        
+
         #region Windows Form Designer generated code
 
         /// <summary>
@@ -36,9 +36,9 @@
             this.mainImage = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.mainImage)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // huntButton
-            // 
+            //
             this.huntButton.BackColor = System.Drawing.Color.Transparent;
             this.huntButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.huntButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -51,9 +51,9 @@
             this.huntButton.Text = "Hunts";
             this.huntButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.huntButton.Click += new System.EventHandler(this.huntButton_Click);
-            // 
+            //
             // statsButton
-            // 
+            //
             this.statsButton.BackColor = System.Drawing.Color.Transparent;
             this.statsButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.statsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -66,9 +66,9 @@
             this.statsButton.Text = "Stats";
             this.statsButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.statsButton.Click += new System.EventHandler(this.statsButton_Click);
-            // 
+            //
             // nameLabel
-            // 
+            //
             this.nameLabel.AutoSize = true;
             this.nameLabel.BackColor = System.Drawing.Color.Transparent;
             this.nameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -79,9 +79,9 @@
             this.nameLabel.Size = new System.Drawing.Size(0, 24);
             this.nameLabel.TabIndex = 1;
             this.nameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // mainImage
-            // 
+            //
             this.mainImage.BackColor = System.Drawing.Color.Transparent;
             this.mainImage.Location = new System.Drawing.Point(12, 12);
             this.mainImage.Name = "mainImage";
@@ -89,9 +89,9 @@
             this.mainImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.mainImage.TabIndex = 0;
             this.mainImage.TabStop = false;
-            // 
+            //
             // CreatureDropsForm
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(358, 183);

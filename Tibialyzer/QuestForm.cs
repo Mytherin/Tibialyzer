@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -53,9 +53,9 @@ namespace Tibialyzer {
             this.wikiButton = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.premiumBox)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // legendLabel
-            // 
+            //
             this.legendLabel.AutoSize = true;
             this.legendLabel.BackColor = System.Drawing.Color.Transparent;
             this.legendLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -67,9 +67,9 @@ namespace Tibialyzer {
             this.legendLabel.Size = new System.Drawing.Size(160, 19);
             this.legendLabel.TabIndex = 29;
             this.legendLabel.Text = "This quest has no legend.";
-            // 
+            //
             // cityLabel
-            // 
+            //
             this.cityLabel.BackColor = System.Drawing.Color.Transparent;
             this.cityLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cityLabel.ForeColor = StyleManager.NotificationTextColor;
@@ -79,9 +79,9 @@ namespace Tibialyzer {
             this.cityLabel.TabIndex = 28;
             this.cityLabel.Text = "Edron";
             this.cityLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
+            //
             // label3
-            // 
+            //
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.ForeColor = StyleManager.NotificationTextColor;
@@ -90,9 +90,9 @@ namespace Tibialyzer {
             this.label3.Size = new System.Drawing.Size(24, 13);
             this.label3.TabIndex = 27;
             this.label3.Text = "City";
-            // 
+            //
             // levelLabel
-            // 
+            //
             this.levelLabel.BackColor = System.Drawing.Color.Transparent;
             this.levelLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.levelLabel.ForeColor = StyleManager.NotificationTextColor;
@@ -102,9 +102,9 @@ namespace Tibialyzer {
             this.levelLabel.TabIndex = 26;
             this.levelLabel.Text = "0";
             this.levelLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
+            //
             // label2
-            // 
+            //
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.ForeColor = StyleManager.NotificationTextColor;
@@ -113,9 +113,9 @@ namespace Tibialyzer {
             this.label2.Size = new System.Drawing.Size(53, 13);
             this.label2.TabIndex = 25;
             this.label2.Text = "Min Level";
-            // 
+            //
             // premiumBox
-            // 
+            //
             this.premiumBox.BackColor = System.Drawing.Color.Transparent;
             this.premiumBox.Location = new System.Drawing.Point(241, 26);
             this.premiumBox.Name = "premiumBox";
@@ -123,9 +123,9 @@ namespace Tibialyzer {
             this.premiumBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.premiumBox.TabIndex = 23;
             this.premiumBox.TabStop = false;
-            // 
+            //
             // summonableLabel
-            // 
+            //
             this.summonableLabel.AutoSize = true;
             this.summonableLabel.BackColor = System.Drawing.Color.Transparent;
             this.summonableLabel.ForeColor = StyleManager.NotificationTextColor;
@@ -134,9 +134,9 @@ namespace Tibialyzer {
             this.summonableLabel.Size = new System.Drawing.Size(47, 13);
             this.summonableLabel.TabIndex = 24;
             this.summonableLabel.Text = "Premium";
-            // 
+            //
             // questTitle
-            // 
+            //
             this.questTitle.BackColor = System.Drawing.Color.Transparent;
             this.questTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.questTitle.ForeColor = StyleManager.NotificationTextColor;
@@ -145,9 +145,9 @@ namespace Tibialyzer {
             this.questTitle.Size = new System.Drawing.Size(200, 16);
             this.questTitle.TabIndex = 4;
             this.questTitle.Text = "Quest Name";
-            // 
+            //
             // wikiButton
-            // 
+            //
             this.wikiButton.BackColor = System.Drawing.Color.Transparent;
             this.wikiButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.wikiButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -160,9 +160,9 @@ namespace Tibialyzer {
             this.wikiButton.Text = "Wiki";
             this.wikiButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.wikiButton.Click += new System.EventHandler(this.wikiButton_Click);
-            // 
+            //
             // QuestForm
-            // 
+            //
             this.ClientSize = new System.Drawing.Size(318, 153);
             this.Controls.Add(this.wikiButton);
             this.Controls.Add(this.legendLabel);
@@ -259,7 +259,7 @@ namespace Tibialyzer {
                         control.BackgroundImage = StyleManager.GetImage("item_background.png");
                         int itemCount = requirements[itemnr].Item1;
                         Item item = requirements[itemnr].Item2;
-                        
+
                         (control as PictureBox).Image = LootDropForm.DrawCountOnItem(item, itemCount);
 
                         itemnr++;
@@ -332,7 +332,7 @@ namespace Tibialyzer {
             base.NotificationFinalize();
             this.ResumeLayout(false);
         }
-        
+
         private void outfitClick(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
             MainForm.mainForm.ExecuteCommand("outfit" + MainForm.commandSymbol + (sender as Control).Name);

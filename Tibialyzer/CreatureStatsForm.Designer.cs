@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -88,9 +88,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.pushableBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pushesBox)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // nameLabel
-            // 
+            //
             this.nameLabel.AutoSize = true;
             this.nameLabel.BackColor = System.Drawing.Color.Transparent;
             this.nameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -101,72 +101,72 @@
             this.nameLabel.Size = new System.Drawing.Size(0, 24);
             this.nameLabel.TabIndex = 10;
             this.nameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // resistanceLabel7
-            // 
+            //
             this.resistanceLabel7.BackColor = System.Drawing.Color.Transparent;
             this.resistanceLabel7.Location = new System.Drawing.Point(119, 126);
             this.resistanceLabel7.Name = "resistanceLabel7";
             this.resistanceLabel7.Size = new System.Drawing.Size(11, 11);
             this.resistanceLabel7.TabIndex = 9;
             this.resistanceLabel7.TabStop = false;
-            // 
+            //
             // resistanceLabel6
-            // 
+            //
             this.resistanceLabel6.BackColor = System.Drawing.Color.Transparent;
             this.resistanceLabel6.Location = new System.Drawing.Point(119, 107);
             this.resistanceLabel6.Name = "resistanceLabel6";
             this.resistanceLabel6.Size = new System.Drawing.Size(11, 11);
             this.resistanceLabel6.TabIndex = 8;
             this.resistanceLabel6.TabStop = false;
-            // 
+            //
             // resistanceLabel5
-            // 
+            //
             this.resistanceLabel5.BackColor = System.Drawing.Color.Transparent;
             this.resistanceLabel5.Location = new System.Drawing.Point(119, 88);
             this.resistanceLabel5.Name = "resistanceLabel5";
             this.resistanceLabel5.Size = new System.Drawing.Size(11, 11);
             this.resistanceLabel5.TabIndex = 7;
             this.resistanceLabel5.TabStop = false;
-            // 
+            //
             // resistanceLabel4
-            // 
+            //
             this.resistanceLabel4.BackColor = System.Drawing.Color.Transparent;
             this.resistanceLabel4.Location = new System.Drawing.Point(119, 69);
             this.resistanceLabel4.Name = "resistanceLabel4";
             this.resistanceLabel4.Size = new System.Drawing.Size(11, 11);
             this.resistanceLabel4.TabIndex = 6;
             this.resistanceLabel4.TabStop = false;
-            // 
+            //
             // resistanceLabel3
-            // 
+            //
             this.resistanceLabel3.BackColor = System.Drawing.Color.Transparent;
             this.resistanceLabel3.Location = new System.Drawing.Point(119, 50);
             this.resistanceLabel3.Name = "resistanceLabel3";
             this.resistanceLabel3.Size = new System.Drawing.Size(11, 11);
             this.resistanceLabel3.TabIndex = 5;
             this.resistanceLabel3.TabStop = false;
-            // 
+            //
             // resistanceLabel2
-            // 
+            //
             this.resistanceLabel2.BackColor = System.Drawing.Color.Transparent;
             this.resistanceLabel2.Location = new System.Drawing.Point(119, 31);
             this.resistanceLabel2.Name = "resistanceLabel2";
             this.resistanceLabel2.Size = new System.Drawing.Size(11, 11);
             this.resistanceLabel2.TabIndex = 4;
             this.resistanceLabel2.TabStop = false;
-            // 
+            //
             // resistanceLabel1
-            // 
+            //
             this.resistanceLabel1.BackColor = System.Drawing.Color.Transparent;
             this.resistanceLabel1.Location = new System.Drawing.Point(119, 12);
             this.resistanceLabel1.Name = "resistanceLabel1";
             this.resistanceLabel1.Size = new System.Drawing.Size(11, 11);
             this.resistanceLabel1.TabIndex = 3;
             this.resistanceLabel1.TabStop = false;
-            // 
+            //
             // expLabel
-            // 
+            //
             this.expLabel.AutoSize = true;
             this.expLabel.BackColor = System.Drawing.Color.Transparent;
             this.expLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -179,9 +179,9 @@
             this.expLabel.TabIndex = 2;
             this.expLabel.Text = "2100 Exp";
             this.expLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // healthLabel
-            // 
+            //
             this.healthLabel.AutoSize = true;
             this.healthLabel.BackColor = System.Drawing.Color.Transparent;
             this.healthLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -194,9 +194,9 @@
             this.healthLabel.TabIndex = 1;
             this.healthLabel.Text = "2500 HP";
             this.healthLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // mainImage
-            // 
+            //
             this.mainImage.BackColor = System.Drawing.Color.Transparent;
             this.mainImage.Location = new System.Drawing.Point(9, 12);
             this.mainImage.Name = "mainImage";
@@ -204,9 +204,9 @@
             this.mainImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.mainImage.TabIndex = 0;
             this.mainImage.TabStop = false;
-            // 
+            //
             // summonableBox
-            // 
+            //
             this.summonableBox.BackColor = System.Drawing.Color.Transparent;
             this.summonableBox.Location = new System.Drawing.Point(272, 12);
             this.summonableBox.Name = "summonableBox";
@@ -214,9 +214,9 @@
             this.summonableBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.summonableBox.TabIndex = 11;
             this.summonableBox.TabStop = false;
-            // 
+            //
             // summonableLabel
-            // 
+            //
             this.summonableLabel.AutoSize = true;
             this.summonableLabel.BackColor = System.Drawing.Color.Transparent;
             this.summonableLabel.ForeColor = StyleManager.NotificationTextColor;
@@ -225,9 +225,9 @@
             this.summonableLabel.Size = new System.Drawing.Size(68, 13);
             this.summonableLabel.TabIndex = 12;
             this.summonableLabel.Text = "Summonable";
-            // 
+            //
             // illusionableBox
-            // 
+            //
             this.illusionableBox.BackColor = System.Drawing.Color.Transparent;
             this.illusionableBox.Location = new System.Drawing.Point(272, 29);
             this.illusionableBox.Name = "illusionableBox";
@@ -235,9 +235,9 @@
             this.illusionableBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.illusionableBox.TabIndex = 13;
             this.illusionableBox.TabStop = false;
-            // 
+            //
             // illusionableLabel
-            // 
+            //
             this.illusionableLabel.AutoSize = true;
             this.illusionableLabel.BackColor = System.Drawing.Color.Transparent;
             this.illusionableLabel.ForeColor = StyleManager.NotificationTextColor;
@@ -246,9 +246,9 @@
             this.illusionableLabel.Size = new System.Drawing.Size(59, 13);
             this.illusionableLabel.TabIndex = 14;
             this.illusionableLabel.Text = "Illusionable";
-            // 
+            //
             // invisibleBox
-            // 
+            //
             this.invisibleBox.BackColor = System.Drawing.Color.Transparent;
             this.invisibleBox.Location = new System.Drawing.Point(272, 46);
             this.invisibleBox.Name = "invisibleBox";
@@ -256,9 +256,9 @@
             this.invisibleBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.invisibleBox.TabIndex = 15;
             this.invisibleBox.TabStop = false;
-            // 
+            //
             // invisibleLabel
-            // 
+            //
             this.invisibleLabel.AutoSize = true;
             this.invisibleLabel.BackColor = System.Drawing.Color.Transparent;
             this.invisibleLabel.ForeColor = StyleManager.NotificationTextColor;
@@ -267,9 +267,9 @@
             this.invisibleLabel.Size = new System.Drawing.Size(45, 13);
             this.invisibleLabel.TabIndex = 16;
             this.invisibleLabel.Text = "Invisible";
-            // 
+            //
             // paralysableBox
-            // 
+            //
             this.paralysableBox.BackColor = System.Drawing.Color.Transparent;
             this.paralysableBox.Location = new System.Drawing.Point(272, 63);
             this.paralysableBox.Name = "paralysableBox";
@@ -277,9 +277,9 @@
             this.paralysableBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.paralysableBox.TabIndex = 17;
             this.paralysableBox.TabStop = false;
-            // 
+            //
             // paralysableLabel
-            // 
+            //
             this.paralysableLabel.AutoSize = true;
             this.paralysableLabel.BackColor = System.Drawing.Color.Transparent;
             this.paralysableLabel.ForeColor = StyleManager.NotificationTextColor;
@@ -288,9 +288,9 @@
             this.paralysableLabel.Size = new System.Drawing.Size(61, 13);
             this.paralysableLabel.TabIndex = 18;
             this.paralysableLabel.Text = "Paralysable";
-            // 
+            //
             // pushableBox
-            // 
+            //
             this.pushableBox.BackColor = System.Drawing.Color.Transparent;
             this.pushableBox.Location = new System.Drawing.Point(272, 80);
             this.pushableBox.Name = "pushableBox";
@@ -298,9 +298,9 @@
             this.pushableBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pushableBox.TabIndex = 19;
             this.pushableBox.TabStop = false;
-            // 
+            //
             // pushableLabel
-            // 
+            //
             this.pushableLabel.AutoSize = true;
             this.pushableLabel.BackColor = System.Drawing.Color.Transparent;
             this.pushableLabel.ForeColor = StyleManager.NotificationTextColor;
@@ -309,9 +309,9 @@
             this.pushableLabel.Size = new System.Drawing.Size(51, 13);
             this.pushableLabel.TabIndex = 20;
             this.pushableLabel.Text = "Pushable";
-            // 
+            //
             // pushesBox
-            // 
+            //
             this.pushesBox.BackColor = System.Drawing.Color.Transparent;
             this.pushesBox.Location = new System.Drawing.Point(272, 97);
             this.pushesBox.Name = "pushesBox";
@@ -319,9 +319,9 @@
             this.pushesBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pushesBox.TabIndex = 21;
             this.pushesBox.TabStop = false;
-            // 
+            //
             // pushesLabel
-            // 
+            //
             this.pushesLabel.AutoSize = true;
             this.pushesLabel.BackColor = System.Drawing.Color.Transparent;
             this.pushesLabel.ForeColor = StyleManager.NotificationTextColor;
@@ -330,9 +330,9 @@
             this.pushesLabel.Size = new System.Drawing.Size(42, 13);
             this.pushesLabel.TabIndex = 22;
             this.pushesLabel.Text = "Pushes";
-            // 
+            //
             // abilitiesLabel
-            // 
+            //
             this.abilitiesLabel.AutoSize = true;
             this.abilitiesLabel.BackColor = System.Drawing.Color.Transparent;
             this.abilitiesLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -344,9 +344,9 @@
             this.abilitiesLabel.Size = new System.Drawing.Size(129, 19);
             this.abilitiesLabel.TabIndex = 23;
             this.abilitiesLabel.Text = "Abilities: Melee (0-5)";
-            // 
+            //
             // maxDamageLabel
-            // 
+            //
             this.maxDamageLabel.BackColor = System.Drawing.Color.Transparent;
             this.maxDamageLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.maxDamageLabel.ForeColor = StyleManager.NotificationTextColor;
@@ -356,9 +356,9 @@
             this.maxDamageLabel.TabIndex = 24;
             this.maxDamageLabel.Text = "Max Damage: 100";
             this.maxDamageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
+            //
             // label7
-            // 
+            //
             this.label7.AutoSize = true;
             this.label7.BackColor = System.Drawing.Color.Transparent;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -370,9 +370,9 @@
             this.label7.Size = new System.Drawing.Size(57, 19);
             this.label7.TabIndex = 25;
             this.label7.Text = "Abilities";
-            // 
+            //
             // statsButton
-            // 
+            //
             this.statsButton.BackColor = System.Drawing.Color.Transparent;
             this.statsButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.statsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -385,9 +385,9 @@
             this.statsButton.Text = "Drops";
             this.statsButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.statsButton.Click += new System.EventHandler(this.statsButton_Click);
-            // 
+            //
             // huntButton
-            // 
+            //
             this.huntButton.BackColor = System.Drawing.Color.Transparent;
             this.huntButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.huntButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -400,9 +400,9 @@
             this.huntButton.Text = "Hunts";
             this.huntButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.huntButton.Click += new System.EventHandler(this.huntButton_Click);
-            // 
+            //
             // averageGoldLabel
-            // 
+            //
             this.averageGoldLabel.BackColor = System.Drawing.Color.Transparent;
             this.averageGoldLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.averageGoldLabel.ForeColor = System.Drawing.Color.Gold;
@@ -412,9 +412,9 @@
             this.averageGoldLabel.TabIndex = 28;
             this.averageGoldLabel.Text = "Average Gold: 100";
             this.averageGoldLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
+            //
             // CreatureStatsForm
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(378, 227);

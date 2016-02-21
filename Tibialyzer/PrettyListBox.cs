@@ -195,7 +195,7 @@ namespace Tibialyzer {
                     }
                 }
             }
-            // Draw the current item text based on the current Font  
+            // Draw the current item text based on the current Font
             // and the custom brush settings.
             if (verifyItem != null && !verifyItem(itemString)) {
                 brush = ErrorBrush;

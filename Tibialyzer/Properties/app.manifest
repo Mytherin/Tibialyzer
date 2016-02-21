@@ -5,7 +5,7 @@
     <security>
       <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
         <!-- UAC Manifest Options
-            If you want to change the Windows User Account Control level replace the 
+            If you want to change the Windows User Account Control level replace the
             requestedExecutionLevel node with one of the following.
 
         <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
@@ -13,7 +13,7 @@
         <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
 
             Specifying requestedExecutionLevel node will disable file and registry virtualization.
-            If you want to utilize File and Registry Virtualization for backward 
+            If you want to utilize File and Registry Virtualization for backward
             compatibility then delete the requestedExecutionLevel node.
         -->
         <requestedExecutionLevel level="asInvoker" uiAccess="false" />
@@ -26,7 +26,7 @@
   </trustInfo>
   <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
     <application>
-      <!-- A list of all Windows versions that this application is designed to work with. 
+      <!-- A list of all Windows versions that this application is designed to work with.
       Windows will automatically select the most compatible environment.-->
       <!-- If your application is designed to work with Windows Vista, uncomment the following supportedOS node-->
       <!--<supportedOS Id="{e2011457-1546-43c5-a5fe-008deee3d3f0}"></supportedOS>-->

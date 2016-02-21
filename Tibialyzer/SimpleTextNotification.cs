@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -42,9 +42,9 @@ namespace Tibialyzer {
             this.notificationImage = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.notificationImage)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // textLabel
-            // 
+            //
             this.textLabel.AutoSize = true;
             this.textLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
@@ -55,9 +55,9 @@ namespace Tibialyzer {
             this.textLabel.TabIndex = 2;
             this.textLabel.Text = "Currently gaining 0 experience per hour. Currently gaining 0 experience per hour." +
     "";
-            // 
+            //
             // titleLabel
-            // 
+            //
             this.titleLabel.AutoSize = true;
             this.titleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.titleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(222)))), ((int)(((byte)(222)))));
@@ -66,18 +66,18 @@ namespace Tibialyzer {
             this.titleLabel.Size = new System.Drawing.Size(86, 16);
             this.titleLabel.TabIndex = 1;
             this.titleLabel.Text = "Experience";
-            // 
+            //
             // notificationImage
-            // 
+            //
             this.notificationImage.Location = new System.Drawing.Point(7, 7);
             this.notificationImage.Name = "notificationImage";
             this.notificationImage.Size = new System.Drawing.Size(45, 45);
             this.notificationImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.notificationImage.TabIndex = 0;
             this.notificationImage.TabStop = false;
-            // 
+            //
             // SimpleTextNotification
-            // 
+            //
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
             this.ClientSize = new System.Drawing.Size(354, 60);
             this.Controls.Add(this.textLabel);

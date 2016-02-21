@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,17 +38,17 @@ namespace Tibialyzer {
         public static MainForm mainForm;
 
         private NotificationForm[] NotificationFormGroups = new NotificationForm[10];
-        
+
         private bool prevent_settings_update = false;
-        private bool minimize_notification = true;        
+        private bool minimize_notification = true;
         private ToolTip scan_tooltip = new ToolTip();
         private Stack<TibialyzerCommand> command_stack = new Stack<TibialyzerCommand>();
         public static List<string> NotificationTypes = new List<string> { "Loot Notification", "Damage Notification", "Object List", "City Information", "Creature Loot Information", "Creature Stats Information", "Hunt Information", "Item Information", "NPC Information", "Outfit Information", "Quest Information", "Spell Information", "Quest/Hunt Directions", "Task Form" };
         public static List<string> NotificationTestCommands = new List<string> { "loot@", "damage@", "creature@quara", "city@venore", "creature@demon", "stats@dragon lord", "hunt@formorgar mines", "item@heroic axe", "npc@rashid", "outfit@brotherhood", "quest@killing in the name of", "spell@light healing", "guide@desert dungeon quest", "task@crystal spider" };
         public static List<Type> NotificationTypeObjects = new List<Type>() { typeof(LootDropForm), typeof(DamageChart), typeof(CreatureList), typeof(CityDisplayForm), typeof(CreatureDropsForm), typeof(CreatureStatsForm), typeof(HuntingPlaceForm), typeof(ItemViewForm), typeof(NPCForm), typeof(OutfitForm), typeof(QuestForm), typeof(SpellForm), typeof(QuestGuideForm), typeof(TaskForm) };
-        
+
         public static StreamWriter fileWriter = null;
-                
+
         enum ScanningState { Scanning, NoTibia, Stuck };
         ScanningState current_state;
 
@@ -76,7 +76,7 @@ namespace Tibialyzer {
             if (!File.Exists(Constants.NodeDatabase)) {
                 ExitWithError("Fatal Error", String.Format("Could not find database file {0}.", Constants.NodeDatabase));
             }
-            
+
             LootDatabaseManager.Initialize();
             StyleManager.InitializeStyle();
             NotificationForm.Initialize();
@@ -116,7 +116,7 @@ namespace Tibialyzer {
             BackgroundWorker bw = new BackgroundWorker();
             bw.DoWork += bw_DoWork;
             bw.RunWorkerAsync();
-            
+
             BackgroundWorker bwMissingChunks = new BackgroundWorker();
             bwMissingChunks.DoWork += BwMissingChunks_DoWork;
             bwMissingChunks.RunWorkerAsync();
@@ -157,7 +157,7 @@ namespace Tibialyzer {
                 return cp;
             }
         }
-        
+
         private void initializeTooltips() {
             explanationTooltip.SetToolTip(saveDamageImageButton, "Saves an image of the damage chart (damage@) to a file.");
             explanationTooltip.SetToolTip(saveLootImageButton, "Saves an image of the loot command (loot@) to a file.");
@@ -201,7 +201,7 @@ namespace Tibialyzer {
 
         public void InitializeHuntDisplay(int activeHuntIndex) {
             skip_hunt_refresh = true;
-            
+
             huntList.Items.Clear();
             foreach (Hunt h in HuntManager.hunts) {
                 huntList.Items.Add(h.name);
@@ -219,7 +219,7 @@ namespace Tibialyzer {
             logMessageCollection.AttemptDeleteItem += LogMessageCollection_AttemptDeleteItem;
             logMessageCollection.DrawMode = DrawMode.OwnerDrawVariable;
         }
-        
+
         private void LogMessageCollection_AttemptDeleteItem(object sender, EventArgs e) {
             Hunt h = getSelectedHunt();
             if (h != null && logMessageCollection.SelectedIndex >= 0) {
@@ -538,7 +538,7 @@ namespace Tibialyzer {
             this.ExecuteCommand("setdiscardgoldratio" + MainForm.commandSymbol + Math.Floor(ratio));
             UpdateDiscardDisplay();
         }
-        
+
         private List<Control> discardLabels = new List<Control>();
         private void UpdateDiscardDisplay() {
             foreach (Control c in discardLabels) {
@@ -559,7 +559,7 @@ namespace Tibialyzer {
             this.ExecuteCommand("setconvertgoldratio" + MainForm.commandSymbol + (item.stackable ? "1-" : "0-") + Math.Ceiling(ratio + 0.01));
             UpdateConvertDisplay();
         }
-        
+
         private List<Control> convertLabels = new List<Control>();
         private void UpdateConvertDisplay() {
             foreach (Control c in convertLabels) {
@@ -715,7 +715,7 @@ namespace Tibialyzer {
                 }
             }
         }
-        
+
         private void BwMissingChunks_DoWork(object sender, DoWorkEventArgs e) {
             while (true) {
                 ScanMissingChunks();
@@ -1844,7 +1844,7 @@ namespace Tibialyzer {
         private void closeButton_MouseLeave(object sender, EventArgs e) {
             (sender as Control).BackColor = StyleManager.CloseButtonNormalColor;
         }
-        
+
         private void minimizeButton_MouseEnter(object sender, EventArgs e) {
             (sender as Control).BackColor = StyleManager.MinimizeButtonHoverColor;
         }
@@ -1947,7 +1947,7 @@ namespace Tibialyzer {
             skip_hunt_refresh = false;
             huntBox_SelectedIndexChanged(huntList, null);
         }
-        
+
         private void activeHuntButton_Click(object sender, MouseEventArgs e) {
             if (switch_hunt) return;
             Hunt h = getSelectedHunt();
@@ -1956,7 +1956,7 @@ namespace Tibialyzer {
             setActiveHuntButton.Enabled = false;
             HuntManager.SaveHunts();
         }
-        
+
         private void refreshHuntImages(Hunt h) {
             int spacing = 4;
             int totalWidth = spacing + spacing;
@@ -2369,7 +2369,7 @@ namespace Tibialyzer {
                     string line = l.ToLower();
                     if (line.Length == 0 || line[0] == ';') continue;
                     if (line.Contains("suspend")) {
-                        // if the key is set to suspend the hotkey layout, we set it up so it sends a message to us 
+                        // if the key is set to suspend the hotkey layout, we set it up so it sends a message to us
                         writer.WriteLine(modifyKeyString(line.ToLower().Split(new string[] { "suspend" }, StringSplitOptions.None)[0]));
                         writer.WriteLine("suspend");
                         writer.WriteLine("if (A_IsSuspended)");
@@ -2501,7 +2501,7 @@ namespace Tibialyzer {
             shutdownAutoHotkey_Click(null, null);
             initializeSettings();
         }
-        
+
         private void scanningSpeedTrack_Scroll(object sender, EventArgs e) {
             if (prevent_settings_update) return;
 
@@ -3012,7 +3012,7 @@ namespace Tibialyzer {
             }
         }
     }
-    
+
     public class TibialyzerCommand {
         public string command;
         public TibialyzerCommand(string command) {

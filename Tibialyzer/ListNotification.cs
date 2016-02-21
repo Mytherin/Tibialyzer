@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,9 +44,9 @@ namespace Tibialyzer {
             this.nameLabel = new System.Windows.Forms.Label();
             this.commandLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
+            //
             // nameLabel
-            // 
+            //
             this.nameLabel.AutoSize = true;
             this.nameLabel.BackColor = System.Drawing.Color.Transparent;
             this.nameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -56,9 +56,9 @@ namespace Tibialyzer {
             this.nameLabel.Size = new System.Drawing.Size(49, 16);
             this.nameLabel.TabIndex = 0;
             this.nameLabel.Text = "Name";
-            // 
+            //
             // commandLabel
-            // 
+            //
             this.commandLabel.AutoSize = true;
             this.commandLabel.BackColor = System.Drawing.Color.Transparent;
             this.commandLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -68,9 +68,9 @@ namespace Tibialyzer {
             this.commandLabel.Size = new System.Drawing.Size(77, 16);
             this.commandLabel.TabIndex = 1;
             this.commandLabel.Text = "Command";
-            // 
+            //
             // ListNotification
-            // 
+            //
             this.ClientSize = new System.Drawing.Size(430, 169);
             this.Controls.Add(this.commandLabel);
             this.Controls.Add(this.nameLabel);

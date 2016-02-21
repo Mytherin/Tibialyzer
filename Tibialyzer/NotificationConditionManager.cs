@@ -44,7 +44,7 @@ namespace Tibialyzer {
 
         public static bool ResolveConditions(Tuple<Creature, List<Tuple<Item, int>>> dropInformation) {
             List<string> conditions = SettingsManager.getSetting("NotificationConditions");
-            
+
             var connection = new SQLiteConnection("Data Source=:memory:");
             connection.Open();
 
@@ -53,7 +53,7 @@ namespace Tibialyzer {
             command.ExecuteNonQuery();
             command = new SQLiteCommand("CREATE TABLE creature(name STRING, exp INTEGER, hp INTEGER)", connection);
             command.ExecuteNonQuery();
-            
+
             Creature cr = dropInformation.Item1;
             if (cr != null) {
                 command = new SQLiteCommand(String.Format("INSERT INTO creature (name, exp, hp) VALUES (\"{0}\",{1},{2})", cr.GetName().Replace("\"", "\\\""), cr.experience, cr.health), connection);

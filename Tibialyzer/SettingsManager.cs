@@ -57,7 +57,7 @@ namespace Tibialyzer {
                 SaveSettings();
             }
         }
-        
+
         public static bool getSettingBool(string key) {
             if (!settings.ContainsKey(key) || settings[key].Count == 0) return false;
             return settings[key][0] == "True";
@@ -147,12 +147,12 @@ C::NumpadPgDn
 ; Hotkey Tibialyzer commands
 ; Open loot window with the [ key
 [::Command=loot@
-; Show exp with ] key 
-]::Command=exp@ 
+; Show exp with ] key
+]::Command=exp@
 ; Close all windows when = key is pressed
-=::Command=close@ 
+=::Command=close@
 ; Open last window with - key
--::Command=refresh@ 
+-::Command=refresh@
 ";
 
         public static void ApplyDefaultSettings() {

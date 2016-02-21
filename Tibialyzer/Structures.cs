@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -693,7 +693,7 @@ namespace Tibialyzer {
             newHeaders.Add(headers[1]);
             newHeaders.Add(headers[2]);
             return newHeaders;
-        } 
+        }
 
         public override IComparable GetConditionalHeaderValue(string header) {
             if (header == "Arm") return armor;
@@ -858,7 +858,7 @@ namespace Tibialyzer {
             itemdrops = new List<ItemDrop>();
         }
         public override Creature AsCreature() { return this; }
-        
+
         public int GetResistance(int index) {
             if (index == 0) {
                 return res_phys;
@@ -983,7 +983,7 @@ namespace Tibialyzer {
         public override string GetName() {
             return name;
         }
-        
+
         public override Image GetImage() {
             Creature cr = StorageManager.getCreature(creatures[0]);
             return cr.GetImage();
@@ -1059,7 +1059,7 @@ namespace Tibialyzer {
         public double dps;
         public double percentage;
         public Color color;
-        
+
         public override Image GetImage() {
             return null;
         }

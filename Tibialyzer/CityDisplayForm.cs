@@ -6,7 +6,7 @@
 // You may obtain a copy of the License at
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -55,9 +55,9 @@ namespace Tibialyzer {
             ((System.ComponentModel.ISupportInitialize)(this.mapDownLevel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapUpLevel)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // cityNameLabel
-            // 
+            //
             this.cityNameLabel.BackColor = System.Drawing.Color.Transparent;
             this.cityNameLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.cityNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -68,9 +68,9 @@ namespace Tibialyzer {
             this.cityNameLabel.TabIndex = 3;
             this.cityNameLabel.Text = "City";
             this.cityNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // listLabel
-            // 
+            //
             this.listLabel.BackColor = System.Drawing.Color.Transparent;
             this.listLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.listLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -81,9 +81,9 @@ namespace Tibialyzer {
             this.listLabel.TabIndex = 4;
             this.listLabel.Text = "Utilities";
             this.listLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // npcButton
-            // 
+            //
             this.npcButton.BackColor = System.Drawing.Color.Transparent;
             this.npcButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.npcButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -95,9 +95,9 @@ namespace Tibialyzer {
             this.npcButton.Text = "NPCs";
             this.npcButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.npcButton.Click += new System.EventHandler(this.npcButton_Click);
-            // 
+            //
             // huntButton
-            // 
+            //
             this.huntButton.BackColor = System.Drawing.Color.Transparent;
             this.huntButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.huntButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -109,9 +109,9 @@ namespace Tibialyzer {
             this.huntButton.Text = "Hunts";
             this.huntButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.huntButton.Click += new System.EventHandler(this.huntButton_Click);
-            // 
+            //
             // questButton
-            // 
+            //
             this.questButton.BackColor = System.Drawing.Color.Transparent;
             this.questButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.questButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -123,9 +123,9 @@ namespace Tibialyzer {
             this.questButton.Text = "Quests";
             this.questButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.questButton.Click += new System.EventHandler(this.questButton_Click);
-            // 
+            //
             // utilityButton
-            // 
+            //
             this.utilityButton.BackColor = System.Drawing.Color.Transparent;
             this.utilityButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.utilityButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -137,9 +137,9 @@ namespace Tibialyzer {
             this.utilityButton.Text = "Utilities";
             this.utilityButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.utilityButton.Click += new System.EventHandler(this.utilityButton_Click);
-            // 
+            //
             // previousButton
-            // 
+            //
             this.previousButton.BackColor = System.Drawing.Color.Transparent;
             this.previousButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.previousButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -151,9 +151,9 @@ namespace Tibialyzer {
             this.previousButton.Text = "Previous";
             this.previousButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.previousButton.Click += new System.EventHandler(this.previousButton_Click);
-            // 
+            //
             // nextButton
-            // 
+            //
             this.nextButton.BackColor = System.Drawing.Color.Transparent;
             this.nextButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.nextButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -165,27 +165,27 @@ namespace Tibialyzer {
             this.nextButton.Text = "Next";
             this.nextButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.nextButton.Click += new System.EventHandler(this.nextButton_Click);
-            // 
+            //
             // mapDownLevel
-            // 
+            //
             this.mapDownLevel.Location = new System.Drawing.Point(5, 73);
             this.mapDownLevel.Name = "mapDownLevel";
             this.mapDownLevel.Size = new System.Drawing.Size(21, 21);
             this.mapDownLevel.TabIndex = 12;
             this.mapDownLevel.TabStop = false;
             this.mapDownLevel.Click += new System.EventHandler(this.mapDownLevel_Click);
-            // 
+            //
             // mapUpLevel
-            // 
+            //
             this.mapUpLevel.Location = new System.Drawing.Point(5, 52);
             this.mapUpLevel.Name = "mapUpLevel";
             this.mapUpLevel.Size = new System.Drawing.Size(21, 21);
             this.mapUpLevel.TabIndex = 11;
             this.mapUpLevel.TabStop = false;
             this.mapUpLevel.Click += new System.EventHandler(this.mapUpLevel_Click);
-            // 
+            //
             // CityDisplayForm
-            // 
+            //
             this.ClientSize = new System.Drawing.Size(376, 301);
             this.Controls.Add(this.mapDownLevel);
             this.Controls.Add(this.mapUpLevel);
@@ -218,7 +218,7 @@ namespace Tibialyzer {
 
             baseHeight = this.Size.Height;
             int listHeight = InitializeList(city.utilities, null);
-        
+
             this.Size = new Size(this.Size.Width, Math.Max(listHeight, baseHeight));
 
             npcButton.Click -= c_Click;
@@ -336,12 +336,12 @@ namespace Tibialyzer {
             int listHeight = InitializeList(null, npcs);
 
             this.Size = new Size(this.Size.Width, Math.Max(listHeight, baseHeight));
-            
+
             this.ResumeForm();
             this.Refresh();
             this.refreshTimer();
         }
-        
+
         private void huntButton_Click(object sender, EventArgs e) {
             MainForm.mainForm.ExecuteCommand("hunt" + MainForm.commandSymbol + city.name);
         }
@@ -367,7 +367,7 @@ namespace Tibialyzer {
 
             int listHeight = InitializeList(city.utilities, npcList);
             this.Size = new Size(this.Size.Width, Math.Max(listHeight, baseHeight));
-            
+
             this.ResumeForm();
             this.Refresh();
             refreshTimer();
