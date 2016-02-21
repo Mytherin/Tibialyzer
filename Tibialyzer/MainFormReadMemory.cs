@@ -117,12 +117,7 @@ namespace Tibialyzer {
             public int expPerHour = 0;
             public bool death = false;
         }
-
-        class MemoryChunkInformation {
-            public int count;
-            public int maxcount;
-        };
-
+        
         Dictionary<int, List<long>> whitelistedAddresses = new Dictionary<int, List<long>>();
 
         /// <summary>
@@ -202,7 +197,6 @@ namespace Tibialyzer {
 
         private Dictionary<string, List<string>> totalLooks = new Dictionary<string, List<string>>();
         private HashSet<string> levelAdvances = new HashSet<string>();
-        private Dictionary<int, MemoryChunkInformation> memorySegmentTimes = new Dictionary<int, MemoryChunkInformation>();
         private ReadMemoryResults ReadMemory() {
             ReadMemoryResults results = null;
             SYSTEM_INFO sys_info = new SYSTEM_INFO();
@@ -220,7 +214,6 @@ namespace Tibialyzer {
                 return null;
             }
             int scanSpeed = SettingsManager.getSettingInt("ScanSpeed");
-            Stopwatch sw = Stopwatch.StartNew();
             results = new ReadMemoryResults();
             flashClient = TibiaClientName.ToLower().Contains("flash") || TibiaClientName.ToLower().Contains("chrome");
             foreach(Process process in processes) {
@@ -264,8 +257,6 @@ namespace Tibialyzer {
                 }
                 process.Dispose();
             }
-            sw.Stop();
-            Console.WriteLine("Time taken: {0}ms", sw.Elapsed.TotalMilliseconds);
 
             FinalCleanup(results);
             return results;
