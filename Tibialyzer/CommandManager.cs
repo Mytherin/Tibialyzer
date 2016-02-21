@@ -96,13 +96,13 @@ namespace Tibialyzer {
                     if (cr != null) {
                         if (split.Length > 2)
                             int.TryParse(split[2], out count);
-                        MainForm.mainForm.insertSkin(cr, count);
+                        HuntManager.InsertSkin(cr, count);
                     } else {
                         int.TryParse(parameter, out count);
                         // find creature with highest killcount with a skin and skin that
                         cr = HuntManager.GetHighestKillCreature(HuntManager.activeHunt);
                         if (cr != null) {
-                            MainForm.mainForm.insertSkin(cr, count);
+                            HuntManager.InsertSkin(cr, count);
                         }
                     }
                 } else if (comp.StartsWith("city" + Constants.CommandSymbol)) { //city@

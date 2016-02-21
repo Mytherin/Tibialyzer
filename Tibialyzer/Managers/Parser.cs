@@ -214,13 +214,13 @@ namespace Tibialyzer {
                                                 h = potentialHunt;
                                                 HuntManager.activeHunt = potentialHunt;
                                             } else if (potentialHunt.aggregateHunt && potentialHunt != h) {
-                                                MainForm.addKillToHunt(potentialHunt, resultList, t, message, stamp, hour, minute, transaction);
+                                                HuntManager.AddKillToHunt(potentialHunt, resultList, t, message, stamp, hour, minute, transaction);
                                             }
                                         }
                                     }
                                 }
 
-                                MainForm.addKillToHunt(h, resultList, t, message, stamp, hour, minute, transaction);
+                                HuntManager.AddKillToHunt(h, resultList, t, message, stamp, hour, minute, transaction);
                                 if (MainForm.fileWriter != null && SettingsManager.getSettingBool("AutomaticallyWriteLootToFile")) {
                                     MainForm.fileWriter.WriteLine(message);
                                     MainForm.fileWriter.Flush();

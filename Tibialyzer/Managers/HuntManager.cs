@@ -420,6 +420,41 @@ namespace Tibialyzer {
             Parser.ParseLootMessages(h, logMessages, null, true, true);
             LootDatabaseManager.UpdateLoot();
         }
+
+        public static void InsertSkin(Creature cr, int count = 1) {
+            var time = DateTime.Now;
+            int hour = time.Hour;
+            int minute = time.Minute;
+            int stamp = TimestampManager.getDayStamp();
+            string timestamp = String.Format("{0}:{1}", (hour < 10 ? "0" + hour.ToString() : hour.ToString()), (minute < 10 ? "0" + minute.ToString() : minute.ToString()));
+            Item item = StorageManager.getItem(cr.skin.dropitemid);
+            if (item == null) return;
+            string message = String.Format("{0} Loot of a {1}: {2} {3}", timestamp, cr.displayname.ToLower(), count, item.displayname.ToLower());
+            Hunt h = HuntManager.activeHunt;
+            LootDatabaseManager.InsertMessage(h, stamp, hour, minute, message);
+            HuntManager.AddSkin(h, message, cr, item, count, timestamp);
+            LootDatabaseManager.UpdateLoot();
+        }
+
+        public static void AddKillToHunt(Hunt h, Tuple<Creature, List<Tuple<Item, int>>> resultList, string t, string message, int stamp = 0, int hour = 0, int minute = 0, SQLiteTransaction transaction = null) {
+            Creature cr = resultList.Item1;
+            if (!h.loot.creatureLoot.ContainsKey(cr)) h.loot.creatureLoot.Add(cr, new Dictionary<Item, int>());
+            foreach (Tuple<Item, int> tpl in resultList.Item2) {
+                Item item = tpl.Item1;
+                int count = tpl.Item2;
+                if (!h.loot.creatureLoot[cr].ContainsKey(item)) h.loot.creatureLoot[cr].Add(item, count);
+                else h.loot.creatureLoot[cr][item] += count;
+            }
+            if (!h.loot.killCount.ContainsKey(cr)) h.loot.killCount.Add(cr, 1);
+            else h.loot.killCount[cr] += 1;
+
+            if (!h.loot.logMessages.ContainsKey(t)) h.loot.logMessages.Add(t, new List<string>());
+            h.loot.logMessages[t].Add(message);
+
+            if (transaction != null) {
+                LootDatabaseManager.InsertMessage(h, stamp, hour, minute, message);
+            }
+        }
     }
 
     public class Loot {
