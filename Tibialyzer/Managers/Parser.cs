@@ -145,30 +145,13 @@ namespace Tibialyzer {
                         ++i;
                     }
 
-                    string str = Encoding.UTF8.GetString(array, start, i - start);
-                    if (!str.Contains("</font>")) {
-                        yield return str;
+                    if (!array.Contains(start, i - start, "</font>")) {
+                        yield return Encoding.UTF8.GetString(array, start, i - start);
                     }
                 }
             }
 
             yield break;
-        }
-
-        private static bool EndsWith(byte[] array, int start, int end, string text) {
-            int strLen = text.Length;
-
-            if (end - start < strLen) {
-                return false;
-            }
-
-            for (int i = 0; i < strLen; ++i) {
-                if (text[i] != array[end - strLen + i]) {
-                    return false;
-                }
-            }
-
-            return true;
         }
 
         public static string parseLookItem(string logMessage) {

@@ -33,6 +33,21 @@ namespace Tibialyzer {
                 c == '9';
         }
 
+        public static bool Contains(this byte[] array, int start, int length, string text) {
+            int j = 0;
+            for (int i = start; i < start + length; i++) {
+                if (text[j] == array[j]) {
+                    j++;
+                    if (j == text.Length) {
+                        return true;
+                    }
+                } else {
+                    j = 0;
+                }
+            }
+            return false;
+        }
+
         public static string ToTitle(this string str) {
             return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(str);
         }
