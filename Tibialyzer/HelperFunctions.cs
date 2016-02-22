@@ -36,7 +36,7 @@ namespace Tibialyzer {
         public static bool Contains(this byte[] array, int start, int length, string text) {
             int j = 0;
             for (int i = start; i < start + length; i++) {
-                if (text[j] == array[j]) {
+                if (text[j] == array[i]) {
                     j++;
                     if (j == text.Length) {
                         return true;
