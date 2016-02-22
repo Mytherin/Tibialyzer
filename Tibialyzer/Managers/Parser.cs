@@ -145,8 +145,9 @@ namespace Tibialyzer {
                         ++i;
                     }
 
-                    if (!EndsWith(array, start, i, "</font></p>") && !EndsWith(array, start, i, "</font>")) {
-                        yield return Encoding.UTF8.GetString(array, start, i - start);
+                    string str = Encoding.UTF8.GetString(array, start, i - start);
+                    if (!str.Contains("</font>")) {
+                        yield return str;
                     }
                 }
             }
