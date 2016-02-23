@@ -60,7 +60,7 @@ namespace Tibialyzer {
 
             screenshotDisplayList.Items.Clear();
             foreach (string file in files) {
-                if (Constants.ImageExtensions.Contains(Path.GetExtension(file).ToLower())) { //check if file is an image
+                if (Constants.ImageExtensions.Contains(Path.GetExtension(file), StringComparer.OrdinalIgnoreCase)) { //check if file is an image
                     string f = Path.GetFileName(file);
                     if (f == selectedValue) {
                         index = screenshotDisplayList.Items.Count;

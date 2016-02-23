@@ -42,5 +42,10 @@ namespace Tibialyzer {
         public static string ToTitle(this string str) {
             return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(str);
         }
+
+        public static bool Contains(this string s, string text, StringComparison stringComparison)
+        {
+            return s.IndexOf(text, stringComparison) > -1;
+        }
     }
 }

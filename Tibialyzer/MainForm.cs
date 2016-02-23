@@ -211,7 +211,7 @@ namespace Tibialyzer {
 
         void makeDraggable(Control.ControlCollection controls) {
             foreach (Control c in controls) {
-                if ((c is Label && !c.Name.ToLower().Contains("button")) || c is Panel) {
+                if ((c is Label && !c.Name.Contains("button", StringComparison.OrdinalIgnoreCase)) || c is Panel) {
                     c.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
                 }
                 if (c is Panel || c is TabPage || c is TabControl) {

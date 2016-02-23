@@ -236,7 +236,7 @@ namespace Tibialyzer {
                 foreach (string t in times) {
                     if (dict.ContainsKey(t)) {
                         foreach (Tuple<string, string> tpl in dict[t]) {
-                            if (tpl.Item2.ToLower().Contains("recent") || tpl.Item2.ToLower().Contains("last")) continue;
+                            if (tpl.Item2.Contains("recent", StringComparison.OrdinalIgnoreCase) || tpl.Item2.Contains("last", StringComparison.OrdinalIgnoreCase)) continue;
                             results.Add(tpl);
                             if (results.Count >= max_entries) return results;
                         }

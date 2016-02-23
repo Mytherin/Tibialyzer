@@ -241,7 +241,7 @@ namespace Tibialyzer {
                                     NotificationManager.ShowTaskNotification(t, command);
                                     return true;
                                 } else {
-                                    if (t.GetName().ToLower().Contains(parameter)) {
+                                    if (t.GetName().Contains(parameter, StringComparison.OrdinalIgnoreCase)) {
                                         tasks.Add(t);
                                     }
                                 }
@@ -443,7 +443,7 @@ namespace Tibialyzer {
                             foreach (Quest quest in StorageManager.questIdMap.Values) {
                                 bool found = true;
                                 foreach (string str in splitStrings) {
-                                    if (!quest.name.ToLower().Contains(str)) {
+                                    if (!quest.name.Contains(str, StringComparison.OrdinalIgnoreCase)) {
                                         found = false;
                                         break;
                                     }
@@ -473,7 +473,7 @@ namespace Tibialyzer {
                     } else {
                         string title;
                         foreach (Quest quest in StorageManager.questIdMap.Values) {
-                            if (quest.name.ToLower().Contains(parameter)) {
+                            if (quest.name.Contains(parameter, StringComparison.OrdinalIgnoreCase)) {
                                 questList.Add(quest);
                             }
                         }

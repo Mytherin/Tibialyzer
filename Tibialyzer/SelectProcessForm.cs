@@ -103,7 +103,7 @@ namespace Tibialyzer {
             processes = new List<Process>();
 
             foreach (Process p in currentProcesses) {
-                if (p.ProcessName.ToLower().Contains("tibia") || p.ProcessName.ToLower().Contains("flash")) {
+                if (p.ProcessName.Contains("tibia", StringComparison.OrdinalIgnoreCase) || p.ProcessName.Contains("flash", StringComparison.OrdinalIgnoreCase)) {
                     processes.Add(p);
                 }
             }

@@ -256,7 +256,7 @@ namespace Tibialyzer {
 
                                 if (switchHunt && commit) {
                                     foreach (Hunt potentialHunt in HuntManager.hunts) {
-                                        if (potentialHunt.lootCreatures.Contains(cr.GetName().ToLower())) {
+                                        if (potentialHunt.lootCreatures.Contains(cr.GetName(), StringComparer.OrdinalIgnoreCase)) {
                                             if (potentialHunt.sideHunt) {
                                                 h = potentialHunt;
                                                 HuntManager.activeHunt = potentialHunt;

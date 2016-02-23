@@ -29,7 +29,7 @@ namespace Tibialyzer {
             }
             Process[] p = Process.GetProcessesByName(TibiaClientName);
             if (p.Length > 0) {
-                if (TibiaClientName.ToLower().Contains("flash")) {
+                if (TibiaClientName.Contains("flash", StringComparison.OrdinalIgnoreCase)) {
                     return p;
                 }
                 return new Process[1] { p[0] };
@@ -39,7 +39,7 @@ namespace Tibialyzer {
 
         public static void DetectFlashClient() {
             foreach (Process p in Process.GetProcesses()) {
-                if (p.ProcessName.ToLower().Contains("flash")) {
+                if (p.ProcessName.Contains("flash", StringComparison.OrdinalIgnoreCase)) {
                     TibiaClientName = p.ProcessName;
                     TibiaProcessId = -1;
                     break;
@@ -54,7 +54,7 @@ namespace Tibialyzer {
         }
 
         public static bool IsFlashClient() {
-            return TibiaClientName.ToLower().Contains("flash") || TibiaClientName.ToLower().Contains("chrome");
+            return TibiaClientName.Contains("flash", StringComparison.OrdinalIgnoreCase) || TibiaClientName.Contains("chrome", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

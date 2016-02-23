@@ -1358,7 +1358,7 @@ namespace Tibialyzer {
                 }
                 return result;
             } else {
-                return _itemIdMap.Values.Where(o => o.GetName().ToLower().Contains(str)).ToList<TibiaObject>();
+                return _itemIdMap.Values.Where(o => o.GetName().Contains(str, StringComparison.OrdinalIgnoreCase)).ToList<TibiaObject>();
             }
         }
         public static List<TibiaObject> searchCreature(string str) {
@@ -1372,7 +1372,7 @@ namespace Tibialyzer {
                 }
                 return result;
             } else {
-                return _creatureIdMap.Values.Where(o => o.GetName().ToLower().Contains(str)).OrderBy(o => o.experience).ToList<TibiaObject>();
+                return _creatureIdMap.Values.Where(o => o.GetName().Contains(str, StringComparison.OrdinalIgnoreCase)).OrderBy(o => o.experience).ToList<TibiaObject>();
             }
         }
         public static List<TibiaObject> searchNPC(string str) {
@@ -1386,7 +1386,7 @@ namespace Tibialyzer {
                 }
                 return result;
             } else {
-                return _npcIdMap.Values.Where(o => o.name.ToLower().Contains(str)).OrderBy(o => o.city).ToList<TibiaObject>();
+                return _npcIdMap.Values.Where(o => o.name.Contains(str, StringComparison.OrdinalIgnoreCase)).OrderBy(o => o.city).ToList<TibiaObject>();
             }
         }
         public static List<HuntingPlace> searchHunt(string str) {
@@ -1400,7 +1400,7 @@ namespace Tibialyzer {
                 }
                 return result;
             } else {
-                return _huntingPlaceIdMap.Values.Where(o => o.name.ToLower().Contains(str)).ToList();
+                return _huntingPlaceIdMap.Values.Where(o => o.name.Contains(str, StringComparison.OrdinalIgnoreCase)).ToList();
             }
         }
         public static List<TibiaObject> searchSpell(string str) {
@@ -1414,7 +1414,7 @@ namespace Tibialyzer {
                 }
                 return result;
             } else {
-                return _spellIdMap.Values.Where(o => o.name.ToLower().Contains(str)).OrderBy(o => o.levelrequired).ToList<TibiaObject>();
+                return _spellIdMap.Values.Where(o => o.name.Contains(str, StringComparison.OrdinalIgnoreCase)).OrderBy(o => o.levelrequired).ToList<TibiaObject>();
             }
         }
         public static List<TibiaObject> searchSpellWords(string str) {
@@ -1428,13 +1428,13 @@ namespace Tibialyzer {
                 }
                 return result;
             } else {
-                return _spellIdMap.Values.Where(o => o.words.ToLower().Contains(str)).OrderBy(o => o.levelrequired).ToList<TibiaObject>();
+                return _spellIdMap.Values.Where(o => o.words.Contains(str, StringComparison.OrdinalIgnoreCase)).OrderBy(o => o.levelrequired).ToList<TibiaObject>();
             }
         }
 
         public static List<TibiaObject> searchQuest(string str) {
             str = str.ToLower();
-            return questIdMap.Values.Where(o => o.name.ToLower().Contains(str)).ToList<TibiaObject>();
+            return questIdMap.Values.Where(o => o.name.Contains(str, StringComparison.OrdinalIgnoreCase)).ToList<TibiaObject>();
         }
         public static List<TibiaObject> searchMount(string str) {
             str = str.ToLower();
@@ -1447,7 +1447,7 @@ namespace Tibialyzer {
                 }
                 return result;
             } else {
-                return _mountIdMap.Values.Where(o => o.name.ToLower().Contains(str)).ToList<TibiaObject>();
+                return _mountIdMap.Values.Where(o => o.name.Contains(str, StringComparison.OrdinalIgnoreCase)).ToList<TibiaObject>();
             }
         }
         public static List<TibiaObject> searchOutfit(string str) {
@@ -1461,7 +1461,7 @@ namespace Tibialyzer {
                 }
                 return result;
             } else {
-                return _outfitIdMap.Values.Where(o => o.name.ToLower().Contains(str)).ToList<TibiaObject>();
+                return _outfitIdMap.Values.Where(o => o.name.Contains(str, StringComparison.OrdinalIgnoreCase)).ToList<TibiaObject>();
             }
         }
 
@@ -1484,7 +1484,7 @@ namespace Tibialyzer {
                 }
                 return new List<TibiaObject>();
             } else {
-                return _itemIdMap.Values.Where(o => o.category.ToLower().Contains(str)).ToList<TibiaObject>();
+                return _itemIdMap.Values.Where(o => o.category.Contains(str, StringComparison.OrdinalIgnoreCase)).ToList<TibiaObject>();
             }
         }
 

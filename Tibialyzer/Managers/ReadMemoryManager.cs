@@ -354,7 +354,7 @@ namespace Tibialyzer {
                         if (!res.damageDealt.ContainsKey(player)) res.damageDealt.Add(player, new Dictionary<string, int>());
                         if (!res.damageDealt[player].ContainsKey(t)) res.damageDealt[player].Add(t, damage);
                         else res.damageDealt[player][t] = res.damageDealt[player][t] + damage;
-                    } else if (logMessage.Substring(5, 14) == " You advanced " && logMessage.ToLower().Contains("level")) {
+                    } else if (logMessage.Substring(5, 14) == " You advanced " && logMessage.Contains("level", StringComparison.OrdinalIgnoreCase)) {
                         // advancement log message (You advanced from level x to level x + 1.)
                         if (logMessage[logMessage.Length - 1] == '.') {
                             if (GlobalDataManager.AddLevelAdvance(logMessage)) {
@@ -364,7 +364,7 @@ namespace Tibialyzer {
                     } else {
                         foreach (Event ev in StorageManager.eventIdMap.Values) {
                             foreach (string evMessage in ev.eventMessages) {
-                                if (logMessage.Length == evMessage.Length + 6 && logMessage.ToLower().Contains(evMessage.ToLower().Trim())) {
+                                if (logMessage.Length == evMessage.Length + 6 && logMessage.Contains(evMessage.Trim(), StringComparison.OrdinalIgnoreCase)) {
                                     res.eventMessages.Add(new Tuple<Event, string>(ev, logMessage));
                                 }
                             }
