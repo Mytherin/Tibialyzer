@@ -63,6 +63,8 @@ namespace Tibialyzer {
     public static class ReadMemoryManager {
         private static bool flashClient = true;
         public static int ignoreStamp = 0;
+        public static byte[] missingChunksBuffer;
+        public static byte[] memoryBuffer;
 
         public static void Initialize() {
             ignoreStamp = TimestampManager.createStamp();
@@ -151,16 +153,18 @@ namespace Tibialyzer {
                         // check if this memory chunk is accessible
                         if (mem_basic_info.Protect == PAGE_READWRITE && mem_basic_info.State == MEM_COMMIT) {
                             if (!whitelist.Contains(addr)) {
-                                byte[] buffer = new byte[mem_basic_info.RegionSize];
+                                if (missingChunksBuffer == null || missingChunksBuffer.Length < mem_basic_info.RegionSize) {
+                                    missingChunksBuffer = new byte[mem_basic_info.RegionSize];
+                                }
 
                                 // read everything in the buffer above
-                                ReadProcessMemory((int)processHandle, mem_basic_info.BaseAddress, buffer, mem_basic_info.RegionSize, ref bytesRead);
+                                ReadProcessMemory((int)processHandle, mem_basic_info.BaseAddress, missingChunksBuffer, mem_basic_info.RegionSize, ref bytesRead);
                                 // scan the memory for strings that start with timestamps and end with the null terminator ('\0')
                                 IEnumerable<string> timestampLines;
                                 if (!flashClient) {
-                                    timestampLines = Parser.FindTimestamps(buffer);
+                                    timestampLines = Parser.FindTimestamps(missingChunksBuffer, bytesRead);
                                 } else {
-                                    timestampLines = Parser.FindTimestampsFlash(buffer);
+                                    timestampLines = Parser.FindTimestampsFlash(missingChunksBuffer, bytesRead);
                                 }
 
                                 // if there are any timestamps found, add the address to the list of whitelisted addresses
@@ -224,16 +228,19 @@ namespace Tibialyzer {
                     VirtualQueryEx(processHandle, proc_min_address, out mem_basic_info, 28);
 
                     if (mem_basic_info.Protect == PAGE_READWRITE && mem_basic_info.State == MEM_COMMIT) {
-                        byte[] buffer = new byte[mem_basic_info.RegionSize];
+                        if (memoryBuffer == null || memoryBuffer.Length < mem_basic_info.RegionSize)
+                        {
+                            memoryBuffer = new byte[mem_basic_info.RegionSize];
+                        }
 
                         // read everything in the buffer above
-                        ReadProcessMemory((int)processHandle, mem_basic_info.BaseAddress, buffer, mem_basic_info.RegionSize, ref bytesRead);
+                        ReadProcessMemory((int)processHandle, mem_basic_info.BaseAddress, memoryBuffer, mem_basic_info.RegionSize, ref bytesRead);
                         // scan the memory for strings that start with timestamps and end with the null terminator ('\0')
                         IEnumerable<string> timestampLines;
                         if (!flashClient) {
-                            timestampLines = Parser.FindTimestamps(buffer);
+                            timestampLines = Parser.FindTimestamps(memoryBuffer, bytesRead);
                         } else {
-                            timestampLines = Parser.FindTimestampsFlash(buffer);
+                            timestampLines = Parser.FindTimestampsFlash(memoryBuffer, bytesRead);
                         }
 
                         if (!SearchChunk(timestampLines, results)) {
