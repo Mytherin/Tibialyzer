@@ -112,7 +112,7 @@ namespace Tibialyzer {
         /// Scan the memory for any chunks that are missing from the whitelist table
         /// </summary>
         public static void ScanMissingChunks() {
-            SYSTEM_INFO sys_info = new SYSTEM_INFO();
+            SYSTEM_INFO sys_info;
             GetSystemInfo(out sys_info);
 
             IntPtr proc_min_address = sys_info.minimumApplicationAddress;
@@ -212,7 +212,6 @@ namespace Tibialyzer {
                 List<long> whitelist = whitelistedAddresses[process.Id];
 
                 IntPtr processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
-                MEMORY_BASIC_INFORMATION mem_basic_info = new MEMORY_BASIC_INFORMATION();
 
                 int bytesRead = 0;  // number of bytes read with ReadProcessMemory
                 for (int i = 0; i < whitelist.Count; i++) {
@@ -221,6 +220,7 @@ namespace Tibialyzer {
 
                     proc_min_address = new IntPtr(addr);
 
+                    MEMORY_BASIC_INFORMATION mem_basic_info;
                     VirtualQueryEx(processHandle, proc_min_address, out mem_basic_info, 28);
 
                     if (mem_basic_info.Protect == PAGE_READWRITE && mem_basic_info.State == MEM_COMMIT) {

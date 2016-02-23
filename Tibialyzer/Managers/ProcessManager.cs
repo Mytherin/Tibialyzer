@@ -21,10 +21,13 @@ namespace Tibialyzer {
 
         public static Process[] GetTibiaProcesses() {
             if (TibiaProcessId >= 0) {
-                List<Process> ids = Process.GetProcesses().Where(x => x.Id == TibiaProcessId).ToList();
-                if (ids.Count > 0) {
-                    return new Process[1] { ids[0] };
+                Process[] ids = Process.GetProcesses();
+                for (int i = 0; i < ids.Length; ++i) {
+                    if (ids[i].Id == TibiaProcessId) {
+                        return new Process[1] { ids[i] };
+                    }
                 }
+
                 TibiaProcessId = -1;
             }
             Process[] p = Process.GetProcessesByName(TibiaClientName);
