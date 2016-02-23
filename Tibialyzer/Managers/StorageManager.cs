@@ -1122,7 +1122,7 @@ namespace Tibialyzer {
                 command.ExecuteNonQuery();
                 transaction.Commit();
             }
-            foreach (int id in _itemIdMap.Keys.ToArray().ToList()) {
+            foreach (int id in _itemIdMap.Keys.ToList()) {
                 Item item = _itemIdMap[id];
                 item.discard = ((double)item.GetMaxValue() / (double)(item.capacity == 0 ? 1 : item.capacity)) < ratio;
             }
@@ -1139,7 +1139,7 @@ namespace Tibialyzer {
                 command.ExecuteNonQuery();
                 transaction.Commit();
             }
-            foreach (int id in _itemIdMap.Keys.ToArray().ToList()) {
+            foreach (int id in _itemIdMap.Keys.ToList()) {
                 Item item = _itemIdMap[id];
                 if (item.stackable == stackable) {
                     item.convert_to_gold = ((double)item.GetMaxValue() / (double)(item.capacity == 0 ? 1 : item.capacity)) < ratio;
