@@ -252,12 +252,12 @@ namespace Tibialyzer {
             search = search.ToLower();
             lock(hunts) {
                 foreach (Hunt h in hunts) {
-                    if (h.name.ToLower() == search) {
+                    if (string.Equals(h.name, search, StringComparison.OrdinalIgnoreCase)) {
                         return h;
                     }
                 }
                 foreach (Hunt h in hunts) {
-                    if (h.name.ToLower().Contains(search)) {
+                    if (h.name.Contains(search, StringComparison.OrdinalIgnoreCase)) {
                         return h;
                     }
                 }
@@ -288,7 +288,7 @@ namespace Tibialyzer {
         public static void SwitchHunt(string parameter) {
             lock (hunts) {
                 foreach (Hunt h in hunts) {
-                    if (h.name.ToLower().Contains(parameter)) {
+                    if (h.name.Contains(parameter, StringComparison.OrdinalIgnoreCase)) {
                         activeHunt = h;
                         break;
                     }

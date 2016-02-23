@@ -63,6 +63,8 @@ namespace Tibialyzer {
     public static class ReadMemoryManager {
         private static bool flashClient = true;
         public static int ignoreStamp = 0;
+        public static byte[] missingChunksBuffer;
+        public static byte[] memoryBuffer;
 
         public static void Initialize() {
             ignoreStamp = TimestampManager.createStamp();
@@ -112,7 +114,7 @@ namespace Tibialyzer {
         /// Scan the memory for any chunks that are missing from the whitelist table
         /// </summary>
         public static void ScanMissingChunks() {
-            SYSTEM_INFO sys_info = new SYSTEM_INFO();
+            SYSTEM_INFO sys_info;
             GetSystemInfo(out sys_info);
 
             IntPtr proc_min_address = sys_info.minimumApplicationAddress;
@@ -151,16 +153,18 @@ namespace Tibialyzer {
                         // check if this memory chunk is accessible
                         if (mem_basic_info.Protect == PAGE_READWRITE && mem_basic_info.State == MEM_COMMIT) {
                             if (!whitelist.Contains(addr)) {
-                                byte[] buffer = new byte[mem_basic_info.RegionSize];
+                                if (missingChunksBuffer == null || missingChunksBuffer.Length < mem_basic_info.RegionSize) {
+                                    missingChunksBuffer = new byte[mem_basic_info.RegionSize];
+                                }
 
                                 // read everything in the buffer above
-                                ReadProcessMemory((int)processHandle, mem_basic_info.BaseAddress, buffer, mem_basic_info.RegionSize, ref bytesRead);
+                                ReadProcessMemory((int)processHandle, mem_basic_info.BaseAddress, missingChunksBuffer, mem_basic_info.RegionSize, ref bytesRead);
                                 // scan the memory for strings that start with timestamps and end with the null terminator ('\0')
                                 IEnumerable<string> timestampLines;
                                 if (!flashClient) {
-                                    timestampLines = Parser.FindTimestamps(buffer);
+                                    timestampLines = Parser.FindTimestamps(missingChunksBuffer, bytesRead);
                                 } else {
-                                    timestampLines = Parser.FindTimestampsFlash(buffer);
+                                    timestampLines = Parser.FindTimestampsFlash(missingChunksBuffer, bytesRead);
                                 }
 
                                 // if there are any timestamps found, add the address to the list of whitelisted addresses
@@ -212,7 +216,6 @@ namespace Tibialyzer {
                 List<long> whitelist = whitelistedAddresses[process.Id];
 
                 IntPtr processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
-                MEMORY_BASIC_INFORMATION mem_basic_info = new MEMORY_BASIC_INFORMATION();
 
                 int bytesRead = 0;  // number of bytes read with ReadProcessMemory
                 for (int i = 0; i < whitelist.Count; i++) {
@@ -221,19 +224,23 @@ namespace Tibialyzer {
 
                     proc_min_address = new IntPtr(addr);
 
+                    MEMORY_BASIC_INFORMATION mem_basic_info;
                     VirtualQueryEx(processHandle, proc_min_address, out mem_basic_info, 28);
 
                     if (mem_basic_info.Protect == PAGE_READWRITE && mem_basic_info.State == MEM_COMMIT) {
-                        byte[] buffer = new byte[mem_basic_info.RegionSize];
+                        if (memoryBuffer == null || memoryBuffer.Length < mem_basic_info.RegionSize)
+                        {
+                            memoryBuffer = new byte[mem_basic_info.RegionSize];
+                        }
 
                         // read everything in the buffer above
-                        ReadProcessMemory((int)processHandle, mem_basic_info.BaseAddress, buffer, mem_basic_info.RegionSize, ref bytesRead);
+                        ReadProcessMemory((int)processHandle, mem_basic_info.BaseAddress, memoryBuffer, mem_basic_info.RegionSize, ref bytesRead);
                         // scan the memory for strings that start with timestamps and end with the null terminator ('\0')
                         IEnumerable<string> timestampLines;
                         if (!flashClient) {
-                            timestampLines = Parser.FindTimestamps(buffer);
+                            timestampLines = Parser.FindTimestamps(memoryBuffer, bytesRead);
                         } else {
-                            timestampLines = Parser.FindTimestampsFlash(buffer);
+                            timestampLines = Parser.FindTimestampsFlash(memoryBuffer, bytesRead);
                         }
 
                         if (!SearchChunk(timestampLines, results)) {
@@ -354,7 +361,7 @@ namespace Tibialyzer {
                         if (!res.damageDealt.ContainsKey(player)) res.damageDealt.Add(player, new Dictionary<string, int>());
                         if (!res.damageDealt[player].ContainsKey(t)) res.damageDealt[player].Add(t, damage);
                         else res.damageDealt[player][t] = res.damageDealt[player][t] + damage;
-                    } else if (logMessage.Substring(5, 14) == " You advanced " && logMessage.ToLower().Contains("level")) {
+                    } else if (logMessage.Substring(5, 14) == " You advanced " && logMessage.Contains("level", StringComparison.OrdinalIgnoreCase)) {
                         // advancement log message (You advanced from level x to level x + 1.)
                         if (logMessage[logMessage.Length - 1] == '.') {
                             if (GlobalDataManager.AddLevelAdvance(logMessage)) {
@@ -364,7 +371,7 @@ namespace Tibialyzer {
                     } else {
                         foreach (Event ev in StorageManager.eventIdMap.Values) {
                             foreach (string evMessage in ev.eventMessages) {
-                                if (logMessage.Length == evMessage.Length + 6 && logMessage.ToLower().Contains(evMessage.ToLower().Trim())) {
+                                if (logMessage.Length == evMessage.Length + 6 && logMessage.Contains(evMessage.Trim(), StringComparison.OrdinalIgnoreCase)) {
                                     res.eventMessages.Add(new Tuple<Event, string>(ev, logMessage));
                                 }
                             }

@@ -159,7 +159,7 @@ namespace Tibialyzer {
                 parseMemoryResults.newLooks.Clear();
             }
 
-            List<string> commands = parseMemoryResults == null ? new List<string>() : parseMemoryResults.newCommands.ToArray().ToList();
+            List<string> commands = parseMemoryResults == null ? new List<string>() : parseMemoryResults.newCommands.ToList();
             commands.Reverse();
 
             foreach (string command in commands) {

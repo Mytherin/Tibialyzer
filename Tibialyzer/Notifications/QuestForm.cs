@@ -268,7 +268,7 @@ namespace Tibialyzer {
 
                 // Text requirements
                 if (this.quest.additionalRequirements.Count > 0) {
-                    List<string> requirementStrings = this.quest.additionalRequirements.ToArray().ToList();
+                    List<string> requirementStrings = this.quest.additionalRequirements.ToList();
                     if (this.quest.minlevel > 0) {
                         requirementStrings.Add(String.Format("You must be at least level {0}.", this.quest.minlevel));
                     }

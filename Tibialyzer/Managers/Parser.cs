@@ -101,13 +101,13 @@ namespace Tibialyzer {
             return o;
         }
 
-        public static IEnumerable<string> FindTimestamps(byte[] array) {
+        public static IEnumerable<string> FindTimestamps(byte[] array, int bytesRead) {
             int index = 0;
             // scan the memory for "timestamp values"
             // i.e. values that are like "xx:xx" where x = a number
             // we consider timestamps the "starting point" of a string, and the null terminator the "ending point"
             int start = 0, i = 0;
-            for (i = 0; i < array.Length; i++) {
+            for (i = 0; i < bytesRead; i++) {
                 if (index < 5) {
                     if (array[i] > 47 && array[i] < 59) { // digits are 47-57, colon is 58
                         index++;
@@ -115,7 +115,7 @@ namespace Tibialyzer {
                     } else {
                         index = 0;
                     }
-                } else if (array[i] == 0 || i == array.Length - 1) { // scan for the null terminator
+                } else if (array[i] == 0 || i == bytesRead - 1) { // scan for the null terminator
                     start -= 4;
                     string str = System.Text.Encoding.UTF8.GetString(array, start, (i - start));
                     if (str[0].isDigit() && str[1].isDigit() && str[3].isDigit() && str[4].isDigit() && str[2] == ':') {
@@ -128,11 +128,11 @@ namespace Tibialyzer {
             yield break;
         }
 
-        public static IEnumerable<string> FindTimestampsFlash(byte[] array) {
+        public static IEnumerable<string> FindTimestampsFlash(byte[] array, int bytesRead) {
             // scan the memory for "timestamp values"
             // i.e. values that are like "xx:xx" where x = a number
             // we consider timestamps the "starting point" of a string, and the null terminator the "ending point"
-            for (int i = 0; i < array.Length - 6; i++) {
+            for (int i = 0; i < bytesRead - 6; i++) {
                 if (array[i] >= '0' && array[i] <= '9'
                     && array[i + 1] >= '0' && array[i + 1] <= '9'
                     && array[i + 2] == ':'
@@ -256,7 +256,7 @@ namespace Tibialyzer {
 
                                 if (switchHunt && commit) {
                                     foreach (Hunt potentialHunt in HuntManager.hunts) {
-                                        if (potentialHunt.lootCreatures.Contains(cr.GetName().ToLower())) {
+                                        if (potentialHunt.lootCreatures.Contains(cr.GetName(), StringComparer.OrdinalIgnoreCase)) {
                                             if (potentialHunt.sideHunt) {
                                                 h = potentialHunt;
                                                 HuntManager.activeHunt = potentialHunt;

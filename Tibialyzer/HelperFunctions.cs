@@ -20,36 +20,32 @@ using System.Threading.Tasks;
 namespace Tibialyzer {
     static class HelperFunctions {
         public static bool isDigit(this char c) {
-            return
-                c == '0' ||
-                c == '1' ||
-                c == '2' ||
-                c == '3' ||
-                c == '4' ||
-                c == '5' ||
-                c == '6' ||
-                c == '7' ||
-                c == '8' ||
-                c == '9';
+            return c >= '0' && c <= '9';
         }
 
         public static bool Contains(this byte[] array, int start, int length, string text) {
-            int j = 0;
             for (int i = start; i < start + length; i++) {
-                if (text[j] == array[i]) {
-                    j++;
-                    if (j == text.Length) {
+                for (int j = 0; j < text.Length; j++) {
+                    if (text[j] != array[i + j]) {
+                        break;
+                    }
+
+                    if (j == text.Length - 1) {
                         return true;
                     }
-                } else {
-                    j = 0;
                 }
             }
+
             return false;
         }
 
         public static string ToTitle(this string str) {
             return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(str);
+        }
+
+        public static bool Contains(this string s, string text, StringComparison stringComparison)
+        {
+            return s.IndexOf(text, stringComparison) > -1;
         }
     }
 }

@@ -66,7 +66,7 @@ namespace Tibialyzer {
                     string helpText = searchCommandHelpBox.Text.ToLower();
                     commands.Clear();
                     foreach (HelpCommand command in StorageManager.helpCommands) {
-                        if (helpText == "" || command.command.ToLower().Contains(helpText) || command.description.ToLower().Contains(helpText)) {
+                        if (helpText == "" || command.command.Contains(helpText, StringComparison.OrdinalIgnoreCase) || command.description.Contains(helpText, StringComparison.OrdinalIgnoreCase)) {
                             commands.Add(command);
                         }
                     }

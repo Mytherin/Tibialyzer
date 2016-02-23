@@ -143,7 +143,7 @@ namespace Tibialyzer {
                     if (!totalCommands.ContainsKey(t)) totalCommands[t] = new List<Tuple<string, string>>();
                     if (currentCommands.Count > totalCommands[t].Count) {
                         List<Tuple<string, string>> unseenCommands = new List<Tuple<string, string>>();
-                        List<Tuple<string, string>> commandsList = totalCommands[t].ToArray().ToList(); // create a copy of the list
+                        List<Tuple<string, string>> commandsList = totalCommands[t].ToList(); // create a copy of the list
                         foreach (Tuple<string, string> command in currentCommands) {
                             if (!totalCommands[t].Contains(command)) {
                                 unseenCommands.Add(command);
@@ -186,7 +186,7 @@ namespace Tibialyzer {
                     if (!totalLooks.ContainsKey(t)) totalLooks[t] = new List<string>();
                     if (currentMessages.Count > totalLooks[t].Count) {
                         List<string> unseenLooks = new List<string>();
-                        List<string> lookList = totalLooks[t].ToArray().ToList();
+                        List<string> lookList = totalLooks[t].ToList();
                         foreach (string lookMessage in currentMessages) {
                             if (!totalLooks[t].Contains(lookMessage)) {
                                 unseenLooks.Add(lookMessage);
@@ -236,7 +236,7 @@ namespace Tibialyzer {
                 foreach (string t in times) {
                     if (dict.ContainsKey(t)) {
                         foreach (Tuple<string, string> tpl in dict[t]) {
-                            if (tpl.Item2.ToLower().Contains("recent") || tpl.Item2.ToLower().Contains("last")) continue;
+                            if (tpl.Item2.Contains("recent", StringComparison.OrdinalIgnoreCase) || tpl.Item2.Contains("last", StringComparison.OrdinalIgnoreCase)) continue;
                             results.Add(tpl);
                             if (results.Count >= max_entries) return results;
                         }
