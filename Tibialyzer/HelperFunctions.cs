@@ -20,17 +20,7 @@ using System.Threading.Tasks;
 namespace Tibialyzer {
     static class HelperFunctions {
         public static bool isDigit(this char c) {
-            return
-                c == '0' ||
-                c == '1' ||
-                c == '2' ||
-                c == '3' ||
-                c == '4' ||
-                c == '5' ||
-                c == '6' ||
-                c == '7' ||
-                c == '8' ||
-                c == '9';
+            return c >= '0' && c <= '9';
         }
 
         public static bool Contains(this byte[] array, int start, int length, string text) {
