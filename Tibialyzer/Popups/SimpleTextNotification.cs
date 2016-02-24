@@ -50,7 +50,7 @@ namespace Tibialyzer {
             this.textLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
             this.textLabel.Location = new System.Drawing.Point(60, 25);
             this.textLabel.MaximumSize = new System.Drawing.Size(290, 0);
-            this.textLabel.Name = "textLabel";
+            this.textLabel.Name = "";
             this.textLabel.Size = new System.Drawing.Size(286, 32);
             this.textLabel.TabIndex = 2;
             this.textLabel.Text = "Currently gaining 0 experience per hour. Currently gaining 0 experience per hour." +
@@ -62,7 +62,7 @@ namespace Tibialyzer {
             this.titleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.titleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(222)))), ((int)(((byte)(222)))));
             this.titleLabel.Location = new System.Drawing.Point(60, 5);
-            this.titleLabel.Name = "titleLabel";
+            this.titleLabel.Name = "";
             this.titleLabel.Size = new System.Drawing.Size(86, 16);
             this.titleLabel.TabIndex = 1;
             this.titleLabel.Text = "Experience";
@@ -70,7 +70,7 @@ namespace Tibialyzer {
             // notificationImage
             //
             this.notificationImage.Location = new System.Drawing.Point(7, 7);
-            this.notificationImage.Name = "notificationImage";
+            this.notificationImage.Name = "";
             this.notificationImage.Size = new System.Drawing.Size(45, 45);
             this.notificationImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.notificationImage.TabIndex = 0;

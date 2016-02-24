@@ -185,5 +185,9 @@ namespace Tibialyzer {
             (sender as Control).BackColor = StyleManager.MainFormButtonColor;
             (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
         }
+
+        private void showPopupWindow_Click(object sender, EventArgs e) {
+            PopupManager.ShowPopupContainer();
+        }
     }
 }

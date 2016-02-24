@@ -153,8 +153,6 @@ namespace Tibialyzer {
             close();
         }
 
-        [DllImport("user32.dll")]
-        static extern bool SetForegroundWindow(IntPtr hWnd);
         public void ReturnFocusToTibia() {
             return;
         }

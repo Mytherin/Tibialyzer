@@ -14,8 +14,64 @@ namespace Tibialyzer {
         private static List<SimpleNotification> notificationStack = new List<SimpleNotification>();
         public static NotifyIcon notifyIcon;
 
+        public static PopupContainer popupContainer = null;
+
         public static void Initialize(NotifyIcon simplePopupControl) {
             notifyIcon = simplePopupControl;
+        }
+
+        public static void ShowPopupContainer() {
+            if (popupContainer != null) {
+                return;
+            }
+
+            popupContainer = new PopupContainer();
+
+            // This code is copied from ShowSimpleNotification, todo: move to method
+            int position_x = 0, position_y = 0;
+            Screen screen;
+            Process tibia_process = ProcessManager.GetTibiaProcess();
+            if (tibia_process == null) {
+                screen = Screen.FromControl(MainForm.mainForm);
+            } else {
+                screen = Screen.FromHandle(tibia_process.MainWindowHandle);
+            }
+            int simpleX = SettingsManager.getSettingInt("SimpleNotificationXOffset");
+            int simpleY = SettingsManager.getSettingInt("SimpleNotificationYOffset");
+
+            int xOffset = simpleX < 0 ? 30 : simpleX;
+            int yOffset = simpleY < 0 ? 30 : simpleY;
+            int anchor = SettingsManager.getSettingInt("SimpleNotificationAnchor");
+            int sign = 1;
+            position_y = screen.WorkingArea.Bottom - yOffset - popupContainer.Height;
+            switch (anchor) {
+                case 0:
+                case 1:
+                    // Top
+                    sign = -1;
+                    position_y = screen.WorkingArea.Top + yOffset;
+                    break;
+                case 2:
+                default:
+                    // Bottom
+                    break;
+            }
+            switch (anchor) {
+                case 0:
+                case 2:
+                    // Left
+                    position_x = screen.WorkingArea.Left + xOffset;
+                    break;
+                case 1:
+                default:
+                    // Right
+                    position_x = screen.WorkingArea.Right - popupContainer.Width - notificationSpacing - xOffset;
+                    break;
+            }
+            popupContainer.StartPosition = FormStartPosition.Manual;
+            popupContainer.SetDesktopLocation(position_x, position_y);
+            popupContainer.UpsideDown = sign > 0;
+            popupContainer.Show();
         }
 
         public static void ShowSimpleNotification(string title, string text, Image image) {
@@ -26,6 +82,11 @@ namespace Tibialyzer {
         }
 
         public static void ShowSimpleNotification(SimpleNotification f) {
+            if (popupContainer != null) {
+                popupContainer.ShowNotification(f);
+                return;
+            }
+
             int position_x = 0, position_y = 0;
             Screen screen;
             Process tibia_process = ProcessManager.GetTibiaProcess();

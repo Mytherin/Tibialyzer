@@ -133,6 +133,12 @@
     <Compile Include="Managers\ProcessManager.cs" />
     <Compile Include="Managers\ScanningManager.cs" />
     <Compile Include="Managers\ScreenshotManager.cs" />
+    <Compile Include="Popups\PopupContainer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Popups\PopupContainer.Designer.cs">
+      <DependentUpon>PopupContainer.cs</DependentUpon>
+    </Compile>
     <Compile Include="SelectProcessForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -354,6 +360,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Notifications\OutfitForm.resx">
       <DependentUpon>OutfitForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Popups\PopupContainer.resx">
+      <DependentUpon>PopupContainer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
