@@ -18,6 +18,9 @@ namespace Tibialyzer {
         public static List<Tuple<Creature, List<Tuple<Item, int>>>> RecentDrops = new List<Tuple<Creature, List<Tuple<Item, int>>>>();
 
         public static void StartScanning() {
+            scanTimer = new System.Timers.Timer(10000);
+            scanTimer.Elapsed += StuckScanning;
+
             BackgroundWorker mainScanner = new BackgroundWorker();
             mainScanner.DoWork += ScanMemory;
             mainScanner.RunWorkerAsync();
@@ -37,11 +40,7 @@ namespace Tibialyzer {
 
         private static void ScanMemory(object sender, DoWorkEventArgs e) {
             while (true) {
-                if (scanTimer == null) {
-                    scanTimer = new System.Timers.Timer(10000);
-                    scanTimer.Elapsed += StuckScanning;
-                    scanTimer.Enabled = true;
-                }
+                scanTimer.Start();
                 bool success = false;
                 try {
                     success = ScanMemory();
@@ -51,8 +50,10 @@ namespace Tibialyzer {
                         Console.WriteLine(ex.Message);
                     });
                 }
-                scanTimer.Dispose();
-                scanTimer = null;
+
+                scanTimer.Stop();
+                scanTimer.Start();
+
                 if (success) {
                     if (currentState != ScanningState.Scanning) {
                         currentState = ScanningState.Scanning;
