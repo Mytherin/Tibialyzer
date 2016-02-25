@@ -222,10 +222,14 @@ namespace Tibialyzer {
 
         private string lastWarning;
         public void DisplayWarning(string message) {
-            warningImageBox.Visible = true;
-            if (lastWarning != message) {
-                explanationTooltip.SetToolTip(warningImageBox, message);
-                lastWarning = message;
+            try {
+                warningImageBox.Visible = true;
+                if (lastWarning != message) {
+                    explanationTooltip.SetToolTip(warningImageBox, message);
+                    lastWarning = message;
+                }
+            } catch(Exception ex) {
+                Console.WriteLine(String.Format("Failed to display warning \"{0}\" with error \"{1}\"", message, ex.Message));
             }
         }
 

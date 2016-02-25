@@ -23,31 +23,38 @@ namespace Tibialyzer {
         static extern bool GetWindowRect(IntPtr hWnd, ref RECT Rect);
 
         public static Bitmap takeScreenshot() {
-            Process tibia_process = ProcessManager.GetTibiaProcess();
-            if (tibia_process == null) return null; //no tibia to take screenshot of
+            try {
+                Process tibia_process = ProcessManager.GetTibiaProcess();
+                if (tibia_process == null) return null; //no tibia to take screenshot of
 
-            RECT Rect = new RECT();
-            if (!GetWindowRect(tibia_process.MainWindowHandle, ref Rect)) return null;
+                RECT Rect = new RECT();
+                if (!GetWindowRect(tibia_process.MainWindowHandle, ref Rect)) return null;
 
-            Bitmap bitmap = new Bitmap(Rect.right - Rect.left, Rect.bottom - Rect.top);
-            using (Graphics gr = Graphics.FromImage(bitmap)) {
-                gr.CopyFromScreen(new Point(Rect.left, Rect.top), Point.Empty, bitmap.Size);
+                Bitmap bitmap = new Bitmap(Rect.right - Rect.left, Rect.bottom - Rect.top);
+                using (Graphics gr = Graphics.FromImage(bitmap)) {
+                    gr.CopyFromScreen(new Point(Rect.left, Rect.top), Point.Empty, bitmap.Size);
+                }
+                return bitmap;
+            } catch(Exception ex) {
+                MainForm.mainForm.DisplayWarning("Failed to take screenshot: " + ex.Message);
+                return null;
             }
-            return bitmap;
-
         }
 
         public static void saveScreenshot(string name, Bitmap bitmap) {
             if (bitmap == null) return;
             string path = SettingsManager.getSettingString("ScreenshotPath");
             if (path == null) return;
-
-            DateTime dt = DateTime.Now;
-            name = String.Format("{0} - {1}-{2}-{3} {4}h{5}m{6}s{7}ms.png", name, dt.Year.ToString("D4"), dt.Month.ToString("D2"), dt.Day.ToString("D2"), dt.Hour.ToString("D2"), dt.Minute.ToString("D2"), dt.Second.ToString("D2"), dt.Millisecond.ToString("D4"));
-            path = Path.Combine(path, name);
-            bitmap.Save(path, ImageFormat.Png);
-            bitmap.Dispose();
-            MainForm.mainForm.refreshScreenshots();
+            try {
+                DateTime dt = DateTime.Now;
+                name = String.Format("{0} - {1}-{2}-{3} {4}h{5}m{6}s{7}ms.png", name, dt.Year.ToString("D4"), dt.Month.ToString("D2"), dt.Day.ToString("D2"), dt.Hour.ToString("D2"), dt.Minute.ToString("D2"), dt.Second.ToString("D2"), dt.Millisecond.ToString("D4"));
+                path = Path.Combine(path, name);
+                bitmap.Save(path, ImageFormat.Png);
+                bitmap.Dispose();
+                MainForm.mainForm.refreshScreenshots();
+            } catch(Exception ex) {
+                MainForm.mainForm.DisplayWarning("Failed to save screenshot: " + ex.Message);
+            }
         }
 
     }
