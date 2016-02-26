@@ -125,8 +125,6 @@ namespace Tibialyzer {
                     index = 0;
                 }
             }
-
-            yield break;
         }
 
         public static IEnumerable<string> FindTimestampsFlash(byte[] array, int bytesRead) {
@@ -134,12 +132,12 @@ namespace Tibialyzer {
             // i.e. values that are like "xx:xx" where x = a number
             // we consider timestamps the "starting point" of a string, and the null terminator the "ending point"
             for (int i = 0; i < bytesRead - 6; i++) {
-                if (array[i] >= '0' && array[i] <= '9'
+                if (array[i + 2] == ':'
+                    && (array[i + 5] == ' ' || array[i + 5] == ':')
+                    && array[i] >= '0' && array[i] <= '2'
                     && array[i + 1] >= '0' && array[i + 1] <= '9'
-                    && array[i + 2] == ':'
-                    && array[i + 3] >= '0' && array[i + 3] <= '9'
-                    && array[i + 4] >= '0' && array[i + 4] <= '9'
-                    && (array[i + 5] == ' ' || array[i + 5] == ':')) {
+                    && array[i + 3] >= '0' && array[i + 3] <= '5'
+                    && array[i + 4] >= '0' && array[i + 4] <= '9' ) {
                     int start = i;
                     i += 6;
                     while (array[i] != '\0') {
@@ -151,8 +149,40 @@ namespace Tibialyzer {
                     }
                 }
             }
+        }
 
-            yield break;
+        public static bool HasAnyValidTimestampsFlash(byte[] array, int bytesRead, List<int> stamps)
+        {
+            var strings = new List<string>();
+            // scan the memory for "timestamp values"
+            // i.e. values that are like "xx:xx" where x = a number
+            // we consider timestamps the "starting point" of a string, and the null terminator the "ending point"
+            for (int i = 0; i < bytesRead - 6; i++) {
+                if (array[i + 2] == ':'
+                    && (array[i + 5] == ' ' || array[i + 5] == ':')
+                    && array[i] >= '0' && array[i] <= '2'
+                    && array[i + 1] >= '0' && array[i + 1] <= '9'
+                    && array[i + 3] >= '0' && array[i + 3] <= '5'
+                    && array[i + 4] >= '0' && array[i + 4] <= '9') {
+                    int start = i;
+                    i += 6;
+                    while (array[i] != '\0') {
+                        ++i;
+                    }
+
+                    int h1 = (array[start] - '0') * 10;
+                    int h2 = array[start + 1] - '0';
+                    int m1 = (array[start + 3] - '0') * 10;
+                    int m2 = array[start + 4] - '0';
+
+                    strings.Add(Encoding.UTF8.GetString(array, start, i - start));
+                    if (stamps.Contains(TimestampManager.getStamp(h1 + h2, m1 + m2)) && !array.Contains(start, i - start, "</font>")) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         public static string parseLookItem(string logMessage) {
