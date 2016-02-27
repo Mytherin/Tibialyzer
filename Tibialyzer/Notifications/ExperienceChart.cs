@@ -149,5 +149,9 @@ namespace Tibialyzer {
             this.ResumeForm();
             NotificationFinalize();
         }
+
+        public override string FormName() {
+            return "ExperienceChart";
+        }
     }
 }

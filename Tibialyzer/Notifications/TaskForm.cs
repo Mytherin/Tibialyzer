@@ -346,5 +346,9 @@ namespace Tibialyzer {
             refreshAttributes();
             this.ResumeForm();
         }
+
+        public override string FormName() {
+            return "TaskForm";
+        }
     }
 }

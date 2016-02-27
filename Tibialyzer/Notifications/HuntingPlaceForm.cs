@@ -500,5 +500,9 @@ namespace Tibialyzer {
         private void cityLabel_Click(object sender, EventArgs e) {
             CommandManager.ExecuteCommand("city" + Constants.CommandSymbol + this.hunting_place.city);
         }
+
+        public override string FormName() {
+            return "HuntingPlaceForm";
+        }
     }
 }

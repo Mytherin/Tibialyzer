@@ -83,7 +83,7 @@ namespace Tibialyzer {
         public override List<string> GetAttributeHeaders() {
             return headers;
         }
-        static List<string> headers = new List<string> { "Name", "Total Damage", "DPS", "Percentage" };
+        static List<string> headers = new List<string> { "Name", "Total", "DPS", "%" };
         static int[] hashes = { headers[0].GetHashCode(), headers[1].GetHashCode(), headers[2].GetHashCode(), headers[3].GetHashCode() };
         public override List<Attribute> GetAttributes() {
             return new List<Attribute> { new StringAttribute(name, 200, color), new StringAttribute(totalDamage.ToString(), 150),

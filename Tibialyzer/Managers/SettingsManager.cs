@@ -104,9 +104,11 @@ namespace Tibialyzer {
         }
 
         public static void setSetting(string key, List<string> value) {
-            if (!settings.ContainsKey(key)) settings.Add(key, value);
-            else settings[key] = value;
-            SaveSettings();
+            lock(settings) {
+                if (!settings.ContainsKey(key)) settings.Add(key, value);
+                else settings[key] = value;
+                SaveSettings();
+            }
         }
 
         public static void setSetting(string key, string value) {
@@ -209,6 +211,11 @@ C::NumpadPgDn
             setSettingIfNotSet("IgnoreLowExperienceValue", 250);
             setSettingIfNotSet("AutomaticallyWriteLootToFile", true);
             setSettingIfNotSet("NotificationConditions", "item.value >= 2000");
+            setSettingIfNotSet("CityDisplayFormWidth", 396);
+            setSettingIfNotSet("CreatureDropsFormWidth", 358);
+            setSettingIfNotSet("CreatureStatsFormWidth", 378);
+            setSettingIfNotSet("DamageChartWidth", 450);
+            setSettingIfNotSet("ItemViewFormWidth", 378);
         }
 
         public static void ResetSettingsToDefault() {

@@ -77,7 +77,7 @@ namespace Tibialyzer {
             this.listLabel.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.listLabel.Location = new System.Drawing.Point(197, 28);
             this.listLabel.Name = "listLabel";
-            this.listLabel.Size = new System.Drawing.Size(172, 25);
+            this.listLabel.Size = new System.Drawing.Size(192, 25);
             this.listLabel.TabIndex = 4;
             this.listLabel.Text = "Utilities";
             this.listLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -146,7 +146,7 @@ namespace Tibialyzer {
             this.previousButton.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.previousButton.Location = new System.Drawing.Point(197, 270);
             this.previousButton.Name = "previousButton";
-            this.previousButton.Size = new System.Drawing.Size(86, 25);
+            this.previousButton.Size = new System.Drawing.Size(96, 25);
             this.previousButton.TabIndex = 9;
             this.previousButton.Text = "Previous";
             this.previousButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -158,9 +158,9 @@ namespace Tibialyzer {
             this.nextButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.nextButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nextButton.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.nextButton.Location = new System.Drawing.Point(283, 270);
+            this.nextButton.Location = new System.Drawing.Point(294, 270);
             this.nextButton.Name = "nextButton";
-            this.nextButton.Size = new System.Drawing.Size(86, 25);
+            this.nextButton.Size = new System.Drawing.Size(96, 25);
             this.nextButton.TabIndex = 10;
             this.nextButton.Text = "Next";
             this.nextButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -186,7 +186,7 @@ namespace Tibialyzer {
             //
             // CityDisplayForm
             //
-            this.ClientSize = new System.Drawing.Size(376, 301);
+            this.ClientSize = new System.Drawing.Size(396, 301);
             this.Controls.Add(this.mapDownLevel);
             this.Controls.Add(this.mapUpLevel);
             this.Controls.Add(this.nextButton);
@@ -217,9 +217,7 @@ namespace Tibialyzer {
             this.Controls.Add(mapBox);
 
             baseHeight = this.Size.Height;
-            int listHeight = InitializeList(city.utilities, null);
-
-            this.Size = new Size(this.Size.Width, Math.Max(listHeight, baseHeight));
+            RefreshForm();
 
             npcButton.Click -= c_Click;
             utilityButton.Click -= c_Click;
@@ -275,9 +273,9 @@ namespace Tibialyzer {
             mapBox.targets.Clear();
 
             int totalHeight = 0;
-            int baseX = mapBox.Location.X + mapBox.Size.Width + 5;
+            int baseX = listLabel.Location.X;
             int x = baseX;
-            int y = mapBox.Location.Y;
+            int y = listLabel.Location.Y + listLabel.Height;
             int index;
             for (index = baseIndex; index < totalCount; index++) {
                 string name = "";
@@ -319,7 +317,7 @@ namespace Tibialyzer {
                     x = baseX;
                     y += height + 4;
                 }
-                if (y > 270 - height - 4) {
+                if (y > (this.Size.Width == MinWidth() ? 570 : 270) - 31 - height - 4) {
                     break;
                 }
             }
@@ -334,8 +332,6 @@ namespace Tibialyzer {
             this.SuspendForm();
             List<TibiaObject> npcs = StorageManager.getNPCWithCity(city.name.ToLower());
             int listHeight = InitializeList(null, npcs);
-
-            this.Size = new Size(this.Size.Width, Math.Max(listHeight, baseHeight));
 
             this.ResumeForm();
             this.Refresh();
@@ -354,8 +350,6 @@ namespace Tibialyzer {
             this.SuspendForm();
             int listHeight = InitializeList(city.utilities, null);
 
-            this.Size = new Size(this.Size.Width, Math.Max(listHeight, baseHeight));
-
             this.ResumeForm();
             this.Refresh();
             this.refreshTimer();
@@ -366,7 +360,6 @@ namespace Tibialyzer {
             baseIndex = prevIndices.Pop();
 
             int listHeight = InitializeList(city.utilities, npcList);
-            this.Size = new Size(this.Size.Width, Math.Max(listHeight, baseHeight));
 
             this.ResumeForm();
             this.Refresh();
@@ -379,7 +372,6 @@ namespace Tibialyzer {
             baseIndex = nextIndex;
 
             int listHeight = InitializeList(city.utilities, npcList);
-            this.Size = new Size(this.Size.Width, Math.Max(listHeight, baseHeight));
 
             this.ResumeForm();
             this.Refresh();
@@ -396,6 +388,46 @@ namespace Tibialyzer {
             mapBox.mapCoordinate.z++;
             mapBox.UpdateMap();
             base.ResetTimer();
+        }
+
+        public override string FormName() {
+            return "CityDisplayForm";
+        }
+
+
+        public override int MinWidth() {
+            return 204;
+        }
+
+        public override int MaxWidth() {
+            return 396;
+        }
+
+        public override int WidthInterval() {
+            return 172;
+        }
+
+        public override void RefreshForm() {
+            int newWidth = GetWidth();
+            if (newWidth == this.Size.Width) return;
+            this.SuspendForm();
+            int height = 0;
+            if (newWidth == MinWidth()) {
+                listLabel.Location = new Point(huntButton.Location.X, huntButton.Location.Y + huntButton.Height);
+                previousButton.Location = new Point(listLabel.Location.X, listLabel.Location.Y + 242);
+                nextButton.Location = new Point(listLabel.Location.X + previousButton.Width, listLabel.Location.Y + 242);
+                height = 567;
+            } else {
+                this.previousButton.Location = new System.Drawing.Point(197, 270);
+                this.nextButton.Location = new System.Drawing.Point(283, 270);
+                this.listLabel.Location = new System.Drawing.Point(197, 28);
+                height = 301;
+            }
+            this.Size = new Size(newWidth, height);
+            utilityButton_Click(null, null);
+
+            this.ResumeForm();
+            this.Refresh();
         }
     }
 }

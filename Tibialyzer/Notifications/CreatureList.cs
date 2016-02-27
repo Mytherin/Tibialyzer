@@ -207,5 +207,9 @@ namespace Tibialyzer {
             this.ResumeForm();
             currentDisplay = -1;
         }
+
+        public override string FormName() {
+            return "CreatureList";
+        }
     }
 }

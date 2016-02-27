@@ -226,7 +226,7 @@ namespace Tibialyzer {
             this.valueDigit10000000000.BackColor = System.Drawing.Color.Transparent;
             this.valueDigit10000000000.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.valueDigit10000000000.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.valueDigit10000000000.Location = new System.Drawing.Point(168, 22);
+            this.valueDigit10000000000.Location = new System.Drawing.Point(154, 42);
             this.valueDigit10000000000.Name = "valueDigit10000000000";
             this.valueDigit10000000000.Size = new System.Drawing.Size(16, 16);
             this.valueDigit10000000000.TabIndex = 60;
@@ -236,7 +236,7 @@ namespace Tibialyzer {
             // decreaseValue10000000000
             //
             this.decreaseValue10000000000.BackColor = System.Drawing.Color.Transparent;
-            this.decreaseValue10000000000.Location = new System.Drawing.Point(167, 38);
+            this.decreaseValue10000000000.Location = new System.Drawing.Point(153, 58);
             this.decreaseValue10000000000.Name = "decreaseValue10000000000";
             this.decreaseValue10000000000.Size = new System.Drawing.Size(16, 16);
             this.decreaseValue10000000000.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -246,7 +246,7 @@ namespace Tibialyzer {
             // increaseValue10000000000
             //
             this.increaseValue10000000000.BackColor = System.Drawing.Color.Transparent;
-            this.increaseValue10000000000.Location = new System.Drawing.Point(167, 6);
+            this.increaseValue10000000000.Location = new System.Drawing.Point(153, 26);
             this.increaseValue10000000000.Name = "increaseValue10000000000";
             this.increaseValue10000000000.Size = new System.Drawing.Size(16, 16);
             this.increaseValue10000000000.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -258,7 +258,7 @@ namespace Tibialyzer {
             this.valueDigit1000000000.BackColor = System.Drawing.Color.Transparent;
             this.valueDigit1000000000.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.valueDigit1000000000.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.valueDigit1000000000.Location = new System.Drawing.Point(184, 22);
+            this.valueDigit1000000000.Location = new System.Drawing.Point(170, 42);
             this.valueDigit1000000000.Name = "valueDigit1000000000";
             this.valueDigit1000000000.Size = new System.Drawing.Size(16, 16);
             this.valueDigit1000000000.TabIndex = 57;
@@ -268,7 +268,7 @@ namespace Tibialyzer {
             // decreaseValue1000000000
             //
             this.decreaseValue1000000000.BackColor = System.Drawing.Color.Transparent;
-            this.decreaseValue1000000000.Location = new System.Drawing.Point(183, 38);
+            this.decreaseValue1000000000.Location = new System.Drawing.Point(169, 58);
             this.decreaseValue1000000000.Name = "decreaseValue1000000000";
             this.decreaseValue1000000000.Size = new System.Drawing.Size(16, 16);
             this.decreaseValue1000000000.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -278,7 +278,7 @@ namespace Tibialyzer {
             // increaseValue1000000000
             //
             this.increaseValue1000000000.BackColor = System.Drawing.Color.Transparent;
-            this.increaseValue1000000000.Location = new System.Drawing.Point(183, 6);
+            this.increaseValue1000000000.Location = new System.Drawing.Point(169, 26);
             this.increaseValue1000000000.Name = "increaseValue1000000000";
             this.increaseValue1000000000.Size = new System.Drawing.Size(16, 16);
             this.increaseValue1000000000.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -290,7 +290,7 @@ namespace Tibialyzer {
             this.valueDigit100000000.BackColor = System.Drawing.Color.Transparent;
             this.valueDigit100000000.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.valueDigit100000000.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.valueDigit100000000.Location = new System.Drawing.Point(200, 22);
+            this.valueDigit100000000.Location = new System.Drawing.Point(186, 42);
             this.valueDigit100000000.Name = "valueDigit100000000";
             this.valueDigit100000000.Size = new System.Drawing.Size(16, 16);
             this.valueDigit100000000.TabIndex = 54;
@@ -300,7 +300,7 @@ namespace Tibialyzer {
             // decreaseValue100000000
             //
             this.decreaseValue100000000.BackColor = System.Drawing.Color.Transparent;
-            this.decreaseValue100000000.Location = new System.Drawing.Point(199, 38);
+            this.decreaseValue100000000.Location = new System.Drawing.Point(185, 58);
             this.decreaseValue100000000.Name = "decreaseValue100000000";
             this.decreaseValue100000000.Size = new System.Drawing.Size(16, 16);
             this.decreaseValue100000000.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -310,7 +310,7 @@ namespace Tibialyzer {
             // increaseValue100000000
             //
             this.increaseValue100000000.BackColor = System.Drawing.Color.Transparent;
-            this.increaseValue100000000.Location = new System.Drawing.Point(199, 6);
+            this.increaseValue100000000.Location = new System.Drawing.Point(185, 26);
             this.increaseValue100000000.Name = "increaseValue100000000";
             this.increaseValue100000000.Size = new System.Drawing.Size(16, 16);
             this.increaseValue100000000.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -322,7 +322,7 @@ namespace Tibialyzer {
             this.valueDigit10000000.BackColor = System.Drawing.Color.Transparent;
             this.valueDigit10000000.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.valueDigit10000000.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.valueDigit10000000.Location = new System.Drawing.Point(216, 22);
+            this.valueDigit10000000.Location = new System.Drawing.Point(202, 42);
             this.valueDigit10000000.Name = "valueDigit10000000";
             this.valueDigit10000000.Size = new System.Drawing.Size(16, 16);
             this.valueDigit10000000.TabIndex = 51;
@@ -332,7 +332,7 @@ namespace Tibialyzer {
             // decreaseValue10000000
             //
             this.decreaseValue10000000.BackColor = System.Drawing.Color.Transparent;
-            this.decreaseValue10000000.Location = new System.Drawing.Point(215, 38);
+            this.decreaseValue10000000.Location = new System.Drawing.Point(201, 58);
             this.decreaseValue10000000.Name = "decreaseValue10000000";
             this.decreaseValue10000000.Size = new System.Drawing.Size(16, 16);
             this.decreaseValue10000000.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -342,7 +342,7 @@ namespace Tibialyzer {
             // increaseValue10000000
             //
             this.increaseValue10000000.BackColor = System.Drawing.Color.Transparent;
-            this.increaseValue10000000.Location = new System.Drawing.Point(215, 6);
+            this.increaseValue10000000.Location = new System.Drawing.Point(201, 26);
             this.increaseValue10000000.Name = "increaseValue10000000";
             this.increaseValue10000000.Size = new System.Drawing.Size(16, 16);
             this.increaseValue10000000.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -354,7 +354,7 @@ namespace Tibialyzer {
             this.valueDigit1000000.BackColor = System.Drawing.Color.Transparent;
             this.valueDigit1000000.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.valueDigit1000000.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.valueDigit1000000.Location = new System.Drawing.Point(232, 22);
+            this.valueDigit1000000.Location = new System.Drawing.Point(218, 42);
             this.valueDigit1000000.Name = "valueDigit1000000";
             this.valueDigit1000000.Size = new System.Drawing.Size(16, 16);
             this.valueDigit1000000.TabIndex = 48;
@@ -364,7 +364,7 @@ namespace Tibialyzer {
             // decreaseValue1000000
             //
             this.decreaseValue1000000.BackColor = System.Drawing.Color.Transparent;
-            this.decreaseValue1000000.Location = new System.Drawing.Point(231, 38);
+            this.decreaseValue1000000.Location = new System.Drawing.Point(217, 58);
             this.decreaseValue1000000.Name = "decreaseValue1000000";
             this.decreaseValue1000000.Size = new System.Drawing.Size(16, 16);
             this.decreaseValue1000000.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -374,7 +374,7 @@ namespace Tibialyzer {
             // increaseValue1000000
             //
             this.increaseValue1000000.BackColor = System.Drawing.Color.Transparent;
-            this.increaseValue1000000.Location = new System.Drawing.Point(231, 6);
+            this.increaseValue1000000.Location = new System.Drawing.Point(217, 26);
             this.increaseValue1000000.Name = "increaseValue1000000";
             this.increaseValue1000000.Size = new System.Drawing.Size(16, 16);
             this.increaseValue1000000.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -386,7 +386,7 @@ namespace Tibialyzer {
             this.valueDigit100000.BackColor = System.Drawing.Color.Transparent;
             this.valueDigit100000.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.valueDigit100000.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.valueDigit100000.Location = new System.Drawing.Point(248, 22);
+            this.valueDigit100000.Location = new System.Drawing.Point(234, 42);
             this.valueDigit100000.Name = "valueDigit100000";
             this.valueDigit100000.Size = new System.Drawing.Size(16, 16);
             this.valueDigit100000.TabIndex = 45;
@@ -396,7 +396,7 @@ namespace Tibialyzer {
             // decreaseValue100000
             //
             this.decreaseValue100000.BackColor = System.Drawing.Color.Transparent;
-            this.decreaseValue100000.Location = new System.Drawing.Point(247, 38);
+            this.decreaseValue100000.Location = new System.Drawing.Point(233, 58);
             this.decreaseValue100000.Name = "decreaseValue100000";
             this.decreaseValue100000.Size = new System.Drawing.Size(16, 16);
             this.decreaseValue100000.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -406,7 +406,7 @@ namespace Tibialyzer {
             // increaseValue100000
             //
             this.increaseValue100000.BackColor = System.Drawing.Color.Transparent;
-            this.increaseValue100000.Location = new System.Drawing.Point(247, 6);
+            this.increaseValue100000.Location = new System.Drawing.Point(233, 26);
             this.increaseValue100000.Name = "increaseValue100000";
             this.increaseValue100000.Size = new System.Drawing.Size(16, 16);
             this.increaseValue100000.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -418,7 +418,7 @@ namespace Tibialyzer {
             this.valueDigit10000.BackColor = System.Drawing.Color.Transparent;
             this.valueDigit10000.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.valueDigit10000.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.valueDigit10000.Location = new System.Drawing.Point(264, 22);
+            this.valueDigit10000.Location = new System.Drawing.Point(250, 42);
             this.valueDigit10000.Name = "valueDigit10000";
             this.valueDigit10000.Size = new System.Drawing.Size(16, 16);
             this.valueDigit10000.TabIndex = 42;
@@ -428,7 +428,7 @@ namespace Tibialyzer {
             // decreaseValue10000
             //
             this.decreaseValue10000.BackColor = System.Drawing.Color.Transparent;
-            this.decreaseValue10000.Location = new System.Drawing.Point(263, 38);
+            this.decreaseValue10000.Location = new System.Drawing.Point(249, 58);
             this.decreaseValue10000.Name = "decreaseValue10000";
             this.decreaseValue10000.Size = new System.Drawing.Size(16, 16);
             this.decreaseValue10000.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -438,7 +438,7 @@ namespace Tibialyzer {
             // increaseValue10000
             //
             this.increaseValue10000.BackColor = System.Drawing.Color.Transparent;
-            this.increaseValue10000.Location = new System.Drawing.Point(263, 6);
+            this.increaseValue10000.Location = new System.Drawing.Point(249, 26);
             this.increaseValue10000.Name = "increaseValue10000";
             this.increaseValue10000.Size = new System.Drawing.Size(16, 16);
             this.increaseValue10000.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -450,7 +450,7 @@ namespace Tibialyzer {
             this.valueDigit1000.BackColor = System.Drawing.Color.Transparent;
             this.valueDigit1000.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.valueDigit1000.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.valueDigit1000.Location = new System.Drawing.Point(280, 22);
+            this.valueDigit1000.Location = new System.Drawing.Point(266, 42);
             this.valueDigit1000.Name = "valueDigit1000";
             this.valueDigit1000.Size = new System.Drawing.Size(16, 16);
             this.valueDigit1000.TabIndex = 39;
@@ -460,7 +460,7 @@ namespace Tibialyzer {
             // decreaseValue1000
             //
             this.decreaseValue1000.BackColor = System.Drawing.Color.Transparent;
-            this.decreaseValue1000.Location = new System.Drawing.Point(279, 38);
+            this.decreaseValue1000.Location = new System.Drawing.Point(265, 58);
             this.decreaseValue1000.Name = "decreaseValue1000";
             this.decreaseValue1000.Size = new System.Drawing.Size(16, 16);
             this.decreaseValue1000.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -470,7 +470,7 @@ namespace Tibialyzer {
             // increaseValue1000
             //
             this.increaseValue1000.BackColor = System.Drawing.Color.Transparent;
-            this.increaseValue1000.Location = new System.Drawing.Point(279, 6);
+            this.increaseValue1000.Location = new System.Drawing.Point(265, 26);
             this.increaseValue1000.Name = "increaseValue1000";
             this.increaseValue1000.Size = new System.Drawing.Size(16, 16);
             this.increaseValue1000.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -482,7 +482,7 @@ namespace Tibialyzer {
             this.valueDigit100.BackColor = System.Drawing.Color.Transparent;
             this.valueDigit100.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.valueDigit100.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.valueDigit100.Location = new System.Drawing.Point(296, 22);
+            this.valueDigit100.Location = new System.Drawing.Point(282, 42);
             this.valueDigit100.Name = "valueDigit100";
             this.valueDigit100.Size = new System.Drawing.Size(16, 16);
             this.valueDigit100.TabIndex = 36;
@@ -492,7 +492,7 @@ namespace Tibialyzer {
             // decreaseValue100
             //
             this.decreaseValue100.BackColor = System.Drawing.Color.Transparent;
-            this.decreaseValue100.Location = new System.Drawing.Point(295, 38);
+            this.decreaseValue100.Location = new System.Drawing.Point(281, 58);
             this.decreaseValue100.Name = "decreaseValue100";
             this.decreaseValue100.Size = new System.Drawing.Size(16, 16);
             this.decreaseValue100.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -502,7 +502,7 @@ namespace Tibialyzer {
             // increaseValue100
             //
             this.increaseValue100.BackColor = System.Drawing.Color.Transparent;
-            this.increaseValue100.Location = new System.Drawing.Point(295, 6);
+            this.increaseValue100.Location = new System.Drawing.Point(281, 26);
             this.increaseValue100.Name = "increaseValue100";
             this.increaseValue100.Size = new System.Drawing.Size(16, 16);
             this.increaseValue100.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -514,7 +514,7 @@ namespace Tibialyzer {
             this.valueDigit10.BackColor = System.Drawing.Color.Transparent;
             this.valueDigit10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.valueDigit10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.valueDigit10.Location = new System.Drawing.Point(312, 22);
+            this.valueDigit10.Location = new System.Drawing.Point(298, 42);
             this.valueDigit10.Name = "valueDigit10";
             this.valueDigit10.Size = new System.Drawing.Size(16, 16);
             this.valueDigit10.TabIndex = 33;
@@ -524,7 +524,7 @@ namespace Tibialyzer {
             // decreaseValue10
             //
             this.decreaseValue10.BackColor = System.Drawing.Color.Transparent;
-            this.decreaseValue10.Location = new System.Drawing.Point(311, 38);
+            this.decreaseValue10.Location = new System.Drawing.Point(297, 58);
             this.decreaseValue10.Name = "decreaseValue10";
             this.decreaseValue10.Size = new System.Drawing.Size(16, 16);
             this.decreaseValue10.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -534,7 +534,7 @@ namespace Tibialyzer {
             // increaseValue10
             //
             this.increaseValue10.BackColor = System.Drawing.Color.Transparent;
-            this.increaseValue10.Location = new System.Drawing.Point(311, 6);
+            this.increaseValue10.Location = new System.Drawing.Point(297, 26);
             this.increaseValue10.Name = "increaseValue10";
             this.increaseValue10.Size = new System.Drawing.Size(16, 16);
             this.increaseValue10.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -546,7 +546,7 @@ namespace Tibialyzer {
             this.valueDigit1.BackColor = System.Drawing.Color.Transparent;
             this.valueDigit1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.valueDigit1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.valueDigit1.Location = new System.Drawing.Point(328, 22);
+            this.valueDigit1.Location = new System.Drawing.Point(314, 42);
             this.valueDigit1.Name = "valueDigit1";
             this.valueDigit1.Size = new System.Drawing.Size(16, 16);
             this.valueDigit1.TabIndex = 30;
@@ -556,7 +556,7 @@ namespace Tibialyzer {
             // decreaseValue1
             //
             this.decreaseValue1.BackColor = System.Drawing.Color.Transparent;
-            this.decreaseValue1.Location = new System.Drawing.Point(327, 38);
+            this.decreaseValue1.Location = new System.Drawing.Point(313, 58);
             this.decreaseValue1.Name = "decreaseValue1";
             this.decreaseValue1.Size = new System.Drawing.Size(16, 16);
             this.decreaseValue1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -566,7 +566,7 @@ namespace Tibialyzer {
             // increaseValue1
             //
             this.increaseValue1.BackColor = System.Drawing.Color.Transparent;
-            this.increaseValue1.Location = new System.Drawing.Point(327, 6);
+            this.increaseValue1.Location = new System.Drawing.Point(313, 26);
             this.increaseValue1.Name = "increaseValue1";
             this.increaseValue1.Size = new System.Drawing.Size(16, 16);
             this.increaseValue1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -578,7 +578,7 @@ namespace Tibialyzer {
             this.convertBox.AutoSize = true;
             this.convertBox.BackColor = System.Drawing.Color.Transparent;
             this.convertBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.convertBox.Location = new System.Drawing.Point(239, 55);
+            this.convertBox.Location = new System.Drawing.Point(239, 75);
             this.convertBox.Name = "convertBox";
             this.convertBox.Size = new System.Drawing.Size(104, 17);
             this.convertBox.TabIndex = 6;
@@ -591,7 +591,7 @@ namespace Tibialyzer {
             this.pickupBox.AutoSize = true;
             this.pickupBox.BackColor = System.Drawing.Color.Transparent;
             this.pickupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.pickupBox.Location = new System.Drawing.Point(133, 56);
+            this.pickupBox.Location = new System.Drawing.Point(133, 76);
             this.pickupBox.Name = "pickupBox";
             this.pickupBox.Size = new System.Drawing.Size(87, 17);
             this.pickupBox.TabIndex = 5;
@@ -604,7 +604,7 @@ namespace Tibialyzer {
             this.lookText.AutoSize = true;
             this.lookText.BackColor = System.Drawing.Color.Transparent;
             this.lookText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.lookText.Location = new System.Drawing.Point(141, 75);
+            this.lookText.Location = new System.Drawing.Point(141, 95);
             this.lookText.MaximumSize = new System.Drawing.Size(210, 0);
             this.lookText.Name = "lookText";
             this.lookText.Size = new System.Drawing.Size(64, 13);
@@ -617,7 +617,7 @@ namespace Tibialyzer {
             this.itemCategory.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.itemCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.itemCategory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.itemCategory.Location = new System.Drawing.Point(34, 23);
+            this.itemCategory.Location = new System.Drawing.Point(34, 27);
             this.itemCategory.MaximumSize = new System.Drawing.Size(96, 28);
             this.itemCategory.Name = "itemCategory";
             this.itemCategory.Size = new System.Drawing.Size(96, 28);
@@ -730,6 +730,7 @@ namespace Tibialyzer {
         private Control[] objectControls = new Control[4];
         private int currentControlList = -1;
         private int base_y;
+        private int initialOffset;
         private string[] extraAttributes = new string[4];
         private Func<TibiaObject, Attribute>[] attributeFunctions = new Func<TibiaObject, Attribute>[4];
         private Func<TibiaObject, IComparable>[] attributeSortFunctions = new Func<TibiaObject, IComparable>[4];
@@ -815,14 +816,33 @@ namespace Tibialyzer {
                 objectList[3].Add(q);
             }
             if (currentControlList >= 0 && objectList[currentControlList].Count == 0) currentControlList = -1;
-            int x = 5;
             base_y = this.Size.Height;
-            if (item.look_text.Length > 150) {
-                base_y += 20;
-                this.Size = new Size(this.Size.Width, base_y);
+            SizeF measuredSize = lookText.CreateGraphics().MeasureString(item.look_text, lookText.Font, lookText.MaximumSize.Width, StringFormat.GenericTypographic);
+            if ((int)(lookText.Location.Y + measuredSize.Height) >= base_y) {
+                base_y = (int)(lookText.Location.Y + measuredSize.Height);
+                this.Size = new Size(this.Size.Width, base_y + 5);
             }
+            base_y += 5;
+            initialOffset = base_y;
+            RefreshForm();
+            base.NotificationFinalize();
+            this.ResumeForm();
+            skip_event = false;
+        }
+
+        private List<Control> headerControls = new List<Control>();
+        private void refreshHeaders() {
+            foreach(Control c in headerControls) {
+                Controls.Remove(c);
+            }
+            headerControls.Clear();
+            int x = 5;
             for (int i = 0; i < headers.Length; i++) {
                 if (objectList[i].Count > 0) {
+                    if (x + 90 > this.Size.Width) {
+                        x = 5;
+                        base_y += 25;
+                    }
                     Label label = new Label();
                     label.Text = headers[i];
                     label.Location = new Point(x, base_y);
@@ -836,6 +856,7 @@ namespace Tibialyzer {
                     label.Click += toggleObjectDisplay;
                     objectControls[i] = label;
                     this.Controls.Add(label);
+                    headerControls.Add(label);
                     if (currentControlList < 0 || currentControlList > headers.Length) {
                         currentControlList = i;
                     }
@@ -844,12 +865,6 @@ namespace Tibialyzer {
                     objectControls[i] = null;
                 }
             }
-            base_y += 25;
-
-            refreshObjectList();
-            base.NotificationFinalize();
-            this.ResumeForm();
-            skip_event = false;
         }
 
         private Attribute DropChance(TibiaObject obj) {
@@ -926,8 +941,8 @@ namespace Tibialyzer {
             controlList.Clear();
             int newwidth;
             PageInfo pageInfo = new PageInfo(false, false);
-            int y = base_y + UIManager.DisplayCreatureAttributeList(this.Controls, objectList[currentControlList], 10, base_y, out newwidth, null, controlList, currentPage, 10, pageInfo, extraAttributes[currentControlList], attributeFunctions[currentControlList], sortHeader, sortedHeader, desc, attributeSortFunctions[currentControlList]);
-            newwidth = Math.Max(newwidth, this.Size.Width);
+            int y = base_y + UIManager.DisplayCreatureAttributeList(this.Controls, objectList[currentControlList], 10, base_y, out newwidth, null, controlList, currentPage, 10, pageInfo, extraAttributes[currentControlList], attributeFunctions[currentControlList], sortHeader, sortedHeader, desc, attributeSortFunctions[currentControlList], null, false, this.Size.Width - 14);
+            newwidth = this.Size.Width;
             if (pageInfo.prevPage || pageInfo.nextPage) {
                 if (pageInfo.prevPage) {
                     PictureBox prevpage = new PictureBox();
@@ -1002,6 +1017,62 @@ namespace Tibialyzer {
 
         private void itemCategory_Click(object sender, EventArgs e) {
             CommandManager.ExecuteCommand("category" + Constants.CommandSymbol + item.category);
+        }
+
+        public override string FormName() {
+            return "ItemViewForm";
+        }
+
+        public override int MinWidth() {
+            return 196;
+        }
+
+        public override int MaxWidth() {
+            return 378;
+        }
+
+        public override int WidthInterval() {
+            return 200;
+        }
+
+        public override void RefreshForm() {
+            this.SuspendForm();
+            this.Size = new Size(GetWidth(), this.Size.Height);
+            if (this.Size.Width == MinWidth()) {
+                lookText.Visible = false;
+                for(int i = valueLabels.Count - 1; i >= 0; i--) {
+                    increaseBoxes[i].Location = new Point(8 + 16 * (valueLabels.Count - (i + 1)), 122);
+                    valueLabels[i].Location = new Point(increaseBoxes[i].Location.X, increaseBoxes[i].Location.Y + 16);
+                    decreaseBoxes[i].Location = new Point(valueLabels[i].Location.X, valueLabels[i].Location.Y + 16);
+                }
+                pickupBox.Location = new Point(4, 170);
+                convertBox.Location = new Point(90, 170);
+                itemPictureBox.Location = new Point(this.Size.Width / 2 - itemPictureBox.Width / 2, itemPictureBox.Location.Y);
+                itemCategory.Location = new Point(this.Size.Width / 2 - itemCategory.Width / 2, itemCategory.Location.Y);
+                itemName.Location = new Point(this.Size.Width / 2 - itemName.Width / 2, itemName.Location.Y);
+                base_y = 190;
+                refreshHeaders();
+                base_y += 25;
+                refreshObjectList();
+            } else {
+                lookText.Visible = true;
+                for (int i = valueLabels.Count - 1; i >= 0; i--) {
+                    increaseBoxes[i].Location = new Point(153 + 16 * (valueLabels.Count - (i + 1)), 26);
+                    valueLabels[i].Location = new Point(increaseBoxes[i].Location.X, increaseBoxes[i].Location.Y + 16);
+                    decreaseBoxes[i].Location = new Point(valueLabels[i].Location.X, valueLabels[i].Location.Y + 16);
+                }
+                pickupBox.Location = new Point(133, 76);
+                convertBox.Location = new Point(239, 75);
+                this.itemCategory.Location = new Point(34, 27);
+                this.itemName.Location = new Point(34, 89);
+                this.itemPictureBox.Location = new Point(66, 56);
+                base_y = initialOffset;
+                refreshHeaders();
+                base_y += 25;
+                refreshObjectList();
+            }
+
+            this.ResumeForm();
         }
     }
 }

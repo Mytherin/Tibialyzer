@@ -465,5 +465,9 @@ namespace Tibialyzer {
             this.ReturnFocusToTibia();
             CommandManager.ExecuteCommand(command_start + (sender as Control).Name);
         }
+
+        public override string FormName() {
+            return "SpellForm";
+        }
     }
 }

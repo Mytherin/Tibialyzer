@@ -229,5 +229,9 @@ namespace Tibialyzer {
             this.ReturnFocusToTibia();
             CommandManager.ExecuteCommand(obtainedCommand);
         }
+
+        public override string FormName() {
+            return "OutfitForm";
+        }
     }
 }

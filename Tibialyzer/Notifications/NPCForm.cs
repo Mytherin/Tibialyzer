@@ -382,5 +382,9 @@ namespace Tibialyzer {
             string city = npc.city;
             CommandManager.ExecuteCommand("city" + Constants.CommandSymbol + city);
         }
+
+        public override string FormName() {
+            return "NPCForm";
+        }
     }
 }

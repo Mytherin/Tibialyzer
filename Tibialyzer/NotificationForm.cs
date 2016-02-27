@@ -34,6 +34,8 @@ namespace Tibialyzer {
         public static Bitmap background_image = null;
         public TibialyzerCommand command;
         protected PictureBox back_button;
+        protected Label decreaseWidthButton;
+        protected Label increaseWidthButton;
         public int notificationDuration = 1;
 
         [DllImport("user32.dll")]
@@ -84,6 +86,42 @@ namespace Tibialyzer {
                 if (c is TextBox || c is CheckBox || c is TransparentChart) continue;
                 c.Click += c_Click;
             }
+
+            if (MinWidth() != MaxWidth()) {
+                increaseWidthButton = new Label();
+                increaseWidthButton.BackColor = System.Drawing.Color.Transparent;
+                increaseWidthButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+                increaseWidthButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                increaseWidthButton.ForeColor = StyleManager.NotificationTextColor;
+                increaseWidthButton.Padding = new System.Windows.Forms.Padding(2);
+                increaseWidthButton.Size = new System.Drawing.Size(40, 21);
+                increaseWidthButton.Text = "+";
+                increaseWidthButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+                increaseWidthButton.Click += new System.EventHandler(IncreaseWidth_Click);
+
+                decreaseWidthButton = new Label();
+                decreaseWidthButton.BackColor = System.Drawing.Color.Transparent;
+                decreaseWidthButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+                decreaseWidthButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                decreaseWidthButton.ForeColor = StyleManager.NotificationTextColor;
+                decreaseWidthButton.Padding = new System.Windows.Forms.Padding(2);
+                decreaseWidthButton.Size = new System.Drawing.Size(40, 21);
+                decreaseWidthButton.Text = "-";
+                decreaseWidthButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+                decreaseWidthButton.Click += new System.EventHandler(DecreaseWidth_Click);
+
+                this.Controls.Add(increaseWidthButton);
+                this.Controls.Add(decreaseWidthButton);
+                increaseWidthButton.BringToFront();
+                decreaseWidthButton.BringToFront();
+                NotificationForm_SizeChanged(null, null);
+                this.SizeChanged += NotificationForm_SizeChanged;
+            }
+        }
+
+        private void NotificationForm_SizeChanged(object sender, EventArgs e) {
+            increaseWidthButton.Location = new System.Drawing.Point(this.Width - 45, 3);
+            decreaseWidthButton.Location = new System.Drawing.Point(this.Width - 85, 3);
         }
 
         public virtual void LoadForm() {
@@ -248,6 +286,48 @@ namespace Tibialyzer {
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "NotificationForm";
             this.ResumeLayout(false);
+        }
+
+        public virtual string FormName() {
+            return "NotificationForm";
+        }
+
+        public virtual int MinWidth() {
+            return 200;
+        }
+
+        public virtual int MaxWidth() {
+            return 200;
+        }
+
+        public virtual int WidthInterval() {
+            return 72;
+        }
+
+        public int GetWidth() {
+            return Math.Min(Math.Max(SettingsManager.getSettingInt(FormName() + "Width"), MinWidth()), MaxWidth());
+        }
+
+        public void SetWidth(int width) {
+            width = Math.Min(Math.Max(width, MinWidth()), MaxWidth());
+            SettingsManager.setSetting(FormName() + "Width", width);
+        }
+
+        private void ChangeSize(int modification) {
+            SetWidth(GetWidth() + modification);
+            RefreshForm();
+        }
+
+        private void DecreaseWidth_Click(object sender, EventArgs e) {
+            ChangeSize(-WidthInterval());
+        }
+
+        private void IncreaseWidth_Click(object sender, EventArgs e) {
+            ChangeSize(WidthInterval());
+        }
+
+        public virtual void RefreshForm() {
+
         }
     }
 }

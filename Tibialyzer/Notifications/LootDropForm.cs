@@ -577,11 +577,15 @@ namespace Tibialyzer {
         }
 
         private void lootSmaller_Click(object sender, EventArgs e) {
-            changeSize(-72);
+            changeSize(-36);
         }
 
         private void lootLarger_Click(object sender, EventArgs e) {
-            changeSize(72);
+            changeSize(36);
+        }
+
+        public override string FormName() {
+            return "LootDropForm";
         }
     }
 }

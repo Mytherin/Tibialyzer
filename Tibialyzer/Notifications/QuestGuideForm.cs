@@ -662,5 +662,9 @@ namespace Tibialyzer {
             this.ResumeLayout(true);
             this.Refresh();
         }
+
+        public override string FormName() {
+            return "QuestGuideForm";
+        }
     }
 }

@@ -133,7 +133,7 @@ namespace Tibialyzer {
             return value;
         }
 
-        public static int DisplayCreatureAttributeList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, out int maxwidth, Func<TibiaObject, string> tooltip_function = null, List<Control> createdControls = null, int page = 0, int pageitems = 20, PageInfo pageInfo = null, string extraAttribute = null, Func<TibiaObject, Attribute> attributeFunction = null, EventHandler headerSortFunction = null, string sortedHeader = null, bool desc = false, Func<TibiaObject, IComparable> extraSort = null, List<string> removedAttributes = null, bool conditional = false) {
+        public static int DisplayCreatureAttributeList(System.Windows.Forms.Control.ControlCollection controls, List<TibiaObject> l, int base_x, int base_y, out int maxwidth, Func<TibiaObject, string> tooltip_function = null, List<Control> createdControls = null, int page = 0, int pageitems = 20, PageInfo pageInfo = null, string extraAttribute = null, Func<TibiaObject, Attribute> attributeFunction = null, EventHandler headerSortFunction = null, string sortedHeader = null, bool desc = false, Func<TibiaObject, IComparable> extraSort = null, List<string> removedAttributes = null, bool conditional = false, int maxWidth = int.MaxValue) {
             const int size = 24;
             const int imageSize = size - 4;
             // add a tooltip that displays the creature names
@@ -204,6 +204,7 @@ namespace Tibialyzer {
                 pageInfo.startDisplay = start;
                 pageInfo.endDisplay = start + pageItems.Count;
             }
+            int totalWidth = 24;
             Dictionary<string, double> sortValues = new Dictionary<string, double>();
             foreach (TibiaObject obj in conditional ? l : pageItems) {
                 List<string> headers = conditional ? obj.GetConditionalHeaders() : new List<string>(obj.GetAttributeHeaders());
@@ -235,8 +236,12 @@ namespace Tibialyzer {
                     width = Math.Min(width, attribute.MaxWidth);
                     if (!totalAttributes.ContainsKey(header)) {
                         int headerWidth = TextRenderer.MeasureText(header, StyleManager.TextFont).Width;
+                        if (totalWidth + Math.Max(headerWidth, width) > maxWidth) break;
+                        totalWidth += Math.Max(headerWidth, width);
                         totalAttributes.Add(header, Math.Max(headerWidth, width));
                     } else if (totalAttributes[header] < width) {
+                        if (totalWidth + width - totalAttributes[header] > maxWidth) break;
+                        totalWidth += width - totalAttributes[header];
                         totalAttributes[header] = width;
                     }
                 }

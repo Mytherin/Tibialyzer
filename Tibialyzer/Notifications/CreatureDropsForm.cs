@@ -27,9 +27,12 @@ namespace Tibialyzer {
 
     public partial class CreatureDropsForm : NotificationForm {
         public Creature creature;
+        private List<Control> itemControls = new List<Control>();
+        private int base_height;
 
         public CreatureDropsForm() {
             InitializeComponent();
+            base_height = this.Size.Height;
         }
 
         private void DisplayItem(ItemDrop drop, int base_x, int base_y, int x, int y, Size item_size, ToolTip droprate_tooltip, int dropbar_height, string prefix = "Drop rate of ") {
@@ -48,6 +51,7 @@ namespace Tibialyzer {
             picture_box.Click += openItemBox;
             droprate_tooltip.SetToolTip(picture_box, prefix + dropItem.displayname + " is " + (drop.percentage >= 0 ? Math.Round(drop.percentage, 1).ToString() + "%." : "unknown."));
             this.Controls.Add(picture_box);
+            itemControls.Add(picture_box);
 
             // the 'dropbar' that roughly displays the droprate of the item
             PictureBox dropbar_box = new PictureBox();
@@ -70,16 +74,22 @@ namespace Tibialyzer {
             gr.FillRectangle(brush, new Rectangle(0, 0, (int)(Math.Ceiling(item_size.Width * drop.percentage / 100) + 1), dropbar_height));
             dropbar_box.Image = image;
             this.Controls.Add(dropbar_box);
+            itemControls.Add(dropbar_box);
         }
 
         private void CombineItems() {
+            foreach(Control c in itemControls) {
+                Controls.Remove(c);
+            }
+            itemControls.Clear();
+
             Size item_size = new Size(32, 32); //size of item image
             int dropbar_height = 6; //height of dropbar
             int item_spacing = 6; //spacing between items
             int base_x = 110;
-            int base_y = this.mainImage.Location.Y;
-            int max_x = 250;
-            int max_y = base_y + 134;
+            int base_y = 24;
+            int max_x = this.Size.Width - 108;
+            int max_y = 388;
 
             // add a tooltip that displays the actual droprate when you mouseover
             ToolTip droprate_tooltip = new ToolTip();
@@ -95,6 +105,10 @@ namespace Tibialyzer {
                 if (x > (max_x - item_size.Width - item_spacing)) {
                     x = item_spacing;
                     y += item_size.Height + item_spacing;
+                    if (base_y + y + item_size.Height > max_y) {
+                        y -= item_size.Height + item_spacing;
+                        break;
+                    }
                 }
                 DisplayItem(drop, base_x, base_y, x, y, item_size, droprate_tooltip, dropbar_height);
                 x += item_size.Width + item_spacing;
@@ -114,6 +128,7 @@ namespace Tibialyzer {
                 picture_box.BackgroundImage = StyleManager.GetImage("item_background.png");
                 picture_box.Click += openItemBox; droprate_tooltip.SetToolTip(picture_box, "You can skin this creature with the item " + skinItem.displayname + ".");
                 this.Controls.Add(picture_box);
+                itemControls.Add(picture_box);
 
                 skinDrop.itemid = creature.skin.dropitemid;
                 skinDrop.percentage = creature.skin.percentage;
@@ -123,8 +138,8 @@ namespace Tibialyzer {
                 if (y < this.huntButton.Location.Y + this.huntButton.Size.Height) y = this.huntButton.Location.Y + this.huntButton.Size.Height;
             }
 
-            if (this.Height < (y + item_size.Height * 2 + item_spacing)) {
-                this.Height = y + item_size.Height * 2 + item_spacing;
+            if (base_height < (base_y + y + item_spacing * 2 + item_size.Height)) {
+                this.Height = base_y + y + item_spacing * 2 + item_size.Height;
             }
             this.Refresh();
         }
@@ -145,7 +160,7 @@ namespace Tibialyzer {
             this.huntButton.Name = this.creature.GetName().ToLower();
             // set background of actual form to transparent
             this.BackColor = StyleManager.NotificationBackgroundColor;
-            CombineItems();
+
             this.nameLabel.Text = this.creature.displayname.ToTitle();
             Font f = StyleManager.FontList[0];
             Font prevFont = f;
@@ -163,6 +178,7 @@ namespace Tibialyzer {
             this.nameLabel.Left = this.mainImage.Left + (mainImage.Width - this.nameLabel.Size.Width) / 2;
             this.NotificationFinalize();
             this.ResumeForm();
+            RefreshForm();
         }
 
         private void statsButton_Click(object sender, EventArgs e) {
@@ -173,6 +189,31 @@ namespace Tibialyzer {
         private void huntButton_Click(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
             CommandManager.ExecuteCommand("hunt" + Constants.CommandSymbol + (sender as Control).Name);
+        }
+        public override string FormName() {
+            return "CreatureDropsForm";
+        }
+
+        public override int MinWidth() {
+            return 240;
+        }
+
+        public override int MaxWidth() {
+            return 472;
+        }
+
+        public override int WidthInterval() {
+            return 38;
+        }
+
+        public override void RefreshForm() {
+            int newWidth = GetWidth();
+            if (newWidth == this.Size.Width) return;
+            this.SuspendForm();
+            this.Size = new Size(newWidth, this.Size.Height);
+            CombineItems();
+            this.ResumeForm();
+            this.Refresh();
         }
     }
 }

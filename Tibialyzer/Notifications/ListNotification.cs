@@ -140,5 +140,9 @@ namespace Tibialyzer {
             this.ReturnFocusToTibia();
             OpenCommand((sender as Control).Name, type);
         }
+
+        public override string FormName() {
+            return "ListNotification";
+        }
     }
 }

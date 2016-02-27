@@ -349,5 +349,9 @@ namespace Tibialyzer {
         private void wikiButton_Click(object sender, EventArgs e) {
             MainForm.OpenUrl(String.Format("http://tibia.wikia.com/wiki/{0}/Spoiler", quest.title));
         }
+
+        public override string FormName() {
+            return "QuestForm";
+        }
     }
 }

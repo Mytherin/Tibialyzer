@@ -186,5 +186,9 @@ namespace Tibialyzer {
             this.ReturnFocusToTibia();
             CommandManager.ExecuteCommand("creature@" + (sender as Control).Name);
         }
+
+        public override string FormName() {
+            return "MountForm";
+        }
     }
 }

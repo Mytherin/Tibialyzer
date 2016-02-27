@@ -146,6 +146,20 @@ namespace Tibialyzer {
             this.abilitiesLabel.Text = RemoveTextInBrackets(this.creature.abilities.Replace(", ", "\n"));
             this.abilitiesLabel.BorderStyle = BorderStyle.FixedSingle;
 
+            // average gold of creature
+            this.averageGoldCenterLabel.Text = goldstring.Replace("Average Gold:", "") + " Gold";
+            horizontal = 96 - averageGoldCenterLabel.Size.Width;
+            left = horizontal / 2;
+            right = horizontal - left;
+            this.averageGoldCenterLabel.Padding = new Padding(left, 2, right, 2);
+            // max damage of creature
+            this.maxDamageCenterLabel.Text = (this.creature.maxdamage > 0 ? this.creature.maxdamage.ToString() + " Dmg" : "Unknown");
+            horizontal = 96 - maxDamageCenterLabel.Size.Width;
+            left = horizontal / 2;
+            right = horizontal - left;
+            this.maxDamageCenterLabel.Padding = new Padding(left, 2, right, 2);
+            this.maxDamageCenterLabel.ForeColor = StyleManager.MainFormSmallDangerColor;
+
             string tooltip;
             this.illusionableBox.Image = creature.illusionable ? StyleManager.GetImage("checkmark-yes.png") : StyleManager.GetImage("checkmark-no.png");
             tooltip = creature.illusionable ? "Creature illusion works for this creature." : "Creature illusion does not work for this creature.";
@@ -176,14 +190,26 @@ namespace Tibialyzer {
             this.nameLabel.Font = f;
             this.nameLabel.Left = this.mainImage.Left + (mainImage.Width - this.nameLabel.Size.Width) / 2;
             base.NotificationInitialize();
+            RefreshTaskList(this.Size.Height);
+            base.NotificationFinalize();
+            this.RefreshForm();
+            this.ResumeForm();
+        }
+
+        List<Control> taskControls = new List<Control>();
+        public void RefreshTaskList(int baseY) {
+            foreach(Control c in taskControls) {
+                Controls.Remove(c);
+            }
+            taskControls.Clear();
 
             List<Task> involvedTasks = new List<Task>();
-            foreach(KeyValuePair<string, List<Task>> kvp in StorageManager.taskList) {
-                foreach(Task t in kvp.Value) {
+            foreach (KeyValuePair<string, List<Task>> kvp in StorageManager.taskList) {
+                foreach (Task t in kvp.Value) {
                     if (t.bossid == creature.id) {
                         involvedTasks.Add(t);
                     }
-                    foreach(int cr in t.creatures) {
+                    foreach (int cr in t.creatures) {
                         if (cr == creature.id) {
                             involvedTasks.Add(t);
                         }
@@ -191,14 +217,10 @@ namespace Tibialyzer {
                 }
             }
             if (involvedTasks.Count > 0) {
-                int baseY = this.Size.Height;
-                int newWidth = 0;
-                int y = UIManager.DisplayCreatureAttributeList(Controls, involvedTasks.ToList<TibiaObject>(), 10, baseY, out newWidth);
-                this.Size = new Size(Math.Max(newWidth, Size.Width), baseY + y);
+                int newWidth;
+                int y = UIManager.DisplayCreatureAttributeList(Controls, involvedTasks.ToList<TibiaObject>(), 10, baseY, out newWidth, null, taskControls, 0, 20, null, null, null, null, null, false, null, null, false, this.Size.Width - 20);
+                this.Size = new Size(this.Size.Width, baseY + y);
             }
-
-            base.NotificationFinalize();
-            this.ResumeForm();
         }
 
         public string RemoveTextInBrackets(string str) {
@@ -238,6 +260,65 @@ namespace Tibialyzer {
         private void huntButton_Click(object sender, EventArgs e) {
             this.ReturnFocusToTibia();
             CommandManager.ExecuteCommand("hunt" + Constants.CommandSymbol + (sender as Control).Name);
+        }
+
+        public override string FormName() {
+            return "CreatureStatsForm";
+        }
+
+        public override int MinWidth() {
+            return 274;
+        }
+
+        public override int MaxWidth() {
+            return 378;
+        }
+
+        public override int WidthInterval() {
+            return 200;
+        }
+
+        public override void RefreshForm() {
+            this.SuspendForm();
+            this.Size = new Size(GetWidth(), this.Size.Height);
+            int y;
+            if (this.Size.Width == MinWidth()) {
+                illusionableBox.Visible = false;
+                summonableBox.Visible = false;
+                invisibleBox.Visible = false;
+                paralysableBox.Visible = false;
+                pushableBox.Visible = false;
+                pushesBox.Visible = false;
+                averageGoldLabel.Visible = false;
+                maxDamageLabel.Visible = false;
+                abilitiesHeaderLabel.Visible = false;
+                abilitiesLabel.Location = new Point(114, abilitiesLabel.Location.Y);
+                averageGoldCenterLabel.Visible = true;
+                maxDamageCenterLabel.Visible = true;
+                abilitiesLabel.MaximumSize = new Size(153, 0);
+                y = Math.Max(this.abilitiesLabel.Location.Y + this.abilitiesLabel.Size.Height + 10, this.maxDamageCenterLabel.Location.Y + this.maxDamageCenterLabel.Height + 10);
+            } else {
+                illusionableBox.Visible = true;
+                summonableBox.Visible = true;
+                invisibleBox.Visible = true;
+                paralysableBox.Visible = true;
+                pushableBox.Visible = true;
+                pushesBox.Visible = true;
+                averageGoldLabel.Visible = true;
+                maxDamageLabel.Visible = true;
+                abilitiesHeaderLabel.Visible = true;
+                averageGoldCenterLabel.Visible = false;
+                maxDamageCenterLabel.Visible = false;
+                abilitiesLabel.Location = new Point(171, abilitiesLabel.Location.Y);
+                abilitiesLabel.MaximumSize = new Size(200, 0);
+                y = Math.Max(this.abilitiesLabel.Location.Y + this.abilitiesLabel.Size.Height + 10, this.expLabel.Location.Y + this.expLabel.Height + 10);
+            }
+            RefreshTaskList(y);
+            if (this.Size.Height < y) {
+                this.Size = new Size(this.Size.Width, y);
+            }
+
+            this.ResumeForm();
         }
     }
 }

@@ -50,8 +50,9 @@ namespace Tibialyzer {
             chartArea1.BackColor = System.Drawing.Color.Transparent;
             chartArea1.Name = "ChartArea1";
             this.mChart.ChartAreas.Add(chartArea1);
+            legend1.Alignment = System.Drawing.StringAlignment.Far;
             legend1.BackColor = System.Drawing.Color.Transparent;
-            legend1.ForeColor = StyleManager.NotificationTextColor;
+            legend1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             legend1.Name = "Legend1";
             this.mChart.Legends.Add(legend1);
             this.mChart.Location = new System.Drawing.Point(0, -1);
@@ -61,7 +62,7 @@ namespace Tibialyzer {
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
             series1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             series1.LabelBackColor = System.Drawing.Color.Transparent;
-            series1.LabelBorderColor = StyleManager.NotificationTextColor;
+            series1.LabelBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             series1.LabelBorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet;
             series1.LabelBorderWidth = 0;
             series1.LabelForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
@@ -77,7 +78,7 @@ namespace Tibialyzer {
             this.detailsButton.BackColor = System.Drawing.Color.Transparent;
             this.detailsButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.detailsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.detailsButton.ForeColor = StyleManager.NotificationTextColor;
+            this.detailsButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.detailsButton.Location = new System.Drawing.Point(12, 291);
             this.detailsButton.Name = "detailsButton";
             this.detailsButton.Padding = new System.Windows.Forms.Padding(2);
@@ -128,14 +129,14 @@ namespace Tibialyzer {
                     DamageObject p = damageDealt[i];
                     p.color = this.mChart.Series[0].Points[i].Color;
                 }
-                this.Size = new Size(startX, startY);
+                this.Size = new Size(GetWidth(), (int)(GetWidth() * 0.9));
             } else {
                 this.mChart.Series[0].Points.Clear();
                 this.mChart.Visible = false;
                 int newWidth = 0;
-                int y = UIManager.DisplayCreatureAttributeList(Controls, damageDealt.ToList<TibiaObject>(), 5, 25, out newWidth, null, controlList, 0, 20, null, null, null, sortFunction, sortedHeader, desc);
+                int y = UIManager.DisplayCreatureAttributeList(Controls, damageDealt.ToList<TibiaObject>(), 5, 25, out newWidth, null, controlList, 0, 20, null, null, null, sortFunction, sortedHeader, desc, null, null, false, this.Size.Width - 20);
 
-                this.Size = new Size(Math.Max(startX, newWidth), Math.Max(startY, 25 + y));
+                this.Size = new Size(GetWidth(), Math.Max(startY, 25 + y));
             }
             refreshTimer();
         }
@@ -149,6 +150,7 @@ namespace Tibialyzer {
                 }
                 this.Invoke((MethodInvoker)delegate {
                     refreshDamageChart();
+                    RefreshForm();
                 });
             } catch {
 
@@ -166,6 +168,7 @@ namespace Tibialyzer {
             }
             this.SuspendForm();
             refreshDamageChart();
+            RefreshForm();
             this.ResumeForm();
         }
 
@@ -182,6 +185,7 @@ namespace Tibialyzer {
             }
             this.SuspendForm();
             refreshDamageChart();
+            RefreshForm();
             this.ResumeForm();
         }
 
@@ -224,6 +228,36 @@ namespace Tibialyzer {
             refreshDamageChart();
             this.ResumeForm();
             NotificationFinalize();
+            RefreshForm();
+        }
+
+        public override string FormName() {
+            return "DamageChart";
+        }
+
+        public override int MinWidth() {
+            return 200;
+        }
+
+        public override int MaxWidth() {
+            return 800;
+        }
+
+        public override int WidthInterval() {
+            return 70;
+        }
+
+        public override void RefreshForm() {
+            this.SuspendForm();
+            if (graph) {
+                this.Size = new Size(GetWidth(), (int)(GetWidth() * 0.9));
+            } else {
+                this.Size = new Size(GetWidth(), 321);
+            }
+            mChart.Size = new Size(this.Size.Width, this.Size.Height);
+            this.detailsButton.Location = new Point(3, this.Size.Height - detailsButton.Height - 5);
+            this.refreshDamageChart();
+            this.ResumeForm();
         }
     }
 }
