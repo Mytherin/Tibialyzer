@@ -25,6 +25,7 @@ namespace Tibialyzer {
         System.Timers.Timer moveTimer = null;
         public int targetPositionX = 0, targetPositionY = 0;
         System.Timers.Timer closeTimer = null;
+        private bool animations = true;
 
         protected void InitializeSimpleNotification(bool movement = true, bool destroy = true) {
             this.Click += c_Click;
@@ -32,13 +33,15 @@ namespace Tibialyzer {
                 c.Click += c_Click;
             }
 
+            this.animations = SettingsManager.getSettingBool("EnableSimpleNotificationAnimation");
+
             if (movement) {
                 moveTimer = new System.Timers.Timer(5);
                 moveTimer.Elapsed += MoveTimer_Elapsed;
                 moveTimer.Enabled = true;
             }
             if (destroy) {
-                closeTimer = new System.Timers.Timer(8000);
+                closeTimer = new System.Timers.Timer(Math.Max(SettingsManager.getSettingInt("PopupDuration"), 1) * 1000);
                 closeTimer.Elapsed += new System.Timers.ElapsedEventHandler(CloseNotification);
                 closeTimer.Enabled = true;
             }
@@ -80,7 +83,7 @@ namespace Tibialyzer {
                 moveTimer.Dispose();
                 moveTimer = null;
             }
-            if (this.Opacity <= 0) {
+            if (!this.animations || this.Opacity <= 0) {
                 closeTimer.Close();
 
                 try {
@@ -94,7 +97,7 @@ namespace Tibialyzer {
                 if (this.IsHandleCreated && !this.IsDisposed) {
                     try {
                         this.Invoke((MethodInvoker)delegate {
-                            this.Opacity -= 0.03;
+                            this.Opacity -= 0.05;
                         });
                         closeTimer.Interval = 20;
                         closeTimer.Start();

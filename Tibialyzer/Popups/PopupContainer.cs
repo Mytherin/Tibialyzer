@@ -59,7 +59,7 @@ namespace Tibialyzer {
                 notifications.Add(controls);
                 controls.Add(background);
 
-                System.Timers.Timer closeTimer = new System.Timers.Timer(8000);
+                System.Timers.Timer closeTimer = new System.Timers.Timer(Math.Max(SettingsManager.getSettingInt("PopupDuration"), 1) * 1000);
                 closeTimer.Elapsed += CloseTimer_Elapsed;
                 closeTimer.Enabled = true;
                 closeTimer.AutoReset = false;

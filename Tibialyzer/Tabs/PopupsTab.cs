@@ -36,6 +36,9 @@ namespace Tibialyzer {
             popupConditionBox.ItemsChanged += PopupConditionBox_ItemsChanged;
             popupConditionBox.verifyItem = NotificationConditionManager.ValidCondition;
             popupConditionBox.RefreshControl();
+
+            popupDurationSlider.Value = Math.Min(Math.Max(SettingsManager.getSettingInt("PopupDuration"), popupDurationSlider.Minimum), popupDurationSlider.Maximum);
+            popupDurationHeader.Text = String.Format("Popup Duration ({0}s)", popupDurationSlider.Value);
         }
 
         public void InitializeTooltips() {
@@ -170,6 +173,13 @@ namespace Tibialyzer {
         private void ControlMouseLeave(object sender, EventArgs e) {
             (sender as Control).BackColor = StyleManager.MainFormButtonColor;
             (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
+        }
+
+        private void popupDurationSlider_Scroll(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            SettingsManager.setSetting("PopupDuration", popupDurationSlider.Value);
+            popupDurationHeader.Text = String.Format("Popup Duration ({0}s)", popupDurationSlider.Value);
         }
     }
 }

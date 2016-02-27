@@ -216,6 +216,7 @@ C::NumpadPgDn
             setSettingIfNotSet("CreatureStatsFormWidth", 378);
             setSettingIfNotSet("DamageChartWidth", 450);
             setSettingIfNotSet("ItemViewFormWidth", 378);
+            setSettingIfNotSet("PopupDuration", 8);
         }
 
         public static void ResetSettingsToDefault() {
