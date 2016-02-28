@@ -178,6 +178,7 @@ namespace Tibialyzer {
             this.nameLabel.Left = this.mainImage.Left + (mainImage.Width - this.nameLabel.Size.Width) / 2;
             this.NotificationFinalize();
             this.ResumeForm();
+            this.Size = new Size(1, this.Size.Height);
             RefreshForm();
         }
 
