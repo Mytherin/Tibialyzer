@@ -82,6 +82,7 @@ namespace Tibialyzer {
             GlobalDataManager.UpdateURLs(res.urls);
 
 
+            HuntManager.AddUsedItems(HuntManager.activeHunt, res.usingMessages);
             Parser.ParseLootMessages(HuntManager.activeHunt, res.itemDrops, o.newItems, true, true);
             HuntManager.activeHunt.totalExp += newExperience;
 
@@ -342,6 +343,24 @@ namespace Tibialyzer {
                 Console.WriteLine(String.Format("Warning, creature {0} was not found in the database.", creature));
                 return null;
             }
+        }
+
+        public static Tuple<string, int> ParseUsingMessage(string message) {
+            string itemName = null;
+            int count = 0;
+
+            string[] words = message.Remove(message.Length - 3, 3).Split(' ');
+            for(int i = words.Length - 1; i >= 0; i--) {
+                if (words[i] == "last") {
+                    count = 1;
+                    break;
+                } else if (int.TryParse(words[i], out count)) {
+                    break;
+                }
+                itemName = itemName == null ? words[i] : words[i] + " " + itemName;
+            }
+
+            return new Tuple<string, int>(Parser.getSingularItem(itemName), count);
         }
     }
 }

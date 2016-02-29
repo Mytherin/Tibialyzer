@@ -89,6 +89,12 @@
     <Compile Include="Notifications\ExperienceChart.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Notifications\WasteForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Notifications\WasteForm.Designer.cs">
+      <DependentUpon>WasteForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Popups\AutoHotkeySuspendedMode.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -315,6 +321,9 @@
     <Compile Include="Managers\UIManager.cs" />
     <EmbeddedResource Include="Notifications\ExperienceChart.resx">
       <DependentUpon>ExperienceChart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Notifications\WasteForm.resx">
+      <DependentUpon>WasteForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Popups\AutoHotkeySuspendedMode.resx">
       <DependentUpon>AutoHotkeySuspendedMode.cs</DependentUpon>

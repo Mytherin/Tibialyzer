@@ -132,6 +132,8 @@ namespace Tibialyzer {
                     } else {
                         PopupManager.ShowSimpleNotification(new SimpleTextNotification(null, title, text));
                     }
+                } else if (comp.StartsWith("waste" + Constants.CommandSymbol)) { //waste@
+                    NotificationManager.ShowWasteForm(HuntManager.activeHunt, command);
                 } else if (comp.StartsWith("loot" + Constants.CommandSymbol)) { //loot@
                     string[] splits = command.Split(Constants.CommandSymbol);
                     string screenshot_path = "";

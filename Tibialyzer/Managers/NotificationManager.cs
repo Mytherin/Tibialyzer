@@ -179,6 +179,14 @@ namespace Tibialyzer {
             ShowNotification(f, command);
         }
 
+        public static void ShowWasteForm(Hunt hunt, string command) {
+            if (hunt == null) return;
+            WasteForm f = new WasteForm();
+            f.hunt = hunt;
+
+            ShowNotification(f, command);
+        }
+
         public static void ShowDamageMeter(Dictionary<string, DamageResult> dps, string comm, string filter = "", string screenshot_path = "") {
             DamageChart f = new DamageChart();
             f.dps = dps;

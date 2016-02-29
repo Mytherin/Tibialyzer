@@ -446,6 +446,13 @@ namespace Tibialyzer {
                 creatureControls = newCreatureControls;
             }
 
+            long usedItemValue = 0;
+            foreach (var value in hunt.usedItems) {
+                if (value.Value.Count > 1) {
+                    usedItemValue += value.Key.GetMaxValue() * value.Value.Count;
+                }
+            }
+
             int xPosition = width_x - totalValueValue.Size.Width - 5;
             y = base_y + y + item_spacing + 10;
             huntNameLabel.Text = hunt.name.ToString();
@@ -458,6 +465,9 @@ namespace Tibialyzer {
             totalExpValue.Text = hunt.totalExp.ToString();
             totalTimeLabel.Location = new Point(5, y += 20);
             totalTimeValue.Location = new Point(xPosition, y);
+            usedItemsValue.Text = usedItemValue.ToString();
+            usedItemsLabel.Location = new Point(5, y += 20);
+            usedItemsValue.Location = new Point(xPosition, y);
 
             long totalSeconds = (long)hunt.totalTime;
             string displayString = "";

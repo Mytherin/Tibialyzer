@@ -456,6 +456,17 @@ namespace Tibialyzer {
             }
         }
 
+        public static void AddUsedItems(Hunt hunt, Dictionary<string, HashSet<int>> usedItems) {
+            foreach (var val in usedItems) {
+                Item item = StorageManager.getItem(val.Key);
+                if (item == null) continue;
+                if (!hunt.usedItems.ContainsKey(item)) {
+                    hunt.usedItems.Add(item, new HashSet<int>());
+                }
+                hunt.usedItems[item].UnionWith(val.Value);
+            }
+        }
+
         public static void SetHuntTime(Hunt h, int clearMinutes) {
             var expInformation = GlobalDataManager.GetTotalExperience(TimestampManager.getLatestTimes(clearMinutes));
             h.totalExp = expInformation.Item1;
@@ -482,6 +493,7 @@ namespace Tibialyzer {
         public double totalTime = 0;
         public Loot loot = new Loot();
         public List<string> lootCreatures = new List<string>();
+        public Dictionary<Item, HashSet<int>> usedItems = new Dictionary<Item, HashSet<int>>();
 
         public string GetTableName() {
             return "LootMessageTable" + dbtableid.ToString();
