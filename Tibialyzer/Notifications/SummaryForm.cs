@@ -48,6 +48,7 @@ namespace Tibialyzer {
                 using (Brush brush = new SolidBrush(fillColor)) {
                     gr.FillRectangle(brush, new RectangleF(p.GetBounds().X - 8, 0, p.GetBounds().Width + 16, ImageHeight - 1));
                 }
+                gr.DrawRectangle(Pens.Black, new Rectangle((int)p.GetBounds().X - 8, 0, (int)p.GetBounds().Width + 16, ImageHeight - 1));
             }
             using (Pen pen = new Pen(Color.Black, 2)) {
                 gr.DrawPath(pen, p);
@@ -204,6 +205,26 @@ namespace Tibialyzer {
             y += box.Height;
         }
 
+        private void CreateItemList(List<Tuple<Item, int>> items, int x, ref int y, List<Control> controls) {
+            Image image = new Bitmap(ImageWidth, ImageHeight);
+            using(Graphics gr = Graphics.FromImage(image)) {
+                int counter = 0;
+                foreach(Tuple<Item, int> item in items) {
+                    Rectangle region = new Rectangle(x + (counter++) * (ImageHeight + 1), 0, ImageHeight - 1, ImageHeight - 1);
+                    RenderImageResized(gr, StyleManager.GetImage("item_background.png"), region);
+                    RenderImageResized(gr, LootDropForm.DrawCountOnItem(item.Item1, item.Item2), region);
+                }
+            }
+            PictureBox box = new PictureBox();
+            box.Size = image.Size;
+            box.BackColor = Color.Transparent;
+            box.Location = new Point(x, y);
+            box.Image = image;
+            this.Controls.Add(box);
+            controls.Add(box);
+            y += box.Height;
+        }
+
         private int x = 5;
         private List<Control> summaryControls = new List<Control>();
         private List<Control> lootControls = new List<Control>();
@@ -318,9 +339,26 @@ namespace Tibialyzer {
             if (maxDrops > 0) {
                 CreateHeaderLabel("Item Drops", x, ref y, lootControls);
                 counter = 0;
+                int width = 0;
+                var items = new List<Tuple<Item, int>>();
                 foreach (Tuple<Item, int> tpl in loot.Item2) {
-                    CreateItemBox(tpl.Item1, tpl.Item2, x, ref y, lootControls);
-                    if (++counter >= maxDrops) break;
+                    int amount = tpl.Item2;
+                    while(amount > 0) {
+                        int count = Math.Min(100, amount);
+                        amount -= count;
+                        items.Add(new Tuple<Item, int>(tpl.Item1, count));
+                        width += ImageHeight + 2;
+                        if (width > ImageWidth - ImageHeight) {
+                            CreateItemList(items, x, ref y, lootControls);
+                            items.Clear();
+                            width = 0;
+                            if (++counter >= maxDrops) break;
+                        }
+                    }
+                }
+                if (items.Count > 0) {
+                    CreateItemList(items, x, ref y, lootControls);
+                    items.Clear();
                 }
             }
             int maxCreatures = SettingsManager.getSettingInt("SummaryMaxCreatures");
@@ -393,11 +431,26 @@ namespace Tibialyzer {
             if (maxUsedItems > 0) {
                 int counter = 0;
                 CreateHeaderLabel("Used Items", x, ref y, usedItemsControls);
+                int width = 0;
+                var items = new List<Tuple<Item, int>>();
                 foreach (Tuple<Item, int> tpl in HuntManager.GetUsedItems(hunt)) {
-                    CreateItemBox(tpl.Item1, tpl.Item2, x, ref y, usedItemsControls);
-                    if (++counter >= maxUsedItems) {
-                        break;
+                    int amount = tpl.Item2;
+                    while (amount > 0) {
+                        int count = Math.Min(100, amount);
+                        amount -= count;
+                        items.Add(new Tuple<Item, int>(tpl.Item1, count));
+                        width += ImageHeight + 2;
+                        if (width > ImageWidth - ImageHeight) {
+                            CreateItemList(items, x, ref y, usedItemsControls);
+                            items.Clear();
+                            width = 0;
+                            if (++counter >= maxUsedItems) break;
+                        }
                     }
+                }
+                if (items.Count > 0) {
+                    CreateItemList(items, x, ref y, usedItemsControls);
+                    items.Clear();
                 }
             }
             if (y != maxheight) {
