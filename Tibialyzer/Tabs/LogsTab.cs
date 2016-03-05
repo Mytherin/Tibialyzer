@@ -81,28 +81,36 @@ namespace Tibialyzer {
 
 
         private void importLogFile_Click(object sender, MouseEventArgs e) {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Title = "Import Log File";
-            DialogResult result = dialog.ShowDialog();
-            if (result == System.Windows.Forms.DialogResult.OK) {
-                HuntManager.LoadLog(MainForm.mainForm.getSelectedHunt(), dialog.FileName);
-                MainForm.mainForm.refreshHunts();
+            try {
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.Title = "Import Log File";
+                DialogResult result = dialog.ShowDialog();
+                if (result == System.Windows.Forms.DialogResult.OK) {
+                    HuntManager.LoadLog(MainForm.mainForm.getSelectedHunt(), dialog.FileName);
+                    MainForm.mainForm.refreshHunts();
+                }
+            } catch (Exception ex) {
+                MainForm.mainForm.DisplayWarning(ex.Message);
             }
         }
 
         private void exportLogButton_Click(object sender, MouseEventArgs e) {
-            SaveFileDialog dialog = new SaveFileDialog();
-            dialog.Title = "Export Log File";
-            if (File.Exists("exported_log")) {
-                int i = 1;
-                while (File.Exists("exported_log (" + i.ToString() + ")")) i++;
-                dialog.FileName = "exported_log (" + i.ToString() + ")";
-            } else {
-                dialog.FileName = "exported_log";
-            }
-            DialogResult result = dialog.ShowDialog();
-            if (result == System.Windows.Forms.DialogResult.OK) {
-                HuntManager.SaveLog(MainForm.mainForm.getSelectedHunt(), dialog.FileName);
+            try {
+                SaveFileDialog dialog = new SaveFileDialog();
+                dialog.Title = "Export Log File";
+                if (File.Exists("exported_log")) {
+                    int i = 1;
+                    while (File.Exists("exported_log (" + i.ToString() + ")")) i++;
+                    dialog.FileName = "exported_log (" + i.ToString() + ")";
+                } else {
+                    dialog.FileName = "exported_log";
+                }
+                DialogResult result = dialog.ShowDialog();
+                if (result == System.Windows.Forms.DialogResult.OK) {
+                    HuntManager.SaveLog(MainForm.mainForm.getSelectedHunt(), dialog.FileName);
+                }
+            } catch (Exception ex) {
+                MainForm.mainForm.DisplayWarning(ex.Message);
             }
         }
 
@@ -114,6 +122,10 @@ namespace Tibialyzer {
         private void ControlMouseLeave(object sender, EventArgs e) {
             (sender as Control).BackColor = StyleManager.MainFormButtonColor;
             (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
+        }
+
+        private void loadLogFromFileButton_Click(object sender, EventArgs e) {
+
         }
     }
 }
