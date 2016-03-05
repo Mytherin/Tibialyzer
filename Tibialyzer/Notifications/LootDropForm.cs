@@ -141,7 +141,7 @@ namespace Tibialyzer {
                 } else {
                     // only display tracked creatures
                     creatureKills = new Dictionary<Creature, int>();
-                    foreach(Creature cr in displayedCreatures) {
+                    foreach (Creature cr in displayedCreatures) {
                         if (!hunt.loot.killCount.ContainsKey(cr)) continue;
 
                         creatureKills.Add(cr, hunt.loot.killCount[cr]);
@@ -232,7 +232,7 @@ namespace Tibialyzer {
 
         public List<Control> createdControls = new List<Control>();
         public void RefreshLoot() {
-            foreach(Control c in createdControls) {
+            foreach (Control c in createdControls) {
                 this.Controls.Remove(c);
                 c.Dispose();
             }
@@ -340,8 +340,8 @@ namespace Tibialyzer {
                 return;
             }
 
-            foreach(KeyValuePair<Item, List<PictureBox>> kvp in itemControls) {
-                foreach(PictureBox p in kvp.Value) {
+            foreach (KeyValuePair<Item, List<PictureBox>> kvp in itemControls) {
+                foreach (PictureBox p in kvp.Value) {
                     this.Controls.Remove(p);
                     p.Dispose();
                 }
@@ -460,10 +460,8 @@ namespace Tibialyzer {
             }
 
             long usedItemValue = 0;
-            foreach (var value in hunt.usedItems) {
-                if (value.Value.Count > 1) {
-                    usedItemValue += value.Key.GetMaxValue() * value.Value.Count;
-                }
+            foreach (var tpl in HuntManager.GetUsedItems(hunt)) {
+                usedItemValue += tpl.Item1.GetMaxValue() * tpl.Item2;
             }
 
             int xPosition = width_x - totalValueValue.Size.Width - 5;
@@ -481,7 +479,7 @@ namespace Tibialyzer {
             usedItemsValue.Text = usedItemValue.ToString();
             usedItemsLabel.Location = new Point(5, y += 20);
             usedItemsValue.Location = new Point(xPosition, y);
-            
+
             totalTimeValue.Text = TimeToString((long)hunt.totalTime);
             y += 20;
 

@@ -470,7 +470,9 @@ namespace Tibialyzer {
         public static List<Tuple<Item, int>> GetUsedItems(Hunt hunt) {
             List<Tuple<Item, int>> items = new List<Tuple<Item, int>>();
             foreach(var val in hunt.usedItems) {
-                items.Add(new Tuple<Item, int>(val.Key, val.Value.Count));
+                if (val.Value.Count > 1) {
+                    items.Add(new Tuple<Item, int>(val.Key, val.Value.Count));
+                }
             }
             return items;
         }

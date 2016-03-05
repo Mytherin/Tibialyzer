@@ -24,11 +24,9 @@ namespace Tibialyzer {
             int max_x = this.Size.Width - 5;
             Size item_size = new Size(32, 32);
             int item_spacing = 4;
-            foreach (var value in hunt.usedItems) {
-                if (value.Value.Count <= 1) continue;
-
-                Item item = value.Key;
-                int count = value.Value.Count;
+            foreach (var tpl in HuntManager.GetUsedItems(hunt)) {
+                Item item = tpl.Item1;
+                int count = tpl.Item2;
                 while (count > 0) {
                     if (x >= (max_x - item_size.Width - item_spacing)) {
                         x = 0;
