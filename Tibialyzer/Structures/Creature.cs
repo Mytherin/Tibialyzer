@@ -131,6 +131,18 @@ namespace Tibialyzer {
             return weakness;
         }
 
+        public string GetStrength() {
+            string weakness = "";
+            int minDamage = int.MaxValue;
+            for (int i = 0; i <= 6; i++) {
+                if (GetResistance(i) < minDamage) {
+                    minDamage = GetResistance(i);
+                    weakness = GetResistanceType(i);
+                }
+            }
+            return weakness;
+        }
+
         public override string GetName() { return title; }
         public override Image GetImage() {
             if (image == null) {

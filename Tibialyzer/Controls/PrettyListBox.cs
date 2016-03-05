@@ -146,6 +146,7 @@ namespace Tibialyzer {
         }
 
         private void PrettyListBox_KeyDown(object sender, KeyEventArgs e) {
+            if (SelectedIndex < 0) return;
             if (e.KeyCode == Keys.Delete && this.SelectedIndex >= 0) {
                 if (AttemptDeleteItem != null) {
                     AttemptDeleteItem.Invoke(this, null);

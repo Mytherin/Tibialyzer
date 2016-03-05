@@ -196,7 +196,6 @@ namespace Tibialyzer {
                 itemDrops = itemDrops.OrderByDescending(o => o.Item1.displayname == "gold coin" ? extraGold - 2 : (o.Item1.displayname == "platinum coin" ? extraGold - 1 : (o.Item1.displayname == "crystal coin" ? extraGold : Math.Max(o.Item1.actual_value, o.Item1.vendor_value) * o.Item2))).ToList();
             }
             return new Tuple<Dictionary<Creature, int>, List<Tuple<Item, int>>>(creatureKills, itemDrops);
-
         }
 
         public void UpdateLoot() {
@@ -215,6 +214,20 @@ namespace Tibialyzer {
                 return cr.experience >= SettingsManager.getSettingInt("IgnoreLowExperienceValue");
             }
             return true;
+        }
+
+        public static string TimeToString(long totalSeconds) {
+            string displayString = "";
+            if (totalSeconds >= 3600) {
+                displayString += (totalSeconds / 3600).ToString() + "h ";
+                totalSeconds = totalSeconds % 3600;
+            }
+            if (totalSeconds >= 60) {
+                displayString += (totalSeconds / 60).ToString() + "m ";
+                totalSeconds = totalSeconds % 60;
+            }
+            displayString += totalSeconds.ToString() + "s";
+            return displayString;
         }
 
         public List<Control> createdControls = new List<Control>();
@@ -468,20 +481,8 @@ namespace Tibialyzer {
             usedItemsValue.Text = usedItemValue.ToString();
             usedItemsLabel.Location = new Point(5, y += 20);
             usedItemsValue.Location = new Point(xPosition, y);
-
-            long totalSeconds = (long)hunt.totalTime;
-            string displayString = "";
-            if (totalSeconds >= 3600) {
-                displayString += (totalSeconds / 3600).ToString() + "h ";
-                totalSeconds = totalSeconds % 3600;
-            }
-            if (totalSeconds >= 60) {
-                displayString += (totalSeconds / 60).ToString() + "m ";
-                totalSeconds = totalSeconds % 60;
-            }
-            displayString += totalSeconds.ToString() + "s";
-
-            totalTimeValue.Text = displayString;
+            
+            totalTimeValue.Text = TimeToString((long)hunt.totalTime);
             y += 20;
 
 

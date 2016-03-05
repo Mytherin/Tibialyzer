@@ -187,6 +187,12 @@ namespace Tibialyzer {
             ShowNotification(f, command);
         }
 
+        public static void ShowSummaryForm(string command) {
+            SummaryForm f = new SummaryForm();
+
+            ShowNotification(f, command);
+        }
+
         public static void ShowDamageMeter(Dictionary<string, DamageResult> dps, string comm, string filter = "", string screenshot_path = "") {
             DamageChart f = new DamageChart();
             f.dps = dps;
@@ -290,6 +296,9 @@ namespace Tibialyzer {
                 if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is LootDropForm) {
                     (NotificationFormGroups[i] as LootDropForm).UpdateLoot();
                 }
+                if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is SummaryForm) {
+                    (NotificationFormGroups[i] as SummaryForm).UpdateLoot();
+                }
             }
         }
 
@@ -308,7 +317,7 @@ namespace Tibialyzer {
                 }
             }
         }
-
+        
         public static void ClearNotifications() {
             for (int i = 0; i < NotificationFormGroups.Length; i++) {
                 if (NotificationFormGroups[i] != null) {

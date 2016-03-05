@@ -467,6 +467,14 @@ namespace Tibialyzer {
             }
         }
 
+        public static List<Tuple<Item, int>> GetUsedItems(Hunt hunt) {
+            List<Tuple<Item, int>> items = new List<Tuple<Item, int>>();
+            foreach(var val in hunt.usedItems) {
+                items.Add(new Tuple<Item, int>(val.Key, val.Value.Count));
+            }
+            return items;
+        }
+
         public static void SetHuntTime(Hunt h, int clearMinutes) {
             var expInformation = GlobalDataManager.GetTotalExperience(TimestampManager.getLatestTimes(clearMinutes));
             h.totalExp = expInformation.Item1;

@@ -14,7 +14,8 @@ namespace Tibialyzer {
         private static System.Timers.Timer scanTimer = null;
         public static ParseMemoryResults lastResults;
         public static bool shownException = false;
-
+        private const int MaxRecentDropsTracked = 20;
+        public static List<Tuple<Creature, List<Tuple<Item, int>>>> RecentDrops = new List<Tuple<Creature, List<Tuple<Item, int>>>>();
 
         public static void StartScanning() {
             BackgroundWorker mainScanner = new BackgroundWorker();
@@ -173,7 +174,16 @@ namespace Tibialyzer {
                     }
                 });
             }
+
             if (parseMemoryResults != null) {
+                lock (RecentDrops) {
+                    if (RecentDrops.Count + parseMemoryResults.newItems.Count > MaxRecentDropsTracked && RecentDrops.Count > 0) {
+                        RecentDrops.RemoveRange(0, Math.Min(RecentDrops.Count - 1, parseMemoryResults.newItems.Count - (MaxRecentDropsTracked - RecentDrops.Count)));
+                    }
+                    foreach (var tpl in parseMemoryResults.newItems) {
+                        RecentDrops.Add(tpl);
+                    }
+                }
                 if (parseMemoryResults.newItems.Count > 0) {
                     MainForm.mainForm.Invoke((MethodInvoker)delegate {
                         LootDatabaseManager.UpdateLoot();
@@ -221,6 +231,21 @@ namespace Tibialyzer {
                 }
             }
             return readMemoryResults != null;
+        }
+
+        public static List<Tuple<Creature, List<Tuple<Item, int>>>> GetRecentDrops(int max = 5) {
+            var recentDrops = new List<Tuple<Creature, List<Tuple<Item, int>>>>();
+            int counter = 0;
+            lock(RecentDrops) {
+                for(int i = RecentDrops.Count - 1; i >= 0; i--) {
+                    recentDrops.Add(RecentDrops[i]);
+                    counter++;
+                    if (counter >= max) {
+                        return recentDrops;
+                    }
+                }
+            }
+            return recentDrops;
         }
     }
 }
