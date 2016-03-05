@@ -193,7 +193,10 @@ namespace Tibialyzer {
         public static List<DamageObject> GenerateDamageInformation(Dictionary<string, DamageResult> dps, string filter) {
             List<DamageObject> damageDealt = new List<DamageObject>();
             foreach (KeyValuePair<string, DamageResult> kvp in dps) {
-                string name = kvp.Key.Replace(".", "").Replace("a ", "").Replace("an ", "");
+                string name = kvp.Key.Replace(".", "");
+                if (name.Substring(0, 2) == "a ") name = name.Substring(2, name.Length - 2);
+                if (name.Substring(0, 3) == "an ") name = name.Substring(3, name.Length - 3);
+
                 Creature cr = StorageManager.getCreature(name);
                 if (filter != "all" && filter != "creature" && cr != null) continue;
                 if (filter == "creature" && cr == null) continue;
