@@ -111,6 +111,7 @@ namespace Tibialyzer {
                 h.loot.creatureLoot.Clear();
                 h.loot.killCount.Clear();
                 h.loot.logMessages.Clear();
+                h.usedItems.Clear();
                 h.totalExp = 0;
                 h.totalTime = 0;
             }
@@ -212,6 +213,7 @@ namespace Tibialyzer {
             h.loot.creatureLoot.Clear();
             h.loot.killCount.Clear();
             h.loot.logMessages.Clear();
+            h.usedItems.Clear();
             h.totalExp = 0;
             h.totalTime = 0;
             HuntManager.SetHuntTime(h, clearMinutes);
