@@ -269,7 +269,7 @@ namespace Tibialyzer {
                                 }
 
                                 HuntManager.AddKillToHunt(h, resultList, t, message, stamp, hour, minute, transaction);
-                                if (MainForm.fileWriter != null && SettingsManager.getSettingBool("AutomaticallyWriteLootToFile")) {
+                                if (newItems != null && MainForm.fileWriter != null && SettingsManager.getSettingBool("AutomaticallyWriteLootToFile")) {
                                     MainForm.fileWriter.WriteLine(message);
                                     MainForm.fileWriter.Flush();
                                 }
