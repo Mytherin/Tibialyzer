@@ -299,19 +299,31 @@ namespace Tibialyzer {
         }
 
         public void UpdateDamage() {
-            lock (updateLock) {
-                this.SuspendForm();
-                this.UpdateDamageForm();
-                this.ResumeForm();
+            try {
+                this.Invoke((MethodInvoker)delegate {
+                    lock (updateLock) {
+                        this.SuspendForm();
+                        this.UpdateDamageForm();
+                        this.ResumeForm();
+                    }
+                });
+            } catch {
+
             }
         }
 
         public void UpdateWaste() {
-            lock (updateLock) {
-                this.SuspendForm();
-                this.UpdateWasteForm();
-                this.UpdateSummaryForm();
-                this.ResumeForm();
+            try {
+                this.Invoke((MethodInvoker)delegate {
+                    lock (updateLock) {
+                        this.SuspendForm();
+                        this.UpdateWasteForm();
+                        this.UpdateSummaryForm();
+                        this.ResumeForm();
+                    }
+                });
+            } catch {
+
             }
         }
 

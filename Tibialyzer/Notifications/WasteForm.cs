@@ -11,6 +11,7 @@ using System.Windows.Forms;
 namespace Tibialyzer {
     public partial class WasteForm : NotificationForm {
         public Hunt hunt;
+        private List<Control> wasteControls = new List<Control>();
         public WasteForm() {
             InitializeComponent();
         }
@@ -18,6 +19,29 @@ namespace Tibialyzer {
         public override void LoadForm() {
             this.SuspendForm();
             this.NotificationInitialize();
+            this.RefreshWaste();
+            this.NotificationFinalize();
+            this.ResumeForm();
+        }
+
+        public void UpdateWaste() {
+            try {
+                this.Invoke((MethodInvoker)delegate {
+                    this.SuspendForm();
+                    this.RefreshWaste();
+                    this.ResumeForm();
+                });
+            } catch {
+
+            }
+        }
+
+        private void RefreshWaste() {
+            foreach(Control c in wasteControls) {
+                Controls.Remove(c);
+                c.Dispose();
+            }
+            wasteControls.Clear();
 
             int base_x = 5, x = 0;
             int base_y = 32, y = 0;
@@ -52,15 +76,13 @@ namespace Tibialyzer {
                     picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
                     picture_box.BackgroundImage = StyleManager.GetImage("item_background.png");
                     this.Controls.Add(picture_box);
+                    wasteControls.Add(picture_box);
 
                     x += item_size.Width + item_spacing;
                 }
             }
 
             this.Size = new Size(this.Size.Width, base_y + y + item_size.Height + item_spacing * 2);
-
-            this.NotificationFinalize();
-            this.ResumeForm();
         }
 
         private void openItem_Click(object sender, EventArgs e) {

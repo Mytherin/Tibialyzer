@@ -252,7 +252,7 @@ namespace Tibialyzer {
 
         public static Hunt GetHunt(string search) {
             search = search.ToLower();
-            lock(hunts) {
+            lock (hunts) {
                 foreach (Hunt h in hunts) {
                     if (string.Equals(h.name, search, StringComparison.OrdinalIgnoreCase)) {
                         return h;
@@ -459,6 +459,7 @@ namespace Tibialyzer {
         }
 
         public static void AddUsedItems(Hunt hunt, Dictionary<string, HashSet<int>> usedItems) {
+            bool newValues = false;
             lock (hunts) {
                 foreach (var val in usedItems) {
                     Item item = StorageManager.getItem(val.Key);
@@ -466,8 +467,15 @@ namespace Tibialyzer {
                     if (!hunt.usedItems.ContainsKey(item)) {
                         hunt.usedItems.Add(item, new HashSet<int>());
                     }
+                    int currentCount = hunt.usedItems[item].Count;
                     hunt.usedItems[item].UnionWith(val.Value);
+                    if (hunt.usedItems[item].Count > currentCount) {
+                        newValues = true;
+                    }
                 }
+            }
+            if (newValues) {
+                GlobalDataManager.UpdateUsedItems();
             }
         }
 

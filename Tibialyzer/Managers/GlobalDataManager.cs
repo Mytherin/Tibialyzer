@@ -14,6 +14,7 @@ namespace Tibialyzer {
         public delegate void DataChangedHandler();
         public static event DataChangedHandler ExperienceChanged;
         public static event DataChangedHandler DamageChanged;
+        public static event DataChangedHandler UsedItemsChanged;
 
         private static Dictionary<string, List<string>> totalItemDrops = new Dictionary<string, List<string>>();
         private static Dictionary<string, List<Tuple<string, string>>> totalCommands = new Dictionary<string, List<Tuple<string, string>>>();
@@ -28,6 +29,12 @@ namespace Tibialyzer {
         public static void UpdateDamage() {
             if (DamageChanged != null) {
                 DamageChanged();
+            }
+        }
+
+        public static void UpdateUsedItems() {
+            if (UsedItemsChanged != null) {
+                UsedItemsChanged();
             }
         }
 

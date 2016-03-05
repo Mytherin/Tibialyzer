@@ -62,6 +62,7 @@ namespace Tibialyzer {
             LootDatabaseManager.LootChanged += UpdateLogDisplay;
             GlobalDataManager.ExperienceChanged += NotificationManager.UpdateExperienceDisplay;
             GlobalDataManager.DamageChanged += NotificationManager.UpdateDamageDisplay;
+            GlobalDataManager.UsedItemsChanged += NotificationManager.UpdateUsedItemsDisplay;
 
             if (!File.Exists(Constants.DatabaseFile)) {
                 ExitWithError("Fatal Error", String.Format("Could not find database file {0}.", Constants.DatabaseFile));

@@ -315,9 +315,24 @@ namespace Tibialyzer {
                 if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is DamageChart) {
                     (NotificationFormGroups[i] as DamageChart).UpdateDamage();
                 }
+                if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is SummaryForm) {
+                    (NotificationFormGroups[i] as SummaryForm).UpdateDamage();
+                }
             }
         }
-        
+
+        public static void UpdateUsedItemsDisplay() {
+            for (int i = 0; i < NotificationFormGroups.Length; i++) {
+                if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is SummaryForm) {
+                    (NotificationFormGroups[i] as SummaryForm).UpdateWaste();
+                }
+                if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is WasteForm) {
+                    (NotificationFormGroups[i] as WasteForm).UpdateWaste();
+                }
+            }
+        }
+
+
         public static void ClearNotifications() {
             for (int i = 0; i < NotificationFormGroups.Length; i++) {
                 if (NotificationFormGroups[i] != null) {
