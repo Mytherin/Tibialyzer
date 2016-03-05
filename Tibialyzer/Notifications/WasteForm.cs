@@ -57,6 +57,8 @@ namespace Tibialyzer {
                 }
             }
 
+            this.Size = new Size(this.Size.Width, base_y + y + item_size.Height + item_spacing * 2);
+
             this.NotificationFinalize();
             this.ResumeForm();
         }
