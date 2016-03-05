@@ -293,7 +293,7 @@ namespace Tibialyzer {
         private List<Control> activeControls = new List<Control>();
         private List<List<Control>> tabControls = new List<List<Control>>();
         private void InitializeTabs() {
-            Tabs = new List<TabInterface> { new MainTab(), new SettingsTab(), new HuntsTab(), new LogsTab(), new NotificationsTab(), new PopupsTab(), new DatabaseTab(), new AutoHotkeyTab(), new ScreenshotTab(), new BrowseTab(), new HelpTab(), new SystemTab() };
+            Tabs = new List<TabInterface> { new MainTab(), new SettingsTab(), new HuntsTab(), new LogsTab(), new NotificationsTab(), new PopupsTab(), new DatabaseTab(), new AutoHotkeyTab(), new ScreenshotTab(), new BrowseTab(), new HelpTab(), new SystemTab(), new SummaryTab() };
             foreach(TabInterface tab in Tabs) {
                 List<Control> controlList = new List<Control>();
                 foreach (Control c in (tab as Form).Controls) {
@@ -330,6 +330,7 @@ namespace Tibialyzer {
             browseButton.Enabled = true;
             helpButton.Enabled = true;
             upgradeButton.Enabled = true;
+            summaryButton.Enabled = true;
             switch (tab) {
                 case 0:
                     mainButton.Enabled = false; break;
@@ -355,6 +356,8 @@ namespace Tibialyzer {
                     helpButton.Enabled = false; break;
                 case 11:
                     upgradeButton.Enabled = false; break;
+                case 12:
+                    summaryButton.Enabled = false; break;
             }
         }
 
@@ -405,6 +408,10 @@ namespace Tibialyzer {
 
         private void upgradeButton_Click(object sender, EventArgs e) {
             switchTab(11);
+        }
+
+        private void summaryButton_Click(object sender, EventArgs e) {
+            switchTab(12);
         }
         #endregion
 

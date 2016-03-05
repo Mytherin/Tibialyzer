@@ -67,20 +67,21 @@
             this.warningImageBox = new System.Windows.Forms.PictureBox();
             this.horizontalSeparator3 = new System.Windows.Forms.Label();
             this.upgradeButton = new System.Windows.Forms.Label();
+            this.summaryButton = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.tibialyzerLogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.loadTimerImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.warningImageBox)).BeginInit();
             this.SuspendLayout();
-            //
+            // 
             // notifyIcon1
-            //
+            // 
             this.notifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.Visible = true;
             this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
-            //
+            // 
             // tibialyzerLogo
-            //
+            // 
             this.tibialyzerLogo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.tibialyzerLogo.Image = ((System.Drawing.Image)(resources.GetObject("tibialyzerLogo.Image")));
             this.tibialyzerLogo.InitialImage = null;
@@ -90,9 +91,9 @@
             this.tibialyzerLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.tibialyzerLogo.TabIndex = 18;
             this.tibialyzerLogo.TabStop = false;
-            //
+            // 
             // closeButton
-            //
+            // 
             this.closeButton.AutoSize = true;
             this.closeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
             this.closeButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -105,9 +106,9 @@
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             this.closeButton.MouseEnter += new System.EventHandler(this.closeButton_MouseEnter);
             this.closeButton.MouseLeave += new System.EventHandler(this.closeButton_MouseLeave);
-            //
+            // 
             // minimizeButton
-            //
+            // 
             this.minimizeButton.AutoSize = true;
             this.minimizeButton.BackColor = System.Drawing.Color.Transparent;
             this.minimizeButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -120,18 +121,18 @@
             this.minimizeButton.Click += new System.EventHandler(this.minimizeButton_Click);
             this.minimizeButton.MouseEnter += new System.EventHandler(this.minimizeButton_MouseEnter);
             this.minimizeButton.MouseLeave += new System.EventHandler(this.minimizeButton_MouseLeave);
-            //
+            // 
             // minimizeIcon
-            //
+            // 
             this.minimizeIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.minimizeIcon.BalloonTipText = "Tibialyzer is now minimized.";
             this.minimizeIcon.BalloonTipTitle = "Tibialyzer";
             this.minimizeIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("minimizeIcon.Icon")));
             this.minimizeIcon.Text = "Tibialyzer";
             this.minimizeIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.minimizeIcon_MouseDoubleClick);
-            //
+            // 
             // loadTimerImage
-            //
+            // 
             this.loadTimerImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.loadTimerImage.Enabled = false;
             this.loadTimerImage.Location = new System.Drawing.Point(0, 2);
@@ -140,19 +141,19 @@
             this.loadTimerImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.loadTimerImage.TabIndex = 3;
             this.loadTimerImage.TabStop = false;
-            //
+            // 
             // openFileDialog1
-            //
+            // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            //
+            // 
             // explanationTooltip
-            //
+            // 
             this.explanationTooltip.AutoPopDelay = 150000;
             this.explanationTooltip.InitialDelay = 500;
             this.explanationTooltip.ReshowDelay = 100;
-            //
+            // 
             // mainButton
-            //
+            // 
             this.mainButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.mainButton.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mainButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -165,27 +166,27 @@
             this.mainButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mainButton_Click);
             this.mainButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.mainButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            //
+            // 
             // backgroundLabel
-            //
+            // 
             this.backgroundLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.backgroundLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.backgroundLabel.Location = new System.Drawing.Point(0, 0);
             this.backgroundLabel.Name = "backgroundLabel";
             this.backgroundLabel.Size = new System.Drawing.Size(102, 525);
             this.backgroundLabel.TabIndex = 5;
-            //
+            // 
             // horizontalSeparator1
-            //
+            // 
             this.horizontalSeparator1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
             this.horizontalSeparator1.Location = new System.Drawing.Point(0, 92);
             this.horizontalSeparator1.Name = "horizontalSeparator1";
             this.horizontalSeparator1.Size = new System.Drawing.Size(102, 5);
             this.horizontalSeparator1.TabIndex = 7;
             this.horizontalSeparator1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
+            // 
             // generalButton
-            //
+            // 
             this.generalButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.generalButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.generalButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -198,9 +199,9 @@
             this.generalButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.generalButton_Click);
             this.generalButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.generalButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            //
+            // 
             // notificationButton
-            //
+            // 
             this.notificationButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.notificationButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.notificationButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -213,9 +214,9 @@
             this.notificationButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.notificationButton_Click);
             this.notificationButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.notificationButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            //
+            // 
             // popupButton
-            //
+            // 
             this.popupButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -228,9 +229,9 @@
             this.popupButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.popupButton_Click);
             this.popupButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.popupButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            //
+            // 
             // databaseButton
-            //
+            // 
             this.databaseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.databaseButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.databaseButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -243,9 +244,9 @@
             this.databaseButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.databaseButton_Click);
             this.databaseButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.databaseButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            //
+            // 
             // autoHotkeyButton
-            //
+            // 
             this.autoHotkeyButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.autoHotkeyButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.autoHotkeyButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -258,9 +259,9 @@
             this.autoHotkeyButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.autoHotkeyButton_Click);
             this.autoHotkeyButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.autoHotkeyButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            //
+            // 
             // screenshotButton
-            //
+            // 
             this.screenshotButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.screenshotButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.screenshotButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -273,18 +274,18 @@
             this.screenshotButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.screenshotButton_Click);
             this.screenshotButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.screenshotButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            //
+            // 
             // horizontalSeparator4
-            //
+            // 
             this.horizontalSeparator4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
             this.horizontalSeparator4.Location = new System.Drawing.Point(0, 311);
             this.horizontalSeparator4.Name = "horizontalSeparator4";
             this.horizontalSeparator4.Size = new System.Drawing.Size(102, 5);
             this.horizontalSeparator4.TabIndex = 15;
             this.horizontalSeparator4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
+            // 
             // browseButton
-            //
+            // 
             this.browseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.browseButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.browseButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -297,18 +298,18 @@
             this.browseButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.browseButton_Click);
             this.browseButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.browseButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            //
+            // 
             // horizontalSeparator2
-            //
+            // 
             this.horizontalSeparator2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
             this.horizontalSeparator2.Location = new System.Drawing.Point(0, 341);
             this.horizontalSeparator2.Name = "horizontalSeparator2";
             this.horizontalSeparator2.Size = new System.Drawing.Size(102, 5);
             this.horizontalSeparator2.TabIndex = 17;
             this.horizontalSeparator2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
+            // 
             // helpButton
-            //
+            // 
             this.helpButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.helpButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.helpButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -321,9 +322,9 @@
             this.helpButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.helpButton_Click);
             this.helpButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.helpButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            //
+            // 
             // huntButton
-            //
+            // 
             this.huntButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.huntButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.huntButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -336,9 +337,9 @@
             this.huntButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.huntButton_Click);
             this.huntButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.huntButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            //
+            // 
             // header
-            //
+            // 
             this.header.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.header.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.header.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -348,18 +349,18 @@
             this.header.TabIndex = 20;
             this.header.Text = "Tibialyzer";
             this.header.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
+            // 
             // label30
-            //
+            // 
             this.label30.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
             this.label30.Location = new System.Drawing.Point(0, 62);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(102, 5);
             this.label30.TabIndex = 22;
             this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
+            // 
             // logButton
-            //
+            // 
             this.logButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.logButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -372,9 +373,9 @@
             this.logButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.logButton_Click);
             this.logButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.logButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            //
+            // 
             // warningImageBox
-            //
+            // 
             this.warningImageBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.warningImageBox.Image = ((System.Drawing.Image)(resources.GetObject("warningImageBox.Image")));
             this.warningImageBox.Location = new System.Drawing.Point(27, 463);
@@ -385,18 +386,18 @@
             this.warningImageBox.TabStop = false;
             this.warningImageBox.Visible = false;
             this.warningImageBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.warningImageBox_MouseDown);
-            //
+            // 
             // horizontalSeparator3
-            //
+            // 
             this.horizontalSeparator3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
             this.horizontalSeparator3.Location = new System.Drawing.Point(0, 373);
             this.horizontalSeparator3.Name = "horizontalSeparator3";
             this.horizontalSeparator3.Size = new System.Drawing.Size(102, 5);
             this.horizontalSeparator3.TabIndex = 25;
             this.horizontalSeparator3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
+            // 
             // upgradeButton
-            //
+            // 
             this.upgradeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.upgradeButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.upgradeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -409,15 +410,31 @@
             this.upgradeButton.Click += new System.EventHandler(this.upgradeButton_Click);
             this.upgradeButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
             this.upgradeButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
-            //
+            // 
+            // summaryButton
+            // 
+            this.summaryButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.summaryButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.summaryButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.summaryButton.Location = new System.Drawing.Point(2, 407);
+            this.summaryButton.Name = "summaryButton";
+            this.summaryButton.Size = new System.Drawing.Size(100, 25);
+            this.summaryButton.TabIndex = 27;
+            this.summaryButton.Text = "Summary";
+            this.summaryButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.summaryButton.Click += new System.EventHandler(this.summaryButton_Click);
+            this.summaryButton.MouseEnter += new System.EventHandler(this.mainButton_MouseEnter);
+            this.summaryButton.MouseLeave += new System.EventHandler(this.mainButton_MouseLeave);
+            // 
             // MainForm
-            //
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(655, 525);
+            this.Controls.Add(this.summaryButton);
             this.Controls.Add(this.upgradeButton);
             this.Controls.Add(this.horizontalSeparator3);
             this.Controls.Add(this.warningImageBox);
@@ -486,6 +503,7 @@
         private System.Windows.Forms.PictureBox warningImageBox;
         private System.Windows.Forms.Label horizontalSeparator3;
         private System.Windows.Forms.Label upgradeButton;
+        private System.Windows.Forms.Label summaryButton;
     }
 }
 

@@ -317,6 +317,12 @@
     <Compile Include="Tabs\SystemTab.Designer.cs">
       <DependentUpon>SystemTab.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\SummaryTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\SummaryTab.Designer.cs">
+      <DependentUpon>SummaryTab.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\TabBase.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -451,6 +457,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\SystemTab.resx">
       <DependentUpon>SystemTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\SummaryTab.resx">
+      <DependentUpon>SummaryTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\TabBase.resx">
       <DependentUpon>TabBase.cs</DependentUpon>

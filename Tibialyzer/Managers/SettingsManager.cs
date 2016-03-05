@@ -217,6 +217,11 @@ C::NumpadPgDn
             setSettingIfNotSet("DamageChartWidth", 450);
             setSettingIfNotSet("ItemViewFormWidth", 378);
             setSettingIfNotSet("PopupDuration", 8);
+            setSettingIfNotSet("SummaryMaxItemDrops", 5);
+            setSettingIfNotSet("SummaryMaxCreatures", 5);
+            setSettingIfNotSet("SummaryMaxRecentDrops", 5);
+            setSettingIfNotSet("SummaryMaxDamagePlayers", 5);
+            setSettingIfNotSet("SummaryMaxUsedItems", 5);
         }
 
         public static void ResetSettingsToDefault() {
