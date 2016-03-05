@@ -459,24 +459,28 @@ namespace Tibialyzer {
         }
 
         public static void AddUsedItems(Hunt hunt, Dictionary<string, HashSet<int>> usedItems) {
-            foreach (var val in usedItems) {
-                Item item = StorageManager.getItem(val.Key);
-                if (item == null) continue;
-                if (!hunt.usedItems.ContainsKey(item)) {
-                    hunt.usedItems.Add(item, new HashSet<int>());
+            lock (hunts) {
+                foreach (var val in usedItems) {
+                    Item item = StorageManager.getItem(val.Key);
+                    if (item == null) continue;
+                    if (!hunt.usedItems.ContainsKey(item)) {
+                        hunt.usedItems.Add(item, new HashSet<int>());
+                    }
+                    hunt.usedItems[item].UnionWith(val.Value);
                 }
-                hunt.usedItems[item].UnionWith(val.Value);
             }
         }
 
         public static List<Tuple<Item, int>> GetUsedItems(Hunt hunt) {
-            List<Tuple<Item, int>> items = new List<Tuple<Item, int>>();
-            foreach(var val in hunt.usedItems) {
-                if (val.Value.Count > 1) {
-                    items.Add(new Tuple<Item, int>(val.Key, val.Value.Count));
+            lock (hunts) {
+                List<Tuple<Item, int>> items = new List<Tuple<Item, int>>();
+                foreach (var val in hunt.usedItems) {
+                    if (val.Value.Count > 1) {
+                        items.Add(new Tuple<Item, int>(val.Key, val.Value.Count));
+                    }
                 }
+                return items;
             }
-            return items;
         }
 
         public static void SetHuntTime(Hunt h, int clearMinutes) {
