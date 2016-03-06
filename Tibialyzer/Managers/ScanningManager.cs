@@ -23,12 +23,12 @@ namespace Tibialyzer {
             scanTimer = new System.Timers.Timer(10000);
             scanTimer.Elapsed += StuckScanning;
 
-            int initialScanSpeed = SettingsManager.getSettingInt("ScanSpeed") * 10 + 1;
+            int initialScanSpeed = SettingsManager.getSettingInt("ScanSpeed") * 15 + 1;
             missingChunkScanTimer = new System.Timers.Timer(initialScanSpeed);
             missingChunkScanTimer.AutoReset = false;
             missingChunkScanTimer.Elapsed += (o, e) => {
                 ReadMemoryManager.ScanMissingChunks();
-                int scanSpeed = SettingsManager.getSettingInt("ScanSpeed") * 10 + 1;
+                int scanSpeed = SettingsManager.getSettingInt("ScanSpeed") * 15 + 1;
                 if (scanSpeed != missingChunkScanTimer.Interval) {
                     missingChunkScanTimer.Interval = scanSpeed;
                 }
@@ -37,12 +37,12 @@ namespace Tibialyzer {
             };
             missingChunkScanTimer.Start();
 
-            initialScanSpeed = SettingsManager.getSettingInt("ScanSpeed") + 1;
+            initialScanSpeed = SettingsManager.getSettingInt("ScanSpeed") * 5 + 1;
             mainScanTimer = new System.Timers.Timer(initialScanSpeed);
             mainScanTimer.AutoReset = false;
             mainScanTimer.Elapsed += (o, e) => {
                 ScanMemory(o, null);
-                int scanSpeed = SettingsManager.getSettingInt("ScanSpeed") + 1;
+                int scanSpeed = SettingsManager.getSettingInt("ScanSpeed") * 5 + 1;
                 if (scanSpeed != mainScanTimer.Interval) {
                     mainScanTimer.Interval = scanSpeed;
                 }
