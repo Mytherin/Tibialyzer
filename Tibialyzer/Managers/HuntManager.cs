@@ -22,99 +22,96 @@ namespace Tibialyzer {
     public class HuntManager {
 
         public static Hunt activeHunt = null;
-        public static List<Hunt> hunts = new List<Hunt>();
+        private static List<Hunt> hunts = new List<Hunt>();
 
         public static void Initialize() {
-            //"Name#DBTableID#Track#Time#Exp#SideHunt#AggregateHunt#ClearOnStartup#Creature#Creature#..."
-            if (!SettingsManager.settingExists("Hunts")) {
-                SettingsManager.setSetting("Hunts", new List<string>() { "New Hunt#True#0#0#False#True" });
+            lock(hunts) {
+                //"Name#DBTableID#Track#Time#Exp#SideHunt#AggregateHunt#ClearOnStartup#Creature#Creature#..."
+                if (!SettingsManager.settingExists("Hunts")) {
+                    SettingsManager.setSetting("Hunts", new List<string>() { "New Hunt#True#0#0#False#True" });
+                }
+                hunts.Clear();
+                int activeHuntIndex = 0, index = 0;
+                List<int> dbTableIds = new List<int>();
+                foreach (string str in SettingsManager.getSetting("Hunts")) {
+                    SQLiteDataReader reader;
+                    Hunt hunt = new Hunt();
+                    string[] splits = str.Split('#');
+                    if (splits.Length >= 7) {
+                        hunt.name = splits[0];
+                        if (!int.TryParse(splits[1].Trim(), out hunt.dbtableid)) continue;
+                        if (dbTableIds.Contains(hunt.dbtableid)) continue;
+                        dbTableIds.Add(hunt.dbtableid);
+
+                        hunt.totalTime = 0;
+                        hunt.trackAllCreatures = splits[2] == "True";
+                        double.TryParse(splits[3], NumberStyles.Any, CultureInfo.InvariantCulture, out hunt.totalTime);
+                        long.TryParse(splits[4], out hunt.totalExp);
+                        hunt.sideHunt = splits[5] == "True";
+                        hunt.aggregateHunt = splits[6] == "True";
+                        hunt.clearOnStartup = splits[7] == "True";
+                        hunt.temporary = false;
+                        string massiveString = "";
+                        for (int i = 8; i < splits.Length; i++) {
+                            if (splits[i].Length > 0) {
+                                massiveString += splits[i] + "\n";
+                            }
+                        }
+                        hunt.trackedCreatures = massiveString;
+                        // set this hunt to the active hunt if it is the active hunt
+                        if (SettingsManager.settingExists("ActiveHunt") && SettingsManager.getSettingString("ActiveHunt") == hunt.name)
+                            activeHuntIndex = index;
+
+                        refreshLootCreatures(hunt);
+
+                        if (hunt.clearOnStartup) {
+                            resetHunt(hunt);
+                        }
+
+                        // create the hunt table if it does not exist
+                        LootDatabaseManager.CreateHuntTable(hunt);
+                        // load the data for the hunt from the database
+                        reader = LootDatabaseManager.GetHuntMessages(hunt);
+                        while (reader.Read()) {
+                            string message = reader["message"].ToString();
+                            Tuple<Creature, List<Tuple<Item, int>>> resultList = Parser.ParseLootMessage(message);
+                            if (resultList == null) continue;
+
+                            string t = message.Substring(0, 5);
+
+                            hunt.AddKillToHunt(resultList, t, message);
+                        }
+                        hunts.Add(hunt);
+                        index++;
+                    }
+                }
+                if (hunts.Count == 0) {
+                    Hunt h = new Hunt();
+                    h.name = "New Hunt";
+                    h.dbtableid = 1;
+                    hunts.Add(h);
+                    resetHunt(h);
+                }
+                activeHunt = hunts[activeHuntIndex];
+                MainForm.mainForm.InitializeHuntDisplay(activeHuntIndex);
             }
-            hunts.Clear();
-            int activeHuntIndex = 0, index = 0;
-            List<int> dbTableIds = new List<int>();
-            foreach (string str in SettingsManager.getSetting("Hunts")) {
-                SQLiteDataReader reader;
-                Hunt hunt = new Hunt();
-                string[] splits = str.Split('#');
-                if (splits.Length >= 7) {
-                    hunt.name = splits[0];
-                    if (!int.TryParse(splits[1].Trim(), out hunt.dbtableid)) continue;
-                    if (dbTableIds.Contains(hunt.dbtableid)) continue;
-                    dbTableIds.Add(hunt.dbtableid);
+        }
 
-                    hunt.totalTime = 0;
-                    hunt.trackAllCreatures = splits[2] == "True";
-                    double.TryParse(splits[3], NumberStyles.Any, CultureInfo.InvariantCulture, out hunt.totalTime);
-                    long.TryParse(splits[4], out hunt.totalExp);
-                    hunt.sideHunt = splits[5] == "True";
-                    hunt.aggregateHunt = splits[6] == "True";
-                    hunt.clearOnStartup = splits[7] == "True";
-                    hunt.temporary = false;
-                    string massiveString = "";
-                    for (int i = 8; i < splits.Length; i++) {
-                        if (splits[i].Length > 0) {
-                            massiveString += splits[i] + "\n";
-                        }
-                    }
-                    hunt.trackedCreatures = massiveString;
-                    // set this hunt to the active hunt if it is the active hunt
-                    if (SettingsManager.settingExists("ActiveHunt") && SettingsManager.getSettingString("ActiveHunt") == hunt.name)
-                        activeHuntIndex = index;
-
-                    refreshLootCreatures(hunt);
-
-                    if (hunt.clearOnStartup) {
-                        resetHunt(hunt);
-                    }
-
-                    // create the hunt table if it does not exist
-                    LootDatabaseManager.CreateHuntTable(hunt);
-                    // load the data for the hunt from the database
-                    reader = LootDatabaseManager.GetHuntMessages(hunt);
-                    while (reader.Read()) {
-                        string message = reader["message"].ToString();
-                        Tuple<Creature, List<Tuple<Item, int>>> resultList = Parser.ParseLootMessage(message);
-                        if (resultList == null) continue;
-
-                        string t = message.Substring(0, 5);
-                        if (!hunt.loot.logMessages.ContainsKey(t)) hunt.loot.logMessages.Add(t, new List<string>());
-                        hunt.loot.logMessages[t].Add(message);
-
-                        Creature cr = resultList.Item1;
-                        if (!hunt.loot.creatureLoot.ContainsKey(cr)) hunt.loot.creatureLoot.Add(cr, new Dictionary<Item, int>());
-                        foreach (Tuple<Item, int> tpl in resultList.Item2) {
-                            Item item = tpl.Item1;
-                            int count = tpl.Item2;
-                            if (!hunt.loot.creatureLoot[cr].ContainsKey(item)) hunt.loot.creatureLoot[cr].Add(item, count);
-                            else hunt.loot.creatureLoot[cr][item] += count;
-                        }
-                        if (!hunt.loot.killCount.ContainsKey(cr)) hunt.loot.killCount.Add(cr, 1);
-                        else hunt.loot.killCount[cr] += 1;
-                    }
-                    hunts.Add(hunt);
-                    index++;
+        public static IEnumerable<Hunt> IterateHunts() {
+            lock(hunts) {
+                foreach(Hunt h in hunts) {
+                    yield return h;
                 }
             }
-            if (hunts.Count == 0) {
-                Hunt h = new Hunt();
-                h.name = "New Hunt";
-                h.dbtableid = 1;
-                hunts.Add(h);
-                resetHunt(h);
-            }
-            activeHunt = hunts[activeHuntIndex];
-            MainForm.mainForm.InitializeHuntDisplay(activeHuntIndex);
+            yield break;
+        }
+
+        public static int HuntCount() {
+            return hunts.Count;
         }
 
         public static void resetHunt(Hunt h) {
-            lock (hunts) {
-                h.loot.creatureLoot.Clear();
-                h.loot.killCount.Clear();
-                h.loot.logMessages.Clear();
-                h.usedItems.Clear();
-                h.totalExp = 0;
-                h.totalTime = 0;
-            }
+            h.Reset();
             LootDatabaseManager.DeleteHuntTable(h);
             LootDatabaseManager.CreateHuntTable(h);
             LootDatabaseManager.UpdateLoot();
@@ -133,29 +130,7 @@ namespace Tibialyzer {
         }
 
         public static List<TibiaObject> refreshLootCreatures(Hunt h) {
-            h.lootCreatures.Clear();
-            string[] creatures = h.trackedCreatures.Split('\n');
-            List<TibiaObject> creatureObjects = new List<TibiaObject>();
-            foreach (string cr in creatures) {
-                string name = cr.ToLower();
-                Creature cc = StorageManager.getCreature(name);
-                if (cc != null && !creatureObjects.Contains(cc)) {
-                    creatureObjects.Add(cc);
-                    h.lootCreatures.Add(name);
-                } else if (cc == null) {
-                    HuntingPlace hunt = StorageManager.getHunt(name);
-                    if (hunt != null) {
-                        foreach (int creatureid in hunt.creatures) {
-                            cc = StorageManager.getCreature(creatureid);
-                            if (cc != null && !creatureObjects.Any(item => item.GetName() == name)) {
-                                creatureObjects.Add(cc);
-                                h.lootCreatures.Add(cc.GetName());
-                            }
-                        }
-                    }
-                }
-            }
-            return creatureObjects;
+            return h.RefreshLootCreatures();
         }
 
         private static bool nameExists(string str) {
@@ -166,8 +141,7 @@ namespace Tibialyzer {
             }
             return false;
         }
-
-
+        
         public static void CreateNewHunt() {
             Hunt h = new Hunt();
             lock (hunts) {
@@ -210,12 +184,7 @@ namespace Tibialyzer {
                 stamp--;
             }
 
-            h.loot.creatureLoot.Clear();
-            h.loot.killCount.Clear();
-            h.loot.logMessages.Clear();
-            h.usedItems.Clear();
-            h.totalExp = 0;
-            h.totalTime = 0;
+            h.Reset();
             HuntManager.SetHuntTime(h, clearMinutes);
 
 
@@ -299,99 +268,28 @@ namespace Tibialyzer {
         }
 
         public static Creature GetHighestKillCreature(Hunt h) {
-            Creature cr = null;
-            int kills = -1;
-            lock (hunts) {
-                foreach (KeyValuePair<Creature, int> kvp in activeHunt.loot.killCount) {
-                    if (kvp.Value > kills && kvp.Key.skin != null) {
-                        cr = kvp.Key;
-                        kills = kvp.Value;
-                    }
-                }
-            }
-            return cr;
+            return h.GetHighestKillCreature();
         }
 
         public static void deleteLogMessage(Hunt h, string logMessage) {
-            string timeStamp = logMessage.Substring(0, 5);
-            bool found = false;
-            lock (hunts) {
-                if (h.loot.logMessages.ContainsKey(timeStamp)) {
-                    if (h.loot.logMessages[timeStamp].Contains(logMessage)) {
-                        h.loot.logMessages[timeStamp].Remove(logMessage);
-                        var logMessageItems = Parser.ParseLootMessage(logMessage);
-                        Creature cr = logMessageItems.Item1;
-                        if (h.loot.killCount.ContainsKey(cr)) {
-                            h.loot.killCount[cr]--;
-                            if (h.loot.killCount[cr] == 0) {
-                                h.loot.killCount.Remove(cr);
-                            }
-                        }
-                        foreach (Tuple<Item, int> tpl in logMessageItems.Item2) {
-                            if (h.loot.creatureLoot[cr].ContainsKey(tpl.Item1)) {
-                                h.loot.creatureLoot[cr][tpl.Item1] -= tpl.Item2;
-                                if (h.loot.creatureLoot[cr][tpl.Item1] <= 0) {
-                                    h.loot.creatureLoot[cr].Remove(tpl.Item1);
-                                }
-                            }
-                        }
-                        found = true;
-                    }
-                }
-            }
+            bool found = h.DeleteLogMessage(logMessage);
             if (!found) return;
             LootDatabaseManager.DeleteMessage(h, logMessage, null);
             LootDatabaseManager.UpdateLoot();
         }
 
         public static void deleteCreatureFromLog(Creature cr) {
-            lock (hunts) {
-                if (activeHunt.loot.killCount.ContainsKey(cr)) {
-                    activeHunt.loot.killCount.Remove(cr);
-                }
-                if (activeHunt.loot.creatureLoot.ContainsKey(cr)) {
-                    activeHunt.loot.creatureLoot.Remove(cr);
-                }
-                using (var transaction = LootDatabaseManager.BeginTransaction()) {
-                    foreach (KeyValuePair<string, List<string>> kvp in activeHunt.loot.logMessages) {
-                        foreach (string msg in kvp.Value) {
-                            if (Parser.ParseCreatureFromLootMessage(msg) == cr) {
-                                LootDatabaseManager.DeleteMessage(activeHunt, msg, transaction);
-                            }
-                        }
-                    }
-                    transaction.Commit();
-                }
-            }
+            activeHunt.DeleteCreature(cr);
             LootDatabaseManager.UpdateLoot();
         }
 
         public static void deleteCreatureWithThreshold(int killThreshold) {
-            List<Creature> deleteList = new List<Creature>();
-            foreach (KeyValuePair<Creature, int> kvp in activeHunt.loot.killCount) {
-                if (kvp.Value < killThreshold) deleteList.Add(kvp.Key);
-            }
-            foreach (Creature cr in deleteList) {
-                deleteCreatureFromLog(cr);
-            }
+            activeHunt.DeleteCreatureWithThreshold(killThreshold);
             LootDatabaseManager.UpdateLoot();
         }
 
         public static void AddSkin(Hunt h, string message, Creature cr, Item item, int count, string timestamp) {
-            lock (hunts) {
-                if (!activeHunt.loot.logMessages.ContainsKey(timestamp)) activeHunt.loot.logMessages.Add(timestamp, new List<string>());
-                activeHunt.loot.logMessages[timestamp].Add(message);
-                if (!activeHunt.loot.creatureLoot.ContainsKey(cr)) {
-                    activeHunt.loot.creatureLoot.Add(cr, new Dictionary<Item, int>());
-                }
-                foreach (Item i in activeHunt.loot.creatureLoot[cr].Keys) {
-                    if (i.id == cr.skin.dropitemid) {
-                        activeHunt.loot.creatureLoot[cr][i] += count;
-                        return;
-                    }
-                }
-                activeHunt.loot.creatureLoot[cr].Add(item, count);
-            }
+            h.AddSkin(message, cr, item, count, timestamp);
         }
 
 
@@ -439,56 +337,37 @@ namespace Tibialyzer {
         }
 
         public static void AddKillToHunt(Hunt h, Tuple<Creature, List<Tuple<Item, int>>> resultList, string t, string message, int stamp = 0, int hour = 0, int minute = 0, SQLiteTransaction transaction = null) {
-            Creature cr = resultList.Item1;
-            if (!h.loot.creatureLoot.ContainsKey(cr)) h.loot.creatureLoot.Add(cr, new Dictionary<Item, int>());
-            foreach (Tuple<Item, int> tpl in resultList.Item2) {
-                Item item = tpl.Item1;
-                int count = tpl.Item2;
-                if (!h.loot.creatureLoot[cr].ContainsKey(item)) h.loot.creatureLoot[cr].Add(item, count);
-                else h.loot.creatureLoot[cr][item] += count;
-            }
-            if (!h.loot.killCount.ContainsKey(cr)) h.loot.killCount.Add(cr, 1);
-            else h.loot.killCount[cr] += 1;
-
-            if (!h.loot.logMessages.ContainsKey(t)) h.loot.logMessages.Add(t, new List<string>());
-            h.loot.logMessages[t].Add(message);
-
+            h.AddKillToHunt(resultList, t, message);
             if (transaction != null) {
                 LootDatabaseManager.InsertMessage(h, stamp, hour, minute, message);
             }
         }
 
-        public static void AddUsedItems(Hunt hunt, Dictionary<string, HashSet<int>> usedItems) {
-            bool newValues = false;
+        public static Hunt CheckTrackedHunts(Hunt h, Tuple<Creature, List<Tuple<Item, int>>> resultList, string t, string message, int stamp = 0, int hour = 0, int minute = 0, SQLiteTransaction transaction = null) {
             lock (hunts) {
-                foreach (var val in usedItems) {
-                    Item item = StorageManager.getItem(val.Key);
-                    if (item == null) continue;
-                    if (!hunt.usedItems.ContainsKey(item)) {
-                        hunt.usedItems.Add(item, new HashSet<int>());
-                    }
-                    int currentCount = hunt.usedItems[item].Count;
-                    hunt.usedItems[item].UnionWith(val.Value);
-                    if (hunt.usedItems[item].Count > currentCount) {
-                        newValues = true;
+                foreach (Hunt potentialHunt in hunts) {
+                    if (potentialHunt.ContainsLootCreature(resultList.Item1)) {
+                        if (potentialHunt.sideHunt) {
+                            h = potentialHunt;
+                            activeHunt = potentialHunt;
+                        } else if (potentialHunt.aggregateHunt && potentialHunt != h) {
+                            AddKillToHunt(potentialHunt, resultList, t, message, stamp, hour, minute, transaction);
+                        }
                     }
                 }
             }
+            return h;
+        }
+
+        public static void AddUsedItems(Hunt hunt, Dictionary<string, HashSet<int>> usedItems) {
+            bool newValues = hunt.AddUsedItems(usedItems);
             if (newValues) {
                 GlobalDataManager.UpdateUsedItems();
             }
         }
 
         public static List<Tuple<Item, int>> GetUsedItems(Hunt hunt) {
-            lock (hunts) {
-                List<Tuple<Item, int>> items = new List<Tuple<Item, int>>();
-                foreach (var val in hunt.usedItems) {
-                    if (val.Value.Count > 1) {
-                        items.Add(new Tuple<Item, int>(val.Key, val.Value.Count));
-                    }
-                }
-                return items;
-            }
+            return hunt.GetUsedItems();
         }
 
         public static void SetHuntTime(Hunt h, int clearMinutes) {
@@ -515,9 +394,10 @@ namespace Tibialyzer {
         public string trackedCreatures = "";
         public long totalExp = 0;
         public double totalTime = 0;
-        public Loot loot = new Loot();
-        public List<string> lootCreatures = new List<string>();
-        public Dictionary<Item, HashSet<int>> usedItems = new Dictionary<Item, HashSet<int>>();
+        private Loot loot = new Loot();
+        private List<string> lootCreatures = new List<string>();
+        private Dictionary<Item, HashSet<int>> usedItems = new Dictionary<Item, HashSet<int>>();
+        private object huntLock = new object();
 
         public string GetTableName() {
             return "LootMessageTable" + dbtableid.ToString();
@@ -525,6 +405,263 @@ namespace Tibialyzer {
 
         public override string ToString() {
             return name + "#" + dbtableid.ToString() + "#" + trackAllCreatures.ToString() + "#" + totalTime.ToString(CultureInfo.InvariantCulture) + "#" + totalExp.ToString() + "#" + sideHunt.ToString() + "#" + aggregateHunt.ToString() + "#" + clearOnStartup.ToString() + "#" + trackedCreatures.Replace("\n", "#");
+        }
+
+        public bool ContainsLootCreature(Creature cr) {
+            lock (huntLock) {
+                return lootCreatures.Contains(cr.GetName(), StringComparer.OrdinalIgnoreCase);
+            }
+        }
+
+        public bool AddUsedItems(Dictionary<string, HashSet<int>> usedItems) {
+            bool newValues = false;
+            lock (huntLock) {
+                foreach (var val in usedItems) {
+                    Item item = StorageManager.getItem(val.Key);
+                    if (item == null) continue;
+                    if (!this.usedItems.ContainsKey(item)) {
+                        this.usedItems.Add(item, new HashSet<int>());
+                    }
+                    int currentCount = this.usedItems[item].Count;
+                    this.usedItems[item].UnionWith(val.Value);
+                    if (this.usedItems[item].Count > currentCount) {
+                        newValues = true;
+                    }
+                }
+            }
+            return newValues;
+        }
+
+        public List<Tuple<Item, int>> GetUsedItems() {
+            lock (huntLock) {
+                List<Tuple<Item, int>> items = new List<Tuple<Item, int>>();
+                foreach (var val in usedItems) {
+                    if (val.Value.Count > 1) {
+                        items.Add(new Tuple<Item, int>(val.Key, val.Value.Count));
+                    }
+                }
+                return items;
+            }
+        }
+
+        public void AddKillToHunt(Tuple<Creature, List<Tuple<Item, int>>> resultList, string t, string message) {
+            lock (huntLock) {
+                Creature cr = resultList.Item1;
+                if (!this.loot.creatureLoot.ContainsKey(cr)) this.loot.creatureLoot.Add(cr, new Dictionary<Item, int>());
+                foreach (Tuple<Item, int> tpl in resultList.Item2) {
+                    Item item = tpl.Item1;
+                    int count = tpl.Item2;
+                    if (!this.loot.creatureLoot[cr].ContainsKey(item)) this.loot.creatureLoot[cr].Add(item, count);
+                    else this.loot.creatureLoot[cr][item] += count;
+                }
+                if (!this.loot.killCount.ContainsKey(cr)) this.loot.killCount.Add(cr, 1);
+                else this.loot.killCount[cr] += 1;
+
+                if (!this.loot.logMessages.ContainsKey(t)) this.loot.logMessages.Add(t, new List<string>());
+                this.loot.logMessages[t].Add(message);
+            }
+        }
+
+        public void AddSkin(string message, Creature cr, Item item, int count, string timestamp) {
+            lock (huntLock) {
+                if (!this.loot.logMessages.ContainsKey(timestamp)) this.loot.logMessages.Add(timestamp, new List<string>());
+                this.loot.logMessages[timestamp].Add(message);
+                if (!this.loot.creatureLoot.ContainsKey(cr)) {
+                    this.loot.creatureLoot.Add(cr, new Dictionary<Item, int>());
+                }
+                foreach (Item i in this.loot.creatureLoot[cr].Keys) {
+                    if (i.id == cr.skin.dropitemid) {
+                        this.loot.creatureLoot[cr][i] += count;
+                        return;
+                    }
+                }
+                this.loot.creatureLoot[cr].Add(item, count);
+            }
+        }
+
+        public IEnumerable<Creature> IterateCreatures() {
+            lock(huntLock) {
+                foreach(Creature cr in loot.killCount.Keys) {
+                    yield return cr;
+                }
+            }
+            yield break;
+        }
+
+        public IEnumerable<KeyValuePair<Creature, Dictionary<Item, int>>> IterateLoot() {
+            lock(huntLock) {
+                foreach(var value in loot.creatureLoot) {
+                    yield return value;
+                }
+            }
+            yield break;
+        }
+
+        public Dictionary<Creature, int> GetCreatureKills() {
+            Dictionary<Creature, int> creatureKills = new Dictionary<Creature, int>();
+            lock(huntLock) {
+                foreach(KeyValuePair<Creature, int> kvp in loot.killCount) {
+                    creatureKills.Add(kvp.Key, kvp.Value);
+                }
+            }
+            return creatureKills;
+        }
+
+        public Dictionary<Creature, int> GetCreatureKills(Creature filter) {
+            return GetCreatureKills(new List<Creature> { filter });
+        }
+
+        public Dictionary<Creature, int> GetCreatureKills(List<Creature> filterCreatures) {
+            Dictionary<Creature, int> creatureKills = new Dictionary<Creature, int>();
+            lock(huntLock) {
+                foreach (Creature cr in filterCreatures) {
+                    if (!this.loot.killCount.ContainsKey(cr)) continue;
+
+                    creatureKills.Add(cr, this.loot.killCount[cr]);
+                }
+            }
+            return creatureKills;
+        }
+
+        public IEnumerable<string> IterateLogMessages() {
+            lock(huntLock) {
+                List<string> timestamps = this.loot.logMessages.Keys.OrderByDescending(o => o).ToList();
+                foreach (string t in timestamps) {
+                    List<string> strings = this.loot.logMessages[t].ToList();
+                    strings.Reverse();
+                    foreach (string str in strings) {
+                        yield return str;
+                    }
+                }
+            }
+        }
+
+        public void DeleteCreature(Creature cr) {
+            lock(huntLock) {
+                if (this.loot.killCount.ContainsKey(cr)) {
+                    this.loot.killCount.Remove(cr);
+                }
+                if (this.loot.creatureLoot.ContainsKey(cr)) {
+                    this.loot.creatureLoot.Remove(cr);
+                }
+                using (var transaction = LootDatabaseManager.BeginTransaction()) {
+                    foreach (KeyValuePair<string, List<string>> kvp in this.loot.logMessages) {
+                        foreach (string msg in kvp.Value) {
+                            if (Parser.ParseCreatureFromLootMessage(msg) == cr) {
+                                LootDatabaseManager.DeleteMessage(this, msg, transaction);
+                            }
+                        }
+                    }
+                    transaction.Commit();
+                }
+            }
+        }
+
+        public void DeleteCreatureWithThreshold(int killThreshold) {
+            List<Creature> deleteList = new List<Creature>();
+            lock (huntLock) {
+                foreach (KeyValuePair<Creature, int> kvp in this.loot.killCount) {
+                    if (kvp.Value < killThreshold) deleteList.Add(kvp.Key);
+                }
+            }
+            foreach (Creature cr in deleteList) {
+                this.DeleteCreature(cr);
+            }
+        }
+
+        public Creature GetHighestKillCreature() {
+            Creature cr = null;
+            int kills = -1;
+            lock (huntLock) {
+                foreach (KeyValuePair<Creature, int> kvp in this.loot.killCount) {
+                    if (kvp.Value > kills && kvp.Key.skin != null) {
+                        cr = kvp.Key;
+                        kills = kvp.Value;
+                    }
+                }
+            }
+            return cr;
+        }
+
+        public bool DeleteLogMessage(string logMessage) {
+            string timestamp = logMessage.Substring(0, 5);
+            lock (huntLock) {
+                if (this.loot.logMessages.ContainsKey(timestamp)) {
+                    if (this.loot.logMessages[timestamp].Contains(logMessage)) {
+                        this.loot.logMessages[timestamp].Remove(logMessage);
+                        var logMessageItems = Parser.ParseLootMessage(logMessage);
+                        Creature cr = logMessageItems.Item1;
+                        if (this.loot.killCount.ContainsKey(cr)) {
+                            this.loot.killCount[cr]--;
+                            if (this.loot.killCount[cr] == 0) {
+                                this.loot.killCount.Remove(cr);
+                            }
+                        }
+                        foreach (Tuple<Item, int> tpl in logMessageItems.Item2) {
+                            if (this.loot.creatureLoot[cr].ContainsKey(tpl.Item1)) {
+                                this.loot.creatureLoot[cr][tpl.Item1] -= tpl.Item2;
+                                if (this.loot.creatureLoot[cr][tpl.Item1] <= 0) {
+                                    this.loot.creatureLoot[cr].Remove(tpl.Item1);
+                                }
+                            }
+                        }
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public List<TibiaObject> RefreshLootCreatures() {
+            List<TibiaObject> creatureObjects = new List<TibiaObject>();
+            lock (huntLock) {
+                this.lootCreatures.Clear();
+                string[] creatures = this.trackedCreatures.Split('\n');
+                foreach (string cr in creatures) {
+                    string name = cr.ToLower();
+                    Creature cc = StorageManager.getCreature(name);
+                    if (cc != null && !creatureObjects.Contains(cc)) {
+                        creatureObjects.Add(cc);
+                        this.lootCreatures.Add(name);
+                    } else if (cc == null) {
+                        HuntingPlace hunt = StorageManager.getHunt(name);
+                        if (hunt != null) {
+                            foreach (int creatureid in hunt.creatures) {
+                                cc = StorageManager.getCreature(creatureid);
+                                if (cc != null && !creatureObjects.Any(item => item.GetName() == name)) {
+                                    creatureObjects.Add(cc);
+                                    this.lootCreatures.Add(cc.GetName());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return creatureObjects;
+        }
+
+        public List<Creature> GetTrackedCreatures() {
+            List<Creature> trackedCreatures = new List<Creature>();
+            lock(huntLock) {
+                foreach (string creature in this.lootCreatures) {
+                    Creature cr = StorageManager.getCreature(creature.ToLower());
+                    if (cr != null) {
+                        trackedCreatures.Add(cr);
+                    }
+                }
+            }
+            return trackedCreatures;
+        }
+
+        public void Reset() {
+            lock(huntLock) {
+                this.loot.creatureLoot.Clear();
+                this.loot.killCount.Clear();
+                this.loot.logMessages.Clear();
+                this.usedItems.Clear();
+                this.totalExp = 0;
+                this.totalTime = 0;
+            }
         }
     };
 }

@@ -108,50 +108,49 @@ namespace Tibialyzer {
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK) {
                 string tibialyzerPath = folderBrowserDialog.SelectedPath;
                 string settings = System.IO.Path.Combine(tibialyzerPath, "settings.txt");
-                lock (HuntManager.hunts) {
+
+                if (!File.Exists(settings)) {
+                    settings = System.IO.Path.Combine(tibialyzerPath, Constants.SettingsFile);
                     if (!File.Exists(settings)) {
-                        settings = System.IO.Path.Combine(tibialyzerPath, Constants.SettingsFile);
-                        if (!File.Exists(settings)) {
-                            MainForm.mainForm.DisplayWarning("Could not find settings.txt in upgrade path.");
-                            return;
-                        }
-                    }
-                    SettingsManager.LoadSettings(settings);
-                    MainForm.mainForm.initializeSettings();
-
-                    string lootDatabase = System.IO.Path.Combine(tibialyzerPath, "loot.db");
-                    if (!File.Exists(lootDatabase)) {
-                        lootDatabase = System.IO.Path.Combine(tibialyzerPath, Constants.LootDatabaseFile);
-                        if (!File.Exists(lootDatabase)) {
-                            MainForm.mainForm.DisplayWarning("Could not find loot.db in upgrade path.");
-                            return;
-                        }
-                    }
-
-                    LootDatabaseManager.Close();
-                    try {
-                        File.Delete(Constants.LootDatabaseFile);
-                        File.Copy(lootDatabase, Constants.LootDatabaseFile);
-                    } catch (Exception ex) {
-                        MainForm.mainForm.DisplayWarning(String.Format("Error modifying loot database: {0}", ex.Message));
+                        MainForm.mainForm.DisplayWarning("Could not find settings.txt in upgrade path.");
                         return;
                     }
-                    LootDatabaseManager.Initialize();
-
-                    HuntManager.Initialize();
-
-                    string database = System.IO.Path.Combine(tibialyzerPath, "database.db");
-                    if (!File.Exists(database)) {
-                        database = System.IO.Path.Combine(tibialyzerPath, Constants.DatabaseFile);
-                        if (!File.Exists(database)) {
-                            MainForm.mainForm.DisplayWarning("Could not find database.db in upgrade path.");
-                            return;
-                        }
-                    }
-                    SQLiteConnection databaseConnection = new SQLiteConnection(String.Format("Data Source={0};Version=3;", database));
-                    databaseConnection.Open();
-                    StorageManager.UpdateDatabase(databaseConnection);
                 }
+                SettingsManager.LoadSettings(settings);
+                MainForm.mainForm.initializeSettings();
+
+                string lootDatabase = System.IO.Path.Combine(tibialyzerPath, "loot.db");
+                if (!File.Exists(lootDatabase)) {
+                    lootDatabase = System.IO.Path.Combine(tibialyzerPath, Constants.LootDatabaseFile);
+                    if (!File.Exists(lootDatabase)) {
+                        MainForm.mainForm.DisplayWarning("Could not find loot.db in upgrade path.");
+                        return;
+                    }
+                }
+
+                LootDatabaseManager.Close();
+                try {
+                    File.Delete(Constants.LootDatabaseFile);
+                    File.Copy(lootDatabase, Constants.LootDatabaseFile);
+                } catch (Exception ex) {
+                    MainForm.mainForm.DisplayWarning(String.Format("Error modifying loot database: {0}", ex.Message));
+                    return;
+                }
+                LootDatabaseManager.Initialize();
+
+                HuntManager.Initialize();
+
+                string database = System.IO.Path.Combine(tibialyzerPath, "database.db");
+                if (!File.Exists(database)) {
+                    database = System.IO.Path.Combine(tibialyzerPath, Constants.DatabaseFile);
+                    if (!File.Exists(database)) {
+                        MainForm.mainForm.DisplayWarning("Could not find database.db in upgrade path.");
+                        return;
+                    }
+                }
+                SQLiteConnection databaseConnection = new SQLiteConnection(String.Format("Data Source={0};Version=3;", database));
+                databaseConnection.Open();
+                StorageManager.UpdateDatabase(databaseConnection);
             }
         }
 

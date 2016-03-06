@@ -300,6 +300,7 @@ namespace Tibialyzer {
 
         public void UpdateDamage() {
             try {
+                if (this.IsDisposed) return;
                 this.Invoke((MethodInvoker)delegate {
                     lock (updateLock) {
                         this.SuspendForm();
@@ -314,6 +315,7 @@ namespace Tibialyzer {
 
         public void UpdateWaste() {
             try {
+                if (this.IsDisposed) return;
                 this.Invoke((MethodInvoker)delegate {
                     lock (updateLock) {
                         this.SuspendForm();

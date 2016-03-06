@@ -107,94 +107,77 @@ namespace Tibialyzer {
         public static Tuple<Dictionary<Creature, int>, List<Tuple<Item, int>>> GenerateLootInformation(Hunt hunt, string rawName, Creature lootCreature) {
             Dictionary<Creature, int> creatureKills;
             List<Tuple<Item, int>> itemDrops = new List<Tuple<Item, int>>();
-            lock (HuntManager.hunts) {
-                bool raw = rawName == "raw";
-                bool all = raw || rawName == "all";
-                List<Creature> displayedCreatures = null;
-                if (!hunt.trackAllCreatures && hunt.trackedCreatures.Length > 0) {
-                    displayedCreatures = new List<Creature>();
-                    foreach (string creature in hunt.lootCreatures) {
-                        Creature cr = StorageManager.getCreature(creature.ToLower());
-                        if (cr != null) {
-                            displayedCreatures.Add(cr);
-                        }
-                    }
-                } else if (SettingsManager.getSettingBool("IgnoreLowExperience")) {
-                    displayedCreatures = new List<Creature>();
-                    foreach (Creature cr in hunt.loot.killCount.Keys) {
-                        if (cr.experience >= SettingsManager.getSettingInt("IgnoreLowExperienceValue")) {
-                            displayedCreatures.Add(cr);
-                        }
+
+            bool raw = rawName == "raw";
+            bool all = raw || rawName == "all";
+            List<Creature> displayedCreatures = null;
+            if (!hunt.trackAllCreatures && hunt.trackedCreatures.Length > 0) {
+                displayedCreatures = hunt.GetTrackedCreatures();
+            } else if (SettingsManager.getSettingBool("IgnoreLowExperience")) {
+                displayedCreatures = new List<Creature>();
+                foreach (Creature cr in hunt.IterateCreatures()) {
+                    if (cr.experience >= SettingsManager.getSettingInt("IgnoreLowExperienceValue")) {
+                        displayedCreatures.Add(cr);
                     }
                 }
-
-                if (lootCreature != null) {
-                    //the command is loot@<creature>, so we only display the kills and loot from the specified creature
-                    creatureKills = new Dictionary<Creature, int>();
-                    if (hunt.loot.killCount.ContainsKey(lootCreature)) {
-                        creatureKills.Add(lootCreature, hunt.loot.killCount[lootCreature]);
-                    } else {
-                        creatureKills = new Dictionary<Creature, int>(); //empty dictionary
-                    }
-                } else if (displayedCreatures == null) {
-                    creatureKills = hunt.loot.killCount; //display all creatures
-                } else {
-                    // only display tracked creatures
-                    creatureKills = new Dictionary<Creature, int>();
-                    foreach (Creature cr in displayedCreatures) {
-                        if (!hunt.loot.killCount.ContainsKey(cr)) continue;
-
-                        creatureKills.Add(cr, hunt.loot.killCount[cr]);
-                    }
-                }
-
-                // now handle item drops, gather a count for every item
-                Dictionary<Item, int> itemCounts = new Dictionary<Item, int>();
-                foreach (KeyValuePair<Creature, Dictionary<Item, int>> kvp in hunt.loot.creatureLoot) {
-                    if (lootCreature != null && kvp.Key != lootCreature) continue; // if lootCreature is specified, only consider loot from the specified creature
-                    if (displayedCreatures != null && !displayedCreatures.Contains(kvp.Key)) continue;
-                    foreach (KeyValuePair<Item, int> kvp2 in kvp.Value) {
-                        Item item = kvp2.Key;
-                        int value = kvp2.Value;
-                        if (!itemCounts.ContainsKey(item)) itemCounts.Add(item, value);
-                        else itemCounts[item] += value;
-                    }
-                }
-
-                // now we do item conversion
-                long extraGold = 0;
-                foreach (KeyValuePair<Item, int> kvp in itemCounts) {
-                    Item item = kvp.Key;
-                    int count = kvp.Value;
-                    // discard items that are set to be discarded (as long as all/raw mode is not enabled)
-                    if (item.discard && !all) continue;
-                    // convert items to gold (as long as raw mode is not enabled), always gather up all the gold coins found
-                    if ((!raw && item.convert_to_gold) || item.displayname == "gold coin" || item.displayname == "platinum coin" || item.displayname == "crystal coin") {
-                        extraGold += Math.Max(item.actual_value, item.vendor_value) * count;
-                    } else {
-                        itemDrops.Add(new Tuple<Item, int>(item, count));
-                    }
-                }
-
-                // handle coin drops, we always convert the gold to the highest possible denomination (so if gold = 10K, we display a crystal coin)
-                long currentGold = extraGold;
-                if (currentGold > 10000) {
-                    itemDrops.Add(new Tuple<Item, int>(StorageManager.getItem("crystal coin"), (int)(currentGold / 10000)));
-                    currentGold = currentGold % 10000;
-                }
-                if (currentGold > 100) {
-                    itemDrops.Add(new Tuple<Item, int>(StorageManager.getItem("platinum coin"), (int)(currentGold / 100)));
-                    currentGold = currentGold % 100;
-                }
-                if (currentGold > 0) {
-                    itemDrops.Add(new Tuple<Item, int>(StorageManager.getItem("gold coin"), (int)(currentGold)));
-                }
-
-                // now order by value so most valuable items are placed first
-                // we use a special value for the gold coins so the gold is placed together in the order crystal > platinum > gold
-                // gold coins = <gold total> - 2, platinum coins = <gold total> - 1, crystal coins = <gold total>
-                itemDrops = itemDrops.OrderByDescending(o => o.Item1.displayname == "gold coin" ? extraGold - 2 : (o.Item1.displayname == "platinum coin" ? extraGold - 1 : (o.Item1.displayname == "crystal coin" ? extraGold : Math.Max(o.Item1.actual_value, o.Item1.vendor_value) * o.Item2))).ToList();
             }
+
+            if (lootCreature != null) {
+                //the command is loot@<creature>, so we only display the kills and loot from the specified creature
+                creatureKills = hunt.GetCreatureKills(lootCreature);
+            } else if (displayedCreatures == null) {
+                creatureKills = hunt.GetCreatureKills(); //display all creatures //loot.killCount; 
+            } else {
+                // only display tracked creatures
+                creatureKills = hunt.GetCreatureKills(displayedCreatures); // new Dictionary<Creature, int>();
+            }
+
+            // now handle item drops, gather a count for every item
+            Dictionary<Item, int> itemCounts = new Dictionary<Item, int>();
+            foreach (KeyValuePair<Creature, Dictionary<Item, int>> kvp in hunt.IterateLoot()) {
+                if (lootCreature != null && kvp.Key != lootCreature) continue; // if lootCreature is specified, only consider loot from the specified creature
+                if (displayedCreatures != null && !displayedCreatures.Contains(kvp.Key)) continue;
+                foreach (KeyValuePair<Item, int> kvp2 in kvp.Value) {
+                    Item item = kvp2.Key;
+                    int value = kvp2.Value;
+                    if (!itemCounts.ContainsKey(item)) itemCounts.Add(item, value);
+                    else itemCounts[item] += value;
+                }
+            }
+
+            // now we do item conversion
+            long extraGold = 0;
+            foreach (KeyValuePair<Item, int> kvp in itemCounts) {
+                Item item = kvp.Key;
+                int count = kvp.Value;
+                // discard items that are set to be discarded (as long as all/raw mode is not enabled)
+                if (item.discard && !all) continue;
+                // convert items to gold (as long as raw mode is not enabled), always gather up all the gold coins found
+                if ((!raw && item.convert_to_gold) || item.displayname == "gold coin" || item.displayname == "platinum coin" || item.displayname == "crystal coin") {
+                    extraGold += Math.Max(item.actual_value, item.vendor_value) * count;
+                } else {
+                    itemDrops.Add(new Tuple<Item, int>(item, count));
+                }
+            }
+
+            // handle coin drops, we always convert the gold to the highest possible denomination (so if gold = 10K, we display a crystal coin)
+            long currentGold = extraGold;
+            if (currentGold > 10000) {
+                itemDrops.Add(new Tuple<Item, int>(StorageManager.getItem("crystal coin"), (int)(currentGold / 10000)));
+                currentGold = currentGold % 10000;
+            }
+            if (currentGold > 100) {
+                itemDrops.Add(new Tuple<Item, int>(StorageManager.getItem("platinum coin"), (int)(currentGold / 100)));
+                currentGold = currentGold % 100;
+            }
+            if (currentGold > 0) {
+                itemDrops.Add(new Tuple<Item, int>(StorageManager.getItem("gold coin"), (int)(currentGold)));
+            }
+
+            // now order by value so most valuable items are placed first
+            // we use a special value for the gold coins so the gold is placed together in the order crystal > platinum > gold
+            // gold coins = <gold total> - 2, platinum coins = <gold total> - 1, crystal coins = <gold total>
+            itemDrops = itemDrops.OrderByDescending(o => o.Item1.displayname == "gold coin" ? extraGold - 2 : (o.Item1.displayname == "platinum coin" ? extraGold - 1 : (o.Item1.displayname == "crystal coin" ? extraGold : Math.Max(o.Item1.actual_value, o.Item1.vendor_value) * o.Item2))).ToList();
             return new Tuple<Dictionary<Creature, int>, List<Tuple<Item, int>>>(creatureKills, itemDrops);
         }
 

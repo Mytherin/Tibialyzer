@@ -35,17 +35,11 @@ namespace Tibialyzer {
         public void refreshHuntLog(Hunt h) {
             if (h == null) return;
             const int maxLogLines = 250;
-            List<string> timestamps = h.loot.logMessages.Keys.OrderByDescending(o => o).ToList();
             int count = 0;
             logMessageCollection.Items.Clear();
-            foreach (string t in timestamps) {
-                List<string> strings = h.loot.logMessages[t].ToList();
-                strings.Reverse();
-                foreach (string str in strings) {
-                    logMessageCollection.Items.Add(str);
-                    if (count++ > maxLogLines) break;
-                }
-                if (count > maxLogLines) break;
+            foreach (string message in h.IterateLogMessages()) {
+                logMessageCollection.Items.Add(message);
+                if (count++ > maxLogLines) break;
             }
         }
         private void LogMessageCollection_AttemptDeleteItem(object sender, EventArgs e) {

@@ -35,7 +35,7 @@ namespace Tibialyzer {
             MainForm.mainForm.skip_hunt_refresh = true;
 
             huntList.Items.Clear();
-            foreach (Hunt h in HuntManager.hunts) {
+            foreach (Hunt h in HuntManager.IterateHunts()) {
                 huntList.Items.Add(h.name);
             }
             MainForm.mainForm.skip_hunt_refresh = false;
@@ -53,7 +53,7 @@ namespace Tibialyzer {
         }
 
         private void HuntList_AttemptDeleteItem(object sender, EventArgs e) {
-            if (HuntManager.hunts.Count <= 1) return;
+            if (HuntManager.HuntCount() <= 1) return;
             Hunt h = getSelectedHunt();
             HuntManager.DeleteHunt(h);
             HuntManager.SaveHunts();
@@ -79,15 +79,13 @@ namespace Tibialyzer {
             Hunt h = getSelectedHunt();
             int currentHunt = 0;
             MainForm.mainForm.skip_hunt_refresh = true;
-
-            lock (HuntManager.hunts) {
-                huntList.Items.Clear();
-                foreach (Hunt hunt in HuntManager.hunts) {
-                    huntList.Items.Add(hunt.name);
-                    if (hunt == h) currentHunt = huntList.Items.Count - 1;
-                }
-                huntList.SelectedIndex = refreshSelection ? 0 : currentHunt;
+            
+            huntList.Items.Clear();
+            foreach (Hunt hunt in HuntManager.IterateHunts()) {
+                huntList.Items.Add(hunt.name);
+                if (hunt == h) currentHunt = huntList.Items.Count - 1;
             }
+            huntList.SelectedIndex = refreshSelection ? 0 : currentHunt;
 
             MainForm.mainForm.skip_hunt_refresh = false;
             huntBox_SelectedIndexChanged(huntList, null);

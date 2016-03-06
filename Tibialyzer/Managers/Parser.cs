@@ -256,65 +256,53 @@ namespace Tibialyzer {
 
         public static Dictionary<string, List<string>> globalMessages = new Dictionary<string, List<string>>();
         public static void ParseLootMessages(Hunt h, Dictionary<string, List<string>> newDrops, List<Tuple<Creature, List<Tuple<Item, int>>>> newItems, bool commit = true, bool switchHunt = false, bool addEverything = false) {
-            lock (HuntManager.hunts) {
+            SQLiteTransaction transaction = null;
+            if (commit) {
+                transaction = LootDatabaseManager.BeginTransaction();
+            }
 
-                SQLiteTransaction transaction = null;
-                if (commit) {
-                    transaction = LootDatabaseManager.BeginTransaction();
+            int stamp = TimestampManager.getDayStamp();
+            Dictionary<string, List<string>> itemDrops = addEverything ? new Dictionary<string, List<string>>() : globalMessages;
+            // now the big one: parse the log messages and check the dropped items
+            foreach (KeyValuePair<string, List<string>> kvp in newDrops) {
+                string t = kvp.Key;
+                List<string> itemList = kvp.Value;
+                if (!itemDrops.ContainsKey(t)) {
+                    itemDrops.Add(t, new List<string>());
                 }
+                if (itemList.Count > itemDrops[t].Count) {
+                    int hour = int.Parse(t.Substring(0, 2));
+                    int minute = int.Parse(t.Substring(3, 2));
+                    foreach (string message in itemList) {
+                        if (!itemDrops[t].Contains(message)) {
+                            // new log message, scan it for new items
+                            Tuple<Creature, List<Tuple<Item, int>>> resultList = ParseLootMessage(message);
+                            if (resultList == null) continue;
 
-                int stamp = TimestampManager.getDayStamp();
-                Dictionary<string, List<string>> itemDrops = addEverything ? new Dictionary<string, List<string>>() : globalMessages;
-                // now the big one: parse the log messages and check the dropped items
-                foreach (KeyValuePair<string, List<string>> kvp in newDrops) {
-                    string t = kvp.Key;
-                    List<string> itemList = kvp.Value;
-                    if (!itemDrops.ContainsKey(t)) {
-                        itemDrops.Add(t, new List<string>());
-                    }
-                    if (itemList.Count > itemDrops[t].Count) {
-                        int hour = int.Parse(t.Substring(0, 2));
-                        int minute = int.Parse(t.Substring(3, 2));
-                        foreach (string message in itemList) {
-                            if (!itemDrops[t].Contains(message)) {
-                                // new log message, scan it for new items
-                                Tuple<Creature, List<Tuple<Item, int>>> resultList = ParseLootMessage(message);
-                                if (resultList == null) continue;
+                            Creature cr = resultList.Item1;
 
-                                Creature cr = resultList.Item1;
-
-                                if (switchHunt && commit) {
-                                    foreach (Hunt potentialHunt in HuntManager.hunts) {
-                                        if (potentialHunt.lootCreatures.Contains(cr.GetName(), StringComparer.OrdinalIgnoreCase)) {
-                                            if (potentialHunt.sideHunt) {
-                                                h = potentialHunt;
-                                                HuntManager.activeHunt = potentialHunt;
-                                            } else if (potentialHunt.aggregateHunt && potentialHunt != h) {
-                                                HuntManager.AddKillToHunt(potentialHunt, resultList, t, message, stamp, hour, minute, transaction);
-                                            }
-                                        }
-                                    }
-                                }
-
-                                HuntManager.AddKillToHunt(h, resultList, t, message, stamp, hour, minute, transaction);
-                                if (newItems != null && MainForm.fileWriter != null && SettingsManager.getSettingBool("AutomaticallyWriteLootToFile")) {
-                                    MainForm.fileWriter.WriteLine(message);
-                                    MainForm.fileWriter.Flush();
-                                }
-
-                                if (newItems != null) {
-                                    newItems.Add(resultList);
-                                }
-                            } else {
-                                itemDrops[t].Remove(message);
+                            if (switchHunt && commit) {
+                                h = HuntManager.CheckTrackedHunts(h, resultList, t, message, stamp, hour, minute, transaction);
                             }
+
+                            HuntManager.AddKillToHunt(h, resultList, t, message, stamp, hour, minute, transaction);
+                            if (newItems != null && MainForm.fileWriter != null && SettingsManager.getSettingBool("AutomaticallyWriteLootToFile")) {
+                                MainForm.fileWriter.WriteLine(message);
+                                MainForm.fileWriter.Flush();
+                            }
+
+                            if (newItems != null) {
+                                newItems.Add(resultList);
+                            }
+                        } else {
+                            itemDrops[t].Remove(message);
                         }
-                        itemDrops[t] = itemList;
                     }
+                    itemDrops[t] = itemList;
                 }
-                if (transaction != null) {
-                    transaction.Commit();
-                }
+            }
+            if (transaction != null) {
+                transaction.Commit();
             }
         }
 
