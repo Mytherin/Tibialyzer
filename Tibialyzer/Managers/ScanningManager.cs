@@ -11,62 +11,84 @@ namespace Tibialyzer {
     enum ScanningState { Scanning, NoTibia, Stuck };
     class ScanningManager {
         private static ScanningState currentState;
-        private static System.Timers.Timer scanTimer = null;
+        private static System.Timers.Timer scanTimer;
+        private static System.Timers.Timer mainScanTimer;
+        private static System.Timers.Timer missingChunkScanTimer;
         public static ParseMemoryResults lastResults;
         public static bool shownException = false;
         private const int MaxRecentDropsTracked = 20;
         public static List<Tuple<Creature, List<Tuple<Item, int>>>> RecentDrops = new List<Tuple<Creature, List<Tuple<Item, int>>>>();
 
         public static void StartScanning() {
-            BackgroundWorker mainScanner = new BackgroundWorker();
-            mainScanner.DoWork += ScanMemory;
-            mainScanner.RunWorkerAsync();
+            scanTimer = new System.Timers.Timer(10000);
+            scanTimer.Elapsed += StuckScanning;
 
-            BackgroundWorker missingChunkScanner = new BackgroundWorker();
-            missingChunkScanner.DoWork += ScanMissingChunks;
-            missingChunkScanner.RunWorkerAsync();
+            int initialScanSpeed = SettingsManager.getSettingInt("ScanSpeed") * 15 + 1;
+            missingChunkScanTimer = new System.Timers.Timer(initialScanSpeed);
+            missingChunkScanTimer.AutoReset = false;
+            missingChunkScanTimer.Elapsed += (o, e) => {
+                ReadMemoryManager.ScanMissingChunks();
+                int scanSpeed = SettingsManager.getSettingInt("ScanSpeed") * 15 + 1;
+                if (scanSpeed != missingChunkScanTimer.Interval) {
+                    missingChunkScanTimer.Interval = scanSpeed;
+                }
+
+                missingChunkScanTimer.Start();
+            };
+            missingChunkScanTimer.Start();
+
+            initialScanSpeed = SettingsManager.getSettingInt("ScanSpeed") * 5 + 1;
+            mainScanTimer = new System.Timers.Timer(initialScanSpeed);
+            mainScanTimer.AutoReset = false;
+            mainScanTimer.Elapsed += (o, e) => {
+                ScanMemory(o, null);
+                int scanSpeed = SettingsManager.getSettingInt("ScanSpeed") * 5 + 1;
+                if (scanSpeed != mainScanTimer.Interval) {
+                    mainScanTimer.Interval = scanSpeed;
+                }
+
+                mainScanTimer.Start();
+            };
+            mainScanTimer.Start();
 
             currentState = ScanningState.NoTibia;
         }
 
-        private static void ScanMissingChunks(object sender, DoWorkEventArgs e) {
-            while (true) {
-                ReadMemoryManager.ScanMissingChunks();
-            }
-        }
-
         private static void ScanMemory(object sender, DoWorkEventArgs e) {
-            while (true) {
-                if (scanTimer == null) {
-                    scanTimer = new System.Timers.Timer(10000);
-                    scanTimer.Elapsed += StuckScanning;
-                    scanTimer.Enabled = true;
-                }
-                bool success = false;
-                try {
-                    success = ScanMemory();
-                } catch (Exception ex) {
+            scanTimer.Start();
+            bool success = false;
+            try
+            {
+                success = ScanMemory();
+            }
+            catch (Exception ex)
+            {
+                MainForm.mainForm.BeginInvoke((MethodInvoker)delegate {
+                    MainForm.mainForm.DisplayWarning(String.Format("Database Scan Error (Non-Fatal): {0}", ex.Message));
+                    Console.WriteLine(ex.Message);
+                });
+            }
+
+            scanTimer.Stop();
+            scanTimer.Start();
+
+            if (success)
+            {
+                if (currentState != ScanningState.Scanning)
+                {
+                    currentState = ScanningState.Scanning;
                     MainForm.mainForm.BeginInvoke((MethodInvoker)delegate {
-                        MainForm.mainForm.DisplayWarning(String.Format("Database Scan Error (Non-Fatal): {0}", ex.Message));
-                        Console.WriteLine(ex.Message);
+                        MainForm.mainForm.SetScanningImage("scanningbar.gif", "Scanning Memory...", true);
                     });
                 }
-                scanTimer.Dispose();
-                scanTimer = null;
-                if (success) {
-                    if (currentState != ScanningState.Scanning) {
-                        currentState = ScanningState.Scanning;
-                        MainForm.mainForm.BeginInvoke((MethodInvoker)delegate {
-                            MainForm.mainForm.SetScanningImage("scanningbar.gif", "Scanning Memory...", true);
-                        });
-                    }
-                } else {
-                    if (currentState != ScanningState.NoTibia) {
-                        currentState = ScanningState.NoTibia;
-                        MainForm.mainForm.BeginInvoke((MethodInvoker)delegate {
-                            MainForm.mainForm.SetScanningImage("scanningbar-red.gif", "No Tibia Client Found...", true);
-                        });
-                    }
+            }
+            else {
+                if (currentState != ScanningState.NoTibia)
+                {
+                    currentState = ScanningState.NoTibia;
+                    MainForm.mainForm.BeginInvoke((MethodInvoker)delegate {
+                        MainForm.mainForm.SetScanningImage("scanningbar-red.gif", "No Tibia Client Found...", true);
+                    });
                 }
             }
         }
