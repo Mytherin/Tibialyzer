@@ -293,41 +293,57 @@ namespace Tibialyzer {
 
         public static void UpdateLootDisplay() {
             for (int i = 0; i < NotificationFormGroups.Length; i++) {
-                if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is LootDropForm) {
-                    (NotificationFormGroups[i] as LootDropForm).UpdateLoot();
-                }
-                if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is SummaryForm) {
-                    (NotificationFormGroups[i] as SummaryForm).UpdateLoot();
+                try {
+                    if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is LootDropForm) {
+                        (NotificationFormGroups[i] as LootDropForm).UpdateLoot();
+                    }
+                    if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is SummaryForm) {
+                        (NotificationFormGroups[i] as SummaryForm).UpdateLoot();
+                    }
+                } catch {
+
                 }
             }
         }
 
         public static void UpdateExperienceDisplay() {
             for (int i = 0; i < NotificationFormGroups.Length; i++) {
-                if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is ExperienceChart) {
-                    (NotificationFormGroups[i] as ExperienceChart).UpdateExperience();
+                try {
+                    if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is ExperienceChart) {
+                        (NotificationFormGroups[i] as ExperienceChart).UpdateExperience();
+                    }
+                } catch {
+
                 }
             }
         }
 
         public static void UpdateDamageDisplay() {
             for (int i = 0; i < NotificationFormGroups.Length; i++) {
-                if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is DamageChart) {
-                    (NotificationFormGroups[i] as DamageChart).UpdateDamage();
-                }
-                if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is SummaryForm) {
-                    (NotificationFormGroups[i] as SummaryForm).UpdateDamage();
+                try {
+                    if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is DamageChart) {
+                        (NotificationFormGroups[i] as DamageChart).UpdateDamage();
+                    }
+                    if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is SummaryForm) {
+                        (NotificationFormGroups[i] as SummaryForm).UpdateDamage();
+                    }
+                } catch {
+
                 }
             }
         }
 
         public static void UpdateUsedItemsDisplay() {
             for (int i = 0; i < NotificationFormGroups.Length; i++) {
-                if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is SummaryForm) {
-                    (NotificationFormGroups[i] as SummaryForm).UpdateWaste();
-                }
-                if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is WasteForm) {
-                    (NotificationFormGroups[i] as WasteForm).UpdateWaste();
+                try {
+                    if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is SummaryForm) {
+                        (NotificationFormGroups[i] as SummaryForm).UpdateWaste();
+                    }
+                    if (NotificationFormGroups[i] != null && NotificationFormGroups[i] is WasteForm) {
+                        (NotificationFormGroups[i] as WasteForm).UpdateWaste();
+                    }
+                } catch {
+
                 }
             }
         }
