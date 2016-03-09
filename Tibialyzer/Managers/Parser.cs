@@ -118,7 +118,7 @@ namespace Tibialyzer {
                     }
                 } else if (array[i] == 0 || i == bytesRead - 1) { // scan for the null terminator
                     start -= 4;
-                    string str = System.Text.Encoding.UTF8.GetString(array, start, (i - start));
+                    string str = System.Text.Encoding.Default.GetString(array, start, (i - start));
                     if (str[0].isDigit() && str[1].isDigit() && str[3].isDigit() && str[4].isDigit() && str[2] == ':') {
                         yield return str;
                     }
@@ -145,7 +145,7 @@ namespace Tibialyzer {
                     }
 
                     if (!array.Contains(start, i - start, "</font>")) {
-                        yield return Encoding.UTF8.GetString(array, start, i - start);
+                        yield return Encoding.Default.GetString(array, start, i - start);
                     }
                 }
             }
