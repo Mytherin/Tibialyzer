@@ -128,15 +128,12 @@ namespace Tibialyzer {
                     }
                 }
 
-                LootDatabaseManager.Close();
                 try {
-                    File.Delete(Constants.LootDatabaseFile);
-                    File.Copy(lootDatabase, Constants.LootDatabaseFile);
-                } catch (Exception ex) {
+                    LootDatabaseManager.ReplaceDatabase(lootDatabase);
+                } catch(Exception ex) {
                     MainForm.mainForm.DisplayWarning(String.Format("Error modifying loot database: {0}", ex.Message));
                     return;
                 }
-                LootDatabaseManager.Initialize();
 
                 HuntManager.Initialize();
 
