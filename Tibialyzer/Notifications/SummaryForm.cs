@@ -69,7 +69,9 @@ namespace Tibialyzer {
                 width = (int)Math.Floor(width * ((double)image.Width / image.Height));
                 x += (height - width) / 2;
             }
-            gr.DrawImage(image, new Rectangle(x, y, width, height), new Rectangle(0, 0, image.Width, image.Height), GraphicsUnit.Pixel);
+            lock(image) {
+                gr.DrawImage(image, new Rectangle(x, y, width, height), new Rectangle(0, 0, image.Width, image.Height), GraphicsUnit.Pixel);
+            }
         }
 
         public Image CreatureBox(Creature creature, int amount = 0) {
@@ -81,7 +83,7 @@ namespace Tibialyzer {
                 }
                 gr.DrawRectangle(Pens.Black, new Rectangle(0, 0, bitmap.Width - 1, bitmap.Height - 1));
                 RenderImageResized(gr, StyleManager.GetImage("item_background.png"), new Rectangle(1, 1, ImageHeight - 2, ImageHeight - 2));
-                RenderImageResized(gr, creature.image, new Rectangle(1, 1, ImageHeight - 2, ImageHeight - 2));
+                RenderImageResized(gr, creature.GetImage(), new Rectangle(1, 1, ImageHeight - 2, ImageHeight - 2));
                 RenderText(gr, creature.displayname.ToTitle(), ImageHeight + 2, Color.Empty, StyleManager.NotificationTextColor);
                 if (amount > 0) {
                     RenderText(gr, amount.ToString(), -ImageWidth, Color.FromArgb(backColor.R / 2, backColor.G / 2, backColor.B / 2), StyleManager.NotificationTextColor);
@@ -98,7 +100,7 @@ namespace Tibialyzer {
                 }
                 gr.DrawRectangle(Pens.Black, new Rectangle(0, 0, bitmap.Width - 1, bitmap.Height - 1));
                 RenderImageResized(gr, StyleManager.GetImage("item_background.png"), new Rectangle(1, 1, ImageHeight - 2, ImageHeight - 2));
-                RenderImageResized(gr, LootDropForm.GetStackImage(item.image, amount > 0 ? amount : 1, item), new Rectangle(1, 1, ImageHeight - 2, ImageHeight - 2));
+                RenderImageResized(gr, LootDropForm.GetStackImage(item.GetImage(), amount > 0 ? amount : 1, item), new Rectangle(1, 1, ImageHeight - 2, ImageHeight - 2));
                 RenderText(gr, item.displayname.ToTitle(), ImageHeight + 2, Color.Empty, StyleManager.NotificationTextColor);
                 if (amount > 0) {
                     RenderText(gr, amount.ToString(), -ImageWidth, Color.FromArgb(StyleManager.MainFormButtonColor.R / 2, StyleManager.MainFormButtonColor.G / 2, StyleManager.MainFormButtonColor.B / 2), StyleManager.NotificationTextColor);

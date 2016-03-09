@@ -345,7 +345,10 @@ namespace Tibialyzer {
             Graphics gr = Graphics.FromImage(bitmap);
             for (int i = 0; i < (this.hunting_place.exp_quality < 0 ? 5 : Math.Min(this.hunting_place.exp_quality, 5)); i++) {
                 string huntQuality = this.hunting_place.exp_quality < 0 ? "unknown" : (this.hunting_place.exp_quality - 1).ToString();
-                gr.DrawImage(StyleManager.GetImage(String.Format("star{0}.png", huntQuality)), new Rectangle(i * experienceStarBox.Size.Width / 5, 0, experienceStarBox.Size.Width / 5, experienceStarBox.Size.Width / 5));
+                Image image = StyleManager.GetImage(String.Format("star{0}.png", huntQuality));
+                lock(image) {
+                    gr.DrawImage(image, new Rectangle(i * experienceStarBox.Size.Width / 5, 0, experienceStarBox.Size.Width / 5, experienceStarBox.Size.Width / 5));
+                }
             }
             experienceStarBox.Image = bitmap;
 
@@ -353,7 +356,10 @@ namespace Tibialyzer {
             gr = Graphics.FromImage(bitmap);
             for (int i = 0; i < (this.hunting_place.loot_quality < 0 ? 5 : Math.Min(this.hunting_place.loot_quality, 5)); i++) {
                 string huntQuality = this.hunting_place.loot_quality < 0 ? "unknown" : (this.hunting_place.loot_quality - 1).ToString();
-                gr.DrawImage(StyleManager.GetImage(String.Format("star{0}.png", huntQuality)), new Rectangle(i * lootStarBox.Size.Width / 5, 0, lootStarBox.Size.Width / 5, lootStarBox.Size.Width / 5));
+                Image image = StyleManager.GetImage(String.Format("star{0}.png", huntQuality));
+                lock(image) {
+                    gr.DrawImage(image, new Rectangle(i * lootStarBox.Size.Width / 5, 0, lootStarBox.Size.Width / 5, lootStarBox.Size.Width / 5));
+                }
             }
             lootStarBox.Image = bitmap;
 

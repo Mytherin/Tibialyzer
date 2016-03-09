@@ -67,18 +67,20 @@ namespace Tibialyzer {
 
         public static Bitmap GetStackImage(Image image, int count, Item item) {
             if (image == null) return new Bitmap(item.image);
-            int max = image.GetFrameCount(FrameDimension.Time);
-            int index = 0;
+            lock(image) {
+                int max = image.GetFrameCount(FrameDimension.Time);
+                int index = 0;
 
-            if (count <= 5) index = count - 1;
-            else if (count <= 10) index = 5;
-            else if (count <= 25) index = 6;
-            else if (count <= 50) index = 7;
-            else index = 8;
+                if (count <= 5) index = count - 1;
+                else if (count <= 10) index = 5;
+                else if (count <= 25) index = 6;
+                else if (count <= 50) index = 7;
+                else index = 8;
 
-            if (index >= max) index = max - 1;
-            image.SelectActiveFrame(FrameDimension.Time, index);
-            return new Bitmap((Image)image.Clone());
+                if (index >= max) index = max - 1;
+                image.SelectActiveFrame(FrameDimension.Time, index);
+                return new Bitmap((Image)image.Clone());
+            }
         }
 
         public static Bitmap DrawCountOnItem(Item item, int itemCount) {
@@ -96,8 +98,9 @@ namespace Tibialyzer {
                     int imagenr = logamount % 10;
                     Image imageNumber = StyleManager.GetImage(imagenr + ".png");
                     xoffset = xoffset + imageNumber.Width + (itemCount >= 1000 ? 0 : 1);
-                    gr.DrawImage(imageNumber,
-                        new Point(image.Width - xoffset, image.Height - imageNumber.Height - 3));
+                    lock(imageNumber) {
+                        gr.DrawImage(imageNumber, new Point(image.Width - xoffset, image.Height - imageNumber.Height - 3));
+                    }
                     logamount /= 10;
                 }
             }

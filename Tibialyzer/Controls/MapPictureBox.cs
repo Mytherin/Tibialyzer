@@ -104,14 +104,14 @@ namespace Tibialyzer {
             if (mapCoordinate.x - sourceWidth / 2 < 0) {
                 mapCoordinate.x = sourceWidth / 2;
             }
-            if (mapCoordinate.x + sourceWidth / 2 > map.image.Width) {
-                mapCoordinate.x = map.image.Width - sourceWidth / 2;
+            if (mapCoordinate.x + sourceWidth / 2 > map.GetImage().Width) {
+                mapCoordinate.x = map.GetImage().Width - sourceWidth / 2;
             }
             if (mapCoordinate.y - sourceWidth / 2 < 0) {
                 mapCoordinate.y = sourceWidth / 2;
             }
-            if (mapCoordinate.y + sourceWidth / 2 > map.image.Height) {
-                mapCoordinate.y = map.image.Height - sourceWidth / 2;
+            if (mapCoordinate.y + sourceWidth / 2 > map.GetImage().Height) {
+                mapCoordinate.y = map.GetImage().Height - sourceWidth / 2;
             }
 
             sourceWidth = Math.Min(Math.Max(sourceWidth, minWidth), maxWidth);
@@ -119,14 +119,20 @@ namespace Tibialyzer {
             Bitmap bitmap = new Bitmap(this.Width, this.Height);
             using (Graphics gr = Graphics.FromImage(bitmap)) {
                 if (mapCoordinate.z == zCoordinate) {
-                    gr.DrawImage(map != null ? map.image : mapImage, new Rectangle(0, 0, bitmap.Width, bitmap.Height), sourceRectangle, GraphicsUnit.Pixel);
+                    Image image = map != null ? map.GetImage() : mapImage;
+                    lock(image) {
+                        gr.DrawImage(image, new Rectangle(0, 0, bitmap.Width, bitmap.Height), sourceRectangle, GraphicsUnit.Pixel);
+                    }
                 } else {
                     Map m = StorageManager.getMap(mapCoordinate.z);
                     if (otherMap != null && m != otherMap) {
                         otherMap.Dispose();
                     }
                     otherMap = m;
-                    gr.DrawImage(m.image, new Rectangle(0, 0, bitmap.Width, bitmap.Height), sourceRectangle, GraphicsUnit.Pixel);
+                    Image image = m.GetImage();
+                    lock(image) {
+                        gr.DrawImage(image, new Rectangle(0, 0, bitmap.Width, bitmap.Height), sourceRectangle, GraphicsUnit.Pixel);
+                    }
                 }
                 foreach(TibiaPath path in paths) {
                     if (path.begin.z == mapCoordinate.z) {
@@ -148,7 +154,9 @@ namespace Tibialyzer {
                             x = (int)((double)x / sourceWidth * bitmap.Width);
                             y = (int)((double)y / sourceWidth * bitmap.Height);
                             int targetWidth = (int)((double)target.size / target.image.Height * target.image.Width);
-                            gr.DrawImage(target.image, new Rectangle(x - targetWidth, y - target.size, targetWidth * 2, target.size * 2));
+                            lock(target.image) {
+                                gr.DrawImage(target.image, new Rectangle(x - targetWidth, y - target.size, targetWidth * 2, target.size * 2));
+                            }
                         }
                     }
                 }

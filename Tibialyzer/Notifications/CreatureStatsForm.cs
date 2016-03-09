@@ -70,7 +70,10 @@ namespace Tibialyzer {
                     gr.FillRectangle(brush, new Rectangle(19, 0, bitmap.Width - 19, bitmap.Height));
                 }
                 gr.DrawRectangle(Pens.Black, new Rectangle(19, 0, bitmap.Width - 20, bitmap.Height - 1));
-                gr.DrawImage(StyleManager.GetElementImage(resistance.name), new Point(2, 2));
+                Image image = StyleManager.GetElementImage(resistance.name);
+                lock(image) {
+                    gr.DrawImage(image, new Point(2, 2));
+                }
                 resistance_controls[i].Width = bitmap.Width;
                 resistance_controls[i].Height = bitmap.Height;
                 resistance_controls[i].Image = bitmap;

@@ -22,10 +22,14 @@ namespace Tibialyzer {
             if (!StyleManager.Initialized) {
                 e.Graphics.FillRectangle(new SolidBrush(Color.Red), new Rectangle(paddingX, 8, 16 + paddingX, 16 + paddingX));
             } else {
+                Image image = null;
                 if (this.Checked) {
-                    e.Graphics.DrawImage(StyleManager.GetImage("checkbox-checked.png"), new Rectangle(paddingX, 8, 16 + paddingX, 16 + paddingX));
+                    image = StyleManager.GetImage("checkbox-checked.png");
                 } else {
-                    e.Graphics.DrawImage(StyleManager.GetImage("checkbox-empty.png"), new Rectangle(paddingX, 8, 16 + paddingX, 16 + paddingX));
+                    image = StyleManager.GetImage("checkbox-empty.png");
+                }
+                lock(image) {
+                    e.Graphics.DrawImage(image, new Rectangle(paddingX, 8, 16 + paddingX, 16 + paddingX));
                 }
             }
         }

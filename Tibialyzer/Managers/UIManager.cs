@@ -75,7 +75,7 @@ namespace Tibialyzer {
             }
 
             Map m = StorageManager.getMap(begin.z);
-            DijkstraPoint result = Dijkstra.FindRoute(m.image, new Point(begin.x, begin.y), new Point(end.x, end.y), collisionBounds, additionalWalkableColors);
+            DijkstraPoint result = Dijkstra.FindRoute(m.GetImage() as Bitmap, new Point(begin.x, begin.y), new Point(end.x, end.y), collisionBounds, additionalWalkableColors);
             if (result == null) {
                 throw new Exception("Couldn't find route.");
             }
