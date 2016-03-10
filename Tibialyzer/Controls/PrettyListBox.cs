@@ -128,7 +128,7 @@ namespace Tibialyzer {
         private void PrettyListBox_KeyPress(object sender, KeyPressEventArgs e) {
             if (ReadOnly) return;
             if (this.SelectedIndex >= 0) {
-                if (e.KeyChar >= 32 && e.KeyChar <= 126) {
+                if ((e.KeyChar >= 32 && e.KeyChar <= 126) || e.KeyChar >= 129) {
                     string currentString = this.Items[this.SelectedIndex].ToString();
                     int caretPosition = CaretPosition(currentString);
                     this.Items[this.SelectedIndex] = currentString.Substring(0, caretPosition) + e.KeyChar + currentString.Substring(caretPosition, currentString.Length - caretPosition);
