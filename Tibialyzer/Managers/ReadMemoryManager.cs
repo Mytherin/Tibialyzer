@@ -54,7 +54,7 @@ namespace Tibialyzer {
         public Dictionary<string, DamageResult> damagePerSecond = new Dictionary<string, DamageResult>();
         public List<string> newCommands = new List<string>();
         public List<string> newLooks = new List<string>();
-        public List<Tuple<Creature, List<Tuple<Item, int>>>> newItems = new List<Tuple<Creature, List<Tuple<Item, int>>>>();
+        public List<Tuple<Creature, List<Tuple<Item, int>>, string>> newItems = new List<Tuple<Creature, List<Tuple<Item, int>>, string>>();
         public List<Tuple<Event, string>> newEventMessages = new List<Tuple<Event, string>>();
         public int expPerHour = 0;
         public bool death = false;

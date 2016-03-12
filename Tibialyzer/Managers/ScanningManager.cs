@@ -17,7 +17,7 @@ namespace Tibialyzer {
         public static ParseMemoryResults lastResults;
         public static bool shownException = false;
         private const int MaxRecentDropsTracked = 20;
-        public static List<Tuple<Creature, List<Tuple<Item, int>>>> RecentDrops = new List<Tuple<Creature, List<Tuple<Item, int>>>>();
+        public static List<Tuple<Creature, List<Tuple<Item, int>>, string>> RecentDrops = new List<Tuple<Creature, List<Tuple<Item, int>>, string>>();
 
         public static void StartScanning() {
             scanTimer = new System.Timers.Timer(10000);
@@ -211,7 +211,7 @@ namespace Tibialyzer {
                         LootDatabaseManager.UpdateLoot();
                     });
                 }
-                foreach (Tuple<Creature, List<Tuple<Item, int>>> tpl in parseMemoryResults.newItems) {
+                foreach (var tpl in parseMemoryResults.newItems) {
                     Creature cr = tpl.Item1;
                     List<Tuple<Item, int>> items = tpl.Item2;
                     bool showNotification = PopupManager.ShowDropNotification(tpl);
@@ -255,8 +255,8 @@ namespace Tibialyzer {
             return readMemoryResults != null;
         }
 
-        public static List<Tuple<Creature, List<Tuple<Item, int>>>> GetRecentDrops(int max = 5) {
-            var recentDrops = new List<Tuple<Creature, List<Tuple<Item, int>>>>();
+        public static List<Tuple<Creature, List<Tuple<Item, int>>, string>> GetRecentDrops(int max = 5) {
+            var recentDrops = new List<Tuple<Creature, List<Tuple<Item, int>>, string>>();
             int counter = 0;
             lock(RecentDrops) {
                 for(int i = RecentDrops.Count - 1; i >= 0; i--) {

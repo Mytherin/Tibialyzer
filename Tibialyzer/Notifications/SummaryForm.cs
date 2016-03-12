@@ -193,7 +193,7 @@ namespace Tibialyzer {
             controls.Add(box);
             y += box.Height;
         }
-        private void CreateCreatureDropsBox(Creature creature, List<Tuple<Item, int>> items, int x, ref int y, List<Control> controls) {
+        private void CreateCreatureDropsBox(Creature creature, List<Tuple<Item, int>> items, string message, int x, ref int y, List<Control> controls) {
             Image image = RecentDropsBox(creature, items);
             PictureBox box = new PictureBox();
             box.Size = image.Size;
@@ -204,7 +204,24 @@ namespace Tibialyzer {
             box.Click += CommandClick;
             this.Controls.Add(box);
             controls.Add(box);
+            // copy button
+            PictureBox copyButton = new PictureBox();
+            copyButton.Size = new Size(box.Size.Height - 4, box.Size.Height - 4);
+            copyButton.BackColor = StyleManager.MainFormButtonColor;
+            copyButton.Location = new Point(box.Location.X + box.Size.Width - box.Size.Height + 2, y + 2);
+            copyButton.Click += CopyLootText;
+            copyButton.Name = message;
+            copyButton.Image = StyleManager.GetImage("copyicon.png");
+            copyButton.SizeMode = PictureBoxSizeMode.Zoom;
+            this.Controls.Add(copyButton);
+            controls.Add(copyButton);
+            copyButton.BringToFront();
+
             y += box.Height;
+        }
+
+        private void CopyLootText(object sender, EventArgs e) {
+            Clipboard.SetText((sender as Control).Name);
         }
 
         private void CreateItemList(List<Tuple<Item, int>> items, int x, ref int y, List<Control> controls) {
@@ -393,7 +410,7 @@ namespace Tibialyzer {
                 CreateHeaderLabel("Recent Drops", x, ref y, lootControls);
                 var recentDrops = ScanningManager.GetRecentDrops(maxRecentDrops);
                 foreach (var drops in recentDrops) {
-                    CreateCreatureDropsBox(drops.Item1, drops.Item2, x, ref y, lootControls);
+                    CreateCreatureDropsBox(drops.Item1, drops.Item2, drops.Item3, x, ref y, lootControls);
                 }
             }
             UpdateDamageForm();

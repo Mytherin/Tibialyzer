@@ -186,8 +186,8 @@ namespace Tibialyzer {
             notificationStack.Remove(notification);
         }
 
-        public static bool ShowDropNotification(Tuple<Creature, List<Tuple<Item, int>>> tpl) {
-            bool showNotification = NotificationConditionManager.ResolveConditions(tpl);
+        public static bool ShowDropNotification(Tuple<Creature, List<Tuple<Item, int>>, string> tpl) {
+            bool showNotification = NotificationConditionManager.ResolveConditions(new Tuple<Creature, List<Tuple<Item, int>>>(tpl.Item1, tpl.Item2));
             bool showNotificationSpecific = false;
             foreach (Tuple<Item, int> tpl2 in tpl.Item2) {
                 Item item = tpl2.Item1;

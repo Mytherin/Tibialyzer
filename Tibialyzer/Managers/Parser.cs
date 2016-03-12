@@ -255,7 +255,7 @@ namespace Tibialyzer {
 
 
         public static Dictionary<string, List<string>> globalMessages = new Dictionary<string, List<string>>();
-        public static void ParseLootMessages(Hunt h, Dictionary<string, List<string>> newDrops, List<Tuple<Creature, List<Tuple<Item, int>>>> newItems, bool commit = true, bool switchHunt = false, bool addEverything = false) {
+        public static void ParseLootMessages(Hunt h, Dictionary<string, List<string>> newDrops, List<Tuple<Creature, List<Tuple<Item, int>>, string>> newItems, bool commit = true, bool switchHunt = false, bool addEverything = false) {
             SQLiteTransaction transaction = null;
             if (commit) {
                 transaction = LootDatabaseManager.BeginTransaction();
@@ -292,7 +292,7 @@ namespace Tibialyzer {
                             }
 
                             if (newItems != null) {
-                                newItems.Add(resultList);
+                                newItems.Add(new Tuple<Creature, List<Tuple<Item, int>>, string>(resultList.Item1, resultList.Item2, message));
                             }
                         } else {
                             itemDrops[t].Remove(message);
