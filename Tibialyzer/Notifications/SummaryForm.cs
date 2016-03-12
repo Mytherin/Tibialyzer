@@ -100,7 +100,7 @@ namespace Tibialyzer {
                 }
                 gr.DrawRectangle(Pens.Black, new Rectangle(0, 0, bitmap.Width - 1, bitmap.Height - 1));
                 RenderImageResized(gr, StyleManager.GetImage("item_background.png"), new Rectangle(1, 1, ImageHeight - 2, ImageHeight - 2));
-                RenderImageResized(gr, LootDropForm.GetStackImage(item.GetImage(), amount > 0 ? amount : 1, item), new Rectangle(1, 1, ImageHeight - 2, ImageHeight - 2));
+                RenderImageResized(gr, (amount > 1 || item.stackable) ? LootDropForm.GetStackImage(item.GetImage(), amount > 0 ? amount : 1, item) : item.GetImage(), new Rectangle(1, 1, ImageHeight - 2, ImageHeight - 2));
                 RenderText(gr, item.displayname.ToTitle(), ImageHeight + 2, Color.Empty, StyleManager.NotificationTextColor);
                 if (amount > 0) {
                     RenderText(gr, amount.ToString(), -ImageWidth, Color.FromArgb(StyleManager.MainFormButtonColor.R / 2, StyleManager.MainFormButtonColor.G / 2, StyleManager.MainFormButtonColor.B / 2), StyleManager.NotificationTextColor);
@@ -214,7 +214,7 @@ namespace Tibialyzer {
                 foreach(Tuple<Item, int> item in items) {
                     Rectangle region = new Rectangle(x + (counter++) * (ImageHeight + 1), 0, ImageHeight - 1, ImageHeight - 1);
                     RenderImageResized(gr, StyleManager.GetImage("item_background.png"), region);
-                    RenderImageResized(gr, LootDropForm.DrawCountOnItem(item.Item1, item.Item2), region);
+                    RenderImageResized(gr, (item.Item1.stackable || item.Item2 > 1) ? LootDropForm.DrawCountOnItem(item.Item1, item.Item2) : item.Item1.GetImage(), region);
                 }
             }
             PictureBox box = new PictureBox();
@@ -413,7 +413,7 @@ namespace Tibialyzer {
 
             int maxDamage = SettingsManager.getSettingInt("SummaryMaxDamagePlayers");
             if (maxDamage < 0) maxDamage = 5;
-            if (maxDamage > 0) {
+            if (maxDamage > 0 && ScanningManager.lastResults != null) {
                 CreateHeaderLabel("Damage Dealt", x, ref y, damageControls);
                 var dps = ScanningManager.lastResults.damagePerSecond;
                 var damageDealt = DamageChart.GenerateDamageInformation(dps, "");
