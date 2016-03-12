@@ -58,5 +58,7 @@ namespace Tibialyzer {
             SettingsManager.setSetting("SummaryMaxUsedItems", (sender as TrackBar).Value);
             maxUsedItemsHeader.Text = String.Format("Max # of Used Items: {0}", (sender as TrackBar).Value);
         }
+
+
     }
 }

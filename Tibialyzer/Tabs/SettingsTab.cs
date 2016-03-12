@@ -26,6 +26,7 @@ namespace Tibialyzer {
             this.lookModeCheckbox.Checked = SettingsManager.getSettingBool("LookMode");
             this.scanningSpeedTrack.Value = Math.Min(Math.Max(SettingsManager.getSettingInt("ScanSpeed"), scanningSpeedTrack.Minimum), scanningSpeedTrack.Maximum);
             this.scanSpeedDisplayLabel.Text = Constants.ScanSpeedText[scanningSpeedTrack.Value / 10] + String.Format("({0})", scanningSpeedTrack.Value);
+            this.experienceComputationDropdown.SelectedIndex = SettingsManager.getSettingString("ExperiencePerHourCalculation") == "TibiaStyle" ? 0 : 1;
         }
 
         public void InitializeTooltips() {
@@ -40,6 +41,7 @@ namespace Tibialyzer {
             tooltip.SetToolTip(popupTypeBox, "Rich notifications are Windows Forms notifications that look pretty. Simple notifications are default Windows bubble notifications. ");
             tooltip.SetToolTip(scanningSpeedTrack, "Set the memory scanning speed of Tibialyzer. Lower settings drastically reduce CPU usage, but increase response time for Tibialyzer to respond to events in-game (such as in-game commands, look events and loot parsing).");
             tooltip.SetToolTip(popupAnimationBox, "Whether or not popups should be animated or simply appear.");
+            tooltip.SetToolTip(experienceComputationDropdown, "The algorithm used to compute experience per hour. Standard Tibia Style uses the same algorithm as the Tibia client; while weighted places more emphasis on recent experience gained.");
         }
 
         private void unlockResetButton_Click(object sender, MouseEventArgs e) {
@@ -129,6 +131,12 @@ namespace Tibialyzer {
         private void ControlMouseLeave(object sender, EventArgs e) {
             (sender as Control).BackColor = StyleManager.MainFormButtonColor;
             (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
+        }
+
+        private void experienceComputationDropdown_SelectedIndexChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+            
+            SettingsManager.setSetting("ExperiencePerHourCalculation", (sender as ComboBox).SelectedIndex == 0 ? "TibiaStyle" : "WeightedStyle" );
         }
     }
 }

@@ -72,6 +72,23 @@ namespace Tibialyzer {
             }
             return new Tuple<int, int>(experience, minutes);
         }
+        
+        private static double[] coefficients = { 2.4, 2.4, 2.2, 2.0, 1.6, 1.2, 0.8, 0.6, 0.6, 0.4, 0.2, 0.2, 0.1, 0.1, 0.1, 0.1 };
+        public static int GetExperiencePerHour() {
+            if (SettingsManager.getSettingString("ExperiencePerHourCalculation") == "TibiaStyle") {
+                return GetTotalExperience(TimestampManager.getLatestTimes(15)).Item1 * 4;
+            }
+            else {
+                List<string> times = TimestampManager.getLatestTimes(coefficients.Length);
+                double totalExperience = 0;
+                for (int i = 0; i < coefficients.Length; i++) {
+                    if (totalExperienceResults.ContainsKey(times[i])) {
+                        totalExperience += totalExperienceResults[times[i]] * coefficients[i];
+                    }
+                }
+                return (int)(totalExperience * 4);
+            }
+        }
 
         public static bool UpdateDeaths(Dictionary<string, bool> newDeaths) {
             bool newDeath = false;

@@ -232,6 +232,7 @@ C::NumpadPgDn
             setSettingIfNotSet("SummaryMaxRecentDrops", 5);
             setSettingIfNotSet("SummaryMaxDamagePlayers", 5);
             setSettingIfNotSet("SummaryMaxUsedItems", 5);
+            setSettingIfNotSet("ExperiencePerHourCalculation", "TibiaStyle");
         }
 
         public static void ResetSettingsToDefault() {

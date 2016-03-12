@@ -58,7 +58,7 @@ namespace Tibialyzer {
             // now compute the experience per hour
             // we use the same formula Tibia itself does so we get the same value
             // this formula is basically, take the experience in the last 15 minutes and multiply it by 4
-            o.expPerHour = GlobalDataManager.GetTotalExperience(times).Item1 * 4;
+            o.expPerHour = GlobalDataManager.GetExperiencePerHour();
 
             // Parse event messages
             foreach(Tuple<Event, string> newEvent in GlobalDataManager.UpdateEventInformation(res.eventMessages)) {
