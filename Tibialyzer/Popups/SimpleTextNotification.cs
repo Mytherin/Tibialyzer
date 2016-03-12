@@ -28,9 +28,12 @@ namespace Tibialyzer {
         public SimpleTextNotification(Image image, string title, string text) {
             this.InitializeComponent();
 
+            this.Size = new Size(SettingsManager.getSettingInt("SimpleNotificationWidth"), this.Size.Height);
+
             this.notificationImage.Image = image == null ? StyleManager.GetImage("defaulticon.png") : image;
             this.titleLabel.Text = title;
             this.textLabel.Text = text;
+            this.textLabel.MaximumSize = new System.Drawing.Size(this.Size.Width - textLabel.Location.X, 0);
 
             this.InitializeSimpleNotification();
         }

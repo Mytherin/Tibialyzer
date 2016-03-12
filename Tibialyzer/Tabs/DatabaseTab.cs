@@ -108,7 +108,7 @@ namespace Tibialyzer {
                 convertLabel.Name = itemName + ":" + goldRatio.ToString(CultureInfo.InvariantCulture);
                 convertLabel.Click += SetConvertValue;
                 convertControls.Add(convertLabel);
-                
+
                 this.Controls.Add(pictureBox);
                 this.Controls.Add(label);
                 this.Controls.Add(convertLabel);
@@ -154,7 +154,7 @@ namespace Tibialyzer {
                 }
             }
         }
-        
+
         private void applyDiscardRatioButton_Click(object sender, EventArgs e) {
             double ratio;
             if (double.TryParse(customDiscardRatioBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out ratio)) {

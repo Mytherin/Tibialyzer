@@ -106,7 +106,7 @@ namespace Tibialyzer {
         public static extern bool ReadProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
         [DllImport("kernel32.dll", SetLastError = true)]
         static extern int VirtualQueryEx(IntPtr hProcess, IntPtr lpAddress, out MEMORY_BASIC_INFORMATION lpBuffer, uint dwLength);
-        
+
         private static Dictionary<int, HashSet<long>> whiteListedAddresses = new Dictionary<int, HashSet<long>>();
 
         /// <summary>
@@ -137,14 +137,14 @@ namespace Tibialyzer {
                     whitelist = new HashSet<long>();
                     newWhitelistedAddresses[process.Id] = whitelist;
                 }
-                
+
                 proc_min_address_l = sys_min_address_l;
-                
+
                 IntPtr processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
                 MEMORY_BASIC_INFORMATION mem_basic_info;
                 List<int> stamps = TimestampManager.getLatestStamps(3, ignoreStamp);
                 int bytesRead = 0;  // number of bytes read with ReadProcessMemory
-                
+
                 try
                 {
                     while (proc_min_address_l < proc_max_address_l)
@@ -213,7 +213,7 @@ namespace Tibialyzer {
             if (processes == null || processes.Length == 0) {
                 return null;
             }
-            
+
             results = new ReadMemoryResults();
             flashClient = ProcessManager.IsFlashClient();
             Dictionary<int, HashSet<long>> newWhitelistedAddresses = null;

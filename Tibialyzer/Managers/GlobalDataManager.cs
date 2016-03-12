@@ -72,7 +72,7 @@ namespace Tibialyzer {
             }
             return new Tuple<int, int>(experience, minutes);
         }
-        
+
         private static double[] coefficients = { 2.4, 2.4, 2.2, 2.0, 1.6, 1.2, 0.8, 0.6, 0.6, 0.4, 0.2, 0.2, 0.1, 0.1, 0.1, 0.1 };
         public static int GetExperiencePerHour() {
             if (SettingsManager.getSettingString("ExperiencePerHourCalculation") == "TibiaStyle") {

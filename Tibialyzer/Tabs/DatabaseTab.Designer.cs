@@ -61,9 +61,9 @@
             this.label16 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.itemPropertyItemBox)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // label5
-            // 
+            //
             this.label5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label5.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -73,9 +73,9 @@
             this.label5.TabIndex = 79;
             this.label5.Text = "Gold/Cap Convert Ratio";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // applyConvertRatioButton
-            // 
+            //
             this.applyConvertRatioButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.applyConvertRatioButton.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.applyConvertRatioButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -88,9 +88,9 @@
             this.applyConvertRatioButton.Click += new System.EventHandler(this.applyConvertRatioButton_Click);
             this.applyConvertRatioButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.applyConvertRatioButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // customDiscardRatioHeader
-            // 
+            //
             this.customDiscardRatioHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.customDiscardRatioHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.customDiscardRatioHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -100,9 +100,9 @@
             this.customDiscardRatioHeader.TabIndex = 75;
             this.customDiscardRatioHeader.Text = "Gold/Cap Discard Ratio";
             this.customDiscardRatioHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // applyDiscardRatioButton
-            // 
+            //
             this.applyDiscardRatioButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.applyDiscardRatioButton.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.applyDiscardRatioButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -115,9 +115,9 @@
             this.applyDiscardRatioButton.Click += new System.EventHandler(this.applyDiscardRatioButton_Click);
             this.applyDiscardRatioButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.applyDiscardRatioButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // databaseItemsHeader
-            // 
+            //
             this.databaseItemsHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.databaseItemsHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.databaseItemsHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -127,9 +127,9 @@
             this.databaseItemsHeader.TabIndex = 51;
             this.databaseItemsHeader.Text = "Database Item Conversion";
             this.databaseItemsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // customConvertRatioBox
-            // 
+            //
             this.customConvertRatioBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.customConvertRatioBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.customConvertRatioBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -140,9 +140,9 @@
             this.customConvertRatioBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.customConvertRatioBox_KeyPress);
             this.customConvertRatioBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.customConvertRatioBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // customDiscardRatioBox
-            // 
+            //
             this.customDiscardRatioBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.customDiscardRatioBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.customDiscardRatioBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -153,9 +153,9 @@
             this.customDiscardRatioBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.customDiscardRatioBox_KeyPress);
             this.customDiscardRatioBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.customDiscardRatioBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // label1
-            // 
+            //
             this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label1.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -165,9 +165,9 @@
             this.label1.TabIndex = 82;
             this.label1.Text = "Value Discard Ratio";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // applyValueDiscardButton
-            // 
+            //
             this.applyValueDiscardButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.applyValueDiscardButton.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.applyValueDiscardButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -180,9 +180,9 @@
             this.applyValueDiscardButton.Click += new System.EventHandler(this.applyValueDiscardButton_Click);
             this.applyValueDiscardButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.applyValueDiscardButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // customValueDiscardBox
-            // 
+            //
             this.customValueDiscardBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.customValueDiscardBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.customValueDiscardBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -192,9 +192,9 @@
             this.customValueDiscardBox.TabIndex = 80;
             this.customValueDiscardBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.customValueDiscardBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // label2
-            // 
+            //
             this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label2.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -204,9 +204,9 @@
             this.label2.TabIndex = 85;
             this.label2.Text = "Value Convert Ratio";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // applyValueConvertButton
-            // 
+            //
             this.applyValueConvertButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.applyValueConvertButton.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.applyValueConvertButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -219,9 +219,9 @@
             this.applyValueConvertButton.Click += new System.EventHandler(this.applyValueConvertButton_Click);
             this.applyValueConvertButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.applyValueConvertButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // customValueConvertBox
-            // 
+            //
             this.customValueConvertBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.customValueConvertBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.customValueConvertBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -231,9 +231,9 @@
             this.customValueConvertBox.TabIndex = 83;
             this.customValueConvertBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.customValueConvertBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // label3
-            // 
+            //
             this.label3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label3.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -243,9 +243,9 @@
             this.label3.TabIndex = 88;
             this.label3.Text = "SQL Discard Query";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // applyQueryDiscardButton
-            // 
+            //
             this.applyQueryDiscardButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.applyQueryDiscardButton.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.applyQueryDiscardButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -258,9 +258,9 @@
             this.applyQueryDiscardButton.Click += new System.EventHandler(this.applyQueryDiscardButton_Click);
             this.applyQueryDiscardButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.applyQueryDiscardButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // customQueryDiscardBox
-            // 
+            //
             this.customQueryDiscardBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.customQueryDiscardBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.customQueryDiscardBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -270,9 +270,9 @@
             this.customQueryDiscardBox.TabIndex = 86;
             this.customQueryDiscardBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.customQueryDiscardBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // label6
-            // 
+            //
             this.label6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label6.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -282,9 +282,9 @@
             this.label6.TabIndex = 91;
             this.label6.Text = "SQL Convert Query";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // applyQueryConvertButton
-            // 
+            //
             this.applyQueryConvertButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.applyQueryConvertButton.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.applyQueryConvertButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
@@ -297,9 +297,9 @@
             this.applyQueryConvertButton.Click += new System.EventHandler(this.applyQueryConvertButton_Click);
             this.applyQueryConvertButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.applyQueryConvertButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // customQueryConvertBox
-            // 
+            //
             this.customQueryConvertBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.customQueryConvertBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.customQueryConvertBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -309,9 +309,9 @@
             this.customQueryConvertBox.TabIndex = 89;
             this.customQueryConvertBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.customQueryConvertBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // label4
-            // 
+            //
             this.label4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label4.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -321,9 +321,9 @@
             this.label4.TabIndex = 92;
             this.label4.Text = "Item Properties";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // itemSelectionBox
-            // 
+            //
             this.itemSelectionBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.itemSelectionBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.itemSelectionBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
@@ -334,9 +334,9 @@
             this.itemSelectionBox.TextChanged += new System.EventHandler(this.itemSelectionBox_TextChanged);
             this.itemSelectionBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.itemSelectionBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
+            //
             // itemPropertyItemBox
-            // 
+            //
             this.itemPropertyItemBox.BackColor = System.Drawing.Color.Transparent;
             this.itemPropertyItemBox.BackgroundImage = global::Tibialyzer.Properties.Resources.item_background;
             this.itemPropertyItemBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -346,9 +346,9 @@
             this.itemPropertyItemBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.itemPropertyItemBox.TabIndex = 94;
             this.itemPropertyItemBox.TabStop = false;
-            // 
+            //
             // label8
-            // 
+            //
             this.label8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label8.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -358,9 +358,9 @@
             this.label8.TabIndex = 96;
             this.label8.Text = "stackable";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
+            //
             // label7
-            // 
+            //
             this.label7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label7.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -370,9 +370,9 @@
             this.label7.TabIndex = 97;
             this.label7.Text = "capacity";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
+            //
             // label9
-            // 
+            //
             this.label9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label9.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -382,9 +382,9 @@
             this.label9.TabIndex = 98;
             this.label9.Text = "vendor_value";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
+            //
             // label10
-            // 
+            //
             this.label10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label10.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -394,9 +394,9 @@
             this.label10.TabIndex = 99;
             this.label10.Text = "actual_value";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
+            //
             // stackableValueLabel
-            // 
+            //
             this.stackableValueLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(102)))), ((int)(((byte)(155)))));
             this.stackableValueLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.stackableValueLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -406,9 +406,9 @@
             this.stackableValueLabel.TabIndex = 100;
             this.stackableValueLabel.Text = "true";
             this.stackableValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // vendorValueLabel
-            // 
+            //
             this.vendorValueLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(102)))), ((int)(((byte)(155)))));
             this.vendorValueLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.vendorValueLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -418,9 +418,9 @@
             this.vendorValueLabel.TabIndex = 101;
             this.vendorValueLabel.Text = "2000";
             this.vendorValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // actualValueLabel
-            // 
+            //
             this.actualValueLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(102)))), ((int)(((byte)(155)))));
             this.actualValueLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.actualValueLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -430,9 +430,9 @@
             this.actualValueLabel.TabIndex = 102;
             this.actualValueLabel.Text = "2000";
             this.actualValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // capacityLabel
-            // 
+            //
             this.capacityLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(102)))), ((int)(((byte)(155)))));
             this.capacityLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.capacityLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -442,9 +442,9 @@
             this.capacityLabel.TabIndex = 103;
             this.capacityLabel.Text = "2000";
             this.capacityLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // discardValueLabel
-            // 
+            //
             this.discardValueLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(102)))), ((int)(((byte)(155)))));
             this.discardValueLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.discardValueLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -454,9 +454,9 @@
             this.discardValueLabel.TabIndex = 105;
             this.discardValueLabel.Text = "true";
             this.discardValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label12
-            // 
+            //
             this.label12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label12.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -466,9 +466,9 @@
             this.label12.TabIndex = 104;
             this.label12.Text = "discard";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
+            //
             // convertValueLabel
-            // 
+            //
             this.convertValueLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(102)))), ((int)(((byte)(155)))));
             this.convertValueLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.convertValueLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -478,9 +478,9 @@
             this.convertValueLabel.TabIndex = 107;
             this.convertValueLabel.Text = "true";
             this.convertValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label14
-            // 
+            //
             this.label14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label14.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -490,9 +490,9 @@
             this.label14.TabIndex = 106;
             this.label14.Text = "convert_to_gold";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
+            //
             // categoryValueLabel
-            // 
+            //
             this.categoryValueLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(102)))), ((int)(((byte)(155)))));
             this.categoryValueLabel.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.categoryValueLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -502,9 +502,9 @@
             this.categoryValueLabel.TabIndex = 109;
             this.categoryValueLabel.Text = "true";
             this.categoryValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // label16
-            // 
+            //
             this.label16.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label16.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label16.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -514,9 +514,9 @@
             this.label16.TabIndex = 108;
             this.label16.Text = "category";
             this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // DatabaseTab
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;

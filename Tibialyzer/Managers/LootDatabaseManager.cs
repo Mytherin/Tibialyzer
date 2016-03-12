@@ -23,7 +23,7 @@ namespace Tibialyzer {
                 lootConn = null;
             }
         }
-        
+
         public static void ReplaceDatabase(string otherDatabase) {
             lock(lootLock) {
                 lootConn.Close();

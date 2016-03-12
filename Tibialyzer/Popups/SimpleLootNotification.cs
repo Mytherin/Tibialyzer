@@ -30,6 +30,10 @@ namespace Tibialyzer {
             this.InitializeComponent();
             this.creature = cr;
 
+            this.Size = new Size(SettingsManager.getSettingInt("SimpleNotificationWidth"), this.Size.Height);
+            bool showCopyButton = SettingsManager.getSettingBool("SimpleNotificationCopyButton");
+
+
             this.InitializeSimpleNotification();
 
             creatureBox.Click -= c_Click;
@@ -41,7 +45,7 @@ namespace Tibialyzer {
             value_tooltip.ShowAlways = true;
             value_tooltip.UseFading = true;
 
-            int max_x = this.Size.Width - creatureBox.Width - 32;
+            int max_x = this.Size.Width - creatureBox.Width - (showCopyButton ? 32 : 4);
             int base_x = 64, base_y = 20;
             int x = 0;
             int y = 0;
@@ -126,15 +130,17 @@ namespace Tibialyzer {
             this.creatureBox.Image = cr.GetImage();
             this.creatureDropLabel.Text = String.Format("Loot of {0}.", cr.displayname);
 
-            PictureBox copyButton = new PictureBox();
-            copyButton.Size = new Size(32, 32);
-            copyButton.BackColor = Color.Transparent;
-            copyButton.Location = new Point(this.Size.Width - copyButton.Size.Width - 4, (this.Size.Height - copyButton.Size.Height) / 2);
-            copyButton.Click += CopyLootText;
-            copyButton.Name = message;
-            copyButton.Image = StyleManager.GetImage("copyicon.png");
-            copyButton.SizeMode = PictureBoxSizeMode.Zoom;
-            this.Controls.Add(copyButton);
+            if (showCopyButton) {
+                PictureBox copyButton = new PictureBox();
+                copyButton.Size = new Size(32, 32);
+                copyButton.BackColor = Color.Transparent;
+                copyButton.Location = new Point(this.Size.Width - copyButton.Size.Width - 4, base_y == 4 ? (this.Size.Height - copyButton.Size.Height) / 2 : base_y);
+                copyButton.Click += CopyLootText;
+                copyButton.Name = message;
+                copyButton.Image = StyleManager.GetImage("copyicon.png");
+                copyButton.SizeMode = PictureBoxSizeMode.Zoom;
+                this.Controls.Add(copyButton);
+            }
         }
 
         private void CopyLootText(object sender, EventArgs e) {

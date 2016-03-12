@@ -19,6 +19,9 @@ namespace Tibialyzer {
 
         public PopupContainer() {
             InitializeComponent();
+
+            this.Size = new Size(SettingsManager.getSettingInt("SimpleNotificationWidth"), this.Size.Height);
+
             this.BackColor = ContainerTransparentColor;
             this.TransparencyKey = ContainerTransparentColor;
         }

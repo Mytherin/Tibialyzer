@@ -135,7 +135,7 @@ namespace Tibialyzer {
 
         private void experienceComputationDropdown_SelectedIndexChanged(object sender, EventArgs e) {
             if (MainForm.prevent_settings_update) return;
-            
+
             SettingsManager.setSetting("ExperiencePerHourCalculation", (sender as ComboBox).SelectedIndex == 0 ? "TibiaStyle" : "WeightedStyle" );
         }
     }

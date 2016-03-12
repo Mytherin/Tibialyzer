@@ -233,6 +233,8 @@ C::NumpadPgDn
             setSettingIfNotSet("SummaryMaxDamagePlayers", 5);
             setSettingIfNotSet("SummaryMaxUsedItems", 5);
             setSettingIfNotSet("ExperiencePerHourCalculation", "TibiaStyle");
+            setSettingIfNotSet("SimpleNotificationWidth", 354);
+            setSettingIfNotSet("SimpleNotificationCopyButton", true);
         }
 
         public static void ResetSettingsToDefault() {

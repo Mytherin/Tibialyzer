@@ -129,7 +129,7 @@ namespace Tibialyzer {
                 //the command is loot@<creature>, so we only display the kills and loot from the specified creature
                 creatureKills = hunt.GetCreatureKills(lootCreature);
             } else if (displayedCreatures == null) {
-                creatureKills = hunt.GetCreatureKills(); //display all creatures //loot.killCount; 
+                creatureKills = hunt.GetCreatureKills(); //display all creatures //loot.killCount;
             } else {
                 // only display tracked creatures
                 creatureKills = hunt.GetCreatureKills(displayedCreatures); // new Dictionary<Creature, int>();

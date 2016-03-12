@@ -141,7 +141,7 @@ namespace Tibialyzer {
             }
             return false;
         }
-        
+
         public static void CreateNewHunt() {
             Hunt h = new Hunt();
             lock (hunts) {
@@ -717,7 +717,7 @@ namespace Tibialyzer {
             }
             CleanHashSets();
         }
-        
+
         public int GetItemCount() {
             int count = baseCount;
             lock (hashSets) {

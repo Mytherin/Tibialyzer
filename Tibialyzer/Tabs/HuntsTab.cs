@@ -79,7 +79,7 @@ namespace Tibialyzer {
             Hunt h = getSelectedHunt();
             int currentHunt = 0;
             MainForm.mainForm.skip_hunt_refresh = true;
-            
+
             huntList.Items.Clear();
             foreach (Hunt hunt in HuntManager.IterateHunts()) {
                 huntList.Items.Add(hunt.name);

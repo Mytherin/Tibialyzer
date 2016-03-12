@@ -91,7 +91,7 @@ namespace Tibialyzer {
             var t = DateTime.Now;
             return t.Year * 400 + t.Month * 40 + t.Day;
         }
-        
+
         public static int Distance(string timestamp, string timestamp2) {
             var one = ParseTimestamp(timestamp);
             var two = ParseTimestamp(timestamp2);

@@ -173,7 +173,7 @@ namespace Tibialyzer {
                     int h2 = array[start + 1] - '0';
                     int m1 = (array[start + 3] - '0') * 10;
                     int m2 = array[start + 4] - '0';
-                    
+
                     if (stamps.Contains(TimestampManager.getStamp(h1 + h2, m1 + m2)) && !array.Contains(start, i - start, "</font>")) {
                         return true;
                     }

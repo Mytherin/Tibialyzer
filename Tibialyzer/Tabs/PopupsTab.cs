@@ -20,6 +20,8 @@ namespace Tibialyzer {
             this.popupAnchorBox.SelectedIndex = Math.Min(Math.Max(SettingsManager.getSettingInt("SimpleNotificationAnchor"), 0), 3);
             this.popupXOffsetBox.Text = SettingsManager.getSettingInt("SimpleNotificationXOffset").ToString();
             this.popupYOffsetBox.Text = SettingsManager.getSettingInt("SimpleNotificationYOffset").ToString();
+            this.notificationWidthBox.Text = SettingsManager.getSettingInt("SimpleNotificationWidth").ToString();
+            this.showCopyButtonCheckbox.Checked = SettingsManager.getSettingBool("SimpleNotificationCopyButton");
 
             popupSpecificItemBox.Items.Clear();
             foreach (string str in SettingsManager.getSetting("NotificationItems")) {
@@ -180,6 +182,21 @@ namespace Tibialyzer {
 
             SettingsManager.setSetting("PopupDuration", popupDurationSlider.Value);
             popupDurationHeader.Text = String.Format("Popup Duration ({0}s)", popupDurationSlider.Value);
+        }
+
+        private void notificationWidthBox_TextChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            int width;
+            if (int.TryParse((sender as TextBox).Text, out width)) {
+                SettingsManager.setSetting("SimpleNotificationWidth", width);
+            }
+        }
+
+        private void showCopyButtonCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            SettingsManager.setSetting("SimpleNotificationCopyButton", showCopyButtonCheckbox.Checked);
         }
     }
 }
