@@ -24,24 +24,26 @@ namespace Tibialyzer {
         public static void LoadSettings(string settingsFile) {
             string line;
             string currentSetting = null;
-            settings.Clear();
+            lock(settings) {
+                settings.Clear();
 
-            if (!File.Exists(settingsFile)) {
-                ResetSettingsToDefault();
-                SaveSettings();
-            } else {
-                StreamReader file = new StreamReader(settingsFile);
-                while ((line = file.ReadLine()) != null) {
-                    if (line.Length == 0) continue;
-                    if (line[0] == '@') {
-                        currentSetting = line.Substring(1, line.Length - 1);
-                        if (!settings.ContainsKey(currentSetting))
-                            settings.Add(currentSetting, new List<string>());
-                    } else if (currentSetting != null) {
-                        settings[currentSetting].Add(line);
+                if (!File.Exists(settingsFile)) {
+                    ResetSettingsToDefault();
+                    SaveSettings();
+                } else {
+                    StreamReader file = new StreamReader(settingsFile);
+                    while ((line = file.ReadLine()) != null) {
+                        if (line.Length == 0) continue;
+                        if (line[0] == '@') {
+                            currentSetting = line.Substring(1, line.Length - 1);
+                            if (!settings.ContainsKey(currentSetting))
+                                settings.Add(currentSetting, new List<string>());
+                        } else if (currentSetting != null) {
+                            settings[currentSetting].Add(line);
+                        }
                     }
+                    file.Close();
                 }
-                file.Close();
             }
         }
 
@@ -65,50 +67,58 @@ namespace Tibialyzer {
         }
 
         public static void removeSetting(string key) {
-            if (settings.ContainsKey(key)) {
-                settings.Remove(key);
-                SaveSettings();
+            lock(settings) {
+                if (settings.ContainsKey(key)) {
+                    settings.Remove(key);
+                }
             }
+            SaveSettings();
         }
 
         public static bool getSettingBool(string key) {
-            if (!settings.ContainsKey(key) || settings[key].Count == 0) return false;
-            return settings[key][0] == "True";
+            string str = getSettingString(key);
+            if (str == null) return false;
+            return str == "True";
         }
 
         public static int getSettingInt(string key) {
-            if (!settings.ContainsKey(key) || settings[key].Count == 0) return -1;
+            string str = getSettingString(key);
+            if (str == null) return -1;
             int v;
-            if (int.TryParse(settings[key][0], out v)) {
+            if (int.TryParse(str, out v)) {
                 return v;
             }
             return -1;
         }
         public static double getSettingDouble(string key) {
-            if (!settings.ContainsKey(key) || settings[key].Count == 0) return -1;
+            string str = getSettingString(key);
+            if (str == null) return -1;
             double v;
-            if (double.TryParse(settings[key][0], NumberStyles.Any, CultureInfo.InvariantCulture, out v)) {
+            if (double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out v)) {
                 return v;
             }
             return -1;
         }
 
         public static string getSettingString(string key) {
-            if (!settings.ContainsKey(key) || settings[key].Count == 0) return null;
-            return settings[key][0];
+            var settings = getSetting(key);
+            if (settings.Count == 0) return null;
+            return settings[0];
         }
 
         public static List<string> getSetting(string key) {
-            if (!settings.ContainsKey(key)) return new List<string>();
-            return settings[key];
+            lock(settings) {
+                if (!settings.ContainsKey(key)) return new List<string>();
+                return settings[key];
+            }
         }
 
         public static void setSetting(string key, List<string> value) {
             lock(settings) {
                 if (!settings.ContainsKey(key)) settings.Add(key, value);
                 else settings[key] = value;
-                SaveSettings();
             }
+            SaveSettings();
         }
 
         public static void setSetting(string key, string value) {
