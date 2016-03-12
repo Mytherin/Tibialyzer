@@ -56,7 +56,7 @@ namespace Tibialyzer {
                 string message = logMessageCollection.Items[logMessageCollection.SelectedIndex].ToString();
                 var result = Parser.ParseLootMessage(message);
                 if (result != null) {
-                    PopupManager.ShowSimpleNotification(new SimpleLootNotification(result.Item1, result.Item2));
+                    PopupManager.ShowSimpleNotification(new SimpleLootNotification(result.Item1, result.Item2, message));
                 }
             }
         }

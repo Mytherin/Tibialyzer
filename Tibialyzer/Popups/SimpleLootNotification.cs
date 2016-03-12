@@ -12,7 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +26,7 @@ namespace Tibialyzer {
         private PictureBox creatureBox;
         public Creature creature;
 
-        public SimpleLootNotification(Creature cr, List<Tuple<Item, int>> items) : base() {
+        public SimpleLootNotification(Creature cr, List<Tuple<Item, int>> items, string message) : base() {
             this.InitializeComponent();
             this.creature = cr;
 
@@ -41,7 +41,7 @@ namespace Tibialyzer {
             value_tooltip.ShowAlways = true;
             value_tooltip.UseFading = true;
 
-            int max_x = 300;
+            int max_x = this.Size.Width - creatureBox.Width - 32;
             int base_x = 64, base_y = 20;
             int x = 0;
             int y = 0;
@@ -53,13 +53,35 @@ namespace Tibialyzer {
                 if (tpl.Item1.GetName().ToLower() == "gold coin" && tpl.Item2 > 100) {
                     Item platinumCoin = StorageManager.getItem("platinum coin");
                     updatedItems.Add(new Tuple<Item, int>(platinumCoin, tpl.Item2 / 100));
-                    updatedItems.Add(new Tuple<Item,int>(tpl.Item1, tpl.Item2 % 100));
+                    updatedItems.Add(new Tuple<Item, int>(tpl.Item1, tpl.Item2 % 100));
                 } else {
                     updatedItems.Add(tpl);
                 }
             }
             updatedItems = updatedItems.OrderByDescending(o => o.Item1.GetMaxValue() * o.Item2).ToList();
 
+            x = 0;
+            foreach (Tuple<Item, int> tpl in updatedItems) {
+                Item item = tpl.Item1;
+                int count = tpl.Item2;
+                while (count > 0) {
+                    if (x >= (max_x - item_size.Width - item_spacing)) {
+                        item_size = new Size(24, 24);
+                        x = 0;
+                        base_y = 4;
+                        creatureDropLabel.Visible = false;
+                        break;
+                    }
+                    int mitems = 1;
+                    if (item.stackable) mitems = Math.Min(count, 100);
+                    count -= mitems;
+
+                    x += item_size.Width + item_spacing;
+                }
+                if (x == 0) break;
+            }
+
+            x = 0;
             foreach (Tuple<Item, int> tpl in updatedItems) {
                 Item item = tpl.Item1;
                 int count = tpl.Item2;
@@ -85,8 +107,9 @@ namespace Tibialyzer {
                         picture_box.Image = item.GetImage();
                     }
 
-                    picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
+                    picture_box.SizeMode = PictureBoxSizeMode.Zoom;
                     picture_box.BackgroundImage = StyleManager.GetImage("item_background.png");
+                    picture_box.BackgroundImageLayout = ImageLayout.Zoom;
                     value_tooltip.SetToolTip(picture_box, item.displayname.ToTitle() + " value: " + Math.Max(item.actual_value, item.vendor_value) * mitems);
                     this.Controls.Add(picture_box);
 
@@ -102,6 +125,20 @@ namespace Tibialyzer {
             }
             this.creatureBox.Image = cr.GetImage();
             this.creatureDropLabel.Text = String.Format("Loot of {0}.", cr.displayname);
+
+            PictureBox copyButton = new PictureBox();
+            copyButton.Size = new Size(32, 32);
+            copyButton.BackColor = Color.Transparent;
+            copyButton.Location = new Point(this.Size.Width - copyButton.Size.Width - 4, (this.Size.Height - copyButton.Size.Height) / 2);
+            copyButton.Click += CopyLootText;
+            copyButton.Name = message;
+            copyButton.Image = StyleManager.GetImage("copyicon.png");
+            copyButton.SizeMode = PictureBoxSizeMode.Zoom;
+            this.Controls.Add(copyButton);
+        }
+
+        private void CopyLootText(object sender, EventArgs e) {
+            Clipboard.SetText((sender as Control).Name);
         }
 
         private void openItem_Click(object sender, EventArgs e) {

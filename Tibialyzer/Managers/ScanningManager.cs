@@ -221,7 +221,7 @@ namespace Tibialyzer {
                             PopupManager.ShowSimpleNotification(cr.displayname, cr.displayname + " dropped a valuable item.", cr.image);
                         } else {
                             MainForm.mainForm.Invoke((MethodInvoker)delegate {
-                                PopupManager.ShowSimpleNotification(new SimpleLootNotification(cr, items));
+                                PopupManager.ShowSimpleNotification(new SimpleLootNotification(cr, items, tpl.Item3));
                             });
                         }
 
@@ -230,7 +230,7 @@ namespace Tibialyzer {
                             Bitmap screenshot = ScreenshotManager.takeScreenshot();
                             if (screenshot == null) continue;
                             // Add a notification to the screenshot
-                            SimpleLootNotification screenshotNotification = new SimpleLootNotification(cr, items);
+                            SimpleLootNotification screenshotNotification = new SimpleLootNotification(cr, items, null);
                             Bitmap notification = new Bitmap(screenshotNotification.Width, screenshotNotification.Height);
                             screenshotNotification.DrawToBitmap(notification, new Rectangle(0, 0, screenshotNotification.Width, screenshotNotification.Height));
                             foreach (Control c in screenshotNotification.Controls) {
