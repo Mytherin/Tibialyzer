@@ -359,7 +359,7 @@ namespace Tibialyzer {
             return h;
         }
 
-        public static void AddUsedItems(Hunt hunt, Dictionary<string, HashSet<int>> usedItems) {
+        public static void AddUsedItems(Hunt hunt, Dictionary<string, Dictionary<string, HashSet<int>>> usedItems) {
             bool newValues = hunt.AddUsedItems(usedItems);
             if (newValues) {
                 GlobalDataManager.UpdateUsedItems();
@@ -396,7 +396,7 @@ namespace Tibialyzer {
         public double totalTime = 0;
         private Loot loot = new Loot();
         private List<string> lootCreatures = new List<string>();
-        private Dictionary<Item, HashSet<int>> usedItems = new Dictionary<Item, HashSet<int>>();
+        private Dictionary<Item, OrderedHashSetCollection> usedItems = new Dictionary<Item, OrderedHashSetCollection>();
         private object huntLock = new object();
 
         public string GetTableName() {
@@ -413,18 +413,20 @@ namespace Tibialyzer {
             }
         }
 
-        public bool AddUsedItems(Dictionary<string, HashSet<int>> usedItems) {
+        public bool AddUsedItems(Dictionary<string, Dictionary<string, HashSet<int>>> newItems) {
             bool newValues = false;
             lock (huntLock) {
-                foreach (var val in usedItems) {
+                foreach (var val in newItems) {
                     Item item = StorageManager.getItem(val.Key);
                     if (item == null) continue;
                     if (!this.usedItems.ContainsKey(item)) {
-                        this.usedItems.Add(item, new HashSet<int>());
+                        this.usedItems.Add(item, new OrderedHashSetCollection());
                     }
-                    int currentCount = this.usedItems[item].Count;
-                    this.usedItems[item].UnionWith(val.Value);
-                    if (this.usedItems[item].Count > currentCount) {
+                    var collection = this.usedItems[item];
+
+                    int currentCount = collection.GetItemCount();
+                    collection.UpdateHashSet(val.Value);
+                    if (collection.GetItemCount() > currentCount) {
                         newValues = true;
                     }
                 }
@@ -436,8 +438,9 @@ namespace Tibialyzer {
             lock (huntLock) {
                 List<Tuple<Item, int>> items = new List<Tuple<Item, int>>();
                 foreach (var val in usedItems) {
-                    if (val.Value.Count > 1) {
-                        items.Add(new Tuple<Item, int>(val.Key, val.Value.Count));
+                    int count = val.Value.GetItemCount();
+                    if (count > 1) {
+                        items.Add(new Tuple<Item, int>(val.Key, count));
                     }
                 }
                 return items;
@@ -663,5 +666,66 @@ namespace Tibialyzer {
                 this.totalTime = 0;
             }
         }
-    };
+    }
+
+    class OrderedHashSetCollection {
+        public List<Tuple<string, HashSet<int>>> hashSets = new List<Tuple<string, HashSet<int>>>();
+        int baseCount = 0;
+
+        private void CleanHashSets() {
+            lock(hashSets) {
+                string currentTime = TimestampManager.getCurrentTime();
+                for(int i = 0; i < hashSets.Count; i++) {
+                    if (TimestampManager.Distance(hashSets[i].Item1, currentTime) > 30) {
+                        baseCount += hashSets[i + 1].Item2.Count;
+                        hashSets.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+        }
+
+        public void UpdateHashSet(Dictionary<string, HashSet<int>> values) {
+            lock (hashSets) {
+                foreach (var val in values.OrderBy(o => o.Key)) {
+                    var hashSet = hashSets.Find(o => o.Item1 == val.Key);
+                    if (hashSet == null) {
+                        hashSet = new Tuple<string, HashSet<int>>(val.Key, val.Value);
+                        hashSets.Add(hashSet);
+                    } else {
+                        int count = hashSet.Item2.Count;
+                        hashSet.Item2.UnionWith(val.Value);
+                        if (count == hashSet.Item2.Count) // no new items
+                            continue;
+                    }
+                    int index = hashSets.IndexOf(hashSet);
+                    if (index <= 0) {
+                        continue;
+                    } else {
+                        Tuple<string, HashSet<int>> previous = null;
+                        while((previous == null || previous.Item2.Count == 0) && index >= 0) {
+                            index--;
+                            previous = hashSets[index];
+                        }
+                        foreach(int itemCount in previous.Item2) {
+                            if (hashSet.Item2.Contains(itemCount)) {
+                                hashSet.Item2.Remove(itemCount);
+                            }
+                        }
+                    }
+                }
+            }
+            CleanHashSets();
+        }
+        
+        public int GetItemCount() {
+            int count = baseCount;
+            lock (hashSets) {
+                foreach (var tpl in hashSets) {
+                    count += tpl.Item2.Count;
+                }
+            }
+            return count;
+        }
+    }
 }

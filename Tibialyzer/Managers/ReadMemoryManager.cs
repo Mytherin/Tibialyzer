@@ -42,7 +42,7 @@ namespace Tibialyzer {
         public Dictionary<string, List<string>> lookMessages = new Dictionary<string, List<string>>();
         public Dictionary<string, bool> deaths = new Dictionary<string, bool>();
         public Dictionary<string, List<string>> duplicateMessages = new Dictionary<string, List<string>>();
-        public Dictionary<string, HashSet<int>> usingMessages = new Dictionary<string, HashSet<int>>();
+        public Dictionary<string, Dictionary<string, HashSet<int>>> usingMessages = new Dictionary<string, Dictionary<string, HashSet<int>>>();
     }
 
     public class DamageResult {
@@ -373,8 +373,9 @@ namespace Tibialyzer {
                     } else if (logMessage.Substring(5, 7) == " Using " && logMessage.Substring(logMessage.Length - 3, 3) == "...") {
                         // using log message (Using one of X items...)
                         var values = Parser.ParseUsingMessage(logMessage);
-                        if (!res.usingMessages.ContainsKey(values.Item1)) res.usingMessages.Add(values.Item1, new HashSet<int>());
-                        if (!res.usingMessages[values.Item1].Contains(values.Item2)) res.usingMessages[values.Item1].Add(values.Item2);
+                        if (!res.usingMessages.ContainsKey(values.Item1)) res.usingMessages.Add(values.Item1, new Dictionary<string, HashSet<int>>());
+                        if (!res.usingMessages[values.Item1].ContainsKey(t)) res.usingMessages[values.Item1].Add(t, new HashSet<int>());
+                        res.usingMessages[values.Item1][t].Add(values.Item2);
                     } else {
                         foreach (Event ev in StorageManager.eventIdMap.Values) {
                             foreach (string evMessage in ev.eventMessages) {
