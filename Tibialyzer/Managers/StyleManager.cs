@@ -141,5 +141,15 @@ namespace Tibialyzer {
                     return false;
             }
         }
+
+        public static string GoldToText(long gold) {
+            if (gold < 10000) {
+                return ((long)gold).ToString();
+            } else if (gold < 1000000) {
+                return ((long)gold / 1000).ToString() + "K";
+            } else {
+                return ((long)gold / 1000000).ToString() + "M";
+            }
+        }
     }
 }

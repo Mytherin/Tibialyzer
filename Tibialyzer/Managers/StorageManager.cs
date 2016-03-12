@@ -1112,6 +1112,42 @@ namespace Tibialyzer {
 
 
 
+        public static void UpdateDiscardQuery(string query) {
+            SQLiteCommand command;
+            command = new SQLiteCommand("UPDATE Items SET discard=1;", conn);
+            command.ExecuteNonQuery();
+            command = new SQLiteCommand(String.Format("UPDATE Items SET discard=0 WHERE {0};", query), conn);
+            command.ExecuteNonQuery();
+            command = new SQLiteCommand(String.Format("SELECT id FROM Items WHERE {0};", query), conn);
+            SQLiteDataReader reader = command.ExecuteReader();
+            HashSet<int> index = new HashSet<int>();
+            while (reader.Read()) {
+                int ind = reader.GetInt32(0);
+                index.Add(ind);
+            }
+            foreach (int id in _itemIdMap.Keys.ToList()) {
+                _itemIdMap[id].discard = !index.Contains(id);
+            }
+        }
+
+        public static void UpdateConvertQuery(string query) {
+            SQLiteCommand command;
+            command = new SQLiteCommand("UPDATE Items SET convert_to_gold=1;", conn);
+            command.ExecuteNonQuery();
+            command = new SQLiteCommand(String.Format("UPDATE Items SET convert_to_gold=0 WHERE {0};", query), conn);
+            command.ExecuteNonQuery();
+            command = new SQLiteCommand(String.Format("SELECT id FROM Items WHERE {0};", query), conn);
+            SQLiteDataReader reader = command.ExecuteReader();
+            HashSet<int> index = new HashSet<int>();
+            while (reader.Read()) {
+                int ind = reader.GetInt32(0);
+                index.Add(ind);
+            }
+            foreach (int id in _itemIdMap.Keys.ToList()) {
+                _itemIdMap[id].convert_to_gold = !index.Contains(id);
+            }
+        }
+
         public static void setGoldRatio(double ratio) {
             ratio -= 0.00001;
             using (var transaction = conn.BeginTransaction()) {

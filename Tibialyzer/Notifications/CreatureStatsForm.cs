@@ -136,13 +136,7 @@ namespace Tibialyzer {
                     averageGold += ((itemDrop.max + itemDrop.min) / 2.0) * itemDrop.percentage * item.GetMaxValue() / 100;
                 }
             }
-            if (averageGold < 10000) {
-                goldstring = ((long)averageGold).ToString();
-            } else if (averageGold < 1000000) {
-                goldstring = ((long)averageGold / 1000).ToString() + "K";
-            } else {
-                goldstring = ((long)averageGold / 1000000).ToString() + "M";
-            }
+            goldstring = StyleManager.GoldToText((long)averageGold);
             this.averageGoldLabel.Text = "Average Gold: " + goldstring;
 
             this.maxDamageLabel.Text = "Max Damage: " + (this.creature.maxdamage >= 0 ? this.creature.maxdamage.ToString() : "-");
