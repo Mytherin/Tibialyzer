@@ -225,6 +225,8 @@ C::NumpadPgDn
             setSettingIfNotSet("CreatureDropsFormWidth", 358);
             setSettingIfNotSet("CreatureStatsFormWidth", 378);
             setSettingIfNotSet("DamageChartWidth", 450);
+            setSettingIfNotSet("ExperienceChartWidth", 450);
+            setSettingIfNotSet("SummaryFormWidth", 210);
             setSettingIfNotSet("ItemViewFormWidth", 378);
             setSettingIfNotSet("PopupDuration", 8);
             setSettingIfNotSet("SummaryMaxItemDrops", 5);

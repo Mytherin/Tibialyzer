@@ -12,8 +12,8 @@ using System.Windows.Forms;
 
 namespace Tibialyzer {
     public partial class SummaryForm : NotificationForm {
-        const int ImageWidth = 200;
-        const int ImageHeight = 25;
+        private int ImageWidth = 200;
+        private int ImageHeight = 25;
         private object updateLock = new object();
 
         public SummaryForm() {
@@ -251,12 +251,8 @@ namespace Tibialyzer {
         private List<Control> usedItemsControls = new List<Control>();
         public override void LoadForm() {
             this.SuspendForm();
-
-            List<Creature> creatures = new List<Creature> { StorageManager.getCreature("Demon"), StorageManager.getCreature("Hero"), StorageManager.getCreature("Dragon Lord"), StorageManager.getCreature("Plaguesmith") };
-            List<Item> items = new List<Item> { StorageManager.getItem("magic sword"), StorageManager.getItem("dragon scale mail"), StorageManager.getItem("plate armor"), StorageManager.getItem("platinum coin") };
+            
             Label label;
-
-
             label = new Label();
             label.Text = "Summary";
             label.Location = new Point(x, 0);
@@ -266,19 +262,13 @@ namespace Tibialyzer {
             label.Font = StyleManager.MainFormLabelFontSmall;
             label.TextAlign = ContentAlignment.MiddleCenter;
             this.Controls.Add(label);
-
-            UpdateSummaryForm();
-            UpdateLootForm();
-            UpdateDamageForm();
-            UpdateWasteForm();
-            //update the summary form again because the loot value is computed in UpdateLootForm()
-            //and UpdateLootForm() has to be called after UpdateLootForm() because it needs the controls to be added to compute its base y position
-            UpdateSummaryForm();
-
+            
             this.NotificationInitialize();
 
             this.NotificationFinalize();
             this.ResumeForm();
+
+            this.RefreshForm();
         }
 
         public void ClearControlList(List<Control> list, out int minheight, out int maxheight) {
@@ -493,6 +483,38 @@ namespace Tibialyzer {
 
         private void CommandClick(object sender, EventArgs e) {
             CommandManager.ExecuteCommand((sender as Control).Name);
+        }
+
+        public override string FormName() {
+            return "SummaryForm";
+        }
+
+        public override int MinWidth() {
+            return 210;
+        }
+
+        public override int MaxWidth() {
+            return 410;
+        }
+
+        public override int WidthInterval() {
+            return 50;
+        }
+
+        public override void RefreshForm() {
+            this.SuspendForm();
+            this.Size = new Size(GetWidth(), this.Size.Height);
+            ImageWidth = this.Size.Width - 10;
+
+            UpdateSummaryForm();
+            UpdateLootForm();
+            UpdateDamageForm();
+            UpdateWasteForm();
+            //update the summary form again because the loot value is computed in UpdateLootForm()
+            //and UpdateLootForm() has to be called after UpdateLootForm() because it needs the controls to be added to compute its base y position
+            UpdateSummaryForm();
+
+            this.ResumeForm();
         }
     }
 }

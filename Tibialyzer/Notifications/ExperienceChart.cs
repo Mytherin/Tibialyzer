@@ -25,11 +25,11 @@ using System.Windows.Forms.DataVisualization.Charting;
 namespace Tibialyzer {
     class ExperienceChart : NotificationForm {
         private TransparentChart mChart;
-        public bool graph = true;
         public string filter = "";
 
         public ExperienceChart() {
             InitializeComponent();
+            RefreshForm();
         }
 
         private void InitializeComponent() {
@@ -152,6 +152,25 @@ namespace Tibialyzer {
 
         public override string FormName() {
             return "ExperienceChart";
+        }
+
+        public override int MinWidth() {
+            return 200;
+        }
+
+        public override int MaxWidth() {
+            return 800;
+        }
+
+        public override int WidthInterval() {
+            return 70;
+        }
+
+        public override void RefreshForm() {
+            this.SuspendForm();
+            this.Size = new Size(GetWidth(), (int)(GetWidth() * 0.9));
+            mChart.Size = new Size(this.Size.Width, this.Size.Height);
+            this.ResumeForm();
         }
     }
 }
