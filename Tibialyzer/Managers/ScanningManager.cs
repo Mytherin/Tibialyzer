@@ -260,6 +260,7 @@ namespace Tibialyzer {
             int counter = 0;
             lock(RecentDrops) {
                 for(int i = RecentDrops.Count - 1; i >= 0; i--) {
+                    if (!TrackCreature(RecentDrops[i].Item1)) continue;
                     recentDrops.Add(RecentDrops[i]);
                     counter++;
                     if (counter >= max) {
@@ -269,5 +270,13 @@ namespace Tibialyzer {
             }
             return recentDrops;
         }
+        
+        public static bool TrackCreature(Creature cr) {
+            if (SettingsManager.getSettingBool("IgnoreLowExperience")) {
+                return cr.experience >= SettingsManager.getSettingInt("IgnoreLowExperienceValue");
+            }
+            return true;
+        }
+
     }
 }

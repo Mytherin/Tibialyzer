@@ -195,13 +195,6 @@ namespace Tibialyzer {
             this.ResumeForm();
         }
 
-        private bool TrackCreature(Creature cr) {
-            if (SettingsManager.getSettingBool("IgnoreLowExperience")) {
-                return cr.experience >= SettingsManager.getSettingInt("IgnoreLowExperienceValue");
-            }
-            return true;
-        }
-
         public static string TimeToString(long totalSeconds) {
             string displayString = "";
             if (totalSeconds >= 3600) {
