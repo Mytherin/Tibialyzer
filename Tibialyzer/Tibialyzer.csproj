@@ -151,6 +151,9 @@
     <Compile Include="Popups\PopupContainer.Designer.cs">
       <DependentUpon>PopupContainer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Popups\SimpleTimerNotification.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="SelectProcessForm.cs">
       <SubType>Form</SubType>
     </Compile>

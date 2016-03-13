@@ -27,7 +27,7 @@ namespace Tibialyzer {
         System.Timers.Timer closeTimer = null;
         private bool animations = true;
 
-        protected void InitializeSimpleNotification(bool movement = true, bool destroy = true) {
+        protected void InitializeSimpleNotification(bool movement = true, bool destroy = true, double extraTime = 0) {
             this.Click += c_Click;
             foreach (Control c in this.Controls) {
                 c.Click += c_Click;
@@ -41,7 +41,7 @@ namespace Tibialyzer {
                 moveTimer.Enabled = true;
             }
             if (destroy) {
-                closeTimer = new System.Timers.Timer(Math.Max(SettingsManager.getSettingInt("PopupDuration"), 1) * 1000);
+                closeTimer = new System.Timers.Timer((Math.Max(SettingsManager.getSettingInt("PopupDuration"), 1) + extraTime) * 1000);
                 closeTimer.Elapsed += new System.Timers.ElapsedEventHandler(CloseNotification);
                 closeTimer.Enabled = true;
             }
@@ -101,8 +101,8 @@ namespace Tibialyzer {
                         });
                         closeTimer.Interval = 20;
                         closeTimer.Start();
-                    } catch {
-
+                    } catch(Exception ex) {
+                        Console.WriteLine(ex.Message);
                     }
                 }
 

@@ -12,7 +12,7 @@ namespace Tibialyzer {
         private static AutoHotkeySuspendedMode window = null;
         private static string autoHotkeyWarning = "Warning: Modified AutoHotkey settings have not taken effect. Restart AutoHotkey to apply changes.";
 
-        private static string modifyKeyString(string value) {
+        private static string modifyKeyString(string value, string originalLine) {
             if (value.Contains("alt+")) {
                 value = value.Replace("alt+", "!");
             }
@@ -24,7 +24,8 @@ namespace Tibialyzer {
             }
             if (value.Contains("command=")) {
                 string[] split = value.Split(new string[] { "command=" }, StringSplitOptions.None);
-                value = split[0] + "SendMessage, 0xC, 0, \"" + split[1] + "\",,Tibialyzer"; //command is send through the WM_SETTEXT message
+                int start = value.IndexOf(split[1]);
+                value = split[0] + "SendMessage, 0xC, 0, \"" + originalLine.Substring(start, originalLine.Length - start) + "\",,Tibialyzer"; //command is send through the WM_SETTEXT message
             }
 
             return value;
@@ -46,7 +47,7 @@ namespace Tibialyzer {
                     if (line.Length == 0 || line[0] == ';') continue;
                     if (line.Contains("suspend")) {
                         // if the key is set to suspend the hotkey layout, we set it up so it sends a message to us
-                        writer.WriteLine(modifyKeyString(line.ToLower().Split(new string[] { "suspend" }, StringSplitOptions.None)[0]));
+                        writer.WriteLine(modifyKeyString(line.ToLower().Split(new string[] { "suspend" }, StringSplitOptions.None)[0], l));
                         writer.WriteLine("suspend");
                         writer.WriteLine("if (A_IsSuspended)");
                         // message 32 is suspend
@@ -56,7 +57,7 @@ namespace Tibialyzer {
                         writer.WriteLine("PostMessage, 0x317,33,33,,Tibialyzer");
                         writer.WriteLine("return");
                     } else {
-                        writer.WriteLine(modifyKeyString(line));
+                        writer.WriteLine(modifyKeyString(line, l));
                     }
                 }
             }

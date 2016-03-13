@@ -71,6 +71,7 @@ namespace Tibialyzer {
         public static List<Font> FontList = new List<Font>();
 
         public static Font TextFont = new Font(FontFamily.GenericSansSerif, 9, FontStyle.Bold);
+        public static Font MainFormLabelFontBig = new System.Drawing.Font("Verdana", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
         public static Font MainFormLabelFont = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
         public static Font MainFormLabelFontSmall = new System.Drawing.Font("Verdana", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
         #endregion

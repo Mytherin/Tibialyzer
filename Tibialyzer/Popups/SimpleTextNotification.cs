@@ -25,7 +25,7 @@ namespace Tibialyzer {
         private Label titleLabel;
         private Label textLabel;
         private PictureBox notificationImage;
-        public SimpleTextNotification(Image image, string title, string text) {
+        public SimpleTextNotification(Image image, string title, string text, double extraTime = 0, int widthOffset = 0) {
             this.InitializeComponent();
 
             this.Size = new Size(SettingsManager.getSettingInt("SimpleNotificationWidth"), this.Size.Height);
@@ -34,6 +34,8 @@ namespace Tibialyzer {
             this.titleLabel.Text = title;
             this.textLabel.Text = text;
             this.textLabel.MaximumSize = new System.Drawing.Size(this.Size.Width - textLabel.Location.X, 0);
+
+            this.textLabel.MaximumSize = new Size(this.textLabel.MaximumSize.Width - widthOffset, 0);
 
             this.InitializeSimpleNotification();
         }

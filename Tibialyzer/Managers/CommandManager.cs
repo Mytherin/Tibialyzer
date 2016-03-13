@@ -123,6 +123,62 @@ namespace Tibialyzer {
                     if (parseMemoryResults != null) {
                         NotificationManager.ShowExperienceChartNotification(command);
                     }
+                } else if (comp.StartsWith("remindme" + Constants.CommandSymbol)) { //remindme@
+                    string[] splits = command.Split(Constants.CommandSymbol);
+                    string time = splits[1].ToLower().Replace(" ", "").Replace("\t", "").Replace("\n", "") + 's'; //remove all whitespace
+                    int timeInSeconds = 0;
+                    int startIndex = 0, endIndex = 0;
+                    for (int i = 0; i < time.Length; i++) {
+                        if (time[i].isDigit()) {
+                            endIndex = i + 1;
+                        } else if (endIndex > startIndex) {
+                            int value = int.Parse(time.Substring(startIndex, endIndex - startIndex));
+                            if (time[i] == 'm') {
+                                value *= 60;
+                            } else if (time[i] == 'h') {
+                                value *= 3600;
+                            }
+                            timeInSeconds += value;
+                            startIndex = i + 1;
+                            endIndex = startIndex;
+                        } else {
+                            startIndex = i + 1;
+                        }
+                    }
+                    if (timeInSeconds > 0) {
+                        Image iconImage = null;
+                        if (splits.Length > 4) {
+                            string icon = splits[4];
+                            TibiaObject[] objects = new TibiaObject[] { StorageManager.getItem(icon), StorageManager.getCreature(icon), StorageManager.getNPC(icon), StorageManager.getMount(icon), StorageManager.getSpell(icon), StorageManager.getOutfit(icon) };
+                            foreach (var obj in objects) {
+                                if (obj != null) {
+                                    iconImage = obj.GetImage();
+                                    if (iconImage != null) {
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        string title = splits.Length > 2 ? splits[2] : "Reminder!";
+                        string message = splits.Length > 3 ? splits[3] : String.Format("Reminder from {0} seconds ago!", timeInSeconds);
+
+                        const int notificationWarningTime = 5;
+
+                        if (timeInSeconds <= notificationWarningTime) {
+                            PopupManager.ShowSimpleNotification(new SimpleTimerNotification(iconImage, title, message, timeInSeconds));
+                        } else {
+                            System.Timers.Timer timer = new System.Timers.Timer(1000 * (timeInSeconds - notificationWarningTime));
+                            timer.Elapsed += (sender, e) => {
+                                timer.Enabled = false;
+                                timer.Dispose();
+
+                                MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                                    PopupManager.ShowSimpleNotification(new SimpleTimerNotification(iconImage, title, message, notificationWarningTime));
+                                });
+                            };
+                            timer.Enabled = true;
+                        }
+                    }
                 } else if (comp.StartsWith("exp" + Constants.CommandSymbol)) { //exp@
                     string title = "Experience";
                     string text = "Currently gaining " + (parseMemoryResults == null ? "unknown" : ((int)parseMemoryResults.expPerHour).ToString()) + " experience an hour.";
