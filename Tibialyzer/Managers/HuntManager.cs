@@ -184,7 +184,7 @@ namespace Tibialyzer {
                 stamp--;
             }
 
-            h.Reset();
+            h.Reset(clearMinutes);
             HuntManager.SetHuntTime(h, clearMinutes);
 
 
@@ -656,12 +656,21 @@ namespace Tibialyzer {
             return trackedCreatures;
         }
 
-        public void Reset() {
+        public void Reset(int clearMinutes = 0) {
             lock(huntLock) {
                 this.loot.creatureLoot.Clear();
                 this.loot.killCount.Clear();
                 this.loot.logMessages.Clear();
-                this.usedItems.Clear();
+                if (clearMinutes == 0) {
+                    this.usedItems.Clear();
+                } else {
+                    foreach(var item in usedItems.Keys.ToList()) {
+                        usedItems[item].ClearItems(clearMinutes);
+                        if (usedItems[item].GetItemCount() == 0) {
+                            usedItems.Remove(item);
+                        }
+                    }
+                }
                 this.totalExp = 0;
                 this.totalTime = 0;
             }
@@ -699,6 +708,18 @@ namespace Tibialyzer {
                                 hashSet.Item2.Remove(itemCount);
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        public void ClearItems(int clearMinutes) {
+            string currentTime = TimestampManager.getCurrentTime();
+            lock (hashSets) {
+                for (int i = 0; i < hashSets.Count; i++) {
+                    if (TimestampManager.Distance(currentTime, hashSets[i].Item1) > clearMinutes) {
+                        hashSets.RemoveAt(i);
+                        i--;
                     }
                 }
             }
