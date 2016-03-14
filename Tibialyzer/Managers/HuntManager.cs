@@ -671,20 +671,7 @@ namespace Tibialyzer {
     class OrderedHashSetCollection {
         public List<Tuple<string, HashSet<int>>> hashSets = new List<Tuple<string, HashSet<int>>>();
         int baseCount = 0;
-
-        private void CleanHashSets() {
-            lock(hashSets) {
-                string currentTime = TimestampManager.getCurrentTime();
-                for(int i = 0; i < hashSets.Count; i++) {
-                    if (TimestampManager.Distance(hashSets[i].Item1, currentTime) > 30) {
-                        baseCount += hashSets[i + 1].Item2.Count;
-                        hashSets.RemoveAt(i);
-                        i--;
-                    }
-                }
-            }
-        }
-
+        
         public void UpdateHashSet(Dictionary<string, HashSet<int>> values) {
             lock (hashSets) {
                 foreach (var val in values.OrderBy(o => o.Key)) {
@@ -715,7 +702,6 @@ namespace Tibialyzer {
                     }
                 }
             }
-            CleanHashSets();
         }
 
         public int GetItemCount() {
