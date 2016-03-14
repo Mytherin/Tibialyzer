@@ -28,7 +28,7 @@ namespace Tibialyzer {
                 timeLabel.TextAlign = ContentAlignment.MiddleCenter;
                 this.Controls.Add(timeLabel);
 
-                timer = new System.Timers.Timer(10);
+                timer = new System.Timers.Timer(100);
                 timer.Elapsed += Timer_Elapsed;
                 timer.Enabled = true;
 
