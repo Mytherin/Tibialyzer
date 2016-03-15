@@ -23,22 +23,22 @@ c = conn.cursor()
 c.execute('DROP TABLE IF EXISTS WorldMap')
 c.execute('CREATE TABLE IF NOT EXISTS WorldMap(z INTEGER, image BLOB)')
 map_images = [
-    'https://tibiamaps.github.io/tibia-map-data/data/floor-15-map.png',
-    'https://tibiamaps.github.io/tibia-map-data/data/floor-14-map.png',
-    'https://tibiamaps.github.io/tibia-map-data/data/floor-13-map.png',
-    'https://tibiamaps.github.io/tibia-map-data/data/floor-12-map.png',
-    'https://tibiamaps.github.io/tibia-map-data/data/floor-11-map.png',
-    'https://tibiamaps.github.io/tibia-map-data/data/floor-10-map.png',
-    'https://tibiamaps.github.io/tibia-map-data/data/floor-09-map.png',
-    'https://tibiamaps.github.io/tibia-map-data/data/floor-08-map.png',
-    'https://tibiamaps.github.io/tibia-map-data/data/floor-07-map.png',
-    'https://tibiamaps.github.io/tibia-map-data/data/floor-06-map.png',
-    'https://tibiamaps.github.io/tibia-map-data/data/floor-05-map.png',
-    'https://tibiamaps.github.io/tibia-map-data/data/floor-04-map.png',
-    'https://tibiamaps.github.io/tibia-map-data/data/floor-03-map.png',
-    'https://tibiamaps.github.io/tibia-map-data/data/floor-02-map.png',
-    'https://tibiamaps.github.io/tibia-map-data/data/floor-01-map.png',
-    'https://tibiamaps.github.io/tibia-map-data/data/floor-00-map.png'
+    'https://tibiamaps.github.io/tibia-map-data/floor-15-map.png',
+    'https://tibiamaps.github.io/tibia-map-data/floor-14-map.png',
+    'https://tibiamaps.github.io/tibia-map-data/floor-13-map.png',
+    'https://tibiamaps.github.io/tibia-map-data/floor-12-map.png',
+    'https://tibiamaps.github.io/tibia-map-data/floor-11-map.png',
+    'https://tibiamaps.github.io/tibia-map-data/floor-10-map.png',
+    'https://tibiamaps.github.io/tibia-map-data/floor-09-map.png',
+    'https://tibiamaps.github.io/tibia-map-data/floor-08-map.png',
+    'https://tibiamaps.github.io/tibia-map-data/floor-07-map.png',
+    'https://tibiamaps.github.io/tibia-map-data/floor-06-map.png',
+    'https://tibiamaps.github.io/tibia-map-data/floor-05-map.png',
+    'https://tibiamaps.github.io/tibia-map-data/floor-04-map.png',
+    'https://tibiamaps.github.io/tibia-map-data/floor-03-map.png',
+    'https://tibiamaps.github.io/tibia-map-data/floor-02-map.png',
+    'https://tibiamaps.github.io/tibia-map-data/floor-01-map.png',
+    'https://tibiamaps.github.io/tibia-map-data/floor-00-map.png'
 ]
 map_images.reverse()
 
