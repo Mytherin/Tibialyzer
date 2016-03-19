@@ -25,11 +25,24 @@ namespace Tibialyzer {
         private static HashSet<string> eventMessages = new HashSet<string>();
         private static HashSet<string> levelAdvances = new HashSet<string>();
         private static Dictionary<string, List<string>> totalLooks = new Dictionary<string, List<string>>();
+        private static long lootValue = 0; 
 
         public static void UpdateDamage() {
             if (DamageChanged != null) {
                 DamageChanged();
             }
+        }
+
+        public static void AddLootValue(long value) {
+            System.Threading.Interlocked.Add(ref lootValue, value);
+        }
+
+        public static long GetLootValue() {
+            return lootValue;
+        }
+
+        public static void ClearLootValue() {
+            System.Threading.Interlocked.Exchange(ref lootValue, 0);
         }
 
         public static void UpdateUsedItems() {

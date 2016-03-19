@@ -42,7 +42,7 @@ namespace Tibialyzer {
                         List<string> times = TimestampManager.getLatestTimes(5);
                         List<TibiaObject> items = new List<TibiaObject>();
                         foreach (string message in GlobalDataManager.GetLookInformation(times)) {
-                            string itemName = Parser.parseLookItem(message).ToLower();
+                            string itemName = Parser.parseLookItem(message).Item1.ToLower();
                             Item item = StorageManager.getItem(itemName);
 
                             if (item != null) {
@@ -616,7 +616,21 @@ namespace Tibialyzer {
                     }
                 } else if (comp.StartsWith("screenshot" + Constants.CommandSymbol)) {
                     ScreenshotManager.saveScreenshot("Screenshot", ScreenshotManager.takeScreenshot());
-                } else {
+                } else if (comp.StartsWith("lootcount" + Constants.CommandSymbol)) {
+                    var sum = GlobalDataManager.GetLootValue();
+                    string title = "Loot Value";
+                    string text = "Loot value is currently: " + sum;
+                    Image image = StyleManager.GetImage("tibia.png");
+                    if (!SettingsManager.getSettingBool("UseRichNotificationType")) {
+                        PopupManager.ShowSimpleNotification(title, text, image);
+                    }
+                    else {
+                        PopupManager.ShowSimpleNotification(new SimpleTextNotification(null, title, text));
+                    }
+                } else if (comp.StartsWith("lootcountclear" + Constants.CommandSymbol)) {
+                    GlobalDataManager.ClearLootValue();
+                }
+                else {
                     bool found = false;
                     foreach (string city in Constants.cities) {
                         if (comp.StartsWith(city + Constants.CommandSymbol)) {
