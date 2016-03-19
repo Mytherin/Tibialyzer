@@ -24,6 +24,7 @@ namespace Tibialyzer {
                 Process[] ids = Process.GetProcesses();
                 for (int i = 0; i < ids.Length; ++i) {
                     if (ids[i].Id == TibiaProcessId) {
+                        MemoryReader.SetProcess(ids[i]);
                         return new Process[1] { ids[i] };
                     }
                 }
@@ -34,6 +35,9 @@ namespace Tibialyzer {
             if (p.Length > 0) {
                 if (TibiaClientName.Contains("flash", StringComparison.OrdinalIgnoreCase)) {
                     return p;
+                }
+                if (TibiaClientName.Contains("tibia", StringComparison.OrdinalIgnoreCase)) {
+                    MemoryReader.SetProcess(p[0]);
                 }
                 return new Process[1] { p[0] };
             }

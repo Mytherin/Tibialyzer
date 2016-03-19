@@ -145,22 +145,17 @@ namespace Tibialyzer {
                 List<int> stamps = TimestampManager.getLatestStamps(3, ignoreStamp);
                 int bytesRead = 0;  // number of bytes read with ReadProcessMemory
 
-                try
-                {
-                    while (proc_min_address_l < proc_max_address_l)
-                    {
+                try {
+                    while (proc_min_address_l < proc_max_address_l) {
                         proc_min_address = new IntPtr(proc_min_address_l);
                         // 28 = sizeof(MEMORY_BASIC_INFORMATION)
                         VirtualQueryEx(processHandle, proc_min_address, out mem_basic_info, 28);
 
                         long addr = (long)proc_min_address;
                         // check if this memory chunk is accessible
-                        if (mem_basic_info.Protect == PAGE_READWRITE && mem_basic_info.State == MEM_COMMIT)
-                        {
-                            if (!whitelist.Contains(addr))
-                            {
-                                if (missingChunksBuffer == null || missingChunksBuffer.Length < mem_basic_info.RegionSize)
-                                {
+                        if (mem_basic_info.Protect == PAGE_READWRITE && mem_basic_info.State == MEM_COMMIT) {
+                            if (!whitelist.Contains(addr)) {
+                                if (missingChunksBuffer == null || missingChunksBuffer.Length < mem_basic_info.RegionSize) {
                                     missingChunksBuffer = new byte[mem_basic_info.RegionSize];
                                 }
 
@@ -168,18 +163,14 @@ namespace Tibialyzer {
                                 ReadProcessMemory((int)processHandle, mem_basic_info.BaseAddress, missingChunksBuffer, mem_basic_info.RegionSize, ref bytesRead);
                                 // scan the memory for strings that start with timestamps and end with the null terminator ('\0')
                                 IEnumerable<string> timestampLines;
-                                if (!flashClient)
-                                {
+                                if (!flashClient) {
                                     timestampLines = Parser.FindTimestamps(missingChunksBuffer, bytesRead);
                                     // if there are any timestamps found, add the address to the list of whitelisted addresses
-                                    if (timestampLines.Any(x => stamps.Contains(TimestampManager.getStamp(int.Parse(x.Substring(0, 2)), int.Parse(x.Substring(3, 2))))))
-                                    {
+                                    if (timestampLines.Any(x => stamps.Contains(TimestampManager.getStamp(int.Parse(x.Substring(0, 2)), int.Parse(x.Substring(3, 2)))))) {
                                         whitelist.Add(addr);
                                     }
-                                }
-                                else {
-                                    if (Parser.HasAnyValidTimestampsFlash(missingChunksBuffer, bytesRead, stamps))
-                                    {
+                                } else {
+                                    if (Parser.HasAnyValidTimestampsFlash(missingChunksBuffer, bytesRead, stamps)) {
                                         whitelist.Add(addr);
                                     }
                                 }
@@ -188,9 +179,7 @@ namespace Tibialyzer {
                         // move to the next memory chunk
                         proc_min_address_l += mem_basic_info.RegionSize;
                     }
-                }
-                catch (Exception ex)
-                {
+                } catch (Exception ex) {
                     Console.WriteLine(ex.Message);
                     return;
                 }
@@ -220,25 +209,21 @@ namespace Tibialyzer {
             Interlocked.Exchange(ref newWhitelistedAddresses, whiteListedAddresses);
             foreach (Process process in processes) {
                 HashSet<long> whitelist;
-                if (!newWhitelistedAddresses.TryGetValue(process.Id, out whitelist))
-                {
+                if (!newWhitelistedAddresses.TryGetValue(process.Id, out whitelist)) {
                     continue;
                 }
 
                 IntPtr processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
 
                 int bytesRead = 0;  // number of bytes read with ReadProcessMemory
-                foreach (long addr in whitelist)
-                {
+                foreach (long addr in whitelist) {
                     proc_min_address = new IntPtr(addr);
 
                     MEMORY_BASIC_INFORMATION mem_basic_info;
                     VirtualQueryEx(processHandle, proc_min_address, out mem_basic_info, 28);
 
-                    if (mem_basic_info.Protect == PAGE_READWRITE && mem_basic_info.State == MEM_COMMIT)
-                    {
-                        if (memoryBuffer == null || memoryBuffer.Length < mem_basic_info.RegionSize)
-                        {
+                    if (mem_basic_info.Protect == PAGE_READWRITE && mem_basic_info.State == MEM_COMMIT) {
+                        if (memoryBuffer == null || memoryBuffer.Length < mem_basic_info.RegionSize) {
                             memoryBuffer = new byte[mem_basic_info.RegionSize];
                         }
 
@@ -246,11 +231,9 @@ namespace Tibialyzer {
                         ReadProcessMemory((int)processHandle, mem_basic_info.BaseAddress, memoryBuffer, mem_basic_info.RegionSize, ref bytesRead);
                         // scan the memory for strings that start with timestamps and end with the null terminator ('\0')
                         IEnumerable<string> timestampLines;
-                        if (!flashClient)
-                        {
+                        if (!flashClient) {
                             timestampLines = Parser.FindTimestamps(memoryBuffer, bytesRead);
-                        }
-                        else {
+                        } else {
                             timestampLines = Parser.FindTimestampsFlash(memoryBuffer, bytesRead);
                         }
 

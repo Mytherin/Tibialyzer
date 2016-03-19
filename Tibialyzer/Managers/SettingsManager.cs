@@ -237,6 +237,16 @@ C::NumpadPgDn
             setSettingIfNotSet("ExperiencePerHourCalculation", "TibiaStyle");
             setSettingIfNotSet("SimpleNotificationWidth", 354);
             setSettingIfNotSet("SimpleNotificationCopyButton", true);
+            setSettingIfNotSet("XORAddress", "0x534658");
+            setSettingIfNotSet("HealthAddress", "0x6d2030");
+            setSettingIfNotSet("MaxHealthAddress", "0x6D2024");
+            setSettingIfNotSet("ManaAddress", "0x534688");
+            setSettingIfNotSet("MaxManaAddress", "0x53465C");
+            setSettingIfNotSet("PlayerIDAddress", "0x6D202C");
+            setSettingIfNotSet("BattleListAddress", "0x72DE20");
+            setSettingIfNotSet("ExperienceAddress", "0x534660");
+            setSettingIfNotSet("LevelAddress", "0x534670");
+            setSettingIfNotSet("MagicLevelAddress", "0x534678");
         }
 
         public static void ResetSettingsToDefault() {

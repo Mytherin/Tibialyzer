@@ -103,6 +103,7 @@ namespace Tibialyzer {
             ReadMemoryManager.Initialize();
             HuntManager.Initialize();
             UIManager.Initialize();
+            MemoryReader.Initialize();
 
             this.Load += MainForm_Load;
 

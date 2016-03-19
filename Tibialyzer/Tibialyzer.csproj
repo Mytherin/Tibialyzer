@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="Managers\AutoHotkeyManager.cs" />
     <Compile Include="Managers\CommandManager.cs" />
+    <Compile Include="Managers\MemoryReader.cs" />
     <Compile Include="Managers\NotificationManager.cs" />
     <Compile Include="Managers\GlobalDataManager.cs" />
     <Compile Include="Managers\PopupManager.cs" />
