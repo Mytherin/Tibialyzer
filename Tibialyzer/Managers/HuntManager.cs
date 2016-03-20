@@ -680,7 +680,7 @@ namespace Tibialyzer {
     class OrderedHashSetCollection {
         public List<Tuple<string, HashSet<int>>> hashSets = new List<Tuple<string, HashSet<int>>>();
         int baseCount = 0;
-        
+
         public void UpdateHashSet(Dictionary<string, HashSet<int>> values) {
             lock (hashSets) {
                 foreach (var val in values.OrderBy(o => o.Key)) {

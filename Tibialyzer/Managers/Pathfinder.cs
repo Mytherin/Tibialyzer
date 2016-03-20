@@ -166,7 +166,7 @@ namespace Tibialyzer {
             HashSet<Point3D> closedSet = new HashSet<Point3D>();
             DijkstraPoint closestNode = null;
             double closestDistance = double.MaxValue;
-            
+
             while (openSet.Count > 0) {
                 DijkstraPoint current = GetMinimum(openSet);
                 if (current.point.Equals(end)) {
@@ -179,11 +179,11 @@ namespace Tibialyzer {
 
                 openSet.Remove(current);
                 closedSet.Add(current.point);
-                
+
                 //check all the neighbors of the current point
                 foreach (Point3D p in getNeighbors(current.point)) {
                     double newCost = current.cost + Distance(current.point, p);
-                    
+
                     if (connection != null && p == connectionPoint) {
                         return new DijkstraPoint(current, p, newCost);
                     }
@@ -221,7 +221,7 @@ namespace Tibialyzer {
             }
             return closestNode;
         }
-        
+
 
         public static double Distance(Node node, Point3D goal) {
             return Math.Abs(node.z - goal.Z) * 100 + Distance(node.x, node.y, goal.X, goal.Y);

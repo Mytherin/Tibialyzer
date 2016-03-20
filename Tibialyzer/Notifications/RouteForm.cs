@@ -37,7 +37,7 @@ namespace Tibialyzer {
             this.targetCoordinate = targetCoordinate;
             this.imageObject = imageObject;
         }
-        
+
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RouteForm));
             this.mapBox = new Tibialyzer.MapPictureBox();
@@ -52,18 +52,18 @@ namespace Tibialyzer {
             ((System.ComponentModel.ISupportInitialize)(this.mapUpLevel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapDownLevel)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // mapBox
-            // 
+            //
             this.mapBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.mapBox.Location = new System.Drawing.Point(121, 12);
             this.mapBox.Name = "mapBox";
             this.mapBox.Size = new System.Drawing.Size(195, 190);
             this.mapBox.TabIndex = 0;
             this.mapBox.TabStop = false;
-            // 
+            //
             // npcImage
-            // 
+            //
             this.npcImage.BackColor = System.Drawing.Color.Transparent;
             this.npcImage.Location = new System.Drawing.Point(12, 45);
             this.npcImage.Name = "npcImage";
@@ -71,9 +71,9 @@ namespace Tibialyzer {
             this.npcImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.npcImage.TabIndex = 1;
             this.npcImage.TabStop = false;
-            // 
+            //
             // creatureName
-            // 
+            //
             this.creatureName.BackColor = System.Drawing.Color.Transparent;
             this.creatureName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.creatureName.ForeColor = System.Drawing.SystemColors.ControlLight;
@@ -85,25 +85,25 @@ namespace Tibialyzer {
             this.creatureName.Text = "Rashid";
             this.creatureName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.creatureName.Click += new System.EventHandler(this.creatureName_Click);
-            // 
+            //
             // mapUpLevel
-            // 
+            //
             this.mapUpLevel.Location = new System.Drawing.Point(121, 13);
             this.mapUpLevel.Name = "mapUpLevel";
             this.mapUpLevel.Size = new System.Drawing.Size(21, 21);
             this.mapUpLevel.TabIndex = 3;
             this.mapUpLevel.TabStop = false;
-            // 
+            //
             // mapDownLevel
-            // 
+            //
             this.mapDownLevel.Location = new System.Drawing.Point(121, 34);
             this.mapDownLevel.Name = "mapDownLevel";
             this.mapDownLevel.Size = new System.Drawing.Size(21, 21);
             this.mapDownLevel.TabIndex = 4;
             this.mapDownLevel.TabStop = false;
-            // 
+            //
             // routeLabel
-            // 
+            //
             this.routeLabel.BackColor = System.Drawing.Color.Transparent;
             this.routeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.routeLabel.ForeColor = System.Drawing.SystemColors.ControlLight;
@@ -111,9 +111,9 @@ namespace Tibialyzer {
             this.routeLabel.Name = "routeLabel";
             this.routeLabel.Size = new System.Drawing.Size(308, 56);
             this.routeLabel.TabIndex = 5;
-            // 
+            //
             // nextStepButton
-            // 
+            //
             this.nextStepButton.BackColor = System.Drawing.Color.Transparent;
             this.nextStepButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.nextStepButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -126,9 +126,9 @@ namespace Tibialyzer {
             this.nextStepButton.Text = "Next Step";
             this.nextStepButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.nextStepButton.Click += new System.EventHandler(this.nextStepButton_Click);
-            // 
+            //
             // RouteForm
-            // 
+            //
             this.ClientSize = new System.Drawing.Size(328, 273);
             this.Controls.Add(this.nextStepButton);
             this.Controls.Add(this.routeLabel);
@@ -207,7 +207,7 @@ namespace Tibialyzer {
             this.mapDownLevel.Image = StyleManager.GetImage("mapdown.png");
             this.mapDownLevel.Click -= c_Click;
             this.mapDownLevel.Click += mapDownLevel_Click;
-            
+
             base.NotificationFinalize();
             this.ResumeForm();
         }

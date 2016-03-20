@@ -25,7 +25,7 @@ namespace Tibialyzer {
         private static HashSet<string> eventMessages = new HashSet<string>();
         private static HashSet<string> levelAdvances = new HashSet<string>();
         private static Dictionary<string, List<string>> totalLooks = new Dictionary<string, List<string>>();
-        private static long lootValue = 0; 
+        private static long lootValue = 0;
 
         public static void UpdateDamage() {
             if (DamageChanged != null) {

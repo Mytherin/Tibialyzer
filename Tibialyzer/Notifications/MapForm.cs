@@ -49,43 +49,43 @@ namespace Tibialyzer {
             ((System.ComponentModel.ISupportInitialize)(this.mapUpLevel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapDownLevel)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // mapBox
-            // 
+            //
             this.mapBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.mapBox.Location = new System.Drawing.Point(121, 12);
             this.mapBox.Name = "mapBox";
             this.mapBox.Size = new System.Drawing.Size(195, 190);
             this.mapBox.TabIndex = 0;
             this.mapBox.TabStop = false;
-            // 
+            //
             // mapUpLevel
-            // 
+            //
             this.mapUpLevel.Location = new System.Drawing.Point(121, 13);
             this.mapUpLevel.Name = "mapUpLevel";
             this.mapUpLevel.Size = new System.Drawing.Size(21, 21);
             this.mapUpLevel.TabIndex = 3;
             this.mapUpLevel.TabStop = false;
-            // 
+            //
             // mapDownLevel
-            // 
+            //
             this.mapDownLevel.Location = new System.Drawing.Point(121, 34);
             this.mapDownLevel.Name = "mapDownLevel";
             this.mapDownLevel.Size = new System.Drawing.Size(21, 21);
             this.mapDownLevel.TabIndex = 4;
             this.mapDownLevel.TabStop = false;
-            // 
+            //
             // mapperBox
-            // 
+            //
             this.mapperBox.Location = new System.Drawing.Point(6, 47);
             this.mapperBox.Name = "mapperBox";
             this.mapperBox.Size = new System.Drawing.Size(108, 20);
             this.mapperBox.TabIndex = 5;
             this.mapperBox.Text = "127.128,124.128,7";
             this.mapperBox.TextChanged += new System.EventHandler(this.mapperBox_TextChanged);
-            // 
+            //
             // usedItemsLabel
-            // 
+            //
             this.usedItemsLabel.AutoSize = true;
             this.usedItemsLabel.BackColor = System.Drawing.Color.Transparent;
             this.usedItemsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -95,9 +95,9 @@ namespace Tibialyzer {
             this.usedItemsLabel.Size = new System.Drawing.Size(107, 16);
             this.usedItemsLabel.TabIndex = 42;
             this.usedItemsLabel.Text = "Mapper Coord";
-            // 
+            //
             // label1
-            // 
+            //
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -107,18 +107,18 @@ namespace Tibialyzer {
             this.label1.Size = new System.Drawing.Size(84, 16);
             this.label1.TabIndex = 44;
             this.label1.Text = "Coordinate";
-            // 
+            //
             // coordinateBox
-            // 
+            //
             this.coordinateBox.Location = new System.Drawing.Point(6, 93);
             this.coordinateBox.Name = "coordinateBox";
             this.coordinateBox.Size = new System.Drawing.Size(108, 20);
             this.coordinateBox.TabIndex = 43;
             this.coordinateBox.Text = "1024,1024,7";
             this.coordinateBox.TextChanged += new System.EventHandler(this.coordinateBox_TextChanged);
-            // 
+            //
             // MapForm
-            // 
+            //
             this.ClientSize = new System.Drawing.Size(328, 221);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.coordinateBox);
@@ -181,7 +181,7 @@ namespace Tibialyzer {
             base.NotificationFinalize();
             this.ResumeForm();
         }
-        
+
         private void MapBox_MapUpdated() {
             updating = true;
             SetCoordinate(mapBox.mapCoordinate);

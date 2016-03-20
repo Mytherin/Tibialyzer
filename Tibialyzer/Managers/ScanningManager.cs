@@ -282,7 +282,7 @@ namespace Tibialyzer {
             }
             return recentDrops;
         }
-        
+
         public static bool TrackCreature(Creature cr) {
             if (SettingsManager.getSettingBool("IgnoreLowExperience")) {
                 return cr.experience >= SettingsManager.getSettingInt("IgnoreLowExperienceValue");

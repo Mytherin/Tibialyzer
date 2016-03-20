@@ -64,9 +64,9 @@ namespace Tibialyzer {
             ((System.ComponentModel.ISupportInitialize)(this.mapUpLevel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapBox)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // requirementLabel
-            // 
+            //
             this.requirementLabel.AutoSize = true;
             this.requirementLabel.BackColor = System.Drawing.Color.Transparent;
             this.requirementLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -76,9 +76,9 @@ namespace Tibialyzer {
             this.requirementLabel.Size = new System.Drawing.Size(104, 16);
             this.requirementLabel.TabIndex = 13;
             this.requirementLabel.Text = "Requirements";
-            // 
+            //
             // cityLabel
-            // 
+            //
             this.cityLabel.AutoSize = true;
             this.cityLabel.BackColor = System.Drawing.Color.Transparent;
             this.cityLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -90,9 +90,9 @@ namespace Tibialyzer {
             this.cityLabel.Text = "City";
             this.cityLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.cityLabel.Click += new System.EventHandler(this.cityLabel_Click);
-            // 
+            //
             // levelLabel
-            // 
+            //
             this.levelLabel.BackColor = System.Drawing.Color.Transparent;
             this.levelLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.levelLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
@@ -102,27 +102,27 @@ namespace Tibialyzer {
             this.levelLabel.TabIndex = 11;
             this.levelLabel.Text = "Level: ";
             this.levelLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
+            //
             // lootStarBox
-            // 
+            //
             this.lootStarBox.BackColor = System.Drawing.Color.Transparent;
             this.lootStarBox.Location = new System.Drawing.Point(100, 96);
             this.lootStarBox.Name = "lootStarBox";
             this.lootStarBox.Size = new System.Drawing.Size(61, 20);
             this.lootStarBox.TabIndex = 10;
             this.lootStarBox.TabStop = false;
-            // 
+            //
             // experienceStarBox
-            // 
+            //
             this.experienceStarBox.BackColor = System.Drawing.Color.Transparent;
             this.experienceStarBox.Location = new System.Drawing.Point(8, 96);
             this.experienceStarBox.Name = "experienceStarBox";
             this.experienceStarBox.Size = new System.Drawing.Size(61, 20);
             this.experienceStarBox.TabIndex = 9;
             this.experienceStarBox.TabStop = false;
-            // 
+            //
             // label1
-            // 
+            //
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -132,9 +132,9 @@ namespace Tibialyzer {
             this.label1.Size = new System.Drawing.Size(38, 16);
             this.label1.TabIndex = 8;
             this.label1.Text = "Loot";
-            // 
+            //
             // experienceLabel
-            // 
+            //
             this.experienceLabel.AutoSize = true;
             this.experienceLabel.BackColor = System.Drawing.Color.Transparent;
             this.experienceLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -144,25 +144,25 @@ namespace Tibialyzer {
             this.experienceLabel.Size = new System.Drawing.Size(34, 16);
             this.experienceLabel.TabIndex = 7;
             this.experienceLabel.Text = "Exp";
-            // 
+            //
             // mapDownLevel
-            // 
+            //
             this.mapDownLevel.Location = new System.Drawing.Point(170, 33);
             this.mapDownLevel.Name = "mapDownLevel";
             this.mapDownLevel.Size = new System.Drawing.Size(21, 21);
             this.mapDownLevel.TabIndex = 6;
             this.mapDownLevel.TabStop = false;
-            // 
+            //
             // mapUpLevel
-            // 
+            //
             this.mapUpLevel.Location = new System.Drawing.Point(170, 12);
             this.mapUpLevel.Name = "mapUpLevel";
             this.mapUpLevel.Size = new System.Drawing.Size(21, 21);
             this.mapUpLevel.TabIndex = 5;
             this.mapUpLevel.TabStop = false;
-            // 
+            //
             // creatureLabel
-            // 
+            //
             this.creatureLabel.AutoSize = true;
             this.creatureLabel.BackColor = System.Drawing.Color.Transparent;
             this.creatureLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -172,9 +172,9 @@ namespace Tibialyzer {
             this.creatureLabel.Size = new System.Drawing.Size(75, 16);
             this.creatureLabel.TabIndex = 4;
             this.creatureLabel.Text = "Creatures";
-            // 
+            //
             // huntingPlaceName
-            // 
+            //
             this.huntingPlaceName.BackColor = System.Drawing.Color.Transparent;
             this.huntingPlaceName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.huntingPlaceName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
@@ -184,18 +184,18 @@ namespace Tibialyzer {
             this.huntingPlaceName.TabIndex = 3;
             this.huntingPlaceName.Text = "Brimstone Cave";
             this.huntingPlaceName.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
+            //
             // mapBox
-            // 
+            //
             this.mapBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.mapBox.Location = new System.Drawing.Point(170, 12);
             this.mapBox.Name = "mapBox";
             this.mapBox.Size = new System.Drawing.Size(195, 190);
             this.mapBox.TabIndex = 0;
             this.mapBox.TabStop = false;
-            // 
+            //
             // routeButton
-            // 
+            //
             this.routeButton.BackColor = System.Drawing.Color.Transparent;
             this.routeButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.routeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -208,9 +208,9 @@ namespace Tibialyzer {
             this.routeButton.Text = "Route";
             this.routeButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.routeButton.Click += new System.EventHandler(this.routeButton_Click);
-            // 
+            //
             // HuntingPlaceForm
-            // 
+            //
             this.ClientSize = new System.Drawing.Size(382, 273);
             this.Controls.Add(this.routeButton);
             this.Controls.Add(this.requirementLabel);
@@ -265,7 +265,7 @@ namespace Tibialyzer {
             this.cityLabel.Text = hunting_place.city;
             this.huntingPlaceName.Text = hunting_place.name.ToTitle();
             this.levelLabel.Text = hunting_place.level < 0 ? "--" : hunting_place.level.ToString();
-            
+
             int y;
             ToolTip tooltip = new ToolTip();
             tooltip.AutoPopDelay = 60000;

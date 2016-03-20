@@ -251,7 +251,7 @@ namespace Tibialyzer {
         private List<Control> usedItemsControls = new List<Control>();
         public override void LoadForm() {
             this.SuspendForm();
-            
+
             Label label;
             label = new Label();
             label.Text = "Summary";
@@ -262,7 +262,7 @@ namespace Tibialyzer {
             label.Font = StyleManager.MainFormLabelFontSmall;
             label.TextAlign = ContentAlignment.MiddleCenter;
             this.Controls.Add(label);
-            
+
             this.NotificationInitialize();
 
             this.NotificationFinalize();

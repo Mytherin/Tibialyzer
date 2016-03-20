@@ -38,7 +38,7 @@ namespace Tibialyzer {
 
         static int PROCESS_QUERY_INFORMATION = 0x0400;
         static int PROCESS_WM_READ = 0x0010;
-        
+
         private static UInt32 XORAddress = 0x534658;
         private static UInt32 HealthAddress = 0x6d2030;
         private static UInt32 MaxHealthAddress = 0x6D2024;
@@ -49,7 +49,7 @@ namespace Tibialyzer {
         private static UInt32 ExperienceAddress = 0x534660;
         private static UInt32 LevelAddress = 0x534670;
         private static UInt32 MagicLevelAddress = 0x534678;
-        
+
         private static uint BL_CREATURE_SIZE = 220;
         private static int BL_Z_OFFSET = 36;
         private static int BL_Y_OFFSET = 40;
@@ -84,7 +84,7 @@ namespace Tibialyzer {
         private static int processID = -1;
         public static void SetProcess(Process process) {
             if (processID == process.Id) return;
-            
+
             MemoryReader.processID = process.Id;
             MemoryReader.handle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
             MemoryReader.baseAddress = (UInt32)process.MainModule.BaseAddress.ToInt32();
@@ -191,7 +191,7 @@ namespace Tibialyzer {
                 return ReadInt32(GetAddress(MagicLevelAddress));
             }
         }
-        
+
         private static UInt32 findPlayerInBattleList() {
             UInt32 creature = GetAddress(BattleListAddress);
             while (ReadInt32(creature) != PlayerId) {
