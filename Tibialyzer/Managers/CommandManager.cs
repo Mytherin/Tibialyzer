@@ -316,6 +316,8 @@ namespace Tibialyzer {
                         }
 
                     }
+                } else if (comp.StartsWith("map" + Constants.CommandSymbol)) { //map@
+                    NotificationManager.ShowMapForm(command);
                 } else if (comp.StartsWith("route" + Constants.CommandSymbol)) { //route@
                     string[] splits = comp.Split(Constants.CommandSymbol);
                     Coordinate targetCoordinate = new Coordinate();

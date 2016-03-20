@@ -45,9 +45,9 @@
             this.usedItemsLabel = new System.Windows.Forms.Label();
             this.usedItemsValue = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            //
+            // 
             // totalValueLabel
-            //
+            // 
             this.totalValueLabel.AutoSize = true;
             this.totalValueLabel.BackColor = System.Drawing.Color.Transparent;
             this.totalValueLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -57,9 +57,9 @@
             this.totalValueLabel.Size = new System.Drawing.Size(96, 16);
             this.totalValueLabel.TabIndex = 0;
             this.totalValueLabel.Text = "Total Value: ";
-            //
+            // 
             // totalExpLabel
-            //
+            // 
             this.totalExpLabel.AutoSize = true;
             this.totalExpLabel.BackColor = System.Drawing.Color.Transparent;
             this.totalExpLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -69,9 +69,9 @@
             this.totalExpLabel.Size = new System.Drawing.Size(82, 16);
             this.totalExpLabel.TabIndex = 1;
             this.totalExpLabel.Text = "Total Exp: ";
-            //
+            // 
             // totalTimeLabel
-            //
+            // 
             this.totalTimeLabel.AutoSize = true;
             this.totalTimeLabel.BackColor = System.Drawing.Color.Transparent;
             this.totalTimeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -81,9 +81,9 @@
             this.totalTimeLabel.Size = new System.Drawing.Size(87, 16);
             this.totalTimeLabel.TabIndex = 2;
             this.totalTimeLabel.Text = "Total Time:";
-            //
+            // 
             // huntNameLabel
-            //
+            // 
             this.huntNameLabel.BackColor = System.Drawing.Color.Transparent;
             this.huntNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.huntNameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
@@ -94,9 +94,9 @@
             this.huntNameLabel.Text = "Hunt Name";
             this.huntNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.huntNameLabel.Click += new System.EventHandler(this.huntNameLabel_Click);
-            //
+            // 
             // totalValueValue
-            //
+            // 
             this.totalValueValue.BackColor = System.Drawing.Color.Transparent;
             this.totalValueValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.totalValueValue.ForeColor = System.Drawing.Color.Gold;
@@ -106,9 +106,9 @@
             this.totalValueValue.TabIndex = 5;
             this.totalValueValue.Text = "10000";
             this.totalValueValue.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            //
+            // 
             // totalExpValue
-            //
+            // 
             this.totalExpValue.BackColor = System.Drawing.Color.Transparent;
             this.totalExpValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.totalExpValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
@@ -118,9 +118,9 @@
             this.totalExpValue.TabIndex = 6;
             this.totalExpValue.Text = "10000";
             this.totalExpValue.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            //
+            // 
             // totalTimeValue
-            //
+            // 
             this.totalTimeValue.BackColor = System.Drawing.Color.Transparent;
             this.totalTimeValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.totalTimeValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
@@ -130,9 +130,9 @@
             this.totalTimeValue.TabIndex = 7;
             this.totalTimeValue.Text = "10000";
             this.totalTimeValue.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            //
+            // 
             // rawLootButton
-            //
+            // 
             this.rawLootButton.BackColor = System.Drawing.Color.Transparent;
             this.rawLootButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.rawLootButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -144,9 +144,9 @@
             this.rawLootButton.Text = "Raw";
             this.rawLootButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.rawLootButton.Click += new System.EventHandler(this.rawLootButton_Click);
-            //
+            // 
             // allLootButton
-            //
+            // 
             this.allLootButton.BackColor = System.Drawing.Color.Transparent;
             this.allLootButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.allLootButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -158,9 +158,9 @@
             this.allLootButton.Text = "All";
             this.allLootButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.allLootButton.Click += new System.EventHandler(this.allLootButton_Click);
-            //
+            // 
             // lootButton
-            //
+            // 
             this.lootButton.BackColor = System.Drawing.Color.Transparent;
             this.lootButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lootButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -172,9 +172,9 @@
             this.lootButton.Text = "Normal";
             this.lootButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lootButton.Click += new System.EventHandler(this.lootButton_Click);
-            //
+            // 
             // lootLarger
-            //
+            // 
             this.lootLarger.BackColor = System.Drawing.Color.Transparent;
             this.lootLarger.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lootLarger.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -187,9 +187,9 @@
             this.lootLarger.Text = "+";
             this.lootLarger.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lootLarger.Click += new System.EventHandler(this.lootLarger_Click);
-            //
+            // 
             // lootSmaller
-            //
+            // 
             this.lootSmaller.BackColor = System.Drawing.Color.Transparent;
             this.lootSmaller.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lootSmaller.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -202,9 +202,9 @@
             this.lootSmaller.Text = "-";
             this.lootSmaller.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lootSmaller.Click += new System.EventHandler(this.lootSmaller_Click);
-            //
+            // 
             // usedItemsLabel
-            //
+            // 
             this.usedItemsLabel.AutoSize = true;
             this.usedItemsLabel.BackColor = System.Drawing.Color.Transparent;
             this.usedItemsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -214,21 +214,21 @@
             this.usedItemsLabel.Size = new System.Drawing.Size(90, 16);
             this.usedItemsLabel.TabIndex = 41;
             this.usedItemsLabel.Text = "Used Items:";
-            //
+            // 
             // usedItemsValue
-            //
+            // 
             this.usedItemsValue.BackColor = System.Drawing.Color.Transparent;
             this.usedItemsValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.usedItemsValue.ForeColor = System.Drawing.Color.FromArgb(156, 56, 65);
+            this.usedItemsValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(56)))), ((int)(((byte)(65)))));
             this.usedItemsValue.Location = new System.Drawing.Point(137, 100);
             this.usedItemsValue.Name = "usedItemsValue";
             this.usedItemsValue.Size = new System.Drawing.Size(150, 16);
             this.usedItemsValue.TabIndex = 42;
             this.usedItemsValue.Text = "10000";
             this.usedItemsValue.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            //
+            // 
             // LootDropForm
-            //
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(348, 261);

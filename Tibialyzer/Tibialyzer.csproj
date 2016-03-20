@@ -90,6 +90,9 @@
     <Compile Include="Notifications\ExperienceChart.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Notifications\MapForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Notifications\RouteForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -340,6 +343,9 @@
     <Compile Include="Managers\UIManager.cs" />
     <EmbeddedResource Include="Notifications\ExperienceChart.resx">
       <DependentUpon>ExperienceChart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Notifications\MapForm.resx">
+      <DependentUpon>MapForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Notifications\RouteForm.resx">
       <DependentUpon>RouteForm.cs</DependentUpon>

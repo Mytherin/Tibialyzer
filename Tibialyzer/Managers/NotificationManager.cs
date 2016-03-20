@@ -137,6 +137,12 @@ namespace Tibialyzer {
 
             ShowNotification(f, comm);
         }
+        public static void ShowMapForm(string comm) {
+            MapForm f = new MapForm();
+
+            ShowNotification(f, comm);
+        }
+
         public static void ShowCreatureList(List<TibiaObject> c, string title, string command, bool conditionalAttributes = false) {
             if (c == null) return;
             string[] split = command.Split(Constants.CommandSymbol);

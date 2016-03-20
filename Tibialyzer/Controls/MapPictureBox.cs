@@ -216,8 +216,8 @@ namespace Tibialyzer {
                             SpecialConnection connection = null;
 
                             nextConnectionPoint = new Point3D(-1, -1, -1);
-                            nextTarget = null;
-                            nextImportantTarget = "Head to the destination.";
+                            nextImportantTarget = null;
+                            nextTarget = "Head to the destination.";
                             if (highresult != null) {
                                 collisionBounds = new List<Rectangle3D>();
                                 while (highresult != null) {
