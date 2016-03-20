@@ -166,10 +166,15 @@ namespace Tibialyzer {
 
             if (SettingsManager.getSettingBool("LookMode") && readMemoryResults != null) {
                 foreach (string msg in parseMemoryResults.newLooks) {
-                    string itemName = Parser.parseLookItem(msg).ToLower();
+                    var itemInfo = Parser.parseLookItem(msg);
+                    string itemName = itemInfo.Item1.ToLower();
                     if (StorageManager.itemExists(itemName)) {
                         MainForm.mainForm.Invoke((MethodInvoker)delegate {
                             CommandManager.ExecuteCommand("item@" + itemName);
+                            var item = StorageManager.getItem(itemName);
+                            if (item != null) {
+                                GlobalDataManager.AddLootValue(item.GetMaxValue() * itemInfo.Item2);
+                            }
                         });
                     } else if (StorageManager.creatureExists(itemName) ||
                         (itemName.Contains("dead ") && (itemName = itemName.Replace("dead ", "")) != null && StorageManager.creatureExists(itemName)) ||

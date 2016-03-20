@@ -183,14 +183,18 @@ namespace Tibialyzer {
             return false;
         }
 
-        public static string parseLookItem(string logMessage) {
+        public static Tuple<string, int> parseLookItem(string logMessage) {
             string[] splits = logMessage.Substring(14).Split('(')[0].Split('.')[0].Split(' ');
             string itemName = "";
+            int count = 1;
             foreach (string split in splits) {
                 if (split.Length == 0) continue;
                 if (split == "that") break;
                 if (itemName == "" && (split == "a" || split == "an")) continue;
-                if (split[0].isDigit()) continue;
+                if (split[0].isDigit()) {
+                    count = int.Parse(split);
+                    continue;
+                }
                 itemName = itemName == "" ? split : itemName + " " + split;
             }
             if (pluralMap.ContainsKey(itemName)) itemName = pluralMap[itemName];
@@ -200,7 +204,7 @@ namespace Tibialyzer {
                     itemName = singular;
                 }
             }
-            return itemName;
+            return new Tuple<string, int>(itemName, count);
         }
 
         public static Tuple<string, int> preprocessItem(string item) {
