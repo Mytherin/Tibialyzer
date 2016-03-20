@@ -62,20 +62,20 @@ namespace Tibialyzer {
             Node beginNode = Pathfinder.GetNode(begin.x, begin.y, begin.z);
             Node endNode = Pathfinder.GetNode(end.x, end.y, end.z);
 
-            List<Rectangle> collisionBounds = null;
-            DijkstraNode highresult = Dijkstra.FindRoute(beginNode, endNode);
+            List<Rectangle3D> collisionBounds = null;
+            DijkstraNode highresult = Dijkstra.FindRoute(beginNode, endNode, new Point3D(end));
             if (highresult != null) {
-                collisionBounds = new List<Rectangle>();
+                collisionBounds = new List<Rectangle3D>();
                 while (highresult != null) {
                     highresult.rect.Inflate(5, 5);
-                    collisionBounds.Add(highresult.rect);
+                    collisionBounds.Add(new Rectangle3D(highresult.rect, highresult.node.z));
                     highresult = highresult.previous;
                 }
                 if (collisionBounds.Count == 0) collisionBounds = null;
             }
 
             Map m = StorageManager.getMap(begin.z);
-            DijkstraPoint result = Dijkstra.FindRoute(m.GetImage() as Bitmap, new Point(begin.x, begin.y), new Point(end.x, end.y), collisionBounds, additionalWalkableColors);
+            DijkstraPoint result = Dijkstra.FindRoute(m.GetImage() as Bitmap, new Point3D(begin), new Point3D(end), collisionBounds, additionalWalkableColors);
             if (result == null) {
                 throw new Exception("Couldn't find route.");
             }

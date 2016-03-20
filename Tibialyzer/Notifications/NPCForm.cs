@@ -12,7 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,6 +26,7 @@ namespace Tibialyzer {
         public NPC npc = null;
         private System.Windows.Forms.PictureBox mapUpLevel;
         private System.Windows.Forms.PictureBox mapDownLevel;
+        private Label routeButton;
         private static Font text_font = new Font(FontFamily.GenericSansSerif, 11, FontStyle.Bold);
 
 
@@ -44,23 +45,24 @@ namespace Tibialyzer {
             this.creatureName = new System.Windows.Forms.Label();
             this.mapUpLevel = new System.Windows.Forms.PictureBox();
             this.mapDownLevel = new System.Windows.Forms.PictureBox();
+            this.routeButton = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.mapBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.npcImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapUpLevel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapDownLevel)).BeginInit();
             this.SuspendLayout();
-            //
+            // 
             // mapBox
-            //
+            // 
             this.mapBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.mapBox.Location = new System.Drawing.Point(121, 12);
             this.mapBox.Name = "mapBox";
             this.mapBox.Size = new System.Drawing.Size(195, 190);
             this.mapBox.TabIndex = 0;
             this.mapBox.TabStop = false;
-            //
+            // 
             // npcImage
-            //
+            // 
             this.npcImage.BackColor = System.Drawing.Color.Transparent;
             this.npcImage.Location = new System.Drawing.Point(12, 45);
             this.npcImage.Name = "npcImage";
@@ -68,9 +70,9 @@ namespace Tibialyzer {
             this.npcImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.npcImage.TabIndex = 1;
             this.npcImage.TabStop = false;
-            //
+            // 
             // creatureName
-            //
+            // 
             this.creatureName.BackColor = System.Drawing.Color.Transparent;
             this.creatureName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.creatureName.ForeColor = System.Drawing.SystemColors.ControlLight;
@@ -82,26 +84,42 @@ namespace Tibialyzer {
             this.creatureName.Text = "Rashid";
             this.creatureName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.creatureName.Click += new System.EventHandler(this.creatureName_Click);
-            //
+            // 
             // mapUpLevel
-            //
+            // 
             this.mapUpLevel.Location = new System.Drawing.Point(121, 13);
             this.mapUpLevel.Name = "mapUpLevel";
             this.mapUpLevel.Size = new System.Drawing.Size(21, 21);
             this.mapUpLevel.TabIndex = 3;
             this.mapUpLevel.TabStop = false;
-            //
+            // 
             // mapDownLevel
-            //
+            // 
             this.mapDownLevel.Location = new System.Drawing.Point(121, 34);
             this.mapDownLevel.Name = "mapDownLevel";
             this.mapDownLevel.Size = new System.Drawing.Size(21, 21);
             this.mapDownLevel.TabIndex = 4;
             this.mapDownLevel.TabStop = false;
-            //
+            // 
+            // routeButton
+            // 
+            this.routeButton.BackColor = System.Drawing.Color.Transparent;
+            this.routeButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.routeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.routeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.routeButton.Location = new System.Drawing.Point(12, 180);
+            this.routeButton.Name = "routeButton";
+            this.routeButton.Padding = new System.Windows.Forms.Padding(2);
+            this.routeButton.Size = new System.Drawing.Size(103, 21);
+            this.routeButton.TabIndex = 16;
+            this.routeButton.Text = "Route";
+            this.routeButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.routeButton.Click += new System.EventHandler(this.routeButton_Click);
+            // 
             // NPCForm
-            //
+            // 
             this.ClientSize = new System.Drawing.Size(328, 209);
+            this.Controls.Add(this.routeButton);
             this.Controls.Add(this.mapDownLevel);
             this.Controls.Add(this.mapUpLevel);
             this.Controls.Add(this.creatureName);
@@ -385,6 +403,10 @@ namespace Tibialyzer {
 
         public override string FormName() {
             return "NPCForm";
+        }
+
+        private void routeButton_Click(object sender, EventArgs e) {
+            CommandManager.ExecuteCommand(String.Format("route{0}{1},{2},{3}{0}{4}", Constants.CommandSymbol, npc.pos.x, npc.pos.y, npc.pos.z, npc.name));
         }
     }
 }

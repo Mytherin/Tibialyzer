@@ -50,25 +50,25 @@ namespace Tibialyzer {
             this.listTitle = new System.Windows.Forms.Label();
             this.toggleButton = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            //
+            // 
             // listTitle
-            //
+            // 
             this.listTitle.AutoSize = true;
             this.listTitle.BackColor = System.Drawing.Color.Transparent;
             this.listTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.listTitle.ForeColor = StyleManager.NotificationTextColor;
+            this.listTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.listTitle.Location = new System.Drawing.Point(152, 32);
             this.listTitle.Name = "listTitle";
             this.listTitle.Size = new System.Drawing.Size(32, 16);
             this.listTitle.TabIndex = 14;
             this.listTitle.Text = "List";
-            //
+            // 
             // toggleButton
-            //
+            // 
             this.toggleButton.BackColor = System.Drawing.Color.Transparent;
             this.toggleButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.toggleButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toggleButton.ForeColor = StyleManager.NotificationTextColor;
+            this.toggleButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.toggleButton.Location = new System.Drawing.Point(244, 7);
             this.toggleButton.Name = "toggleButton";
             this.toggleButton.Padding = new System.Windows.Forms.Padding(2);
@@ -77,9 +77,9 @@ namespace Tibialyzer {
             this.toggleButton.Text = "Icons";
             this.toggleButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.toggleButton.Click += new System.EventHandler(this.toggleButton_Click);
-            //
+            // 
             // CreatureList
-            //
+            // 
             this.ClientSize = new System.Drawing.Size(352, 76);
             this.Controls.Add(this.toggleButton);
             this.Controls.Add(this.listTitle);

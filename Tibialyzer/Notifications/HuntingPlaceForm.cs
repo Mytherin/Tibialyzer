@@ -35,8 +35,8 @@ namespace Tibialyzer {
         private Label levelLabel;
         private Label cityLabel;
         private Label requirementLabel;
-        private Label guideButton;
         private static Font requirement_font = new Font(FontFamily.GenericSansSerif, 7.5f, FontStyle.Bold);
+        private Label routeButton;
         private Coordinate targetCoordinate;
 
         public HuntingPlaceForm() {
@@ -57,32 +57,32 @@ namespace Tibialyzer {
             this.creatureLabel = new System.Windows.Forms.Label();
             this.huntingPlaceName = new System.Windows.Forms.Label();
             this.mapBox = new Tibialyzer.MapPictureBox();
-            this.guideButton = new System.Windows.Forms.Label();
+            this.routeButton = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.lootStarBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.experienceStarBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapDownLevel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapUpLevel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapBox)).BeginInit();
             this.SuspendLayout();
-            //
+            // 
             // requirementLabel
-            //
+            // 
             this.requirementLabel.AutoSize = true;
             this.requirementLabel.BackColor = System.Drawing.Color.Transparent;
             this.requirementLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.requirementLabel.ForeColor = StyleManager.NotificationTextColor;
+            this.requirementLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.requirementLabel.Location = new System.Drawing.Point(37, 121);
             this.requirementLabel.Name = "requirementLabel";
             this.requirementLabel.Size = new System.Drawing.Size(104, 16);
             this.requirementLabel.TabIndex = 13;
             this.requirementLabel.Text = "Requirements";
-            //
+            // 
             // cityLabel
-            //
+            // 
             this.cityLabel.AutoSize = true;
             this.cityLabel.BackColor = System.Drawing.Color.Transparent;
             this.cityLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cityLabel.ForeColor = StyleManager.NotificationTextColor;
+            this.cityLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.cityLabel.Location = new System.Drawing.Point(7, 58);
             this.cityLabel.Name = "cityLabel";
             this.cityLabel.Size = new System.Drawing.Size(34, 16);
@@ -90,129 +90,129 @@ namespace Tibialyzer {
             this.cityLabel.Text = "City";
             this.cityLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.cityLabel.Click += new System.EventHandler(this.cityLabel_Click);
-            //
+            // 
             // levelLabel
-            //
+            // 
             this.levelLabel.BackColor = System.Drawing.Color.Transparent;
             this.levelLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.levelLabel.ForeColor = StyleManager.NotificationTextColor;
+            this.levelLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.levelLabel.Location = new System.Drawing.Point(111, 58);
             this.levelLabel.Name = "levelLabel";
             this.levelLabel.Size = new System.Drawing.Size(54, 16);
             this.levelLabel.TabIndex = 11;
             this.levelLabel.Text = "Level: ";
             this.levelLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            //
+            // 
             // lootStarBox
-            //
+            // 
             this.lootStarBox.BackColor = System.Drawing.Color.Transparent;
             this.lootStarBox.Location = new System.Drawing.Point(100, 96);
             this.lootStarBox.Name = "lootStarBox";
             this.lootStarBox.Size = new System.Drawing.Size(61, 20);
             this.lootStarBox.TabIndex = 10;
             this.lootStarBox.TabStop = false;
-            //
+            // 
             // experienceStarBox
-            //
+            // 
             this.experienceStarBox.BackColor = System.Drawing.Color.Transparent;
             this.experienceStarBox.Location = new System.Drawing.Point(8, 96);
             this.experienceStarBox.Name = "experienceStarBox";
             this.experienceStarBox.Size = new System.Drawing.Size(61, 20);
             this.experienceStarBox.TabIndex = 9;
             this.experienceStarBox.TabStop = false;
-            //
+            // 
             // label1
-            //
+            // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = StyleManager.NotificationTextColor;
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.label1.Location = new System.Drawing.Point(111, 79);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(38, 16);
             this.label1.TabIndex = 8;
             this.label1.Text = "Loot";
-            //
+            // 
             // experienceLabel
-            //
+            // 
             this.experienceLabel.AutoSize = true;
             this.experienceLabel.BackColor = System.Drawing.Color.Transparent;
             this.experienceLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.experienceLabel.ForeColor = StyleManager.NotificationTextColor;
+            this.experienceLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.experienceLabel.Location = new System.Drawing.Point(23, 77);
             this.experienceLabel.Name = "experienceLabel";
             this.experienceLabel.Size = new System.Drawing.Size(34, 16);
             this.experienceLabel.TabIndex = 7;
             this.experienceLabel.Text = "Exp";
-            //
+            // 
             // mapDownLevel
-            //
+            // 
             this.mapDownLevel.Location = new System.Drawing.Point(170, 33);
             this.mapDownLevel.Name = "mapDownLevel";
             this.mapDownLevel.Size = new System.Drawing.Size(21, 21);
             this.mapDownLevel.TabIndex = 6;
             this.mapDownLevel.TabStop = false;
-            //
+            // 
             // mapUpLevel
-            //
+            // 
             this.mapUpLevel.Location = new System.Drawing.Point(170, 12);
             this.mapUpLevel.Name = "mapUpLevel";
             this.mapUpLevel.Size = new System.Drawing.Size(21, 21);
             this.mapUpLevel.TabIndex = 5;
             this.mapUpLevel.TabStop = false;
-            //
+            // 
             // creatureLabel
-            //
+            // 
             this.creatureLabel.AutoSize = true;
             this.creatureLabel.BackColor = System.Drawing.Color.Transparent;
             this.creatureLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.creatureLabel.ForeColor = StyleManager.NotificationTextColor;
+            this.creatureLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.creatureLabel.Location = new System.Drawing.Point(39, 211);
             this.creatureLabel.Name = "creatureLabel";
             this.creatureLabel.Size = new System.Drawing.Size(75, 16);
             this.creatureLabel.TabIndex = 4;
             this.creatureLabel.Text = "Creatures";
-            //
+            // 
             // huntingPlaceName
-            //
+            // 
             this.huntingPlaceName.BackColor = System.Drawing.Color.Transparent;
             this.huntingPlaceName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.huntingPlaceName.ForeColor = StyleManager.NotificationTextColor;
+            this.huntingPlaceName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.huntingPlaceName.Location = new System.Drawing.Point(6, 27);
             this.huntingPlaceName.Name = "huntingPlaceName";
             this.huntingPlaceName.Size = new System.Drawing.Size(158, 34);
             this.huntingPlaceName.TabIndex = 3;
             this.huntingPlaceName.Text = "Brimstone Cave";
             this.huntingPlaceName.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            //
+            // 
             // mapBox
-            //
+            // 
             this.mapBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.mapBox.Location = new System.Drawing.Point(170, 12);
             this.mapBox.Name = "mapBox";
             this.mapBox.Size = new System.Drawing.Size(195, 190);
             this.mapBox.TabIndex = 0;
             this.mapBox.TabStop = false;
-            //
-            // guideButton
-            //
-            this.guideButton.BackColor = System.Drawing.Color.Transparent;
-            this.guideButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.guideButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guideButton.ForeColor = StyleManager.NotificationTextColor;
-            this.guideButton.Location = new System.Drawing.Point(269, 209);
-            this.guideButton.Name = "guideButton";
-            this.guideButton.Padding = new System.Windows.Forms.Padding(2);
-            this.guideButton.Size = new System.Drawing.Size(96, 21);
-            this.guideButton.TabIndex = 31;
-            this.guideButton.Text = "Guide";
-            this.guideButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.guideButton.Click += new System.EventHandler(this.guideButton_Click);
-            //
+            // 
+            // routeButton
+            // 
+            this.routeButton.BackColor = System.Drawing.Color.Transparent;
+            this.routeButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.routeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.routeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.routeButton.Location = new System.Drawing.Point(262, 209);
+            this.routeButton.Name = "routeButton";
+            this.routeButton.Padding = new System.Windows.Forms.Padding(2);
+            this.routeButton.Size = new System.Drawing.Size(103, 21);
+            this.routeButton.TabIndex = 32;
+            this.routeButton.Text = "Route";
+            this.routeButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.routeButton.Click += new System.EventHandler(this.routeButton_Click);
+            // 
             // HuntingPlaceForm
-            //
+            // 
             this.ClientSize = new System.Drawing.Size(382, 273);
-            this.Controls.Add(this.guideButton);
+            this.Controls.Add(this.routeButton);
             this.Controls.Add(this.requirementLabel);
             this.Controls.Add(this.cityLabel);
             this.Controls.Add(this.levelLabel);
@@ -265,11 +265,7 @@ namespace Tibialyzer {
             this.cityLabel.Text = hunting_place.city;
             this.huntingPlaceName.Text = hunting_place.name.ToTitle();
             this.levelLabel.Text = hunting_place.level < 0 ? "--" : hunting_place.level.ToString();
-
-            if (hunting_place.directions.Count == 0) {
-                guideButton.Visible = false;
-            }
-
+            
             int y;
             ToolTip tooltip = new ToolTip();
             tooltip.AutoPopDelay = 60000;
@@ -462,11 +458,6 @@ namespace Tibialyzer {
             string name = (sender as Control).Name;
             CommandManager.ExecuteCommand("quest" + Constants.CommandSymbol + name.ToLower());
         }
-        private void guideButton_Click(object sender, EventArgs e) {
-            this.ReturnFocusToTibia();
-            string name = (sender as Control).Name;
-            CommandManager.ExecuteCommand("direction" + Constants.CommandSymbol + hunting_place.name.ToLower());
-        }
 
         void label_Click(object sender, EventArgs e) {
             Coordinate new_coordinate = hunting_place.coordinates[int.Parse((sender as Control).Name)];
@@ -509,6 +500,10 @@ namespace Tibialyzer {
 
         public override string FormName() {
             return "HuntingPlaceForm";
+        }
+
+        private void routeButton_Click(object sender, EventArgs e) {
+            CommandManager.ExecuteCommand(String.Format("route{0}{1},{2},{3}{0}{4}", Constants.CommandSymbol, mapBox.beginCoordinate.x, mapBox.beginCoordinate.y, mapBox.beginCoordinate.z, hunting_place.GetName()));
         }
     }
 }

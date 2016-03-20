@@ -105,6 +105,13 @@ namespace Tibialyzer {
         public static bool ScanMemory() {
             ReadMemoryResults readMemoryResults = ReadMemoryManager.ReadMemory();
             ParseMemoryResults parseMemoryResults = Parser.ParseLogResults(readMemoryResults);
+            /*
+            try {
+                Console.WriteLine(String.Format("Health: {0}/{1}, Mana: {2}/{3}", MemoryReader.Health, MemoryReader.MaxHealth, MemoryReader.Mana, MemoryReader.MaxMana));
+                Console.WriteLine(String.Format("X: {0}, Y: {1}, Z: {2}", MemoryReader.X, MemoryReader.Y, MemoryReader.Z));
+            } catch(Exception ex) {
+                Console.WriteLine(ex.Message);
+            }*/
 
             if (parseMemoryResults != null) {
                 lastResults = parseMemoryResults;

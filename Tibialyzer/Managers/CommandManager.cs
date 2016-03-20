@@ -8,9 +8,11 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Tibialyzer {
     class CommandManager {
+        private static Coordinate teleportCoordinatePrev = null;
         public static bool ExecuteCommand(string command, ParseMemoryResults parseMemoryResults = null) {
             try {
                 if (parseMemoryResults == null) {
@@ -313,6 +315,56 @@ namespace Tibialyzer {
                             NotificationManager.ShowCreatureList(tasks, String.Format("Tasks Containing \"{0}\"", parameter), command);
                         }
 
+                    }
+                } else if (comp.StartsWith("route" + Constants.CommandSymbol)) { //route@
+                    string[] splits = comp.Split(Constants.CommandSymbol);
+                    Coordinate targetCoordinate = new Coordinate();
+                    TibiaObject imageObject = null;
+                    if (splits.Length > 1) {
+                        string[] coords = splits[1].Split(',');
+                        if (coords.Length >= 3) {
+                            if (int.TryParse(coords[0], out targetCoordinate.x) && int.TryParse(coords[1], out targetCoordinate.y) && int.TryParse(coords[2], out targetCoordinate.z)) {
+                                if (splits.Length > 2) {
+                                    imageObject = StorageManager.getItem(splits[2]);
+                                    if (imageObject == null) {
+                                        imageObject = StorageManager.getCreature(splits[2]);
+                                        if (imageObject == null) {
+                                            imageObject = StorageManager.getNPC(splits[2]);
+                                            if (imageObject == null) {
+                                                imageObject = StorageManager.getMount(splits[2]);
+                                                if (imageObject == null) {
+                                                    imageObject = StorageManager.getOutfit(splits[2]);
+                                                    if (imageObject == null) {
+                                                        imageObject = StorageManager.getSpell(splits[2]);
+                                                        if (imageObject == null) {
+                                                            imageObject = StorageManager.getHunt(splits[2]);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                NotificationManager.ShowRoute(targetCoordinate, imageObject, command);
+                            }
+                        }
+                    }
+                } else if (comp.StartsWith("registerdoor" + Constants.CommandSymbol)) { //registerdoor@
+                    using (StreamWriter writer = new StreamWriter("doors", true)) {
+                        writer.WriteLine(String.Format("{0},{1},{2}", MemoryReader.X, MemoryReader.Y, MemoryReader.Z));
+                    }
+                } else if (comp.StartsWith("registerteleport" + Constants.CommandSymbol)) { //registerteleport@
+                    if (teleportCoordinatePrev == null) {
+                        teleportCoordinatePrev = new Coordinate(MemoryReader.X, MemoryReader.Y, MemoryReader.Z);
+                    } else {
+                        string teleportName = "Stairs";
+                        if (comp.Split('@')[1].Length > 0) {
+                            teleportName = comp.Split('@')[1];
+                        }
+                        using (StreamWriter writer = new StreamWriter("teleports", true)) {
+                            writer.WriteLine(String.Format("{0},{1},{2}-{3},{4},{5}-{6}", teleportCoordinatePrev.x, teleportCoordinatePrev.y, teleportCoordinatePrev.z, MemoryReader.X, MemoryReader.Y, MemoryReader.Z, teleportName));
+                        }
+                        teleportCoordinatePrev = null;
                     }
                 } else if (comp.StartsWith("category" + Constants.CommandSymbol)) { //category@
                                                                                     // list all items with the specified category

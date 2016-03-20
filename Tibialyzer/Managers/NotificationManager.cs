@@ -192,6 +192,12 @@ namespace Tibialyzer {
 
             ShowNotification(f, command);
         }
+        public static void ShowRoute(Coordinate target, TibiaObject obj, string command) {
+            if (target == null) return;
+            RouteForm f = new RouteForm(target, obj);
+
+            ShowNotification(f, command);
+        }
 
         public static void ShowDamageMeter(Dictionary<string, DamageResult> dps, string comm, string filter = "", string screenshot_path = "") {
             DamageChart f = new DamageChart();
