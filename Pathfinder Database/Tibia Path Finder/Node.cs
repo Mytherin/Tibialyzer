@@ -106,8 +106,8 @@ namespace Tibia_Path_Finder {
             rect.Height = Math.Max(rect.Y + rect.Height, other.Y + other.Height) - rect.Y;*/
         }
 
-        public void addNeighbor(Node node, SpecialConnection settings = null) {
-            if (this.neighbors.Find(o => o.neighbor == node) != null) {
+        public void addNeighbor(Node node, SpecialConnection settings = null, bool possibleDuplicate = false) {
+            if (!possibleDuplicate && this.neighbors.Find(o => o.neighbor == node) != null) {
                 throw new Exception("");
             }
             this.neighbors.Add(new Connection(node, settings));
@@ -119,6 +119,10 @@ namespace Tibia_Path_Finder {
 
         public bool hasNeighbor(Node node) {
             return this.neighbors.Find(o => o.neighbor == node) != null;
+        }
+
+        public Connection getNeighbor(Node node) {
+            return this.neighbors.Find(o => o.neighbor == node);
         }
     }
 }

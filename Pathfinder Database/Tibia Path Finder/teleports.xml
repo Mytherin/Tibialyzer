@@ -1,7 +1,7 @@
 
 <Teleports>
 	<Teleport>
-		<Name>Boat between Ab'Dendriel</Name>
+		<Name>Boat From Ab'Dendriel</Name>
 		<Start>990,693,6</Start>
 		<Destinations>
 			<Destination Name="Carlin" Cost="100">644,845,6</Destination>
@@ -12,7 +12,7 @@
 		</Destinations>
 	</Teleport>
 	<Teleport>
-		<Name>Boat between Ankrahmun</Name>
+		<Name>Boat From Ankrahmun</Name>
 		<Start>1348,1907,6</Start>
 		<Destinations>
 			<Destination Name="Darashia" Cost="100">1545,1505,6</Destination>
@@ -24,7 +24,7 @@
 		</Destinations>
 	</Teleport>
 	<Teleport>
-		<Name>Boat between Carlin</Name>
+		<Name>Boat From Carlin</Name>
 		<Start>644,845,6</Start>
 		<Destinations>
 			<Destination Name="Edron" Cost="100">1432,788,6</Destination>
@@ -35,7 +35,7 @@
 		</Destinations>
 	</Teleport>
 	<Teleport>
-		<Name>Boat between Darashia</Name>
+		<Name>Boat From Darashia</Name>
 		<Start>1545,1505,6</Start>
 		<Destinations>
 			<Destination Name="Liberty Bay" Cost="100">541,1915,6</Destination>
@@ -45,7 +45,7 @@
 		</Destinations>
 	</Teleport>
 	<Teleport>
-		<Name>Boat between Edron</Name>
+		<Name>Boat From Edron</Name>
 		<Start>1432,788,6</Start>
 		<Destinations>
 			<Destination Name="Cormaya" Cost="100">1544,983,6</Destination>
@@ -57,7 +57,7 @@
 		</Destinations>
 	</Teleport>
 	<Teleport>
-		<Name>Boat between Liberty Bay</Name>
+		<Name>Boat From Liberty Bay</Name>
 		<Start>541,1915,6</Start>
 		<Destinations>
 			<Destination Name="Port Hope" Cost="100">784,1808,6</Destination>
@@ -67,7 +67,7 @@
 		</Destinations>
 	</Teleport>
 	<Teleport>
-		<Name>Boat between Port Hope</Name>
+		<Name>Boat From Port Hope</Name>
 		<Start>784,1808,6</Start>
 		<Destinations>
 			<Destination Name="Thais" Cost="100">566,1233,6</Destination>
@@ -76,21 +76,21 @@
 		</Destinations>
 	</Teleport>
 	<Teleport>
-		<Name>Boat between Roshamuul</Name>
+		<Name>Boat From Roshamuul</Name>
 		<Start>1741,1594,7</Start>
 		<Destinations>
 			<Destination Name="Thais" Cost="100">566,1233,6</Destination>
 		</Destinations>
 	</Teleport>
 	<Teleport>
-		<Name>Boat between Oramund</Name>
+		<Name>Boat From Oramund</Name>
 		<Start>1724,1003,7</Start>
 		<Destinations>
 			<Destination Name="Thais" Cost="100">566,1233,6</Destination>
 		</Destinations>
 	</Teleport>
 	<Teleport>
-		<Name>Boat between Svargrond</Name>
+		<Name>Boat From Svargrond</Name>
 		<Start>598,132,6</Start>
 		<Destinations>
 			<Destination Name="Thais" Cost="100">566,1233,6</Destination>
@@ -98,7 +98,7 @@
 		</Destinations>
 	</Teleport>
 	<Teleport>
-		<Name>Boat between Thais</Name>
+		<Name>Boat From Thais</Name>
 		<Start>566,1233,6</Start>
 		<Destinations>
 			<Destination Name="Venore" Cost="100">1210,1046,6</Destination>
@@ -106,14 +106,14 @@
 		</Destinations>
 	</Teleport>
 	<Teleport>
-		<Name>Boat between Venore</Name>
+		<Name>Boat From Venore</Name>
 		<Start>1210,1046,6</Start>
 		<Destinations>
 			<Destination Name="Yalahar" Cost="100">1073,297,6</Destination>
 		</Destinations>
 	</Teleport>
 	<Teleport>
-		<Name>Steamship between Cormaya</Name>
+		<Name>Steamship From Cormaya</Name>
 		<Start>1566,1013,15</Start>
 		<Destinations>
 			<Destination Name="Farmine" Cost="100">1281,576,10</Destination>
@@ -121,14 +121,14 @@
 		</Destinations>
 	</Teleport>
 	<Teleport>
-		<Name>Steamship between Farmine</Name>
+		<Name>Steamship From Farmine</Name>
 		<Start>1281,576,10</Start>
 		<Destinations>
 			<Destination Name="Kazordoon" Cost="100">915,982,15</Destination>
 		</Destinations>
 	</Teleport>
 	<Teleport>
-		<Name>Teleport between Farmine</Name>
+		<Name>Teleport From Farmine</Name>
 		<Start>1316,555,10</Start>
 		<Destinations>
 			<Destination Name="Zao" Cost="100">1340,556,7</Destination>

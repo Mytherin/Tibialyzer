@@ -25,22 +25,36 @@
 558,1121,7-557,1121,8-Stairs
 615,1925,7-596,1562,7-Turtle
 1084,281,7-1083,281,6-Levitate
-1173,223,7-1197,206,7-Boat to Quaras
-1093,387,7-1113,573,7-Boat to Vengoth
-909,924,8-930,1000,15-Ore Wagon
-912,924,8-862,928,9-Ore Wagon
-914,924,8-886,946,11-Ore Wagon
-917,924,8-833,992,9-Ore Wagon
-928,997,15-863,933,9-Ore Wagon
-933,997,15-881,946,11-Ore Wagon
-936,997,15-833,1001,9-Ore Wagon
-830,998,9-887,946,11-Ore Wagon
-830,995,9-863,926,9-Ore Wagon
-859,930,9-882,946,11-Ore Wagon
-871,922,9-856,899,7-Ore Wagon
-873,922,9-833,953,0-Ore Wagon
-875,922,9-875,968,7-Ore Wagon
-877,922,9-809,954,7-Ore Wagon
+1173,223,7-1197,206,7-Boat from Yalahar to Quaras
+1093,387,7-1113,573,7-Boat from Yalahar to Vengoth
+1059,281,6-1059,278,7-Stairs
+1058,281,6-1058,278,7-Stairs
+1057,281,6-1057,278,7-Stairs
+1056,281,6-1056,278,7-Stairs
+1124,129,7-1122,129,6-Stairs
+1122,129,6-1119,129,7-Stairs
+840,997,9-840,995,10-Stairs
+859,925,9-833,995,9-Ore Wagon from Shops to Main Gate ONE WAY
+859,928,9-912,927,8-Ore Wagon from Shops to Depot ONE WAY
+859,930,9-882,946,11-Ore Wagon from Shops to Temple ONE WAY
+859,933,9-929,1000,15-Ore Wagon from Shops to Steamboat ONE WAY
+909,924,8-930,1000,15-Ore Wagon from Depot to Steamboat ONE WAY
+912,924,8-862,928,9-Ore Wagon from Depot to Shops ONE WAY
+914,924,8-886,946,11-Ore Wagon from Depot to Temple ONE WAY
+917,924,8-833,992,9-Ore Wagon from Depot to Main Gate ONE WAY
+880,943,11-934,1000,15-Ore Wagon from Temple to Steamboat ONE WAY
+883,943,11-863,930,9-Ore Wagon from Temple to Shops ONE WAY
+885,943,11-915,927,8-Ore Wagon from Temple to Depot ONE WAY
+888,943,11-832,999,9-Ore Wagon from Temple to Main Gate ONE WAY
+871,922,9-856,899,7-Ore Wagon from Shops to Kazordoon Surface North
+873,922,9-833,953,0-Ore Wagon from Shops to Colossus Top
+875,922,9-875,968,7-Ore Wagon from Shops to Kazordoon Surface South
+877,922,9-809,954,7-Ore Wagon from Shops to Kazordoon Surface West
+789,937,7-787,937,8-Stairs
+775,990,7-773,990,8-Stairs
+805,1012,7-803,1012,8-Stairs
+751,998,7-749,998,8-Stairs
+835,917,7-835,915,8-Stairs
 880,878,11-499,1622,8-Spike Entrance
 491,1628,13-499,1642,13-Teleporter
 491,1628,14-499,1613,14-Teleporter
@@ -133,16 +147,16 @@
 480,405,7-277,318,7-Buddel from Okolnir to Camp
 493,437,6-493,438,7-Levitate
 451,451,5-451,450,4-Levitate
-1448,808,3-1525,1465,6-Carpet from Edron to Darashia
-1448,808,3-510,121,4-Carpet from Edron to Svargrond
-1448,808,3-791,861,4-Carpet from Edron to Femor Hills
-1448,808,3-844,966,0-Carpet from Edron to Kazordoon
-1525,1465,6-510,121,4-Carpet from Darashia to Svargrond
-1525,1465,6-791,861,4-Carpet from Darashia to Femor Hills
-1525,1465,6-844,966,0-Carpet from Darashia to Kazordoon
-510,121,4-791,861,4-Carpet from Svargrond to Femor Hills
-510,121,4-510,121,4-Carpet from Svargrond to Kazordoon
-791,861,4-844,966,0-Carpet from Femor Hills to Kazordoon
+1448,808,3-1525,1465,6-Flying Carpet from Edron to Darashia
+1448,808,3-510,121,4-Flying Carpet from Edron to Svargrond
+1448,808,3-791,861,4-Flying Carpet from Edron to Femor Hills
+1448,808,3-844,966,0-Flying Carpet from Edron to Kazordoon
+1525,1465,6-510,121,4-Flying Carpet from Darashia to Svargrond
+1525,1465,6-791,861,4-Flying Carpet from Darashia to Femor Hills
+1525,1465,6-844,966,0-Flying Carpet from Darashia to Kazordoon
+510,121,4-791,861,4-Flying Carpet from Svargrond to Femor Hills
+510,121,4-844,966,0-Flying Carpet from Svargrond to Kazordoon
+791,861,4-844,966,0-Flying Carpet from Femor Hills to Kazordoon
 916,981,15-1565,1013,15-Steamboat from Kazordoon to Cormaya
 916,981,15-1280,576,10-Steamboat from Kazordoon to Farmine
 1565,1013,15-1280,576,10-Steamboat from Cormaya to Farmine

@@ -13,6 +13,8 @@ using System.Xml;
 using System.IO;
 using System.Data.SQLite;
 
+using Tibialyzer;
+
 namespace Tibia_Path_Finder {
     public partial class Form1 : Form {
         List<Color> walkableColors = new List<Color> { Color.FromArgb(0, 204, 0), Color.FromArgb(153, 153, 153), Color.FromArgb(255, 204, 153), Color.FromArgb(153, 102, 51), Color.FromArgb(255, 255, 255), Color.FromArgb(153, 153, 153), Color.FromArgb(204, 255, 255), Color.FromArgb(255, 255, 0) };
@@ -92,13 +94,6 @@ namespace Tibia_Path_Finder {
             return array;
         }
 
-        public Node getParent(Node n) {
-            while (n.parent != null) {
-                n = n.parent;
-            }
-            return n;
-        }
-
         public void inheritChildren(Node main, Node merge, Dictionary<Node, Node> originalList) {
             if (merge.children == null) {
                 Node n = originalList[merge];
@@ -111,23 +106,63 @@ namespace Tibia_Path_Finder {
             }
         }
 
+        public string ReverseName(string str) {
+            if (str.ToLower().Contains(" from ") && str.ToLower().Contains(" to ")) {
+                string[] splits = str.Split(' ');
+                string final = "";
+                string from = null;
+                for(int i = 0; i < splits.Length; i++) {
+                    if (splits[i].ToLower() == "to") {
+                        final += "from ";
+                        for(int j = i + 1; j < splits.Length; j++) {
+                            final += splits[j] + " ";
+                        }
+                        final += "to " + from;
+                        final = final.Substring(0, final.Length - 1) + ".";
+                        return final;
+                    } else if (from != null) {
+                        from += splits[i] + " ";
+                    } else if (splits[i].ToLower() != "from") {
+                        final += splits[i] + " ";
+                    } else {
+                        from = "";
+                    }
+                }
+            }
+            return str;
+        }
+
         public List<SpecialConnection> CreateSpecialConnections(List<Node[,]> nodeLists) {
             Stopwatch sw;
 
             List<SpecialConnection> specialConnections = new List<SpecialConnection>();
-
+            
             sw = Stopwatch.StartNew();
             // Add connections between floors created by stairs/rope holes (these are added if both image (i) and image (i + 1) have the color yellow at a pixel)
             for (int x = 0; x < mapImages[7].Width; x++) {
                 for (int y = 0; y < mapImages[7].Height; y++) {
                     for (int i = 0; i < 15; i++) {
-                        if (nodeLists[i][x, y] != null && nodeLists[i + 1][x, y] != null && nodeLists[i][x, y].color == stairsColor && nodeLists[i + 1][x, y].color == stairsColor) {
-                            SpecialConnection connection = new SpecialConnection { source = nodeLists[i][x, y], destination = nodeLists[i + 1][x, y], cost = 10, name = "Stairs" };
-                            SpecialConnection connection2 = new SpecialConnection { source = nodeLists[i + 1][x, y], destination = nodeLists[i][x, y], cost = 10, name = "Stairs" };
-                            specialConnections.Add(connection);
-                            specialConnections.Add(connection2);
-                            nodeLists[i][x, y].addNeighbor(nodeLists[i + 1][x, y], connection);
-                            nodeLists[i + 1][x, y].addNeighbor(nodeLists[i][x, y], connection2);
+                        if (nodeLists[i][x, y] != null && nodeLists[i][x, y].color == stairsColor) {
+                            Node other = null;
+                            if (nodeLists[i + 1][x, y] != null && nodeLists[i + 1][x, y].color == stairsColor) {
+                                other = nodeLists[i + 1][x, y];
+                            } else if (nodeLists[i + 1][x + 1, y] != null && nodeLists[i + 1][x + 1, y].color == stairsColor) {
+                                other = nodeLists[i + 1][x + 1, y];
+                            } else if (nodeLists[i + 1][x - 1, y] != null && nodeLists[i + 1][x - 1, y].color == stairsColor) {
+                                other = nodeLists[i + 1][x - 1, y];
+                            } else if (nodeLists[i + 1][x, y - 1] != null && nodeLists[i + 1][x, y - 1].color == stairsColor) {
+                                other = nodeLists[i + 1][x, y - 1];
+                            } else if (nodeLists[i + 1][x, y + 1] != null && nodeLists[i + 1][x, y + 1].color == stairsColor) {
+                                other = nodeLists[i + 1][x, y + 1];
+                            }
+                            if (other != null) {
+                                SpecialConnection connection = new SpecialConnection { source = nodeLists[i][x, y], destination = other, cost = 50, name = "Stairs" };
+                                SpecialConnection connection2 = new SpecialConnection { source = other, destination = nodeLists[i][x, y], cost = 50, name = "Stairs" };
+                                specialConnections.Add(connection);
+                                specialConnections.Add(connection2);
+                                nodeLists[i][x, y].addNeighbor(other, connection);
+                                other.addNeighbor(nodeLists[i][x, y], connection2);
+                            }
                         }
                     }
                 }
@@ -161,7 +196,7 @@ namespace Tibia_Path_Finder {
                                     int z = int.Parse(split[2]);
                                     startNode = nodeLists[z][x, y];
                                 } else if (currentNode == "Destination") {
-                                    string name = startName + " and " + attributes["Name"];
+                                    string name = startName + " to " + attributes["Name"];
                                     int cost = int.Parse(attributes["Cost"]);
                                     string[] split = reader.Value.Split(',');
                                     int x = int.Parse(split[0]);
@@ -170,7 +205,7 @@ namespace Tibia_Path_Finder {
                                     endNode = nodeLists[z][x, y];
 
                                     SpecialConnection connection = new SpecialConnection { source = startNode, destination = endNode, cost = cost, name = name };
-                                    SpecialConnection connection2 = new SpecialConnection { source = endNode, destination = startNode, cost = cost, name = name };
+                                    SpecialConnection connection2 = new SpecialConnection { source = endNode, destination = startNode, cost = cost, name = ReverseName(name) };
                                     specialConnections.Add(connection);
                                     specialConnections.Add(connection2);
                                     startNode.addNeighbor(endNode, connection);
@@ -230,7 +265,7 @@ namespace Tibia_Path_Finder {
 
                     if (!one_way) {
                         if (!endNode.hasNeighbor(startNode)) {
-                            connection = new SpecialConnection { source = endNode, destination = startNode, cost = 100, name = name };
+                            connection = new SpecialConnection { source = endNode, destination = startNode, cost = 100, name = ReverseName(name) };
                             specialConnections.Add(connection);
                             endNode.addNeighbor(startNode, connection);
                         }
@@ -301,6 +336,7 @@ namespace Tibia_Path_Finder {
                     for (int y = 0; y < mapImages[7].Height; y++) {
                         if (nodes[x, y] != null) {
                             hierarchicalNodes.Add(nodes[x, y]);
+                            nodes[x, y].parent = null;
                         }
                     }
                 }
@@ -317,6 +353,7 @@ namespace Tibia_Path_Finder {
                     Node current = null;
                     foreach (Node n in hierarchicalNodes) {
                         current = n;
+                        break;
                     }
                     if (current == null) break;
 
@@ -327,7 +364,7 @@ namespace Tibia_Path_Finder {
                     HashSet<Node> closedSet = new HashSet<Node>() { current };
                     while (openSet.Count > 0 && hierarchicalNode.children.Count < childCount) {
                         Node n = openSet[0];
-                        openSet.Remove(n);
+                        openSet.RemoveAt(0);
                         hierarchicalNode.children.Add(n);
                         hierarchicalNodes.Remove(n);
                         if (n.parent != null) throw new Exception("Already has a parent.");
@@ -358,27 +395,19 @@ namespace Tibia_Path_Finder {
                         foreach (Connection conn in n.neighbors) {
                             Node neighbor = conn.neighbor as Node;
                             if (neighbor.parent == null) throw new Exception("Node without a parent.");
-                            if (neighbor.parent != hierarchicalNode && !hierarchicalNode.hasNeighbor(neighbor.parent)) {
-                                hierarchicalNode.addNeighbor(neighbor.parent, conn.settings);
-
-                                // make sure neighbors are connected
-                                if (hierarchicalNode.rect.X > neighbor.parent.rect.X + neighbor.parent.rect.Width) {
-                                    hierarchicalNode.rect.X = neighbor.parent.rect.X + neighbor.parent.rect.Width - 1;
-                                } else if (hierarchicalNode.rect.X + hierarchicalNode.rect.Width < neighbor.parent.rect.X) {
-                                    neighbor.parent.rect.X = hierarchicalNode.rect.X + hierarchicalNode.rect.Width - 1;
+                            if (neighbor.parent != hierarchicalNode) {
+                                Connection existingConnection = hierarchicalNode.getNeighbor(neighbor.parent);
+                                if (existingConnection == null) {
+                                    hierarchicalNode.addNeighbor(neighbor.parent, conn.settings);
                                 }
-
-                                if (hierarchicalNode.rect.Y > neighbor.parent.rect.Y + neighbor.parent.rect.Height) {
-                                    hierarchicalNode.rect.Y = neighbor.parent.rect.Y + neighbor.parent.rect.Height - 1;
-                                } else if (hierarchicalNode.rect.Y + hierarchicalNode.rect.Height < neighbor.parent.rect.Y) {
-                                    neighbor.parent.rect.Y = hierarchicalNode.rect.Y + hierarchicalNode.rect.Height - 1;
-                                }
-
                             }
                         }
                     }
                 }
             }
+
+            Node node = nodeLists[beginz][beginx, beginy];
+
             sw.Stop();
             Console.WriteLine("Create hierarchical stuff: {0}ms", sw.Elapsed.TotalMilliseconds);
 
@@ -398,7 +427,7 @@ namespace Tibia_Path_Finder {
             using (SQLiteTransaction transaction = sqlconn.BeginTransaction()) {
                 for (int i = 0; i < doors.Count; i++) {
                     foreach (var value in doors[i]) {
-                        command = new SQLiteCommand(String.Format("INSERT INTO Doors(x, y, z, condition) VALUES ({0},{1},{2},{3})", value.Key.Item1, value.Key.Item2, i, value.Value == null ? "NULL": String.Format("'{0}'", value.Value)), sqlconn, transaction);
+                        command = new SQLiteCommand(String.Format("INSERT INTO Doors(x, y, z, condition) VALUES ({0},{1},{2},{3})", value.Key.Item1, value.Key.Item2, i, value.Value == null ? "NULL" : String.Format("'{0}'", value.Value)), sqlconn, transaction);
                         command.ExecuteNonQuery();
                     }
                 }
@@ -412,7 +441,6 @@ namespace Tibia_Path_Finder {
                 }
                 foreach (Node n in highLevelNodes) {
                     foreach (Connection c in n.neighbors) {
-                        (c.neighbor as Node).removeNeighbor(n);
                         int special_id = -1;
                         if (c.settings != null) {
                             SpecialConnection connection = c.settings;
@@ -428,210 +456,22 @@ namespace Tibia_Path_Finder {
                 transaction.Commit();
             }
         }
-        List<List<NormalNode>> nodes = new List<List<NormalNode>>();
-        List<Dictionary<Tuple<int, int>, string>> doors = new List<Dictionary<Tuple<int, int>, string>>();
+
         public void LoadFromDatabase() {
-            SQLiteConnection conn;
-            SQLiteCommand command;
-            SQLiteDataReader reader;
-
-            conn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", "nodes.db"));
-            conn.Open();
-
-            for (int k = 0; k <= 15; k++) {
-                nodes.Add(new List<NormalNode>());
-            }
-            Dictionary<int, NormalNode> nodeids = new Dictionary<int, NormalNode>();
-            Dictionary<int, Tuple<Connection, Connection>> connectionids = new Dictionary<int, Tuple<Connection, Connection>>();
-            command = new SQLiteCommand("SELECT id,x,y,z,width,height FROM HierarchicalNode", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                int id = reader.GetInt32(0);
-                int x = reader.GetInt32(1);
-                int y = reader.GetInt32(2);
-                int z = reader.GetInt32(3);
-                int width = reader.GetInt32(4);
-                int height = reader.GetInt32(5);
-                NormalNode n = new NormalNode(x, y, z, width, height);
-                nodeids.Add(id, n);
-                nodes[z].Add(n);
-            }
-            command = new SQLiteCommand("SELECT nodeid,nodeid2 FROM HierarchicalConnections", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                int nodeid = reader.GetInt32(0);
-                int nodeid2 = reader.GetInt32(1);
-                Connection c = new Connection(nodeids[nodeid]);
-                Connection c2 = new Connection(nodeids[nodeid2]);
-                nodeids[nodeid].neighbors.Add(c2);
-                nodeids[nodeid2].neighbors.Add(c);
-            }
-            var specialConnections = new List<Dictionary<Tuple<int, int>, List<SpecialConnection>>>();
-            for (int i = 0; i <= 15; i++) {
-                specialConnections.Add(new Dictionary<Tuple<int, int>, List<SpecialConnection>>());
-            }
-            command = new SQLiteCommand("SELECT x1,y1,z1,x2,y2,z2,name,cost FROM SpecialConnections", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                int x1 = reader.GetInt32(0);
-                int y1 = reader.GetInt32(1);
-                int z1 = reader.GetInt32(2);
-                int x2 = reader.GetInt32(3);
-                int y2 = reader.GetInt32(4);
-                int z2 = reader.GetInt32(5);
-                string name = reader[6].ToString();
-                int cost = reader.GetInt32(7);
-                SpecialConnection connection = new SpecialConnection() { source = new Node(walkableColors[0], x1, y1, z1), destination = new Node(walkableColors[0], x2, y2, z2), name = name, cost = cost };
-                Tuple<int, int> tpl = new Tuple<int, int>(x1, y1);
-                if (!specialConnections[z1].ContainsKey(tpl)) {
-                    specialConnections[z1].Add(tpl, new List<SpecialConnection>());
-                }
-                specialConnections[z1][tpl].Add(connection);
-            }
-            for(int i = 0; i <= 15; i++) {
-                doors.Add(new Dictionary<Tuple<int, int>, string>());
-            }
-            command = new SQLiteCommand("SELECT x,y,z,condition FROM Doors", conn);
-            reader = command.ExecuteReader();
-            while (reader.Read()) {
-                int x = reader.GetInt32(0);
-                int y = reader.GetInt32(1);
-                int z = reader.GetInt32(2);
-                string condition = reader.IsDBNull(3) ? null : reader[3].ToString();
-                doors[z].Add(new Tuple<int, int>(x, y), condition);
-            }
+            Pathfinder.LoadFromDatabase("nodes.db");
         }
 
-        public NormalNode GetNode(int x, int y, int z) {
-            foreach (NormalNode node in nodes[z]) {
-                if (node.rect.Contains(x, y)) return node;
-            }
-            return null;
-        }
-
-
-        public class DijkstraPoint {
-            public DijkstraPoint previous;
-            public Point point;
-            public double cost;
-
-            public DijkstraPoint(DijkstraPoint previous, Point point, double cost) {
-                this.previous = previous;
-                this.cost = cost;
-                this.point = point;
-            }
-        }
-        public static DijkstraPoint GetMinimum(List<DijkstraPoint> list) {
-            double minValue = double.MaxValue;
-            DijkstraPoint min = null;
-            foreach (var node in list) {
-                double nodeValue = node.cost;
-                if (nodeValue < minValue) {
-                    min = node;
-                    minValue = nodeValue;
-                }
-            }
-            return min;
-        }
-
-        public static double Distance(Point a, Point b) {
-            // Euclidean distance
-            return Math.Sqrt(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2));
-        }
-
-        private static List<Color> wwalkableColors = new List<Color> { Color.FromArgb(0, 204, 0), Color.FromArgb(153, 153, 153), Color.FromArgb(255, 204, 153), Color.FromArgb(153, 102, 51), Color.FromArgb(255, 255, 255), Color.FromArgb(153, 153, 153), Color.FromArgb(204, 255, 255), Color.FromArgb(255, 255, 0) };
-        public static bool isWalkable(Color color) {
-            return wwalkableColors.Contains(color);
-        }
-
-        public static Point[] getNeighbors(Point point) {
-            if (point.X > 0 && point.Y > 0) {
-                Point[] points = new Point[8];
-                points[0] = new Point(point.X - 1, point.Y - 1);
-                points[1] = new Point(point.X, point.Y - 1);
-                points[2] = new Point(point.X - 1, point.Y);
-                points[3] = new Point(point.X + 1, point.Y + 1);
-                points[4] = new Point(point.X + 1, point.Y);
-                points[5] = new Point(point.X, point.Y + 1);
-                points[6] = new Point(point.X - 1, point.Y + 1);
-                points[7] = new Point(point.X + 1, point.Y - 1);
-                return points;
-            }
-            return null;
-        }
-
-        public static DijkstraPoint FindRoute(Bitmap mapImage, Point start, Point end, List<Rectangle> bounds, int z) {
-            List<DijkstraPoint> openSet = new List<DijkstraPoint> { new DijkstraPoint(null, start, 0) };
-            HashSet<Point> closedSet = new HashSet<Point>();
-            DijkstraPoint closestNode = null;
-            double closestDistance = double.MaxValue;
-
-
-            while (openSet.Count > 0) {
-                DijkstraPoint current = GetMinimum(openSet);
-                if (current.point.Equals(end)) {
-                    return current;
-                }
-                if (Distance(current.point, end) < closestDistance) {
-                    closestDistance = Distance(current.point, end);
-                    closestNode = current;
-                }
-
-                openSet.Remove(current);
-                closedSet.Add(current.point);
-
-                //check all the neighbors of the current point
-                foreach (Point p in getNeighbors(current.point)) {
-                    if (closedSet.Contains(p)) continue;
-                    if (!isWalkable(mapImage.GetPixel(p.X, p.Y))) {
-                        closedSet.Add(p);
-                        continue;
-                    }
-                    if (bounds != null) {
-                        bool found = false;
-                        foreach (Rectangle bound in bounds) {
-                            if (bound.Contains(p)) {
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found) continue;
-                    }
-                    double newCost = current.cost + Distance(current.point, p);
-
-                    DijkstraPoint neighborPoint = openSet.Find(o => o.point == p);
-                    if (neighborPoint == null) {
-                        openSet.Add(new DijkstraPoint(current, p, newCost));
-                    } else if (neighborPoint.cost < newCost) {
-                        continue;
-                    } else {
-                        openSet.Remove(neighborPoint);
-                        openSet.Add(new DijkstraPoint(current, p, newCost));
-                    }
-                }
-            }
-            return closestNode;
-        }
-
-        int beginx, beginy, beginz, endx, endy, endz;
+        public static int beginx, beginy, beginz, endx, endy, endz;
 
         public void RedrawRoute() {
             Stopwatch sw;
 
             sw = Stopwatch.StartNew();
-            NormalNode start = GetNode(beginx, beginy, beginz);
-            NormalNode end = GetNode(endx, endy, endz);
-            AStarNode node = AStar.FindRoute(start, end);
-
-            List<Rectangle> rectangles = new List<Rectangle>();
-            AStarNode tempnode = node;
-            while (tempnode != null) {
-                rectangles.Add(tempnode.rect);
-                tempnode = tempnode.previous;
-            }
-
-            DijkstraPoint point = FindRoute(new Bitmap(mapImages[beginz]), new Point(beginx, beginy), new Point(endx, endy), rectangles, beginz);
-
+            Point3D start = new Point3D(beginx, beginy, beginz);
+            Point3D target = new Point3D(endx, endy, endz);
+            var res = Pathfinder.FindRoute(start, target, new Bitmap(mapImages[start.Z]));
+            DijkstraPoint point = res.Item1;
+            var rects = res.Item2;
             sw.Stop();
             Console.WriteLine("Find Route: {0}ms", sw.Elapsed.TotalMilliseconds);
 
@@ -661,22 +501,17 @@ namespace Tibia_Path_Finder {
                     point = point.previous;
                 }
 
-                while (node.previous != null) {
-                    gr.DrawRectangle(Pens.Red, node.rect);
-                    node = node.previous;
+                foreach (Rectangle3D rect in rects) {
+                    gr.DrawRectangle(Pens.Yellow, rect.Rect);
                 }
-
             }
             bigMap = bitmap;
             UpdateMap();
         }
 
         public void Main() {
-            //CreateDatabase();
-            LoadFromDatabase();
-
-            string beginstr = "129.173,124.100,7";
-            string endstr = "129.243,124.94,6";
+            string beginstr = "126.57,125.189,7";
+            string endstr = "126.55,125.172,6";
 
             int minx = 124 * 256;
             int miny = 121 * 256;
@@ -686,6 +521,9 @@ namespace Tibia_Path_Finder {
             endx = int.Parse(endstr.Split(',')[0].Split('.')[0]) * 256 + int.Parse(endstr.Split(',')[0].Split('.')[1]) - minx;
             endy = int.Parse(endstr.Split(',')[1].Split('.')[0]) * 256 + int.Parse(endstr.Split(',')[1].Split('.')[1]) - miny;
             endz = int.Parse(endstr.Split(',')[2]);
+
+            CreateDatabase();
+            LoadFromDatabase();
 
             RedrawRoute();
         }
