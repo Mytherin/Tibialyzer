@@ -27,6 +27,7 @@ namespace Tibialyzer {
             this.scanningSpeedTrack.Value = Math.Min(Math.Max(SettingsManager.getSettingInt("ScanSpeed"), scanningSpeedTrack.Minimum), scanningSpeedTrack.Maximum);
             this.scanSpeedDisplayLabel.Text = Constants.ScanSpeedText[scanningSpeedTrack.Value / 10] + String.Format("({0})", scanningSpeedTrack.Value);
             this.experienceComputationDropdown.SelectedIndex = SettingsManager.getSettingString("ExperiencePerHourCalculation") == "TibiaStyle" ? 0 : 1;
+            this.scanEntireMemoryDropdown.SelectedIndex = SettingsManager.getSettingBool("ScanInternalTabStructure") ? 0 : 1;
         }
 
         public void InitializeTooltips() {
@@ -42,6 +43,7 @@ namespace Tibialyzer {
             tooltip.SetToolTip(scanningSpeedTrack, "Set the memory scanning speed of Tibialyzer. Lower settings drastically reduce CPU usage, but increase response time for Tibialyzer to respond to events in-game (such as in-game commands, look events and loot parsing).");
             tooltip.SetToolTip(popupAnimationBox, "Whether or not popups should be animated or simply appear.");
             tooltip.SetToolTip(experienceComputationDropdown, "The algorithm used to compute experience per hour. Standard Tibia Style uses the same algorithm as the Tibia client; while weighted places more emphasis on recent experience gained.");
+            tooltip.SetToolTip(scanEntireMemoryDropdown, "Scanning the internal tab structure is much faster and prevents duplicate issues (only available for C client).\nOnly select scanning the entire memory if for some reason this setting does not work (e.g. because of an update).");
         }
 
         private void unlockResetButton_Click(object sender, MouseEventArgs e) {
@@ -137,6 +139,12 @@ namespace Tibialyzer {
             if (MainForm.prevent_settings_update) return;
 
             SettingsManager.setSetting("ExperiencePerHourCalculation", (sender as ComboBox).SelectedIndex == 0 ? "TibiaStyle" : "WeightedStyle" );
+        }
+
+        private void scanEntireMemoryDropdown_SelectedIndexChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            SettingsManager.setSetting("ScanInternalTabStructure", (sender as ComboBox).SelectedIndex == 0);
         }
     }
 }

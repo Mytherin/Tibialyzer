@@ -247,6 +247,8 @@ C::NumpadPgDn
             setSettingIfNotSet("ExperienceAddress", "0x534660");
             setSettingIfNotSet("LevelAddress", "0x534670");
             setSettingIfNotSet("MagicLevelAddress", "0x534678");
+            setSettingIfNotSet("TabsBaseAddress", "0x534970");
+            setSettingIfNotSet("ScanInternalTabStructure", true);
         }
 
         public static void ResetSettingsToDefault() {

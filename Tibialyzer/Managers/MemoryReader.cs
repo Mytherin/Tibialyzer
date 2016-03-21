@@ -39,16 +39,17 @@ namespace Tibialyzer {
         static int PROCESS_QUERY_INFORMATION = 0x0400;
         static int PROCESS_WM_READ = 0x0010;
 
-        private static UInt32 XORAddress = 0x534658;
-        private static UInt32 HealthAddress = 0x6d2030;
-        private static UInt32 MaxHealthAddress = 0x6D2024;
-        private static UInt32 ManaAddress = 0x534688;
-        private static UInt32 MaxManaAddress = 0x53465C;
-        private static UInt32 PlayerIDAddress = 0x6D202C;
-        private static UInt32 BattleListAddress = 0x72DE20;
-        private static UInt32 ExperienceAddress = 0x534660;
-        private static UInt32 LevelAddress = 0x534670;
-        private static UInt32 MagicLevelAddress = 0x534678;
+        private static UInt32 XORAddress;
+        private static UInt32 HealthAddress;
+        private static UInt32 MaxHealthAddress;
+        private static UInt32 ManaAddress;
+        private static UInt32 MaxManaAddress;
+        private static UInt32 PlayerIDAddress;
+        private static UInt32 BattleListAddress;
+        private static UInt32 ExperienceAddress;
+        private static UInt32 LevelAddress;
+        private static UInt32 MagicLevelAddress;
+        public static UInt32 TabsBaseAddress;
 
         private static uint BL_CREATURE_SIZE = 220;
         private static int BL_Z_OFFSET = 36;
@@ -77,6 +78,7 @@ namespace Tibialyzer {
             ParseAddress("ExperienceAddress", out ExperienceAddress, 0x534660);
             ParseAddress("LevelAddress", out LevelAddress, 0x534670);
             ParseAddress("MagicLevelAddress", out MagicLevelAddress, 0x534678);
+            ParseAddress("TabsBaseAddress", out TabsBaseAddress, 0x534970);
         }
 
         private static UInt32 baseAddress;
@@ -95,22 +97,22 @@ namespace Tibialyzer {
             return baseAddress + offset;
         }
 
-        public static byte[] ReadBytes(Int64 address, uint n) {
+        public static byte[] ReadBytes(Int64 address, uint n, int processHandle = -1) {
             IntPtr ptrBytesRead;
             byte[] buf = new byte[n];
-            ReadProcessMemory(handle, new IntPtr(address), buf, n, out ptrBytesRead);
+            ReadProcessMemory(processHandle < 0 ? handle : new IntPtr(processHandle), new IntPtr(address), buf, n, out ptrBytesRead);
             return buf;
         }
 
-        public static Int32 ReadInt32(Int64 address) {
+        public static Int32 ReadInt32(Int64 address, int handle = -1) {
             return BitConverter.ToInt32(ReadBytes(address, 4), 0);
         }
 
-        public static UInt32 ReadUInt32(Int64 address) {
+        public static UInt32 ReadUInt32(Int64 address, int handle = -1) {
             return BitConverter.ToUInt32(ReadBytes(address, 4), 0);
         }
 
-        public static string ReadString(Int64 address, uint length = 32) {
+        public static string ReadString(Int64 address, uint length = 32, int handle = -1) {
             return ASCIIEncoding.Default.GetString(ReadBytes(address, length)).Split('\0')[0];
         }
 
