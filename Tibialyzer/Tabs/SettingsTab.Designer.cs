@@ -35,6 +35,8 @@
             this.scanningSpeedTrack = new System.Windows.Forms.TrackBar();
             this.label68 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.scanEntireMemoryDropdown = new Tibialyzer.PrettyDropDownList();
             this.experienceComputationDropdown = new Tibialyzer.PrettyDropDownList();
             this.lookModeCheckbox = new Tibialyzer.PrettyCheckBox();
             this.outfitGenderCheckbox = new Tibialyzer.PrettyDropDownList();
@@ -43,8 +45,7 @@
             this.eventPopupBox = new Tibialyzer.PrettyCheckBox();
             this.unrecognizedPopupBox = new Tibialyzer.PrettyCheckBox();
             this.popupTypeBox = new Tibialyzer.PrettyDropDownList();
-            this.label2 = new System.Windows.Forms.Label();
-            this.scanEntireMemoryDropdown = new Tibialyzer.PrettyDropDownList();
+            this.skipDuplicateLootCheckbox = new Tibialyzer.PrettyCheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.scanningSpeedTrack)).BeginInit();
             this.SuspendLayout();
             // 
@@ -201,6 +202,36 @@
             this.label1.Text = "Experience Computation";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // label2
+            // 
+            this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
+            this.label2.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.label2.Location = new System.Drawing.Point(6, 355);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(273, 30);
+            this.label2.TabIndex = 56;
+            this.label2.Text = "Scan Entire Memory";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // scanEntireMemoryDropdown
+            // 
+            this.scanEntireMemoryDropdown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.scanEntireMemoryDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.scanEntireMemoryDropdown.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.scanEntireMemoryDropdown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.scanEntireMemoryDropdown.FormattingEnabled = true;
+            this.scanEntireMemoryDropdown.Items.AddRange(new object[] {
+            "Scan Internal Tabs Structure",
+            "Scan Entire Memory"});
+            this.scanEntireMemoryDropdown.Location = new System.Drawing.Point(7, 385);
+            this.scanEntireMemoryDropdown.Name = "scanEntireMemoryDropdown";
+            this.scanEntireMemoryDropdown.Size = new System.Drawing.Size(272, 24);
+            this.scanEntireMemoryDropdown.TabIndex = 57;
+            this.scanEntireMemoryDropdown.SelectedIndexChanged += new System.EventHandler(this.scanEntireMemoryDropdown_SelectedIndexChanged);
+            this.scanEntireMemoryDropdown.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.scanEntireMemoryDropdown.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            // 
             // experienceComputationDropdown
             // 
             this.experienceComputationDropdown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -335,35 +366,21 @@
             this.popupTypeBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.popupTypeBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             // 
-            // label2
+            // skipDuplicateLootCheckbox
             // 
-            this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label2.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label2.Location = new System.Drawing.Point(6, 355);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(273, 30);
-            this.label2.TabIndex = 56;
-            this.label2.Text = "Scan Entire Memory";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // scanEntireMemoryDropdown
-            // 
-            this.scanEntireMemoryDropdown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.scanEntireMemoryDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.scanEntireMemoryDropdown.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.scanEntireMemoryDropdown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.scanEntireMemoryDropdown.FormattingEnabled = true;
-            this.scanEntireMemoryDropdown.Items.AddRange(new object[] {
-            "Scan Internal Tabs Structure",
-            "Scan Entire Memory"});
-            this.scanEntireMemoryDropdown.Location = new System.Drawing.Point(7, 385);
-            this.scanEntireMemoryDropdown.Name = "scanEntireMemoryDropdown";
-            this.scanEntireMemoryDropdown.Size = new System.Drawing.Size(272, 24);
-            this.scanEntireMemoryDropdown.TabIndex = 57;
-            this.scanEntireMemoryDropdown.SelectedIndexChanged += new System.EventHandler(this.scanEntireMemoryDropdown_SelectedIndexChanged);
-            this.scanEntireMemoryDropdown.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.scanEntireMemoryDropdown.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            this.skipDuplicateLootCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.skipDuplicateLootCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.skipDuplicateLootCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.skipDuplicateLootCheckbox.Location = new System.Drawing.Point(285, 356);
+            this.skipDuplicateLootCheckbox.Name = "skipDuplicateLootCheckbox";
+            this.skipDuplicateLootCheckbox.Padding = new System.Windows.Forms.Padding(10);
+            this.skipDuplicateLootCheckbox.Size = new System.Drawing.Size(249, 40);
+            this.skipDuplicateLootCheckbox.TabIndex = 58;
+            this.skipDuplicateLootCheckbox.Text = "Skip Duplicate Loot";
+            this.skipDuplicateLootCheckbox.UseVisualStyleBackColor = false;
+            this.skipDuplicateLootCheckbox.CheckedChanged += new System.EventHandler(this.skipDuplicateLootCheckbox_CheckedChanged);
+            this.skipDuplicateLootCheckbox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.skipDuplicateLootCheckbox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             // 
             // SettingsTab
             // 
@@ -371,6 +388,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(538, 514);
+            this.Controls.Add(this.skipDuplicateLootCheckbox);
             this.Controls.Add(this.scanEntireMemoryDropdown);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -426,5 +444,6 @@
         private PrettyDropDownList experienceComputationDropdown;
         private System.Windows.Forms.Label label2;
         private PrettyDropDownList scanEntireMemoryDropdown;
+        private PrettyCheckBox skipDuplicateLootCheckbox;
     }
 }

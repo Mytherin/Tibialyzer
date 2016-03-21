@@ -249,6 +249,7 @@ C::NumpadPgDn
             setSettingIfNotSet("MagicLevelAddress", "0x534678");
             setSettingIfNotSet("TabsBaseAddress", "0x534970");
             setSettingIfNotSet("ScanInternalTabStructure", true);
+            setSettingIfNotSet("SkipDuplicateLoot", false);
         }
 
         public static void ResetSettingsToDefault() {

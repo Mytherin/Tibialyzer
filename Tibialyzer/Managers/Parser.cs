@@ -270,7 +270,7 @@ namespace Tibialyzer {
             // now the big one: parse the log messages and check the dropped items
             foreach (KeyValuePair<string, List<string>> kvp in newDrops) {
                 string t = kvp.Key;
-                List<string> itemList = kvp.Value;
+                List<string> itemList = SettingsManager.getSettingBool("SkipDuplicateLoot") ? kvp.Value.Distinct().ToList() : kvp.Value;
                 if (!itemDrops.ContainsKey(t)) {
                     itemDrops.Add(t, new List<string>());
                 }

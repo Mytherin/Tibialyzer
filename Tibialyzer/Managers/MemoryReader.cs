@@ -105,15 +105,15 @@ namespace Tibialyzer {
         }
 
         public static Int32 ReadInt32(Int64 address, int handle = -1) {
-            return BitConverter.ToInt32(ReadBytes(address, 4), 0);
+            return BitConverter.ToInt32(ReadBytes(address, 4, handle), 0);
         }
 
         public static UInt32 ReadUInt32(Int64 address, int handle = -1) {
-            return BitConverter.ToUInt32(ReadBytes(address, 4), 0);
+            return BitConverter.ToUInt32(ReadBytes(address, 4, handle), 0);
         }
 
         public static string ReadString(Int64 address, uint length = 32, int handle = -1) {
-            return ASCIIEncoding.Default.GetString(ReadBytes(address, length)).Split('\0')[0];
+            return ASCIIEncoding.Default.GetString(ReadBytes(address, length, handle)).Split('\0')[0];
         }
 
         public static int XOR {

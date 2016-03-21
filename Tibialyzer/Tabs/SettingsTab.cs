@@ -28,6 +28,7 @@ namespace Tibialyzer {
             this.scanSpeedDisplayLabel.Text = Constants.ScanSpeedText[scanningSpeedTrack.Value / 10] + String.Format("({0})", scanningSpeedTrack.Value);
             this.experienceComputationDropdown.SelectedIndex = SettingsManager.getSettingString("ExperiencePerHourCalculation") == "TibiaStyle" ? 0 : 1;
             this.scanEntireMemoryDropdown.SelectedIndex = SettingsManager.getSettingBool("ScanInternalTabStructure") ? 0 : 1;
+            this.skipDuplicateLootCheckbox.Checked = SettingsManager.getSettingBool("SkipDuplicateLoot");
         }
 
         public void InitializeTooltips() {
@@ -145,6 +146,12 @@ namespace Tibialyzer {
             if (MainForm.prevent_settings_update) return;
 
             SettingsManager.setSetting("ScanInternalTabStructure", (sender as ComboBox).SelectedIndex == 0);
+        }
+
+        private void skipDuplicateLootCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            SettingsManager.setSetting("SkipDuplicateLoot", (sender as CheckBox).Checked);
         }
     }
 }
