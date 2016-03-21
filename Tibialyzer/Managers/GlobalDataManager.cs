@@ -38,7 +38,7 @@ namespace Tibialyzer {
         }
 
         public static long GetLootValue() {
-            return lootValue;
+            return System.Threading.Interlocked.Read(ref lootValue);
         }
 
         public static void ClearLootValue() {
