@@ -29,6 +29,7 @@ namespace Tibialyzer {
         private Label usedItemsLabel;
         private Label label1;
         private EnterTextBox coordinateBox;
+        private Label routeButton;
         private static Font text_font = new Font(FontFamily.GenericSansSerif, 11, FontStyle.Bold);
 
 
@@ -45,47 +46,48 @@ namespace Tibialyzer {
             this.usedItemsLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.coordinateBox = new Tibialyzer.EnterTextBox();
+            this.routeButton = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.mapBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapUpLevel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapDownLevel)).BeginInit();
             this.SuspendLayout();
-            //
+            // 
             // mapBox
-            //
+            // 
             this.mapBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.mapBox.Location = new System.Drawing.Point(121, 12);
             this.mapBox.Name = "mapBox";
             this.mapBox.Size = new System.Drawing.Size(195, 190);
             this.mapBox.TabIndex = 0;
             this.mapBox.TabStop = false;
-            //
+            // 
             // mapUpLevel
-            //
+            // 
             this.mapUpLevel.Location = new System.Drawing.Point(121, 13);
             this.mapUpLevel.Name = "mapUpLevel";
             this.mapUpLevel.Size = new System.Drawing.Size(21, 21);
             this.mapUpLevel.TabIndex = 3;
             this.mapUpLevel.TabStop = false;
-            //
+            // 
             // mapDownLevel
-            //
+            // 
             this.mapDownLevel.Location = new System.Drawing.Point(121, 34);
             this.mapDownLevel.Name = "mapDownLevel";
             this.mapDownLevel.Size = new System.Drawing.Size(21, 21);
             this.mapDownLevel.TabIndex = 4;
             this.mapDownLevel.TabStop = false;
-            //
+            // 
             // mapperBox
-            //
+            // 
             this.mapperBox.Location = new System.Drawing.Point(6, 47);
             this.mapperBox.Name = "mapperBox";
             this.mapperBox.Size = new System.Drawing.Size(108, 20);
             this.mapperBox.TabIndex = 5;
             this.mapperBox.Text = "127.128,124.128,7";
             this.mapperBox.TextChanged += new System.EventHandler(this.mapperBox_TextChanged);
-            //
+            // 
             // usedItemsLabel
-            //
+            // 
             this.usedItemsLabel.AutoSize = true;
             this.usedItemsLabel.BackColor = System.Drawing.Color.Transparent;
             this.usedItemsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -95,9 +97,9 @@ namespace Tibialyzer {
             this.usedItemsLabel.Size = new System.Drawing.Size(107, 16);
             this.usedItemsLabel.TabIndex = 42;
             this.usedItemsLabel.Text = "Mapper Coord";
-            //
+            // 
             // label1
-            //
+            // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -107,19 +109,35 @@ namespace Tibialyzer {
             this.label1.Size = new System.Drawing.Size(84, 16);
             this.label1.TabIndex = 44;
             this.label1.Text = "Coordinate";
-            //
+            // 
             // coordinateBox
-            //
+            // 
             this.coordinateBox.Location = new System.Drawing.Point(6, 93);
             this.coordinateBox.Name = "coordinateBox";
             this.coordinateBox.Size = new System.Drawing.Size(108, 20);
             this.coordinateBox.TabIndex = 43;
             this.coordinateBox.Text = "1024,1024,7";
             this.coordinateBox.TextChanged += new System.EventHandler(this.coordinateBox_TextChanged);
-            //
+            // 
+            // routeButton
+            // 
+            this.routeButton.BackColor = System.Drawing.Color.Transparent;
+            this.routeButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.routeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.routeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.routeButton.Location = new System.Drawing.Point(6, 181);
+            this.routeButton.Name = "routeButton";
+            this.routeButton.Padding = new System.Windows.Forms.Padding(2);
+            this.routeButton.Size = new System.Drawing.Size(103, 21);
+            this.routeButton.TabIndex = 45;
+            this.routeButton.Text = "Route";
+            this.routeButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.routeButton.Click += new System.EventHandler(this.routeButton_Click);
+            // 
             // MapForm
-            //
+            // 
             this.ClientSize = new System.Drawing.Size(328, 221);
+            this.Controls.Add(this.routeButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.coordinateBox);
             this.Controls.Add(this.usedItemsLabel);
@@ -250,6 +268,11 @@ namespace Tibialyzer {
                     updating = false;
                 }
             }
+        }
+
+        private void routeButton_Click(object sender, EventArgs e) {
+            Coordinate c = mapBox.mapCoordinate;
+            CommandManager.ExecuteCommand(String.Format("route@{0},{1},{2}", c.x, c.y, c.z));
         }
     }
 }
