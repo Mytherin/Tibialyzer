@@ -91,13 +91,7 @@ namespace Tibialyzer {
                 }
 
                 int position_x = 0, position_y = 0;
-                Screen screen;
-                Process tibia_process = ProcessManager.GetTibiaProcess();
-                if (tibia_process == null) {
-                    screen = Screen.FromControl(MainForm.mainForm);
-                } else {
-                    screen = Screen.FromHandle(tibia_process.MainWindowHandle);
-                }
+                Screen screen = ProcessManager.GetScreen();
                 int simpleX = SettingsManager.getSettingInt("SimpleNotificationXOffset");
                 int simpleY = SettingsManager.getSettingInt("SimpleNotificationYOffset");
 

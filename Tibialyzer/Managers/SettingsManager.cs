@@ -272,7 +272,7 @@ C::NumpadPgDn
                 setSettingIfNotSet(settingObject + "Opacity", 0.8);
             }
 
-
+            setSettingIfNotSet("MonitorAnchor", 0);
         }
 
         public static void ResetSettingsToDefault() {

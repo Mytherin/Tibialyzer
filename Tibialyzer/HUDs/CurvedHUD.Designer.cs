@@ -1,5 +1,5 @@
 ﻿namespace Tibialyzer {
-    partial class StatusBar {
+    partial class CurvedHUD {
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -23,35 +23,32 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.healthBarLabel = new Tibialyzer.ProgressBarLabel();
+            this.hpManaBar = new Tibialyzer.CurveBar();
             this.SuspendLayout();
             // 
-            // healthBarLabel
+            // hpManaBar
             // 
-            this.healthBarLabel.Font = new System.Drawing.Font("Verdana", 20.25F, System.Drawing.FontStyle.Bold);
-            this.healthBarLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.healthBarLabel.Location = new System.Drawing.Point(0, 0);
-            this.healthBarLabel.Name = "healthBarLabel";
-            this.healthBarLabel.Size = new System.Drawing.Size(284, 63);
-            this.healthBarLabel.TabIndex = 2;
-            this.healthBarLabel.Text = "150/150";
-            this.healthBarLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.hpManaBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.hpManaBar.Location = new System.Drawing.Point(0, 0);
+            this.hpManaBar.Name = "hpManaBar";
+            this.hpManaBar.Size = new System.Drawing.Size(300, 300);
+            this.hpManaBar.TabIndex = 0;
             // 
-            // StatusBar
+            // CurvedHUD
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(284, 63);
-            this.Controls.Add(this.healthBarLabel);
+            this.ClientSize = new System.Drawing.Size(300, 300);
+            this.Controls.Add(this.hpManaBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "StatusBar";
-            this.Text = "HealthBar";
+            this.Name = "CurvedHUD";
+            this.Text = "CurvedHUD";
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private ProgressBarLabel healthBarLabel;
+
+        private CurveBar hpManaBar;
     }
 }

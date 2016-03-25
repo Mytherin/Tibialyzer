@@ -26,6 +26,8 @@ namespace Tibialyzer {
             notificationTypeList.SelectedIndex = 0;
 
             Constants.MaximumNotificationDuration = notificationDurationBox.Maximum;
+
+            monitorAnchorDropdown.SelectedIndex = SettingsManager.getSettingInt("MonitorAnchor");
         }
 
         public void InitializeTooltips() {
@@ -133,6 +135,12 @@ namespace Tibialyzer {
         private void ControlMouseLeave(object sender, EventArgs e) {
             (sender as Control).BackColor = StyleManager.MainFormButtonColor;
             (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
+        }
+
+        private void monitorAnchorDropdown_SelectedIndexChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            SettingsManager.setSetting("MonitorAnchor", monitorAnchorDropdown.SelectedIndex);
         }
     }
 }

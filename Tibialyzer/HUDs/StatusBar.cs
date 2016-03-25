@@ -17,6 +17,9 @@ namespace Tibialyzer {
         public StatusBar(StatusType statusType) {
             this.statusType = statusType;
             InitializeComponent();
+            
+            BackColor = StyleManager.TransparencyKey;
+            TransparencyKey = StyleManager.TransparencyKey;
 
             double opacity = SettingsManager.getSettingDouble(GetHUD() + "Opacity");
             opacity = Math.Min(1, Math.Max(0, opacity));

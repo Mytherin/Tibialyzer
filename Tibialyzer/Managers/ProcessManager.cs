@@ -46,7 +46,7 @@ namespace Tibialyzer {
 
         public static Screen GetScreen() {
             Process tibia_process = ProcessManager.GetTibiaProcess();
-            if (tibia_process == null) {
+            if (tibia_process == null || SettingsManager.getSettingInt("MonitorAnchor") == 1) {
                 return Screen.FromControl(MainForm.mainForm);
             } else {
                 return Screen.FromHandle(tibia_process.MainWindowHandle);
