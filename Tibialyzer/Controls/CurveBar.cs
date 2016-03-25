@@ -64,11 +64,11 @@ namespace Tibialyzer {
             rect.Height = rect.Width;
             rect.Width -= (int) (thickness + 2);
             rect.X += (int) (thickness / 2 + 1);
-            
+
             using (Pen pen = new Pen(Color.Black)) {
-                //pen.Width = thickness + 2;
-                //e.Graphics.DrawArc(pen, rect, 135, 90);
-                //e.Graphics.DrawArc(pen, rect, 45, -90);
+                pen.Width = thickness + 2;
+                e.Graphics.DrawArc(pen, rect, 135, 90);
+                e.Graphics.DrawArc(pen, rect, 45, -90);
 
                 pen.Width = thickness;
 

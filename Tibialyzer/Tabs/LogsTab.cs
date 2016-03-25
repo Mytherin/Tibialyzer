@@ -73,8 +73,17 @@ namespace Tibialyzer {
             }
         }
 
+        private void ControlMouseEnter(object sender, EventArgs e) {
+            (sender as Control).BackColor = StyleManager.MainFormHoverColor;
+            (sender as Control).ForeColor = StyleManager.MainFormHoverForeColor;
+        }
 
-        private void importLogFile_Click(object sender, MouseEventArgs e) {
+        private void ControlMouseLeave(object sender, EventArgs e) {
+            (sender as Control).BackColor = StyleManager.MainFormButtonColor;
+            (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
+        }
+
+        private void loadLogFromFileButton_Click(object sender, EventArgs e) {
             try {
                 OpenFileDialog dialog = new OpenFileDialog();
                 dialog.Title = "Import Log File";
@@ -88,16 +97,16 @@ namespace Tibialyzer {
             }
         }
 
-        private void exportLogButton_Click(object sender, MouseEventArgs e) {
+        private void saveLogToFileButton_Click(object sender, EventArgs e) {
             try {
                 SaveFileDialog dialog = new SaveFileDialog();
                 dialog.Title = "Export Log File";
-                if (File.Exists("exported_log")) {
+                if (File.Exists("exported_log.txt")) {
                     int i = 1;
-                    while (File.Exists("exported_log (" + i.ToString() + ")")) i++;
-                    dialog.FileName = "exported_log (" + i.ToString() + ")";
+                    while (File.Exists("exported_log (" + i.ToString() + ").txt")) i++;
+                    dialog.FileName = "exported_log (" + i.ToString() + ").txt";
                 } else {
-                    dialog.FileName = "exported_log";
+                    dialog.FileName = "exported_log.txt";
                 }
                 DialogResult result = dialog.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK) {
@@ -106,20 +115,6 @@ namespace Tibialyzer {
             } catch (Exception ex) {
                 MainForm.mainForm.DisplayWarning(ex.Message);
             }
-        }
-
-        private void ControlMouseEnter(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormHoverColor;
-            (sender as Control).ForeColor = StyleManager.MainFormHoverForeColor;
-        }
-
-        private void ControlMouseLeave(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormButtonColor;
-            (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
-        }
-
-        private void loadLogFromFileButton_Click(object sender, EventArgs e) {
-
         }
     }
 }
