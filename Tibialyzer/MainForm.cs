@@ -104,6 +104,7 @@ namespace Tibialyzer {
             HuntManager.Initialize();
             UIManager.Initialize();
             MemoryReader.Initialize();
+            HUDManager.Initialize();
 
             this.Load += MainForm_Load;
 
@@ -295,7 +296,7 @@ namespace Tibialyzer {
         private List<Control> activeControls = new List<Control>();
         private List<List<Control>> tabControls = new List<List<Control>>();
         private void InitializeTabs() {
-            Tabs = new List<TabInterface> { new MainTab(), new SettingsTab(), new HuntsTab(), new LogsTab(), new NotificationsTab(), new PopupsTab(), new DatabaseTab(), new AutoHotkeyTab(), new ScreenshotTab(), new BrowseTab(), new HelpTab(), new SystemTab(), new SummaryTab() };
+            Tabs = new List<TabInterface> { new MainTab(), new SettingsTab(), new HuntsTab(), new LogsTab(), new NotificationsTab(), new PopupsTab(), new DatabaseTab(), new AutoHotkeyTab(), new ScreenshotTab(), new BrowseTab(), new HelpTab(), new SystemTab(), new SummaryTab(), new HUDTab() };
             foreach(TabInterface tab in Tabs) {
                 List<Control> controlList = new List<Control>();
                 foreach (Control c in (tab as Form).Controls) {
@@ -333,6 +334,7 @@ namespace Tibialyzer {
             helpButton.Enabled = true;
             upgradeButton.Enabled = true;
             summaryButton.Enabled = true;
+            hudButton.Enabled = true;
             switch (tab) {
                 case 0:
                     mainButton.Enabled = false; break;
@@ -360,6 +362,8 @@ namespace Tibialyzer {
                     upgradeButton.Enabled = false; break;
                 case 12:
                     summaryButton.Enabled = false; break;
+                case 13:
+                    hudButton.Enabled = false; break;
             }
         }
 
@@ -414,6 +418,10 @@ namespace Tibialyzer {
 
         private void summaryButton_Click(object sender, EventArgs e) {
             switchTab(12);
+        }
+
+        private void hudButton_Click(object sender, EventArgs e) {
+            switchTab(13);
         }
         #endregion
 

@@ -53,13 +53,7 @@ namespace Tibialyzer {
                 NotificationFormGroups[group].close();
             }
             int position_x = 0, position_y = 0;
-            Screen screen;
-            Process tibia_process = ProcessManager.GetTibiaProcess();
-            if (tibia_process == null) {
-                screen = Screen.FromControl(MainForm.mainForm);
-            } else {
-                screen = Screen.FromHandle(tibia_process.MainWindowHandle);
-            }
+            Screen screen = ProcessManager.GetScreen();
 
             int xOffset = richX == -1 ? 30 : richX;
             int yOffset = richY == -1 ? 30 : richY;

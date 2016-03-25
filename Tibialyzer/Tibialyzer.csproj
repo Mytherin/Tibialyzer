@@ -81,8 +81,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\ProgressBarLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="HUDs\BaseHUD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HUDs\StatusBar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HUDs\StatusBar.Designer.cs">
+      <DependentUpon>StatusBar.cs</DependentUpon>
+    </Compile>
     <Compile Include="Managers\AutoHotkeyManager.cs" />
     <Compile Include="Managers\CommandManager.cs" />
+    <Compile Include="Managers\HUDManager.cs" />
     <Compile Include="Managers\MemoryReader.cs" />
     <Compile Include="Managers\NotificationManager.cs" />
     <Compile Include="Managers\GlobalDataManager.cs" />
@@ -251,9 +264,6 @@
     <Compile Include="Controls\TransparentChart.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\TransparentLabel.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Managers\TimestampManager.cs" />
     <Compile Include="Tabs\MainTab.cs">
       <SubType>Form</SubType>
@@ -333,6 +343,12 @@
     <Compile Include="Tabs\SummaryTab.Designer.cs">
       <DependentUpon>SummaryTab.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\HUDTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\HUDTab.Designer.cs">
+      <DependentUpon>HUDTab.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\TabBase.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -341,6 +357,9 @@
     </Compile>
     <Compile Include="Tabs\TabInterface.cs" />
     <Compile Include="Managers\UIManager.cs" />
+    <EmbeddedResource Include="HUDs\StatusBar.resx">
+      <DependentUpon>StatusBar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Notifications\ExperienceChart.resx">
       <DependentUpon>ExperienceChart.cs</DependentUpon>
     </EmbeddedResource>
@@ -477,6 +496,9 @@
     <EmbeddedResource Include="Tabs\SummaryTab.resx">
       <DependentUpon>SummaryTab.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\HUDTab.resx">
+      <DependentUpon>HUDTab.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tabs\TabBase.resx">
       <DependentUpon>TabBase.cs</DependentUpon>
     </EmbeddedResource>
@@ -543,6 +565,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\background_image.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\background_image_light.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\bank.png">

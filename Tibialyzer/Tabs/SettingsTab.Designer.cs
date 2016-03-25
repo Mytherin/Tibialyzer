@@ -36,6 +36,7 @@
             this.label68 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.skipDuplicateLootCheckbox = new Tibialyzer.PrettyCheckBox();
             this.scanEntireMemoryDropdown = new Tibialyzer.PrettyDropDownList();
             this.experienceComputationDropdown = new Tibialyzer.PrettyDropDownList();
             this.lookModeCheckbox = new Tibialyzer.PrettyCheckBox();
@@ -45,7 +46,6 @@
             this.eventPopupBox = new Tibialyzer.PrettyCheckBox();
             this.unrecognizedPopupBox = new Tibialyzer.PrettyCheckBox();
             this.popupTypeBox = new Tibialyzer.PrettyDropDownList();
-            this.skipDuplicateLootCheckbox = new Tibialyzer.PrettyCheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.scanningSpeedTrack)).BeginInit();
             this.SuspendLayout();
             // 
@@ -54,7 +54,7 @@
             this.unlockLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(56)))), ((int)(((byte)(65)))));
             this.unlockLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.unlockLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.unlockLabel.Location = new System.Drawing.Point(8, 439);
+            this.unlockLabel.Location = new System.Drawing.Point(8, 427);
             this.unlockLabel.Name = "unlockLabel";
             this.unlockLabel.Size = new System.Drawing.Size(250, 30);
             this.unlockLabel.TabIndex = 34;
@@ -66,7 +66,7 @@
             this.unlockResetButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.unlockResetButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.unlockResetButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.unlockResetButton.Location = new System.Drawing.Point(8, 469);
+            this.unlockResetButton.Location = new System.Drawing.Point(8, 457);
             this.unlockResetButton.Name = "unlockResetButton";
             this.unlockResetButton.Padding = new System.Windows.Forms.Padding(10);
             this.unlockResetButton.Size = new System.Drawing.Size(250, 38);
@@ -83,7 +83,7 @@
             this.resetSettingsButton.Enabled = false;
             this.resetSettingsButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.resetSettingsButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.resetSettingsButton.Location = new System.Drawing.Point(262, 469);
+            this.resetSettingsButton.Location = new System.Drawing.Point(262, 457);
             this.resetSettingsButton.Name = "resetSettingsButton";
             this.resetSettingsButton.Padding = new System.Windows.Forms.Padding(10);
             this.resetSettingsButton.Size = new System.Drawing.Size(272, 38);
@@ -99,7 +99,7 @@
             this.resetSettingsLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.resetSettingsLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.resetSettingsLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.resetSettingsLabel.Location = new System.Drawing.Point(262, 439);
+            this.resetSettingsLabel.Location = new System.Drawing.Point(262, 427);
             this.resetSettingsLabel.Name = "resetSettingsLabel";
             this.resetSettingsLabel.Size = new System.Drawing.Size(272, 30);
             this.resetSettingsLabel.TabIndex = 31;
@@ -213,6 +213,22 @@
             this.label2.TabIndex = 56;
             this.label2.Text = "Scan Entire Memory";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // skipDuplicateLootCheckbox
+            // 
+            this.skipDuplicateLootCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.skipDuplicateLootCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.skipDuplicateLootCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.skipDuplicateLootCheckbox.Location = new System.Drawing.Point(285, 356);
+            this.skipDuplicateLootCheckbox.Name = "skipDuplicateLootCheckbox";
+            this.skipDuplicateLootCheckbox.Padding = new System.Windows.Forms.Padding(10);
+            this.skipDuplicateLootCheckbox.Size = new System.Drawing.Size(249, 40);
+            this.skipDuplicateLootCheckbox.TabIndex = 58;
+            this.skipDuplicateLootCheckbox.Text = "Skip Duplicate Loot";
+            this.skipDuplicateLootCheckbox.UseVisualStyleBackColor = false;
+            this.skipDuplicateLootCheckbox.CheckedChanged += new System.EventHandler(this.skipDuplicateLootCheckbox_CheckedChanged);
+            this.skipDuplicateLootCheckbox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.skipDuplicateLootCheckbox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             // 
             // scanEntireMemoryDropdown
             // 
@@ -365,22 +381,6 @@
             this.popupTypeBox.SelectedIndexChanged += new System.EventHandler(this.notificationTypeBox_SelectedIndexChanged);
             this.popupTypeBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.popupTypeBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
-            // skipDuplicateLootCheckbox
-            // 
-            this.skipDuplicateLootCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.skipDuplicateLootCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.skipDuplicateLootCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.skipDuplicateLootCheckbox.Location = new System.Drawing.Point(285, 356);
-            this.skipDuplicateLootCheckbox.Name = "skipDuplicateLootCheckbox";
-            this.skipDuplicateLootCheckbox.Padding = new System.Windows.Forms.Padding(10);
-            this.skipDuplicateLootCheckbox.Size = new System.Drawing.Size(249, 40);
-            this.skipDuplicateLootCheckbox.TabIndex = 58;
-            this.skipDuplicateLootCheckbox.Text = "Skip Duplicate Loot";
-            this.skipDuplicateLootCheckbox.UseVisualStyleBackColor = false;
-            this.skipDuplicateLootCheckbox.CheckedChanged += new System.EventHandler(this.skipDuplicateLootCheckbox_CheckedChanged);
-            this.skipDuplicateLootCheckbox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.skipDuplicateLootCheckbox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             // 
             // SettingsTab
             // 

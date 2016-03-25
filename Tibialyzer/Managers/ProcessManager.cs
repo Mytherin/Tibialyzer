@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
+using System.Windows.Forms;
 
 namespace Tibialyzer {
     class ProcessManager {
@@ -42,6 +42,15 @@ namespace Tibialyzer {
                 return new Process[1] { p[0] };
             }
             return null;
+        }
+
+        public static Screen GetScreen() {
+            Process tibia_process = ProcessManager.GetTibiaProcess();
+            if (tibia_process == null) {
+                return Screen.FromControl(MainForm.mainForm);
+            } else {
+                return Screen.FromHandle(tibia_process.MainWindowHandle);
+            }
         }
 
         public static void DetectFlashClient() {

@@ -65,6 +65,14 @@ namespace Tibialyzer {
 
         public static Color CreatureHealthColor = Color.FromArgb(60, 179, 60);
         public static Color CreatureBossColor = Color.FromArgb(205, 102, 102);
+
+        public static Color HealthFull = Color.FromArgb(125, 0, 192, 0);
+        public static Color HealthHealthy = Color.FromArgb(125, 72, 145, 72);
+        public static Color HealthDamaged = Color.FromArgb(125, 146, 146, 0);
+        public static Color HealthDanger = Color.FromArgb(125, 145, 35, 35);
+        public static Color HealthCritical = Color.FromArgb(125, 47, 0, 0);
+        public static Color ManaColor = Color.FromArgb(125, 54, 51, 167);
+        public static Color ExperienceColor = Color.FromArgb(125, 64, 64, 64);
         #endregion
 
         #region UI Fonts
@@ -79,7 +87,7 @@ namespace Tibialyzer {
         private static Dictionary<string, Image> images = new Dictionary<string, Image>();
         public static void InitializeStyle() {
             // Load Images
-            foreach(string image in Directory.GetFiles(@"Images\")) {
+            foreach (string image in Directory.GetFiles(@"Images\")) {
                 LoadImage(image, image.Split('\\')[1]);
             }
             // Generate Fonts of different sizes

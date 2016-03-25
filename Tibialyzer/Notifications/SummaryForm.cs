@@ -20,42 +20,55 @@ namespace Tibialyzer {
             InitializeComponent();
         }
 
-        public void RenderText(Graphics gr, string text, int x, Color fillColor, Color textColor) {
+        public static void RenderText(Graphics gr, string text, int x, Color fillColor, Color textColor, Color traceColor, int maxHeight = -1, int y = 4, Font font = null, bool center = false) {
             gr.InterpolationMode = InterpolationMode.High;
             gr.SmoothingMode = SmoothingMode.HighQuality;
             gr.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
             gr.CompositingQuality = CompositingQuality.HighQuality;
+            FontFamily family = FontFamily.GenericMonospace;
+            FontStyle fontStyle = FontStyle.Bold;
+            float fontSize = 10;
+            if (font != null) {
+                family = font.FontFamily;
+                fontStyle = font.Style;
+                fontSize = font.SizeInPoints;
+            }
             GraphicsPath p = new GraphicsPath();
             p.AddString(
-               text,
-                FontFamily.GenericMonospace,
-                (int)FontStyle.Bold,
-                gr.DpiY * 10 / 72,
-                new Point(x, 4),
+                text,
+                family,
+                (int)fontStyle,
+                gr.DpiY * fontSize / 72,
+                new Point(x, y),
                 new StringFormat());
-            if (x < 0) {
-                x = (int)(Math.Abs(x) - p.GetBounds().Width - 10);
+            if (x < 0 || center) {
+                if (x < 0) {
+                    x = (int)(Math.Abs(x) - p.GetBounds().Width - 10);
+                }
+                if (center) {
+                    y = (int)((maxHeight - (p.GetBounds().Height  + p.GetBounds().Y)) / 2);
+                }
                 p = new GraphicsPath();
                 p.AddString(
-                   text,
-                    FontFamily.GenericMonospace,
-                    (int)FontStyle.Bold,
-                    gr.DpiY * 10 / 72,
-                    new Point(x, 4),
+                    text,
+                    family,
+                    (int)fontStyle,
+                    gr.DpiY * fontSize / 72,
+                    new Point(x, y),
                     new StringFormat());
             }
+            maxHeight = maxHeight < 0 ? (int) p.GetBounds().Height : maxHeight;
             if (fillColor != Color.Empty) {
                 using (Brush brush = new SolidBrush(fillColor)) {
-                    gr.FillRectangle(brush, new RectangleF(p.GetBounds().X - 8, 0, p.GetBounds().Width + 16, ImageHeight - 1));
+                    gr.FillRectangle(brush, new RectangleF(p.GetBounds().X - 8, 0, p.GetBounds().Width + 16, maxHeight - 1));
                 }
-                gr.DrawRectangle(Pens.Black, new Rectangle((int)p.GetBounds().X - 8, 0, (int)p.GetBounds().Width + 16, ImageHeight - 1));
+                gr.DrawRectangle(Pens.Black, new Rectangle((int)p.GetBounds().X - 8, 0, (int)p.GetBounds().Width + 16, maxHeight - 1));
             }
-            using (Pen pen = new Pen(Color.Black, 2)) {
+            using (Pen pen = new Pen(traceColor, 2)) {
                 gr.DrawPath(pen, p);
             }
             using (SolidBrush brush = new SolidBrush(textColor)) {
                 gr.FillPath(brush, p);
-                p.GetBounds();
             }
         }
 
@@ -84,9 +97,9 @@ namespace Tibialyzer {
                 gr.DrawRectangle(Pens.Black, new Rectangle(0, 0, bitmap.Width - 1, bitmap.Height - 1));
                 RenderImageResized(gr, StyleManager.GetImage("item_background.png"), new Rectangle(1, 1, ImageHeight - 2, ImageHeight - 2));
                 RenderImageResized(gr, creature.GetImage(), new Rectangle(1, 1, ImageHeight - 2, ImageHeight - 2));
-                RenderText(gr, creature.displayname.ToTitle(), ImageHeight + 2, Color.Empty, StyleManager.NotificationTextColor);
+                RenderText(gr, creature.displayname.ToTitle(), ImageHeight + 2, Color.Empty, StyleManager.NotificationTextColor, Color.Black, ImageHeight);
                 if (amount > 0) {
-                    RenderText(gr, amount.ToString(), -ImageWidth, Color.FromArgb(backColor.R / 2, backColor.G / 2, backColor.B / 2), StyleManager.NotificationTextColor);
+                    RenderText(gr, amount.ToString(), -ImageWidth, Color.FromArgb(backColor.R / 2, backColor.G / 2, backColor.B / 2), StyleManager.NotificationTextColor, Color.Black, ImageHeight);
                 }
             }
             return bitmap;
@@ -101,9 +114,9 @@ namespace Tibialyzer {
                 gr.DrawRectangle(Pens.Black, new Rectangle(0, 0, bitmap.Width - 1, bitmap.Height - 1));
                 RenderImageResized(gr, StyleManager.GetImage("item_background.png"), new Rectangle(1, 1, ImageHeight - 2, ImageHeight - 2));
                 RenderImageResized(gr, (amount > 1 || item.stackable) ? LootDropForm.GetStackImage(item.GetImage(), amount > 0 ? amount : 1, item) : item.GetImage(), new Rectangle(1, 1, ImageHeight - 2, ImageHeight - 2));
-                RenderText(gr, item.displayname.ToTitle(), ImageHeight + 2, Color.Empty, StyleManager.NotificationTextColor);
+                RenderText(gr, item.displayname.ToTitle(), ImageHeight + 2, Color.Empty, StyleManager.NotificationTextColor, Color.Black, ImageHeight);
                 if (amount > 0) {
-                    RenderText(gr, amount.ToString(), -ImageWidth, Color.FromArgb(StyleManager.MainFormButtonColor.R / 2, StyleManager.MainFormButtonColor.G / 2, StyleManager.MainFormButtonColor.B / 2), StyleManager.NotificationTextColor);
+                    RenderText(gr, amount.ToString(), -ImageWidth, Color.FromArgb(StyleManager.MainFormButtonColor.R / 2, StyleManager.MainFormButtonColor.G / 2, StyleManager.MainFormButtonColor.B / 2), StyleManager.NotificationTextColor, Color.Black, ImageHeight);
                 }
             }
             return bitmap;
@@ -116,8 +129,8 @@ namespace Tibialyzer {
                     gr.FillRectangle(brush, new RectangleF(0, 0, ImageWidth, ImageHeight));
                 }
                 gr.DrawRectangle(Pens.Black, new Rectangle(0, 0, bitmap.Width - 1, bitmap.Height - 1));
-                RenderText(gr, header, 0, Color.Empty, StyleManager.NotificationTextColor);
-                RenderText(gr, value, -ImageWidth, Color.FromArgb(StyleManager.MainFormButtonColor.R / 2, StyleManager.MainFormButtonColor.G / 2, StyleManager.MainFormButtonColor.B / 2), textColor);
+                RenderText(gr, header, 0, Color.Empty, StyleManager.NotificationTextColor, Color.Black, ImageHeight);
+                RenderText(gr, value, -ImageWidth, Color.FromArgb(StyleManager.MainFormButtonColor.R / 2, StyleManager.MainFormButtonColor.G / 2, StyleManager.MainFormButtonColor.B / 2), textColor, Color.Black, ImageHeight);
             }
             return bitmap;
         }

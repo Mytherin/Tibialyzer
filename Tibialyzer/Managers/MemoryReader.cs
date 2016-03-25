@@ -113,7 +113,9 @@ namespace Tibialyzer {
         }
 
         public static string ReadString(Int64 address, uint length = 32, int handle = -1) {
-            return ASCIIEncoding.Default.GetString(ReadBytes(address, length, handle)).Split('\0')[0];
+            byte[] bytes = ReadBytes(address, length, handle);
+            string str = ASCIIEncoding.Default.GetString(bytes);
+            return str.Split('\0')[0];
         }
 
         public static int XOR {

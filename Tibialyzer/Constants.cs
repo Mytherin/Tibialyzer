@@ -70,6 +70,9 @@ namespace Tibialyzer {
         public static List<string> NotificationTestCommands = new List<string> { "loot@", "damage@", "creature@quara", "city@venore", "creature@demon", "stats@dragon lord", "hunt@formorgar mines", "item@heroic axe", "npc@rashid", "outfit@brotherhood", "quest@killing in the name of", "spell@light healing", "guide@desert dungeon quest", "task@crystal spider", "experience@", "waste@", "summary@", "route@1500,500,7", "map@" };
         public static List<Type> NotificationTypeObjects = new List<Type>() { typeof(LootDropForm), typeof(DamageChart), typeof(CreatureList), typeof(CityDisplayForm), typeof(CreatureDropsForm), typeof(CreatureStatsForm), typeof(HuntingPlaceForm), typeof(ItemViewForm), typeof(NPCForm), typeof(OutfitForm), typeof(QuestForm), typeof(SpellForm), typeof(QuestGuideForm), typeof(TaskForm), typeof(ExperienceChart), typeof(WasteForm), typeof(SummaryForm), typeof(RouteForm), typeof(MapForm) };
 
+        public static List<string> HudTypes = new List<string> { "Health Bar", "Mana Bar", "Experience Bar" };
+        public static List<string> HudTestCommands = new List<string> { "hud@healthbar", "hud@manabar", "hud@experiencebar" };
+
         public static List<string> ImageExtensions = new List<string> { ".jpg", ".bmp", ".gif", ".png" };
 
         public static string AutoHotkeyURL = "http://ahkscript.org/download/ahk-install.exe";

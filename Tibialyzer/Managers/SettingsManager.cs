@@ -250,6 +250,20 @@ C::NumpadPgDn
             setSettingIfNotSet("TabsBaseAddress", "0x534970");
             setSettingIfNotSet("ScanInternalTabStructure", true);
             setSettingIfNotSet("SkipDuplicateLoot", false);
+                        
+            setSettingIfNotSet("ManaBarYOffset", 95);
+            setSettingIfNotSet("ExperienceBarYOffset", 160);
+
+            foreach (string obj in Constants.HudTypes) {
+                string settingObject = obj.Replace(" ", "");
+                setSettingIfNotSet(settingObject + "Anchor", 1);
+                setSettingIfNotSet(settingObject + "XOffset", 180);
+                setSettingIfNotSet(settingObject + "YOffset", 30);
+                setSettingIfNotSet(settingObject + "FontSize", 20);
+                setSettingIfNotSet(settingObject + "Width", 200);
+                setSettingIfNotSet(settingObject + "Height", 65);
+                setSettingIfNotSet(settingObject + "ShowOnStartup", false);
+            }
         }
 
         public static void ResetSettingsToDefault() {

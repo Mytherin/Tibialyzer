@@ -316,6 +316,10 @@ namespace Tibialyzer {
                         }
 
                     }
+                } else if (comp.StartsWith("hud" + Constants.CommandSymbol)) { //hud@
+                    HUDManager.ShowHUD(comp.Split(Constants.CommandSymbol)[1]);
+                } else if (comp.StartsWith("closehud" + Constants.CommandSymbol)) { //hud@
+                    HUDManager.CloseHUD(comp.Split(Constants.CommandSymbol)[1]);
                 } else if (comp.StartsWith("map" + Constants.CommandSymbol)) { //map@
                     NotificationManager.ShowMapForm(command);
                 } else if (comp.StartsWith("route" + Constants.CommandSymbol)) { //route@
