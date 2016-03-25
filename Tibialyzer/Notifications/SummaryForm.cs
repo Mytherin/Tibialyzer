@@ -46,7 +46,7 @@ namespace Tibialyzer {
                     x = (int)(Math.Abs(x) - p.GetBounds().Width - 10);
                 }
                 if (center) {
-                    y = (int)((maxHeight - (p.GetBounds().Height  + p.GetBounds().Y)) / 2);
+                    y = (int)((maxHeight - (p.GetBounds().Height + p.GetBounds().Y)) / 2);
                 }
                 p = new GraphicsPath();
                 p.AddString(
@@ -57,7 +57,7 @@ namespace Tibialyzer {
                     new Point(x, y),
                     new StringFormat());
             }
-            maxHeight = maxHeight < 0 ? (int) p.GetBounds().Height : maxHeight;
+            maxHeight = maxHeight < 0 ? (int)p.GetBounds().Height : maxHeight;
             if (fillColor != Color.Empty) {
                 using (Brush brush = new SolidBrush(fillColor)) {
                     gr.FillRectangle(brush, new RectangleF(p.GetBounds().X - 8, 0, p.GetBounds().Width + 16, maxHeight - 1));
@@ -82,7 +82,7 @@ namespace Tibialyzer {
                 width = (int)Math.Floor(width * ((double)image.Width / image.Height));
                 x += (height - width) / 2;
             }
-            lock(image) {
+            lock (image) {
                 gr.DrawImage(image, new Rectangle(x, y, width, height), new Rectangle(0, 0, image.Width, image.Height), GraphicsUnit.Pixel);
             }
         }
@@ -239,9 +239,9 @@ namespace Tibialyzer {
 
         private void CreateItemList(List<Tuple<Item, int>> items, int x, ref int y, List<Control> controls) {
             Image image = new Bitmap(ImageWidth, ImageHeight);
-            using(Graphics gr = Graphics.FromImage(image)) {
+            using (Graphics gr = Graphics.FromImage(image)) {
                 int counter = 0;
-                foreach(Tuple<Item, int> item in items) {
+                foreach (Tuple<Item, int> item in items) {
                     Rectangle region = new Rectangle(x + (counter++) * (ImageHeight + 1), 0, ImageHeight - 1, ImageHeight - 1);
                     RenderImageResized(gr, StyleManager.GetImage("item_background.png"), region);
                     RenderImageResized(gr, (item.Item1.stackable || item.Item2 > 1) ? LootDropForm.DrawCountOnItem(item.Item1, item.Item2) : item.Item1.GetImage(), region);
@@ -301,6 +301,7 @@ namespace Tibialyzer {
         }
 
         private long totalValue = 0;
+        private long totalWaste = 0;
         public void UpdateSummaryForm() {
             int minheight, maxheight;
             ClearControlList(summaryControls, out minheight, out maxheight);
@@ -309,6 +310,7 @@ namespace Tibialyzer {
             CreateSummaryLabel("Loot", totalValue.ToString(), x, ref y, StyleManager.ItemGoldColor, summaryControls);
             CreateSummaryLabel("Exp", HuntManager.activeHunt.totalExp.ToString(), x, ref y, StyleManager.NotificationTextColor, summaryControls);
             CreateSummaryLabel("Time", LootDropForm.TimeToString((long)HuntManager.activeHunt.totalTime), x, ref y, StyleManager.NotificationTextColor, summaryControls);
+            CreateSummaryLabel("Waste", totalWaste.ToString(), x, ref y, StyleManager.WasteColor, summaryControls);
         }
 
         public void UpdateLoot() {
@@ -379,7 +381,7 @@ namespace Tibialyzer {
                 var items = new List<Tuple<Item, int>>();
                 foreach (Tuple<Item, int> tpl in loot.Item2) {
                     int amount = tpl.Item2;
-                    while(amount > 0) {
+                    while (amount > 0) {
                         int count = Math.Min(100, amount);
                         amount -= count;
                         items.Add(new Tuple<Item, int>(tpl.Item1, count));
@@ -461,7 +463,7 @@ namespace Tibialyzer {
             foreach (Control c in damageControls.Count > 0 ? damageControls : (lootControls.Count > 0 ? lootControls : summaryControls)) {
                 y = Math.Max(c.Location.Y + c.Height, y);
             }
-
+            totalWaste = 0;
             int maxUsedItems = SettingsManager.getSettingInt("SummaryMaxUsedItems");
             if (maxUsedItems < 0) maxUsedItems = 5;
             if (maxUsedItems > 0) {
@@ -469,9 +471,11 @@ namespace Tibialyzer {
                 CreateHeaderLabel("Used Items", x, ref y, usedItemsControls);
                 int width = 0;
                 var items = new List<Tuple<Item, int>>();
+                bool display = true;
                 foreach (Tuple<Item, int> tpl in HuntManager.GetUsedItems(hunt)) {
                     int amount = tpl.Item2;
-                    while (amount > 0) {
+                    totalWaste += amount * tpl.Item1.GetMaxValue();
+                    while (amount > 0 && display) {
                         int count = Math.Min(100, amount);
                         amount -= count;
                         items.Add(new Tuple<Item, int>(tpl.Item1, count));
@@ -480,7 +484,7 @@ namespace Tibialyzer {
                             CreateItemList(items, x, ref y, usedItemsControls);
                             items.Clear();
                             width = 0;
-                            if (++counter >= maxUsedItems) break;
+                            if (++counter >= maxUsedItems) display = false;
                         }
                     }
                 }

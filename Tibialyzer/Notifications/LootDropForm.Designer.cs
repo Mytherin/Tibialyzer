@@ -219,7 +219,7 @@
             //
             this.usedItemsValue.BackColor = System.Drawing.Color.Transparent;
             this.usedItemsValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.usedItemsValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(56)))), ((int)(((byte)(65)))));
+            this.usedItemsValue.ForeColor = StyleManager.WasteColor;
             this.usedItemsValue.Location = new System.Drawing.Point(137, 100);
             this.usedItemsValue.Name = "usedItemsValue";
             this.usedItemsValue.Size = new System.Drawing.Size(150, 16);
