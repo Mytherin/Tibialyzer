@@ -37,20 +37,6 @@ namespace Tibialyzer {
             showTimer.Enabled = true;
         }
 
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetWindowThreadProcessId(IntPtr hWnd, out uint ProcessId);
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr GetForegroundWindow();
-
-        string GetActiveProcessFileName() {
-            IntPtr hwnd = GetForegroundWindow();
-            uint pid;
-            GetWindowThreadProcessId(hwnd, out pid);
-            Process p = Process.GetProcessById((int)pid);
-            return p.ProcessName;
-        }
-
         private void ShowTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
             if (alwaysShow) return;
             if (ProcessManager.IsFlashClient()) {
@@ -61,7 +47,7 @@ namespace Tibialyzer {
                     return;
                 }
                 // only show the suspended window when tibia is active
-                bool visible = GetActiveProcessFileName() == ProcessManager.GetTibiaProcess().ProcessName;
+                bool visible = ProcessManager.IsTibiaActive();
                 this.BeginInvoke((MethodInvoker)delegate {
                     this.Visible = visible;
                 });

@@ -87,8 +87,10 @@ namespace Tibialyzer {
             double percentage = (double)life / maxlife;
 
             try {
+                bool visible = ProcessManager.IsTibiaActive();
                 this.Invoke((MethodInvoker)delegate {
                     RefreshHUD(life, maxlife, percentage);
+                    this.Visible = visible;
                 });
                 timer.Enabled = true;
             } catch {

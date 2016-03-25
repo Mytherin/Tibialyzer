@@ -44,6 +44,13 @@ namespace Tibialyzer {
         private void updateTimer_Tick(object sender, EventArgs e) {
             health = (float)MemoryReader.Health / MemoryReader.MaxHealth;
             mana = (float)MemoryReader.Mana / MemoryReader.MaxMana;
+            try {
+                bool visible = ProcessManager.IsTibiaActive();
+                this.Invoke((MethodInvoker)delegate {
+                    this.Visible = visible;
+                });
+            } catch {
+            }
             this.Invalidate();
         }
 
@@ -57,8 +64,7 @@ namespace Tibialyzer {
             rect.Height = rect.Width;
             rect.Width -= (int) (thickness + 2);
             rect.X += (int) (thickness / 2 + 1);
-
-
+            
             using (Pen pen = new Pen(Color.Black)) {
                 //pen.Width = thickness + 2;
                 //e.Graphics.DrawArc(pen, rect, 135, 90);

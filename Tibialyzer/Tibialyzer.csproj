@@ -130,7 +130,7 @@
     <Compile Include="Notifications\WasteForm.Designer.cs">
       <DependentUpon>WasteForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Popups\AutoHotkeySuspendedMode.cs">
+    <Compile Include="HUDs\AutoHotkeySuspendedMode.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Notifications\CityDisplayForm.cs">
@@ -387,7 +387,7 @@
     <EmbeddedResource Include="Notifications\WasteForm.resx">
       <DependentUpon>WasteForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Popups\AutoHotkeySuspendedMode.resx">
+    <EmbeddedResource Include="HUDs\AutoHotkeySuspendedMode.resx">
       <DependentUpon>AutoHotkeySuspendedMode.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Notifications\CityDisplayForm.resx">
