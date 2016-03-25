@@ -14,7 +14,7 @@ namespace Tibialyzer {
         private static System.Timers.Timer scanTimer;
         private static System.Timers.Timer mainScanTimer;
         private static System.Timers.Timer missingChunkScanTimer;
-        public static ParseMemoryResults lastResults;
+        public static ParseMemoryResults lastResults = null;
         public static bool shownException = false;
         private const int MaxRecentDropsTracked = 20;
         public static List<Tuple<Creature, List<Tuple<Item, int>>, string>> RecentDrops = new List<Tuple<Creature, List<Tuple<Item, int>>, string>>();

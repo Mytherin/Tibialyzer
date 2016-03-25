@@ -311,6 +311,9 @@ namespace Tibialyzer {
             CreateSummaryLabel("Exp", HuntManager.activeHunt.totalExp.ToString(), x, ref y, StyleManager.NotificationTextColor, summaryControls);
             CreateSummaryLabel("Time", LootDropForm.TimeToString((long)HuntManager.activeHunt.totalTime), x, ref y, StyleManager.NotificationTextColor, summaryControls);
             CreateSummaryLabel("Waste", totalWaste.ToString(), x, ref y, StyleManager.WasteColor, summaryControls);
+            if (ScanningManager.lastResults != null) {
+                CreateSummaryLabel("Exp/Hour", ScanningManager.lastResults.expPerHour.ToString(), x, ref y, StyleManager.NotificationTextColor, summaryControls);
+            }
         }
 
         public void UpdateLoot() {
