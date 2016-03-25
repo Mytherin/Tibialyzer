@@ -254,6 +254,12 @@ C::NumpadPgDn
             setSettingIfNotSet("ManaBarYOffset", 95);
             setSettingIfNotSet("ExperienceBarYOffset", 160);
 
+            setSettingIfNotSet("CurvedBarsWidth", 300);
+            setSettingIfNotSet("CurvedBarsHeight", 300);
+            setSettingIfNotSet("CurvedBarsAnchor", 4);
+            setSettingIfNotSet("CurvedBarsXOffset", -100);
+            setSettingIfNotSet("CurvedBarsYOffset", -100);
+
             foreach (string obj in Constants.HudTypes) {
                 string settingObject = obj.Replace(" ", "");
                 setSettingIfNotSet(settingObject + "Anchor", 1);

@@ -38,6 +38,11 @@ namespace Tibialyzer {
                 case "experiencebar":
                     hud = new StatusBar(StatusType.Experience);
                     break;
+                case "curvedbars":
+                case "curvedbar":
+                case "curved":
+                    hud = new CurvedHUD();
+                    break;
 
             }
             if (hud == null) return;
@@ -63,6 +68,10 @@ namespace Tibialyzer {
                 int xOffset = x == -1 ? 30 : x;
                 int yOffset = y == -1 ? 30 : y;
                 switch (anchor) {
+                    case 4:
+                        position_x = (screen.WorkingArea.Left + screen.WorkingArea.Width / 2) + xOffset - width / 2;
+                        position_y = (screen.WorkingArea.Top + screen.WorkingArea.Height / 2) + yOffset - height / 2;
+                        break;
                     case 3:
                         position_x = screen.WorkingArea.Right - xOffset - width;
                         position_y = screen.WorkingArea.Bottom - yOffset - height;

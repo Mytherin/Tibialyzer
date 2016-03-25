@@ -81,11 +81,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\CurveBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\ProgressBarLabel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="HUDs\BaseHUD.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HUDs\CurvedHUD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HUDs\CurvedHUD.Designer.cs">
+      <DependentUpon>CurvedHUD.cs</DependentUpon>
     </Compile>
     <Compile Include="HUDs\StatusBar.cs">
       <SubType>Form</SubType>
@@ -357,6 +366,9 @@
     </Compile>
     <Compile Include="Tabs\TabInterface.cs" />
     <Compile Include="Managers\UIManager.cs" />
+    <EmbeddedResource Include="HUDs\CurvedHUD.resx">
+      <DependentUpon>CurvedHUD.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="HUDs\StatusBar.resx">
       <DependentUpon>StatusBar.cs</DependentUpon>
     </EmbeddedResource>
