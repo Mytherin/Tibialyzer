@@ -37,6 +37,9 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.fontSizeBox = new Tibialyzer.EnterTextBox();
             this.hudHeightBox = new Tibialyzer.EnterTextBox();
             this.hudWidthBox = new Tibialyzer.EnterTextBox();
             this.showHudOnStartupBox = new Tibialyzer.PrettyCheckBox();
@@ -44,9 +47,8 @@
             this.hudXOffsetBox = new Tibialyzer.EnterTextBox();
             this.hudAnchorBox = new Tibialyzer.PrettyDropDownList();
             this.hudTypeList = new Tibialyzer.PrettyListBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.fontSizeBox = new Tibialyzer.EnterTextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.hudOpacityBox = new Tibialyzer.EnterTextBox();
             this.SuspendLayout();
             // 
             // selectedHUDLabel
@@ -138,7 +140,7 @@
             this.showHudButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.showHudButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showHudButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.showHudButton.Location = new System.Drawing.Point(286, 354);
+            this.showHudButton.Location = new System.Drawing.Point(286, 364);
             this.showHudButton.Name = "showHudButton";
             this.showHudButton.Padding = new System.Windows.Forms.Padding(10);
             this.showHudButton.Size = new System.Drawing.Size(250, 38);
@@ -154,7 +156,7 @@
             this.closeHudButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.closeHudButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.closeHudButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.closeHudButton.Location = new System.Drawing.Point(286, 392);
+            this.closeHudButton.Location = new System.Drawing.Point(286, 402);
             this.closeHudButton.Name = "closeHudButton";
             this.closeHudButton.Padding = new System.Windows.Forms.Padding(10);
             this.closeHudButton.Size = new System.Drawing.Size(250, 38);
@@ -170,7 +172,7 @@
             this.closeAllHudsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.closeAllHudsButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.closeAllHudsButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.closeAllHudsButton.Location = new System.Drawing.Point(286, 433);
+            this.closeAllHudsButton.Location = new System.Drawing.Point(286, 443);
             this.closeAllHudsButton.Name = "closeAllHudsButton";
             this.closeAllHudsButton.Padding = new System.Windows.Forms.Padding(10);
             this.closeAllHudsButton.Size = new System.Drawing.Size(250, 38);
@@ -186,7 +188,7 @@
             this.label3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label3.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label3.Location = new System.Drawing.Point(286, 324);
+            this.label3.Location = new System.Drawing.Point(286, 334);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(250, 30);
             this.label3.TabIndex = 71;
@@ -228,6 +230,41 @@
             this.label6.TabIndex = 72;
             this.label6.Text = "Size";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.label1.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.label1.Location = new System.Drawing.Point(286, 280);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(99, 23);
+            this.label1.TabIndex = 79;
+            this.label1.Text = "Size";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label2
+            // 
+            this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
+            this.label2.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.label2.Location = new System.Drawing.Point(286, 250);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(250, 30);
+            this.label2.TabIndex = 77;
+            this.label2.Text = "Font Size";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // fontSizeBox
+            // 
+            this.fontSizeBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.fontSizeBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.fontSizeBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
+            this.fontSizeBox.Location = new System.Drawing.Point(384, 280);
+            this.fontSizeBox.Name = "fontSizeBox";
+            this.fontSizeBox.Size = new System.Drawing.Size(152, 23);
+            this.fontSizeBox.TabIndex = 78;
+            this.fontSizeBox.TextChanged += new System.EventHandler(this.fontSizeBox_TextChanged);
             // 
             // hudHeightBox
             // 
@@ -308,7 +345,8 @@
             "Top Left",
             "Top Right",
             "Bottom Left",
-            "Bottom Right"});
+            "Bottom Right",
+            "Center"});
             this.hudAnchorBox.Location = new System.Drawing.Point(286, 145);
             this.hudAnchorBox.Name = "hudAnchorBox";
             this.hudAnchorBox.Size = new System.Drawing.Size(250, 24);
@@ -334,40 +372,28 @@
             this.hudTypeList.TabIndex = 56;
             this.hudTypeList.SelectedIndexChanged += new System.EventHandler(this.hudTypeList_SelectedIndexChanged);
             // 
-            // label1
+            // label7
             // 
-            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label1.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.label1.Location = new System.Drawing.Point(286, 280);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(99, 23);
-            this.label1.TabIndex = 79;
-            this.label1.Text = "Size";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.label7.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.label7.Location = new System.Drawing.Point(286, 305);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(99, 23);
+            this.label7.TabIndex = 81;
+            this.label7.Text = "Opacity";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label2
+            // hudOpacityBox
             // 
-            this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label2.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label2.Location = new System.Drawing.Point(286, 250);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(250, 30);
-            this.label2.TabIndex = 77;
-            this.label2.Text = "Font Size";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // fontSizeBox
-            // 
-            this.fontSizeBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.fontSizeBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.fontSizeBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
-            this.fontSizeBox.Location = new System.Drawing.Point(384, 280);
-            this.fontSizeBox.Name = "fontSizeBox";
-            this.fontSizeBox.Size = new System.Drawing.Size(152, 23);
-            this.fontSizeBox.TabIndex = 78;
-            this.fontSizeBox.TextChanged += new System.EventHandler(this.fontSizeBox_TextChanged);
+            this.hudOpacityBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.hudOpacityBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hudOpacityBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
+            this.hudOpacityBox.Location = new System.Drawing.Point(384, 305);
+            this.hudOpacityBox.Name = "hudOpacityBox";
+            this.hudOpacityBox.Size = new System.Drawing.Size(152, 23);
+            this.hudOpacityBox.TabIndex = 80;
+            this.hudOpacityBox.TextChanged += new System.EventHandler(this.hudOpacityBox_TextChanged);
             // 
             // HUDTab
             // 
@@ -375,6 +401,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(538, 514);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.hudOpacityBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.fontSizeBox);
@@ -433,5 +461,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private EnterTextBox fontSizeBox;
+        private System.Windows.Forms.Label label7;
+        private EnterTextBox hudOpacityBox;
     }
 }

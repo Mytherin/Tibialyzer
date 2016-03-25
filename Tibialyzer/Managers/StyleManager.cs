@@ -66,13 +66,15 @@ namespace Tibialyzer {
         public static Color CreatureHealthColor = Color.FromArgb(60, 179, 60);
         public static Color CreatureBossColor = Color.FromArgb(205, 102, 102);
 
-        public static Color HealthFull = Color.FromArgb(125, 0, 192, 0);
-        public static Color HealthHealthy = Color.FromArgb(125, 72, 145, 72);
-        public static Color HealthDamaged = Color.FromArgb(125, 146, 146, 0);
-        public static Color HealthDanger = Color.FromArgb(125, 145, 35, 35);
-        public static Color HealthCritical = Color.FromArgb(125, 47, 0, 0);
-        public static Color ManaColor = Color.FromArgb(125, 54, 51, 167);
-        public static Color ExperienceColor = Color.FromArgb(125, 64, 64, 64);
+        public static Color HealthFull = Color.FromArgb(0, 192, 0);
+        public static Color HealthHealthy = Color.FromArgb(72, 145, 72);
+        public static Color HealthDamaged = Color.FromArgb(146, 146, 0);
+        public static Color HealthDanger = Color.FromArgb(145, 35, 35);
+        public static Color HealthCritical = Color.FromArgb(47, 0, 0);
+        public static Color ManaColor = Color.FromArgb(54, 51, 167);
+        public static Color ExperienceColor = Color.FromArgb(64, 64, 64);
+
+        public static Color TransparencyKey = Color.FromArgb(251, 0, 255);
         #endregion
 
         #region UI Fonts
@@ -158,6 +160,20 @@ namespace Tibialyzer {
                 return ((long)gold / 1000).ToString() + "K";
             } else {
                 return ((long)gold / 1000000).ToString() + "M";
+            }
+        }
+
+        public static Color GetHealthColor(double percentage) {
+            if (percentage < 0.1) {
+                return StyleManager.HealthCritical;
+            } else if (percentage < 0.3) {
+                return StyleManager.HealthDanger;
+            } else if (percentage < 0.6) {
+                return StyleManager.HealthDamaged;
+            } else if (percentage < 1.0) {
+                return StyleManager.HealthHealthy;
+            } else {
+                return StyleManager.HealthFull;
             }
         }
     }

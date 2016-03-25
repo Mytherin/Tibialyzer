@@ -17,6 +17,10 @@ namespace Tibialyzer {
         public StatusBar(StatusType statusType) {
             this.statusType = statusType;
             InitializeComponent();
+
+            double opacity = SettingsManager.getSettingDouble(GetHUD() + "Opacity");
+            opacity = Math.Min(1, Math.Max(0, opacity));
+            this.Opacity = opacity;
         }
 
         public override void LoadHUD() {
@@ -41,7 +45,7 @@ namespace Tibialyzer {
         public static int GetExperience(int lvl) {
             return (50 * lvl * lvl * lvl - 150 * lvl * lvl + 400 * lvl) / 3;
         }
-
+        
         public void RefreshHUD(int min, int max, double percentage) {
             if (statusType == StatusType.Experience) {
                 healthBarLabel.Text = String.Format("Lvl {0}: {1}%", MemoryReader.Level, (int)(percentage * 100));
@@ -50,17 +54,7 @@ namespace Tibialyzer {
             }
             healthBarLabel.percentage = percentage;
             if (statusType == StatusType.Health) {
-                if (percentage < 0.05) {
-                    healthBarLabel.BackColor = StyleManager.HealthCritical;
-                } else if (percentage < 0.2) {
-                    healthBarLabel.BackColor = StyleManager.HealthDanger;
-                } else if (percentage < 0.6) {
-                    healthBarLabel.BackColor = StyleManager.HealthDamaged;
-                } else if (percentage < 1.0) {
-                    healthBarLabel.BackColor = StyleManager.HealthHealthy;
-                } else {
-                    healthBarLabel.BackColor = StyleManager.HealthFull;
-                }
+                healthBarLabel.BackColor = StyleManager.GetHealthColor(percentage);
             } else if (statusType == StatusType.Mana) {
                 healthBarLabel.BackColor = StyleManager.ManaColor;
             } else if (statusType == StatusType.Experience) {

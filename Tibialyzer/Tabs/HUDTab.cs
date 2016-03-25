@@ -55,6 +55,7 @@ namespace Tibialyzer {
             hudHeightBox.Text = SettingsManager.getSettingString(hudName + "Height");
             showHudOnStartupBox.Checked = SettingsManager.getSettingBool(hudName + "ShowOnStartup");
             fontSizeBox.Text = SettingsManager.getSettingString(hudName + "FontSize");
+            hudOpacityBox.Text = SettingsManager.getSettingString(hudName + "Opacity");
             MainForm.prevent_settings_update = false;
         }
 
@@ -124,6 +125,17 @@ namespace Tibialyzer {
             double value;
             if (double.TryParse(fontSizeBox.Text, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out value)) {
                 SettingsManager.setSetting(getSelectedHudName() + "FontSize", value);
+            }
+        }
+
+        private void hudOpacityBox_TextChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            double value;
+            if (double.TryParse(hudOpacityBox.Text, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out value)) {
+                if (value >= 0 && value <= 1) {
+                    SettingsManager.setSetting(getSelectedHudName() + "Opacity", value);
+                }
             }
         }
     }

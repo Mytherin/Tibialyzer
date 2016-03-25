@@ -263,7 +263,10 @@ C::NumpadPgDn
                 setSettingIfNotSet(settingObject + "Width", 200);
                 setSettingIfNotSet(settingObject + "Height", 65);
                 setSettingIfNotSet(settingObject + "ShowOnStartup", false);
+                setSettingIfNotSet(settingObject + "Opacity", 0.8);
             }
+
+
         }
 
         public static void ResetSettingsToDefault() {
