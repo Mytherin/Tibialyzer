@@ -27,6 +27,10 @@ namespace Tibialyzer {
         System.Timers.Timer closeTimer = null;
         private bool animations = true;
 
+        public SimpleNotification() {
+            this.ShowInTaskbar = false;
+        }
+
         protected void InitializeSimpleNotification(bool movement = true, bool destroy = true, double extraTime = 0) {
             this.Click += c_Click;
             foreach (Control c in this.Controls) {

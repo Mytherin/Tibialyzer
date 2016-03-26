@@ -24,6 +24,8 @@ namespace Tibialyzer {
 
             this.BackColor = ContainerTransparentColor;
             this.TransparencyKey = ContainerTransparentColor;
+
+            this.ShowInTaskbar = false;
         }
 
         public int TranslateY(int y, int height) {

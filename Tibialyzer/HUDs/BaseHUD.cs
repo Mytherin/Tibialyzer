@@ -14,6 +14,10 @@ namespace Tibialyzer {
         static int WS_EX_TOOLWINDOW = 0x00000080;
         static int WS_EX_COMPOSITED = 0x02000000;
 
+        public BaseHUD() {
+            this.ShowInTaskbar = false;
+        }
+
         protected override CreateParams CreateParams {
             get {
                 CreateParams baseParams = base.CreateParams;

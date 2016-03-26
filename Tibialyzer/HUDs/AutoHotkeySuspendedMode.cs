@@ -29,6 +29,9 @@ namespace Tibialyzer {
 
         public AutoHotkeySuspendedMode(bool alwaysShow) {
             this.InitializeComponent();
+
+            this.ShowInTaskbar = false;
+
             this.alwaysShow = alwaysShow;
             this.InitializeSimpleNotification(false, false);
 

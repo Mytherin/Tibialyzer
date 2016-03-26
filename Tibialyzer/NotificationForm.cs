@@ -37,6 +37,10 @@ namespace Tibialyzer {
         protected Label decreaseWidthButton;
         protected Label increaseWidthButton;
         public int notificationDuration = 1;
+        
+        public NotificationForm() {
+            this.ShowInTaskbar = false;
+        }
 
         [DllImport("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, Int32 wMsg, bool wParam, Int32 lParam);
