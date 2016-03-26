@@ -193,7 +193,15 @@ namespace Tibialyzer {
                 } else if (comp.StartsWith("waste" + Constants.CommandSymbol)) { //waste@
                     NotificationManager.ShowWasteForm(HuntManager.activeHunt, command);
                 } else if (comp.StartsWith("summary" + Constants.CommandSymbol)) { //summary@
-                    NotificationManager.ShowSummaryForm(command);
+                    string[] splits = command.Split(Constants.CommandSymbol);
+                    string screenshot_path = "";
+                    string parameter = splits[1].Trim().ToLower();
+                    if (parameter == "screenshot" && splits.Length > 2) {
+                        parameter = "";
+                        screenshot_path = splits[2];
+                    }
+
+                    NotificationManager.ShowSummaryForm(command, screenshot_path);
                 } else if (comp.StartsWith("loot" + Constants.CommandSymbol)) { //loot@
                     string[] splits = command.Split(Constants.CommandSymbol);
                     string screenshot_path = "";

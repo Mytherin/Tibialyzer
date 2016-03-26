@@ -115,6 +115,25 @@ namespace Tibialyzer {
             }
         }
 
+
+        private void saveSummaryImageButton_Click(object sender, EventArgs e) {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.AddExtension = true;
+            dialog.DefaultExt = "png";
+            dialog.Title = "Save Damage Image";
+            if (File.Exists("summary_screenshot.png")) {
+                int i = 1;
+                while (File.Exists("summary_screenshot (" + i.ToString() + ").png")) i++;
+                dialog.FileName = "summary_screenshot (" + i.ToString() + ").png";
+            } else {
+                dialog.FileName = "summary_screenshot.png";
+            }
+            DialogResult result = dialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK) {
+                CommandManager.ExecuteCommand("summary" + Constants.CommandSymbol + "screenshot" + Constants.CommandSymbol + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/"));
+            }
+        }
+
         private void commandTextBox_KeyPress(object sender, KeyPressEventArgs e) {
             if (e.KeyChar == '\r') {
                 CommandManager.ExecuteCommand((sender as TextBox).Text);

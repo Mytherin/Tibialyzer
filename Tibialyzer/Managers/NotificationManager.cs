@@ -187,10 +187,10 @@ namespace Tibialyzer {
             ShowNotification(f, command);
         }
 
-        public static void ShowSummaryForm(string command) {
+        public static void ShowSummaryForm(string command, string screenshot_path = "") {
             SummaryForm f = new SummaryForm();
 
-            ShowNotification(f, command);
+            ShowNotification(f, command, screenshot_path);
         }
         public static void ShowRoute(Coordinate target, TibiaObject obj, string command) {
             if (target == null) return;
