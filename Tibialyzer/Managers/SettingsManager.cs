@@ -273,6 +273,9 @@ C::NumpadPgDn
             }
 
             setSettingIfNotSet("MonitorAnchor", 0);
+            setSettingIfNotSet("SummaryLootItemSize", 25);
+            setSettingIfNotSet("SummaryRecentDropsItemSize", 25);
+            setSettingIfNotSet("SummaryWasteItemSize", 25);
         }
 
         public static void ResetSettingsToDefault() {

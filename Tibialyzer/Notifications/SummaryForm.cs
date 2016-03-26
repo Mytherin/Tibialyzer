@@ -12,8 +12,8 @@ using System.Windows.Forms;
 
 namespace Tibialyzer {
     public partial class SummaryForm : NotificationForm {
-        private int ImageWidth = 200;
-        private int ImageHeight = 25;
+        private int BlockWidth = 200;
+        private int BlockHeight = 25;
         private object updateLock = new object();
 
         public SummaryForm() {
@@ -88,65 +88,48 @@ namespace Tibialyzer {
         }
 
         public Image CreatureBox(Creature creature, int amount = 0) {
-            Bitmap bitmap = new Bitmap(ImageWidth, ImageHeight);
+            Bitmap bitmap = new Bitmap(BlockWidth, BlockHeight);
             using (Graphics gr = Graphics.FromImage(bitmap)) {
                 Color backColor = StyleManager.GetElementColor(creature.GetStrength());
                 using (Brush brush = new SolidBrush(backColor)) {
                     gr.FillRectangle(brush, new Rectangle(0, 0, bitmap.Width, bitmap.Height));
                 }
                 gr.DrawRectangle(Pens.Black, new Rectangle(0, 0, bitmap.Width - 1, bitmap.Height - 1));
-                RenderImageResized(gr, StyleManager.GetImage("item_background.png"), new Rectangle(1, 1, ImageHeight - 2, ImageHeight - 2));
-                RenderImageResized(gr, creature.GetImage(), new Rectangle(1, 1, ImageHeight - 2, ImageHeight - 2));
-                RenderText(gr, creature.displayname.ToTitle(), ImageHeight + 2, Color.Empty, StyleManager.NotificationTextColor, Color.Black, ImageHeight);
+                RenderImageResized(gr, StyleManager.GetImage("item_background.png"), new Rectangle(1, 1, BlockHeight - 2, BlockHeight - 2));
+                RenderImageResized(gr, creature.GetImage(), new Rectangle(1, 1, BlockHeight - 2, BlockHeight - 2));
+                RenderText(gr, creature.displayname.ToTitle(), BlockHeight + 2, Color.Empty, StyleManager.NotificationTextColor, Color.Black, BlockHeight);
                 if (amount > 0) {
-                    RenderText(gr, amount.ToString(), -ImageWidth, Color.FromArgb(backColor.R / 2, backColor.G / 2, backColor.B / 2), StyleManager.NotificationTextColor, Color.Black, ImageHeight);
-                }
-            }
-            return bitmap;
-        }
-
-        public Image ItemBox(Item item, int amount = 0) {
-            Bitmap bitmap = new Bitmap(ImageWidth, ImageHeight);
-            using (Graphics gr = Graphics.FromImage(bitmap)) {
-                using (Brush brush = new SolidBrush(StyleManager.MainFormButtonColor)) {
-                    gr.FillRectangle(brush, new Rectangle(0, 0, bitmap.Width, bitmap.Height));
-                }
-                gr.DrawRectangle(Pens.Black, new Rectangle(0, 0, bitmap.Width - 1, bitmap.Height - 1));
-                RenderImageResized(gr, StyleManager.GetImage("item_background.png"), new Rectangle(1, 1, ImageHeight - 2, ImageHeight - 2));
-                RenderImageResized(gr, (amount > 1 || item.stackable) ? LootDropForm.GetStackImage(item.GetImage(), amount > 0 ? amount : 1, item) : item.GetImage(), new Rectangle(1, 1, ImageHeight - 2, ImageHeight - 2));
-                RenderText(gr, item.displayname.ToTitle(), ImageHeight + 2, Color.Empty, StyleManager.NotificationTextColor, Color.Black, ImageHeight);
-                if (amount > 0) {
-                    RenderText(gr, amount.ToString(), -ImageWidth, Color.FromArgb(StyleManager.MainFormButtonColor.R / 2, StyleManager.MainFormButtonColor.G / 2, StyleManager.MainFormButtonColor.B / 2), StyleManager.NotificationTextColor, Color.Black, ImageHeight);
+                    RenderText(gr, amount.ToString(), -BlockWidth, Color.FromArgb(backColor.R / 2, backColor.G / 2, backColor.B / 2), StyleManager.NotificationTextColor, Color.Black, BlockHeight);
                 }
             }
             return bitmap;
         }
 
         public Image SummaryBox(string header, string value, Color textColor) {
-            Bitmap bitmap = new Bitmap(ImageWidth, ImageHeight);
+            Bitmap bitmap = new Bitmap(BlockWidth, BlockHeight);
             using (Graphics gr = Graphics.FromImage(bitmap)) {
                 using (SolidBrush brush = new SolidBrush(StyleManager.MainFormButtonColor)) {
-                    gr.FillRectangle(brush, new RectangleF(0, 0, ImageWidth, ImageHeight));
+                    gr.FillRectangle(brush, new RectangleF(0, 0, BlockWidth, BlockHeight));
                 }
                 gr.DrawRectangle(Pens.Black, new Rectangle(0, 0, bitmap.Width - 1, bitmap.Height - 1));
-                RenderText(gr, header, 0, Color.Empty, StyleManager.NotificationTextColor, Color.Black, ImageHeight);
-                RenderText(gr, value, -ImageWidth, Color.FromArgb(StyleManager.MainFormButtonColor.R / 2, StyleManager.MainFormButtonColor.G / 2, StyleManager.MainFormButtonColor.B / 2), textColor, Color.Black, ImageHeight);
+                RenderText(gr, header, 0, Color.Empty, StyleManager.NotificationTextColor, Color.Black, BlockHeight);
+                RenderText(gr, value, -BlockWidth, Color.FromArgb(StyleManager.MainFormButtonColor.R / 2, StyleManager.MainFormButtonColor.G / 2, StyleManager.MainFormButtonColor.B / 2), textColor, Color.Black, BlockHeight);
             }
             return bitmap;
         }
 
-        public Image RecentDropsBox(Creature creature, List<Tuple<Item, int>> items) {
-            Bitmap bitmap = new Bitmap(ImageWidth, ImageHeight);
+        public Image RecentDropsBox(Creature creature, List<Tuple<Item, int>> items, int imageHeight) {
+            Bitmap bitmap = new Bitmap(BlockWidth, imageHeight);
             using (Graphics gr = Graphics.FromImage(bitmap)) {
                 using (Brush brush = new SolidBrush(StyleManager.MainFormButtonColor)) {
                     gr.FillRectangle(brush, new Rectangle(0, 0, bitmap.Width, bitmap.Height));
                 }
                 gr.DrawRectangle(Pens.Black, new Rectangle(0, 0, bitmap.Width - 1, bitmap.Height - 1));
-                RenderImageResized(gr, StyleManager.GetImage("item_background.png"), new Rectangle(1, 1, ImageHeight - 2, ImageHeight - 2));
-                RenderImageResized(gr, creature.GetImage(), new Rectangle(1, 1, ImageHeight - 1, ImageHeight - 1));
+                RenderImageResized(gr, StyleManager.GetImage("item_background.png"), new Rectangle(1, 1, imageHeight - 2, imageHeight - 2));
+                RenderImageResized(gr, creature.GetImage(), new Rectangle(1, 1, imageHeight - 1, imageHeight - 1));
                 int count = 0;
                 foreach (Tuple<Item, int> item in items) {
-                    Rectangle region = new Rectangle(8 + (ImageHeight - 1) * ++count, 1, ImageHeight - 2, ImageHeight - 2);
+                    Rectangle region = new Rectangle(8 + (imageHeight - 1) * ++count, 1, imageHeight - 2, imageHeight - 2);
                     RenderImageResized(gr, StyleManager.GetImage("item_background.png"), region);
                     RenderImageResized(gr, (item.Item1.stackable || item.Item2 > 1) ? LootDropForm.DrawCountOnItem(item.Item1, item.Item2) : item.Item1.GetImage(), region);
                 }
@@ -158,7 +141,7 @@ namespace Tibialyzer {
             Label label = new Label();
             label.Text = title;
             label.Location = new Point(x, y);
-            label.Size = new Size(ImageWidth, 15);
+            label.Size = new Size(BlockWidth, 15);
             label.BackColor = Color.Transparent;
             label.ForeColor = StyleManager.NotificationTextColor;
             label.Font = StyleManager.MainFormLabelFontSmall;
@@ -179,20 +162,6 @@ namespace Tibialyzer {
             y += box.Height;
         }
 
-        private void CreateItemBox(Item item, int count, int x, ref int y, List<Control> controls) {
-            Image image = ItemBox(item, count);
-            PictureBox box = new PictureBox();
-            box.Size = image.Size;
-            box.BackColor = Color.Transparent;
-            box.Location = new Point(x, y);
-            box.Image = image;
-            box.Name = "item" + Constants.CommandSymbol + item.title;
-            box.Click += CommandClick;
-            this.Controls.Add(box);
-            controls.Add(box);
-            y += box.Height;
-        }
-
         private void CreateCreatureBox(Creature creature, int count, int x, ref int y, List<Control> controls) {
             Image image = CreatureBox(creature, count);
             PictureBox box = new PictureBox();
@@ -206,8 +175,8 @@ namespace Tibialyzer {
             controls.Add(box);
             y += box.Height;
         }
-        private void CreateCreatureDropsBox(Creature creature, List<Tuple<Item, int>> items, string message, int x, ref int y, List<Control> controls) {
-            Image image = RecentDropsBox(creature, items);
+        private void CreateCreatureDropsBox(Creature creature, List<Tuple<Item, int>> items, string message, int x, ref int y, List<Control> controls, int imageHeight) {
+            Image image = RecentDropsBox(creature, items, imageHeight);
             PictureBox box = new PictureBox();
             box.Size = image.Size;
             box.BackColor = Color.Transparent;
@@ -237,12 +206,12 @@ namespace Tibialyzer {
             Clipboard.SetText((sender as Control).Name);
         }
 
-        private void CreateItemList(List<Tuple<Item, int>> items, int x, ref int y, List<Control> controls) {
-            Image image = new Bitmap(ImageWidth, ImageHeight);
+        private void CreateItemList(List<Tuple<Item, int>> items, int x, ref int y, List<Control> controls, int imageHeight) {
+            Image image = new Bitmap(BlockWidth, imageHeight);
             using (Graphics gr = Graphics.FromImage(image)) {
                 int counter = 0;
                 foreach (Tuple<Item, int> item in items) {
-                    Rectangle region = new Rectangle(x + (counter++) * (ImageHeight + 1), 0, ImageHeight - 1, ImageHeight - 1);
+                    Rectangle region = new Rectangle(x + (counter++) * (imageHeight + 1), 0, imageHeight - 1, imageHeight - 1);
                     RenderImageResized(gr, StyleManager.GetImage("item_background.png"), region);
                     RenderImageResized(gr, (item.Item1.stackable || item.Item2 > 1) ? LootDropForm.DrawCountOnItem(item.Item1, item.Item2) : item.Item1.GetImage(), region);
                 }
@@ -269,7 +238,7 @@ namespace Tibialyzer {
             label = new Label();
             label.Text = "Summary";
             label.Location = new Point(x, 0);
-            label.Size = new Size(ImageWidth, 30);
+            label.Size = new Size(BlockWidth, 30);
             label.BackColor = Color.Transparent;
             label.ForeColor = StyleManager.NotificationTextColor;
             label.Font = StyleManager.MainFormLabelFontSmall;
@@ -317,11 +286,15 @@ namespace Tibialyzer {
         }
 
         public void UpdateLoot() {
-            lock (updateLock) {
-                this.SuspendForm();
-                this.UpdateLootForm();
-                this.UpdateSummaryForm();
-                this.ResumeForm();
+            try {
+                lock (updateLock) {
+                    this.SuspendForm();
+                    this.UpdateLootForm();
+                    this.UpdateSummaryForm();
+                    this.ResumeForm();
+                }
+            } catch {
+
             }
         }
 
@@ -329,10 +302,14 @@ namespace Tibialyzer {
             try {
                 if (this.IsDisposed) return;
                 this.Invoke((MethodInvoker)delegate {
-                    lock (updateLock) {
-                        this.SuspendForm();
-                        this.UpdateDamageForm();
-                        this.ResumeForm();
+                    try {
+                        lock (updateLock) {
+                            this.SuspendForm();
+                            this.UpdateDamageForm();
+                            this.ResumeForm();
+                        }
+                    } catch {
+
                     }
                 });
             } catch {
@@ -344,11 +321,15 @@ namespace Tibialyzer {
             try {
                 if (this.IsDisposed) return;
                 this.Invoke((MethodInvoker)delegate {
-                    lock (updateLock) {
-                        this.SuspendForm();
-                        this.UpdateWasteForm();
-                        this.UpdateSummaryForm();
-                        this.ResumeForm();
+                    try {
+                        lock (updateLock) {
+                            this.SuspendForm();
+                            this.UpdateWasteForm();
+                            this.UpdateSummaryForm();
+                            this.ResumeForm();
+                        }
+                    } catch {
+
                     }
                 });
             } catch {
@@ -378,8 +359,12 @@ namespace Tibialyzer {
             int maxDrops = SettingsManager.getSettingInt("SummaryMaxItemDrops");
             if (maxDrops < 0) maxDrops = 5;
             if (maxDrops > 0) {
+                int imageHeight = SettingsManager.getSettingInt("SummaryLootItemSize");
+                imageHeight = imageHeight < 0 ? BlockHeight : imageHeight;
+
                 CreateHeaderLabel("Item Drops", x, ref y, lootControls);
                 counter = 0;
+                bool display = true;
                 int width = 0;
                 var items = new List<Tuple<Item, int>>();
                 foreach (Tuple<Item, int> tpl in loot.Item2) {
@@ -388,17 +373,21 @@ namespace Tibialyzer {
                         int count = Math.Min(100, amount);
                         amount -= count;
                         items.Add(new Tuple<Item, int>(tpl.Item1, count));
-                        width += ImageHeight + 2;
-                        if (width > ImageWidth - ImageHeight) {
-                            CreateItemList(items, x, ref y, lootControls);
+                        width += imageHeight + 2;
+                        if (width > BlockWidth - imageHeight) {
+                            CreateItemList(items, x, ref y, lootControls, imageHeight);
                             items.Clear();
                             width = 0;
-                            if (++counter >= maxDrops) break;
+                            if (++counter >= maxDrops) {
+                                display = false;
+                                break;
+                            }
                         }
                     }
+                    if (!display) break;
                 }
                 if (items.Count > 0) {
-                    CreateItemList(items, x, ref y, lootControls);
+                    CreateItemList(items, x, ref y, lootControls, imageHeight);
                     items.Clear();
                 }
             }
@@ -416,9 +405,11 @@ namespace Tibialyzer {
             if (maxRecentDrops < 0) maxRecentDrops = 5;
             if (maxRecentDrops > 0) {
                 CreateHeaderLabel("Recent Drops", x, ref y, lootControls);
+                int imageHeight = SettingsManager.getSettingInt("SummaryRecentDropsItemSize");
+                imageHeight = imageHeight < 0 ? BlockHeight : imageHeight;
                 var recentDrops = ScanningManager.GetRecentDrops(maxRecentDrops);
                 foreach (var drops in recentDrops) {
-                    CreateCreatureDropsBox(drops.Item1, drops.Item2, drops.Item3, x, ref y, lootControls);
+                    CreateCreatureDropsBox(drops.Item1, drops.Item2, drops.Item3, x, ref y, lootControls, imageHeight);
                 }
             }
             UpdateDamageForm();
@@ -470,6 +461,8 @@ namespace Tibialyzer {
             int maxUsedItems = SettingsManager.getSettingInt("SummaryMaxUsedItems");
             if (maxUsedItems < 0) maxUsedItems = 5;
             if (maxUsedItems > 0) {
+                int imageHeight = SettingsManager.getSettingInt("SummaryWasteItemSize");
+                imageHeight = imageHeight < 0 ? BlockHeight : imageHeight;
                 int counter = 0;
                 CreateHeaderLabel("Used Items", x, ref y, usedItemsControls);
                 int width = 0;
@@ -482,9 +475,9 @@ namespace Tibialyzer {
                         int count = Math.Min(100, amount);
                         amount -= count;
                         items.Add(new Tuple<Item, int>(tpl.Item1, count));
-                        width += ImageHeight + 2;
-                        if (width > ImageWidth - ImageHeight) {
-                            CreateItemList(items, x, ref y, usedItemsControls);
+                        width += imageHeight + 2;
+                        if (width > BlockWidth - imageHeight) {
+                            CreateItemList(items, x, ref y, usedItemsControls, imageHeight);
                             items.Clear();
                             width = 0;
                             if (++counter >= maxUsedItems) display = false;
@@ -492,12 +485,12 @@ namespace Tibialyzer {
                     }
                 }
                 if (items.Count > 0) {
-                    CreateItemList(items, x, ref y, usedItemsControls);
+                    CreateItemList(items, x, ref y, usedItemsControls, imageHeight);
                     items.Clear();
                 }
             }
             if (y != maxheight) {
-                this.Size = new Size(ImageWidth + 10, y + 5);
+                this.Size = new Size(BlockWidth + 10, y + 5);
             }
         }
 
@@ -524,7 +517,7 @@ namespace Tibialyzer {
         public override void RefreshForm() {
             this.SuspendForm();
             this.Size = new Size(GetWidth(), this.Size.Height);
-            ImageWidth = this.Size.Width - 10;
+            BlockWidth = this.Size.Width - 10;
 
             UpdateSummaryForm();
             UpdateLootForm();
