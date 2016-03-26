@@ -131,8 +131,8 @@ namespace Tibialyzer {
 
             ShowNotification(f, comm);
         }
-        public static void ShowMapForm(string comm) {
-            MapForm f = new MapForm();
+        public static void ShowMapForm(Coordinate startCoordinate, string comm) {
+            MapForm f = new MapForm(startCoordinate);
 
             ShowNotification(f, comm);
         }

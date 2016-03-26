@@ -23,6 +23,26 @@ namespace Tibialyzer {
         public static Random Random = new Random();
         //! Cities in Tibia
         public static HashSet<string> cities = new HashSet<string>() { "ab'dendriel", "carlin", "kazordoon", "venore", "thais", "ankrahmun", "farmine", "gray beach", "liberty bay", "port hope", "rathleton", "roshamuul", "yalahar", "svargrond", "edron", "darashia", "rookgaard", "dawnport", "gray beach" };
+        //! City Locations in Tibia
+        public static Dictionary<string, string> cityCoordinates = new Dictionary<string, string>() {
+                {"ab'dendriel", "916,697,7"},
+                {"ankrahmun", "1396,1838,7"},
+                {"carlin", "592,810,7"},
+                {"darashia", "1483,1450,7"},
+                {"edron", "1442,844,7"},
+                {"farmine", "1275,557,10"},
+                {"gray beach", "1708,343,7"},
+                {"kazordoon", "883,944,8"},
+                {"liberty bay", "576,1854,7"},
+                {"port hope", "877,1774,7"},
+                {"rathleton", "1877,921,7"},
+                {"rookgaard", "352,1225,7"},
+                {"roshamuul", "1799,1402,7"},
+                {"svargrond", "514,170,7"},
+                {"thais", "622,1234,7"},
+                {"venore", "1173,1090,6"},
+                {"yalahar", "1053,228,7"}
+        };
         //! Vocations in Tibia
         public static List<string> vocations = new List<string> { "knight", "druid", "paladin", "sorcerer" };
         //! Location of Loot database; used for storing loot found by the player

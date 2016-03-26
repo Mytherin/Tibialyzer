@@ -321,12 +321,31 @@ namespace Tibialyzer {
                 } else if (comp.StartsWith("closehud" + Constants.CommandSymbol)) { //hud@
                     HUDManager.CloseHUD(comp.Split(Constants.CommandSymbol)[1]);
                 } else if (comp.StartsWith("map" + Constants.CommandSymbol)) { //map@
-                    NotificationManager.ShowMapForm(command);
+                    Coordinate startCoordinate = null;
+                    string[] splits = comp.Split(Constants.CommandSymbol);
+                    if (splits.Length > 1) {
+                        string cityName = splits[1].Trim().ToLower();
+                        if (Constants.cityCoordinates.ContainsKey(cityName)) {
+                            return ExecuteCommand("map@" + Constants.cityCoordinates[cityName]);
+                        }
+                        Coordinate targetCoordinate = new Coordinate();
+                        string[] coords = splits[1].Split(',');
+                        if (coords.Length >= 3) {
+                            if (int.TryParse(coords[0], out targetCoordinate.x) && int.TryParse(coords[1], out targetCoordinate.y) && int.TryParse(coords[2], out targetCoordinate.z)) {
+                                startCoordinate = targetCoordinate;
+                            }
+                        }
+                    }
+                    NotificationManager.ShowMapForm(startCoordinate, command);
                 } else if (comp.StartsWith("route" + Constants.CommandSymbol)) { //route@
                     string[] splits = comp.Split(Constants.CommandSymbol);
                     Coordinate targetCoordinate = new Coordinate();
                     TibiaObject imageObject = null;
                     if (splits.Length > 1) {
+                        string cityName = splits[1].Trim().ToLower();
+                        if (Constants.cityCoordinates.ContainsKey(cityName)) {
+                            return ExecuteCommand("route@" + Constants.cityCoordinates[cityName]);
+                        }
                         string[] coords = splits[1].Split(',');
                         if (coords.Length >= 3) {
                             if (int.TryParse(coords[0], out targetCoordinate.x) && int.TryParse(coords[1], out targetCoordinate.y) && int.TryParse(coords[2], out targetCoordinate.z)) {

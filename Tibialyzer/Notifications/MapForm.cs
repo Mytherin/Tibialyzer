@@ -31,9 +31,10 @@ namespace Tibialyzer {
         private EnterTextBox coordinateBox;
         private Label routeButton;
         private static Font text_font = new Font(FontFamily.GenericSansSerif, 11, FontStyle.Bold);
+        private Coordinate startCoordinate;
 
-
-        public MapForm() {
+        public MapForm(Coordinate startCoordinate) {
+            this.startCoordinate = startCoordinate;
             InitializeComponent();
         }
 
@@ -167,12 +168,14 @@ namespace Tibialyzer {
             this.SuspendForm();
             NotificationInitialize();
 
-            Coordinate coord = new Coordinate();
-            try {
-                coord = new Coordinate(MemoryReader.X, MemoryReader.Y, MemoryReader.Z);
-            } catch {
+            Coordinate coord = startCoordinate;
+            if (coord == null) {
+                try {
+                    coord = new Coordinate(MemoryReader.X, MemoryReader.Y, MemoryReader.Z);
+                } catch {
+                    coord = new Coordinate();
+                }
             }
-
             Map m = StorageManager.getMap(coord.z);
 
             mapBox.map = m;
