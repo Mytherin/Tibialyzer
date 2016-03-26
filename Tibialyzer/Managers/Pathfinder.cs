@@ -227,7 +227,7 @@ namespace Tibialyzer {
             return Math.Abs(node.z - goal.Z) * 100 + Distance(node.x, node.y, goal.X, goal.Y);
         }
 
-        public static DijkstraNode FindRoute(Node start, Node goal, Point3D exactGoal) {
+        public static DijkstraNode FindRoute(Node start, Node goal, Point3D exactGoal, DijkstraNode previousPath = null) {
             // Dijkstra algorithm
             // We use Dijkstra instead of A* because there are random teleports in Tibia (e.g. boats)
             // And it is difficult to create a good A* heuristic that takes random teleports into account
@@ -237,12 +237,36 @@ namespace Tibialyzer {
 
             double closestDistance = double.MaxValue;
             DijkstraNode closestNode = null;
+            
+            Dictionary<Node, DijkstraNode> nodes = new Dictionary<Node, DijkstraNode>(); 
+            if (previousPath != null) {
+                DijkstraNode it = previousPath;
+                DijkstraNode prevNode = null;
+                while(it != null) {
+                    if (it.node == start) {
+                        it.previous = null;
+                        it.connection = new Connection(it.node);
+                        return previousPath;
+                    }
+                    if (prevNode != null && !nodes.ContainsKey(prevNode.node)) {
+                        nodes.Add(prevNode.node, it);
+                    }
+                    prevNode = it;
+                    it = it.previous;
+                }
+            }
 
+            
             while (openSet.Count > 0) {
                 // Extract path with current minimal cost
                 DijkstraNode current = GetMinimum(openSet);
                 if (current.node == goal) {
                     return current;
+                }
+                if (nodes.ContainsKey(current.node)) {
+                    DijkstraNode node = nodes[current.node];
+                    node.previous = current;
+                    return previousPath;
                 }
                 double distance = Distance(current.node, exactGoal);
                 if (distance < closestDistance) {

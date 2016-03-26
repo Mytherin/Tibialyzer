@@ -127,6 +127,8 @@ namespace Tibialyzer {
             }
         }
 
+        private DijkstraNode previousResult = null;
+
         public void UpdateMap(bool periodicUpdate = false) {
             lock (mapBoxLock) {
                 int PlayerX = 0, PlayerY = 0, PlayerZ = 0;
@@ -212,7 +214,8 @@ namespace Tibialyzer {
                             Node endNode = Pathfinder.GetNode(targetCoordinate.x, targetCoordinate.y, targetCoordinate.z);
 
                             List<Rectangle3D> collisionBounds = null;
-                            DijkstraNode highresult = Dijkstra.FindRoute(beginNode, endNode, new Point3D(targetCoordinate));
+                            DijkstraNode highresult = Dijkstra.FindRoute(beginNode, endNode, new Point3D(targetCoordinate), previousResult);
+                            previousResult = highresult;
                             SpecialConnection connection = null;
 
                             nextConnectionPoint = new Point3D(-1, -1, -1);
