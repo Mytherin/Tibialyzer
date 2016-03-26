@@ -507,7 +507,7 @@ namespace Tibialyzer {
         }
 
         public override int MaxWidth() {
-            return 410;
+            return 810;
         }
 
         public override int WidthInterval() {
