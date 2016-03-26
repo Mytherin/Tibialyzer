@@ -51,7 +51,7 @@ namespace Tibialyzer {
         public override Item AsItem() { return this; }
 
         public long GetMaxValue() {
-            return Math.Max(vendor_value, actual_value);
+            return actual_value;
         }
 
         public string GetMaxValueString() {

@@ -114,7 +114,7 @@ namespace Tibialyzer {
                     picture_box.SizeMode = PictureBoxSizeMode.Zoom;
                     picture_box.BackgroundImage = StyleManager.GetImage("item_background.png");
                     picture_box.BackgroundImageLayout = ImageLayout.Zoom;
-                    value_tooltip.SetToolTip(picture_box, item.displayname.ToTitle() + " value: " + Math.Max(item.actual_value, item.vendor_value) * mitems);
+                    value_tooltip.SetToolTip(picture_box, item.displayname.ToTitle() + " value: " + item.GetMaxValue() * mitems);
                     this.Controls.Add(picture_box);
 
                     x += item_size.Width + item_spacing;

@@ -157,7 +157,7 @@ namespace Tibialyzer {
                 if (item.discard && !all) continue;
                 // convert items to gold (as long as raw mode is not enabled), always gather up all the gold coins found
                 if ((!raw && item.convert_to_gold) || item.displayname == "gold coin" || item.displayname == "platinum coin" || item.displayname == "crystal coin") {
-                    extraGold += Math.Max(item.actual_value, item.vendor_value) * count;
+                    extraGold += item.GetMaxValue() * count;
                 } else {
                     itemDrops.Add(new Tuple<Item, int>(item, count));
                 }
@@ -180,7 +180,7 @@ namespace Tibialyzer {
             // now order by value so most valuable items are placed first
             // we use a special value for the gold coins so the gold is placed together in the order crystal > platinum > gold
             // gold coins = <gold total> - 2, platinum coins = <gold total> - 1, crystal coins = <gold total>
-            itemDrops = itemDrops.OrderByDescending(o => o.Item1.displayname == "gold coin" ? extraGold - 2 : (o.Item1.displayname == "platinum coin" ? extraGold - 1 : (o.Item1.displayname == "crystal coin" ? extraGold : Math.Max(o.Item1.actual_value, o.Item1.vendor_value) * o.Item2))).ToList();
+            itemDrops = itemDrops.OrderByDescending(o => o.Item1.displayname == "gold coin" ? extraGold - 2 : (o.Item1.displayname == "platinum coin" ? extraGold - 1 : (o.Item1.displayname == "crystal coin" ? extraGold : o.Item1.GetMaxValue() * o.Item2))).ToList();
             return new Tuple<Dictionary<Creature, int>, List<Tuple<Item, int>>>(creatureKills, itemDrops);
         }
 
@@ -281,7 +281,7 @@ namespace Tibialyzer {
                                 picture_box.Image = LootDropForm.DrawCountOnItem(item, mitems);
                             }
                             picture_box.TabIndex = mitems;
-                            long individualValue = Math.Max(item.actual_value, item.vendor_value);
+                            long individualValue = item.GetMaxValue();
                             value_tooltip.SetToolTip(picture_box, System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(item.displayname) + " value: " + (individualValue >= 0 ? (individualValue * mitems).ToString() : "Unknown"));
                         } else {
                             picture_box = new PictureBox();
@@ -299,7 +299,7 @@ namespace Tibialyzer {
                             picture_box.SizeMode = PictureBoxSizeMode.StretchImage;
                             picture_box.BackgroundImage = StyleManager.GetImage("item_background.png");
                             picture_box.Click += openItemBox;
-                            long individualValue = Math.Max(item.actual_value, item.vendor_value);
+                            long individualValue = item.GetMaxValue();
                             value_tooltip.SetToolTip(picture_box, System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(item.displayname) + " value: " + (individualValue >= 0 ? (individualValue * mitems).ToString() : "Unknown"));
                             this.Controls.Add(picture_box);
                         }
