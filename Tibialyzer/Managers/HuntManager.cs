@@ -81,6 +81,14 @@ namespace Tibialyzer {
 
                             hunt.AddKillToHunt(resultList, t, message);
                         }
+                        reader = LootDatabaseManager.GetUsedItems(hunt);
+                        List<Tuple<Item, int>> usedItems = new List<Tuple<Item, int>>();
+                        while (reader.Read()) {
+                            int itemid = reader.GetInt32(0);
+                            int amount = reader.GetInt32(1);
+                            usedItems.Add(new Tuple<Item, int>(StorageManager.getItem(itemid), amount));
+                        }
+                        hunt.AddUsedItems(usedItems);
                         hunts.Add(hunt);
                         index++;
                     }
@@ -402,6 +410,9 @@ namespace Tibialyzer {
         public string GetTableName() {
             return "LootMessageTable" + dbtableid.ToString();
         }
+        public string GetWasteTableName() {
+            return "WasteTable" + dbtableid.ToString();
+        }
 
         public override string ToString() {
             return name + "#" + dbtableid.ToString() + "#" + trackAllCreatures.ToString() + "#" + totalTime.ToString(CultureInfo.InvariantCulture) + "#" + totalExp.ToString() + "#" + sideHunt.ToString() + "#" + aggregateHunt.ToString() + "#" + clearOnStartup.ToString() + "#" + trackedCreatures.Replace("\n", "#");
@@ -430,8 +441,21 @@ namespace Tibialyzer {
                         newValues = true;
                     }
                 }
+                if (newValues) {
+                    LootDatabaseManager.UpdateUsedItems(this);
+                }
             }
             return newValues;
+        }
+
+        public void AddUsedItems(List<Tuple<Item, int>> items) {
+            lock(huntLock) {
+                foreach(var tpl in items) {
+                    var orderedHashSet = new OrderedHashSetCollection();
+                    orderedHashSet.baseCount = tpl.Item2;
+                    this.usedItems.Add(tpl.Item1, orderedHashSet);
+                }
+            }
         }
 
         public List<Tuple<Item, int>> GetUsedItems() {
@@ -679,7 +703,7 @@ namespace Tibialyzer {
 
     class OrderedHashSetCollection {
         public List<Tuple<string, HashSet<int>>> hashSets = new List<Tuple<string, HashSet<int>>>();
-        int baseCount = 0;
+        public int baseCount = 0;
 
         public void UpdateHashSet(Dictionary<string, HashSet<int>> values) {
             lock (hashSets) {
@@ -714,6 +738,7 @@ namespace Tibialyzer {
         }
 
         public void ClearItems(int clearMinutes) {
+            baseCount = 0;
             string currentTime = TimestampManager.getCurrentTime();
             lock (hashSets) {
                 for (int i = 0; i < hashSets.Count; i++) {
