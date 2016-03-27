@@ -119,7 +119,19 @@ namespace Tibialyzer {
                             parameter = "";
                             screenshot_path = splits[2];
                         }
-                        NotificationManager.ShowDamageMeter(parseMemoryResults.damagePerSecond, command, parameter, screenshot_path);
+                        NotificationManager.ShowDamageMeter(parseMemoryResults.DamagePerSecond, command, DamageChartType.DamageDealt, parameter, screenshot_path);
+                    }
+                } else if (comp.StartsWith("damagetaken" + Constants.CommandSymbol)) { //damagetaken@
+                    if (parseMemoryResults != null) {
+                        string[] splits = command.Split(Constants.CommandSymbol);
+                        string parameter = splits[1].Trim().ToLower();
+                        NotificationManager.ShowDamageMeter(parseMemoryResults.DamageTakenPerSecond, command, DamageChartType.DamageTaken, parameter);
+                    }
+                } else if (comp.StartsWith("healing" + Constants.CommandSymbol)) { //healing@
+                    if (parseMemoryResults != null) {
+                        string[] splits = command.Split(Constants.CommandSymbol);
+                        string parameter = splits[1].Trim().ToLower();
+                        NotificationManager.ShowDamageMeter(parseMemoryResults.HealingPerSecond, command, DamageChartType.HealingDone, parameter);
                     }
                 } else if (comp.StartsWith("experience" + Constants.CommandSymbol)) { //experience@
                     if (parseMemoryResults != null) {
@@ -228,7 +240,7 @@ namespace Tibialyzer {
                     string creatureName = command.Split(Constants.CommandSymbol)[1].Trim().ToLower();
                     Creature lootCreature = null;
                     if (creatureName == "damage" && parseMemoryResults != null) {
-                        var damageInformation = DamageChart.GenerateDamageInformation(parseMemoryResults.damagePerSecond, "");
+                        var damageInformation = DamageChart.GenerateDamageInformation(parseMemoryResults.DamagePerSecond, "").Item2;
                         string damageString = "Damage Dealt: ";
                         foreach (var damage in damageInformation) {
                             damageString += String.Format("{0}: {1:N1}%; ", damage.name, damage.percentage);
@@ -708,14 +720,12 @@ namespace Tibialyzer {
                     Image image = StyleManager.GetImage("tibia.png");
                     if (!SettingsManager.getSettingBool("UseRichNotificationType")) {
                         PopupManager.ShowSimpleNotification(title, text, image);
-                    }
-                    else {
+                    } else {
                         PopupManager.ShowSimpleNotification(new SimpleTextNotification(null, title, text));
                     }
                 } else if (comp.StartsWith("lootcountclear" + Constants.CommandSymbol)) {
                     GlobalDataManager.ClearLootValue();
-                }
-                else {
+                } else {
                     bool found = false;
                     foreach (string city in Constants.cities) {
                         if (comp.StartsWith(city + Constants.CommandSymbol)) {

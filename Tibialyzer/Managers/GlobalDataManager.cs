@@ -5,12 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Tibialyzer {
-    class GlobalDataManager {
-        public class DamageData {
-            public Dictionary<string, int> damagePerMinute;
-            public int totalDamage;
-        }
+    public class DamageEntry {
+        public int damage = 0;
+        public Dictionary<string, int> targetDamage = new Dictionary<string, int>();
+    }
 
+    public class DamageData {
+        public Dictionary<string, DamageEntry> damagePerMinute;
+        public int totalDamage;
+    }
+
+    class GlobalDataManager {
         public delegate void DataChangedHandler();
         public static event DataChangedHandler ExperienceChanged;
         public static event DataChangedHandler DamageChanged;
@@ -19,6 +24,7 @@ namespace Tibialyzer {
         private static Dictionary<string, List<string>> totalItemDrops = new Dictionary<string, List<string>>();
         private static Dictionary<string, List<Tuple<string, string>>> totalCommands = new Dictionary<string, List<Tuple<string, string>>>();
         private static Dictionary<string, DamageData> totalDamageResults = new Dictionary<string, DamageData>();
+        private static Dictionary<string, DamageData> totalHealingResults = new Dictionary<string, DamageData>();
         private static Dictionary<string, List<Tuple<string, string>>> totalURLs = new Dictionary<string, List<Tuple<string, string>>>();
         private static Dictionary<string, int> totalExperienceResults = new Dictionary<string, int>();
         private static Dictionary<string, bool> totalDeaths = new Dictionary<string, bool>();
@@ -90,8 +96,7 @@ namespace Tibialyzer {
         public static int GetExperiencePerHour() {
             if (SettingsManager.getSettingString("ExperiencePerHourCalculation") == "TibiaStyle") {
                 return GetTotalExperience(TimestampManager.getLatestTimes(15)).Item1 * 4;
-            }
-            else {
+            } else {
                 List<string> times = TimestampManager.getLatestTimes(coefficients.Length);
                 double totalExperience = 0;
                 for (int i = 0; i < coefficients.Length; i++) {
@@ -119,20 +124,22 @@ namespace Tibialyzer {
             return newDeath;
         }
 
-        public static bool UpdateDamageInformation(Dictionary<string, Dictionary<string, int>> damageDealt) {
+        public static bool UpdateDamageInformation(Dictionary<string, Dictionary<string, DamageEntry>> damageDealt, bool healing = false) {
             bool newDamage = false;
-            lock (totalDamageResults) {
-                foreach (KeyValuePair<string, Dictionary<string, int>> kvp in damageDealt) {
+            Dictionary<string, DamageData> totalResults = healing ? totalHealingResults : totalDamageResults;
+            lock (totalResults) {
+                foreach (KeyValuePair<string, Dictionary<string, DamageEntry>> kvp in damageDealt) {
                     string player = kvp.Key;
-                    Dictionary<string, int> playerDamage = kvp.Value;
-                    if (!totalDamageResults.ContainsKey(player)) totalDamageResults.Add(player, new DamageData { damagePerMinute = new Dictionary<string, int>(), totalDamage = 0 });
-                    DamageData data = totalDamageResults[player];
-                    foreach (KeyValuePair<string, int> kvp2 in playerDamage) {
+                    Dictionary<string, DamageEntry> playerDamage = kvp.Value;
+                    if (!totalResults.ContainsKey(player)) totalResults.Add(player, new DamageData { damagePerMinute = new Dictionary<string, DamageEntry>(), totalDamage = 0 });
+                    DamageData data = totalResults[player];
+                    foreach (KeyValuePair<string, DamageEntry> kvp2 in playerDamage) {
                         string timestamp = kvp2.Key;
-                        int damage = kvp2.Value;
+                        DamageEntry entry = kvp2.Value;
+                        int damage = entry.damage;
                         // if the damage for the given timestamp does not exist yet, add it
                         if (!data.damagePerMinute.ContainsKey(timestamp)) {
-                            data.damagePerMinute.Add(timestamp, damage);
+                            data.damagePerMinute.Add(timestamp, entry);
                             data.totalDamage += damage;
                             newDamage = true;
                         }
@@ -141,9 +148,9 @@ namespace Tibialyzer {
                         // - if the timestamp is 'the current time', totalDamageResults may hold an old value, so we update it
                         // - if timestamp is old, a part of the log for the time could have already been removed (because the log was full)
                         //    so the 'new' damage is only part of the damage for this timestamp
-                        else if (data.damagePerMinute[timestamp] < damage) {
-                            data.totalDamage += damage - data.damagePerMinute[timestamp];
-                            data.damagePerMinute[timestamp] = damage;
+                        else if (data.damagePerMinute[timestamp].damage < damage) {
+                            data.totalDamage += damage - data.damagePerMinute[timestamp].damage;
+                            data.damagePerMinute[timestamp] = entry;
                             newDamage = true;
                         }
                     }
@@ -152,21 +159,62 @@ namespace Tibialyzer {
             return newDamage;
         }
 
-        public static void GenerateDamageResults(Dictionary<string, DamageResult> damageResults, List<string> times) {
-            lock (totalDamageResults) {
-                foreach (KeyValuePair<string, DamageData> kvp in totalDamageResults) {
+        public static void GenerateDamageResults(Dictionary<string, DamageResult> damageResults, List<string> times, bool healing = false) {
+            Dictionary<string, DamageData> totalResults = healing ? totalHealingResults : totalDamageResults;
+            lock (totalResults) {
+                foreach (KeyValuePair<string, DamageData> kvp in totalResults) {
+                    DamageResult result = new DamageResult();
                     string player = kvp.Key;
                     DamageData data = kvp.Value;
                     int damage = 0;
                     int minutes = 0;
                     foreach (string t in times) {
                         if (data.damagePerMinute.ContainsKey(t)) {
-                            damage += data.damagePerMinute[t];
+                            foreach(var creatureDamage in data.damagePerMinute[t].targetDamage) {
+                                string cr = creatureDamage.Key;
+                                int dmg = creatureDamage.Value;
+                                if (!result.damagePerCreature.ContainsKey(cr)) {
+                                    result.damagePerCreature.Add(cr, dmg);
+                                } else {
+                                    result.damagePerCreature[cr] += dmg;
+                                }
+                            }
+                            damage += data.damagePerMinute[t].damage;
                             minutes++;
                         }
                     }
                     if (damage > 0) {
-                        damageResults.Add(player, new DamageResult { damagePerSecond = damage / (minutes * 60.0), totalDamage = data.totalDamage });
+                        result.damagePerSecond = damage / (minutes * 60.0);
+                        result.totalDamage = data.totalDamage;
+                        damageResults.Add(player, result);
+                    }
+                }
+            }
+        }
+
+        public static void GenerateDamageTakenResults(Dictionary<string, DamageResult> damageResults, List<string> times) {
+            Dictionary<string, DamageData> totalResults = totalDamageResults;
+            lock (totalResults) {
+                foreach (KeyValuePair<string, DamageData> kvp in totalResults) {
+                    string damageSource = kvp.Key;
+                    DamageData data = kvp.Value;
+                    foreach (string t in times) {
+                        if (data.damagePerMinute.ContainsKey(t)) {
+                            foreach (var creatureDamage in data.damagePerMinute[t].targetDamage) {
+                                string target = creatureDamage.Key;
+                                int dmg = creatureDamage.Value;
+                                if (!damageResults.ContainsKey(target)) {
+                                    damageResults.Add(target, new DamageResult());
+                                }
+                                DamageResult result = damageResults[target];
+                                if (!result.damagePerCreature.ContainsKey(damageSource)) {
+                                    result.damagePerCreature.Add(damageSource, dmg);
+                                } else {
+                                    result.damagePerCreature[damageSource] += dmg;
+                                }
+                                result.totalDamage += dmg;
+                            }
+                        }
                     }
                 }
             }
@@ -296,8 +344,8 @@ namespace Tibialyzer {
         }
 
         public static IEnumerable<KeyValuePair<string, int>> GetExperience() {
-            lock(totalExperienceResults) {
-                foreach(KeyValuePair<string, int> kvp in totalExperienceResults) {
+            lock (totalExperienceResults) {
+                foreach (KeyValuePair<string, int> kvp in totalExperienceResults) {
                     yield return kvp;
                 }
             }

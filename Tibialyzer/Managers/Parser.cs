@@ -46,10 +46,12 @@ namespace Tibialyzer {
             if (res == null) return null;
             ParseMemoryResults o = new ParseMemoryResults();
             // first we add the new parsed damage logs to the totalDamageResults
-            o.newDamage = GlobalDataManager.UpdateDamageInformation(res.damageDealt);
+            o.newDamage = GlobalDataManager.UpdateDamageInformation(res.damageDealt, false);
+            // then we add the new parsed healing logs to the totalHealingResults
+            o.newHealing = GlobalDataManager.UpdateDamageInformation(res.healingDone, true);
             // now that we have updated the damage results, fill in the DPS meter, we use damage from the last 15 minutes for this
-            List<string> times = TimestampManager.getLatestTimes(15);
-            GlobalDataManager.GenerateDamageResults(o.damagePerSecond, times);
+            o.times = TimestampManager.getLatestTimes(15);
+            //GlobalDataManager.GenerateDamageResults(o.damagePerSecond, times);
 
             // similar to damage, we keep a totalExperienceResults list
             // first update it with the new information

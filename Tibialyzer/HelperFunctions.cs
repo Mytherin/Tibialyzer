@@ -46,5 +46,15 @@ namespace Tibialyzer {
         public static bool Contains(this string s, string text, StringComparison stringComparison) {
             return s.IndexOf(text, stringComparison) > -1;
         }
+
+
+        public static int IndexOf(this string[] s, string text) {
+            for(int i = 0; i < s.Length; i++) {
+                if (s[i] != null && s[i].Equals(text, StringComparison.InvariantCultureIgnoreCase)) {
+                    return i;
+                }
+            }
+            return -1;
+        }
     }
 }

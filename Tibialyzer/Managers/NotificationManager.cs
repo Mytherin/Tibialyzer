@@ -26,7 +26,7 @@ namespace Tibialyzer {
             int duration = 5;
             int group = 0;
             for (int it = 0; it < Constants.NotificationTypeObjects.Count; it++) {
-                if (f.GetType() == Constants.NotificationTypeObjects[it]) {
+                if (f.FormName() == Constants.NotificationTypeObjects[it]) {
                     string settingObject = Constants.NotificationTypes[it].Replace(" ", "");
                     richX = SettingsManager.getSettingInt(settingObject + "XOffset");
                     richY = SettingsManager.getSettingInt(settingObject + "YOffset");
@@ -199,8 +199,8 @@ namespace Tibialyzer {
             ShowNotification(f, command);
         }
 
-        public static void ShowDamageMeter(Dictionary<string, DamageResult> dps, string comm, string filter = "", string screenshot_path = "") {
-            DamageChart f = new DamageChart();
+        public static void ShowDamageMeter(Dictionary<string, DamageResult> dps, string comm, DamageChartType chartType, string filter = "", string screenshot_path = "") {
+            DamageChart f = new DamageChart(chartType);
             f.dps = dps;
             f.filter = filter;
 

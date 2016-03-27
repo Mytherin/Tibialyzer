@@ -37,13 +37,13 @@
             this.label39 = new System.Windows.Forms.Label();
             this.label37 = new System.Windows.Forms.Label();
             this.label36 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.monitorAnchorDropdown = new Tibialyzer.PrettyDropDownList();
             this.notificationTypeList = new Tibialyzer.PrettyListBox();
             this.notificationGroupBox = new Tibialyzer.PrettyDropDownList();
             this.notificationYOffsetBox = new Tibialyzer.EnterTextBox();
             this.notificationXOffsetBox = new Tibialyzer.EnterTextBox();
             this.notificationAnchorBox = new Tibialyzer.PrettyDropDownList();
-            this.label1 = new System.Windows.Forms.Label();
-            this.monitorAnchorDropdown = new Tibialyzer.PrettyDropDownList();
             ((System.ComponentModel.ISupportInitialize)(this.notificationDurationBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -165,7 +165,7 @@
             this.testNotificationDisplayButton.Padding = new System.Windows.Forms.Padding(10);
             this.testNotificationDisplayButton.Size = new System.Drawing.Size(250, 38);
             this.testNotificationDisplayButton.TabIndex = 39;
-            this.testNotificationDisplayButton.Text = "Test Display";
+            this.testNotificationDisplayButton.Text = "Display Notification";
             this.testNotificationDisplayButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.testNotificationDisplayButton.Click += new System.EventHandler(this.testNotificationDisplayButton_Click);
             this.testNotificationDisplayButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
@@ -231,6 +231,34 @@
             this.label36.Text = "Anchor";
             this.label36.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
+            this.label1.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.label1.Location = new System.Drawing.Point(3, 440);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(275, 30);
+            this.label1.TabIndex = 57;
+            this.label1.Text = "Monitor Anchor";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // monitorAnchorDropdown
+            // 
+            this.monitorAnchorDropdown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.monitorAnchorDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.monitorAnchorDropdown.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.monitorAnchorDropdown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.monitorAnchorDropdown.FormattingEnabled = true;
+            this.monitorAnchorDropdown.Items.AddRange(new object[] {
+            "Tibia Client Monitor",
+            "Tibialyzer Monitor"});
+            this.monitorAnchorDropdown.Location = new System.Drawing.Point(3, 470);
+            this.monitorAnchorDropdown.Name = "monitorAnchorDropdown";
+            this.monitorAnchorDropdown.Size = new System.Drawing.Size(275, 24);
+            this.monitorAnchorDropdown.TabIndex = 56;
+            this.monitorAnchorDropdown.SelectedIndexChanged += new System.EventHandler(this.monitorAnchorDropdown_SelectedIndexChanged);
+            // 
             // notificationTypeList
             // 
             this.notificationTypeList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
@@ -244,7 +272,7 @@
             "Loot Window"});
             this.notificationTypeList.Location = new System.Drawing.Point(3, 81);
             this.notificationTypeList.Name = "notificationTypeList";
-            this.notificationTypeList.Size = new System.Drawing.Size(275, 315);
+            this.notificationTypeList.Size = new System.Drawing.Size(275, 355);
             this.notificationTypeList.TabIndex = 51;
             this.notificationTypeList.SelectedIndexChanged += new System.EventHandler(this.notificationTypeList_SelectedIndexChanged);
             // 
@@ -319,34 +347,6 @@
             this.notificationAnchorBox.SelectedIndexChanged += new System.EventHandler(this.notificationAnchorBox_SelectedIndexChanged);
             this.notificationAnchorBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.notificationAnchorBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label1.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label1.Location = new System.Drawing.Point(3, 401);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(275, 30);
-            this.label1.TabIndex = 57;
-            this.label1.Text = "Monitor Anchor";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // monitorAnchorDropdown
-            // 
-            this.monitorAnchorDropdown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.monitorAnchorDropdown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.monitorAnchorDropdown.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.monitorAnchorDropdown.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.monitorAnchorDropdown.FormattingEnabled = true;
-            this.monitorAnchorDropdown.Items.AddRange(new object[] {
-            "Tibia Client Monitor",
-            "Tibialyzer Monitor"});
-            this.monitorAnchorDropdown.Location = new System.Drawing.Point(3, 431);
-            this.monitorAnchorDropdown.Name = "monitorAnchorDropdown";
-            this.monitorAnchorDropdown.Size = new System.Drawing.Size(275, 24);
-            this.monitorAnchorDropdown.TabIndex = 56;
-            this.monitorAnchorDropdown.SelectedIndexChanged += new System.EventHandler(this.monitorAnchorDropdown_SelectedIndexChanged);
             // 
             // NotificationsTab
             // 

@@ -431,10 +431,10 @@ namespace Tibialyzer {
             if (maxDamage < 0) maxDamage = 5;
             if (maxDamage > 0 && ScanningManager.lastResults != null) {
                 CreateHeaderLabel("Damage Dealt", x, ref y, damageControls);
-                var dps = ScanningManager.lastResults.damagePerSecond;
-                var damageDealt = DamageChart.GenerateDamageInformation(dps, "");
+                var dps = ScanningManager.lastResults.DamagePerSecond;
+                var damageDealt = DamageChart.GenerateDamageInformation(dps, "").Item2;
                 for (int i = 0; i < damageDealt.Count; i++) {
-                    damageDealt[i].color = Constants.ChartColors[i % Constants.ChartColors.Count];
+                    damageDealt[i].color = Constants.DamageChartColors[i % Constants.DamageChartColors.Count];
                 }
                 int counter = 0;
                 foreach (DamageObject obj in damageDealt) {

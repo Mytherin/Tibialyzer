@@ -34,7 +34,8 @@ namespace Tibialyzer {
     public class ReadMemoryResults {
         public Dictionary<string, List<string>> itemDrops = new Dictionary<string, List<string>>();
         public Dictionary<string, int> exp = new Dictionary<string, int>();
-        public Dictionary<string, Dictionary<string, int>> damageDealt = new Dictionary<string, Dictionary<string, int>>();
+        public Dictionary<string, Dictionary<string, DamageEntry>> healingDone = new Dictionary<string, Dictionary<string, DamageEntry>>();
+        public Dictionary<string, Dictionary<string, DamageEntry>> damageDealt = new Dictionary<string, Dictionary<string, DamageEntry>>();
         public Dictionary<string, List<Tuple<string, string>>> commands = new Dictionary<string, List<Tuple<string, string>>>();
         public Dictionary<string, List<Tuple<string, string>>> urls = new Dictionary<string, List<Tuple<string, string>>>();
         public List<string> newAdvances = new List<string>();
@@ -48,10 +49,49 @@ namespace Tibialyzer {
     public class DamageResult {
         public int totalDamage;
         public double damagePerSecond;
+        public Dictionary<string, int> damagePerCreature = new Dictionary<string, int>();
     }
 
     public class ParseMemoryResults {
-        public Dictionary<string, DamageResult> damagePerSecond = new Dictionary<string, DamageResult>();
+        private object damageLock = new object();
+        private object healingLock = new object();
+        private object damageTakenLock = new object();
+        private Dictionary<string, DamageResult> damagePerSecond = null;
+        private Dictionary<string, DamageResult> healingPerSecond = null;
+        private Dictionary<string, DamageResult> damageTakenPerSecond = null;
+        public List<string> times = null;
+        public Dictionary<string, DamageResult> DamagePerSecond { get {
+                lock(damageLock) {
+                    if (damagePerSecond == null) {
+                        damagePerSecond = new Dictionary<string, DamageResult>();
+                        GlobalDataManager.GenerateDamageResults(damagePerSecond, times, false);
+                    }
+                }
+                return damagePerSecond;
+            }
+        }
+        public Dictionary<string, DamageResult> HealingPerSecond {
+            get {
+                lock(healingLock) {
+                    if (healingPerSecond == null) {
+                        healingPerSecond = new Dictionary<string, DamageResult>();
+                        GlobalDataManager.GenerateDamageResults(healingPerSecond, times, true);
+                    }
+                }
+                return healingPerSecond;
+            }
+        }
+        public Dictionary<string, DamageResult> DamageTakenPerSecond {
+            get {
+                lock (damageTakenLock) {
+                    if (damageTakenPerSecond == null) {
+                        damageTakenPerSecond = new Dictionary<string, DamageResult>();
+                        GlobalDataManager.GenerateDamageTakenResults(damageTakenPerSecond, times);
+                    }
+                }
+                return damageTakenPerSecond;
+            }
+        }
         public List<string> newCommands = new List<string>();
         public List<string> newLooks = new List<string>();
         public List<Tuple<Creature, List<Tuple<Item, int>>, string>> newItems = new List<Tuple<Creature, List<Tuple<Item, int>>, string>>();
@@ -59,6 +99,7 @@ namespace Tibialyzer {
         public int expPerHour = 0;
         public bool death = false;
         public bool newDamage = false;
+        public bool newHealing = false;
     }
 
     public static class ReadMemoryManager {
@@ -247,17 +288,17 @@ namespace Tibialyzer {
             }
             yield break;
         }
-        
+
         public static void ReadMemoryInternal(Process process, ReadMemoryResults results) {
             int currentAddress = process.MainModule.BaseAddress.ToInt32();
-            
+
             IntPtr ptr = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
             if (ptr == null) {
                 return;
             }
             int processHandle = ptr.ToInt32();
 
-            currentAddress += (int) MemoryReader.TabsBaseAddress;
+            currentAddress += (int)MemoryReader.TabsBaseAddress;
             currentAddress = MemoryReader.ReadInt32(currentAddress, processHandle);
             currentAddress = MemoryReader.ReadInt32(currentAddress + 0x24, processHandle);
             currentAddress = MemoryReader.ReadInt32(currentAddress + 0x10, processHandle);
@@ -378,10 +419,12 @@ namespace Tibialyzer {
                             res.deaths.Add(t, true);
                     } else if (logMessage.Length > 18) {
                         string[] split = message.Split(' ');
-                        if (split.Contains("hitpoints") && split.ToList().IndexOf("hitpoints") > 0) {
+                        int index = split.IndexOf("hitpoints");
+                        if (index > 0) {
+                            int ind;
                             // damage log message (X loses Y hitpoints due to an attack by Z.)
                             int damage = 0;
-                            if (!int.TryParse(split[split.ToList().IndexOf("hitpoints") - 1], out damage)) {
+                            if (!int.TryParse(split[index - 1], out damage)) {
                                 continue;
                             }
                             string player;
@@ -389,46 +432,134 @@ namespace Tibialyzer {
                                 // X lost Y hitpoints because of your attack.
                                 // attacker is the player himself
                                 player = "You";
-                            } else {
+                            } else if (split.Contains("by")) {
                                 // X lost Y hitpoints because of an attack by Z.
                                 // Z is the attacker => after the word "by"
-                                if (!split.Contains("by")) continue;
                                 player = "";
-                                int ind = split.ToList().IndexOf("by") + 1;
+                                ind = split.IndexOf("by") + 1;
                                 for (int i = ind; i < split.Length; i++) {
                                     player = (player == "" ? player : player + " ") + split[i];
                                 }
-                            }
-                            if (!res.damageDealt.ContainsKey(player)) res.damageDealt.Add(player, new Dictionary<string, int>());
-                            if (!res.damageDealt[player].ContainsKey(t)) res.damageDealt[player].Add(t, damage);
-                            else res.damageDealt[player][t] = res.damageDealt[player][t] + damage;
-                            continue;
-                        } else if (logMessage.Substring(5, 14) == " You advanced " && logMessage.Contains("level", StringComparison.OrdinalIgnoreCase)) {
-                            // advancement log message (You advanced from level x to level x + 1.)
-                            if (logMessage[logMessage.Length - 1] == '.') {
-                                if (GlobalDataManager.AddLevelAdvance(logMessage)) {
-                                    res.newAdvances.Add(logMessage);
-                                }
+                            } else {
                                 continue;
                             }
-                        } else if (logMessage.Substring(5, 7) == " Using " && logMessage.Substring(logMessage.Length - 3, 3) == "...") {
-                            // using log message (Using one of X items...)
-                            var values = Parser.ParseUsingMessage(logMessage);
-                            if (!res.usingMessages.ContainsKey(values.Item1)) res.usingMessages.Add(values.Item1, new Dictionary<string, HashSet<int>>());
-                            if (!res.usingMessages[values.Item1].ContainsKey(t)) res.usingMessages[values.Item1].Add(t, new HashSet<int>());
-                            res.usingMessages[values.Item1][t].Add(values.Item2);
+                            string splitTerm;
+                            if (split.Contains("loses")) {
+                                splitTerm = "loses";
+                            } else if (split.Contains("lose")) {
+                                splitTerm = "lose";
+                            } else {
+                                continue;
+                            }
+                            ind = split.IndexOf(splitTerm);
+                            string target = "";
+                            for (int i = 0; i < ind; i++) {
+                                target = (target == "" ? target : target + " ") + split[i];
+                            }
+                            if (!res.damageDealt.ContainsKey(player)) {
+                                res.damageDealt.Add(player, new Dictionary<string, DamageEntry>());
+                            }
+                            DamageEntry damageEntry;
+                            if (!res.damageDealt[player].ContainsKey(t)) {
+                                damageEntry = new DamageEntry();
+                                damageEntry.damage = damage;
+                                damageEntry.targetDamage.Add(target, damage);
+                                res.damageDealt[player].Add(t, damageEntry);
+                            } else {
+                                damageEntry = res.damageDealt[player][t];
+                                damageEntry.damage += damage;
+                                if (damageEntry.targetDamage.ContainsKey(target)) {
+                                    damageEntry.targetDamage[target] += damage;
+                                } else {
+                                    damageEntry.targetDamage.Add(target, damage);
+                                }
+                            }
                             continue;
                         } else {
-                            foreach (Event ev in StorageManager.eventIdMap.Values) {
-                                foreach (string evMessage in ev.eventMessages) {
-                                    if (logMessage.Length == evMessage.Length + 6 && logMessage.Contains(evMessage.Trim(), StringComparison.OrdinalIgnoreCase)) {
-                                        res.eventMessages.Add(new Tuple<Event, string>(ev, logMessage));
+                            index = split.IndexOf("hitpoints.");
+                            if (index > 0) {
+                                // heal log message (X healed Y for Z hitpoints.)
+                                int healing = 0;
+                                if (!int.TryParse(split[index - 1], out healing)) {
+                                    continue;
+                                }
+
+                                int forIndex = split.IndexOf("for");
+                                if (forIndex <= 0) {
+                                    continue;
+                                }
+
+
+                                string splitTerm;
+                                if (split.Contains("heal")) {
+                                    splitTerm = "heal";
+                                } else if (split.Contains("healed")) {
+                                    splitTerm = "healed";
+                                } else {
+                                    continue;
+                                }
+                                int healIndex = split.IndexOf(splitTerm);
+                                if (healIndex >= forIndex) {
+                                    continue;
+                                }
+
+                                string source = "";
+                                for (int i = 0; i < healIndex; i++) {
+                                    source = (source == "" ? source : source + " ") + split[i];
+                                }
+                                string target = "";
+                                for (int i = healIndex + 1; i < forIndex; i++) {
+                                    target = (target == "" ? target : target + " ") + split[i];
+                                }
+                                if (target == "yourself" || target == "itself" || target == "himself" || target == "herself") {
+                                    target = source;
+                                }
+
+                                if (!res.healingDone.ContainsKey(source)) {
+                                    res.healingDone.Add(source, new Dictionary<string, DamageEntry>());
+                                }
+                                DamageEntry healingEntry;
+                                if (!res.healingDone[source].ContainsKey(t)) {
+                                    healingEntry = new DamageEntry();
+                                    healingEntry.damage = healing;
+                                    healingEntry.targetDamage.Add(target, healing);
+                                    res.healingDone[source].Add(t, healingEntry);
+                                } else {
+                                    healingEntry = res.healingDone[source][t];
+                                    healingEntry.damage += healing;
+                                    if (healingEntry.targetDamage.ContainsKey(target)) {
+                                        healingEntry.targetDamage[target] += healing;
+                                    } else {
+                                        healingEntry.targetDamage.Add(target, healing);
+                                    }
+                                }
+                            } else if (logMessage.Substring(5, 14) == " You advanced " && logMessage.Contains("level", StringComparison.OrdinalIgnoreCase)) {
+                                // advancement log message (You advanced from level x to level x + 1.)
+                                if (logMessage[logMessage.Length - 1] == '.') {
+                                    if (GlobalDataManager.AddLevelAdvance(logMessage)) {
+                                        res.newAdvances.Add(logMessage);
+                                    }
+                                    continue;
+                                }
+                            } else if (logMessage.Substring(5, 7) == " Using " && logMessage.Substring(logMessage.Length - 3, 3) == "...") {
+                                // using log message (Using one of X items...)
+                                var values = Parser.ParseUsingMessage(logMessage);
+                                if (!res.usingMessages.ContainsKey(values.Item1)) res.usingMessages.Add(values.Item1, new Dictionary<string, HashSet<int>>());
+                                if (!res.usingMessages[values.Item1].ContainsKey(t)) res.usingMessages[values.Item1].Add(t, new HashSet<int>());
+                                res.usingMessages[values.Item1][t].Add(values.Item2);
+                                continue;
+                            } else {
+                                foreach (Event ev in StorageManager.eventIdMap.Values) {
+                                    foreach (string evMessage in ev.eventMessages) {
+                                        if (logMessage.Length == evMessage.Length + 6 && logMessage.Contains(evMessage.Trim(), StringComparison.OrdinalIgnoreCase)) {
+                                            res.eventMessages.Add(new Tuple<Event, string>(ev, logMessage));
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                } 
+                }
                 if (readChatMessages) {
                     if (message.Contains(':')) {
                         if (logMessage.Length > 14 && logMessage.Substring(5, 9) == " Loot of ") { // loot drop message
