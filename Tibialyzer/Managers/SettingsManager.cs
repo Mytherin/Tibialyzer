@@ -276,6 +276,7 @@ C::NumpadPgDn
             setSettingIfNotSet("SummaryLootItemSize", 25);
             setSettingIfNotSet("SummaryRecentDropsItemSize", 25);
             setSettingIfNotSet("SummaryWasteItemSize", 25);
+            setSettingIfNotSet("MaxDamageChartPlayers", 0);
         }
 
         public static void ResetSettingsToDefault() {

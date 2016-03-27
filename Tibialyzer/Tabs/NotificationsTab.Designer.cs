@@ -258,6 +258,8 @@
             this.monitorAnchorDropdown.Size = new System.Drawing.Size(275, 24);
             this.monitorAnchorDropdown.TabIndex = 56;
             this.monitorAnchorDropdown.SelectedIndexChanged += new System.EventHandler(this.monitorAnchorDropdown_SelectedIndexChanged);
+            this.monitorAnchorDropdown.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.monitorAnchorDropdown.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             // 
             // notificationTypeList
             // 

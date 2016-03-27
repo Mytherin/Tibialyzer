@@ -46,6 +46,8 @@
             this.nameListBox = new Tibialyzer.PrettyListBox();
             this.commandTextBox = new Tibialyzer.EnterTextBox();
             this.saveSummaryImageButton = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.maxDamagePlayersBox = new Tibialyzer.PrettyDropDownList();
             this.SuspendLayout();
             // 
             // detectFlashClientButton
@@ -81,7 +83,7 @@
             this.lootOptionsHeaderLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.lootOptionsHeaderLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lootOptionsHeaderLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.lootOptionsHeaderLabel.Location = new System.Drawing.Point(305, 158);
+            this.lootOptionsHeaderLabel.Location = new System.Drawing.Point(305, 128);
             this.lootOptionsHeaderLabel.Name = "lootOptionsHeaderLabel";
             this.lootOptionsHeaderLabel.Size = new System.Drawing.Size(226, 30);
             this.lootOptionsHeaderLabel.TabIndex = 37;
@@ -117,7 +119,7 @@
             this.saveDamageImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.saveDamageImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveDamageImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.saveDamageImageButton.Location = new System.Drawing.Point(305, 224);
+            this.saveDamageImageButton.Location = new System.Drawing.Point(305, 194);
             this.saveDamageImageButton.Name = "saveDamageImageButton";
             this.saveDamageImageButton.Padding = new System.Windows.Forms.Padding(10);
             this.saveDamageImageButton.Size = new System.Drawing.Size(226, 39);
@@ -133,7 +135,7 @@
             this.saveLootImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.saveLootImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveLootImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.saveLootImageButton.Location = new System.Drawing.Point(305, 186);
+            this.saveLootImageButton.Location = new System.Drawing.Point(305, 156);
             this.saveLootImageButton.Name = "saveLootImageButton";
             this.saveLootImageButton.Padding = new System.Windows.Forms.Padding(10);
             this.saveLootImageButton.Size = new System.Drawing.Size(226, 38);
@@ -372,7 +374,7 @@
             this.saveSummaryImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.saveSummaryImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveSummaryImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.saveSummaryImageButton.Location = new System.Drawing.Point(305, 263);
+            this.saveSummaryImageButton.Location = new System.Drawing.Point(305, 233);
             this.saveSummaryImageButton.Name = "saveSummaryImageButton";
             this.saveSummaryImageButton.Padding = new System.Windows.Forms.Padding(10);
             this.saveSummaryImageButton.Size = new System.Drawing.Size(226, 38);
@@ -383,12 +385,58 @@
             this.saveSummaryImageButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.saveSummaryImageButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
+            this.label1.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.label1.Location = new System.Drawing.Point(305, 277);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(226, 30);
+            this.label1.TabIndex = 48;
+            this.label1.Text = "Max Damage@ Players";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // maxDamagePlayersBox
+            // 
+            this.maxDamagePlayersBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.maxDamagePlayersBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.maxDamagePlayersBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.maxDamagePlayersBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.maxDamagePlayersBox.FormattingEnabled = true;
+            this.maxDamagePlayersBox.Items.AddRange(new object[] {
+            "Any",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15"});
+            this.maxDamagePlayersBox.Location = new System.Drawing.Point(305, 308);
+            this.maxDamagePlayersBox.Name = "maxDamagePlayersBox";
+            this.maxDamagePlayersBox.Size = new System.Drawing.Size(226, 24);
+            this.maxDamagePlayersBox.TabIndex = 49;
+            this.maxDamagePlayersBox.SelectedIndexChanged += new System.EventHandler(this.maxDamagePlayersBox_SelectedIndexChanged);
+            this.maxDamagePlayersBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.maxDamagePlayersBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            // 
             // MainTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(538, 514);
+            this.Controls.Add(this.maxDamagePlayersBox);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.saveSummaryImageButton);
             this.Controls.Add(this.detectFlashClientButton);
             this.Controls.Add(this.saveAllLootCheckbox);
@@ -445,5 +493,7 @@
         #endregion
 
         private System.Windows.Forms.Label saveSummaryImageButton;
+        private System.Windows.Forms.Label label1;
+        private PrettyDropDownList maxDamagePlayersBox;
     }
 }

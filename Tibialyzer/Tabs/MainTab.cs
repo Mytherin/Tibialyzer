@@ -23,7 +23,8 @@ namespace Tibialyzer {
             this.ignoreLowExperienceBox.Enabled = this.ignoreLowExperienceButton.Checked;
             this.ignoreLowExperienceBox.Text = SettingsManager.getSettingInt("IgnoreLowExperienceValue").ToString();
             this.saveAllLootCheckbox.Checked = SettingsManager.getSettingBool("AutomaticallyWriteLootToFile");
-
+            this.maxDamagePlayersBox.SelectedIndex = Math.Min(Math.Max(SettingsManager.getSettingInt("MaxDamageChartPlayers"), 0), maxDamagePlayersBox.Items.Count - 1);
+            
             nameListBox.Items.Clear();
             foreach (string str in SettingsManager.getSetting("Names")) {
                 nameListBox.Items.Add(str);
@@ -183,6 +184,12 @@ namespace Tibialyzer {
         private void ControlMouseLeave(object sender, EventArgs e) {
             (sender as Control).BackColor = StyleManager.MainFormButtonColor;
             (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
+        }
+
+        private void maxDamagePlayersBox_SelectedIndexChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            SettingsManager.setSetting("MaxDamageChartPlayers", maxDamagePlayersBox.SelectedIndex);
         }
     }
 }

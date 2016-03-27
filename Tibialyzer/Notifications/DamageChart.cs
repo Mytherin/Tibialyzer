@@ -159,7 +159,9 @@ namespace Tibialyzer {
             if (graph) {
                 this.mChart.Visible = true;
                 this.mChart.Series[0].Points.Clear();
+                int max = SettingsManager.getSettingInt("MaxDamageChartPlayers");
                 for (int i = 0; i < damageDealt.Count; i++) {
+                    if (max > 0 && i >= max) break;
                     DamageObject p = damageDealt[i];
                     double percentage = p.percentage;
                     DataPoint point = new DataPoint();
@@ -172,14 +174,11 @@ namespace Tibialyzer {
                     this.mChart.Series[0].Points.Add(point);
                 }
                 this.mChart.ApplyPaletteColors();
-                string str = "new List<Color> { ";
                 for (int i = 0; i < damageDealt.Count; i++) {
+                    if (max > 0 && i >= max) break;
                     DamageObject p = damageDealt[i];
                     p.color = this.mChart.Series[0].Points[i].Color;
-                    str += String.Format("Color.FromArgb({0},{1},{2}), ", p.color.R, p.color.G, p.color.B);
                 }
-                str += "};";
-                Console.WriteLine(str);
                 this.Size = new Size(GetWidth(), (int)(GetWidth() * 0.9));
             } else {
                 this.mChart.Series[0].Points.Clear();
