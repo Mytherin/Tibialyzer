@@ -115,7 +115,7 @@ namespace Tibialyzer {
 
             if (parseMemoryResults != null) {
                 lastResults = parseMemoryResults;
-                if (parseMemoryResults.newDamage) {
+                if (parseMemoryResults.newDamage || parseMemoryResults.newHealing) {
                     GlobalDataManager.UpdateDamage();
                 }
             }

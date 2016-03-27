@@ -505,14 +505,21 @@ namespace Tibialyzer {
 
                                 string source = "";
                                 for (int i = 0; i < healIndex; i++) {
+                                    if (split[i] == "was" || split[i] == "were") break;
+                                    if (split[i] == "by") continue;
                                     source = (source == "" ? source : source + " ") + split[i];
                                 }
                                 string target = "";
                                 for (int i = healIndex + 1; i < forIndex; i++) {
+                                    if (split[i] == "was" || split[i] == "were") break;
+                                    if (split[i] == "by") continue;
                                     target = (target == "" ? target : target + " ") + split[i];
                                 }
                                 if (target == "yourself" || target == "itself" || target == "himself" || target == "herself") {
                                     target = source;
+                                }
+                                if (target.Length == 0 || source.Length == 0) {
+                                    continue;
                                 }
 
                                 if (!res.healingDone.ContainsKey(source)) {
