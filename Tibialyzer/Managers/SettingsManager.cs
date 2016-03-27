@@ -195,7 +195,7 @@ C::NumpadPgDn
             setSettingIfNotSet("AutoScreenshotDeath", false);
             setSettingIfNotSet("EnableScreenshots", false);
             setSettingIfNotSet("Names", "Mytherin");
-            setSettingIfNotSet("ScanSpeed", "5");
+            setSettingIfNotSet("ScanSpeed", "50");
             setSettingIfNotSet("OutfitGenderMale", true);
             setSettingIfNotSet("RichNotificationXOffset", 30);
             setSettingIfNotSet("RichNotificationYOffset", 30);
