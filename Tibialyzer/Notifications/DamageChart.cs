@@ -125,7 +125,7 @@ namespace Tibialyzer {
             this.chartTitle.BackColor = System.Drawing.Color.Transparent;
             this.chartTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chartTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
-            this.chartTitle.Location = new System.Drawing.Point(177, 6);
+            this.chartTitle.Location = new System.Drawing.Point(8, 30);
             this.chartTitle.Name = "chartTitle";
             this.chartTitle.Size = new System.Drawing.Size(32, 16);
             this.chartTitle.TabIndex = 15;
