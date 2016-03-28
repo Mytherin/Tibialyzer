@@ -65,7 +65,9 @@ namespace Tibialyzer {
 
         public static void UpdateSettings(List<string> settings) {
             SettingsManager.setSetting("AutoHotkeySettings", settings);
-            MainForm.mainForm.DisplayWarning(autoHotkeyWarning);
+            if (!MainForm.startup) {
+                MainForm.mainForm.DisplayWarning(autoHotkeyWarning);
+            }
         }
 
         public static void StartAutohotkey() {

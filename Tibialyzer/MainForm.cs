@@ -41,6 +41,7 @@ namespace Tibialyzer {
         private bool minimize_notification = true;
         private ToolTip scan_tooltip = new ToolTip();
         public static StreamWriter fileWriter = null;
+        public static bool startup = false;
 
         private static List<TabInterface> Tabs = new List<TabInterface>();
 
@@ -52,6 +53,7 @@ namespace Tibialyzer {
         }
 
         public MainForm() {
+            startup = true;
             Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
             mainForm = this;
             InitializeComponent();
@@ -111,6 +113,7 @@ namespace Tibialyzer {
             fileWriter = new StreamWriter(Constants.BigLootFile, true);
 
             tibialyzerLogo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
+            startup = false;
 
             ScanningManager.StartScanning();
 
