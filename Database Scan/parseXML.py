@@ -120,6 +120,8 @@ if not skipLoading:
     c.execute('CREATE TABLE OutfitImages(outfitid INTEGER, male BOOLEAN, addon INTEGER, image BLOB)')
     c.execute('CREATE TABLE Mounts(id INTEGER PRIMARY KEY AUTOINCREMENT, title STRING, name STRING, tameitemid INTEGER, tamecreatureid INTEGER, speed INTEGER, tibiastore BOOLEAN, image BLOB)')
     c.execute('CREATE TABLE WorldObjects(title STRING, name STRING, image BLOB)')
+    c.execute('CREATE TABLE ItemIDMap(tibiaid INTEGER PRIMARY KEY, itemid INTEGER)')
+    c.execute('CREATE TABLE ConsumableItems(itemid INTEGER, duration INTEGER, costitemid INTEGER, costitemcount INTEGER)')
 
 
 buyitems = dict()
@@ -133,6 +135,7 @@ questDangers = dict()
 mountStuff = dict()
 questNPCs = dict()
 keyItems = dict()
+durationCostMap = dict()
 
 import re
 def wordCount(input_string, word):
@@ -167,7 +170,7 @@ if not skipLoading:
                 print('Quest failed', title)
         elif wordCount(lcontent, '{{infobox item') == 1 or wordCount(lcontent, '{{infobox_item') == 1:
             #print('Item', title)
-            if not parseItem(title, attributes, c, buyitems, sellitems, currencymap, getURL):
+            if not parseItem(title, attributes, c, buyitems, sellitems, currencymap, durationCostMap, getURL):
                 print('Item failed', title)
         elif wordCount(lcontent, '{{infobox npc') == 1 or wordCount(lcontent, '{{infobox_npc') == 1:
             #print('NPC', title)
@@ -213,6 +216,7 @@ if not skipLoading:
     d['mountStuff'] = mountStuff
     d['questNPCs'] = questNPCs
     d['keyItems'] = keyItems
+    d['durationCostMap'] = durationCostMap
 
     f = open('valuedict', 'wb')
     pickle.dump(d, f)
@@ -232,6 +236,7 @@ questDangers = d['questDangers']
 mountStuff = d['mountStuff'] 
 questNPCs = d['questNPCs']
 keyItems = d['keyItems']
+durationCostMap = d['durationCostMap']
 
 # add images to keys
 for keyid,primarytype in iter(keyItems.items()):
@@ -244,6 +249,25 @@ for keyid,primarytype in iter(keyItems.items()):
     else:
         print("unrecognized primary type %s", primarytype)
         exit()
+
+
+c.execute('DROP TABLE ConsumableItems')
+c.execute('CREATE TABLE ConsumableItems(itemid INTEGER, duration INTEGER, costitemid INTEGER, costitemcount INTEGER)')
+for itemname,tpl in iter(durationCostMap.items()):
+    name = itemname.strip().lower()
+    c.execute('SELECT id FROM Items WHERE LOWER(name)=? OR LOWER(title)=?', (name, name))
+    results = c.fetchall()
+    itemid = results[0][0]
+    duration = tpl[0]
+    itemcost = tpl[1]
+    itemcostcount = tpl[2]
+    name = itemcost.strip().lower()
+    print(tpl)
+    c.execute('SELECT id FROM Items WHERE LOWER(name)=? OR LOWER(title)=?', (name, name))
+    results = c.fetchall()
+    costid = results[0][0]
+    c.execute('INSERT INTO ConsumableItems (itemid, duration, costitemid, costitemcount) VALUES (?,?,?,?)', (itemid, duration, costid, itemcostcount))
+
 
 #fix typos in spells
 spellMap = {'desintegrate':'disintegrate', 'paralyze':'paralyse','avalanche (rune)':'avalanche'}
