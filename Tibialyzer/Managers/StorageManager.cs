@@ -289,6 +289,15 @@ namespace Tibialyzer {
             return registerItem(item);
         }
 
+        public static Item getItemFromTibiaID(int id) {
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT itemid FROM ItemIDMap WHERE tibiaid={0};", id), conn);
+            SQLiteDataReader reader = command.ExecuteReader();
+            while(reader.Read()) {
+                return getItem(reader.GetInt32(0));
+            }
+            return null;
+        }
+
         private static Item registerItem(Item item) {
             if (item == null) return null;
             lock (ItemLock) {

@@ -367,6 +367,12 @@ namespace Tibialyzer {
             return h;
         }
 
+        public static void AddUsedItems(Hunt hunt, Item item, int itemCount) {
+            if (itemCount == 0 || item == null) return;
+            hunt.AddUsedItems(new List<Tuple<Item, int>> { new Tuple<Item, int>(item, itemCount) });
+            GlobalDataManager.UpdateUsedItems();
+        }
+
         public static void AddUsedItems(Hunt hunt, Dictionary<string, Dictionary<string, HashSet<int>>> usedItems) {
             bool newValues = hunt.AddUsedItems(usedItems);
             if (newValues) {
@@ -451,9 +457,13 @@ namespace Tibialyzer {
         public void AddUsedItems(List<Tuple<Item, int>> items) {
             lock(huntLock) {
                 foreach(var tpl in items) {
-                    var orderedHashSet = new OrderedHashSetCollection();
-                    orderedHashSet.baseCount = tpl.Item2;
-                    this.usedItems.Add(tpl.Item1, orderedHashSet);
+                    if (!usedItems.ContainsKey(tpl.Item1)) {
+                        var orderedHashSet = new OrderedHashSetCollection();
+                        orderedHashSet.baseCount = tpl.Item2;
+                        this.usedItems.Add(tpl.Item1, orderedHashSet);
+                    } else {
+                        this.usedItems[tpl.Item1].baseCount += tpl.Item2;
+                    }
                 }
             }
         }

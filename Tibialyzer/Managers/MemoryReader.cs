@@ -49,6 +49,8 @@ namespace Tibialyzer {
         private static UInt32 ExperienceAddress;
         private static UInt32 LevelAddress;
         private static UInt32 MagicLevelAddress;
+        private static UInt32 AmmunitionCountAddress;
+        private static UInt32 AmmunitionTypeAddress;
         public static UInt32 TabsBaseAddress;
 
         private static uint BL_CREATURE_SIZE = 220;
@@ -79,6 +81,9 @@ namespace Tibialyzer {
             ParseAddress("LevelAddress", out LevelAddress, 0x534670);
             ParseAddress("MagicLevelAddress", out MagicLevelAddress, 0x534678);
             ParseAddress("TabsBaseAddress", out TabsBaseAddress, 0x534970);
+            ParseAddress("AmmunitionCountAddress", out AmmunitionCountAddress, 0x773E8C);
+            ParseAddress("AmmunitionTypeAddress", out AmmunitionTypeAddress, 0x773E8C + 4);
+
         }
 
         private static UInt32 baseAddress;
@@ -193,6 +198,18 @@ namespace Tibialyzer {
         public static int MagicLevel {
             get {
                 return ReadInt32(GetAddress(MagicLevelAddress));
+            }
+        }
+
+        public static int AmmunitionType {
+            get {
+                return ReadInt32(GetAddress(AmmunitionTypeAddress));
+            }
+        }
+
+        public static int AmmunitionCount {
+            get {
+                return ReadInt32(GetAddress(AmmunitionCountAddress));
             }
         }
 

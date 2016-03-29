@@ -104,6 +104,7 @@
     </Compile>
     <Compile Include="Managers\AutoHotkeyManager.cs" />
     <Compile Include="Managers\CommandManager.cs" />
+    <Compile Include="Managers\EquipmentManager.cs" />
     <Compile Include="Managers\HUDManager.cs" />
     <Compile Include="Managers\MemoryReader.cs" />
     <Compile Include="Managers\NotificationManager.cs" />

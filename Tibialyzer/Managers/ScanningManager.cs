@@ -60,8 +60,7 @@ namespace Tibialyzer {
             try
             {
                 success = ScanMemory();
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 MainForm.mainForm.BeginInvoke((MethodInvoker)delegate {
                     MainForm.mainForm.DisplayWarning(String.Format("Database Scan Error (Non-Fatal): {0}", ex.Message));
@@ -105,6 +104,8 @@ namespace Tibialyzer {
         public static bool ScanMemory() {
             ReadMemoryResults readMemoryResults = ReadMemoryManager.ReadMemory();
             ParseMemoryResults parseMemoryResults = Parser.ParseLogResults(readMemoryResults);
+
+            EquipmentManager.UpdateUsedItems();
             /*
             try {
                 Console.WriteLine(String.Format("Health: {0}/{1}, Mana: {2}/{3}", MemoryReader.Health, MemoryReader.MaxHealth, MemoryReader.Mana, MemoryReader.MaxMana));
