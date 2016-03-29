@@ -28,7 +28,24 @@ imageRegex2 = re.compile('src="([^"]*vignette[^"]*)"')
 from imageoperations import crop_image, gif_is_animated, convert_to_png, properly_crop_item
 from urlhelpers import getImage
 
-def parseItem(title, attributes, c, buyitems, sellitems, currencymap, getURL):
+consumableMap = {
+    'pair of soft boots': ('4 hours', '10000', 'Gold Coin'), 
+    'helmet of the ancients (Enchanted)': ('30 minutes', '1', 'Small Ruby'), 
+    'sparking rainbow shield': ('15 minutes', '1', 'Small Amethyst'),
+    'terran rainbow shield': ('15 minutes', '1', 'Small Emerald'),
+    'fiery rainbow shield': ('15 minutes', '1', 'Small Ruby'),
+    'icy rainbow shield': ('15 minutes', '1', 'Small Sapphire'),
+    'enchanted werewolf amulet': ('60 minutes', '1', 'Moonlight Crystals'),
+    'enchanted werewolf helmet (axe)': ('60 minutes', '1', 'Moonlight Crystals'),
+    'enchanted werewolf helmet (club)': ('60 minutes', '1', 'Moonlight Crystals'),
+    'enchanted werewolf helmet (sword)': ('60 minutes', '1', 'Moonlight Crystals'),
+    'enchanted werewolf helmet (distance)': ('60 minutes', '1', 'Moonlight Crystals'),
+    'enchanted werewolf helmet (magic)': ('60 minutes', '1', 'Moonlight Crystals'),
+    'enchanted werewolf helmet (sword)': ('60 minutes', '1', 'Moonlight Crystals')
+}
+
+
+def parseItem(title, attributes, c, buyitems, sellitems, currencymap, durationMap, getURL):
     npcValue = None
     if 'npcvalue' in attributes:
         try: npcValue = int(attributes['npcvalue'])
@@ -66,6 +83,28 @@ def parseItem(title, attributes, c, buyitems, sellitems, currencymap, getURL):
         category = attributes['primarytype']
     elif 'itemclass' in attributes:
         category = attributes['itemclass']
+    duration, itemcost, itemcostcount = (None, None, None)
+    durationText = None
+    if title.lower() in consumableMap:
+        tpl = consumableMap[title.lower()]
+        durationText = tpl[0]
+        itemcostcount = tpl[1]
+        itemcost = tpl[2]
+    elif 'duration' in attributes:
+        durationText = attributes['duration']
+        itemcost = title
+        itemcostcount = 1
+    if durationText != None:
+        match = numberRegex.search(durationText)
+        if match != None:
+            duration = float(match.groups()[0])
+            if duration != None:
+                if 'minute' in durationText:
+                    duration *= 60
+                elif 'hour' in durationText:
+                    duration *= 3600
+    if duration != None:
+        durationMap[title] = (duration, itemcost, itemcostcount)
     # tibia wiki uses some function to get the image url rather than storing it explicitly, and I don't really want to bother to decipher it
     url = "http://tibia.wikia.com/wiki/%s" % (title.replace(' ', '_'))
     itemHTML = getURL(url, True)
@@ -95,6 +134,14 @@ def parseItem(title, attributes, c, buyitems, sellitems, currencymap, getURL):
 
     c.execute('INSERT INTO Items (title,name, vendor_value, actual_value, capacity, stackable, image, category, discard, convert_to_gold, look_text) VALUES (?,?,?,?,?,?,?,?,?,?,?)', (title,name, npcValue, actualValue, capacity, stackable, image, category, discard, convert_to_gold, look_text))
     itemid = c.lastrowid
+    if 'itemid' in attributes:
+        splits = attributes['itemid'].split(',')
+        for item in splits:
+            try: 
+                tibiaid = int(item.strip())
+                c.execute('INSERT INTO ItemIDMap (tibiaid, itemid) VALUES (?,?)', (tibiaid, itemid))
+            except:
+                pass
     if 'buyfrom' in attributes:
         buyitems[itemid] = dict()
         npcs = attributes['buyfrom'].split(',')
