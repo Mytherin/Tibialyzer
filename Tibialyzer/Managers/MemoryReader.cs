@@ -51,6 +51,10 @@ namespace Tibialyzer {
         private static UInt32 MagicLevelAddress;
         private static UInt32 AmmunitionCountAddress;
         private static UInt32 AmmunitionTypeAddress;
+        private static UInt32 WeaponCountAddress;
+        private static UInt32 WeaponTypeAddress;
+        private static UInt32 BootsTypeAddress;
+        private static UInt32 RingTypeAddress;
         public static UInt32 TabsBaseAddress;
 
         private static uint BL_CREATURE_SIZE = 220;
@@ -83,7 +87,10 @@ namespace Tibialyzer {
             ParseAddress("TabsBaseAddress", out TabsBaseAddress, 0x534970);
             ParseAddress("AmmunitionCountAddress", out AmmunitionCountAddress, 0x773E8C);
             ParseAddress("AmmunitionTypeAddress", out AmmunitionTypeAddress, 0x773E8C + 4);
-
+            ParseAddress("WeaponCountAddress", out WeaponCountAddress, 0x773F0C);
+            ParseAddress("WeaponTypeAddress", out WeaponTypeAddress, 0x773F0C + 4);
+            ParseAddress("BootsTypeAddress", out BootsTypeAddress, 0x773ED0);
+            ParseAddress("RingTypeAddress", out RingTypeAddress, 0x773EB0);
         }
 
         private static UInt32 baseAddress;
@@ -210,6 +217,30 @@ namespace Tibialyzer {
         public static int AmmunitionCount {
             get {
                 return ReadInt32(GetAddress(AmmunitionCountAddress));
+            }
+        }
+
+        public static int WeaponCount {
+            get {
+                return ReadInt32(GetAddress(WeaponCountAddress));
+            }
+        }
+
+        public static int WeaponType {
+            get {
+                return ReadInt32(GetAddress(WeaponTypeAddress));
+            }
+        }
+
+        public static int BootsType {
+            get {
+                return ReadInt32(GetAddress(BootsTypeAddress));
+            }
+        }
+
+        public static int RingType {
+            get {
+                return ReadInt32(GetAddress(RingTypeAddress));
             }
         }
 
