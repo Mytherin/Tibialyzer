@@ -315,12 +315,13 @@ namespace Tibialyzer {
 
         public static Tuple<Creature, List<Tuple<Item, int>>> ParseLootMessage(string message) {
             if (message.Length <= 14) return null;
-            string lootMessage = message.Substring(14);
+            string lootMessage = message.Substring(14, message[message.Length - 1] == '.' ? message.Length - 15 : message.Length - 14);
             // split on : because the message is Loot of a x: a, b, c, d
             if (!lootMessage.Contains(':')) return null;
             string[] matches = lootMessage.Split(':');
             string creature = matches[0];
-            // non-boss creatures start with 'a' (e.g. 'Loot of a wyvern'); remove the 'a'
+            // non-boss creatures start with 'a' or 'an' (e.g. 'Loot of a wyvern'); remove the 'a'
+            // we can just look for the first letter being 'a' because boss creatures start with a capital 'A'
             if (creature[0] == 'a') {
                 creature = creature.Split(new char[] { ' ' }, 2)[1];
             }
