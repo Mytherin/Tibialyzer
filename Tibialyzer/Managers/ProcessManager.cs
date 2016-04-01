@@ -65,7 +65,8 @@ namespace Tibialyzer {
             uint pid;
             GetWindowThreadProcessId(hwnd, out pid);
             Process p = Process.GetProcessById((int)pid);
-            return GetTibiaProcess().Id == p.Id || p.ProcessName.Contains("Tibialyzer", StringComparison.CurrentCultureIgnoreCase);
+            Process tibiaProcess = GetTibiaProcess();
+            return (tibiaProcess != null && tibiaProcess.Id == p.Id) || p.ProcessName.Contains("Tibialyzer", StringComparison.CurrentCultureIgnoreCase);
         }
 
 
