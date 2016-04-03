@@ -96,6 +96,10 @@
     <Compile Include="HUDs\CurvedHUD.Designer.cs">
       <DependentUpon>CurvedHUD.cs</DependentUpon>
     </Compile>
+    <Compile Include="HUDs\HealthList.cs" />
+    <Compile Include="HUDs\HealthList.Designer.cs">
+      <DependentUpon>HealthList.cs</DependentUpon>
+    </Compile>
     <Compile Include="HUDs\StatusBar.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -359,6 +363,12 @@
     <Compile Include="Tabs\HUDTab.Designer.cs">
       <DependentUpon>HUDTab.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\HUDs\HealthListTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\HUDs\HealthListTab.Designer.cs">
+      <DependentUpon>HealthListTab.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\TabBase.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -369,6 +379,9 @@
     <Compile Include="Managers\UIManager.cs" />
     <EmbeddedResource Include="HUDs\CurvedHUD.resx">
       <DependentUpon>CurvedHUD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HUDs\HealthList.resx">
+      <DependentUpon>HealthList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="HUDs\StatusBar.resx">
       <DependentUpon>StatusBar.cs</DependentUpon>
@@ -511,6 +524,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\HUDTab.resx">
       <DependentUpon>HUDTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\HUDs\HealthListTab.resx">
+      <DependentUpon>HealthListTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\TabBase.resx">
       <DependentUpon>TabBase.cs</DependentUpon>

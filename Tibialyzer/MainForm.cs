@@ -299,7 +299,7 @@ namespace Tibialyzer {
         private List<Control> activeControls = new List<Control>();
         private List<List<Control>> tabControls = new List<List<Control>>();
         private void InitializeTabs() {
-            Tabs = new List<TabInterface> { new MainTab(), new SettingsTab(), new HuntsTab(), new LogsTab(), new NotificationsTab(), new PopupsTab(), new DatabaseTab(), new AutoHotkeyTab(), new ScreenshotTab(), new BrowseTab(), new HelpTab(), new SystemTab(), new SummaryTab(), new HUDTab() };
+            Tabs = new List<TabInterface> { new MainTab(), new SettingsTab(), new HuntsTab(), new LogsTab(), new NotificationsTab(), new PopupsTab(), new DatabaseTab(), new AutoHotkeyTab(), new ScreenshotTab(), new BrowseTab(), new HelpTab(), new SystemTab(), new SummaryTab(), new HUDTab(), new HealthListTab() };
             foreach (TabInterface tab in Tabs) {
                 List<Control> controlList = new List<Control>();
                 foreach (Control c in (tab as Form).Controls) {
@@ -314,7 +314,7 @@ namespace Tibialyzer {
             tabControls[3].Add((Tabs[2] as HuntsTab).GetHuntLabel());
         }
 
-        private void switchTab(int tab) {
+        public void switchTab(int tab) {
             foreach (Control c in activeControls) {
                 this.Controls.Remove(c);
             }

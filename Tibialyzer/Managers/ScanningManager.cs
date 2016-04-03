@@ -105,6 +105,8 @@ namespace Tibialyzer {
             ReadMemoryResults readMemoryResults = ReadMemoryManager.ReadMemory();
             ParseMemoryResults parseMemoryResults = Parser.ParseLogResults(readMemoryResults);
 
+            MemoryReader.UpdateBattleList();
+
             EquipmentManager.UpdateUsedItems();
             /*
             try {

@@ -16,9 +16,8 @@ namespace Tibialyzer {
                 }
             }
         }
-
+        
         public static void ShowHUD(string param) {
-            if (param == null) return;
             BaseHUD hud = null;
             param = param.ToLower().Replace(" ", "");
             switch(param) {
@@ -42,6 +41,11 @@ namespace Tibialyzer {
                 case "curvedbar":
                 case "curved":
                     hud = new CurvedHUD();
+                    break;
+                case "healthlist":
+                case "hudlist":
+                case "hplist":
+                    hud = new HealthList();
                     break;
 
             }

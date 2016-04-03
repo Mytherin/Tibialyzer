@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Globalization;
+using System.Collections.Generic;
 
 namespace Tibialyzer {
     class MemoryReader {
@@ -61,6 +62,7 @@ namespace Tibialyzer {
         private static int BL_Z_OFFSET = 36;
         private static int BL_Y_OFFSET = 40;
         private static int BL_X_OFFSET = 44;
+        private static int BL_HP_OFFSET = 140;
 
         private static int START_X = 124 * 256;
         private static int START_Y = 121 * 256;
@@ -71,6 +73,7 @@ namespace Tibialyzer {
             if (hexString != null) {
                 UInt32.TryParse(hexString.Replace("0x", ""), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out memoryAddress);
             }
+            InitializeBattleList();
         }
 
         public static void Initialize() {
@@ -244,6 +247,52 @@ namespace Tibialyzer {
             }
         }
 
+
+        private static BattleListEntry[] battleList = new BattleListEntry[255];
+
+        private static void InitializeBattleList() {
+            for (int i = 0; i < battleList.Length; i++) {
+                battleList[i] = new BattleListEntry();
+            }
+        }
+
+        public static void UpdateBattleList() {
+            lock (battleList) {
+                UInt32 creature = GetAddress(BattleListAddress);
+                for (int i = 0; i < battleList.Length; i++) {
+                    battleList[i].id = ReadInt32(creature);
+                    battleList[i].name = ReadString(creature + 4);
+                    battleList[i].x = ReadInt32(creature + BL_X_OFFSET);
+                    battleList[i].y = ReadInt32(creature + BL_Y_OFFSET);
+                    battleList[i].z = ReadInt32(creature + BL_Z_OFFSET);
+                    battleList[i].hp = ReadInt32(creature + BL_HP_OFFSET);
+                    creature += BL_CREATURE_SIZE;
+                }
+            }
+        }
+
+        public static int GetPlayerID(string name) {
+            lock (battleList) {
+                for (int i = 0; i < battleList.Length; i++) {
+                    if (battleList[i].name != null && battleList[i].name.Equals(name, StringComparison.InvariantCultureIgnoreCase)) {
+                        return battleList[i].id;
+                    }
+                }
+                return -1;
+            }
+        }   
+
+        public static int GetHealthPercentage(int id) {
+            lock (battleList) {
+                for (int i = 0; i < battleList.Length; i++) {
+                    if (battleList[i].id == id) {
+                        return battleList[i].hp;
+                    }
+                }
+                return -1;
+            }
+        }
+
         private static UInt32 findPlayerInBattleList() {
             UInt32 creature = GetAddress(BattleListAddress);
             while (ReadInt32(creature) != PlayerId) {
@@ -252,4 +301,14 @@ namespace Tibialyzer {
             return creature;
         }
     }
+
+    class BattleListEntry {
+        public int id;
+        public string name;
+        public int x;
+        public int y;
+        public int z;
+        public int hp;
+    }
+
 }

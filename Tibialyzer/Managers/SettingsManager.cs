@@ -261,6 +261,9 @@ C::NumpadPgDn
                 setSettingIfNotSet(settingObject + "Opacity", 0.8);
                 setSettingIfNotSet(settingObject + "DisplayText", true);
             }
+            setSettingIfNotSet("HealthListDisplayNames", true);
+            setSettingIfNotSet("HealthListDisplayIcons", false);
+            setSettingIfNotSet("HealthListPlayerList", "");
 
             setSettingIfNotSet("MonitorAnchor", 0);
             setSettingIfNotSet("SummaryLootItemSize", 25);

@@ -13,18 +13,12 @@ namespace Tibialyzer {
 
     public partial class StatusBar : BaseHUD {
         private StatusType statusType;
-        private string name = null;
-        private int playerid = -1;
         private bool displayText;
 
-        public StatusBar(StatusType statusType, string name = null) {
+        public StatusBar(StatusType statusType) {
             this.statusType = statusType;
-            this.name = name;
-            if (name != null && statusType != StatusType.Health) {
-                throw new Exception("Only health of other players can be tracked.");
-            }
             InitializeComponent();
-            
+
             BackColor = StyleManager.TransparencyKey;
             TransparencyKey = StyleManager.TransparencyKey;
 
@@ -56,7 +50,7 @@ namespace Tibialyzer {
         public static int GetExperience(int lvl) {
             return (50 * lvl * lvl * lvl - 150 * lvl * lvl + 400 * lvl) / 3;
         }
-        
+
         public void RefreshHUD(int min, int max, double percentage) {
             if (displayText) {
                 if (statusType == StatusType.Experience) {

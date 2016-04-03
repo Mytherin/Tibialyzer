@@ -57,6 +57,9 @@ namespace Tibialyzer {
             fontSizeBox.Text = SettingsManager.getSettingString(hudName + "FontSize");
             hudOpacityBox.Text = SettingsManager.getSettingString(hudName + "Opacity");
             displayHUDTextBox.Checked = SettingsManager.getSettingBool(hudName + "DisplayText");
+            
+            advancedOptionsButton.Visible = hudName == "HealthList";
+
             MainForm.prevent_settings_update = false;
         }
 
@@ -144,6 +147,12 @@ namespace Tibialyzer {
             if (MainForm.prevent_settings_update) return;
 
             SettingsManager.setSetting(getSelectedHudName() + "DisplayText", (sender as CheckBox).Checked);
+        }
+
+        private void advancedOptionsButton_Click(object sender, EventArgs e) {
+            MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                MainForm.mainForm.switchTab(14);
+            });
         }
     }
 }
