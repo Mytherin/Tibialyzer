@@ -234,7 +234,7 @@ namespace Tibialyzer {
                     explanationTooltip.SetToolTip(warningImageBox, message);
                     lastWarning = message;
                 }
-            } catch(Exception ex) {
+            } catch (Exception ex) {
                 Console.WriteLine(String.Format("Failed to display warning \"{0}\" with error \"{1}\"", message, ex.Message));
             }
         }
@@ -300,7 +300,7 @@ namespace Tibialyzer {
         private List<List<Control>> tabControls = new List<List<Control>>();
         private void InitializeTabs() {
             Tabs = new List<TabInterface> { new MainTab(), new SettingsTab(), new HuntsTab(), new LogsTab(), new NotificationsTab(), new PopupsTab(), new DatabaseTab(), new AutoHotkeyTab(), new ScreenshotTab(), new BrowseTab(), new HelpTab(), new SystemTab(), new SummaryTab(), new HUDTab() };
-            foreach(TabInterface tab in Tabs) {
+            foreach (TabInterface tab in Tabs) {
                 List<Control> controlList = new List<Control>();
                 foreach (Control c in (tab as Form).Controls) {
                     controlList.Add(c);

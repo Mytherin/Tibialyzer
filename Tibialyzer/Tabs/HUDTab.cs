@@ -56,6 +56,7 @@ namespace Tibialyzer {
             showHudOnStartupBox.Checked = SettingsManager.getSettingBool(hudName + "ShowOnStartup");
             fontSizeBox.Text = SettingsManager.getSettingString(hudName + "FontSize");
             hudOpacityBox.Text = SettingsManager.getSettingString(hudName + "Opacity");
+            displayHUDTextBox.Checked = SettingsManager.getSettingBool(hudName + "DisplayText");
             MainForm.prevent_settings_update = false;
         }
 
@@ -137,6 +138,12 @@ namespace Tibialyzer {
                     SettingsManager.setSetting(getSelectedHudName() + "Opacity", value);
                 }
             }
+        }
+
+        private void displayHUDTextBox_CheckedChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            SettingsManager.setSetting(getSelectedHudName() + "DisplayText", (sender as CheckBox).Checked);
         }
     }
 }

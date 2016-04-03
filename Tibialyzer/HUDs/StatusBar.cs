@@ -13,14 +13,22 @@ namespace Tibialyzer {
 
     public partial class StatusBar : BaseHUD {
         private StatusType statusType;
+        private string name = null;
+        private int playerid = -1;
+        private bool displayText;
 
-        public StatusBar(StatusType statusType) {
+        public StatusBar(StatusType statusType, string name = null) {
             this.statusType = statusType;
+            this.name = name;
+            if (name != null && statusType != StatusType.Health) {
+                throw new Exception("Only health of other players can be tracked.");
+            }
             InitializeComponent();
             
             BackColor = StyleManager.TransparencyKey;
             TransparencyKey = StyleManager.TransparencyKey;
 
+            displayText = SettingsManager.getSettingBool(GetHUD() + "DisplayText");
             double opacity = SettingsManager.getSettingDouble(GetHUD() + "Opacity");
             opacity = Math.Min(1, Math.Max(0, opacity));
             this.Opacity = opacity;
@@ -50,10 +58,14 @@ namespace Tibialyzer {
         }
         
         public void RefreshHUD(int min, int max, double percentage) {
-            if (statusType == StatusType.Experience) {
-                healthBarLabel.Text = String.Format("Lvl {0}: {1}%", MemoryReader.Level, (int)(percentage * 100));
+            if (displayText) {
+                if (statusType == StatusType.Experience) {
+                    healthBarLabel.Text = String.Format("Lvl {0}: {1}%", MemoryReader.Level, (int)(percentage * 100));
+                } else {
+                    healthBarLabel.Text = String.Format("{0}/{1}", min, max);
+                }
             } else {
-                healthBarLabel.Text = String.Format("{0}/{1}", min, max);
+                healthBarLabel.Text = "";
             }
             healthBarLabel.percentage = percentage;
             if (statusType == StatusType.Health) {

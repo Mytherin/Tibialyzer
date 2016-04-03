@@ -259,6 +259,7 @@ C::NumpadPgDn
                 setSettingIfNotSet(settingObject + "Height", 65);
                 setSettingIfNotSet(settingObject + "ShowOnStartup", false);
                 setSettingIfNotSet(settingObject + "Opacity", 0.8);
+                setSettingIfNotSet(settingObject + "DisplayText", true);
             }
 
             setSettingIfNotSet("MonitorAnchor", 0);
