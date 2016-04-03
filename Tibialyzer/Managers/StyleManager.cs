@@ -172,7 +172,7 @@ namespace Tibialyzer {
                 return StyleManager.HealthDanger;
             } else if (percentage < 0.6) {
                 return StyleManager.HealthDamaged;
-            } else if (percentage < 1.0) {
+            } else if (percentage < 0.95) {
                 return StyleManager.HealthHealthy;
             } else {
                 return StyleManager.HealthFull;
