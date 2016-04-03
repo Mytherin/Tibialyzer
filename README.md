@@ -10,11 +10,13 @@ See the [Wiki section](https://github.com/Mytherin/Tibialyzer/wiki) for an in-de
 
 For information on downloading and installing Tibialyzer, see the [Installation Instructions Section](https://github.com/Mytherin/Tibialyzer/wiki/Installation-Instructions). For help getting started, visit the [Quick Start Section](https://github.com/Mytherin/Tibialyzer/wiki/Quick-Start-Guide).
 
+Tibialyzer supports both the Standalone Client and the Flash Client (on Firefox). It works on Windows Vista, Windows 7, Windows 8/8.1 and Windows 10.
+
 # Why did you make Tibialyzer?
 
 It started a couple of months ago. I was hunting Apes in Banuta on a low-level sorcerer alt using avalanche runes. I wanted to power-level (gain a lot of experience fast). However, `Ape Fur` was worth a lot on my server (about `6000` gold each). I felt it was a waste to leave any ape fur behind in the corpses. My plan was to look at the server log and check if any ape fur dropped, and if any dropped I would pick it up. 
 
-While doing this I thought, if these strings are in the server log, why can't I just make a program to read them instead of manually reading them? And thus the first `Tibialyzer` was born. This was a simple Python script that I hacked together in an hour. This script would simply scan for the words `Ape Fur` in Tibia's memory and would call `notify-send` if it found any. This was still on Linux.
+While doing this I thought, if these strings are in the server log, why can't I just make a program to read them instead of manually reading them? And thus the first `Tibialyzer` was born. This was a simple Python script that I hacked together in an hour. This script would simply scan for the words `Ape Fur` in Tibia's memory and would call `notify-send` if it found any. This was still on Linux. [Here is a screenshot of the initial version](http://i.imgur.com/p0UREDO.jpg).
 
 It worked very well, and at that point I thought, why not keep track of more things this way? I can keep track of all the loot you find and all the creatures you killed. I switched development to Windows because that is what my friends were using and I was already familiar with WinForms. I proceeded to make the first real Tibialyzer application, and shared it with my friends. We kept on using it, and I kept on adding more and more features until it grew into what it is today.
 
