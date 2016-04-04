@@ -12,6 +12,7 @@ namespace Tibialyzer {
     class PlayerEntry {
         public string name = null;
         public int playerid = -1;
+        public int battlelistentry = 0;
         public Image playerImage = null;
         public ProgressBarLabel healthBar = null;
         public Label playerNameLabel = null;
@@ -137,7 +138,7 @@ namespace Tibialyzer {
                             }
                             this.Size = new Size(this.Size.Width, playerBarHeight * players.Count);
                         }
-                        int percentage = MemoryReader.GetHealthPercentage(player.playerid);
+                        int percentage = MemoryReader.GetHealthPercentage(player.playerid, ref player.battlelistentry);
                         if (displayText) {
                             player.healthBar.Text = String.Format("{0}%", percentage);
                         }

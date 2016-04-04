@@ -282,10 +282,15 @@ namespace Tibialyzer {
             }
         }   
 
-        public static int GetHealthPercentage(int id) {
+        public static int GetHealthPercentage(int id, ref int battlelistentry) {
             lock (battleList) {
+                if (battleList[battlelistentry].id == id) {
+                    return battleList[battlelistentry].hp;
+                }
+
                 for (int i = 0; i < battleList.Length; i++) {
                     if (battleList[i].id == id) {
+                        battlelistentry = i;
                         return battleList[i].hp;
                     }
                 }
