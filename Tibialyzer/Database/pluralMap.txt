@@ -90,3 +90,4 @@ piles of grave earth=pile of grave earth
 gooey masses=gooey mass
 cookies=cookie
 mushroom pies=mushroom pie
+books of necromantic rituals=book of necromantic rituals
