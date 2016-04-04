@@ -87,6 +87,13 @@ namespace Tibialyzer {
                             HuntManager.deleteCreatureFromLog(cr);
                         }
                     }
+                } else if (comp.StartsWith("addwaste" + Constants.CommandSymbol)) { //addwaste@
+                    string[] split = command.Split(Constants.CommandSymbol);
+                    string parameter = split[1].Trim().ToLower();
+                    int count = 1;
+                    Item item = StorageManager.getItem(parameter);
+                    if (split.Length > 2) int.TryParse(split[2], out count);
+                    HuntManager.AddUsedItems(HuntManager.activeHunt, item, count);
                 } else if (comp.StartsWith("skin" + Constants.CommandSymbol)) { //skin@
                     string[] split = command.Split(Constants.CommandSymbol);
                     string parameter = split[1].Trim().ToLower();
