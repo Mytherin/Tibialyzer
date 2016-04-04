@@ -326,7 +326,7 @@ namespace Tibialyzer {
                 creature = creature.Split(new char[] { ' ' }, 2)[1];
             }
             Creature cr = StorageManager.getCreature(creature.ToLower());
-            if (cr == null) {
+            if (cr == null && !creature.Equals("non-existent creature", StringComparison.InvariantCultureIgnoreCase)) {
                 Console.WriteLine(String.Format("Warning, creature {0} was not found in the database.", creature));
                 return null;
             }

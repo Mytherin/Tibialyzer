@@ -25,7 +25,7 @@ namespace Tibialyzer {
         private static List<Hunt> hunts = new List<Hunt>();
 
         public static void Initialize() {
-            lock(hunts) {
+            lock (hunts) {
                 //"Name#DBTableID#Track#Time#Exp#SideHunt#AggregateHunt#ClearOnStartup#Creature#Creature#..."
                 if (!SettingsManager.settingExists("Hunts")) {
                     SettingsManager.setSetting("Hunts", new List<string>() { "New Hunt#True#0#0#False#True" });
@@ -106,8 +106,8 @@ namespace Tibialyzer {
         }
 
         public static IEnumerable<Hunt> IterateHunts() {
-            lock(hunts) {
-                foreach(Hunt h in hunts) {
+            lock (hunts) {
+                foreach (Hunt h in hunts) {
                     yield return h;
                 }
             }
@@ -351,6 +351,15 @@ namespace Tibialyzer {
             }
         }
 
+        public static void AddLoot(Hunt h, Item item, int itemCount) {
+            h.AddItem(item, itemCount);
+            int stamp = TimestampManager.getDayStamp();
+            Tuple<int, int> time = TimestampManager.getCurrentTime();
+            LootDatabaseManager.InsertMessage(h, stamp, time.Item1, time.Item2, String.Format("{0}:{1} Loot of a non-existent creature: {2} {3}", time.Item1, time.Item2, itemCount, item.GetName()));
+            LootDatabaseManager.UpdateLoot();
+        }
+
+
         public static Hunt CheckTrackedHunts(Hunt h, Tuple<Creature, List<Tuple<Item, int>>> resultList, string t, string message, int stamp = 0, int hour = 0, int minute = 0, SQLiteTransaction transaction = null) {
             lock (hunts) {
                 foreach (Hunt potentialHunt in hunts) {
@@ -393,6 +402,7 @@ namespace Tibialyzer {
 
     public class Loot {
         public Dictionary<string, List<string>> logMessages = new Dictionary<string, List<string>>();
+        public Dictionary<Item, int> extraLoot = new Dictionary<Item, int>();
         public Dictionary<Creature, Dictionary<Item, int>> creatureLoot = new Dictionary<Creature, Dictionary<Item, int>>();
         public Dictionary<Creature, int> killCount = new Dictionary<Creature, int>();
     };
@@ -455,8 +465,8 @@ namespace Tibialyzer {
         }
 
         public void AddUsedItems(List<Tuple<Item, int>> items) {
-            lock(huntLock) {
-                foreach(var tpl in items) {
+            lock (huntLock) {
+                foreach (var tpl in items) {
                     if (!usedItems.ContainsKey(tpl.Item1)) {
                         var orderedHashSet = new OrderedHashSetCollection();
                         orderedHashSet.baseCount = tpl.Item2;
@@ -484,6 +494,15 @@ namespace Tibialyzer {
         public void AddKillToHunt(Tuple<Creature, List<Tuple<Item, int>>> resultList, string t, string message) {
             lock (huntLock) {
                 Creature cr = resultList.Item1;
+                if (cr == null) {
+                    foreach (Tuple<Item, int> tpl in resultList.Item2) {
+                        Item item = tpl.Item1;
+                        int count = tpl.Item2;
+                        if (!this.loot.extraLoot.ContainsKey(item)) this.loot.extraLoot.Add(item, count);
+                        else this.loot.extraLoot[item] += count;
+                    }
+                    return;
+                }
                 if (!this.loot.creatureLoot.ContainsKey(cr)) this.loot.creatureLoot.Add(cr, new Dictionary<Item, int>());
                 foreach (Tuple<Item, int> tpl in resultList.Item2) {
                     Item item = tpl.Item1;
@@ -496,6 +515,15 @@ namespace Tibialyzer {
 
                 if (!this.loot.logMessages.ContainsKey(t)) this.loot.logMessages.Add(t, new List<string>());
                 this.loot.logMessages[t].Add(message);
+            }
+        }
+        public void AddItem(Item item, int count) {
+            lock (huntLock) {
+                if (loot.extraLoot.ContainsKey(item)) {
+                    loot.extraLoot[item] += count;
+                } else {
+                    loot.extraLoot.Add(item, count);
+                }
             }
         }
 
@@ -517,8 +545,8 @@ namespace Tibialyzer {
         }
 
         public IEnumerable<Creature> IterateCreatures() {
-            lock(huntLock) {
-                foreach(Creature cr in loot.killCount.Keys) {
+            lock (huntLock) {
+                foreach (Creature cr in loot.killCount.Keys) {
                     yield return cr;
                 }
             }
@@ -526,18 +554,19 @@ namespace Tibialyzer {
         }
 
         public IEnumerable<KeyValuePair<Creature, Dictionary<Item, int>>> IterateLoot() {
-            lock(huntLock) {
-                foreach(var value in loot.creatureLoot) {
+            lock (huntLock) {
+                foreach (var value in loot.creatureLoot) {
                     yield return value;
                 }
+                yield return new KeyValuePair<Creature, Dictionary<Item, int>>(null, loot.extraLoot);
             }
             yield break;
         }
 
         public Dictionary<Creature, int> GetCreatureKills() {
             Dictionary<Creature, int> creatureKills = new Dictionary<Creature, int>();
-            lock(huntLock) {
-                foreach(KeyValuePair<Creature, int> kvp in loot.killCount) {
+            lock (huntLock) {
+                foreach (KeyValuePair<Creature, int> kvp in loot.killCount) {
                     creatureKills.Add(kvp.Key, kvp.Value);
                 }
             }
@@ -550,7 +579,7 @@ namespace Tibialyzer {
 
         public Dictionary<Creature, int> GetCreatureKills(List<Creature> filterCreatures) {
             Dictionary<Creature, int> creatureKills = new Dictionary<Creature, int>();
-            lock(huntLock) {
+            lock (huntLock) {
                 foreach (Creature cr in filterCreatures) {
                     if (!this.loot.killCount.ContainsKey(cr)) continue;
 
@@ -561,7 +590,7 @@ namespace Tibialyzer {
         }
 
         public IEnumerable<string> IterateLogMessages() {
-            lock(huntLock) {
+            lock (huntLock) {
                 List<string> timestamps = this.loot.logMessages.Keys.OrderByDescending(o => o).ToList();
                 foreach (string t in timestamps) {
                     List<string> strings = this.loot.logMessages[t].ToList();
@@ -574,7 +603,7 @@ namespace Tibialyzer {
         }
 
         public void DeleteCreature(Creature cr) {
-            lock(huntLock) {
+            lock (huntLock) {
                 if (this.loot.killCount.ContainsKey(cr)) {
                     this.loot.killCount.Remove(cr);
                 }
@@ -679,7 +708,7 @@ namespace Tibialyzer {
 
         public List<Creature> GetTrackedCreatures() {
             List<Creature> trackedCreatures = new List<Creature>();
-            lock(huntLock) {
+            lock (huntLock) {
                 foreach (string creature in this.lootCreatures) {
                     Creature cr = StorageManager.getCreature(creature.ToLower());
                     if (cr != null) {
@@ -691,14 +720,15 @@ namespace Tibialyzer {
         }
 
         public void Reset(int clearMinutes = 0) {
-            lock(huntLock) {
+            lock (huntLock) {
                 this.loot.creatureLoot.Clear();
                 this.loot.killCount.Clear();
                 this.loot.logMessages.Clear();
+                this.loot.extraLoot.Clear();
                 if (clearMinutes == 0) {
                     this.usedItems.Clear();
                 } else {
-                    foreach(var item in usedItems.Keys.ToList()) {
+                    foreach (var item in usedItems.Keys.ToList()) {
                         usedItems[item].ClearItems(clearMinutes);
                         if (usedItems[item].GetItemCount() == 0) {
                             usedItems.Remove(item);
@@ -733,11 +763,11 @@ namespace Tibialyzer {
                         continue;
                     } else {
                         Tuple<string, HashSet<int>> previous = null;
-                        while((previous == null || previous.Item2.Count == 0) && index >= 0) {
+                        while ((previous == null || previous.Item2.Count == 0) && index >= 0) {
                             index--;
                             previous = hashSets[index];
                         }
-                        foreach(int itemCount in previous.Item2) {
+                        foreach (int itemCount in previous.Item2) {
                             if (hashSet.Item2.Contains(itemCount)) {
                                 hashSet.Item2.Remove(itemCount);
                             }
@@ -749,7 +779,7 @@ namespace Tibialyzer {
 
         public void ClearItems(int clearMinutes) {
             baseCount = 0;
-            string currentTime = TimestampManager.getCurrentTime();
+            string currentTime = TimestampManager.getCurrentTimestamp();
             lock (hashSets) {
                 for (int i = 0; i < hashSets.Count; i++) {
                     if (TimestampManager.Distance(currentTime, hashSets[i].Item1) > clearMinutes) {

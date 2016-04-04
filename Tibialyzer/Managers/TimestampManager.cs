@@ -39,11 +39,16 @@ namespace Tibialyzer {
             return String.Format("{0:00}:{1:00}", hour, minute);
         }
 
-        public static string getCurrentTime() {
+        public static string getCurrentTimestamp() {
             var time = DateTime.Now;
             int hour = time.Hour;
             int minute = time.Minute;
             return FormatTimestamp(hour, minute);
+        }
+
+        public static Tuple<int, int> getCurrentTime() {
+            var time = DateTime.Now;
+            return new Tuple<int, int>(time.Hour, time.Minute);
         }
 
         public static List<string> getLatestTimes(int hour, int minute, int count, int ignoreStamp = -1) {
