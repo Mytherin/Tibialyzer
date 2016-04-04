@@ -87,6 +87,7 @@ namespace Tibialyzer {
         public void RefreshHUD() {
             lock(players) {
                 int playerIndex = 0;
+                MemoryReader.UpdateBattleList();
                 for (int index = 0; index < players.Count; index++) {
                     PlayerEntry player = players[index];
                     if (player.playerid < 0) {
@@ -142,7 +143,7 @@ namespace Tibialyzer {
                         if (displayText) {
                             player.healthBar.Text = String.Format("{0}%", percentage);
                         }
-                        player.healthBar.percentage = percentage;
+                        player.healthBar.percentage = percentage / 100.0;
                         player.healthBar.BackColor = StyleManager.GetHealthColor(percentage / 100.0);
                         playerIndex++;
                     }

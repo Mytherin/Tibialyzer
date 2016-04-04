@@ -104,9 +104,7 @@ namespace Tibialyzer {
         public static bool ScanMemory() {
             ReadMemoryResults readMemoryResults = ReadMemoryManager.ReadMemory();
             ParseMemoryResults parseMemoryResults = Parser.ParseLogResults(readMemoryResults);
-
-            MemoryReader.UpdateBattleList();
-
+            
             EquipmentManager.UpdateUsedItems();
 
             if (parseMemoryResults != null) {
