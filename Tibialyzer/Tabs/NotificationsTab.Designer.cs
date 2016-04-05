@@ -38,6 +38,7 @@
             this.label37 = new System.Windows.Forms.Label();
             this.label36 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.hideWhenTibiaMinimized = new Tibialyzer.PrettyCheckBox();
             this.monitorAnchorDropdown = new Tibialyzer.PrettyDropDownList();
             this.notificationTypeList = new Tibialyzer.PrettyListBox();
             this.notificationGroupBox = new Tibialyzer.PrettyDropDownList();
@@ -236,12 +237,28 @@
             this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label1.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label1.Location = new System.Drawing.Point(3, 440);
+            this.label1.Location = new System.Drawing.Point(3, 401);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(275, 30);
             this.label1.TabIndex = 57;
             this.label1.Text = "Monitor Anchor";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // hideWhenTibiaMinimized
+            // 
+            this.hideWhenTibiaMinimized.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.hideWhenTibiaMinimized.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hideWhenTibiaMinimized.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.hideWhenTibiaMinimized.Location = new System.Drawing.Point(3, 458);
+            this.hideWhenTibiaMinimized.Name = "hideWhenTibiaMinimized";
+            this.hideWhenTibiaMinimized.Padding = new System.Windows.Forms.Padding(10);
+            this.hideWhenTibiaMinimized.Size = new System.Drawing.Size(275, 40);
+            this.hideWhenTibiaMinimized.TabIndex = 58;
+            this.hideWhenTibiaMinimized.Text = "Only Show When Tibia is Active";
+            this.hideWhenTibiaMinimized.UseVisualStyleBackColor = false;
+            this.hideWhenTibiaMinimized.CheckedChanged += new System.EventHandler(this.hideWhenTibiaMinimized_CheckedChanged);
+            this.hideWhenTibiaMinimized.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.hideWhenTibiaMinimized.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             // 
             // monitorAnchorDropdown
             // 
@@ -253,7 +270,7 @@
             this.monitorAnchorDropdown.Items.AddRange(new object[] {
             "Tibia Client Monitor",
             "Tibialyzer Monitor"});
-            this.monitorAnchorDropdown.Location = new System.Drawing.Point(3, 470);
+            this.monitorAnchorDropdown.Location = new System.Drawing.Point(3, 431);
             this.monitorAnchorDropdown.Name = "monitorAnchorDropdown";
             this.monitorAnchorDropdown.Size = new System.Drawing.Size(275, 24);
             this.monitorAnchorDropdown.TabIndex = 56;
@@ -274,7 +291,7 @@
             "Loot Window"});
             this.notificationTypeList.Location = new System.Drawing.Point(3, 81);
             this.notificationTypeList.Name = "notificationTypeList";
-            this.notificationTypeList.Size = new System.Drawing.Size(275, 355);
+            this.notificationTypeList.Size = new System.Drawing.Size(275, 315);
             this.notificationTypeList.TabIndex = 51;
             this.notificationTypeList.SelectedIndexChanged += new System.EventHandler(this.notificationTypeList_SelectedIndexChanged);
             // 
@@ -356,6 +373,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(538, 514);
+            this.Controls.Add(this.hideWhenTibiaMinimized);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.monitorAnchorDropdown);
             this.Controls.Add(this.selectedWindowLabel);
@@ -409,5 +427,6 @@
 
         private System.Windows.Forms.Label label1;
         private PrettyDropDownList monitorAnchorDropdown;
+        private PrettyCheckBox hideWhenTibiaMinimized;
     }
 }

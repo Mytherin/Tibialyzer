@@ -28,6 +28,7 @@ namespace Tibialyzer {
             Constants.MaximumNotificationDuration = notificationDurationBox.Maximum;
 
             monitorAnchorDropdown.SelectedIndex = SettingsManager.getSettingInt("MonitorAnchor");
+            hideWhenTibiaMinimized.Checked = SettingsManager.getSettingBool("NotificationShowTibiaActive");
         }
 
         public void InitializeTooltips() {
@@ -141,6 +142,12 @@ namespace Tibialyzer {
             if (MainForm.prevent_settings_update) return;
 
             SettingsManager.setSetting("MonitorAnchor", monitorAnchorDropdown.SelectedIndex);
+        }
+
+        private void hideWhenTibiaMinimized_CheckedChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            SettingsManager.setSetting("NotificationShowTibiaActive", (sender as CheckBox).Checked);
         }
     }
 }

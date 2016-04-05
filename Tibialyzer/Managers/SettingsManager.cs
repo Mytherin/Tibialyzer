@@ -265,6 +265,7 @@ C::NumpadPgDn
             setSettingIfNotSet("HealthListDisplayIcons", false);
             setSettingIfNotSet("HealthListPlayerList", "");
 
+            setSettingIfNotSet("NotificationShowTibiaActive", false);
             setSettingIfNotSet("MonitorAnchor", 0);
             setSettingIfNotSet("SummaryLootItemSize", 25);
             setSettingIfNotSet("SummaryRecentDropsItemSize", 25);

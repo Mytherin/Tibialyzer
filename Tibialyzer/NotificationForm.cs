@@ -31,15 +31,19 @@ namespace Tibialyzer {
         object timerLock = new object();
         object closeLock = new object();
         System.Timers.Timer closeTimer = null;
+        System.Timers.Timer checkTimer = null;
         public static Bitmap background_image = null;
         public TibialyzerCommand command;
         protected PictureBox back_button;
         protected Label decreaseWidthButton;
         protected Label increaseWidthButton;
         public int notificationDuration = 1;
-        
+        protected bool hideWhenTibiaInactive = false;
+
         public NotificationForm() {
             this.ShowInTaskbar = false;
+
+            hideWhenTibiaInactive = SettingsManager.getSettingBool("NotificationShowTibiaActive");
         }
 
         [DllImport("user32.dll")]
@@ -121,6 +125,27 @@ namespace Tibialyzer {
                 NotificationForm_SizeChanged(null, null);
                 this.SizeChanged += NotificationForm_SizeChanged;
             }
+
+            if (hideWhenTibiaInactive) {
+                checkTimer = new System.Timers.Timer(10);
+                checkTimer.Elapsed += CheckTimer;
+                checkTimer.Enabled = true;
+            }
+        }
+
+        private void CheckTimer(object sender, System.Timers.ElapsedEventArgs e) {
+            try {
+                bool tibiaActive = ProcessManager.IsTibiaActive();
+                if (tibiaActive && !this.Visible) {
+                    this.Invoke((MethodInvoker)delegate {
+                        this.Visible = true;
+                    });
+                } else if (!tibiaActive && this.Visible) {
+                    this.Invoke((MethodInvoker)delegate {
+                        this.Visible = false;
+                    });
+                }
+            } catch { }
         }
 
         private void NotificationForm_SizeChanged(object sender, EventArgs e) {
