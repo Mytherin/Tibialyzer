@@ -248,7 +248,7 @@ namespace Tibialyzer {
         }
 
 
-        private static BattleListEntry[] battleList = new BattleListEntry[255];
+        private static BattleListEntry[] battleList = new BattleListEntry[500];
 
         private static void InitializeBattleList() {
             for (int i = 0; i < battleList.Length; i++) {

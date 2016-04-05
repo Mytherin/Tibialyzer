@@ -93,7 +93,6 @@ namespace Tibialyzer {
                     int count = 1;
                     if (split.Length > 2) int.TryParse(split[2], out count);
                     HuntManager.AddLoot(HuntManager.activeHunt, item, count);
-
                 } else if (comp.StartsWith("addwaste" + Constants.CommandSymbol)) { //addwaste@
                     string[] split = command.Split(Constants.CommandSymbol);
                     string parameter = split[1].Trim().ToLower();
