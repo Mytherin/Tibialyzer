@@ -29,7 +29,7 @@ Rest assured that if I wanted to make a program to hack people, I would not have
 # Building Tibialyzer
 Tibialyzer is written using C#. For visualization it uses WinForms, which is part of the .NET framework. Tibialyzer requires the .NET framework 4.5 or higher to run. In addition, Tibialyzer uses SQLite. The necessary SQLite libraries are shipped with the Tibialyzer application.
 
-Tibialyzer is build using Visual Studio 2015. If you wish to build it yourself, open the Tibialyzer solution using Visual Studio and press F5. If you do not have Visual Studio installed, you can download the [Express Edition](https://www.visualstudio.com/en-us/products/visual-studio-express-vs.aspx) that is provided for free by Microsoft. 
+Tibialyzer is build using Visual Studio 2015. If you wish to build it yourself, open the Tibialyzer solution using Visual Studio and press F5. If you do not have Visual Studio installed, you can download the [Community Edition](https://www.visualstudio.com/products/visual-studio-community-vs) that is provided for free by Microsoft. 
 
 For a high level overview of the Tibialyzer code base, check the [Tibialyzer Code Readme](https://github.com/Mytherin/Tibialyzer/tree/master/Tibialyzer#important-files). As Tibialyzer is performance intensive, I recommend compiling with optimization flags (i.e. Release Build) if you are compiling a version that you intend to use.
 
