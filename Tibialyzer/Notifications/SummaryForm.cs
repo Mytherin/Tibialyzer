@@ -72,17 +72,17 @@ namespace Tibialyzer {
             }
         }
 
-        public void RenderImageResized(Graphics gr, Image image, Rectangle targetRectangle) {
-            int x = targetRectangle.X, y = targetRectangle.Y;
-            int width = targetRectangle.Width, height = targetRectangle.Height;
-            if (image.Width > image.Height) {
-                height = (int)Math.Floor(height * ((double)image.Height / image.Width));
-                y += (width - height) / 2;
-            } else if (image.Height > image.Width) {
-                width = (int)Math.Floor(width * ((double)image.Width / image.Height));
-                x += (height - width) / 2;
-            }
+        public static void RenderImageResized(Graphics gr, Image image, Rectangle targetRectangle) {
             lock (image) {
+                int x = targetRectangle.X, y = targetRectangle.Y;
+                int width = targetRectangle.Width, height = targetRectangle.Height;
+                if (image.Width > image.Height) {
+                    height = (int)Math.Floor(height * ((double)image.Height / image.Width));
+                    y += (width - height) / 2;
+                } else if (image.Height > image.Width) {
+                    width = (int)Math.Floor(width * ((double)image.Width / image.Height));
+                    x += (height - width) / 2;
+                }
                 gr.DrawImage(image, new Rectangle(x, y, width, height), new Rectangle(0, 0, image.Width, image.Height), GraphicsUnit.Pixel);
             }
         }

@@ -248,6 +248,11 @@ C::NumpadPgDn
             setSettingIfNotSet("CurvedBarsAnchor", 4);
             setSettingIfNotSet("CurvedBarsXOffset", -100);
             setSettingIfNotSet("CurvedBarsYOffset", -100);
+            setSettingIfNotSet("PortraitAnchor", 0);
+            setSettingIfNotSet("PortraitXOffset", 300);
+            setSettingIfNotSet("PortraitYOffset", 20);
+            setSettingIfNotSet("PortraitWidth", 300);
+            setSettingIfNotSet("PortraitHeight", 200);
 
             foreach (string obj in Constants.HudTypes) {
                 string settingObject = obj.Replace(" ", "");

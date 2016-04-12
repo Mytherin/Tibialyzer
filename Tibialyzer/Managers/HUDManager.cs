@@ -47,6 +47,9 @@ namespace Tibialyzer {
                 case "hplist":
                     hud = new HealthList();
                     break;
+                case "portrait":
+                    hud = new Portrait();
+                    break;
 
             }
             if (hud == null) return;

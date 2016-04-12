@@ -47,11 +47,11 @@ namespace Tibialyzer {
             RefreshHealth();
         }
 
-        public static int GetExperience(int lvl) {
+        public static long GetExperience(int lvl) {
             return (50 * lvl * lvl * lvl - 150 * lvl * lvl + 400 * lvl) / 3;
         }
 
-        public void RefreshHUD(int min, int max, double percentage) {
+        public void RefreshHUD(long min, long max, double percentage) {
             if (displayText) {
                 if (statusType == StatusType.Experience) {
                     healthBarLabel.Text = String.Format("Lvl {0}: {1}%", MemoryReader.Level, (int)(percentage * 100));
@@ -73,7 +73,7 @@ namespace Tibialyzer {
 
         public void RefreshHealth() {
             timer.Enabled = false;
-            int life = 0, maxlife = 1;
+            long life = 0, maxlife = 1;
             if (statusType == StatusType.Health) {
                 life = MemoryReader.Health;
                 maxlife = MemoryReader.MaxHealth;
@@ -82,7 +82,7 @@ namespace Tibialyzer {
                 maxlife = MemoryReader.MaxMana;
             } else if (statusType == StatusType.Experience) {
                 int level = MemoryReader.Level;
-                int baseExperience = GetExperience(level - 1);
+                long baseExperience = GetExperience(level - 1);
                 life = MemoryReader.Experience - baseExperience;
                 maxlife = GetExperience(level) - baseExperience;
             }

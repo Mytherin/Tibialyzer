@@ -100,6 +100,12 @@
     <Compile Include="HUDs\HealthList.Designer.cs">
       <DependentUpon>HealthList.cs</DependentUpon>
     </Compile>
+    <Compile Include="HUDs\Portrait.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HUDs\Portrait.Designer.cs">
+      <DependentUpon>Portrait.cs</DependentUpon>
+    </Compile>
     <Compile Include="HUDs\StatusBar.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -383,6 +389,9 @@
     <EmbeddedResource Include="HUDs\HealthList.resx">
       <DependentUpon>HealthList.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="HUDs\Portrait.resx">
+      <DependentUpon>Portrait.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="HUDs\StatusBar.resx">
       <DependentUpon>StatusBar.cs</DependentUpon>
     </EmbeddedResource>
@@ -624,6 +633,21 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\defaulticon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\defaultportrait-blue.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\defaultportrait-green.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\defaultportrait-orange.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\defaultportrait-purple.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\defaultportrait-red.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\depot.png">
