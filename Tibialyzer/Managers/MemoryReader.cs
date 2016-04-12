@@ -96,7 +96,7 @@ namespace Tibialyzer {
 
         public static Dictionary<string, UInt32> ParseAddresses() {
             Dictionary<string, UInt32> addresses = new Dictionary<string, UInt32>();
-            using (StreamReader reader = new StreamReader(Constants.NodeDatabase)) {
+            using (StreamReader reader = new StreamReader(Constants.MemoryAddresses)) {
                 string line;
                 while ((line = reader.ReadLine()) != null) {
                     if (line.Contains("=")) {
