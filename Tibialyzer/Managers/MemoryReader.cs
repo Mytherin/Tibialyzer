@@ -186,27 +186,32 @@ namespace Tibialyzer {
             }
         }
 
-        public string PlayerName {
+        private static int playerAddress = -1;
+        
+        public static string PlayerName {
             get {
-                return ReadString(findPlayerInBattleList() + 4);
+                return GetPlayerName(PlayerId);
             }
         }
 
         public static int X {
             get {
-                return ReadInt32(findPlayerInBattleList() + BL_X_OFFSET) - START_X;
+                if (playerAddress == -1) playerAddress = GetPlayerPosition(PlayerId);
+                return battleList[playerAddress].x - START_X;
             }
         }
 
         public static int Y {
             get {
-                return ReadInt32(findPlayerInBattleList() + BL_Y_OFFSET) - START_Y;
+                if (playerAddress == -1) playerAddress = GetPlayerPosition(PlayerId);
+                return battleList[playerAddress].y - START_Y;
             }
         }
 
         public static int Z {
             get {
-                return ReadInt32(findPlayerInBattleList() + BL_Z_OFFSET);
+                if (playerAddress == -1) playerAddress = GetPlayerPosition(PlayerId);
+                return battleList[playerAddress].z;
             }
         }
 
@@ -288,6 +293,16 @@ namespace Tibialyzer {
             }
         }
 
+        public static int GetPlayerPosition(int id) {
+            lock (battleList) {
+                for (int i = 0; i < battleList.Length; i++) {
+                    if (battleList[i].name != null && battleList[i].id == id) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+        }
         public static int GetPlayerID(string name) {
             lock (battleList) {
                 for (int i = 0; i < battleList.Length; i++) {
@@ -297,7 +312,19 @@ namespace Tibialyzer {
                 }
                 return -1;
             }
-        }   
+        }
+
+        public static string GetPlayerName(int id) {
+            lock (battleList) {
+                for (int i = 0; i < battleList.Length; i++) {
+                    if (battleList[i].name != null && battleList[i].id == id) {
+                        return battleList[i].name;
+                    }
+                }
+                return null;
+            }
+        }
+
 
         public static int GetHealthPercentage(int id, ref int battlelistentry) {
             lock (battleList) {
@@ -313,14 +340,6 @@ namespace Tibialyzer {
                 }
                 return -1;
             }
-        }
-
-        private static UInt32 findPlayerInBattleList() {
-            UInt32 creature = GetAddress(BattleListAddress);
-            while (ReadInt32(creature) != PlayerId) {
-                creature += BL_CREATURE_SIZE;
-            }
-            return creature;
         }
     }
 

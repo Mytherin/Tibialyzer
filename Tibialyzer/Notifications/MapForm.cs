@@ -171,6 +171,7 @@ namespace Tibialyzer {
             Coordinate coord = startCoordinate;
             if (coord == null) {
                 try {
+                    MemoryReader.UpdateBattleList();
                     coord = new Coordinate(MemoryReader.X, MemoryReader.Y, MemoryReader.Z);
                 } catch {
                     coord = new Coordinate();

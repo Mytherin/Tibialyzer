@@ -409,16 +409,19 @@ namespace Tibialyzer {
                     }
                 } else if (comp.StartsWith("registerdoor" + Constants.CommandSymbol)) { //registerdoor@
                     using (StreamWriter writer = new StreamWriter("doors", true)) {
+                        MemoryReader.UpdateBattleList();
                         writer.WriteLine(String.Format("{0},{1},{2}", MemoryReader.X, MemoryReader.Y, MemoryReader.Z));
                     }
                 } else if (comp.StartsWith("registerteleport" + Constants.CommandSymbol)) { //registerteleport@
                     if (teleportCoordinatePrev == null) {
+                        MemoryReader.UpdateBattleList();
                         teleportCoordinatePrev = new Coordinate(MemoryReader.X, MemoryReader.Y, MemoryReader.Z);
                     } else {
                         string teleportName = "Stairs";
                         if (comp.Split('@')[1].Length > 0) {
                             teleportName = comp.Split('@')[1];
                         }
+                        MemoryReader.UpdateBattleList();
                         using (StreamWriter writer = new StreamWriter("teleports", true)) {
                             writer.WriteLine(String.Format("{0},{1},{2}-{3},{4},{5}-{6}", teleportCoordinatePrev.x, teleportCoordinatePrev.y, teleportCoordinatePrev.z, MemoryReader.X, MemoryReader.Y, MemoryReader.Z, teleportName));
                         }

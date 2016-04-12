@@ -135,6 +135,7 @@ namespace Tibialyzer {
                 bool recomputeRoute = true;
 
                 if (targetCoordinate != null) {
+                    MemoryReader.UpdateBattleList();
                     PlayerX = MemoryReader.X;
                     PlayerY = MemoryReader.Y;
                     PlayerZ = MemoryReader.Z;
