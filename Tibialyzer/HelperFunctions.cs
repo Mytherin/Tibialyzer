@@ -56,5 +56,14 @@ namespace Tibialyzer {
             }
             return -1;
         }
+
+        public static float ClampPercentage(this float percentage) {
+            if (float.IsNaN(percentage) || float.IsInfinity(percentage)) return 1;
+            return Math.Min(Math.Max(percentage, 0), 1);
+        }
+        public static double ClampPercentage(this double percentage) {
+            if (double.IsNaN(percentage) || double.IsInfinity(percentage)) return 1;
+            return Math.Min(Math.Max(percentage, 0), 1);
+        }
     }
 }

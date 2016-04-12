@@ -29,6 +29,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Globalization;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Tibialyzer {
     class MemoryReader {
@@ -66,34 +67,50 @@ namespace Tibialyzer {
 
         private static int START_X = 124 * 256;
         private static int START_Y = 121 * 256;
-
-        private static void ParseAddress(string setting, out UInt32 memoryAddress, UInt32 defaultValue) {
-            memoryAddress = defaultValue;
-            string hexString = SettingsManager.getSettingString(setting);
-            if (hexString != null) {
-                UInt32.TryParse(hexString.Replace("0x", ""), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out memoryAddress);
+        
+        public static void Initialize() {
+            try {
+                Dictionary<string, UInt32> memoryAddresses = ParseAddresses();
+                memoryAddresses.TryGetValue("xoraddress", out XORAddress);
+                memoryAddresses.TryGetValue("healthaddress", out HealthAddress);
+                memoryAddresses.TryGetValue("maxhealthaddress", out MaxHealthAddress);
+                memoryAddresses.TryGetValue("manaaddress", out ManaAddress);
+                memoryAddresses.TryGetValue("maxmanaaddress", out MaxManaAddress);
+                memoryAddresses.TryGetValue("playeridaddress", out PlayerIDAddress);
+                memoryAddresses.TryGetValue("battlelistaddress", out BattleListAddress);
+                memoryAddresses.TryGetValue("experienceaddress", out ExperienceAddress);
+                memoryAddresses.TryGetValue("leveladdress", out LevelAddress);
+                memoryAddresses.TryGetValue("magicleveladdress", out MagicLevelAddress);
+                memoryAddresses.TryGetValue("tabsbaseaddress", out TabsBaseAddress);
+                memoryAddresses.TryGetValue("ammunitioncountaddress", out AmmunitionCountAddress);
+                memoryAddresses.TryGetValue("ammunitiontypeaddress", out AmmunitionTypeAddress);
+                memoryAddresses.TryGetValue("weaponcountaddress", out WeaponCountAddress);
+                memoryAddresses.TryGetValue("weapontypeaddress", out WeaponTypeAddress);
+                memoryAddresses.TryGetValue("bootstypeaddress", out BootsTypeAddress);
+                memoryAddresses.TryGetValue("ringtypeaddress", out RingTypeAddress);
+            } catch(Exception ex) {
+                MainForm.mainForm.DisplayWarning("Failed to read memory addresses file: " + ex.Message);
             }
             InitializeBattleList();
         }
 
-        public static void Initialize() {
-            ParseAddress("XORAddress", out XORAddress, 0x534658);
-            ParseAddress("HealthAddress", out HealthAddress, 0x6d2030);
-            ParseAddress("MaxHealthAddress", out MaxHealthAddress, 0x6D2024);
-            ParseAddress("ManaAddress", out ManaAddress, 0x534688);
-            ParseAddress("MaxManaAddress", out MaxManaAddress, 0x53465C);
-            ParseAddress("PlayerIDAddress", out PlayerIDAddress, 0x6D202C);
-            ParseAddress("BattleListAddress", out BattleListAddress, 0x72DE20);
-            ParseAddress("ExperienceAddress", out ExperienceAddress, 0x534660);
-            ParseAddress("LevelAddress", out LevelAddress, 0x534670);
-            ParseAddress("MagicLevelAddress", out MagicLevelAddress, 0x534678);
-            ParseAddress("TabsBaseAddress", out TabsBaseAddress, 0x534970);
-            ParseAddress("AmmunitionCountAddress", out AmmunitionCountAddress, 0x773E8C);
-            ParseAddress("AmmunitionTypeAddress", out AmmunitionTypeAddress, 0x773E8C + 4);
-            ParseAddress("WeaponCountAddress", out WeaponCountAddress, 0x773F0C);
-            ParseAddress("WeaponTypeAddress", out WeaponTypeAddress, 0x773F0C + 4);
-            ParseAddress("BootsTypeAddress", out BootsTypeAddress, 0x773ED0);
-            ParseAddress("RingTypeAddress", out RingTypeAddress, 0x773EB0);
+        public static Dictionary<string, UInt32> ParseAddresses() {
+            Dictionary<string, UInt32> addresses = new Dictionary<string, UInt32>();
+            using (StreamReader reader = new StreamReader(Constants.NodeDatabase)) {
+                string line;
+                while ((line = reader.ReadLine()) != null) {
+                    if (line.Contains("=")) {
+                        string[] split = line.Split('=');
+
+                        string key = split[0].Trim().ToLower();
+                        UInt32 value = 0;
+                        if (UInt32.TryParse(split[1].Replace("0x", ""), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out value)) {
+                            addresses.Add(key, value);
+                        }
+                    }
+                }
+            }
+            return addresses;
         }
 
         private static UInt32 baseAddress;

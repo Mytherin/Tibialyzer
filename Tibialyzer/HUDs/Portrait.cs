@@ -46,6 +46,8 @@ namespace Tibialyzer {
         }
 
         private void RefreshHUD(double lifePercentage, double manaPercentage) {
+            lifePercentage = lifePercentage.ClampPercentage();
+            manaPercentage = manaPercentage.ClampPercentage();
             Bitmap bitmap = new Bitmap(pictureBox.Size.Width, pictureBox.Size.Height);
 
             int width = bitmap.Width;

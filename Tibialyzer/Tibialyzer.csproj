@@ -566,6 +566,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Database\MemoryAddresses.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Database\pluralMap.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

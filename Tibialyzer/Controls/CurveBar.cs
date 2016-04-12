@@ -72,8 +72,8 @@ namespace Tibialyzer {
 
                 pen.Width = thickness;
 
-                health = Math.Min(1, Math.Max(0, health));
-                mana = Math.Min(1, Math.Max(0, mana));
+                health = health.ClampPercentage();
+                mana = mana.ClampPercentage();
                 
                 pen.Color = StyleManager.GetHealthColor(health);
                 e.Graphics.DrawArc(pen, rect, 135, 90 * health);

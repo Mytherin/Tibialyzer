@@ -49,6 +49,8 @@ namespace Tibialyzer {
         public static string LootDatabaseFile = @"Database\Loot.db";
         //! Location of the main database; this database contains all Tibia-related information (creatures, items, npcs, etc)
         public static string DatabaseFile = @"Database\Database.db";
+        //! Location of file containing Tibia memory addresses
+        public static string MemoryAddresses = @"Database\MemoryAddresses.txt";
         //! Location of the node database; this database contains information used by the pathfinder
         public static string NodeDatabase = @"Database\Nodes.db";
         //! Location of the plural map file; this file contains a map of plural items that don't follow the normal plural rules
