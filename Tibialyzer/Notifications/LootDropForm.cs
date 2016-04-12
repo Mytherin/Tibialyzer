@@ -86,7 +86,11 @@ namespace Tibialyzer {
         public static Bitmap DrawCountOnItem(Item item, int itemCount) {
             Bitmap image;
             if (item.stackable) {
-                image = new Bitmap(LootDropForm.GetStackImage(item.image, itemCount, item));
+                try {
+                    image = new Bitmap(LootDropForm.GetStackImage(item.image, itemCount, item));
+                } catch {
+                    image = new Bitmap(item.image);
+                }
             } else {
                 image = new Bitmap(item.image);
             }
