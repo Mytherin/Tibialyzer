@@ -457,6 +457,9 @@ namespace Tibialyzer {
             totalExpLabel.Location = new Point(5, y += 20);
             totalExpValue.Location = new Point(xPosition, y);
             totalExpValue.Text = hunt.totalExp.ToString("N0");
+            expHourValue.Text = ScanningManager.lastResults == null ? "-" : ScanningManager.lastResults.expPerHour.ToString("N0");
+            expHourLabel.Location = new Point(5, y += 20);
+            expHourValue.Location = new Point(xPosition, y);
             totalTimeLabel.Location = new Point(5, y += 20);
             totalTimeValue.Location = new Point(xPosition, y);
             usedItemsValue.Text = usedItemValue.ToString("N0");
