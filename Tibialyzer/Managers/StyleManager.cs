@@ -165,6 +165,14 @@ namespace Tibialyzer {
             }
         }
 
+        public static string GoldToText(double gold) {
+            if (gold < 1) {
+                return String.Format("{0:0.0}", gold);
+            } else {
+                return GoldToText((long)Math.Round(gold));
+            }
+        }
+
         public static Color GetHealthColor(double percentage) {
             if (percentage < 0.1) {
                 return StyleManager.HealthCritical;
