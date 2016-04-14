@@ -304,7 +304,7 @@ namespace Tibialyzer {
                 List<Control> controlList = new List<Control>();
                 foreach (Control c in (tab as Form).Controls) {
                     controlList.Add(c);
-                    c.Location = new Point(c.Location.X + 101, c.Location.Y + 24);
+                    c.Location = new Point(c.Location.X + mainButton.Location.X + mainButton.Width + 4, c.Location.Y + 24);
                 }
                 tabControls.Add(controlList);
             }

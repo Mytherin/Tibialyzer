@@ -86,7 +86,7 @@ namespace Tibialyzer {
             Size item_size = new Size(32, 32); //size of item image
             int dropbar_height = 6; //height of dropbar
             int item_spacing = 6; //spacing between items
-            int base_x = 110;
+            int base_x = this.mainImage.Location.X + this.mainImage.Width + item_spacing;
             int base_y = 24;
             int max_x = this.Size.Width - 108;
             int max_y = 388;
