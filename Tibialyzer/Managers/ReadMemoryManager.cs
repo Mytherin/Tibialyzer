@@ -518,8 +518,17 @@ namespace Tibialyzer {
                                 if (target == "yourself" || target == "itself" || target == "himself" || target == "herself") {
                                     target = source;
                                 }
+                                
                                 if (target.Length == 0 || source.Length == 0) {
                                     continue;
+                                }
+
+                                if (split.Contains("by")) {
+                                    // X healed Y for Z. => X is the source and Y is the target (default)
+                                    // X was healed by Y for Z. => X is the target and Y is the source, so swap source and target
+                                    string temp = source;
+                                    source = target;
+                                    target = temp;
                                 }
 
                                 if (!res.healingDone.ContainsKey(source)) {
