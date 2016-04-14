@@ -276,12 +276,12 @@ namespace Tibialyzer {
             ClearControlList(summaryControls, out minheight, out maxheight);
             int y = maxheight < 0 ? 30 : minheight;
 
-            CreateSummaryLabel("Loot", totalValue.ToString(), x, ref y, StyleManager.ItemGoldColor, summaryControls);
-            CreateSummaryLabel("Exp", HuntManager.activeHunt.totalExp.ToString(), x, ref y, StyleManager.NotificationTextColor, summaryControls);
+            CreateSummaryLabel("Loot", totalValue.ToString("N0"), x, ref y, StyleManager.ItemGoldColor, summaryControls);
+            CreateSummaryLabel("Exp", HuntManager.activeHunt.totalExp.ToString("N0"), x, ref y, StyleManager.NotificationTextColor, summaryControls);
             CreateSummaryLabel("Time", LootDropForm.TimeToString((long)HuntManager.activeHunt.totalTime), x, ref y, StyleManager.NotificationTextColor, summaryControls);
-            CreateSummaryLabel("Waste", totalWaste.ToString(), x, ref y, StyleManager.WasteColor, summaryControls);
+            CreateSummaryLabel("Waste", totalWaste.ToString("N0"), x, ref y, StyleManager.WasteColor, summaryControls);
             if (ScanningManager.lastResults != null) {
-                CreateSummaryLabel("Exp/Hour", ScanningManager.lastResults.expPerHour.ToString(), x, ref y, StyleManager.NotificationTextColor, summaryControls);
+                CreateSummaryLabel("Exp/Hour", ScanningManager.lastResults.expPerHour.ToString("N0"), x, ref y, StyleManager.NotificationTextColor, summaryControls);
             }
         }
 

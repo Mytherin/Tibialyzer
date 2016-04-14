@@ -452,14 +452,14 @@ namespace Tibialyzer {
             huntNameLabel.Text = hunt.name.ToString();
             totalValueLabel.Location = new Point(5, y);
             totalValueValue.Location = new Point(xPosition, y);
-            totalValueValue.Text = total_value.ToString();
+            totalValueValue.Text = total_value.ToString("N0");
             value_tooltip.SetToolTip(totalValueValue, String.Format("Average gold for these creature kills: {0} gold.", averageGold));
             totalExpLabel.Location = new Point(5, y += 20);
             totalExpValue.Location = new Point(xPosition, y);
-            totalExpValue.Text = hunt.totalExp.ToString();
+            totalExpValue.Text = hunt.totalExp.ToString("N0");
             totalTimeLabel.Location = new Point(5, y += 20);
             totalTimeValue.Location = new Point(xPosition, y);
-            usedItemsValue.Text = usedItemValue.ToString();
+            usedItemsValue.Text = usedItemValue.ToString("N0");
             usedItemsLabel.Location = new Point(5, y += 20);
             usedItemsValue.Location = new Point(xPosition, y);
 
