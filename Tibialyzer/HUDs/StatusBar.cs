@@ -12,6 +12,10 @@ namespace Tibialyzer {
     public enum StatusType { Health, Mana, Experience, ExpPerHour };
 
     public partial class StatusBar : BaseHUD {
+        private const int WS_EX_Transparent = 0x20;
+        private const int WS_EX_Layered = 0x80000;
+        private const int WS_EX_Composited = 0x02000000;
+
         private StatusType statusType;
         private bool displayText;
 
@@ -19,8 +23,8 @@ namespace Tibialyzer {
             this.statusType = statusType;
             InitializeComponent();
 
-            BackColor = StyleManager.TransparencyKey;
-            TransparencyKey = StyleManager.TransparencyKey;
+            BackColor = StyleManager.BlendTransparencyKey;
+            TransparencyKey = StyleManager.BlendTransparencyKey;
 
             displayText = SettingsManager.getSettingBool(GetHUD() + "DisplayText");
             double opacity = SettingsManager.getSettingDouble(GetHUD() + "Opacity");
@@ -34,6 +38,14 @@ namespace Tibialyzer {
             this.healthBarLabel.Font = new System.Drawing.Font("Verdana", (float)fontSize, System.Drawing.FontStyle.Bold);
             this.RefreshHUD(100, 100, 1);
             this.Load += StatusBar_Load;
+        }
+
+        protected override CreateParams CreateParams {
+            get {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= WS_EX_Composited | WS_EX_Transparent | WS_EX_Layered;
+                return cp;
+            }
         }
 
         private System.Timers.Timer timer;

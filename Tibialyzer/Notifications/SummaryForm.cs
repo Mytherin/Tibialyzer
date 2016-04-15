@@ -20,9 +20,9 @@ namespace Tibialyzer {
             InitializeComponent();
         }
 
-        public static void RenderText(Graphics gr, string text, int x, Color fillColor, Color textColor, Color traceColor, int maxHeight = -1, int y = 4, Font font = null, bool center = false) {
-            gr.InterpolationMode = InterpolationMode.High;
-            gr.SmoothingMode = SmoothingMode.HighQuality;
+        public static void RenderText(Graphics gr, string text, int x, Color fillColor, Color textColor, Color traceColor, int maxHeight = -1, int y = 4, Font font = null, bool center = false, InterpolationMode interpolationMode = InterpolationMode.High, SmoothingMode smoothingMode = SmoothingMode.HighQuality) {
+            gr.InterpolationMode = interpolationMode;
+            gr.SmoothingMode = smoothingMode;
             gr.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
             gr.CompositingQuality = CompositingQuality.HighQuality;
             FontFamily family = FontFamily.GenericMonospace;

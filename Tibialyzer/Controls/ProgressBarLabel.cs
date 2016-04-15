@@ -9,27 +9,18 @@ using System.Windows.Forms;
 namespace Tibialyzer {
     class ProgressBarLabel : Label {
         public double percentage;
+        public Color backColor = StyleManager.BlendTransparencyKey;
 
         public ProgressBarLabel() {
             this.percentage = 1;
         }
-
-        private void TileImage(Graphics gr, Image image) {
-            lock(image) {
-                for (int y = 0; y < this.Size.Height; y += image.Height) {
-                    for(int x = 0; x < this.Size.Width; x += image.Width) {
-                        gr.DrawImage(image, new Point(x, y));
-                    }
-                }
-            }
-        }
-
+        
         protected override void OnPaint(PaintEventArgs e) {
-            SummaryForm.RenderText(e.Graphics, this.Text, 5, Color.Empty, Color.FromArgb(191, 191, 191), Color.FromArgb(64, 64, 64), this.Height, 4, this.Font, true);
+            SummaryForm.RenderText(e.Graphics, this.Text, 5, Color.Empty, StyleManager.NotificationTextColor, Color.FromArgb(64, 64, 64), this.Height, 4, this.Font, true, System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor, backColor == StyleManager.TransparencyKey ? System.Drawing.Drawing2D.SmoothingMode.None : System.Drawing.Drawing2D.SmoothingMode.HighQuality);
         }
 
         protected override void OnPaintBackground(PaintEventArgs e) {
-            TileImage(e.Graphics, StyleManager.GetImage("background_image.png"));
+            e.Graphics.Clear(backColor);
             using (Brush brush = new SolidBrush(this.BackColor)) {
                 e.Graphics.FillRectangle(brush, new Rectangle(0, 0, (int)(this.Width * percentage), this.Height));
             }

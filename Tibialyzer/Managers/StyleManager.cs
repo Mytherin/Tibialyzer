@@ -77,6 +77,7 @@ namespace Tibialyzer {
         public static Color WasteColor = Color.FromArgb(255, 64, 64);
 
         public static Color TransparencyKey = Color.FromArgb(251, 0, 255);
+        public static Color BlendTransparencyKey = Color.FromArgb(17, 17, 17);
         #endregion
 
         #region UI Fonts
