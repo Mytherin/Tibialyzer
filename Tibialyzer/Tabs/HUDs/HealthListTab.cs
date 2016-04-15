@@ -93,5 +93,9 @@ namespace Tibialyzer {
             (sender as Control).BackColor = StyleManager.MainFormButtonColor;
             (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
         }
+
+        private void refreshButton_Click(object sender, EventArgs e) {
+            CommandManager.ExecuteCommand("hud@healthlist");
+        }
     }
 }

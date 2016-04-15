@@ -73,6 +73,7 @@ namespace Tibialyzer {
         }
 
         public static void RenderImageResized(Graphics gr, Image image, Rectangle targetRectangle) {
+            if (image == null) return;
             lock (image) {
                 int x = targetRectangle.X, y = targetRectangle.Y;
                 int width = targetRectangle.Width, height = targetRectangle.Height;

@@ -31,6 +31,7 @@
             this.label67 = new System.Windows.Forms.Label();
             this.displayPlayerNameBox = new Tibialyzer.PrettyCheckBox();
             this.displayPlayerImageBox = new Tibialyzer.PrettyCheckBox();
+            this.refreshButton = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.playerImageBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -147,12 +148,29 @@
             this.displayPlayerImageBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.displayPlayerImageBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             // 
+            // refreshButton
+            // 
+            this.refreshButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.refreshButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.refreshButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.refreshButton.Location = new System.Drawing.Point(169, 418);
+            this.refreshButton.Name = "refreshButton";
+            this.refreshButton.Padding = new System.Windows.Forms.Padding(10);
+            this.refreshButton.Size = new System.Drawing.Size(172, 38);
+            this.refreshButton.TabIndex = 72;
+            this.refreshButton.Text = "Refresh";
+            this.refreshButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
+            this.refreshButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.refreshButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            // 
             // HealthListTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(538, 514);
+            this.Controls.Add(this.refreshButton);
             this.Controls.Add(this.label67);
             this.Controls.Add(this.displayPlayerNameBox);
             this.Controls.Add(this.displayPlayerImageBox);
@@ -179,5 +197,6 @@
         private System.Windows.Forms.Label label67;
         private PrettyCheckBox displayPlayerNameBox;
         private PrettyCheckBox displayPlayerImageBox;
+        private System.Windows.Forms.Label refreshButton;
     }
 }

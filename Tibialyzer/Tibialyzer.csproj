@@ -375,6 +375,12 @@
     <Compile Include="Tabs\HUDs\HealthListTab.Designer.cs">
       <DependentUpon>HealthListTab.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\HUDs\PortraitTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\HUDs\PortraitTab.Designer.cs">
+      <DependentUpon>PortraitTab.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\TabBase.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -536,6 +542,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\HUDs\HealthListTab.resx">
       <DependentUpon>HealthListTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\HUDs\PortraitTab.resx">
+      <DependentUpon>PortraitTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\TabBase.resx">
       <DependentUpon>TabBase.cs</DependentUpon>

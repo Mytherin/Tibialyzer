@@ -276,6 +276,13 @@ C::NumpadPgDn
             setSettingIfNotSet("SummaryRecentDropsItemSize", 25);
             setSettingIfNotSet("SummaryWasteItemSize", 25);
             setSettingIfNotSet("MaxDamageChartPlayers", 0);
+
+            setSettingIfNotSet("PortraitBackgroundScale", 100);
+            setSettingIfNotSet("PortraitBackgroundXOffset", 0);
+            setSettingIfNotSet("PortraitBackgroundYOffset", 0);
+            setSettingIfNotSet("PortraitCenterScale", 80);
+            setSettingIfNotSet("PortraitCenterXOffset", 0);
+            setSettingIfNotSet("PortraitCenterYOffset", 0);
         }
 
         public static void ResetSettingsToDefault() {

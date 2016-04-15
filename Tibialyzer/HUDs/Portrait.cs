@@ -12,6 +12,9 @@ namespace Tibialyzer {
     public partial class Portrait : BaseHUD {
         PictureBox pictureBox;
         Image portrait;
+        Image centerImage;
+        Point backgroundOffset, centerOffset;
+        int backgroundScale, centerScale;
 
         private const int WS_EX_Transparent = 0x20;
         private const int WS_EX_Layered = 0x80000;
@@ -20,8 +23,12 @@ namespace Tibialyzer {
         public Portrait() {
             InitializeComponent();
 
-            BackColor = StyleManager.TransparencyKey;
-            TransparencyKey = StyleManager.TransparencyKey;
+            BackColor = StyleManager.BlendTransparencyKey;
+            TransparencyKey = StyleManager.BlendTransparencyKey;
+        }
+
+        ~Portrait() {
+            portrait.Dispose();
         }
 
         protected override CreateParams CreateParams {
@@ -39,7 +46,24 @@ namespace Tibialyzer {
             pictureBox.BackColor = StyleManager.TransparencyKey;
             this.Controls.Add(pictureBox);
 
-            portrait = StyleManager.GetImage("defaultportrait-blue.png");
+            try {
+                portrait = Image.FromFile(SettingsManager.getSettingString("PortraitBackgroundImage"));
+            } catch {
+                portrait = StyleManager.GetImage("defaultportrait-blue.png").Clone() as Image;
+            }
+
+            try {
+                centerImage = Image.FromFile(SettingsManager.getSettingString("PortraitCenterImage"));
+            } catch {
+                centerImage = null;
+            }
+
+
+            backgroundOffset = new Point(SettingsManager.getSettingInt("PortraitBackgroundXOffset"), SettingsManager.getSettingInt("PortraitBackgroundYOffset"));
+            centerOffset = new Point(SettingsManager.getSettingInt("PortraitCenterXOffset"), SettingsManager.getSettingInt("PortraitCenterYOffset"));
+
+            backgroundScale = Math.Min(100, Math.Max(0, SettingsManager.getSettingInt("PortraitBackgroundScale")));
+            centerScale = Math.Min(100, Math.Max(0, SettingsManager.getSettingInt("PortraitCenterScale")));
 
             RefreshHUD(1, 1);
 
@@ -68,9 +92,8 @@ namespace Tibialyzer {
             using (Graphics gr = Graphics.FromImage(bitmap)) {
                 // we set the interpolation mode to nearest neighbor because other interpolation modes modify the colors
                 // which causes the transparency key to appear around the edges of the object
-                gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 
-                gr.Clear(StyleManager.TransparencyKey);
+                gr.Clear(StyleManager.BlendTransparencyKey);
                 Rectangle lifeRectangle = new Rectangle();
                 lifeRectangle.X = (int)(height * 0.7);
                 lifeRectangle.Y = (int)(height * 0.15) - 2;
@@ -99,7 +122,13 @@ namespace Tibialyzer {
                     gr.FillRectangle(brush, manaRectangle);
                 }
 
-                SummaryForm.RenderImageResized(gr, portrait, new Rectangle(0, 0, height, height));
+                int backgroundSize = (int)(height * backgroundScale / 100.0);
+                int backgroundBaseOffset = (height - backgroundSize) / 2;
+                int centerSize = (int)(height * centerScale / 100.0);
+                int centerBaseOffset = (height - centerSize) / 2;
+
+                SummaryForm.RenderImageResized(gr, portrait, new Rectangle(backgroundBaseOffset + backgroundOffset.X, backgroundBaseOffset + backgroundOffset.Y, backgroundSize, backgroundSize));
+                SummaryForm.RenderImageResized(gr, centerImage, new Rectangle(centerBaseOffset + centerOffset.X, centerBaseOffset + centerOffset.Y, centerSize, centerSize));
 
                 Rectangle levelRect = new Rectangle((int)(height * 0.7), (int)(height * 0.6), (int)(height * 0.35), (int)(height * 0.35));
                 using (Brush brush = new SolidBrush(StyleManager.MainFormButtonColor)) {

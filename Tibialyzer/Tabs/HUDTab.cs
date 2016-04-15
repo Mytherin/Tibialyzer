@@ -58,7 +58,7 @@ namespace Tibialyzer {
             hudOpacityBox.Text = SettingsManager.getSettingString(hudName + "Opacity");
             displayHUDTextBox.Checked = SettingsManager.getSettingBool(hudName + "DisplayText");
             
-            advancedOptionsButton.Visible = hudName == "HealthList";
+            advancedOptionsButton.Visible = hudName == "HealthList" || hudName == "Portrait";
 
             MainForm.prevent_settings_update = false;
         }
@@ -150,9 +150,15 @@ namespace Tibialyzer {
         }
 
         private void advancedOptionsButton_Click(object sender, EventArgs e) {
-            MainForm.mainForm.Invoke((MethodInvoker)delegate {
-                MainForm.mainForm.switchTab(14);
-            });
+            if (getSelectedHudName() == "HealthList") {
+                MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                    MainForm.mainForm.switchTab(14);
+                });
+            } else if (getSelectedHudName() == "Portrait") {
+                MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                    MainForm.mainForm.switchTab(15);
+                });
+            }
         }
     }
 }

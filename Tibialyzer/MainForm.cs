@@ -299,7 +299,7 @@ namespace Tibialyzer {
         private List<Control> activeControls = new List<Control>();
         private List<List<Control>> tabControls = new List<List<Control>>();
         private void InitializeTabs() {
-            Tabs = new List<TabInterface> { new MainTab(), new SettingsTab(), new HuntsTab(), new LogsTab(), new NotificationsTab(), new PopupsTab(), new DatabaseTab(), new AutoHotkeyTab(), new ScreenshotTab(), new BrowseTab(), new HelpTab(), new SystemTab(), new SummaryTab(), new HUDTab(), new HealthListTab() };
+            Tabs = new List<TabInterface> { new MainTab(), new SettingsTab(), new HuntsTab(), new LogsTab(), new NotificationsTab(), new PopupsTab(), new DatabaseTab(), new AutoHotkeyTab(), new ScreenshotTab(), new BrowseTab(), new HelpTab(), new SystemTab(), new SummaryTab(), new HUDTab(), new HealthListTab(), new PortraitTab() };
             foreach (TabInterface tab in Tabs) {
                 List<Control> controlList = new List<Control>();
                 foreach (Control c in (tab as Form).Controls) {
