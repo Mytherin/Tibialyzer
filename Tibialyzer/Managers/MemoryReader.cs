@@ -139,6 +139,9 @@ namespace Tibialyzer {
         public static Int32 ReadInt32(Int64 address, int handle = -1) {
             return BitConverter.ToInt32(ReadBytes(address, 4, handle), 0);
         }
+        public static Int64 ReadInt64(Int64 address, int handle = -1) {
+            return BitConverter.ToInt64(ReadBytes(address, 8, handle), 0);
+        }
 
         public static UInt32 ReadUInt32(Int64 address, int handle = -1) {
             return BitConverter.ToUInt32(ReadBytes(address, 4, handle), 0);
@@ -215,9 +218,9 @@ namespace Tibialyzer {
             }
         }
 
-        public static int Experience {
+        public static long Experience {
             get {
-                return ReadInt32(GetAddress(ExperienceAddress));
+                return ReadInt64(GetAddress(ExperienceAddress));
             }
         }
 

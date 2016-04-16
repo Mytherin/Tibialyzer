@@ -32,6 +32,13 @@ namespace Tibialyzer {
             this.Opacity = opacity;
         }
 
+        ~StatusBar() {
+            if (timer != null) {
+                timer.Stop();
+                timer.Dispose();
+            }
+        }
+
         public override void LoadHUD() {
             double fontSize = SettingsManager.getSettingDouble(GetHUD() + "FontSize");
             fontSize = fontSize < 0 ? 20 : fontSize;
@@ -48,14 +55,15 @@ namespace Tibialyzer {
             }
         }
 
-        private System.Timers.Timer timer;
+        private Timer timer;
         private void StatusBar_Load(object sender, EventArgs e) {
-            timer = new System.Timers.Timer(10);
-            timer.Elapsed += Timer_Elapsed;
+            timer = new Timer();
+            timer.Interval = 25;
+            timer.Tick += Timer_Tick;
             timer.Start();
         }
-
-        private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
+        
+        private void Timer_Tick(object sender, EventArgs e) {
             RefreshHealth();
         }
 
@@ -84,7 +92,6 @@ namespace Tibialyzer {
         }
 
         public void RefreshHealth() {
-            timer.Enabled = false;
             long life = 0, maxlife = 1;
             if (statusType == StatusType.Health) {
                 life = MemoryReader.Health;
@@ -110,12 +117,7 @@ namespace Tibialyzer {
                     RefreshHUD(life, maxlife, percentage);
                     this.Visible = visible;
                 });
-                timer.Enabled = true;
             } catch {
-                if (timer != null) {
-                    timer.Dispose();
-                    timer = null;
-                }
             }
         }
 

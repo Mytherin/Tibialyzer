@@ -31,7 +31,7 @@ namespace Tibialyzer {
         object timerLock = new object();
         object closeLock = new object();
         System.Timers.Timer closeTimer = null;
-        System.Timers.Timer checkTimer = null;
+        Timer checkTimer = null;
         public static Bitmap background_image = null;
         public TibialyzerCommand command;
         protected PictureBox back_button;
@@ -127,13 +127,14 @@ namespace Tibialyzer {
             }
 
             if (hideWhenTibiaInactive) {
-                checkTimer = new System.Timers.Timer(10);
-                checkTimer.Elapsed += CheckTimer;
-                checkTimer.Enabled = true;
+                checkTimer = new Timer();
+                checkTimer.Interval = 50;
+                checkTimer.Tick += CheckTimer_Tick;
+                checkTimer.Start();
             }
         }
 
-        private void CheckTimer(object sender, System.Timers.ElapsedEventArgs e) {
+        private void CheckTimer_Tick(object sender, EventArgs e) {
             try {
                 bool tibiaActive = ProcessManager.IsTibiaActive();
                 if (tibiaActive && !this.Visible) {
@@ -147,7 +148,7 @@ namespace Tibialyzer {
                 }
             } catch { }
         }
-
+        
         private void NotificationForm_SizeChanged(object sender, EventArgs e) {
             increaseWidthButton.Location = new System.Drawing.Point(this.Width - 45, 3);
             decreaseWidthButton.Location = new System.Drawing.Point(this.Width - 85, 3);

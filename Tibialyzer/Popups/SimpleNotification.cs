@@ -12,7 +12,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,13 +22,15 @@ using System.Windows.Forms;
 
 namespace Tibialyzer {
     public class SimpleNotification : Form {
-        System.Timers.Timer moveTimer = null;
+        Timer moveTimer = null;
         public int targetPositionX = 0, targetPositionY = 0;
+        public double targetOpacity;
         System.Timers.Timer closeTimer = null;
         private bool animations = true;
 
         public SimpleNotification() {
             this.ShowInTaskbar = false;
+            targetOpacity = 1.0;
         }
 
         protected void InitializeSimpleNotification(bool movement = true, bool destroy = true, double extraTime = 0) {
@@ -40,28 +42,51 @@ namespace Tibialyzer {
             this.animations = SettingsManager.getSettingBool("EnableSimpleNotificationAnimation");
 
             if (movement) {
-                moveTimer = new System.Timers.Timer(5);
-                moveTimer.Elapsed += MoveTimer_Elapsed;
-                moveTimer.Enabled = true;
+                moveTimer = new Timer();
+                moveTimer.Interval = 1;
+                moveTimer.Tick += MoveTimer_Tick;
+                moveTimer.Start();
             }
             if (destroy) {
                 closeTimer = new System.Timers.Timer((Math.Max(SettingsManager.getSettingInt("PopupDuration"), 1) + extraTime) * 1000);
-                closeTimer.Elapsed += new System.Timers.ElapsedEventHandler(CloseNotification);
-                closeTimer.Enabled = true;
+                closeTimer.Elapsed += CloseTimer_Elapsed;
+                closeTimer.Start();
             }
         }
 
+        private void CloseTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
+            closeTimer.Dispose();
+            closeTimer = null;
+            if (this.animations) {
+                targetOpacity = 0;
+            } else {
+                try {
+                    this.Invoke((MethodInvoker)delegate {
+                        close();
+                    });
+                } catch {
 
-        private void MoveTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
+                }
+            }
+        }
+
+        private int concurrentEntries = 0;
+        private void MoveTimer_Tick(object sender, EventArgs e) {
             int desktopX = this.DesktopLocation.X;
             int desktopY = this.DesktopLocation.Y;
-            if (this.Visible && (desktopX != targetPositionX || desktopY != targetPositionY)) {
+            if (this.Visible && (desktopX != targetPositionX || desktopY != targetPositionY || targetOpacity != Opacity)) {
                 int updatedX = Math.Abs(desktopX - targetPositionX) < 3 ? targetPositionX : (int)(desktopX + (targetPositionX - desktopX) / 5.0);
                 int updatedY = Math.Abs(desktopY - targetPositionY) < 3 ? targetPositionY : (int)(desktopY + (targetPositionY - desktopY) / 5.0);
+                double updatedOpacity = Math.Abs(targetOpacity - Opacity) < 0.1 ? targetOpacity : Opacity + (targetOpacity - Opacity) / 10.0;
                 try {
                     this.Invoke((MethodInvoker)delegate {
                         if (!this.IsDisposed) {
                             this.SetDesktopLocation(updatedX, updatedY);
+                            this.Opacity = updatedOpacity;
+                            if (updatedOpacity <= 0 || (targetOpacity == 0 && !animations)) {
+                                moveTimer.Dispose();
+                                close();
+                            }
                         }
                     });
                 } catch {
@@ -82,36 +107,6 @@ namespace Tibialyzer {
             }
         }
 
-        public void CloseNotification(object sender, EventArgs e) {
-            if (moveTimer != null) {
-                moveTimer.Dispose();
-                moveTimer = null;
-            }
-            if (!this.animations || this.Opacity <= 0) {
-                closeTimer.Close();
-
-                try {
-                    this.Invoke((MethodInvoker)delegate {
-                        close();
-                    });
-                } catch {
-
-                }
-            } else {
-                if (this.IsHandleCreated && !this.IsDisposed) {
-                    try {
-                        this.Invoke((MethodInvoker)delegate {
-                            this.Opacity -= 0.05;
-                        });
-                        closeTimer.Interval = 20;
-                        closeTimer.Start();
-                    } catch(Exception ex) {
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-
-            }
-        }
         protected override bool ShowWithoutActivation {
             get { return true; }
         }
@@ -132,8 +127,10 @@ namespace Tibialyzer {
 
         public void close() {
             try {
-                closeTimer.Dispose();
-                closeTimer = null;
+                if (closeTimer != null) {
+                    closeTimer.Dispose();
+                    closeTimer = null;
+                }
                 this.Close();
             } catch {
 

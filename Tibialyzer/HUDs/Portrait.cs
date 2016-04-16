@@ -11,10 +11,9 @@ using System.Windows.Forms;
 namespace Tibialyzer {
     public partial class Portrait : BaseHUD {
         PictureBox pictureBox;
-        Image portrait;
-        Image centerImage;
-        Point backgroundOffset, centerOffset;
-        int backgroundScale, centerScale;
+        private Image backgroundImage, centerImage;
+        private Point backgroundOffset, centerOffset;
+        private int backgroundScale, centerScale;
 
         private const int WS_EX_Transparent = 0x20;
         private const int WS_EX_Layered = 0x80000;
@@ -28,7 +27,14 @@ namespace Tibialyzer {
         }
 
         ~Portrait() {
-            portrait.Dispose();
+            if (backgroundImage != null) {
+                backgroundImage.Dispose();
+            }
+
+            if (timer != null) {
+                timer.Stop();
+                timer.Dispose();
+            }
         }
 
         protected override CreateParams CreateParams {
@@ -47,13 +53,23 @@ namespace Tibialyzer {
             this.Controls.Add(pictureBox);
 
             try {
-                portrait = Image.FromFile(SettingsManager.getSettingString("PortraitBackgroundImage"));
+                string backgroundLocation = SettingsManager.getSettingString("PortraitBackgroundImage");
+                if (backgroundLocation != null) {
+                    backgroundImage = Image.FromFile(backgroundLocation);
+                } else {
+                    backgroundImage = StyleManager.GetImage("defaultportrait-blue.png").Clone() as Image;
+                }
             } catch {
-                portrait = StyleManager.GetImage("defaultportrait-blue.png").Clone() as Image;
+                backgroundImage = StyleManager.GetImage("defaultportrait-blue.png").Clone() as Image;
             }
 
             try {
-                centerImage = Image.FromFile(SettingsManager.getSettingString("PortraitCenterImage"));
+                string centerLocation = SettingsManager.getSettingString("PortraitCenterImage");
+                if (centerLocation != null) {
+                    centerImage = Image.FromFile(centerLocation);
+                } else {
+                    centerImage = null;
+                }
             } catch {
                 centerImage = null;
             }
@@ -70,14 +86,15 @@ namespace Tibialyzer {
             this.Load += Portrait_Load;
         }
 
-        private System.Timers.Timer timer;
+        private Timer timer;
         private void Portrait_Load(object sender, EventArgs e) {
-            timer = new System.Timers.Timer(10);
-            timer.Elapsed += Timer_Elapsed;
+            timer = new Timer();
+            timer.Interval = 25;
+            timer.Tick += Timer_Tick;
             timer.Start();
         }
-
-        private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
+        
+        private void Timer_Tick(object sender, EventArgs e) {
             RefreshStats();
         }
 
@@ -127,7 +144,7 @@ namespace Tibialyzer {
                 int centerSize = (int)(height * centerScale / 100.0);
                 int centerBaseOffset = (height - centerSize) / 2;
 
-                SummaryForm.RenderImageResized(gr, portrait, new Rectangle(backgroundBaseOffset + backgroundOffset.X, backgroundBaseOffset + backgroundOffset.Y, backgroundSize, backgroundSize));
+                SummaryForm.RenderImageResized(gr, backgroundImage, new Rectangle(backgroundBaseOffset + backgroundOffset.X, backgroundBaseOffset + backgroundOffset.Y, backgroundSize, backgroundSize));
                 SummaryForm.RenderImageResized(gr, centerImage, new Rectangle(centerBaseOffset + centerOffset.X, centerBaseOffset + centerOffset.Y, centerSize, centerSize));
 
                 Rectangle levelRect = new Rectangle((int)(height * 0.7), (int)(height * 0.6), (int)(height * 0.35), (int)(height * 0.35));
@@ -153,7 +170,6 @@ namespace Tibialyzer {
         }
 
         private void RefreshStats() {
-            timer.Enabled = false;
             long life = 0, maxlife = 1, mana = 0, maxmana = 1;
             life = MemoryReader.Health;
             maxlife = MemoryReader.MaxHealth;
@@ -168,16 +184,9 @@ namespace Tibialyzer {
                     RefreshHUD(lifePercentage, manaPercentage);
                     this.Visible = visible;
                 });
-                timer.Enabled = true;
-            } catch {
-                if (timer != null) {
-                    timer.Dispose();
-                    timer = null;
-                }
-            }
+            } catch { }
         }
-
-
+        
         public override string GetHUD() {
             return "Portrait";
         }
