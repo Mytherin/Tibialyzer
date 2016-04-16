@@ -41,10 +41,7 @@ namespace Tibialyzer {
             updateTimer.Start();
         }
         
-        private bool _updating = false;
         private void updateTimer_Tick(object sender, EventArgs e) {
-            if (_updating) return;
-            _updating = true;
             health = (float)MemoryReader.Health / MemoryReader.MaxHealth;
             mana = (float)MemoryReader.Mana / MemoryReader.MaxMana;
             try {
@@ -55,7 +52,6 @@ namespace Tibialyzer {
             } catch {
             }
             this.Invalidate();
-            _updating = false;
         }
 
         protected override void OnPaint(PaintEventArgs e) {
