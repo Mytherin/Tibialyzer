@@ -8,11 +8,23 @@ namespace Tibialyzer {
         public delegate void LootChangedHandler();
         public static event LootChangedHandler LootChanged;
         private static object lootLock = new object();
+        private static bool LootUpdated;
+
 
         public static void Initialize() {
             lock (lootLock) {
                 lootConn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", Constants.LootDatabaseFile));
                 lootConn.Open();
+            }
+            LootUpdated = false;
+        }
+
+        public static void LootUpdatedEvent() {
+            if (LootUpdated) {
+                if (LootChanged != null) {
+                    LootChanged();
+                }
+                LootUpdated = false;
             }
         }
 
@@ -39,9 +51,7 @@ namespace Tibialyzer {
         }
 
         public static void UpdateLoot() {
-            if (LootChanged != null) {
-                LootChanged();
-            }
+            LootUpdated = true;
         }
 
         private static void ExecuteNonQuery(string query) {

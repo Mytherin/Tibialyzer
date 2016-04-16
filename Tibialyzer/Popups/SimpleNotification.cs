@@ -69,8 +69,7 @@ namespace Tibialyzer {
                 }
             }
         }
-
-        private int concurrentEntries = 0;
+        
         private void MoveTimer_Tick(object sender, EventArgs e) {
             int desktopX = this.DesktopLocation.X;
             int desktopY = this.DesktopLocation.Y;

@@ -33,30 +33,48 @@ namespace Tibialyzer {
         private static Dictionary<string, List<string>> totalLooks = new Dictionary<string, List<string>>();
         private static long lootValue = 0;
 
+        private static bool DamageUpdated = false;
+        private static bool WasteUpdated = false;
+        private static bool ExperienceUpdated = false;
+        private static System.Windows.Forms.Timer updateTimer;
+
+        public static void Initialize() {
+            updateTimer = new System.Windows.Forms.Timer();
+            updateTimer.Interval = 50;
+            updateTimer.Tick += UpdateTimer_Tick;
+            updateTimer.Start();
+
+        }
+
+        private static void UpdateTimer_Tick(object sender, EventArgs e) {
+            LootDatabaseManager.LootUpdatedEvent();
+
+            if (DamageUpdated) {
+                if (DamageChanged != null) {
+                    DamageChanged();
+                }
+                DamageUpdated = false;
+            }
+            if (WasteUpdated) {
+                if (UsedItemsChanged != null) {
+                    UsedItemsChanged();
+                }
+                WasteUpdated = false;
+            }
+            if (ExperienceUpdated) {
+                if (ExperienceChanged != null) {
+                    ExperienceChanged();
+                }
+                ExperienceUpdated = false;
+            }
+        }
+
         public static void UpdateDamage() {
-            if (DamageChanged != null) {
-                DamageChanged();
-            }
+            DamageUpdated = true;
         }
-
-        public static void AddLootValue(long value) {
-            System.Threading.Interlocked.Add(ref lootValue, value);
-        }
-
-        public static long GetLootValue() {
-            return System.Threading.Interlocked.Read(ref lootValue);
-        }
-
-        public static void ClearLootValue() {
-            System.Threading.Interlocked.Exchange(ref lootValue, 0);
-        }
-
         public static void UpdateUsedItems() {
-            if (UsedItemsChanged != null) {
-                UsedItemsChanged();
-            }
+            WasteUpdated = true;
         }
-
         public static int UpdateExperience(Dictionary<string, int> newExperience) {
             int exp = 0;
             lock (totalExperienceResults) {
@@ -72,12 +90,24 @@ namespace Tibialyzer {
                     }
                 }
             }
-            if (exp > 0 && ExperienceChanged != null) {
-                ExperienceChanged();
+            if (exp > 0) {
+                ExperienceUpdated = true;
             }
             return exp;
         }
 
+        public static void AddLootValue(long value) {
+            System.Threading.Interlocked.Add(ref lootValue, value);
+        }
+
+        public static long GetLootValue() {
+            return System.Threading.Interlocked.Read(ref lootValue);
+        }
+
+        public static void ClearLootValue() {
+            System.Threading.Interlocked.Exchange(ref lootValue, 0);
+        }
+        
         public static Tuple<int, int> GetTotalExperience(List<string> times) {
             int experience = 0;
             int minutes = 0;
