@@ -89,7 +89,7 @@ namespace Tibialyzer {
         private Timer timer;
         private void Portrait_Load(object sender, EventArgs e) {
             timer = new Timer();
-            timer.Interval = 25;
+            timer.Interval = 10;
             timer.Tick += Timer_Tick;
             timer.Start();
         }

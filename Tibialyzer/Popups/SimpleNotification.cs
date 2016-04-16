@@ -22,7 +22,7 @@ using System.Windows.Forms;
 
 namespace Tibialyzer {
     public class SimpleNotification : Form {
-        Timer moveTimer = null;
+        System.Timers.Timer moveTimer = null;
         public int targetPositionX = 0, targetPositionY = 0;
         public double targetOpacity;
         System.Timers.Timer closeTimer = null;
@@ -42,9 +42,8 @@ namespace Tibialyzer {
             this.animations = SettingsManager.getSettingBool("EnableSimpleNotificationAnimation");
 
             if (movement) {
-                moveTimer = new Timer();
-                moveTimer.Interval = 1;
-                moveTimer.Tick += MoveTimer_Tick;
+                moveTimer = new System.Timers.Timer(5);
+                moveTimer.Elapsed += MoveTimer_Elapsed;
                 moveTimer.Start();
             }
             if (destroy) {
@@ -52,6 +51,44 @@ namespace Tibialyzer {
                 closeTimer.Elapsed += CloseTimer_Elapsed;
                 closeTimer.Start();
             }
+        }
+        
+        private int moveLock = 0;
+        private void MoveTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
+            if (moveLock > 0) return;
+            moveLock++;
+            int desktopX = this.DesktopLocation.X;
+            int desktopY = this.DesktopLocation.Y;
+            if (this.Visible && (desktopX != targetPositionX || desktopY != targetPositionY || targetOpacity != Opacity)) {
+                int updatedX, updatedY;
+                double updatedOpacity;
+                if (animations) {
+                    updatedX = Math.Abs(desktopX - targetPositionX) < 3 ? targetPositionX : (int)(desktopX + (targetPositionX - desktopX) / 5.0);
+                    updatedY = Math.Abs(desktopY - targetPositionY) < 3 ? targetPositionY : (int)(desktopY + (targetPositionY - desktopY) / 5.0);
+                    updatedOpacity = Math.Abs(targetOpacity - Opacity) < 0.1 ? targetOpacity : Opacity + (targetOpacity - Opacity) / 10.0;
+                } else {
+                    updatedX = targetPositionX;
+                    updatedY = targetPositionY;
+                    updatedOpacity = targetOpacity;
+                }
+                try {
+                    this.Invoke((MethodInvoker)delegate {
+                        if (!this.IsDisposed) {
+                            this.SetDesktopLocation(updatedX, updatedY);
+                            this.Opacity = updatedOpacity;
+                            if (updatedOpacity <= 0 || (targetOpacity == 0 && !animations)) {
+                                moveTimer.Dispose();
+                                close();
+                            }
+                        }
+                    });
+                } catch {
+                }
+                moveTimer.Interval = 5;
+            } else {
+                moveTimer.Interval = 100;
+            }
+            moveLock = 0;
         }
 
         private void CloseTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
@@ -70,30 +107,6 @@ namespace Tibialyzer {
             }
         }
         
-        private void MoveTimer_Tick(object sender, EventArgs e) {
-            int desktopX = this.DesktopLocation.X;
-            int desktopY = this.DesktopLocation.Y;
-            if (this.Visible && (desktopX != targetPositionX || desktopY != targetPositionY || targetOpacity != Opacity)) {
-                int updatedX = Math.Abs(desktopX - targetPositionX) < 3 ? targetPositionX : (int)(desktopX + (targetPositionX - desktopX) / 5.0);
-                int updatedY = Math.Abs(desktopY - targetPositionY) < 3 ? targetPositionY : (int)(desktopY + (targetPositionY - desktopY) / 5.0);
-                double updatedOpacity = Math.Abs(targetOpacity - Opacity) < 0.1 ? targetOpacity : Opacity + (targetOpacity - Opacity) / 10.0;
-                try {
-                    this.Invoke((MethodInvoker)delegate {
-                        if (!this.IsDisposed) {
-                            this.SetDesktopLocation(updatedX, updatedY);
-                            this.Opacity = updatedOpacity;
-                            if (updatedOpacity <= 0 || (targetOpacity == 0 && !animations)) {
-                                moveTimer.Dispose();
-                                close();
-                            }
-                        }
-                    });
-                } catch {
-
-                }
-            }
-        }
-
         public void ClearTimers() {
             if (moveTimer != null) {
                 moveTimer.Dispose();

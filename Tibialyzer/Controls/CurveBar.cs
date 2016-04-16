@@ -36,7 +36,7 @@ namespace Tibialyzer {
 
         public CurveBar() {
             updateTimer = new Timer();
-            updateTimer.Interval = 50;
+            updateTimer.Interval = 10;
             updateTimer.Tick += updateTimer_Tick;
             updateTimer.Start();
         }
