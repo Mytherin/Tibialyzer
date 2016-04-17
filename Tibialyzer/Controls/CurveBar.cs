@@ -41,6 +41,12 @@ namespace Tibialyzer {
             updateTimer.Start();
         }
         
+        ~CurveBar() {
+            if (updateTimer != null) {
+                updateTimer.Dispose();
+            }
+        }
+
         private void updateTimer_Tick(object sender, EventArgs e) {
             health = (float)MemoryReader.Health / MemoryReader.MaxHealth;
             mana = (float)MemoryReader.Mana / MemoryReader.MaxMana;

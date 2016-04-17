@@ -11,10 +11,18 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Tibialyzer {
+
     public partial class SummaryForm : NotificationForm {
+        public struct ItemRegion {
+            public TibiaObject item;
+            public Rectangle region;
+        }
         private int BlockWidth = 200;
         private int BlockHeight = 25;
         private object updateLock = new object();
+        private List<ItemRegion>[] lootRegions = new List<ItemRegion>[20];
+        private List<ItemRegion>[] wasteRegions = new List<ItemRegion>[20];
+        private List<ItemRegion>[] recentDropsRegions = new List<ItemRegion>[20];
 
         public SummaryForm() {
             InitializeComponent();
@@ -119,18 +127,21 @@ namespace Tibialyzer {
             return bitmap;
         }
 
-        public Image RecentDropsBox(Creature creature, List<Tuple<Item, int>> items, int imageHeight) {
+        public Image RecentDropsBox(Creature creature, List<Tuple<Item, int>> items, int imageHeight, List<ItemRegion> regions) {
             Bitmap bitmap = new Bitmap(BlockWidth, imageHeight);
             using (Graphics gr = Graphics.FromImage(bitmap)) {
                 using (Brush brush = new SolidBrush(StyleManager.MainFormButtonColor)) {
                     gr.FillRectangle(brush, new Rectangle(0, 0, bitmap.Width, bitmap.Height));
                 }
                 gr.DrawRectangle(Pens.Black, new Rectangle(0, 0, bitmap.Width - 1, bitmap.Height - 1));
+                Rectangle creatureRegion = new Rectangle(1, 1, imageHeight - 1, imageHeight - 1);
                 RenderImageResized(gr, StyleManager.GetImage("item_background.png"), new Rectangle(1, 1, imageHeight - 2, imageHeight - 2));
-                RenderImageResized(gr, creature.GetImage(), new Rectangle(1, 1, imageHeight - 1, imageHeight - 1));
+                RenderImageResized(gr, creature.GetImage(), creatureRegion);
+                regions.Add(new ItemRegion { item = creature, region = creatureRegion });
                 int count = 0;
                 foreach (Tuple<Item, int> item in items) {
                     Rectangle region = new Rectangle(8 + (imageHeight - 1) * ++count, 1, imageHeight - 2, imageHeight - 2);
+                    regions.Add(new ItemRegion { item = item.Item1, region = region });
                     RenderImageResized(gr, StyleManager.GetImage("item_background.png"), region);
                     RenderImageResized(gr, (item.Item1.stackable || item.Item2 > 1) ? LootDropForm.DrawCountOnItem(item.Item1, item.Item2) : item.Item1.GetImage(), region);
                 }
@@ -176,15 +187,15 @@ namespace Tibialyzer {
             controls.Add(box);
             y += box.Height;
         }
-        private void CreateCreatureDropsBox(Creature creature, List<Tuple<Item, int>> items, string message, int x, ref int y, List<Control> controls, int imageHeight) {
-            Image image = RecentDropsBox(creature, items, imageHeight);
+
+        private PictureBox CreateCreatureDropsBox(Creature creature, List<Tuple<Item, int>> items, string message, int x, ref int y, List<Control> controls, int imageHeight, List<ItemRegion> region = null, int index = 0) {
+            Image image = RecentDropsBox(creature, items, imageHeight, region);
             PictureBox box = new PictureBox();
             box.Size = image.Size;
             box.BackColor = Color.Transparent;
             box.Location = new Point(x, y);
             box.Image = image;
-            box.Name = "creature" + Constants.CommandSymbol + creature.title;
-            box.Click += CommandClick;
+            box.Name = index.ToString();
             this.Controls.Add(box);
             controls.Add(box);
             // copy button
@@ -201,18 +212,20 @@ namespace Tibialyzer {
             copyButton.BringToFront();
 
             y += box.Height;
+            return box;
         }
 
         private void CopyLootText(object sender, EventArgs e) {
             Clipboard.SetText((sender as Control).Name);
         }
 
-        private void CreateItemList(List<Tuple<Item, int>> items, int x, ref int y, List<Control> controls, int imageHeight) {
+        private PictureBox CreateItemList(List<Tuple<Item, int>> items, int x, ref int y, List<Control> controls, int imageHeight, List<ItemRegion> newRegions = null, int boxIndex = 0) {
             Image image = new Bitmap(BlockWidth, imageHeight);
             using (Graphics gr = Graphics.FromImage(image)) {
                 int counter = 0;
                 foreach (Tuple<Item, int> item in items) {
                     Rectangle region = new Rectangle(x + (counter++) * (imageHeight + 1), 0, imageHeight - 1, imageHeight - 1);
+                    if (newRegions != null) newRegions.Add(new ItemRegion { item = item.Item1, region = region });
                     RenderImageResized(gr, StyleManager.GetImage("item_background.png"), region);
                     RenderImageResized(gr, (item.Item1.stackable || item.Item2 > 1) ? LootDropForm.DrawCountOnItem(item.Item1, item.Item2) : item.Item1.GetImage(), region);
                 }
@@ -222,9 +235,35 @@ namespace Tibialyzer {
             box.BackColor = Color.Transparent;
             box.Location = new Point(x, y);
             box.Image = image;
+            box.Name = boxIndex.ToString();
             this.Controls.Add(box);
             controls.Add(box);
             y += box.Height;
+            return box;
+        }
+
+        private void OpenItemWindow(object sender, MouseEventArgs e, List<ItemRegion>[] lootRegions) {
+            Point mousePoint = new Point(e.X, e.Y);
+            int index = 0;
+            int.TryParse((sender as Control).Name, out index);
+            if (index > lootRegions.Length && lootRegions[index] == null) return;
+            List<ItemRegion> regions = lootRegions[index];
+            foreach (ItemRegion reg in regions) {
+                if (reg.region.Contains(mousePoint)) {
+                    CommandManager.ExecuteCommand(reg.item.GetCommand());
+                    return;
+                }
+            }
+        }
+
+        private void OpenLootWindow(object sender, MouseEventArgs e) {
+            OpenItemWindow(sender, e, lootRegions);
+        }
+        private void OpenWasteWindow(object sender, MouseEventArgs e) {
+            OpenItemWindow(sender, e, wasteRegions);
+        }
+        private void OpenRecentDropsWindow(object sender, MouseEventArgs e) {
+            OpenItemWindow(sender, e, recentDropsRegions);
         }
 
         private int x = 5;
@@ -360,6 +399,7 @@ namespace Tibialyzer {
             int maxDrops = SettingsManager.getSettingInt("SummaryMaxItemDrops");
             if (maxDrops < 0) maxDrops = 5;
             if (maxDrops > 0) {
+                List<ItemRegion> region;
                 int imageHeight = SettingsManager.getSettingInt("SummaryLootItemSize");
                 imageHeight = imageHeight < 0 ? BlockHeight : imageHeight;
 
@@ -376,7 +416,9 @@ namespace Tibialyzer {
                         items.Add(new Tuple<Item, int>(tpl.Item1, count));
                         width += imageHeight + 2;
                         if (width > BlockWidth - imageHeight) {
-                            CreateItemList(items, x, ref y, lootControls, imageHeight);
+                            region = new List<ItemRegion>();
+                            CreateItemList(items, x, ref y, lootControls, imageHeight, region, counter).MouseDown += OpenLootWindow;
+                            lootRegions[counter] = region;
                             items.Clear();
                             width = 0;
                             if (++counter >= maxDrops) {
@@ -388,7 +430,9 @@ namespace Tibialyzer {
                     if (!display) break;
                 }
                 if (items.Count > 0) {
-                    CreateItemList(items, x, ref y, lootControls, imageHeight);
+                    region = new List<ItemRegion>();
+                    CreateItemList(items, x, ref y, lootControls, imageHeight, region, counter).MouseDown += OpenLootWindow;
+                    lootRegions[counter] = region;
                     items.Clear();
                 }
             }
@@ -409,8 +453,11 @@ namespace Tibialyzer {
                 int imageHeight = SettingsManager.getSettingInt("SummaryRecentDropsItemSize");
                 imageHeight = imageHeight < 0 ? BlockHeight : imageHeight;
                 var recentDrops = ScanningManager.GetRecentDrops(maxRecentDrops);
+                int index = 0;
                 foreach (var drops in recentDrops) {
-                    CreateCreatureDropsBox(drops.Item1, drops.Item2, drops.Item3, x, ref y, lootControls, imageHeight);
+                    List<ItemRegion> region = new List<ItemRegion>();
+                    CreateCreatureDropsBox(drops.Item1, drops.Item2, drops.Item3, x, ref y, lootControls, imageHeight, region, index).MouseDown += OpenRecentDropsWindow;
+                    recentDropsRegions[index++] = region;
                 }
             }
             UpdateDamageForm();
@@ -462,6 +509,7 @@ namespace Tibialyzer {
             int maxUsedItems = SettingsManager.getSettingInt("SummaryMaxUsedItems");
             if (maxUsedItems < 0) maxUsedItems = 5;
             if (maxUsedItems > 0) {
+                List<ItemRegion> region;
                 int imageHeight = SettingsManager.getSettingInt("SummaryWasteItemSize");
                 imageHeight = imageHeight < 0 ? BlockHeight : imageHeight;
                 int counter = 0;
@@ -478,7 +526,9 @@ namespace Tibialyzer {
                         items.Add(new Tuple<Item, int>(tpl.Item1, count));
                         width += imageHeight + 2;
                         if (width > BlockWidth - imageHeight) {
-                            CreateItemList(items, x, ref y, usedItemsControls, imageHeight);
+                            region = new List<ItemRegion>();
+                            CreateItemList(items, x, ref y, usedItemsControls, imageHeight, region, counter).MouseDown += OpenWasteWindow;
+                            wasteRegions[counter] = region;
                             items.Clear();
                             width = 0;
                             if (++counter >= maxUsedItems) display = false;
@@ -486,7 +536,9 @@ namespace Tibialyzer {
                     }
                 }
                 if (items.Count > 0) {
-                    CreateItemList(items, x, ref y, usedItemsControls, imageHeight);
+                    region = new List<ItemRegion>();
+                    CreateItemList(items, x, ref y, usedItemsControls, imageHeight, region, counter).MouseDown += OpenWasteWindow;
+                    wasteRegions[counter] = region;
                     items.Clear();
                 }
             }
