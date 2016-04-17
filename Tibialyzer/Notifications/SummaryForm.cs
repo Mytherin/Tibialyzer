@@ -23,9 +23,11 @@ namespace Tibialyzer {
         private List<ItemRegion>[] lootRegions = new List<ItemRegion>[20];
         private List<ItemRegion>[] wasteRegions = new List<ItemRegion>[20];
         private List<ItemRegion>[] recentDropsRegions = new List<ItemRegion>[20];
+        private ToolTip tooltip;
 
         public SummaryForm() {
             InitializeComponent();
+            tooltip = UIManager.CreateTooltip();
         }
 
         public static void RenderText(Graphics gr, string text, int x, Color fillColor, Color textColor, Color traceColor, int maxHeight = -1, int y = 4, Font font = null, bool center = false, InterpolationMode interpolationMode = InterpolationMode.High, SmoothingMode smoothingMode = SmoothingMode.HighQuality) {
@@ -162,7 +164,7 @@ namespace Tibialyzer {
             y += 15;
         }
 
-        private void CreateSummaryLabel(string title, string value, int x, ref int y, Color color, List<Control> controls) {
+        private PictureBox CreateSummaryLabel(string title, string value, int x, ref int y, Color color, List<Control> controls) {
             Image image = SummaryBox(title, value, color);
             PictureBox box = new PictureBox();
             box.Size = image.Size;
@@ -172,6 +174,7 @@ namespace Tibialyzer {
             this.Controls.Add(box);
             controls.Add(box);
             y += box.Height;
+            return box;
         }
 
         private void CreateCreatureBox(Creature creature, int count, int x, ref int y, List<Control> controls) {
@@ -310,16 +313,20 @@ namespace Tibialyzer {
         }
 
         private long totalValue = 0;
+        private long averageValue = 0;
         private long totalWaste = 0;
         public void UpdateSummaryForm() {
             int minheight, maxheight;
             ClearControlList(summaryControls, out minheight, out maxheight);
             int y = maxheight < 0 ? 30 : minheight;
 
-            CreateSummaryLabel("Loot", totalValue.ToString("N0"), x, ref y, StyleManager.ItemGoldColor, summaryControls);
+            PictureBox loot = CreateSummaryLabel("Loot", totalValue.ToString("N0"), x, ref y, StyleManager.ItemGoldColor, summaryControls);
+            tooltip.SetToolTip(loot, String.Format("Average gold for these creature kills: {0} gold.", averageValue.ToString("N0")));
             CreateSummaryLabel("Exp", HuntManager.activeHunt.totalExp.ToString("N0"), x, ref y, StyleManager.NotificationTextColor, summaryControls);
             CreateSummaryLabel("Time", LootDropForm.TimeToString((long)HuntManager.activeHunt.totalTime), x, ref y, StyleManager.NotificationTextColor, summaryControls);
-            CreateSummaryLabel("Waste", totalWaste.ToString("N0"), x, ref y, StyleManager.WasteColor, summaryControls);
+            PictureBox waste = CreateSummaryLabel("Waste", totalWaste.ToString("N0"), x, ref y, StyleManager.WasteColor, summaryControls);
+            long profit = totalValue - totalWaste;
+            tooltip.SetToolTip(waste, String.Format(profit > 0 ? "Total Profit: {0} gold" : "Total Waste: {0} gold", profit.ToString("N0")));
             if (ScanningManager.lastResults != null) {
                 CreateSummaryLabel("Exp/Hour", ScanningManager.lastResults.expPerHour.ToString("N0"), x, ref y, StyleManager.NotificationTextColor, summaryControls);
             }
@@ -395,6 +402,8 @@ namespace Tibialyzer {
             foreach (Tuple<Item, int> tpl in loot.Item2) {
                 totalValue += tpl.Item1.GetMaxValue() * tpl.Item2;
             }
+
+            averageValue = LootDropForm.GetAverageGold(loot.Item1);
 
             int maxDrops = SettingsManager.getSettingInt("SummaryMaxItemDrops");
             if (maxDrops < 0) maxDrops = 5;

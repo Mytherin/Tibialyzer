@@ -213,6 +213,21 @@ namespace Tibialyzer {
             return displayString;
         }
 
+        public static long GetAverageGold(Dictionary<Creature, int> creatures) {
+            long averageGold = 0;
+            foreach (KeyValuePair<Creature, int> tpl in creatures) {
+                double average = 0;
+                foreach (ItemDrop dr in tpl.Key.itemdrops) {
+                    Item it = StorageManager.getItem(dr.itemid);
+                    if (!it.discard && it.GetMaxValue() > 0 && dr.percentage > 0) {
+                        average += ((dr.min + dr.max) / 2.0) * (dr.percentage / 100.0) * it.GetMaxValue();
+                    }
+                }
+                averageGold += (int)(average * tpl.Value);
+            }
+            return averageGold;
+        }
+
         public List<Control> createdControls = new List<Control>();
         public void RefreshLoot() {
             foreach (Control c in createdControls) {
@@ -235,17 +250,7 @@ namespace Tibialyzer {
             bool prevPage = page > 0;
             bool nextPage = false;
 
-            averageGold = 0;
-            foreach (KeyValuePair<Creature, int> tpl in creatures) {
-                double average = 0;
-                foreach (ItemDrop dr in tpl.Key.itemdrops) {
-                    Item it = StorageManager.getItem(dr.itemid);
-                    if (!it.discard && it.GetMaxValue() > 0 && dr.percentage > 0) {
-                        average += ((dr.min + dr.max) / 2.0) * (dr.percentage / 100.0) * it.GetMaxValue();
-                    }
-                }
-                averageGold += (int)(average * tpl.Value);
-            }
+            averageGold = GetAverageGold(creatures);
 
             foreach (Tuple<Item, int> tpl in items) {
                 total_value += tpl.Item1.GetMaxValue() * tpl.Item2;
@@ -453,7 +458,7 @@ namespace Tibialyzer {
             totalValueLabel.Location = new Point(5, y);
             totalValueValue.Location = new Point(xPosition, y);
             totalValueValue.Text = total_value.ToString("N0");
-            value_tooltip.SetToolTip(totalValueValue, String.Format("Average gold for these creature kills: {0} gold.", averageGold));
+            value_tooltip.SetToolTip(totalValueValue, String.Format("Average gold for these creature kills: {0} gold.", averageGold.ToString("N0")));
             totalExpLabel.Location = new Point(5, y += 20);
             totalExpValue.Location = new Point(xPosition, y);
             totalExpValue.Text = hunt.totalExp.ToString("N0");
@@ -465,6 +470,8 @@ namespace Tibialyzer {
             usedItemsValue.Text = usedItemValue.ToString("N0");
             usedItemsLabel.Location = new Point(5, y += 20);
             usedItemsValue.Location = new Point(xPosition, y);
+            long profit = total_value - usedItemValue;
+            value_tooltip.SetToolTip(usedItemsValue, String.Format(profit > 0 ? "Total Profit: {0} gold" : "Total Waste: {0} gold", profit.ToString("N0")));
 
             totalTimeValue.Text = TimeToString((long)hunt.totalTime);
             y += 20;
