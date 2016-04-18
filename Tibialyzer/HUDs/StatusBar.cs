@@ -65,7 +65,7 @@ namespace Tibialyzer {
             RefreshHealth();
         }
 
-        public static long GetExperience(int lvl) {
+        public static long GetExperience(long lvl) {
             return (50 * lvl * lvl * lvl - 150 * lvl * lvl + 400 * lvl) / 3;
         }
 
