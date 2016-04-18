@@ -335,10 +335,12 @@ namespace Tibialyzer {
         public void UpdateLoot() {
             try {
                 lock (updateLock) {
-                    this.SuspendForm();
-                    this.UpdateLootForm();
-                    this.UpdateSummaryForm();
-                    this.ResumeForm();
+                    this.Invoke((MethodInvoker)delegate {
+                        this.SuspendForm();
+                        this.UpdateLootForm();
+                        this.UpdateSummaryForm();
+                        this.ResumeForm();
+                    });
                 }
             } catch {
 

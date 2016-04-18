@@ -188,8 +188,7 @@ namespace Tibialyzer {
             return new Tuple<Dictionary<Creature, int>, List<Tuple<Item, int>>>(creatureKills, itemDrops);
         }
 
-        public void UpdateLoot() {
-            if (this.IsDisposed) return;
+        private void UpdateLootInternal() {
             refreshTimer();
             var tpl = LootDropForm.GenerateLootInformation(hunt, rawName, lootCreature);
             creatures = tpl.Item1;
@@ -197,6 +196,17 @@ namespace Tibialyzer {
             this.SuspendForm();
             RefreshLoot();
             this.ResumeForm();
+        }
+
+        public void UpdateLoot() {
+            if (this.IsDisposed) return;
+            try {
+                this.Invoke((MethodInvoker)delegate {
+                    UpdateLootInternal();
+                });
+            } catch {
+
+            }
         }
 
         public static string TimeToString(long totalSeconds) {
@@ -502,7 +512,7 @@ namespace Tibialyzer {
             allLootButton.Click -= c_Click;
             lootButton.Click -= c_Click;
 
-            UpdateLoot();
+            UpdateLootInternal();
 
             base.NotificationFinalize();
         }
@@ -543,13 +553,13 @@ namespace Tibialyzer {
 
         private void rawLootButton_Click(object sender, EventArgs e) {
             rawName = "raw";
-            this.UpdateLoot();
+            this.UpdateLootInternal();
             this.UpdateCommand();
         }
 
         private void allLootButton_Click(object sender, EventArgs e) {
             rawName = "all";
-            this.UpdateLoot();
+            this.UpdateLootInternal();
             this.UpdateCommand();
         }
 
@@ -557,7 +567,7 @@ namespace Tibialyzer {
             rawName = "";
             creatureName = "";
             lootCreature = null;
-            this.UpdateLoot();
+            this.UpdateLootInternal();
             this.UpdateCommand();
         }
 
