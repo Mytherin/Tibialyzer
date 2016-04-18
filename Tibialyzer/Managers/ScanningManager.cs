@@ -12,8 +12,8 @@ namespace Tibialyzer {
     class ScanningManager {
         private static ScanningState currentState;
         private static System.Timers.Timer scanTimer;
-        private static System.Timers.Timer mainScanTimer;
-        private static System.Timers.Timer missingChunkScanTimer;
+        private static SafeTimer mainScanTimer;
+        private static SafeTimer missingChunkScanTimer;
         public static ParseMemoryResults lastResults = null;
         public static bool shownException = false;
         private const int MaxRecentDropsTracked = 20;
@@ -24,37 +24,37 @@ namespace Tibialyzer {
             scanTimer.Elapsed += StuckScanning;
 
             int initialScanSpeed = SettingsManager.getSettingInt("ScanSpeed") * 15 + 1;
-            missingChunkScanTimer = new System.Timers.Timer(initialScanSpeed);
-            missingChunkScanTimer.AutoReset = false;
-            missingChunkScanTimer.Elapsed += (o, e) => {
-                ReadMemoryManager.ScanMissingChunks();
-                int scanSpeed = SettingsManager.getSettingInt("ScanSpeed") * 15 + 1;
-                if (scanSpeed != missingChunkScanTimer.Interval) {
-                    missingChunkScanTimer.Interval = scanSpeed;
-                }
-
-                missingChunkScanTimer.Start();
-            };
+            missingChunkScanTimer = new SafeTimer(initialScanSpeed, ScanMissingChunksTimer);
             missingChunkScanTimer.Start();
 
             initialScanSpeed = SettingsManager.getSettingInt("ScanSpeed") * 5 + 1;
-            mainScanTimer = new System.Timers.Timer(initialScanSpeed);
-            mainScanTimer.AutoReset = false;
-            mainScanTimer.Elapsed += (o, e) => {
-                ScanMemory(o, null);
-                int scanSpeed = SettingsManager.getSettingInt("ScanSpeed") * 5 + 1;
-                if (scanSpeed != mainScanTimer.Interval) {
-                    mainScanTimer.Interval = scanSpeed;
-                }
-
-                mainScanTimer.Start();
-            };
+            mainScanTimer = new SafeTimer(initialScanSpeed, MainScanTimer);
             mainScanTimer.Start();
 
             currentState = ScanningState.NoTibia;
         }
 
-        private static void ScanMemory(object sender, DoWorkEventArgs e) {
+        private static void MainScanTimer()
+        {
+            ScanMemoryInternal();
+            int scanSpeed = SettingsManager.getSettingInt("ScanSpeed") * 5 + 1;
+            if (scanSpeed != mainScanTimer.Interval)
+            {
+                mainScanTimer.Interval = scanSpeed;
+            }
+        }
+
+        private static void ScanMissingChunksTimer()
+        {
+            ReadMemoryManager.ScanMissingChunks();
+            int scanSpeed = SettingsManager.getSettingInt("ScanSpeed") * 15 + 1;
+            if (scanSpeed != missingChunkScanTimer.Interval)
+            {
+                missingChunkScanTimer.Interval = scanSpeed;
+            }
+        }
+
+        private static void ScanMemoryInternal() {
             scanTimer.Start();
             bool success = false;
             try

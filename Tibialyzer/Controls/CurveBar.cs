@@ -29,15 +29,13 @@ using System.Windows.Forms;
 
 namespace Tibialyzer {
     public class CurveBar : Control {
-        private Timer updateTimer;
+        private SafeTimer updateTimer;
 
         private float health = 1;
         private float mana = 1;
 
         public CurveBar() {
-            updateTimer = new Timer();
-            updateTimer.Interval = 10;
-            updateTimer.Tick += updateTimer_Tick;
+            updateTimer = new SafeTimer(10, updateTimer_Tick);
             updateTimer.Start();
         }
         
@@ -47,7 +45,7 @@ namespace Tibialyzer {
             }
         }
 
-        private void updateTimer_Tick(object sender, EventArgs e) {
+        private void updateTimer_Tick() {
             health = (float)MemoryReader.Health / MemoryReader.MaxHealth;
             mana = (float)MemoryReader.Mana / MemoryReader.MaxMana;
             try {
@@ -55,6 +53,7 @@ namespace Tibialyzer {
                 this.Invoke((MethodInvoker)delegate {
                     this.Visible = visible;
                 });
+
             } catch {
             }
             this.Invalidate();

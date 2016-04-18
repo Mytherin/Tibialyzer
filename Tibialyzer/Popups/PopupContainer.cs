@@ -5,7 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Tibialyzer {
@@ -64,10 +64,7 @@ namespace Tibialyzer {
                 notifications.Add(controls);
                 controls.Add(background);
 
-                System.Timers.Timer closeTimer = new System.Timers.Timer(Math.Max(SettingsManager.getSettingInt("PopupDuration"), 1) * 1000);
-                closeTimer.Elapsed += CloseTimer_Elapsed;
-                closeTimer.Enabled = true;
-                closeTimer.AutoReset = false;
+                System.Threading.Tasks.Task.Delay(Math.Max(SettingsManager.getSettingInt("PopupDuration"), 1) * 1000).ContinueWith(t => ClosePopup()).Start();
             }
         }
 
@@ -109,7 +106,7 @@ namespace Tibialyzer {
             }
         }
 
-        private void CloseTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
+        private void ClosePopup() {
             this.Invoke((MethodInvoker)delegate {
                 lock (notificationLock) {
                     if (notifications.Count == 0) return;

@@ -194,16 +194,9 @@ namespace Tibialyzer {
                         if (timeInSeconds <= notificationWarningTime) {
                             PopupManager.ShowSimpleNotification(new SimpleTimerNotification(iconImage, title, message, timeInSeconds));
                         } else {
-                            System.Timers.Timer timer = new System.Timers.Timer(1000 * (timeInSeconds - notificationWarningTime));
-                            timer.Elapsed += (sender, e) => {
-                                timer.Enabled = false;
-                                timer.Dispose();
-
-                                MainForm.mainForm.Invoke((MethodInvoker)delegate {
-                                    PopupManager.ShowSimpleNotification(new SimpleTimerNotification(iconImage, title, message, notificationWarningTime));
-                                });
-                            };
-                            timer.Enabled = true;
+                            MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                                System.Threading.Tasks.Task.Delay(1000 * (timeInSeconds - notificationWarningTime)).ContinueWith(x => PopupManager.ShowSimpleNotification(new SimpleTimerNotification(iconImage, title, message, notificationWarningTime))).Start();
+                            });
                         }
                     }
                 } else if (comp.StartsWith("exp" + Constants.CommandSymbol)) { //exp@

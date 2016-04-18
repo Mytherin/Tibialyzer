@@ -36,17 +36,14 @@ namespace Tibialyzer {
         private static bool DamageUpdated = false;
         private static bool WasteUpdated = false;
         private static bool ExperienceUpdated = false;
-        private static System.Windows.Forms.Timer updateTimer;
+        private static SafeTimer updateTimer;
 
         public static void Initialize() {
-            updateTimer = new System.Windows.Forms.Timer();
-            updateTimer.Interval = 50;
-            updateTimer.Tick += UpdateTimer_Tick;
+            updateTimer = new SafeTimer(50, UpdateTimer_Tick);
             updateTimer.Start();
-
         }
 
-        private static void UpdateTimer_Tick(object sender, EventArgs e) {
+        private static void UpdateTimer_Tick() {
             LootDatabaseManager.LootUpdatedEvent();
 
             if (DamageUpdated) {

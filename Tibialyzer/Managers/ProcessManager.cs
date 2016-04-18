@@ -9,9 +9,11 @@ namespace Tibialyzer {
     class ProcessManager {
         public static string TibiaClientName = "Tibia";
         public static int TibiaProcessId = -1;
+        private static SafeTimer detectTibiaActive = new SafeTimer(100, DetectIfTibiaActive);
 
         public static void Initialize() {
             TibiaClientName = SettingsManager.settingExists("TibiaClientName") ? SettingsManager.getSettingString("TibiaClientName") : TibiaClientName;
+            detectTibiaActive.Start();
         }
 
         public static Process GetTibiaProcess() {
@@ -60,15 +62,25 @@ namespace Tibialyzer {
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
 
+        private static bool isTibiaActive = false;
         public static bool IsTibiaActive() {
+            return isTibiaActive;   
+        }
+
+        private static void DetectIfTibiaActive() {
             IntPtr hwnd = GetForegroundWindow();
             uint pid;
             GetWindowThreadProcessId(hwnd, out pid);
             Process p = Process.GetProcessById((int)pid);
-            Process tibiaProcess = GetTibiaProcess();
-            return (tibiaProcess != null && tibiaProcess.Id == p.Id) || p.ProcessName.Contains("Tibialyzer", StringComparison.CurrentCultureIgnoreCase);
-        }
+            if (p.ProcessName.Contains("Tibialyzer", StringComparison.CurrentCultureIgnoreCase))
+            {
+                isTibiaActive = true;
+                return;
+            }
 
+            Process tibiaProcess = GetTibiaProcess();
+            isTibiaActive = (tibiaProcess != null && tibiaProcess.Id == p.Id);
+        }
 
         public static void DetectFlashClient() {
             foreach (Process p in Process.GetProcesses()) {
