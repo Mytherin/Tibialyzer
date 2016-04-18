@@ -85,14 +85,13 @@ namespace Tibialyzer {
             this.Load += HealthList_Load;
         }
 
-        private System.Timers.Timer timer;
+        private SafeTimer timer;
         private void HealthList_Load(object sender, EventArgs e) {
-            timer = new System.Timers.Timer(10);
-            timer.Elapsed += Timer_Elapsed;
+            timer = new SafeTimer(10, Timer_Elapsed);
             timer.Start();
         }
 
-        private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
+        private void Timer_Elapsed() {
             RefreshHealth();
         }
         
@@ -164,19 +163,13 @@ namespace Tibialyzer {
         }
 
         public void RefreshHealth() {
-            timer.Enabled = false;
             try {
                 bool visible = ProcessManager.IsTibiaActive();
                 this.Invoke((MethodInvoker)delegate {
                     RefreshHUD();
                     this.Visible = visible;
                 });
-                timer.Enabled = true;
             } catch {
-                if (timer != null) {
-                    timer.Dispose();
-                    timer = null;
-                }
             }
         }
 

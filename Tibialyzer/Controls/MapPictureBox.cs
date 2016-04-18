@@ -55,6 +55,7 @@ namespace Tibialyzer {
         public Point3D nextConnectionPoint = new Point3D(-1, -1, -1);
         TibiaPath playerPath = null;
         public event MapUpdatedHandler MapUpdated;
+        SafeTimer refreshTimer;
 
         public MapPictureBox() {
             mapImage = null;
@@ -66,6 +67,7 @@ namespace Tibialyzer {
             paths = new List<TibiaPath>();
             map = null;
             otherMap = null;
+            refreshTimer = new SafeTimer(50, RefreshMapTimer);
         }
 
         protected override void Dispose(bool disposing) {
@@ -102,28 +104,21 @@ namespace Tibialyzer {
             }
         }
 
-        System.Timers.Timer refreshTimer = new System.Timers.Timer();
+        
         public void SetTargetCoordinate(Coordinate coordinate) {
             this.targetCoordinate = coordinate;
-            refreshTimer = new System.Timers.Timer(50);
-            refreshTimer.Elapsed += RefreshMapTimer;
-            refreshTimer.Enabled = true;
+            refreshTimer.Start();
         }
 
         private object mapBoxLock = new object();
-        private void RefreshMapTimer(object sender, System.Timers.ElapsedEventArgs e) {
+        private void RefreshMapTimer() {
             if (this.IsDisposed) return;
             try {
-                refreshTimer.Dispose();
-                refreshTimer = null;
                 this.Invoke((MethodInvoker)delegate {
                     UpdateMap(true);
                 });
-                refreshTimer = new System.Timers.Timer(50);
-                refreshTimer.Elapsed += RefreshMapTimer;
-                refreshTimer.Enabled = true;
-            } catch {
 
+            } catch {
             }
         }
 

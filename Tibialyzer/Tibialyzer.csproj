@@ -194,6 +194,7 @@
     <Compile Include="Popups\SimpleTimerNotification.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="SafeTimer.cs" />
     <Compile Include="SelectProcessForm.cs">
       <SubType>Form</SubType>
     </Compile>

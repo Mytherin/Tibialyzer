@@ -86,15 +86,13 @@ namespace Tibialyzer {
             this.Load += Portrait_Load;
         }
 
-        private Timer timer;
+        private SafeTimer timer;
         private void Portrait_Load(object sender, EventArgs e) {
-            timer = new Timer();
-            timer.Interval = 10;
-            timer.Tick += Timer_Tick;
+            timer = new SafeTimer(10, Timer_Tick);
             timer.Start();
         }
         
-        private void Timer_Tick(object sender, EventArgs e) {
+        private void Timer_Tick() {
             RefreshStats();
         }
 
