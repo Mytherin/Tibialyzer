@@ -64,7 +64,7 @@ namespace Tibialyzer {
                 notifications.Add(controls);
                 controls.Add(background);
 
-                System.Threading.Tasks.Task.Delay(Math.Max(SettingsManager.getSettingInt("PopupDuration"), 1) * 1000).ContinueWith(t => ClosePopup()).Start();
+                System.Threading.Tasks.Task.Delay(Math.Max(SettingsManager.getSettingInt("PopupDuration"), 1) * 1000).ContinueWith(t => ClosePopup());
             }
         }
 
