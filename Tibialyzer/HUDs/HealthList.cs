@@ -154,9 +154,39 @@ namespace Tibialyzer {
                         if (displayText) {
                             player.healthBar.Text = String.Format("{0}%", percentage);
                         }
-                        player.healthBar.percentage = percentage / 100.0;
-                        player.healthBar.BackColor = StyleManager.GetHealthColor(percentage / 100.0);
-                        playerIndex++;
+                        if (percentage <= 0) {
+                            player.playerid = -1;
+                            if (player.healthBar != null) {
+                                this.Controls.Remove(player.healthBar);
+                                player.healthBar.Dispose();
+                                player.healthBar = null;
+                            }
+                            if (player.playerNameLabel != null) {
+                                this.Controls.Remove(player.playerNameLabel);
+                                player.playerNameLabel.Dispose();
+                                player.playerNameLabel = null;
+                            }
+                            if (player.playerIconLabel != null) {
+                                this.Controls.Remove(player.playerIconLabel);
+                                player.playerIconLabel.Dispose();
+                                player.playerIconLabel = null;
+                            }
+                            for (int j = index + 1; j < players.Count; j++) {
+                                if (players[j].healthBar != null) {
+                                    players[j].healthBar.Location = new Point(players[j].healthBar.Location.X, players[j].healthBar.Location.Y - playerBarHeight);
+                                }
+                                if (players[j].playerIconLabel != null) {
+                                    players[j].playerIconLabel.Location = new Point(players[j].playerIconLabel.Location.X, players[j].playerIconLabel.Location.Y - playerBarHeight);
+                                }
+                                if (players[j].playerNameLabel != null) {
+                                    players[j].playerNameLabel.Location = new Point(players[j].playerNameLabel.Location.X, players[j].playerNameLabel.Location.Y - playerBarHeight);
+                                }
+                            }
+                        } else {
+                            player.healthBar.percentage = percentage / 100.0;
+                            player.healthBar.BackColor = StyleManager.GetHealthColor(percentage / 100.0);
+                            playerIndex++;
+                        }
                     }
                 }
             }

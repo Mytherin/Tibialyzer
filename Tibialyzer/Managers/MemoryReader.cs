@@ -317,8 +317,11 @@ namespace Tibialyzer {
             }
         }
 
-        public static string GetPlayerName(int id) {
+        public static string GetPlayerName(int id, int battlelistentry = -1) {
             lock (battleList) {
+                if (battleList[battlelistentry].id == id) {
+                    return battleList[battlelistentry].name;
+                }
                 for (int i = 0; i < battleList.Length; i++) {
                     if (battleList[i].name != null && battleList[i].id == id) {
                         return battleList[i].name;
