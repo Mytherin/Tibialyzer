@@ -14,7 +14,9 @@ namespace Tibialyzer
             timer.Elapsed += (s, e) =>
             {
                 action();
-                timer.Start();
+                if (timer != null) {
+                    timer.Start();
+                }
             };
         }
 
@@ -34,10 +36,15 @@ namespace Tibialyzer
         public double Interval
         {
             get {
+                if (timer == null) {
+                    return -1;
+                }
                 return timer.Interval;
             }
             set {
-                timer.Interval = value;
+                if (timer != null) {
+                    timer.Interval = value;
+                }
             }
         }
 
