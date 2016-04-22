@@ -10,7 +10,6 @@ using System.Windows.Forms;
 
 namespace Tibialyzer {
     public partial class PopupContainer : Form {
-        public static Color ContainerTransparentColor = Color.Fuchsia;
 
         private object notificationLock = new object();
         private List<List<Control>> notifications = new List<List<Control>>();
@@ -22,8 +21,8 @@ namespace Tibialyzer {
 
             this.Size = new Size(SettingsManager.getSettingInt("SimpleNotificationWidth"), this.Size.Height);
 
-            this.BackColor = ContainerTransparentColor;
-            this.TransparencyKey = ContainerTransparentColor;
+            this.BackColor = StyleManager.TransparencyKey;
+            this.TransparencyKey = StyleManager.TransparencyKey;
         }
 
         public int TranslateY(int y, int height) {
