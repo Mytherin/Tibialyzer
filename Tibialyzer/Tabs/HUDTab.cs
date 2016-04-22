@@ -24,6 +24,8 @@ namespace Tibialyzer {
                 hudTypeList.Items.Add(hudName);
             }
             hudTypeList.SelectedIndex = 0;
+
+            alwaysShowHUD.Checked = SettingsManager.getSettingBool("AlwaysShowHUD");
         }
 
         public void InitializeTooltips() {
@@ -159,6 +161,10 @@ namespace Tibialyzer {
                     MainForm.mainForm.switchTab(15);
                 });
             }
+        }
+
+        private void alwaysShowHUD_CheckedChanged(object sender, EventArgs e) {
+            SettingsManager.setSetting("AlwaysShowHUD", (sender as CheckBox).Checked);
         }
     }
 }

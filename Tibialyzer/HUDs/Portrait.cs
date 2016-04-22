@@ -180,7 +180,7 @@ namespace Tibialyzer {
                 bool visible = ProcessManager.IsTibiaActive();
                 this.Invoke((MethodInvoker)delegate {
                     RefreshHUD(lifePercentage, manaPercentage);
-                    this.Visible = visible;
+                    this.Visible = alwaysShow ? true : visible;
                 });
             } catch { }
         }

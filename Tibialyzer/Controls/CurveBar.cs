@@ -33,10 +33,12 @@ namespace Tibialyzer {
 
         private float health = 1;
         private float mana = 1;
+        private bool alwaysShow = false;
 
         public CurveBar() {
             updateTimer = new SafeTimer(10, updateTimer_Tick);
             updateTimer.Start();
+            alwaysShow = SettingsManager.getSettingBool("AlwaysShowHUD");
         }
         
         ~CurveBar() {
@@ -48,13 +50,15 @@ namespace Tibialyzer {
         private void updateTimer_Tick() {
             health = (float)MemoryReader.Health / MemoryReader.MaxHealth;
             mana = (float)MemoryReader.Mana / MemoryReader.MaxMana;
-            try {
-                bool visible = ProcessManager.IsTibiaActive();
-                this.Invoke((MethodInvoker)delegate {
-                    this.Visible = visible;
-                });
+            if (!alwaysShow) {
+                try {
+                    bool visible = ProcessManager.IsTibiaActive();
+                    this.Invoke((MethodInvoker)delegate {
+                        this.Visible = visible;
+                    });
 
-            } catch {
+                } catch {
+                }
             }
             this.Invalidate();
         }

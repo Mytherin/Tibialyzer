@@ -53,7 +53,7 @@ namespace Tibialyzer {
                 // only show the suspended window when tibia is active
                 bool visible = ProcessManager.IsTibiaActive();
                 this.BeginInvoke((MethodInvoker)delegate {
-                    this.Visible = visible;
+                    this.Visible = alwaysShow ? true : visible;
                 });
             } catch {
 

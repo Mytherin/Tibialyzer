@@ -113,7 +113,7 @@ namespace Tibialyzer {
                 bool visible = ProcessManager.IsTibiaActive();
                 this.Invoke((MethodInvoker)delegate {
                     RefreshHUD(life, maxlife, percentage);
-                    this.Visible = visible;
+                    this.Visible = alwaysShow ? true : visible;
                 });
             } catch {
             }

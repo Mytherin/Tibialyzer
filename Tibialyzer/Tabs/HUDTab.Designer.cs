@@ -51,6 +51,7 @@
             this.hudOpacityBox = new Tibialyzer.EnterTextBox();
             this.displayHUDTextBox = new Tibialyzer.PrettyCheckBox();
             this.advancedOptionsButton = new System.Windows.Forms.Label();
+            this.alwaysShowHUD = new Tibialyzer.PrettyCheckBox();
             this.SuspendLayout();
             // 
             // selectedHUDLabel
@@ -416,7 +417,7 @@
             this.advancedOptionsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.advancedOptionsButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.advancedOptionsButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.advancedOptionsButton.Location = new System.Drawing.Point(5, 420);
+            this.advancedOptionsButton.Location = new System.Drawing.Point(8, 432);
             this.advancedOptionsButton.Name = "advancedOptionsButton";
             this.advancedOptionsButton.Padding = new System.Windows.Forms.Padding(10);
             this.advancedOptionsButton.Size = new System.Drawing.Size(275, 54);
@@ -427,12 +428,29 @@
             this.advancedOptionsButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.advancedOptionsButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             // 
+            // alwaysShowHUD
+            // 
+            this.alwaysShowHUD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.alwaysShowHUD.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.alwaysShowHUD.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.alwaysShowHUD.Location = new System.Drawing.Point(8, 395);
+            this.alwaysShowHUD.Name = "alwaysShowHUD";
+            this.alwaysShowHUD.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.alwaysShowHUD.Size = new System.Drawing.Size(275, 34);
+            this.alwaysShowHUD.TabIndex = 84;
+            this.alwaysShowHUD.Text = "Always Show HUD";
+            this.alwaysShowHUD.UseVisualStyleBackColor = false;
+            this.alwaysShowHUD.CheckedChanged += new System.EventHandler(this.alwaysShowHUD_CheckedChanged);
+            this.alwaysShowHUD.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.alwaysShowHUD.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            // 
             // HUDTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(538, 514);
+            this.Controls.Add(this.alwaysShowHUD);
             this.Controls.Add(this.advancedOptionsButton);
             this.Controls.Add(this.displayHUDTextBox);
             this.Controls.Add(this.label7);
@@ -499,5 +517,6 @@
         private EnterTextBox hudOpacityBox;
         private PrettyCheckBox displayHUDTextBox;
         private System.Windows.Forms.Label advancedOptionsButton;
+        private PrettyCheckBox alwaysShowHUD;
     }
 }
