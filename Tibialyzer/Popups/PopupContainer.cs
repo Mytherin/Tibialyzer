@@ -24,8 +24,6 @@ namespace Tibialyzer {
 
             this.BackColor = ContainerTransparentColor;
             this.TransparencyKey = ContainerTransparentColor;
-
-            this.ShowInTaskbar = false;
         }
 
         public int TranslateY(int y, int height) {
@@ -92,7 +90,6 @@ namespace Tibialyzer {
         }
 
         static int WS_EX_NOACTIVATE = 0x08000000;
-        static int WS_EX_TOOLWINDOW = 0x00000080;
         static int WS_EX_COMPOSITED = 0x02000000;
 
         protected override CreateParams CreateParams {
@@ -100,7 +97,7 @@ namespace Tibialyzer {
                 CreateParams baseParams = base.CreateParams;
 
                 baseParams.ExStyle |= (int)(
-                  WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW | WS_EX_COMPOSITED);
+                  WS_EX_NOACTIVATE | WS_EX_COMPOSITED);
 
                 return baseParams;
             }

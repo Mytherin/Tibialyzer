@@ -33,8 +33,8 @@
             this.ClientSize = new System.Drawing.Size(354, 325);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "PopupContainer";
-            this.Text = "PopupContainer";
+            this.Name = "Tibialyzer (Popup Container)";
+            this.Text = "Tibialyzer (Popup Container)";
             this.TopMost = true;
             this.ResumeLayout(false);
 

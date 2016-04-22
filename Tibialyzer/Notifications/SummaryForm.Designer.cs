@@ -31,8 +31,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "SummaryForm";
-            this.Text = "SummaryForm";
+            this.Name = "Tibialyzer (Summary Form)";
+            this.Text = "Tibialyzer (Summary Form)";
             this.ResumeLayout(false);
 
         }

@@ -63,6 +63,7 @@ namespace Tibialyzer {
             value_tooltip.ReshowDelay = 0;
             value_tooltip.ShowAlways = true;
             value_tooltip.UseFading = true;
+            this.Name = "Tibialyzer (Loot Form)";
         }
 
         public static Bitmap GetStackImage(Image image, int count, Item item) {

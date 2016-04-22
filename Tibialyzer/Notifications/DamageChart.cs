@@ -50,6 +50,8 @@ namespace Tibialyzer {
                     this.mChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.EarthTones;
                     chartTitle.Text = "Healing Done"; break;
             }
+            this.Name = "Tibialyzer (Damage Form)";
+            this.Text = "Tibialyzer (Damage Form)";
         }
 
         private void InitializeComponent() {

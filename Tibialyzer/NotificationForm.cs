@@ -41,7 +41,8 @@ namespace Tibialyzer {
         protected bool hideWhenTibiaInactive = false;
 
         public NotificationForm() {
-            this.ShowInTaskbar = false;
+            this.ShowInTaskbar = Constants.OBSEnableWindowCapture;
+            this.Name = String.Format("Tibialyzer ({0})", FormName());
 
             hideWhenTibiaInactive = SettingsManager.getSettingBool("NotificationShowTibiaActive");
         }
@@ -241,8 +242,10 @@ namespace Tibialyzer {
             get {
                 CreateParams baseParams = base.CreateParams;
 
-                baseParams.ExStyle |= (int)(
-                  WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW | WS_EX_COMPOSITED);
+                baseParams.ExStyle |= (int)(WS_EX_NOACTIVATE | WS_EX_COMPOSITED);
+                if (!Constants.OBSEnableWindowCapture) {
+                    baseParams.ExStyle |= WS_EX_TOOLWINDOW;
+                }
 
                 return baseParams;
             }

@@ -276,8 +276,8 @@
             this.Controls.Add(this.huntNameLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "LootDropForm";
-            this.Text = "Loot Drop Form";
+            this.Name = "Tibialyzer (Loot Form)";
+            this.Text = "Tibialyzer (Loot Form)";
             this.ResumeLayout(false);
             this.PerformLayout();
 

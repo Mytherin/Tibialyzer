@@ -42,6 +42,9 @@ namespace Tibialyzer {
             customCommandList.AttemptNewItem += CustomCommandList_AttemptNewItem;
             customCommandList.RefreshControl();
             CustomCommandList_ItemsChanged(null, null);
+
+            Constants.OBSEnableWindowCapture = SettingsManager.getSettingBool("OBSEnableWindowCapture");
+            enableWindowCapture.Checked = Constants.OBSEnableWindowCapture;
         }
 
         public void InitializeTooltips() {
@@ -184,6 +187,11 @@ namespace Tibialyzer {
 
         private void showPopupWindow_Click(object sender, EventArgs e) {
             PopupManager.ShowPopupContainer();
+        }
+
+        private void enableWindowCapture_CheckedChanged(object sender, EventArgs e) {
+            SettingsManager.setSetting("OBSEnableWindowCapture", (sender as CheckBox).Checked);
+            Constants.OBSEnableWindowCapture = (sender as CheckBox).Checked;
         }
     }
 }

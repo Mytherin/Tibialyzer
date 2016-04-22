@@ -32,8 +32,8 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(284, 63);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "HealthList";
-            this.Text = "HealthBar";
+            this.Name = "Tibialyzer (Health List HUD)";
+            this.Text = "Tibialyzer (Health List HUD)";
             this.ResumeLayout(false);
 
         }

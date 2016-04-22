@@ -41,8 +41,8 @@
             this.ClientSize = new System.Drawing.Size(300, 300);
             this.Controls.Add(this.hpManaBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "CurvedHUD";
-            this.Text = "CurvedHUD";
+            this.Name = "Tibialyzer (Curved HUD)";
+            this.Text = "Tibialyzer (Curved HUD)";
             this.ResumeLayout(false);
 
         }

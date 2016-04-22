@@ -31,8 +31,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(400, 200);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "Portrait";
-            this.Text = "Portrait";
+            this.Name = "Tibialyzer (Portrait HUD)";
+            this.Text = "Tibialyzer (Portrait HUD)";
             this.ResumeLayout(false);
 
         }

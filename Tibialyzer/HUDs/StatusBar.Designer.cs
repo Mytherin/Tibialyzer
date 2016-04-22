@@ -45,8 +45,8 @@
             this.ClientSize = new System.Drawing.Size(284, 63);
             this.Controls.Add(this.healthBarLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "StatusBar";
-            this.Text = "HealthBar";
+            this.Name = "Tibialyzer (Status Bar)";
+            this.Text = "Tibialyzer (Status Bar)";
             this.ResumeLayout(false);
 
         }

@@ -197,7 +197,7 @@ namespace Tibialyzer {
                 bool visible = ProcessManager.IsTibiaActive();
                 this.Invoke((MethodInvoker)delegate {
                     RefreshHUD();
-                    this.Visible = visible;
+                    this.Visible = alwaysShow ? true : visible;
                 });
             } catch {
             }

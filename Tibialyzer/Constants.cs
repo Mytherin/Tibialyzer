@@ -108,5 +108,8 @@ namespace Tibialyzer {
         public static List<Color> DamageChartColors = new List<Color> { Color.FromArgb(65, 140, 240), Color.FromArgb(252, 180, 65), Color.FromArgb(224, 64, 10), Color.FromArgb(5, 100, 146), Color.FromArgb(191, 191, 191), Color.FromArgb(26, 59, 105), Color.FromArgb(255, 227, 130), Color.FromArgb(18, 156, 221), Color.FromArgb(202, 107, 75), Color.FromArgb(0, 92, 219), Color.FromArgb(243, 210, 136), Color.FromArgb(80, 99, 129), Color.FromArgb(241, 185, 168), Color.FromArgb(224, 131, 10), Color.FromArgb(120, 147, 190) };
         public static List<Color> DamageTakenChartColors = new List<Color> { Color.FromArgb(255, 128, 0), Color.FromArgb(184, 134, 11), Color.FromArgb(192, 64, 0), Color.FromArgb(107, 142, 35), Color.FromArgb(205, 133, 63), Color.FromArgb(192, 192, 0), Color.FromArgb(34, 139, 34), Color.FromArgb(210, 105, 30), Color.FromArgb(128, 128, 0), Color.FromArgb(32, 178, 170), Color.FromArgb(244, 164, 96), Color.FromArgb(0, 192, 0), Color.FromArgb(143, 188, 139), Color.FromArgb(178, 34, 34), Color.FromArgb(139, 69, 19), Color.FromArgb(192, 0, 0) };
         public static List<Color> HealingChartColors = new List<Color> { Color.FromArgb(160, 82, 45), Color.FromArgb(210, 105, 30), Color.FromArgb(139, 0, 0), Color.FromArgb(205, 133, 63), Color.FromArgb(165, 42, 42), Color.FromArgb(244, 164, 96), Color.FromArgb(139, 69, 19), Color.FromArgb(192, 64, 0), Color.FromArgb(178, 34, 34), Color.FromArgb(182, 92, 58) };
+
+        // Not a constant, but don't tell anyone!
+        public static bool OBSEnableWindowCapture = false;
     }
 }
