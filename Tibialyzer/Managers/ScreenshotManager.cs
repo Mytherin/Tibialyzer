@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -47,7 +47,7 @@ namespace Tibialyzer {
             if (path == null) return;
             try {
                 DateTime dt = DateTime.Now;
-                name = String.Format("{0} - {1}-{2}-{3} {4}h{5}m{6}s{7}ms.png", name, dt.Year.ToString("D4"), dt.Month.ToString("D2"), dt.Day.ToString("D2"), dt.Hour.ToString("D2"), dt.Minute.ToString("D2"), dt.Second.ToString("D2"), dt.Millisecond.ToString("D4"));
+                name = String.Format("{0}-{1}-{2} {3}h{4}m{5}s{6}ms {7}.png", dt.Year.ToString("D4"), dt.Month.ToString("D2"), dt.Day.ToString("D2"), dt.Hour.ToString("D2"), dt.Minute.ToString("D2"), dt.Second.ToString("D2"), dt.Millisecond.ToString("D4"), name);
                 path = Path.Combine(path, name);
                 bitmap.Save(path, ImageFormat.Png);
                 bitmap.Dispose();
