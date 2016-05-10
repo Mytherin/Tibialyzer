@@ -76,6 +76,14 @@
 		<Desc>Displays the damage meter for creatures.</Desc>
 	</Command>
 	<Command>
+		<Com>healing@</Com>
+		<Desc>Displays the healing meter for players.</Desc>
+	</Command>
+	<Command>
+		<Com>damagetaken@</Com>
+		<Desc>Displays the damage taken for players.</Desc>
+	</Command>
+	<Command>
 		<Com>reset@</Com>
 		<Desc>Clears the currently active hunt, deleting all loot.</Desc>
 	</Command>
@@ -158,5 +166,37 @@
 	<Command>
 		<Com>[cityname]@[spellname]</Com>
 		<Desc>Displays a NPC that teaches [spellname] in [cityname].</Desc>
+	</Command>
+	<Command>
+		<Com>hud@[hudname]</Com>
+		<Desc>Displays the specified HUD.</Desc>
+	</Command>
+	<Command>
+		<Com>closehud@[hudname]</Com>
+		<Desc>Closes the specified HUD.</Desc>
+	</Command>
+	<Command>
+		<Com>addwaste@[item]@[count]</Com>
+		<Desc>Adds the specified amount of items to the used items of the active hunt.</Desc>
+	</Command>
+	<Command>
+		<Com>addloot@[item]@[count]</Com>
+		<Desc>Adds the specified amount of items to the loot of the active hunt.</Desc>
+	</Command>
+	<Command>
+		<Com>summary@</Com>
+		<Desc>Displays a notification that contains summary information (loot, experience, recent drops).</Desc>
+	</Command>
+	<Command>
+		<Com>experience@</Com>
+		<Desc>Displays a graph of experience gained over time.</Desc>
+	</Command>
+	<Command>
+		<Com>waste@</Com>
+		<Desc>Displays all used items of the current hunt.</Desc>
+	</Command>
+	<Command>
+		<Com>remindme@[time]@[title]@[message]@[icon]</Com>
+		<Desc>Displays a reminder after [time] with [title] and [message] and [icon].</Desc>
 	</Command>
 </Commands>
