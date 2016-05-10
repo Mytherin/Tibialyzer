@@ -17,40 +17,57 @@ namespace Tibialyzer {
             }
         }
         
-        public static void ShowHUD(string param) {
-            BaseHUD hud = null;
-            param = param.ToLower().Replace(" ", "");
-            switch(param) {
+        private static string AlternateHUDNames(string name) {
+            switch (name) {
                 case "health":
                 case "life":
                 case "hp":
                 case "healthbar":
-                    hud = new StatusBar(StatusType.Health);
-                    break;
+                    return "health bar";
                 case "mana":
                 case "mp":
                 case "manabar":
-                    hud = new StatusBar(StatusType.Mana);
-                    break;
+                    return "mana bar";
                 case "exp":
                 case "experience":
                 case "experiencebar":
-                    hud = new StatusBar(StatusType.Experience);
-                    break;
+                    return "experience bar";
                 case "curvedbars":
                 case "curvedbar":
                 case "curved":
-                    hud = new CurvedHUD();
-                    break;
+                    return "curved bar";
                 case "healthlist":
                 case "hudlist":
                 case "hplist":
+                    return "health list";
+                case "portrait":
+                    return "portrait";
+            }
+            return name;
+        }
+
+        public static void ShowHUD(string param) {
+            BaseHUD hud = null;
+            param = filterName(param);
+            switch(param) {
+                case "healthbar":
+                    hud = new StatusBar(StatusType.Health);
+                    break;
+                case "manabar":
+                    hud = new StatusBar(StatusType.Mana);
+                    break;
+                case "experiencebar":
+                    hud = new StatusBar(StatusType.Experience);
+                    break;
+                case "curvedbar":
+                    hud = new CurvedHUD();
+                    break;
+                case "healthlist":
                     hud = new HealthList();
                     break;
                 case "portrait":
                     hud = new Portrait();
                     break;
-
             }
             if (hud == null) return;
             string hudName = hud.GetHUD();
@@ -126,7 +143,7 @@ namespace Tibialyzer {
         }
 
         public static string filterName(string name) {
-            return name.ToLower().Replace(" ", "");
+            return AlternateHUDNames(name.ToLower()).Replace(" ", "");
         }
     }
 }

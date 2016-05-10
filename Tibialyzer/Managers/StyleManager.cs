@@ -119,6 +119,7 @@ namespace Tibialyzer {
         public static Image GetImage(string name) {
             if (!images.ContainsKey(name.ToLower())) {
                 Console.WriteLine("Unknown image: {0}", name.ToLower());
+                return null;
             }
             return images[name.ToLower()];
         }

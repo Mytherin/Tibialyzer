@@ -119,9 +119,13 @@ namespace Tibialyzer {
         public static void SetProcess(Process process) {
             if (processID == process.Id) return;
 
-            MemoryReader.processID = process.Id;
-            MemoryReader.handle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
-            MemoryReader.baseAddress = (UInt32)process.MainModule.BaseAddress.ToInt32();
+            try {
+                MemoryReader.baseAddress = (UInt32)process.MainModule.BaseAddress.ToInt32();
+                MemoryReader.handle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
+                MemoryReader.processID = process.Id;
+            } catch {
+
+            }
         }
 
 
