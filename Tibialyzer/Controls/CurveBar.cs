@@ -36,7 +36,7 @@ namespace Tibialyzer {
         private bool alwaysShow = false;
 
         public CurveBar() {
-            updateTimer = new SafeTimer(10, updateTimer_Tick);
+            updateTimer = new SafeTimer(50, updateTimer_Tick);
             updateTimer.Start();
             alwaysShow = SettingsManager.getSettingBool("AlwaysShowHUD");
         }

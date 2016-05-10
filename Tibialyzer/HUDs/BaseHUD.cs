@@ -25,7 +25,7 @@ namespace Tibialyzer {
             get {
                 CreateParams baseParams = base.CreateParams;
 
-                baseParams.ExStyle |= (int)(WS_EX_NOACTIVATE | WS_EX_COMPOSITED);
+                baseParams.ExStyle |= WS_EX_NOACTIVATE | WS_EX_COMPOSITED;
                 if (!Constants.OBSEnableWindowCapture) {
                     baseParams.ExStyle |= WS_EX_TOOLWINDOW;
                 }
