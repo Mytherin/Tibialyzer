@@ -12,6 +12,8 @@ namespace Tibialyzer {
 
         protected bool alwaysShow = false;
 
+        static int WS_EX_TRANSPARENT = 0x20;
+        static int WS_EX_LAYERED = 0x80000;
         static int WS_EX_NOACTIVATE = 0x08000000;
         static int WS_EX_TOOLWINDOW = 0x00000080;
         static int WS_EX_COMPOSITED = 0x02000000;
@@ -24,8 +26,8 @@ namespace Tibialyzer {
         protected override CreateParams CreateParams {
             get {
                 CreateParams baseParams = base.CreateParams;
-
-                baseParams.ExStyle |= WS_EX_NOACTIVATE | WS_EX_COMPOSITED;
+                
+                baseParams.ExStyle |= WS_EX_NOACTIVATE | WS_EX_COMPOSITED | WS_EX_LAYERED | WS_EX_TRANSPARENT;
                 if (!Constants.OBSEnableWindowCapture) {
                     baseParams.ExStyle |= WS_EX_TOOLWINDOW;
                 }

@@ -12,17 +12,13 @@ namespace Tibialyzer {
     public enum StatusType { Health, Mana, Experience, ExpPerHour };
 
     public partial class StatusBar : BaseHUD {
-        private const int WS_EX_Transparent = 0x20;
-        private const int WS_EX_Layered = 0x80000;
-        private const int WS_EX_Composited = 0x02000000;
-
         private StatusType statusType;
         private bool displayText;
 
         public StatusBar(StatusType statusType) {
             this.statusType = statusType;
             InitializeComponent();
-
+            
             BackColor = StyleManager.BlendTransparencyKey;
             TransparencyKey = StyleManager.BlendTransparencyKey;
 
@@ -43,18 +39,10 @@ namespace Tibialyzer {
             double fontSize = SettingsManager.getSettingDouble(GetHUD() + "FontSize");
             fontSize = fontSize < 0 ? 20 : fontSize;
             this.healthBarLabel.Font = new System.Drawing.Font("Verdana", (float)fontSize, System.Drawing.FontStyle.Bold);
-            this.RefreshHUD(100, 100, 1);
+            this.RefreshHUD(100, 100);
             this.Load += StatusBar_Load;
         }
-
-        protected override CreateParams CreateParams {
-            get {
-                CreateParams cp = base.CreateParams;
-                cp.ExStyle |= WS_EX_Composited | WS_EX_Transparent | WS_EX_Layered;
-                return cp;
-            }
-        }
-
+        
         private SafeTimer timer;
         private void StatusBar_Load(object sender, EventArgs e) {
             timer = new SafeTimer(10, Timer_Tick);
@@ -69,17 +57,19 @@ namespace Tibialyzer {
             return (50 * lvl * lvl * lvl - 150 * lvl * lvl + 400 * lvl) / 3;
         }
 
-        public void RefreshHUD(long min, long max, double percentage) {
+        public void RefreshHUD(long value, long max) {
+            double percentage = ((double) value) / ((double) max);
             if (displayText) {
                 if (statusType == StatusType.Experience) {
                     healthBarLabel.Text = String.Format("Lvl {0}: {1}%", MemoryReader.Level, (int)(percentage * 100));
                 } else {
-                    healthBarLabel.Text = String.Format("{0}/{1}", min, max);
+                    healthBarLabel.Text = String.Format("{0}/{1}", value, max);
                 }
             } else {
                 healthBarLabel.Text = "";
             }
             healthBarLabel.percentage = percentage;
+            healthBarLabel.Size = this.Size;
             if (statusType == StatusType.Health) {
                 healthBarLabel.BackColor = StyleManager.GetHealthColor(percentage);
             } else if (statusType == StatusType.Mana) {
@@ -107,12 +97,11 @@ namespace Tibialyzer {
                 life = 1;
                 maxlife = 1;
             }
-            double percentage = (double)life / maxlife;
 
             try {
                 bool visible = ProcessManager.IsTibiaActive();
                 this.Invoke((MethodInvoker)delegate {
-                    RefreshHUD(life, maxlife, percentage);
+                    RefreshHUD(life, maxlife);
                     this.Visible = alwaysShow ? true : visible;
                 });
             } catch {
