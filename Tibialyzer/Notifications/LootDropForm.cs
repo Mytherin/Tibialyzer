@@ -84,7 +84,21 @@ namespace Tibialyzer {
             }
         }
 
-        public static Bitmap DrawCountOnItem(Item item, int itemCount) {
+        public static void DrawCountOnGraphics(Graphics gr, int itemCount, int offset_x, int offset_y) {
+            int numbers = (int)Math.Floor(Math.Log(itemCount, 10)) + 1;
+            int xoffset = 1, logamount = itemCount;
+            for (int i = 0; i < numbers; i++) {
+                int imagenr = logamount % 10;
+                Image imageNumber = StyleManager.GetImage(imagenr + ".png");
+                xoffset = xoffset + imageNumber.Width + (itemCount >= 1000 ? 0 : 1);
+                lock (imageNumber) {
+                    gr.DrawImage(imageNumber, new Point(offset_x - xoffset, offset_y - imageNumber.Height - 3));
+                }
+                logamount /= 10;
+            }
+        }
+
+        public static Bitmap DrawCountOnItem(Item item, int itemCount, int size = -1) {
             Bitmap image;
             if (item.stackable) {
                 try {
@@ -95,19 +109,9 @@ namespace Tibialyzer {
             } else {
                 image = new Bitmap(item.image);
             }
-
+            
             using (Graphics gr = Graphics.FromImage(image)) {
-                int numbers = (int)Math.Floor(Math.Log(itemCount, 10)) + 1;
-                int xoffset = 1, logamount = itemCount;
-                for (int i = 0; i < numbers; i++) {
-                    int imagenr = logamount % 10;
-                    Image imageNumber = StyleManager.GetImage(imagenr + ".png");
-                    xoffset = xoffset + imageNumber.Width + (itemCount >= 1000 ? 0 : 1);
-                    lock(imageNumber) {
-                        gr.DrawImage(imageNumber, new Point(image.Width - xoffset, image.Height - imageNumber.Height - 3));
-                    }
-                    logamount /= 10;
-                }
+                DrawCountOnGraphics(gr, itemCount, image.Width, image.Height);
             }
             return image;
         }

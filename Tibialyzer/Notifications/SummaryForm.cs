@@ -146,7 +146,7 @@ namespace Tibialyzer {
                     Rectangle region = new Rectangle(8 + (imageHeight - 1) * ++count, 1, imageHeight - 2, imageHeight - 2);
                     regions.Add(new ItemRegion { item = item.Item1, region = region });
                     RenderImageResized(gr, StyleManager.GetImage("item_background.png"), region);
-                    RenderImageResized(gr, (item.Item1.stackable || item.Item2 > 1) ? LootDropForm.DrawCountOnItem(item.Item1, item.Item2) : item.Item1.GetImage(), region);
+                    RenderItemCount(gr, item, region);
                 }
             }
             return bitmap;
@@ -223,6 +223,17 @@ namespace Tibialyzer {
             Clipboard.SetText((sender as Control).Name);
         }
 
+        private static void RenderItemCount(Graphics gr, Tuple<Item, int> item, Rectangle region) {
+            if (region.Width > 28) {
+                RenderImageResized(gr, item.Item1.GetImage(), region);
+                if (item.Item1.stackable || item.Item2 > 1) {
+                    LootDropForm.DrawCountOnGraphics(gr, item.Item2, region.X + region.Width - 1, region.Y + region.Height - 1);
+                }
+            } else {
+                RenderImageResized(gr, (item.Item1.stackable || item.Item2 > 1) ? LootDropForm.DrawCountOnItem(item.Item1, item.Item2) : item.Item1.GetImage(), region);
+            }
+        }
+
         private PictureBox CreateItemList(List<Tuple<Item, int>> items, int x, ref int y, List<Control> controls, int imageHeight, List<ItemRegion> newRegions = null, int boxIndex = 0) {
             Image image = new Bitmap(BlockWidth, imageHeight);
             using (Graphics gr = Graphics.FromImage(image)) {
@@ -231,7 +242,7 @@ namespace Tibialyzer {
                     Rectangle region = new Rectangle(x + (counter++) * (imageHeight + 1), 0, imageHeight - 1, imageHeight - 1);
                     if (newRegions != null) newRegions.Add(new ItemRegion { item = item.Item1, region = region });
                     RenderImageResized(gr, StyleManager.GetImage("item_background.png"), region);
-                    RenderImageResized(gr, (item.Item1.stackable || item.Item2 > 1) ? LootDropForm.DrawCountOnItem(item.Item1, item.Item2) : item.Item1.GetImage(), region);
+                    RenderItemCount(gr, item, region);
                 }
             }
             PictureBox box = new PictureBox();
