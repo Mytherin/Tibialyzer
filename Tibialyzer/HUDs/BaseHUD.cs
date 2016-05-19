@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Tibialyzer {
-    public class BaseHUD : Form {
+    public abstract class BaseHUD : Form {
         public virtual string GetHUD() { return ""; }
         public virtual void LoadHUD() { }
 

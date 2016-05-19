@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Tibialyzer.Structures;
 
 namespace Tibialyzer {
     public enum StatusType { Health, Mana, Experience, ExpPerHour };
@@ -26,42 +27,27 @@ namespace Tibialyzer {
             double opacity = SettingsManager.getSettingDouble(GetHUD() + "Opacity");
             opacity = Math.Min(1, Math.Max(0, opacity));
             this.Opacity = opacity;
-        }
 
-        ~StatusBar() {
-            if (timer != null) {
-                timer.Stop();
-                timer.Dispose();
-            }
+            MemoryReader.AttributesChanged += (o, e) => RefreshHUD(e);
+            ProcessManager.TibiaVisibilityChanged += (o, e) => UpdateVisibility(e);
         }
 
         public override void LoadHUD() {
             double fontSize = SettingsManager.getSettingDouble(GetHUD() + "FontSize");
             fontSize = fontSize < 0 ? 20 : fontSize;
             this.healthBarLabel.Font = new System.Drawing.Font("Verdana", (float)fontSize, System.Drawing.FontStyle.Bold);
-            this.RefreshHUD(100, 100);
-            this.Load += StatusBar_Load;
-        }
-        
-        private SafeTimer timer;
-        private void StatusBar_Load(object sender, EventArgs e) {
-            timer = new SafeTimer(10, Timer_Tick);
-            timer.Start();
-        }
-        
-        private void Timer_Tick() {
-            RefreshHealth();
+            this.RefreshHUD(100, 100, 1);
         }
 
-        public static long GetExperience(long lvl) {
+        private static long GetExperience(long lvl) {
             return (50 * lvl * lvl * lvl - 150 * lvl * lvl + 400 * lvl) / 3;
         }
 
-        public void RefreshHUD(long value, long max) {
+        private void RefreshHUD(long value, long max, int level) {
             double percentage = ((double) value) / ((double) max);
             if (displayText) {
                 if (statusType == StatusType.Experience) {
-                    healthBarLabel.Text = String.Format("Lvl {0}: {1}%", MemoryReader.Level, (int)(percentage * 100));
+                    healthBarLabel.Text = String.Format("Lvl {0}: {1}%", level, (int)(percentage * 100));
                 } else {
                     healthBarLabel.Text = String.Format("{0}/{1}", value, max);
                 }
@@ -79,18 +65,21 @@ namespace Tibialyzer {
             }
         }
 
-        public void RefreshHealth() {
-            long life = 0, maxlife = 1;
+        private void RefreshHUD(PlayerAttributes attributes) {
+            long life = 0;
+            long maxlife = 1;
+            int level = 1;
+
             if (statusType == StatusType.Health) {
-                life = MemoryReader.Health;
-                maxlife = MemoryReader.MaxHealth;
+                life = attributes.Health;
+                maxlife = attributes.MaxHealth;
             } else if (statusType == StatusType.Mana) {
-                life = MemoryReader.Mana;
-                maxlife = MemoryReader.MaxMana;
+                life = attributes.Mana;
+                maxlife = attributes.MaxMana;
             } else if (statusType == StatusType.Experience) {
-                int level = MemoryReader.Level;
+                level = attributes.Level;
                 long baseExperience = GetExperience(level - 1);
-                life = MemoryReader.Experience - baseExperience;
+                life = attributes.Experience - baseExperience;
                 maxlife = GetExperience(level) - baseExperience;
             }
             if (maxlife == 0) {
@@ -98,13 +87,26 @@ namespace Tibialyzer {
                 maxlife = 1;
             }
 
-            try {
-                bool visible = ProcessManager.IsTibiaActive();
+            try
+            {
                 this.Invoke((MethodInvoker)delegate {
-                    RefreshHUD(life, maxlife);
-                    this.Visible = alwaysShow ? true : visible;
+                    RefreshHUD(life, maxlife, level);
                 });
-            } catch {
+            }
+            catch
+            {
+            }
+        }
+
+        private void UpdateVisibility(bool visible) {
+            try
+            {
+                this.Invoke((MethodInvoker)delegate {
+                    this.Visible = alwaysShow || visible;
+                });
+            }
+            catch
+            {
             }
         }
 

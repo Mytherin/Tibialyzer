@@ -60,6 +60,7 @@ namespace Tibialyzer {
                     hud = new StatusBar(StatusType.Experience);
                     break;
                 case "curvedbar":
+                case "curvedbars":
                     hud = new CurvedHUD();
                     break;
                 case "healthlist":

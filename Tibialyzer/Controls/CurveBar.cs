@@ -26,40 +26,40 @@ SOFTWARE.*/
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Tibialyzer.Structures;
 
 namespace Tibialyzer {
     public class CurveBar : Control {
-        private SafeTimer updateTimer;
 
         private float health = 1;
         private float mana = 1;
         private bool alwaysShow = false;
 
         public CurveBar() {
-            updateTimer = new SafeTimer(50, updateTimer_Tick);
-            updateTimer.Start();
+            MemoryReader.AttributesChanged += (o, e) => UpdateHud(e);
+            ProcessManager.TibiaVisibilityChanged += (o, e) => UpdateHudVisibility(e);
+            this.DoubleBuffered = true;
             alwaysShow = SettingsManager.getSettingBool("AlwaysShowHUD");
         }
-        
-        ~CurveBar() {
-            if (updateTimer != null) {
-                updateTimer.Dispose();
-            }
+
+        private void UpdateHud(PlayerAttributes attributes) {
+            health = (float)attributes.Health / attributes.MaxHealth;
+            mana = (float)attributes.Mana / attributes.MaxMana;
+            this.Invalidate();
         }
 
-        private void updateTimer_Tick() {
-            health = (float)MemoryReader.Health / MemoryReader.MaxHealth;
-            mana = (float)MemoryReader.Mana / MemoryReader.MaxMana;
+        private void UpdateHudVisibility(bool visible) {
             if (!alwaysShow) {
                 try {
-                    bool visible = ProcessManager.IsTibiaActive();
                     this.Invoke((MethodInvoker)delegate {
-                        this.Visible = visible;
+                        this.Visible = alwaysShow || visible;
                     });
 
-                } catch {
+                }
+                catch {
                 }
             }
+
             this.Invalidate();
         }
 

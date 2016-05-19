@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Tibialyzer.Structures;
 
 namespace Tibialyzer {
     public partial class Portrait : BaseHUD {
@@ -24,16 +25,13 @@ namespace Tibialyzer {
 
             BackColor = StyleManager.BlendTransparencyKey;
             TransparencyKey = StyleManager.BlendTransparencyKey;
+            MemoryReader.AttributesChanged += (o, e) => RefreshStats(e);
+            ProcessManager.TibiaVisibilityChanged += (o, e) => UpdateVisibility(e);
         }
 
         ~Portrait() {
             if (backgroundImage != null) {
                 backgroundImage.Dispose();
-            }
-
-            if (timer != null) {
-                timer.Stop();
-                timer.Dispose();
             }
         }
 
@@ -81,22 +79,10 @@ namespace Tibialyzer {
             backgroundScale = Math.Min(100, Math.Max(0, SettingsManager.getSettingInt("PortraitBackgroundScale")));
             centerScale = Math.Min(100, Math.Max(0, SettingsManager.getSettingInt("PortraitCenterScale")));
 
-            RefreshHUD(1, 1);
-
-            this.Load += Portrait_Load;
+            RefreshHUD(1, 1, 1);
         }
 
-        private SafeTimer timer;
-        private void Portrait_Load(object sender, EventArgs e) {
-            timer = new SafeTimer(10, Timer_Tick);
-            timer.Start();
-        }
-        
-        private void Timer_Tick() {
-            RefreshStats();
-        }
-
-        private void RefreshHUD(double lifePercentage, double manaPercentage) {
+        private void RefreshHUD(double lifePercentage, double manaPercentage, int level) {
             lifePercentage = lifePercentage.ClampPercentage();
             manaPercentage = manaPercentage.ClampPercentage();
             Bitmap bitmap = new Bitmap(pictureBox.Size.Width, pictureBox.Size.Height);
@@ -153,8 +139,8 @@ namespace Tibialyzer {
                     gr.DrawEllipse(pen, levelRect);
                 }
                 using (Brush brush = new SolidBrush(StyleManager.MainFormButtonForeColor)) {
-                    string level = MemoryReader.Level.ToString();
-                    gr.DrawString(level, StyleManager.MainFormLabelFont, brush, new PointF(height * (0.725f + (3 - level.Length) * 0.0375f), height * 0.7f));
+                    string levelString = level.ToString();
+                    gr.DrawString(levelString, StyleManager.MainFormLabelFont, brush, new PointF(height * (0.725f + (3 - levelString.Length) * 0.0375f), height * 0.7f));
                 }
             }
             bitmap.MakeTransparent(StyleManager.TransparencyKey);
@@ -167,22 +153,27 @@ namespace Tibialyzer {
             }
         }
 
-        private void RefreshStats() {
-            long life = 0, maxlife = 1, mana = 0, maxmana = 1;
-            life = MemoryReader.Health;
-            maxlife = MemoryReader.MaxHealth;
-            mana = MemoryReader.Mana;
-            maxmana = MemoryReader.MaxMana;
-            double lifePercentage = (double)life / maxlife;
-            double manaPercentage = (double)mana / maxmana;
+        private void RefreshStats(PlayerAttributes attributes) {
+            double lifePercentage = (double)attributes.Health / attributes.MaxHealth;
+            double manaPercentage = (double)attributes.Mana / attributes.MaxMana;
+            int level = attributes.Level;
 
             try {
-                bool visible = ProcessManager.IsTibiaActive();
                 this.Invoke((MethodInvoker)delegate {
-                    RefreshHUD(lifePercentage, manaPercentage);
-                    this.Visible = alwaysShow ? true : visible;
+                    RefreshHUD(lifePercentage, manaPercentage, level);
                 });
-            } catch { }
+            }
+            catch { }
+            
+        }
+
+        private void UpdateVisibility(bool visible) {
+            try {
+                this.Invoke((MethodInvoker)delegate {
+                    this.Visible = alwaysShow || visible;
+                });
+            }
+            catch { }
         }
         
         public override string GetHUD() {

@@ -273,6 +273,7 @@
     <Compile Include="Structures\Mount.cs" />
     <Compile Include="Structures\NPC.cs" />
     <Compile Include="Structures\Outfit.cs" />
+    <Compile Include="Structures\PlayerAttributes.cs" />
     <Compile Include="Structures\Quest.cs" />
     <Compile Include="Structures\Spell.cs" />
     <Compile Include="Structures\Task.cs" />
