@@ -16,6 +16,10 @@ namespace Tibialyzer {
         private Point backgroundOffset, centerOffset;
         private int backgroundScale, centerScale;
 
+        private double lifePercentage;
+        private double manaPercentage;
+        private int level;
+
         private const int WS_EX_Transparent = 0x20;
         private const int WS_EX_Layered = 0x80000;
         private const int WS_EX_Composited = 0x02000000;
@@ -23,9 +27,15 @@ namespace Tibialyzer {
         public Portrait() {
             InitializeComponent();
 
+            lifePercentage = 1;
+            manaPercentage = 1;
+            level = 1;
+
             BackColor = StyleManager.BlendTransparencyKey;
             TransparencyKey = StyleManager.BlendTransparencyKey;
-            MemoryReader.AttributesChanged += (o, e) => RefreshStats(e);
+            MemoryReader.HealthChanged += (o, e) => RefreshHealth(e);
+            MemoryReader.ManaChanged += (o, e) => RefreshMana(e);
+            MemoryReader.ExperienceChanged += (o, e) => RefreshExp(e);
             ProcessManager.TibiaVisibilityChanged += (o, e) => UpdateVisibility(e);
         }
 
@@ -79,10 +89,10 @@ namespace Tibialyzer {
             backgroundScale = Math.Min(100, Math.Max(0, SettingsManager.getSettingInt("PortraitBackgroundScale")));
             centerScale = Math.Min(100, Math.Max(0, SettingsManager.getSettingInt("PortraitCenterScale")));
 
-            RefreshHUD(1, 1, 1);
+            RefreshHUD();
         }
 
-        private void RefreshHUD(double lifePercentage, double manaPercentage, int level) {
+        private void RefreshHUD() {
             lifePercentage = lifePercentage.ClampPercentage();
             manaPercentage = manaPercentage.ClampPercentage();
             Bitmap bitmap = new Bitmap(pictureBox.Size.Width, pictureBox.Size.Height);
@@ -153,18 +163,40 @@ namespace Tibialyzer {
             }
         }
 
-        private void RefreshStats(PlayerAttributes attributes) {
-            double lifePercentage = (double)attributes.Health / attributes.MaxHealth;
-            double manaPercentage = (double)attributes.Mana / attributes.MaxMana;
-            int level = attributes.Level;
+        private void RefreshHealth(PlayerHealth playerHp) {
+            lifePercentage = (double)playerHp.Health / playerHp.MaxHealth;
 
-            try {
+            try
+            {
                 this.Invoke((MethodInvoker)delegate {
-                    RefreshHUD(lifePercentage, manaPercentage, level);
+                    RefreshHUD();
                 });
             }
             catch { }
-            
+        }
+
+        private void RefreshMana(PlayerMana playerMp) {
+            manaPercentage = (double)playerMp.Mana / playerMp.MaxMana;
+
+            try
+            {
+                this.Invoke((MethodInvoker)delegate {
+                    RefreshHUD();
+                });
+            }
+            catch { }
+        }
+
+        private void RefreshExp(PlayerExperience playerExp) {
+            level = playerExp.Level;
+
+            try
+            {
+                this.Invoke((MethodInvoker)delegate {
+                    RefreshHUD();
+                });
+            }
+            catch { }
         }
 
         private void UpdateVisibility(bool visible) {

@@ -36,15 +36,20 @@ namespace Tibialyzer {
         private bool alwaysShow = false;
 
         public CurveBar() {
-            MemoryReader.AttributesChanged += (o, e) => UpdateHud(e);
+            MemoryReader.HealthChanged += (o, e) => UpdateHealth(e);
+            MemoryReader.ManaChanged += (o, e) => UpdateMana(e);
             ProcessManager.TibiaVisibilityChanged += (o, e) => UpdateHudVisibility(e);
             this.DoubleBuffered = true;
             alwaysShow = SettingsManager.getSettingBool("AlwaysShowHUD");
         }
 
-        private void UpdateHud(PlayerAttributes attributes) {
-            health = (float)attributes.Health / attributes.MaxHealth;
-            mana = (float)attributes.Mana / attributes.MaxMana;
+        private void UpdateHealth(PlayerHealth playerHealth) {
+            health = (float)playerHealth.Health / playerHealth.MaxHealth;
+            this.Invalidate();
+        }
+
+        private void UpdateMana(PlayerMana playerMana) {
+            mana = (float)playerMana.Mana / playerMana.MaxMana;
             this.Invalidate();
         }
 

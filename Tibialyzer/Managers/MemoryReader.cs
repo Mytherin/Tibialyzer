@@ -69,9 +69,13 @@ namespace Tibialyzer {
         private static int START_X = 124 * 256;
         private static int START_Y = 121 * 256;
         
-        public static event EventHandler<PlayerAttributes> AttributesChanged;
+        public static event EventHandler<PlayerHealth> HealthChanged;
+        public static event EventHandler<PlayerMana> ManaChanged;
+        public static event EventHandler<PlayerExperience> ExperienceChanged;
 
-        private static SafeTimer readTimer;
+        private static SafeTimer healthTimer;
+        private static SafeTimer manaTimer;
+        private static SafeTimer expTimer;
 
         public static void Initialize() {
             try {
@@ -94,8 +98,14 @@ namespace Tibialyzer {
                 memoryAddresses.TryGetValue("bootstypeaddress", out BootsTypeAddress);
                 memoryAddresses.TryGetValue("ringtypeaddress", out RingTypeAddress);
 
-                readTimer = new SafeTimer(10, UpdateAttributes);
-                readTimer.Start();
+                healthTimer = new SafeTimer(10, UpdateHealth);
+                healthTimer.Start();
+
+                manaTimer = new SafeTimer(10, UpdateMana);
+                manaTimer.Start();
+
+                expTimer = new SafeTimer(10, UpdateExp);
+                expTimer.Start();
             } catch(Exception ex) {
                 MainForm.mainForm.DisplayWarning("Failed to read memory addresses file: " + ex.Message);
             }
@@ -136,28 +146,54 @@ namespace Tibialyzer {
             }
         }
 
-        private static void UpdateAttributes() {
-            bool attributesChanged =  ReadHealth();
+        private static void UpdateHealth()
+        {
+            bool attributesChanged = ReadHealth();
             attributesChanged |= ReadMaxHealth();
-            attributesChanged |= ReadMana();
-            attributesChanged |= ReadMaxMana();
-            attributesChanged |= ReadExperience();
-            attributesChanged |= ReadLevel();
-            attributesChanged |= ReadMagicLevel();
 
-            if (attributesChanged && AttributesChanged != null) {
-                var attributes = new PlayerAttributes
+            if (attributesChanged && HealthChanged != null)
+            {
+                var playerHealth = new PlayerHealth
                 {
                     Health = health,
-                    MaxHealth = maxHealth,
-                    Mana = mana,
-                    MaxMana = maxMana,
-                    Level = level,
-                    Experience = experience,
-                    MagicLevel = magicLevel
+                    MaxHealth = maxHealth
                 };
 
-                AttributesChanged(null, attributes);
+                HealthChanged(null, playerHealth);
+            }
+        }
+
+        private static void UpdateMana()
+        {
+            bool attributesChanged = ReadMana();
+            attributesChanged |= ReadMaxMana();
+
+            if (attributesChanged && ManaChanged != null)
+            {
+                var playerMana = new PlayerMana
+                {
+                    Mana = mana,
+                    MaxMana = maxMana
+                };
+
+                ManaChanged(null, playerMana);
+            }
+        }
+
+        private static void UpdateExp()
+        {
+            bool attributesChanged = ReadExperience();
+            attributesChanged |= ReadLevel();
+
+            if (attributesChanged && ExperienceChanged != null)
+            {
+                var playerExperience = new PlayerExperience
+                {
+                    Level = level,
+                    Experience = experience
+                };
+
+                ExperienceChanged(null, playerExperience);
             }
         }
 

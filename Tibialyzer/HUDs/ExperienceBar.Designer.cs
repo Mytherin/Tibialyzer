@@ -1,5 +1,5 @@
 ﻿namespace Tibialyzer {
-    partial class StatusBar {
+    partial class ExperienceBar {
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -23,19 +23,19 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.healthBarLabel = new Tibialyzer.ProgressBarLabel();
+            this.experienceBarLabel = new Tibialyzer.ProgressBarLabel();
             this.SuspendLayout();
             // 
             // healthBarLabel
             // 
-            this.healthBarLabel.Font = new System.Drawing.Font("Verdana", 20.25F, System.Drawing.FontStyle.Bold);
-            this.healthBarLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.healthBarLabel.Location = new System.Drawing.Point(0, 0);
-            this.healthBarLabel.Name = "healthBarLabel";
-            this.healthBarLabel.Size = new System.Drawing.Size(284, 63);
-            this.healthBarLabel.TabIndex = 2;
-            this.healthBarLabel.Text = "150/150";
-            this.healthBarLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.experienceBarLabel.Font = new System.Drawing.Font("Verdana", 20.25F, System.Drawing.FontStyle.Bold);
+            this.experienceBarLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.experienceBarLabel.Location = new System.Drawing.Point(0, 0);
+            this.experienceBarLabel.Name = "healthBarLabel";
+            this.experienceBarLabel.Size = new System.Drawing.Size(284, 63);
+            this.experienceBarLabel.TabIndex = 2;
+            this.experienceBarLabel.Text = "150/150";
+            this.experienceBarLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // StatusBar
             // 
@@ -43,7 +43,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(284, 63);
-            this.Controls.Add(this.healthBarLabel);
+            this.Controls.Add(this.experienceBarLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Tibialyzer (Status Bar)";
             this.Text = "Tibialyzer (Status Bar)";
@@ -52,6 +52,6 @@
         }
 
         #endregion
-        private ProgressBarLabel healthBarLabel;
+        private ProgressBarLabel experienceBarLabel;
     }
 }
