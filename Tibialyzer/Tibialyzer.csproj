@@ -106,11 +106,23 @@
     <Compile Include="HUDs\Portrait.Designer.cs">
       <DependentUpon>Portrait.cs</DependentUpon>
     </Compile>
-    <Compile Include="HUDs\StatusBar.cs">
+    <Compile Include="HUDs\ManaBar.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="HUDs\StatusBar.Designer.cs">
-      <DependentUpon>StatusBar.cs</DependentUpon>
+    <Compile Include="HUDs\ManaBar.Designer.cs">
+      <DependentUpon>ManaBar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HUDs\ExperienceBar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HUDs\ExperienceBar.Designer.cs">
+      <DependentUpon>ExperienceBar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HUDs\HealthBar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HUDs\HealthBar.Designer.cs">
+      <DependentUpon>HealthBar.cs</DependentUpon>
     </Compile>
     <Compile Include="Managers\AutoHotkeyManager.cs" />
     <Compile Include="Managers\CommandManager.cs" />
@@ -273,6 +285,9 @@
     <Compile Include="Structures\Mount.cs" />
     <Compile Include="Structures\NPC.cs" />
     <Compile Include="Structures\Outfit.cs" />
+    <Compile Include="Structures\PlayerExperience.cs" />
+    <Compile Include="Structures\PlayerMana.cs" />
+    <Compile Include="Structures\PlayerHealth.cs" />
     <Compile Include="Structures\Quest.cs" />
     <Compile Include="Structures\Spell.cs" />
     <Compile Include="Structures\Task.cs" />
@@ -399,8 +414,14 @@
     <EmbeddedResource Include="HUDs\Portrait.resx">
       <DependentUpon>Portrait.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="HUDs\StatusBar.resx">
-      <DependentUpon>StatusBar.cs</DependentUpon>
+    <EmbeddedResource Include="HUDs\ManaBar.resx">
+      <DependentUpon>ManaBar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HUDs\ExperienceBar.resx">
+      <DependentUpon>ExperienceBar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HUDs\HealthBar.resx">
+      <DependentUpon>HealthBar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Notifications\ExperienceChart.resx">
       <DependentUpon>ExperienceChart.cs</DependentUpon>

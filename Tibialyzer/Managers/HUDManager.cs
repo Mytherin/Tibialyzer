@@ -51,15 +51,16 @@ namespace Tibialyzer {
             param = filterName(param);
             switch(param) {
                 case "healthbar":
-                    hud = new StatusBar(StatusType.Health);
+                    hud = new HealthBar();
                     break;
                 case "manabar":
-                    hud = new StatusBar(StatusType.Mana);
+                    hud = new ManaBar();
                     break;
                 case "experiencebar":
-                    hud = new StatusBar(StatusType.Experience);
+                    hud = new ExperienceBar();
                     break;
                 case "curvedbar":
+                case "curvedbars":
                     hud = new CurvedHUD();
                     break;
                 case "healthlist":

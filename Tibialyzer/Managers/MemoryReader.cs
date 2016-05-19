@@ -30,9 +30,10 @@ using System.Text;
 using System.Globalization;
 using System.Collections.Generic;
 using System.IO;
+using Tibialyzer.Structures;
 
 namespace Tibialyzer {
-    class MemoryReader {
+    public static class MemoryReader {
         [DllImport("kernel32.dll")]
         public static extern Int32 ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, [In, Out] byte[] buffer, UInt32 size, out IntPtr lpNumberOfBytesRead);
         [DllImport("kernel32.dll")]
@@ -68,6 +69,14 @@ namespace Tibialyzer {
         private static int START_X = 124 * 256;
         private static int START_Y = 121 * 256;
         
+        public static event EventHandler<PlayerHealth> HealthChanged;
+        public static event EventHandler<PlayerMana> ManaChanged;
+        public static event EventHandler<PlayerExperience> ExperienceChanged;
+
+        private static SafeTimer healthTimer;
+        private static SafeTimer manaTimer;
+        private static SafeTimer expTimer;
+
         public static void Initialize() {
             try {
                 Dictionary<string, UInt32> memoryAddresses = ParseAddresses();
@@ -88,13 +97,22 @@ namespace Tibialyzer {
                 memoryAddresses.TryGetValue("weapontypeaddress", out WeaponTypeAddress);
                 memoryAddresses.TryGetValue("bootstypeaddress", out BootsTypeAddress);
                 memoryAddresses.TryGetValue("ringtypeaddress", out RingTypeAddress);
+
+                healthTimer = new SafeTimer(10, UpdateHealth);
+                healthTimer.Start();
+
+                manaTimer = new SafeTimer(10, UpdateMana);
+                manaTimer.Start();
+
+                expTimer = new SafeTimer(10, UpdateExp);
+                expTimer.Start();
             } catch(Exception ex) {
                 MainForm.mainForm.DisplayWarning("Failed to read memory addresses file: " + ex.Message);
             }
             InitializeBattleList();
         }
 
-        public static Dictionary<string, UInt32> ParseAddresses() {
+        private static Dictionary<string, UInt32> ParseAddresses() {
             Dictionary<string, UInt32> addresses = new Dictionary<string, UInt32>();
             using (StreamReader reader = new StreamReader(Constants.MemoryAddresses)) {
                 string line;
@@ -128,12 +146,62 @@ namespace Tibialyzer {
             }
         }
 
+        private static void UpdateHealth()
+        {
+            bool attributesChanged = ReadHealth();
+            attributesChanged |= ReadMaxHealth();
 
-        public static UInt32 GetAddress(UInt32 offset) {
+            if (attributesChanged && HealthChanged != null)
+            {
+                var playerHealth = new PlayerHealth
+                {
+                    Health = health,
+                    MaxHealth = maxHealth
+                };
+
+                HealthChanged(null, playerHealth);
+            }
+        }
+
+        private static void UpdateMana()
+        {
+            bool attributesChanged = ReadMana();
+            attributesChanged |= ReadMaxMana();
+
+            if (attributesChanged && ManaChanged != null)
+            {
+                var playerMana = new PlayerMana
+                {
+                    Mana = mana,
+                    MaxMana = maxMana
+                };
+
+                ManaChanged(null, playerMana);
+            }
+        }
+
+        private static void UpdateExp()
+        {
+            bool attributesChanged = ReadExperience();
+            attributesChanged |= ReadLevel();
+
+            if (attributesChanged && ExperienceChanged != null)
+            {
+                var playerExperience = new PlayerExperience
+                {
+                    Level = level,
+                    Experience = experience
+                };
+
+                ExperienceChanged(null, playerExperience);
+            }
+        }
+
+        private static UInt32 GetAddress(UInt32 offset) {
             return baseAddress + offset;
         }
 
-        public static byte[] ReadBytes(Int64 address, uint n, int processHandle = -1) {
+        private static byte[] ReadBytes(Int64 address, uint n, int processHandle = -1) {
             IntPtr ptrBytesRead;
             byte[] buf = new byte[n];
             ReadProcessMemory(processHandle < 0 ? handle : new IntPtr(processHandle), new IntPtr(address), buf, n, out ptrBytesRead);
@@ -143,6 +211,7 @@ namespace Tibialyzer {
         public static Int32 ReadInt32(Int64 address, int handle = -1) {
             return BitConverter.ToInt32(ReadBytes(address, 4, handle), 0);
         }
+
         public static Int64 ReadInt64(Int64 address, int handle = -1) {
             return BitConverter.ToInt64(ReadBytes(address, 8, handle), 0);
         }
@@ -157,34 +226,50 @@ namespace Tibialyzer {
             return str.Split('\0')[0];
         }
 
-        public static int XOR {
+        private static int XOR {
             get {
                 return ReadInt32(GetAddress(XORAddress));
             }
         }
 
-        public static int Health {
-            get {
-                return ReadInt32(GetAddress(HealthAddress)) ^ XOR;
-            }
+        private static int health;
+
+        private static bool ReadHealth() {
+            int currentHealth = ReadInt32(GetAddress(HealthAddress)) ^ XOR;
+            bool healthChanged = currentHealth == health;
+            health = currentHealth;
+
+            return healthChanged;
         }
 
-        public static int MaxHealth {
-            get {
-                return ReadInt32(GetAddress(MaxHealthAddress)) ^ XOR;
-            }
+        private static int maxHealth;
+
+        private static bool ReadMaxHealth() {
+            int currentMaxHealth = ReadInt32(GetAddress(MaxHealthAddress)) ^ XOR;
+            bool maxHealthChanged = currentMaxHealth == maxHealth;
+            maxHealth = currentMaxHealth;
+
+            return maxHealthChanged;
         }
 
-        public static int Mana {
-            get {
-                return ReadInt32(GetAddress(ManaAddress)) ^ XOR;
-            }
+        private static int mana;
+
+        private static bool ReadMana() {
+            int currentMana = ReadInt32(GetAddress(ManaAddress)) ^ XOR;
+            bool manaChanged = currentMana == mana;
+            mana = currentMana;
+
+            return manaChanged;
         }
 
-        public static int MaxMana {
-            get {
-                return ReadInt32(GetAddress(MaxManaAddress)) ^ XOR;
-            }
+        private static int maxMana;
+
+        private static bool ReadMaxMana() {
+            int currentMaxMana = ReadInt32(GetAddress(MaxManaAddress)) ^ XOR;
+            bool maxManaChanged = currentMaxMana == maxMana;
+            maxMana = currentMaxMana;
+
+            return maxManaChanged;
         }
 
         public static int PlayerId {
@@ -222,22 +307,34 @@ namespace Tibialyzer {
             }
         }
 
-        public static long Experience {
-            get {
-                return ReadInt64(GetAddress(ExperienceAddress));
-            }
+        private static long experience;
+
+        private static bool ReadExperience() {
+            long currentExperience = ReadInt64(GetAddress(ExperienceAddress));
+            bool experienceChanged = currentExperience == experience;
+            experience = currentExperience;
+
+            return experienceChanged;
         }
 
-        public static int Level {
-            get {
-                return ReadInt32(GetAddress(LevelAddress));
-            }
+        private static int level;
+
+        private static bool ReadLevel() {
+            int currentLevel = ReadInt32(GetAddress(LevelAddress));
+            bool levelChanged = level == currentLevel;
+            level = currentLevel;
+
+            return levelChanged;
         }
 
-        public static int MagicLevel {
-            get {
-                return ReadInt32(GetAddress(MagicLevelAddress));
-            }
+        private static int magicLevel;
+
+        private static bool ReadMagicLevel() {
+            int currentMagicLevel = ReadInt32(GetAddress(MagicLevelAddress));
+            bool magicLevelChanged = currentMagicLevel == magicLevel;
+            magicLevel = currentMagicLevel;
+
+            return magicLevelChanged;
         }
 
         public static int AmmunitionType {
@@ -361,5 +458,4 @@ namespace Tibialyzer {
         public int z;
         public int hp;
     }
-
 }

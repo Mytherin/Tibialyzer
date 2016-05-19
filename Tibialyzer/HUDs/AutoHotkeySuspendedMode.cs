@@ -24,7 +24,7 @@ using System.Windows.Forms;
 namespace Tibialyzer {
     class AutoHotkeySuspendedMode : SimpleNotification {
         private System.Windows.Forms.Label typeModeLabel;
-        Timer showTimer = null;
+        SafeTimer showTimer = null;
         private bool alwaysShow = false;
 
         public AutoHotkeySuspendedMode(bool alwaysShow) {
@@ -35,13 +35,11 @@ namespace Tibialyzer {
             this.alwaysShow = alwaysShow;
             this.InitializeSimpleNotification(false, false);
 
-            showTimer = new Timer();
-            showTimer.Interval = 50;
-            showTimer.Tick += ShowTimer_Tick;
+            showTimer = new SafeTimer(100, ShowTimer);
             showTimer.Start();
         }
 
-        private void ShowTimer_Tick(object sender, EventArgs e) {
+        private void ShowTimer() {
             if (alwaysShow) return;
             if (ProcessManager.IsFlashClient()) {
                 return;
