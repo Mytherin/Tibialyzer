@@ -332,13 +332,13 @@ namespace Tibialyzer {
             ClearControlList(summaryControls, out minheight, out maxheight);
             int y = maxheight < 0 ? 30 : minheight;
 
-            PictureBox loot = CreateSummaryLabel("Loot value", totalValue.ToString("N0"), x, ref y, StyleManager.ItemGoldColor, summaryControls);
+            PictureBox loot = CreateSummaryLabel("Loot value (gp)", totalValue.ToString("N0"), x, ref y, StyleManager.ItemGoldColor, summaryControls);
             tooltip.SetToolTip(loot, String.Format("Average gold for these creature kills: {0} gold.", averageValue.ToString("N0")));
             CreateSummaryLabel("Exp gained", HuntManager.activeHunt.totalExp.ToString("N0"), x, ref y, StyleManager.NotificationTextColor, summaryControls);
             CreateSummaryLabel("Time", LootDropForm.TimeToString((long)HuntManager.activeHunt.totalTime), x, ref y, StyleManager.NotificationTextColor, summaryControls);
-            PictureBox waste = CreateSummaryLabel("Waste", totalWaste.ToString("N0"), x, ref y, StyleManager.WasteColor, summaryControls);
+            CreateSummaryLabel("Supplies used (gp)", totalWaste.ToString("N0"), x, ref y, StyleManager.WasteColor, summaryControls);
             long profit = totalValue - totalWaste;
-            tooltip.SetToolTip(waste, String.Format(profit > 0 ? "Total Profit: {0} gold" : "Total Waste: {0} gold", profit.ToString("N0")));
+            CreateSummaryLabel(profit > 0 ? "Profit (gp)" : "Waste (gp)", profit.ToString("N0"), x, ref y, profit > 0 ? StyleManager.ItemGoldColor : StyleManager.WasteColor, summaryControls);
             if (ScanningManager.lastResults != null) {
                 CreateSummaryLabel("Exp/hour", ScanningManager.lastResults.expPerHour.ToString("N0"), x, ref y, StyleManager.NotificationTextColor, summaryControls);
             }
