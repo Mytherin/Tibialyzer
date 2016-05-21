@@ -17,47 +17,49 @@ using System.Linq;
 using System.IO;
 using System.Globalization;
 using System.Windows.Forms;
+using System.Text;
 
 namespace Tibialyzer {
-    public class SettingsManager {
+    public static class SettingsManager {
+        private static object lockObject = new object();
         public static Dictionary<string, List<string>> settings = new Dictionary<string, List<string>>();
         public static void LoadSettings(string settingsFile) {
-            string line;
             string currentSetting = null;
-            lock(settings) {
+            lock(lockObject) {
                 settings.Clear();
 
                 if (!File.Exists(settingsFile)) {
                     ResetSettingsToDefault();
                     SaveSettings();
                 } else {
-                    StreamReader file = new StreamReader(settingsFile);
-                    while ((line = file.ReadLine()) != null) {
+                    var lines = File.ReadAllLines(settingsFile);
+                    foreach (string line in lines) {
                         if (line.Length == 0) continue;
                         if (line[0] == '@') {
                             currentSetting = line.Substring(1, line.Length - 1);
                             if (!settings.ContainsKey(currentSetting))
                                 settings.Add(currentSetting, new List<string>());
-                        } else if (currentSetting != null) {
+                        }
+                        else if (currentSetting != null) {
                             settings[currentSetting].Add(line);
                         }
                     }
-                    file.Close();
                 }
             }
         }
 
         public static void SaveSettings() {
             try {
-                lock (settings) {
-                    using (StreamWriter file = new StreamWriter(Constants.SettingsFile)) {
-                        foreach (KeyValuePair<string, List<string>> pair in settings) {
-                            file.WriteLine("@" + pair.Key);
-                            foreach (string str in pair.Value) {
-                                file.WriteLine(str);
-                            }
+                lock (lockObject) {
+                    var sb = new StringBuilder();
+                    foreach (KeyValuePair<string, List<string>> pair in settings) {
+                        sb.Append("@").Append(pair.Key).AppendLine();
+                        foreach (string str in pair.Value) {
+                            sb.AppendLine(str);
                         }
                     }
+
+                    File.WriteAllText(Constants.SettingsFile, sb.ToString());
                 }
             } catch(Exception ex) {
                 MainForm.mainForm.Invoke((MethodInvoker)delegate {
@@ -67,7 +69,7 @@ namespace Tibialyzer {
         }
 
         public static void removeSetting(string key) {
-            lock(settings) {
+            lock(lockObject) {
                 if (settings.ContainsKey(key)) {
                     settings.Remove(key);
                 }
@@ -107,14 +109,14 @@ namespace Tibialyzer {
         }
 
         public static List<string> getSetting(string key) {
-            lock(settings) {
+            lock(lockObject) {
                 if (!settings.ContainsKey(key)) return new List<string>();
                 return settings[key];
             }
         }
 
         public static void setSetting(string key, List<string> value) {
-            lock(settings) {
+            lock(lockObject) {
                 if (!settings.ContainsKey(key)) settings.Add(key, value);
                 else settings[key] = value;
             }
@@ -136,28 +138,40 @@ namespace Tibialyzer {
         }
 
         public static void setSettingIfNotSet(string key, List<string> value) {
-            if (!settings.ContainsKey(key)) settings.Add(key, value);
+            lock (lockObject) { 
+                if (!settings.ContainsKey(key)) settings.Add(key, value);
+            }
         }
 
         public static void setSettingIfNotSet(string key, string value) {
-            if (!settings.ContainsKey(key)) setSetting(key, new List<string> { value });
+            lock (lockObject) {
+                if (!settings.ContainsKey(key)) setSetting(key, new List<string> { value });
+            }
         }
 
         public static void setSettingIfNotSet(string key, int value) {
-            if (!settings.ContainsKey(key)) setSetting(key, value.ToString());
+            lock (lockObject) {
+                if (!settings.ContainsKey(key)) setSetting(key, value.ToString());
+            }
         }
         public static void setSettingIfNotSet(string key, bool value) {
-            if (!settings.ContainsKey(key)) setSetting(key, value.ToString());
+            lock (lockObject) {
+                if (!settings.ContainsKey(key)) setSetting(key, value.ToString());
+            }
         }
         public static void setSettingIfNotSet(string key, double value) {
-            if (!settings.ContainsKey(key)) setSetting(key, value.ToString(CultureInfo.InvariantCulture));
+            lock (lockObject) {
+                if (!settings.ContainsKey(key)) setSetting(key, value.ToString(CultureInfo.InvariantCulture));
+            }
         }
 
         public static bool settingExists(string key) {
-            return settings.ContainsKey(key) && settings[key].Count > 0;
+            lock (lockObject) {
+                return settings.ContainsKey(key) && settings[key].Count > 0;
+            }
         }
 
-        public static string defaultWASDSettings = @"; Suspend autohotkey mode with Ctrl+Enter
+        public const string defaultWASDSettings = @"; Suspend autohotkey mode with Ctrl+Enter
 Ctrl+Enter::Suspend
 ; Enable WASD Movement
 W::Up
@@ -286,7 +300,10 @@ C::NumpadPgDn
         }
 
         public static void ResetSettingsToDefault() {
-            settings = new Dictionary<string, List<string>>();
+            lock (lockObject) {
+                settings = new Dictionary<string, List<string>>();
+            }
+            
             ApplyDefaultSettings();
             SaveSettings();
         }
