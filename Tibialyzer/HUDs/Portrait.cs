@@ -16,8 +16,8 @@ namespace Tibialyzer {
         private Point backgroundOffset, centerOffset;
         private int backgroundScale, centerScale;
 
-        private double lifePercentage;
-        private double manaPercentage;
+        private float lifePercentage;
+        private float manaPercentage;
         private int level;
 
         private const int WS_EX_Transparent = 0x20;
@@ -93,8 +93,8 @@ namespace Tibialyzer {
         }
 
         private void RefreshHUD() {
-            lifePercentage = lifePercentage.ClampPercentage();
-            manaPercentage = manaPercentage.ClampPercentage();
+            float life = lifePercentage.ClampPercentage();
+            float mana = manaPercentage.ClampPercentage();
             Bitmap bitmap = new Bitmap(pictureBox.Size.Width, pictureBox.Size.Height);
 
             int width = bitmap.Width;
@@ -114,8 +114,8 @@ namespace Tibialyzer {
                 gr.FillRectangle(Brushes.Black, lifeRectangle);
                 lifeRectangle.Y += 2;
                 lifeRectangle.Height -= 4;
-                lifeRectangle.Width = (int)(lifeRectangle.Width * lifePercentage) - 2;
-                using (Brush brush = new SolidBrush(StyleManager.GetHealthColor(lifePercentage))) {
+                lifeRectangle.Width = (int)(lifeRectangle.Width * life) - 2;
+                using (Brush brush = new SolidBrush(StyleManager.GetHealthColor(life))) {
                     gr.FillRectangle(brush, lifeRectangle);
                 }
 
@@ -128,7 +128,7 @@ namespace Tibialyzer {
                 gr.FillRectangle(Brushes.Black, manaRectangle);
                 manaRectangle.Y += 2;
                 manaRectangle.Height -= 4;
-                manaRectangle.Width = (int)(manaRectangle.Width * manaPercentage) - 2;
+                manaRectangle.Width = (int)(manaRectangle.Width * mana) - 2;
                 using (Brush brush = new SolidBrush(StyleManager.ManaColor)) {
                     gr.FillRectangle(brush, manaRectangle);
                 }
@@ -164,7 +164,7 @@ namespace Tibialyzer {
         }
 
         private void RefreshHealth(PlayerHealth playerHp) {
-            lifePercentage = (double)playerHp.Health / playerHp.MaxHealth;
+            lifePercentage = (float)playerHp.Health / playerHp.MaxHealth;
 
             try
             {
@@ -176,7 +176,7 @@ namespace Tibialyzer {
         }
 
         private void RefreshMana(PlayerMana playerMp) {
-            manaPercentage = (double)playerMp.Mana / playerMp.MaxMana;
+            manaPercentage = (float)playerMp.Mana / playerMp.MaxMana;
 
             try
             {
