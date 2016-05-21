@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Tibialyzer {
     class ScreenshotManager {
@@ -24,11 +25,20 @@ namespace Tibialyzer {
 
         public static Bitmap takeScreenshot() {
             try {
-                Process tibia_process = ProcessManager.GetTibiaProcess();
-                if (tibia_process == null) return null; //no tibia to take screenshot of
-
                 RECT Rect = new RECT();
-                if (!GetWindowRect(tibia_process.MainWindowHandle, ref Rect)) return null;
+                if (ProcessManager.IsFlashClient()) {
+                    Screen screen = Screen.FromControl(MainForm.mainForm);
+
+                    Rect.left = screen.Bounds.Left;
+                    Rect.right = screen.Bounds.Right;
+                    Rect.top = screen.Bounds.Top;
+                    Rect.bottom = screen.Bounds.Bottom;
+                } else {
+                    Process tibia_process = ProcessManager.GetTibiaProcess();
+                    if (tibia_process == null) return null; //no tibia to take screenshot of
+                    
+                    if (!GetWindowRect(tibia_process.MainWindowHandle, ref Rect)) return null;
+                }
 
                 Bitmap bitmap = new Bitmap(Rect.right - Rect.left, Rect.bottom - Rect.top);
                 using (Graphics gr = Graphics.FromImage(bitmap)) {
