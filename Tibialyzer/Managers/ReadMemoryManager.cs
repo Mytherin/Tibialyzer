@@ -396,7 +396,7 @@ namespace Tibialyzer {
 
                 string message = logMessage.Substring(6); // message without timestamp
                 if (readLogMessages) {
-                    if (logMessage.Length > 14 && logMessage.Substring(5, 9) == " You see ") {
+                    if (logMessage.Length > 14 && logMessage.Substring(5, 9) == " You see " && logMessage[logMessage.Length - 1] == '.') {
                         // the message contains "you see", so it's a look message
                         if (!res.lookMessages.ContainsKey(t)) res.lookMessages.Add(t, new List<string>());
                         if (!skipDuplicateCommands || !res.lookMessages[t].Contains(logMessage)) {
