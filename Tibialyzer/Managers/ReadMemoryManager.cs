@@ -107,6 +107,7 @@ namespace Tibialyzer {
         public static int ignoreStamp = 0;
         public static byte[] missingChunksBuffer;
         public static byte[] memoryBuffer;
+        private static bool skipDuplicateCommands;
 
         public static void Initialize() {
             ignoreStamp = TimestampManager.createStamp();
@@ -345,6 +346,7 @@ namespace Tibialyzer {
 
             results = new ReadMemoryResults();
             flashClient = ProcessManager.IsFlashClient();
+            skipDuplicateCommands = (flashClient || !SettingsManager.getSettingBool("ScanInternalTabStructure")) && SettingsManager.getSettingBool("SkipDuplicateCommands");
             Dictionary<int, HashSet<long>> newWhitelistedAddresses = null;
             Interlocked.Exchange(ref newWhitelistedAddresses, whiteListedAddresses);
 
@@ -397,7 +399,9 @@ namespace Tibialyzer {
                     if (logMessage.Length > 14 && logMessage.Substring(5, 9) == " You see ") {
                         // the message contains "you see", so it's a look message
                         if (!res.lookMessages.ContainsKey(t)) res.lookMessages.Add(t, new List<string>());
-                        res.lookMessages[t].Add(logMessage);
+                        if (!skipDuplicateCommands || !res.lookMessages[t].Contains(logMessage)) {
+                            res.lookMessages[t].Add(logMessage);
+                        }
                         continue;
                     } else if (message.Contains(':')) {
                         if (logMessage.Length > 14 && logMessage.Substring(5, 9) == " Loot of ") { // loot drop message
@@ -596,7 +600,10 @@ namespace Tibialyzer {
                             if (command.Contains('@')) {
                                 // @ symbol symbolizes a command, so if there is an @ symbol, we treat the string as a command
                                 if (!res.commands.ContainsKey(t)) res.commands.Add(t, new List<Tuple<string, string>>());
-                                res.commands[t].Add(new Tuple<string, string>(player, command));
+                                var tpl = new Tuple<string, string>(player, command);
+                                if (!skipDuplicateCommands || !res.commands[t].Contains(tpl)) {
+                                    res.commands[t].Add(tpl);
+                                }
                             } else if (command.Contains("www") || command.Contains("http") || command.Contains(".com") || command.Contains(".net") || command.Contains(".tv") || command.Contains(".br")) {
                                 // check if the command is an url, we aren't really smart about this, just check for a couple of common url-like things
                                 if (!res.urls.ContainsKey(t)) res.urls.Add(t, new List<Tuple<string, string>>());

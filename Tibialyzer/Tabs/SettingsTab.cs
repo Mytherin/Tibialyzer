@@ -29,6 +29,7 @@ namespace Tibialyzer {
             this.experienceComputationDropdown.SelectedIndex = SettingsManager.getSettingString("ExperiencePerHourCalculation") == "TibiaStyle" ? 0 : 1;
             this.scanEntireMemoryDropdown.SelectedIndex = SettingsManager.getSettingBool("ScanInternalTabStructure") ? 0 : 1;
             this.skipDuplicateLootCheckbox.Checked = SettingsManager.getSettingBool("SkipDuplicateLoot");
+            this.skipDuplicateCommandsCheckbox.Checked = SettingsManager.getSettingBool("SkipDuplicateCommands");
         }
 
         public void InitializeTooltips() {
@@ -152,6 +153,12 @@ namespace Tibialyzer {
             if (MainForm.prevent_settings_update) return;
 
             SettingsManager.setSetting("SkipDuplicateLoot", (sender as CheckBox).Checked);
+        }
+
+        private void skipDuplicateCommandsCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            SettingsManager.setSetting("SkipDuplicateCommands", (sender as CheckBox).Checked);
         }
     }
 }
