@@ -195,7 +195,15 @@ namespace Tibialyzer {
                             PopupManager.ShowSimpleNotification(new SimpleTimerNotification(iconImage, title, message, timeInSeconds));
                         } else {
                             MainForm.mainForm.Invoke((MethodInvoker)delegate {
-                                System.Threading.Tasks.Task.Delay(1000 * (timeInSeconds - notificationWarningTime)).ContinueWith(x => PopupManager.ShowSimpleNotification(new SimpleTimerNotification(iconImage, title, message, notificationWarningTime))).Start();
+                                System.Threading.Tasks.Task.Delay(1000 * (timeInSeconds - notificationWarningTime)).ContinueWith(x => {
+                                    try {
+                                        MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                                            PopupManager.ShowSimpleNotification(new SimpleTimerNotification(iconImage, title, message, notificationWarningTime));
+                                        });
+                                    } catch {
+
+                                    }
+                                 });
                             });
                         }
                     }

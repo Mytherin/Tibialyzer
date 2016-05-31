@@ -11,6 +11,8 @@ namespace Tibialyzer {
         public static int TibiaProcessId = -1;
         private static SafeTimer detectTibiaActive = new SafeTimer(100, DetectIfTibiaActive);
         public static EventHandler<bool> TibiaVisibilityChanged;
+        public static IntPtr TibialyzerProcessHandle;
+
 
         public static void Initialize() {
             TibiaClientName = SettingsManager.settingExists("TibiaClientName") ? SettingsManager.getSettingString("TibiaClientName") : TibiaClientName;
@@ -51,7 +53,7 @@ namespace Tibialyzer {
         public static Screen GetScreen() {
             Process tibia_process = ProcessManager.GetTibiaProcess();
             if (tibia_process == null || SettingsManager.getSettingInt("MonitorAnchor") == 1) {
-                return Screen.FromControl(MainForm.mainForm);
+                return Screen.FromHandle(TibialyzerProcessHandle);
             } else {
                 return Screen.FromHandle(tibia_process.MainWindowHandle);
             }

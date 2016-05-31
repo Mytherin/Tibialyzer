@@ -129,6 +129,7 @@ namespace Tibialyzer {
 
         private void MainForm_Load(object sender, EventArgs e) {
             (Tabs[10] as HelpTab).LoadHelpTab();
+            ProcessManager.TibialyzerProcessHandle = this.Handle;
         }
 
         protected override CreateParams CreateParams {
