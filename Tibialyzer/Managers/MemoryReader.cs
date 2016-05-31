@@ -68,7 +68,7 @@ namespace Tibialyzer {
 
         private static int START_X = 124 * 256;
         private static int START_Y = 121 * 256;
-        
+
         public static event EventHandler<PlayerHealth> HealthChanged;
         public static event EventHandler<PlayerMana> ManaChanged;
         public static event EventHandler<PlayerExperience> ExperienceChanged;
@@ -77,26 +77,30 @@ namespace Tibialyzer {
         private static SafeTimer manaTimer;
         private static SafeTimer expTimer;
 
+        public static void InitializeMemoryAddresses() {
+            Dictionary<string, UInt32> memoryAddresses = ParseAddresses();
+            memoryAddresses.TryGetValue("xoraddress", out XORAddress);
+            memoryAddresses.TryGetValue("healthaddress", out HealthAddress);
+            memoryAddresses.TryGetValue("maxhealthaddress", out MaxHealthAddress);
+            memoryAddresses.TryGetValue("manaaddress", out ManaAddress);
+            memoryAddresses.TryGetValue("maxmanaaddress", out MaxManaAddress);
+            memoryAddresses.TryGetValue("playeridaddress", out PlayerIDAddress);
+            memoryAddresses.TryGetValue("battlelistaddress", out BattleListAddress);
+            memoryAddresses.TryGetValue("experienceaddress", out ExperienceAddress);
+            memoryAddresses.TryGetValue("leveladdress", out LevelAddress);
+            memoryAddresses.TryGetValue("magicleveladdress", out MagicLevelAddress);
+            memoryAddresses.TryGetValue("tabsbaseaddress", out TabsBaseAddress);
+            memoryAddresses.TryGetValue("ammunitioncountaddress", out AmmunitionCountAddress);
+            memoryAddresses.TryGetValue("ammunitiontypeaddress", out AmmunitionTypeAddress);
+            memoryAddresses.TryGetValue("weaponcountaddress", out WeaponCountAddress);
+            memoryAddresses.TryGetValue("weapontypeaddress", out WeaponTypeAddress);
+            memoryAddresses.TryGetValue("bootstypeaddress", out BootsTypeAddress);
+            memoryAddresses.TryGetValue("ringtypeaddress", out RingTypeAddress);
+        }
+
         public static void Initialize() {
             try {
-                Dictionary<string, UInt32> memoryAddresses = ParseAddresses();
-                memoryAddresses.TryGetValue("xoraddress", out XORAddress);
-                memoryAddresses.TryGetValue("healthaddress", out HealthAddress);
-                memoryAddresses.TryGetValue("maxhealthaddress", out MaxHealthAddress);
-                memoryAddresses.TryGetValue("manaaddress", out ManaAddress);
-                memoryAddresses.TryGetValue("maxmanaaddress", out MaxManaAddress);
-                memoryAddresses.TryGetValue("playeridaddress", out PlayerIDAddress);
-                memoryAddresses.TryGetValue("battlelistaddress", out BattleListAddress);
-                memoryAddresses.TryGetValue("experienceaddress", out ExperienceAddress);
-                memoryAddresses.TryGetValue("leveladdress", out LevelAddress);
-                memoryAddresses.TryGetValue("magicleveladdress", out MagicLevelAddress);
-                memoryAddresses.TryGetValue("tabsbaseaddress", out TabsBaseAddress);
-                memoryAddresses.TryGetValue("ammunitioncountaddress", out AmmunitionCountAddress);
-                memoryAddresses.TryGetValue("ammunitiontypeaddress", out AmmunitionTypeAddress);
-                memoryAddresses.TryGetValue("weaponcountaddress", out WeaponCountAddress);
-                memoryAddresses.TryGetValue("weapontypeaddress", out WeaponTypeAddress);
-                memoryAddresses.TryGetValue("bootstypeaddress", out BootsTypeAddress);
-                memoryAddresses.TryGetValue("ringtypeaddress", out RingTypeAddress);
+                InitializeMemoryAddresses();
 
                 healthTimer = new SafeTimer(10, UpdateHealth);
                 healthTimer.Start();
@@ -106,7 +110,7 @@ namespace Tibialyzer {
 
                 expTimer = new SafeTimer(10, UpdateExp);
                 expTimer.Start();
-            } catch(Exception ex) {
+            } catch (Exception ex) {
                 MainForm.mainForm.DisplayWarning("Failed to read memory addresses file: " + ex.Message);
             }
             InitializeBattleList();
@@ -146,15 +150,12 @@ namespace Tibialyzer {
             }
         }
 
-        private static void UpdateHealth()
-        {
+        private static void UpdateHealth() {
             bool attributesChanged = ReadHealth();
             attributesChanged |= ReadMaxHealth();
 
-            if (attributesChanged && HealthChanged != null)
-            {
-                var playerHealth = new PlayerHealth
-                {
+            if (attributesChanged && HealthChanged != null) {
+                var playerHealth = new PlayerHealth {
                     Health = health,
                     MaxHealth = maxHealth
                 };
@@ -163,15 +164,12 @@ namespace Tibialyzer {
             }
         }
 
-        private static void UpdateMana()
-        {
+        private static void UpdateMana() {
             bool attributesChanged = ReadMana();
             attributesChanged |= ReadMaxMana();
 
-            if (attributesChanged && ManaChanged != null)
-            {
-                var playerMana = new PlayerMana
-                {
+            if (attributesChanged && ManaChanged != null) {
+                var playerMana = new PlayerMana {
                     Mana = mana,
                     MaxMana = maxMana
                 };
@@ -180,15 +178,12 @@ namespace Tibialyzer {
             }
         }
 
-        private static void UpdateExp()
-        {
+        private static void UpdateExp() {
             bool attributesChanged = ReadExperience();
             attributesChanged |= ReadLevel();
 
-            if (attributesChanged && ExperienceChanged != null)
-            {
-                var playerExperience = new PlayerExperience
-                {
+            if (attributesChanged && ExperienceChanged != null) {
+                var playerExperience = new PlayerExperience {
                     Level = level,
                     Experience = experience
                 };
@@ -279,7 +274,7 @@ namespace Tibialyzer {
         }
 
         private static int playerAddress = -1;
-        
+
         public static string PlayerName {
             get {
                 return GetPlayerName(PlayerId);

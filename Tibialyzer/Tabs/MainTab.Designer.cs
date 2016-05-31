@@ -33,11 +33,7 @@
             this.selectClientProgramButton = new System.Windows.Forms.Label();
             this.mainOptionsLabel = new System.Windows.Forms.Label();
             this.executeButton = new System.Windows.Forms.Label();
-            this.issuesGuideButton = new System.Windows.Forms.Label();
-            this.popupsGuideButton = new System.Windows.Forms.Label();
-            this.lootGuideButton = new System.Windows.Forms.Label();
             this.mainGuidesLabel = new System.Windows.Forms.Label();
-            this.gettingStartedGuideButton = new System.Windows.Forms.Label();
             this.namesLabel = new System.Windows.Forms.Label();
             this.saveAllLootCheckbox = new Tibialyzer.PrettyCheckBox();
             this.ignoreLowExperienceBox = new Tibialyzer.EnterTextBox();
@@ -48,6 +44,8 @@
             this.saveSummaryImageButton = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.maxDamagePlayersBox = new Tibialyzer.PrettyDropDownList();
+            this.downloadAddressButton = new System.Windows.Forms.Label();
+            this.generateAddressButton = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // detectFlashClientButton
@@ -189,54 +187,6 @@
             this.executeButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.executeButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             // 
-            // issuesGuideButton
-            // 
-            this.issuesGuideButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.issuesGuideButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.issuesGuideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.issuesGuideButton.Location = new System.Drawing.Point(402, 374);
-            this.issuesGuideButton.Name = "issuesGuideButton";
-            this.issuesGuideButton.Padding = new System.Windows.Forms.Padding(10);
-            this.issuesGuideButton.Size = new System.Drawing.Size(130, 40);
-            this.issuesGuideButton.TabIndex = 26;
-            this.issuesGuideButton.Text = "Issues";
-            this.issuesGuideButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.issuesGuideButton.Click += new System.EventHandler(this.issuesGuide_Click);
-            this.issuesGuideButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.issuesGuideButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
-            // popupsGuideButton
-            // 
-            this.popupsGuideButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.popupsGuideButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.popupsGuideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.popupsGuideButton.Location = new System.Drawing.Point(272, 374);
-            this.popupsGuideButton.Name = "popupsGuideButton";
-            this.popupsGuideButton.Padding = new System.Windows.Forms.Padding(10);
-            this.popupsGuideButton.Size = new System.Drawing.Size(130, 40);
-            this.popupsGuideButton.TabIndex = 25;
-            this.popupsGuideButton.Text = "Popups";
-            this.popupsGuideButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.popupsGuideButton.Click += new System.EventHandler(this.popupsGuide_Click);
-            this.popupsGuideButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.popupsGuideButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
-            // lootGuideButton
-            // 
-            this.lootGuideButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.lootGuideButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lootGuideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.lootGuideButton.Location = new System.Drawing.Point(142, 374);
-            this.lootGuideButton.Name = "lootGuideButton";
-            this.lootGuideButton.Padding = new System.Windows.Forms.Padding(10);
-            this.lootGuideButton.Size = new System.Drawing.Size(130, 40);
-            this.lootGuideButton.TabIndex = 24;
-            this.lootGuideButton.Text = "Loot";
-            this.lootGuideButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lootGuideButton.Click += new System.EventHandler(this.commandsGuide_Click);
-            this.lootGuideButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.lootGuideButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
             // mainGuidesLabel
             // 
             this.mainGuidesLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
@@ -246,24 +196,8 @@
             this.mainGuidesLabel.Name = "mainGuidesLabel";
             this.mainGuidesLabel.Size = new System.Drawing.Size(523, 30);
             this.mainGuidesLabel.TabIndex = 23;
-            this.mainGuidesLabel.Text = "Guides";
+            this.mainGuidesLabel.Text = "Update Memory Addresses";
             this.mainGuidesLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // gettingStartedGuideButton
-            // 
-            this.gettingStartedGuideButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.gettingStartedGuideButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gettingStartedGuideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.gettingStartedGuideButton.Location = new System.Drawing.Point(9, 374);
-            this.gettingStartedGuideButton.Name = "gettingStartedGuideButton";
-            this.gettingStartedGuideButton.Padding = new System.Windows.Forms.Padding(10);
-            this.gettingStartedGuideButton.Size = new System.Drawing.Size(140, 40);
-            this.gettingStartedGuideButton.TabIndex = 22;
-            this.gettingStartedGuideButton.Text = "Getting Started";
-            this.gettingStartedGuideButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.gettingStartedGuideButton.Click += new System.EventHandler(this.gettingStartedGuide_Click);
-            this.gettingStartedGuideButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.gettingStartedGuideButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             // 
             // namesLabel
             // 
@@ -429,12 +363,46 @@
             this.maxDamagePlayersBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.maxDamagePlayersBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             // 
+            // downloadAddressButton
+            // 
+            this.downloadAddressButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.downloadAddressButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.downloadAddressButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.downloadAddressButton.Location = new System.Drawing.Point(9, 374);
+            this.downloadAddressButton.Name = "downloadAddressButton";
+            this.downloadAddressButton.Padding = new System.Windows.Forms.Padding(10);
+            this.downloadAddressButton.Size = new System.Drawing.Size(226, 38);
+            this.downloadAddressButton.TabIndex = 50;
+            this.downloadAddressButton.Text = "Download New Addresses";
+            this.downloadAddressButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.downloadAddressButton.Click += new System.EventHandler(this.downloadAddressButton_Click);
+            this.downloadAddressButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.downloadAddressButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            // 
+            // generateAddressButton
+            // 
+            this.generateAddressButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.generateAddressButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.generateAddressButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.generateAddressButton.Location = new System.Drawing.Point(305, 374);
+            this.generateAddressButton.Name = "generateAddressButton";
+            this.generateAddressButton.Padding = new System.Windows.Forms.Padding(10);
+            this.generateAddressButton.Size = new System.Drawing.Size(226, 38);
+            this.generateAddressButton.TabIndex = 51;
+            this.generateAddressButton.Text = "Generate Partial Addresses";
+            this.generateAddressButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.generateAddressButton.Click += new System.EventHandler(this.generateAddressButton_Click);
+            this.generateAddressButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.generateAddressButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            // 
             // MainTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(538, 514);
+            this.Controls.Add(this.generateAddressButton);
+            this.Controls.Add(this.downloadAddressButton);
             this.Controls.Add(this.maxDamagePlayersBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.saveSummaryImageButton);
@@ -452,11 +420,7 @@
             this.Controls.Add(this.selectClientProgramButton);
             this.Controls.Add(this.mainOptionsLabel);
             this.Controls.Add(this.executeButton);
-            this.Controls.Add(this.issuesGuideButton);
-            this.Controls.Add(this.popupsGuideButton);
-            this.Controls.Add(this.lootGuideButton);
             this.Controls.Add(this.mainGuidesLabel);
-            this.Controls.Add(this.gettingStartedGuideButton);
             this.Controls.Add(this.nameListBox);
             this.Controls.Add(this.namesLabel);
             this.Controls.Add(this.commandTextBox);
@@ -482,11 +446,7 @@
         private System.Windows.Forms.Label selectClientProgramButton;
         private System.Windows.Forms.Label mainOptionsLabel;
         private System.Windows.Forms.Label executeButton;
-        private System.Windows.Forms.Label issuesGuideButton;
-        private System.Windows.Forms.Label popupsGuideButton;
-        private System.Windows.Forms.Label lootGuideButton;
         private System.Windows.Forms.Label mainGuidesLabel;
-        private System.Windows.Forms.Label gettingStartedGuideButton;
         private PrettyListBox nameListBox;
         private System.Windows.Forms.Label namesLabel;
         private EnterTextBox commandTextBox;
@@ -495,5 +455,7 @@
         private System.Windows.Forms.Label saveSummaryImageButton;
         private System.Windows.Forms.Label label1;
         private PrettyDropDownList maxDamagePlayersBox;
+        private System.Windows.Forms.Label downloadAddressButton;
+        private System.Windows.Forms.Label generateAddressButton;
     }
 }
