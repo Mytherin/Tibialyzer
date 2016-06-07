@@ -67,11 +67,15 @@ namespace Tibialyzer {
                 o.newEventMessages.Add(newEvent);
             }
 
-            // Update the look information
-            foreach(string newLook in GlobalDataManager.UpdateLookInformation(res.lookMessages)) {
-                o.newLooks.Add(newLook);
+            foreach (Tuple<Achievement, string> newAchievement in GlobalDataManager.UpdateAchievementInformation(res.achievements)) {
+                o.newAchievements.Add(newAchievement);
             }
 
+            // Update the look information
+            foreach (string newLook in GlobalDataManager.UpdateLookInformation(res.lookMessages)) {
+                o.newLooks.Add(newLook);
+            }
+            
             // Update death information
             o.death = GlobalDataManager.UpdateDeaths(res.deaths);
 
@@ -385,6 +389,12 @@ namespace Tibialyzer {
             }
 
             return new Tuple<string, int>(Parser.getSingularItem(itemName), count);
+        }
+
+        public static string GetAchievement(string logMessage) {
+            string[] split = logMessage.Split('"');
+            if (split.Length <= 1) return null;
+            return split[1];
         }
     }
 }

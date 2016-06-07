@@ -131,6 +131,14 @@ namespace Tibialyzer {
 
             ShowNotification(f, comm);
         }
+        public static void ShowAchievement(Achievement a, string comm) {
+            if (a == null) return;
+            AchievementForm f = new AchievementForm();
+            f.achievement = a;
+
+            ShowNotification(f, comm);
+        }
+
         public static void ShowMapForm(Coordinate startCoordinate, string comm) {
             MapForm f = new MapForm(startCoordinate);
 

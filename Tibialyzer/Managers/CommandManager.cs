@@ -34,6 +34,20 @@ namespace Tibialyzer {
                             NotificationManager.ShowCreatureList(creatures, "Creature List", command);
                         }
                     }
+                } else if (comp.StartsWith("achievement" + Constants.CommandSymbol)) { //achievement@
+                    string[] split = command.Split(Constants.CommandSymbol);
+                    string parameter = split[1].Trim().ToLower();
+                    Achievement a = StorageManager.getAchievement(parameter);
+                    if (a != null) {
+                        NotificationManager.ShowAchievement(a, command);
+                    } else {
+                        List<TibiaObject> achievements = StorageManager.searchAchievement(parameter);
+                        if (achievements.Count == 1) {
+                            NotificationManager.ShowAchievement(achievements[0] as Achievement, command);
+                        } else if (achievements.Count > 1) {
+                            NotificationManager.ShowCreatureList(achievements, "Achievements", command);
+                        }
+                    }
                 } else if (comp.StartsWith("look" + Constants.CommandSymbol)) { //look@
                     string parameter = command.Split(Constants.CommandSymbol)[1].Trim().ToLower();
                     if (parameter == "on") {

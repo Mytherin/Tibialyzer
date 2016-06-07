@@ -49,6 +49,10 @@ namespace Tibialyzer {
         public static bool outfitsLoaded = false;
         private static Dictionary<string, WorldObject> _worldObjectNameMap = new Dictionary<string, WorldObject>();
         public static bool worldObjectsLoaded = false;
+        private static Object AchievementLock = new Object();
+        private static Dictionary<string, Achievement> _achievementNameMap = new Dictionary<string, Achievement>();
+        private static Dictionary<int, Achievement> _achievementIdMap = new Dictionary<int, Achievement>();
+        public static bool achievementsLoaded = false;
 
         public static Dictionary<string, List<Task>> taskList = new Dictionary<string, List<Task>>();
         public static Dictionary<int, string> taskGroups = new Dictionary<int, string>();
@@ -1119,6 +1123,65 @@ namespace Tibialyzer {
 
         #endregion
 
+        #region Achievement Handling
+        public static Achievement getAchievement(string name) {
+            name = name.ToLower().Trim();
+            if (_achievementNameMap.ContainsKey(name)) {
+                return _achievementNameMap[name];
+            }
+            if (achievementsLoaded) return null;
+
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Achievements WHERE LOWER(name)='{1}';", _achievementProperties, name.Replace("\'", "\'\'")), conn);
+            Achievement achievement = createAchievement(command.ExecuteReader());
+            return registerAchievement(achievement);
+        }
+
+        public static Achievement getAchievement(int id) {
+            if (_achievementIdMap.ContainsKey(id)) {
+                return _achievementIdMap[id];
+            }
+            if (achievementsLoaded) return null;
+
+            SQLiteCommand command = new SQLiteCommand(String.Format("SELECT {0} FROM Achievements WHERE id={1};", _achievementProperties, id), conn);
+            Achievement achievement = createAchievement(command.ExecuteReader());
+            return registerAchievement(achievement);
+        }
+        
+        private static Achievement registerAchievement(Achievement achievement) {
+            if (achievement == null) return null;
+            lock (AchievementLock) {
+                if (_achievementIdMap.ContainsKey(achievement.id)) {
+                    return _achievementIdMap[achievement.id];
+                }
+                _achievementIdMap.Add(achievement.id, achievement);
+                string name = achievement.GetName().ToLower();
+                if (!_achievementNameMap.ContainsKey(name)) {
+                    _achievementNameMap.Add(achievement.GetName().ToLower(), achievement);
+                }
+            }
+            return achievement;
+        }
+        
+        private static string _achievementProperties = "id, name, grade, points, description, spoiler, image, imagetype";
+        private static Achievement createAchievement(SQLiteDataReader reader) {
+            if (!reader.Read()) {
+                return null;
+            }
+
+            Achievement achievement = new Achievement();
+            achievement.id = reader.GetInt32(0);
+            achievement.name = reader.GetString(1);
+            achievement.grade = reader.IsDBNull(2) ? 1 : reader.GetInt32(2);
+            achievement.points = reader.IsDBNull(3) ? 1 : reader.GetInt32(3);
+            achievement.description = reader.IsDBNull(4) ? " " : reader.GetString(4);
+            achievement.spoiler = reader.IsDBNull(5)  ? " " : reader.GetString(5);
+            achievement.image = reader.IsDBNull(6) ? -1 : reader.GetInt32(6);
+            achievement.imagetype = reader.IsDBNull(7) ? -1 : reader.GetInt32(7);
+
+            return achievement;
+        }
+        #endregion
+
 
 
         public static void UpdateDiscardQuery(string query) {
@@ -1418,6 +1481,20 @@ namespace Tibialyzer {
                 return result;
             } else {
                 return _creatureIdMap.Values.Where(o => o.GetName().Contains(str, StringComparison.OrdinalIgnoreCase)).OrderBy(o => o.experience).ToList<TibiaObject>();
+            }
+        }
+        public static List<TibiaObject> searchAchievement(string str) {
+            str = str.ToLower();
+            if (!achievementsLoaded) {
+                List<TibiaObject> result = new List<TibiaObject>();
+                SQLiteCommand command = new SQLiteCommand(String.Format("SELECT id FROM Achievements WHERE LOWER(name) LIKE '%{0}%' ORDER BY grade;", str.Replace("\'", "\'\'")), conn);
+                SQLiteDataReader reader = command.ExecuteReader();
+                while (reader.Read()) {
+                    result.Add(StorageManager.getAchievement(reader.GetInt32(0)));
+                }
+                return result;
+            } else {
+                return _achievementIdMap.Values.Where(o => o.GetName().Contains(str, StringComparison.OrdinalIgnoreCase)).OrderBy(o => o.grade).ToList<TibiaObject>();
             }
         }
         public static List<TibiaObject> searchNPC(string str) {

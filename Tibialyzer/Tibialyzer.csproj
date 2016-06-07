@@ -132,6 +132,12 @@
     <Compile Include="Managers\NotificationManager.cs" />
     <Compile Include="Managers\GlobalDataManager.cs" />
     <Compile Include="Managers\PopupManager.cs" />
+    <Compile Include="Notifications\AchievementForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Notifications\AchievementForm.Designer.cs">
+      <DependentUpon>AchievementForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Notifications\ExperienceChart.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -279,6 +285,7 @@
     <Compile Include="Structures\Creature.cs" />
     <Compile Include="Structures\Event.cs" />
     <Compile Include="Structures\HuntingPlace.cs" />
+    <Compile Include="Structures\Achievement.cs" />
     <Compile Include="Structures\Item.cs" />
     <Compile Include="Structures\LazyTibiaObject.cs" />
     <Compile Include="Structures\Map.cs" />
@@ -422,6 +429,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="HUDs\HealthBar.resx">
       <DependentUpon>HealthBar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Notifications\AchievementForm.resx">
+      <DependentUpon>AchievementForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Notifications\ExperienceChart.resx">
       <DependentUpon>ExperienceChart.cs</DependentUpon>
@@ -631,6 +641,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\9.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\achievementgrade1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\achievementgrade2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\achievementgrade3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\achievementgrade4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\back.png">

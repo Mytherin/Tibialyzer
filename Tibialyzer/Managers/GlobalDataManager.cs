@@ -30,6 +30,7 @@ namespace Tibialyzer {
         private static Dictionary<string, bool> totalDeaths = new Dictionary<string, bool>();
         private static HashSet<string> eventMessages = new HashSet<string>();
         private static HashSet<string> levelAdvances = new HashSet<string>();
+        private static HashSet<string> achievements = new HashSet<string>();
         private static Dictionary<string, List<string>> totalLooks = new Dictionary<string, List<string>>();
         private static long lootValue = 0;
 
@@ -320,6 +321,17 @@ namespace Tibialyzer {
                 foreach (Tuple<Event, string> tpl in newEvents) {
                     if (!eventMessages.Contains(tpl.Item2)) {
                         eventMessages.Add(tpl.Item2);
+                        yield return tpl;
+                    }
+                }
+            }
+            yield break;
+        }
+        public static IEnumerable<Tuple<Achievement, string>> UpdateAchievementInformation(List<Tuple<Achievement, string>> newAchievements) {
+            lock (achievements) {
+                foreach (Tuple<Achievement, string> tpl in newAchievements) {
+                    if (!achievements.Contains(tpl.Item2)) {
+                        achievements.Add(tpl.Item2);
                         yield return tpl;
                     }
                 }

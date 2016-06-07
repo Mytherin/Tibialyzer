@@ -40,6 +40,7 @@ namespace Tibialyzer {
         public Dictionary<string, List<Tuple<string, string>>> urls = new Dictionary<string, List<Tuple<string, string>>>();
         public List<string> newAdvances = new List<string>();
         public List<Tuple<Event, string>> eventMessages = new List<Tuple<Event, string>>();
+        public List<Tuple<Achievement, string>> achievements = new List<Tuple<Achievement, string>>();
         public Dictionary<string, List<string>> lookMessages = new Dictionary<string, List<string>>();
         public Dictionary<string, bool> deaths = new Dictionary<string, bool>();
         public Dictionary<string, List<string>> duplicateMessages = new Dictionary<string, List<string>>();
@@ -96,6 +97,7 @@ namespace Tibialyzer {
         public List<string> newLooks = new List<string>();
         public List<Tuple<Creature, List<Tuple<Item, int>>, string>> newItems = new List<Tuple<Creature, List<Tuple<Item, int>>, string>>();
         public List<Tuple<Event, string>> newEventMessages = new List<Tuple<Event, string>>();
+        public List<Tuple<Achievement, string>> newAchievements = new List<Tuple<Achievement, string>>();
         public int expPerHour = 0;
         public bool death = false;
         public bool newDamage = false;
@@ -522,7 +524,7 @@ namespace Tibialyzer {
                                 if (target == "yourself" || target == "itself" || target == "himself" || target == "herself") {
                                     target = source;
                                 }
-                                
+
                                 if (target.Length == 0 || source.Length == 0) {
                                     continue;
                                 }
@@ -568,6 +570,13 @@ namespace Tibialyzer {
                                 if (!res.usingMessages[values.Item1].ContainsKey(t)) res.usingMessages[values.Item1].Add(t, new HashSet<int>());
                                 res.usingMessages[values.Item1][t].Add(values.Item2);
                                 continue;
+                            } else if (logMessage.Length > 50 && logMessage.Substring(5, 45) == " Congratulations! You earned the achievement ") {
+                                Achievement achievement = StorageManager.getAchievement(Parser.GetAchievement(logMessage));
+                                if (achievement != null) {
+                                    res.achievements.Add(new Tuple<Achievement, string>(achievement, logMessage));
+                                } else {
+                                    Console.WriteLine("Unrecognized achievement {0}.", Parser.GetAchievement(logMessage));
+                                }
                             } else {
                                 foreach (Event ev in StorageManager.eventIdMap.Values) {
                                     foreach (string evMessage in ev.eventMessages) {

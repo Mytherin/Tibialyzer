@@ -34,22 +34,18 @@ namespace Tibialyzer {
             currentState = ScanningState.NoTibia;
         }
 
-        private static void MainScanTimer()
-        {
+        private static void MainScanTimer() {
             ScanMemoryInternal();
             int scanSpeed = SettingsManager.getSettingInt("ScanSpeed") * 5 + 1;
-            if (scanSpeed != mainScanTimer.Interval)
-            {
+            if (scanSpeed != mainScanTimer.Interval) {
                 mainScanTimer.Interval = scanSpeed;
             }
         }
 
-        private static void ScanMissingChunksTimer()
-        {
+        private static void ScanMissingChunksTimer() {
             ReadMemoryManager.ScanMissingChunks();
             int scanSpeed = SettingsManager.getSettingInt("ScanSpeed") * 15 + 1;
-            if (scanSpeed != missingChunkScanTimer.Interval)
-            {
+            if (scanSpeed != missingChunkScanTimer.Interval) {
                 missingChunkScanTimer.Interval = scanSpeed;
             }
         }
@@ -57,11 +53,9 @@ namespace Tibialyzer {
         private static void ScanMemoryInternal() {
             scanTimer.Start();
             bool success = false;
-            try
-            {
+            try {
                 success = ScanMemory();
-            } catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 MainForm.mainForm.BeginInvoke((MethodInvoker)delegate {
                     MainForm.mainForm.DisplayWarning(String.Format("Database Scan Error (Non-Fatal): {0}", ex.Message));
                     Console.WriteLine(ex.Message);
@@ -71,19 +65,15 @@ namespace Tibialyzer {
             scanTimer.Stop();
             scanTimer.Start();
 
-            if (success)
-            {
-                if (currentState != ScanningState.Scanning)
-                {
+            if (success) {
+                if (currentState != ScanningState.Scanning) {
                     currentState = ScanningState.Scanning;
                     MainForm.mainForm.BeginInvoke((MethodInvoker)delegate {
                         MainForm.mainForm.SetScanningImage("scanningbar.gif", "Scanning Memory...", true);
                     });
                 }
-            }
-            else {
-                if (currentState != ScanningState.NoTibia)
-                {
+            } else {
+                if (currentState != ScanningState.NoTibia) {
                     currentState = ScanningState.NoTibia;
                     MainForm.mainForm.BeginInvoke((MethodInvoker)delegate {
                         MainForm.mainForm.SetScanningImage("scanningbar-red.gif", "No Tibia Client Found...", true);
@@ -104,7 +94,7 @@ namespace Tibialyzer {
         public static bool ScanMemory() {
             ReadMemoryResults readMemoryResults = ReadMemoryManager.ReadMemory();
             ParseMemoryResults parseMemoryResults = Parser.ParseLogResults(readMemoryResults);
-            
+
             EquipmentManager.UpdateUsedItems();
 
             if (parseMemoryResults != null) {
@@ -155,6 +145,25 @@ namespace Tibialyzer {
                         }
                     }
                     parseMemoryResults.newEventMessages.Clear();
+                }
+                if (parseMemoryResults.newAchievements.Count > 0) {
+                    foreach (Tuple<Achievement, string> tpl in parseMemoryResults.newAchievements) {
+                        Achievement achievement = tpl.Item1;
+                        if (SettingsManager.getSettingBool("EnableEventNotifications")) {
+                            MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                                if (!SettingsManager.getSettingBool("UseRichNotificationType")) {
+                                    PopupManager.ShowSimpleNotification("Achievement earned!", tpl.Item2, achievement.GetImage());
+                                } else {
+                                    PopupManager.ShowSimpleNotification(new SimpleTextNotification(achievement.GetImage(), "Achievement earned!", tpl.Item2));
+                                }
+                            });
+                        }
+                        if (SettingsManager.getSettingBool("CopyAdvances")) {
+                            MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                                Clipboard.SetText(tpl.Item2.ToString());
+                            });
+                        }
+                    }
                 }
             }
 
@@ -264,8 +273,8 @@ namespace Tibialyzer {
         public static List<Tuple<Creature, List<Tuple<Item, int>>, string>> GetRecentDrops(int max = 5) {
             var recentDrops = new List<Tuple<Creature, List<Tuple<Item, int>>, string>>();
             int counter = 0;
-            lock(RecentDrops) {
-                for(int i = RecentDrops.Count - 1; i >= 0; i--) {
+            lock (RecentDrops) {
+                for (int i = RecentDrops.Count - 1; i >= 0; i--) {
                     if (!TrackCreature(RecentDrops[i].Item1)) continue;
                     recentDrops.Add(RecentDrops[i]);
                     counter++;
