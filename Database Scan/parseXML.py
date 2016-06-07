@@ -37,6 +37,7 @@ from parseoutfit import parseOutfit
 from parsemount import parseMount
 from parseobject import parseObject
 from parsekey import parseKey
+from parseachievement import parseAchievement
 
 webcache = dict()
 
@@ -116,6 +117,7 @@ if not skipLoading:
     c.execute('CREATE TABLE QuestOutfits(questid INT, outfitid INT)')
     c.execute('CREATE TABLE QuestDangers(questid INT, creatureid INT)')
     c.execute('CREATE TABLE QuestNPCs(questid INTEGER, npcid INTEGER)')
+    c.execute('CREATE TABLE Achievements(id INTEGER PRIMARY KEY, name STRING, grade INTEGER, points INTEGER, description STRING, spoiler STRING, image INT, imagetype INT)')
     c.execute('CREATE TABLE Outfits(id INTEGER PRIMARY KEY AUTOINCREMENT, title STRING, name STRING, premium BOOLEAN, tibiastore BOOLEAN)')
     c.execute('CREATE TABLE OutfitImages(outfitid INTEGER, male BOOLEAN, addon INTEGER, image BLOB)')
     c.execute('CREATE TABLE Mounts(id INTEGER PRIMARY KEY AUTOINCREMENT, title STRING, name STRING, tameitemid INTEGER, tamecreatureid INTEGER, speed INTEGER, tibiastore BOOLEAN, image BLOB)')
@@ -136,6 +138,7 @@ mountStuff = dict()
 questNPCs = dict()
 keyItems = dict()
 durationCostMap = dict()
+achievementReferences = dict()
 
 import re
 def wordCount(input_string, word):
@@ -200,6 +203,10 @@ if not skipLoading:
             #print('Key', title)
             if not parseKey(title, attributes, c, keyItems, buyitems, sellitems, getURL):
                 print('Key failed', title)
+        elif wordCount(lcontent, '{{infobox achievement') == 1 or wordCount(lcontent, '{{infobox_achievement') == 1:
+            #print('Achievement', title)
+            if not parseAchievement(title, attributes, c, achievementReferences):
+                print('Achievement failed', title)
     saveCache(True)
 
     conn.commit()
@@ -217,6 +224,7 @@ if not skipLoading:
     d['questNPCs'] = questNPCs
     d['keyItems'] = keyItems
     d['durationCostMap'] = durationCostMap
+    d['achievementReferences'] = achievementReferences
 
     f = open('valuedict', 'wb')
     pickle.dump(d, f)
@@ -237,6 +245,53 @@ mountStuff = d['mountStuff']
 questNPCs = d['questNPCs']
 keyItems = d['keyItems']
 durationCostMap = d['durationCostMap']
+achievementReferences = d['achievementReferences']
+
+def attemptGetImage(reference):
+    reference = reference.lower().strip()
+    c.execute('SELECT id FROM Outfits WHERE LOWER(name)=? OR LOWER(title)=?', (reference, reference))
+    results = c.fetchall()
+    if len(results) > 0:
+        return (results[0][0], 1)
+    c.execute('SELECT id FROM Mounts WHERE LOWER(name)=? OR LOWER(title)=?', (reference, reference))
+    results = c.fetchall()
+    if len(results) > 0:
+        return (results[0][0], 2)
+    c.execute('SELECT id FROM Quests WHERE LOWER(name)=? OR LOWER(title)=?', (reference, reference))
+    results = c.fetchall()
+    if len(results) > 0:
+        return (results[0][0], 3)
+    c.execute('SELECT id FROM HuntingPlaces WHERE LOWER(name)=?', (reference,))
+    results = c.fetchall()
+    if len(results) > 0:
+        return (results[0][0], 4)
+    c.execute('SELECT id FROM Creatures WHERE LOWER(name)=? OR LOWER(title)=?', (reference, reference))
+    results = c.fetchall()
+    if len(results) > 0:
+        return (results[0][0], 5)
+    c.execute('SELECT id FROM NPCs WHERE LOWER(name)=? OR LOWER(title)=?', (reference, reference))
+    results = c.fetchall()
+    if len(results) > 0:
+        return (results[0][0], 6)
+    c.execute('SELECT id FROM Items WHERE LOWER(name)=? OR LOWER(title)=?', (reference, reference))
+    results = c.fetchall()
+    if len(results) > 0:
+        return (results[0][0], 7)
+    c.execute('SELECT id FROM Spells WHERE LOWER(name)=?', (reference, ))
+    results = c.fetchall()
+    if len(results) > 0:
+        return (results[0][0], 8)
+    return(None,None)
+
+
+# add images to achievements
+for achievementid,references in iter(achievementReferences.items()):
+    for reference in references:
+        (imageid,imagetype) = attemptGetImage(reference)
+        if imageid != None:
+            c.execute('UPDATE Achievements SET image=? WHERE id=?', (imageid, achievementid))
+            c.execute('UPDATE Achievements SET imagetype=? WHERE id=?', (imagetype, achievementid))
+            break
 
 # add images to keys
 for keyid,primarytype in iter(keyItems.items()):
