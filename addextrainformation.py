@@ -38,6 +38,7 @@ def getHuntID(name):
 def getQuestID(name):
     global c
     name = name.strip().lower()
+    if name == "ferumbras' ascendant quest": name = 'ferumbras\' ascension quest'
     c.execute('SELECT id FROM Quests WHERE LOWER(name)=? OR LOWER(title)=?', (name, name))
     print(name)
     return c.fetchall()[0][0]
