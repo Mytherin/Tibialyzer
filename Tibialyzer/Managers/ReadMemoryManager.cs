@@ -411,7 +411,7 @@ namespace Tibialyzer {
                             res.itemDrops[t].Add(logMessage);
                             continue;
                         }
-                    } else if (logMessage.Length > 17 && logMessage.Substring(5, 12) == " You gained ") {
+                    } else if (logMessage.Length > 17 && logMessage.Substring(5, 12) == " You gained " && logMessage.EndsWith("experience points.")) {
                         // the message is an experience string, "You gained x experience."
                         try {
                             int experience = int.Parse(logMessage.Substring(17).Split(' ')[0]);
