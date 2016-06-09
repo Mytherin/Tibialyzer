@@ -48,6 +48,12 @@ namespace Tibialyzer {
                             NotificationManager.ShowCreatureList(achievements, "Achievements", command);
                         }
                     }
+                } else if (comp.StartsWith("player" + Constants.CommandSymbol)) { //player@
+                    Player player = new Player();
+                    player.name = command.Split(Constants.CommandSymbol)[1].Trim().ToLower();
+                    if (player.GatherInformationOnline(true)) {
+                        NotificationManager.ShowPlayer(player, command);
+                    }
                 } else if (comp.StartsWith("look" + Constants.CommandSymbol)) { //look@
                     string parameter = command.Split(Constants.CommandSymbol)[1].Trim().ToLower();
                     if (parameter == "on") {

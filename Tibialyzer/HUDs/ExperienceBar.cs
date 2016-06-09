@@ -35,7 +35,7 @@ namespace Tibialyzer {
             this.RefreshHUD(100, 100, 1);
         }
 
-        private static long GetExperience(long lvl) {
+        public static long GetExperience(long lvl) {
             return (50 * lvl * lvl * lvl - 150 * lvl * lvl + 400 * lvl) / 3;
         }
 

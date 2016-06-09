@@ -144,6 +144,12 @@
     <Compile Include="Notifications\MapForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Notifications\PlayerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Notifications\PlayerForm.Designer.cs">
+      <DependentUpon>PlayerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Notifications\RouteForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -292,6 +298,7 @@
     <Compile Include="Structures\Mount.cs" />
     <Compile Include="Structures\NPC.cs" />
     <Compile Include="Structures\Outfit.cs" />
+    <Compile Include="Structures\Player.cs" />
     <Compile Include="Structures\PlayerExperience.cs" />
     <Compile Include="Structures\PlayerMana.cs" />
     <Compile Include="Structures\PlayerHealth.cs" />
@@ -438,6 +445,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Notifications\MapForm.resx">
       <DependentUpon>MapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Notifications\PlayerForm.resx">
+      <DependentUpon>PlayerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Notifications\RouteForm.resx">
       <DependentUpon>RouteForm.cs</DependentUpon>
@@ -718,6 +728,30 @@
     <Content Include="Images\energy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\femaledruid.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\femaleelderdruid.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\femaleeliteknight.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\femaleknight.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\femalemastersorcerer.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\femalepaladin.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\femaleroyalpaladin.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\femalesorcerer.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\fire.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -734,6 +768,30 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\load.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\maledruid.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\maleelderdruid.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\maleeliteknight.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\maleknight.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\malemastersorcerer.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\malepaladin.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\maleroyalpaladin.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\malesorcerer.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\mapdown.png">

@@ -18,6 +18,7 @@ using System.Text;
 using System.IO;
 using System.Data.SQLite;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace Tibialyzer {
     class Parser {
@@ -187,6 +188,24 @@ namespace Tibialyzer {
             }
 
             return false;
+        }
+
+        public static Player parseLookPlayer(string lookMessage) {
+            Regex levelRegex = new Regex("\\(Level ([0-9]+)\\)");
+            Regex vocationRegex = new Regex("(?:She|He) is (?:a|an) ([^.]+)");
+            Match levelMatch = levelRegex.Match(lookMessage);
+            Match vocationMatch = vocationRegex.Match(lookMessage);
+            if (!levelMatch.Success || !vocationMatch.Success) return null;
+            Player player = new Player();
+            player.name = parseLookItem(lookMessage).Item1;
+            player.level = int.Parse(levelMatch.Groups[1].Value);
+            string vocation = vocationMatch.Groups[1].Value.ToLower();
+            player.SetVocation(vocation);
+
+            if (lookMessage.Contains("He")) player.gender = Gender.Male;
+            else player.gender = Gender.Female;
+
+            return player;
         }
 
         public static Tuple<string, int> parseLookItem(string logMessage) {

@@ -169,28 +169,35 @@ namespace Tibialyzer {
 
             if (SettingsManager.getSettingBool("LookMode") && readMemoryResults != null) {
                 foreach (string msg in parseMemoryResults.newLooks) {
-                    var itemInfo = Parser.parseLookItem(msg);
-                    string itemName = itemInfo.Item1.ToLower();
-                    if (StorageManager.itemExists(itemName)) {
+                    Player player = Parser.parseLookPlayer(msg);
+                    if (player != null) {
                         MainForm.mainForm.Invoke((MethodInvoker)delegate {
-                            CommandManager.ExecuteCommand("item@" + itemName);
-                            var item = StorageManager.getItem(itemName);
-                            if (item != null) {
-                                GlobalDataManager.AddLootValue(item.GetMaxValue() * itemInfo.Item2);
-                            }
-                        });
-                    } else if (StorageManager.creatureExists(itemName) ||
-                        (itemName.Contains("dead ") && (itemName = itemName.Replace("dead ", "")) != null && StorageManager.creatureExists(itemName)) ||
-                        (itemName.Contains("slain ") && (itemName = itemName.Replace("slain ", "")) != null && StorageManager.creatureExists(itemName))) {
-                        MainForm.mainForm.Invoke((MethodInvoker)delegate {
-                            CommandManager.ExecuteCommand("creature@" + itemName);
+                            NotificationManager.ShowPlayer(player, "player@" + player.name);
                         });
                     } else {
-                        NPC npc = StorageManager.getNPC(itemName);
-                        if (npc != null) {
+                        var itemInfo = Parser.parseLookItem(msg);
+                        string itemName = itemInfo.Item1.ToLower();
+                        if (StorageManager.itemExists(itemName)) {
                             MainForm.mainForm.Invoke((MethodInvoker)delegate {
-                                CommandManager.ExecuteCommand("npc@" + itemName);
+                                CommandManager.ExecuteCommand("item@" + itemName);
+                                var item = StorageManager.getItem(itemName);
+                                if (item != null) {
+                                    GlobalDataManager.AddLootValue(item.GetMaxValue() * itemInfo.Item2);
+                                }
                             });
+                        } else if (StorageManager.creatureExists(itemName) ||
+                            (itemName.Contains("dead ") && (itemName = itemName.Replace("dead ", "")) != null && StorageManager.creatureExists(itemName)) ||
+                            (itemName.Contains("slain ") && (itemName = itemName.Replace("slain ", "")) != null && StorageManager.creatureExists(itemName))) {
+                            MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                                CommandManager.ExecuteCommand("creature@" + itemName);
+                            });
+                        } else {
+                            NPC npc = StorageManager.getNPC(itemName);
+                            if (npc != null) {
+                                MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                                    CommandManager.ExecuteCommand("npc@" + itemName);
+                                });
+                            }
                         }
                     }
                 }
