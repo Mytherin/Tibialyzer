@@ -30,6 +30,7 @@ namespace Tibialyzer {
             this.scanEntireMemoryDropdown.SelectedIndex = SettingsManager.getSettingBool("ScanInternalTabStructure") ? 0 : 1;
             this.skipDuplicateLootCheckbox.Checked = SettingsManager.getSettingBool("SkipDuplicateLoot");
             this.skipDuplicateCommandsCheckbox.Checked = SettingsManager.getSettingBool("SkipDuplicateCommands");
+            this.gatherOnlineInformation.Checked = SettingsManager.getSettingBool("GatherExtraPlayerInformation");
         }
 
         public void InitializeTooltips() {
@@ -46,6 +47,7 @@ namespace Tibialyzer {
             tooltip.SetToolTip(popupAnimationBox, "Whether or not popups should be animated or simply appear.");
             tooltip.SetToolTip(experienceComputationDropdown, "The algorithm used to compute experience per hour. Standard Tibia Style uses the same algorithm as the Tibia client; while weighted places more emphasis on recent experience gained.");
             tooltip.SetToolTip(scanEntireMemoryDropdown, "Scanning the internal tab structure is much faster and prevents duplicate issues (only available for C client).\nOnly select scanning the entire memory if for some reason this setting does not work (e.g. because of an update).");
+            tooltip.SetToolTip(gatherOnlineInformation, "When looking at a player, also navigate to the tibia.com page for that player and gather extra information (e.g. recent deaths, house, guild, marriage).");
         }
 
         private void unlockResetButton_Click(object sender, MouseEventArgs e) {
@@ -159,6 +161,12 @@ namespace Tibialyzer {
             if (MainForm.prevent_settings_update) return;
 
             SettingsManager.setSetting("SkipDuplicateCommands", (sender as CheckBox).Checked);
+        }
+
+        private void gatherOnlineInformation_CheckedChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            SettingsManager.setSetting("GatherExtraPlayerInformation", (sender as CheckBox).Checked);
         }
     }
 }

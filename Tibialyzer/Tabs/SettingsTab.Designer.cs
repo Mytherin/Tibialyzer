@@ -47,6 +47,7 @@
             this.unrecognizedPopupBox = new Tibialyzer.PrettyCheckBox();
             this.popupTypeBox = new Tibialyzer.PrettyDropDownList();
             this.skipDuplicateCommandsCheckbox = new Tibialyzer.PrettyCheckBox();
+            this.gatherOnlineInformation = new Tibialyzer.PrettyCheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.scanningSpeedTrack)).BeginInit();
             this.SuspendLayout();
             // 
@@ -112,7 +113,7 @@
             this.label29.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label29.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label29.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label29.Location = new System.Drawing.Point(3, 132);
+            this.label29.Location = new System.Drawing.Point(3, 188);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(240, 30);
             this.label29.TabIndex = 30;
@@ -148,9 +149,9 @@
             this.scanSpeedDisplayLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.scanSpeedDisplayLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.scanSpeedDisplayLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.scanSpeedDisplayLabel.Location = new System.Drawing.Point(6, 315);
+            this.scanSpeedDisplayLabel.Location = new System.Drawing.Point(245, 315);
             this.scanSpeedDisplayLabel.Name = "scanSpeedDisplayLabel";
-            this.scanSpeedDisplayLabel.Size = new System.Drawing.Size(528, 30);
+            this.scanSpeedDisplayLabel.Size = new System.Drawing.Size(289, 30);
             this.scanSpeedDisplayLabel.TabIndex = 25;
             this.scanSpeedDisplayLabel.Text = "Fastest";
             this.scanSpeedDisplayLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -160,9 +161,9 @@
             this.scanSpeedLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.scanSpeedLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.scanSpeedLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.scanSpeedLabel.Location = new System.Drawing.Point(6, 240);
+            this.scanSpeedLabel.Location = new System.Drawing.Point(245, 240);
             this.scanSpeedLabel.Name = "scanSpeedLabel";
-            this.scanSpeedLabel.Size = new System.Drawing.Size(528, 30);
+            this.scanSpeedLabel.Size = new System.Drawing.Size(289, 30);
             this.scanSpeedLabel.TabIndex = 24;
             this.scanSpeedLabel.Text = "Scanning Speed";
             this.scanSpeedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -170,10 +171,10 @@
             // scanningSpeedTrack
             // 
             this.scanningSpeedTrack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.scanningSpeedTrack.Location = new System.Drawing.Point(6, 270);
+            this.scanningSpeedTrack.Location = new System.Drawing.Point(245, 270);
             this.scanningSpeedTrack.Maximum = 100;
             this.scanningSpeedTrack.Name = "scanningSpeedTrack";
-            this.scanningSpeedTrack.Size = new System.Drawing.Size(528, 45);
+            this.scanningSpeedTrack.Size = new System.Drawing.Size(289, 45);
             this.scanningSpeedTrack.TabIndex = 2;
             this.scanningSpeedTrack.Scroll += new System.EventHandler(this.scanningSpeedTrack_Scroll);
             this.scanningSpeedTrack.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
@@ -196,7 +197,7 @@
             this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label1.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label1.Location = new System.Drawing.Point(2, 186);
+            this.label1.Location = new System.Drawing.Point(2, 242);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(240, 30);
             this.label1.TabIndex = 55;
@@ -259,7 +260,7 @@
             this.experienceComputationDropdown.Items.AddRange(new object[] {
             "Standard (Tibia Client Style)",
             "Weighted"});
-            this.experienceComputationDropdown.Location = new System.Drawing.Point(2, 216);
+            this.experienceComputationDropdown.Location = new System.Drawing.Point(2, 272);
             this.experienceComputationDropdown.Name = "experienceComputationDropdown";
             this.experienceComputationDropdown.Size = new System.Drawing.Size(240, 24);
             this.experienceComputationDropdown.TabIndex = 54;
@@ -293,7 +294,7 @@
             this.outfitGenderCheckbox.Items.AddRange(new object[] {
             "Male",
             "Female"});
-            this.outfitGenderCheckbox.Location = new System.Drawing.Point(3, 162);
+            this.outfitGenderCheckbox.Location = new System.Drawing.Point(3, 218);
             this.outfitGenderCheckbox.Name = "outfitGenderCheckbox";
             this.outfitGenderCheckbox.Size = new System.Drawing.Size(240, 24);
             this.outfitGenderCheckbox.TabIndex = 22;
@@ -399,12 +400,29 @@
             this.skipDuplicateCommandsCheckbox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.skipDuplicateCommandsCheckbox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             // 
+            // gatherOnlineInformation
+            // 
+            this.gatherOnlineInformation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.gatherOnlineInformation.Font = new System.Drawing.Font("Verdana", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gatherOnlineInformation.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.gatherOnlineInformation.Location = new System.Drawing.Point(3, 129);
+            this.gatherOnlineInformation.Name = "gatherOnlineInformation";
+            this.gatherOnlineInformation.Padding = new System.Windows.Forms.Padding(10);
+            this.gatherOnlineInformation.Size = new System.Drawing.Size(240, 40);
+            this.gatherOnlineInformation.TabIndex = 60;
+            this.gatherOnlineInformation.Text = "Extra Player Look Information";
+            this.gatherOnlineInformation.UseVisualStyleBackColor = false;
+            this.gatherOnlineInformation.CheckedChanged += new System.EventHandler(this.gatherOnlineInformation_CheckedChanged);
+            this.gatherOnlineInformation.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.gatherOnlineInformation.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            // 
             // SettingsTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(538, 514);
+            this.Controls.Add(this.gatherOnlineInformation);
             this.Controls.Add(this.skipDuplicateCommandsCheckbox);
             this.Controls.Add(this.skipDuplicateLootCheckbox);
             this.Controls.Add(this.scanEntireMemoryDropdown);
@@ -464,5 +482,6 @@
         private PrettyDropDownList scanEntireMemoryDropdown;
         private PrettyCheckBox skipDuplicateLootCheckbox;
         private PrettyCheckBox skipDuplicateCommandsCheckbox;
+        private PrettyCheckBox gatherOnlineInformation;
     }
 }

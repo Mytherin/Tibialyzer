@@ -297,6 +297,8 @@ C::NumpadPgDn
             setSettingIfNotSet("PortraitCenterScale", 80);
             setSettingIfNotSet("PortraitCenterXOffset", 0);
             setSettingIfNotSet("PortraitCenterYOffset", 0);
+
+            setSettingIfNotSet("GatherExtraPlayerInformation", false);
         }
 
         public static void ResetSettingsToDefault() {

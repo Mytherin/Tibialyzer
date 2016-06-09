@@ -205,6 +205,10 @@ namespace Tibialyzer {
             if (lookMessage.Contains("He")) player.gender = Gender.Male;
             else player.gender = Gender.Female;
 
+            if (SettingsManager.getSettingBool("GatherExtraPlayerInformation")) {
+                player.GatherInformationOnline(false);
+            }
+
             return player;
         }
 
