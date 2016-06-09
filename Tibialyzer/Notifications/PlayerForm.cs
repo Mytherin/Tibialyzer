@@ -43,6 +43,20 @@ namespace Tibialyzer {
             capLabel.Text = String.Format("{0} Cap", player.Capacity());
             sharedLabel.Text = String.Format("Shared Range\n{0} - {1}", player.SharedLevelMin(), player.SharedLevelMax());
             vocationLabel.Text = player.GetVocation();
+            
+            Font f = StyleManager.FontList[0];
+            Font prevFont = f;
+            for (int i = 0; i < StyleManager.FontList.Count; i++) {
+                Font font = StyleManager.FontList[i];
+                int width = TextRenderer.MeasureText(this.nameLabel.Text, font).Width;
+                if (width < this.mainImage.Size.Width) {
+                    f = prevFont;
+                } else {
+                    break;
+                }
+                prevFont = font;
+            }
+            nameLabel.Font = f;
 
             accountLabel.Visible = player.additionalInfo;
             houseLabel.Visible = player.additionalInfo;
@@ -52,7 +66,7 @@ namespace Tibialyzer {
 
             if (player.additionalInfo) {
                 accountLabel.Text = player.premium ? "Premium Account" : "Free Account";
-                accountLabel.ForeColor = player.premium ? StyleManager.HealthDamaged : StyleManager.HealthCritical;
+                accountLabel.ForeColor = player.premium ? StyleManager.HealthHealthy : StyleManager.ElementFireColor;
                 if (player.house != null) houseLabel.Text = String.Format("House: {0}", player.house);
                 else houseLabel.Visible = false;
                 if (player.guild != null) guildLabel.Text = String.Format("Guild: {0}", player.guild);
@@ -66,7 +80,7 @@ namespace Tibialyzer {
                     label.Text = death;
                     label.Font = hpLabel.Font;
                     label.BackColor = Color.Transparent;
-                    label.ForeColor = StyleManager.HealthDanger;
+                    label.ForeColor = StyleManager.ElementFireColor;
                     label.BorderStyle = BorderStyle.FixedSingle;
                     label.AutoSize = false;
                     int height = label.Text.Length < 50 ? 17 : 35;

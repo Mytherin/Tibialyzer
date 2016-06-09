@@ -135,82 +135,86 @@ namespace Tibialyzer {
         /// Gets additional information about a player from the tibia.com characters page
         /// </summary>
         public bool GatherInformationOnline(bool all = false) {
-            using(WebClient client = new WebClient() ) {
-                string html = client.DownloadString(String.Format("https://secure.tibia.com/community/?subtopic=characters&name={0}", name.Replace(" ", "+")));
+            try {
+                using (WebClient client = new WebClient()) {
+                    string html = client.DownloadString(String.Format("https://secure.tibia.com/community/?subtopic=characters&name={0}", name.Replace(" ", "+")));
 
-                string baseRegex = "<td[^>]*>{0}</td[^>]*><td[^>]*>";
+                    string baseRegex = "<td[^>]*>{0}</td[^>]*><td[^>]*>";
 
-                if (all) {
-                    Regex genderRegex = new Regex(String.Format(baseRegex, "Sex:"));
-                    Regex vocationRegex = new Regex(String.Format(baseRegex, "Vocation:"));
-                    Regex levelRegex = new Regex(String.Format(baseRegex, "Level:"));
-                    
-                    Match gender = genderRegex.Match(html);
-                    Match vocation = vocationRegex.Match(html);
-                    Match level = levelRegex.Match(html);
-                    if (!gender.Success || !vocation.Success || !level.Success) {
-                        return false;
+                    if (all) {
+                        Regex genderRegex = new Regex(String.Format(baseRegex, "Sex:"));
+                        Regex vocationRegex = new Regex(String.Format(baseRegex, "Vocation:"));
+                        Regex levelRegex = new Regex(String.Format(baseRegex, "Level:"));
+
+                        Match gender = genderRegex.Match(html);
+                        Match vocation = vocationRegex.Match(html);
+                        Match level = levelRegex.Match(html);
+                        if (!gender.Success || !vocation.Success || !level.Success) {
+                            return false;
+                        }
+
+                        this.gender = FindEntry(html, gender).ToLower().Contains("female") ? Gender.Female : Gender.Male;
+                        if (!int.TryParse(FindEntry(html, level).Trim(), out this.level)) {
+                            return false;
+                        }
+                        this.SetVocation(FindEntry(html, vocation).ToLower());
                     }
-                    
-                    this.gender = FindEntry(html, gender).ToLower().Contains("female") ? Gender.Female : Gender.Male;
-                    if (!int.TryParse(FindEntry(html, level).Trim(), out this.level)) {
-                        return false;
+
+                    Regex marriedRegex = new Regex(String.Format(baseRegex, "Married to:"));
+                    Regex houseRegex = new Regex(String.Format(baseRegex, "House:"));
+                    Regex guildRegex = new Regex(String.Format(baseRegex, "Guild&#160;membership:"));
+                    Regex worldRegex = new Regex(String.Format(baseRegex, "World:"));
+                    Regex linkNameRegex = new Regex("<a href[^>]*>([^\n]+)</a[^>]*>");
+
+                    Match married = marriedRegex.Match(html);
+                    if (married.Success) {
+                        Match player = linkNameRegex.Match(FindEntry(html, married));
+                        if (player.Success) {
+                            this.marriage = RemoveJunk(player.Groups[1].Value);
+                        }
                     }
-                    this.SetVocation(FindEntry(html, vocation).ToLower());
-                }
-
-                Regex marriedRegex = new Regex(String.Format(baseRegex, "Married to:"));
-                Regex houseRegex = new Regex(String.Format(baseRegex, "House:"));
-                Regex guildRegex = new Regex(String.Format(baseRegex, "Guild&#160;membership:"));
-                Regex worldRegex = new Regex(String.Format(baseRegex, "World:"));
-                Regex linkNameRegex = new Regex("<a href[^>]*>([^\n]+)</a[^>]*>");
-
-                Match married = marriedRegex.Match(html);
-                if (married.Success) {
-                    Match player = linkNameRegex.Match(FindEntry(html, married));
-                    if (player.Success) {
-                        this.marriage = RemoveJunk(player.Groups[1].Value);
+                    Match house = houseRegex.Match(html);
+                    if (house.Success) {
+                        string h = FindEntry(html, house);
+                        this.house = RemoveJunk(h.Split('(')[0]);
                     }
-                }
-                Match house = houseRegex.Match(html);
-                if (house.Success) {
-                    string h = FindEntry(html, house);
-                    this.house = RemoveJunk(h.Split('(')[0]);
-                }
-                Match guild = guildRegex.Match(html);
-                if (guild.Success) {
-                    Match guildname = linkNameRegex.Match(FindEntry(html, guild));
-                    if (guildname.Success) {
-                        this.guild = RemoveJunk(guildname.Groups[1].Value);
+                    Match guild = guildRegex.Match(html);
+                    if (guild.Success) {
+                        Match guildname = linkNameRegex.Match(FindEntry(html, guild));
+                        if (guildname.Success) {
+                            this.guild = RemoveJunk(guildname.Groups[1].Value);
+                        }
                     }
-                }
-                Match world = worldRegex.Match(html);
-                if (world.Success) {
-                    this.world = RemoveJunk(FindEntry(html, world));
-                }
-
-                if (this.promoted) {
-                    this.premium = true;
-                } else {
-                    Regex premiumRegex = new Regex(String.Format(baseRegex, "Account Status:"));
-                    Match premium = premiumRegex.Match(html);
-                    if (premium.Success) {
-                        this.premium = FindEntry(html, premium).ToLower().Contains("premium");
+                    Match world = worldRegex.Match(html);
+                    if (world.Success) {
+                        this.world = RemoveJunk(FindEntry(html, world));
                     }
-                }
 
-                Regex deathRegex = new Regex("<td[^>]*>((?:Killed|Died|Slain|Crushed)[^\n]+)");
-                int startIndex = 0;
-                Match m;
-                while((m = deathRegex.Match(html, startIndex)).Success) {
-                    string deathString = html.Substring(m.Groups[1].Index).Split(new string[] { "</td>" }, StringSplitOptions.None)[0];
-                    this.recentDeaths.Add(RemoveJunk(deathString));
-                    startIndex += (m.Groups[1].Index - startIndex) + deathString.Length;
-                }
+                    if (this.promoted) {
+                        this.premium = true;
+                    } else {
+                        Regex premiumRegex = new Regex(String.Format(baseRegex, "Account Status:"));
+                        Match premium = premiumRegex.Match(html);
+                        if (premium.Success) {
+                            this.premium = FindEntry(html, premium).ToLower().Contains("premium");
+                        }
+                    }
 
-                additionalInfo = true;
+                    Regex deathRegex = new Regex("<td[^>]*>((?:Killed|Died|Slain|Crushed)[^\n]+)");
+                    int startIndex = 0;
+                    Match m;
+                    while ((m = deathRegex.Match(html, startIndex)).Success) {
+                        string deathString = html.Substring(m.Groups[1].Index).Split(new string[] { "</td>" }, StringSplitOptions.None)[0];
+                        this.recentDeaths.Add(RemoveJunk(deathString));
+                        startIndex += (m.Groups[1].Index - startIndex) + deathString.Length;
+                    }
+
+                    additionalInfo = true;
+                }
+                return true;
+            } catch {
+                return false;
             }
-            return true;
         }
 
         public int SharedLevelMin() { return (level * 2) / 3; }
