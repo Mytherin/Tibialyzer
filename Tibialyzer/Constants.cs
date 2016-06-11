@@ -46,9 +46,13 @@ namespace Tibialyzer {
         //! Vocations in Tibia
         public static List<string> vocations = new List<string> { "knight", "druid", "paladin", "sorcerer" };
         //! Location of Loot database; used for storing loot found by the player
-        public static string LootDatabaseFile = @"Database\Loot.db";
+        public static string LootDatabaseFile = @"Database\loot.db";
         //! Location of the main database; this database contains all Tibia-related information (creatures, items, npcs, etc)
-        public static string DatabaseFile = @"Database\Database.db";
+        public static string DatabaseFile = @"Database\database.db";
+        //! Location of temporary new database after being downloaded
+        public static string NewDatabaseFile = @"Database\new_database.db";
+        //! Location of temporary old database while being replaced
+        public static string OldDatabaseFile = @"Database\old_database.db";
         //! Location of file containing Tibia memory addresses
         public static string MemoryAddresses = @"Database\MemoryAddresses.txt";
         //! Location of the node database; this database contains information used by the pathfinder

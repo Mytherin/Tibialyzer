@@ -18,6 +18,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Data.SQLite;
+using System.IO;
 
 namespace Tibialyzer {
     class StorageManager {
@@ -71,8 +72,39 @@ namespace Tibialyzer {
         public static int DATABASE_NULL = -127;
         public static string DATABASE_STRING_NULL = "";
         public static void InitializeStorage() {
-            conn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", Constants.DatabaseFile));
-            conn.Open();
+            if (File.Exists(Constants.NewDatabaseFile)) {
+                try {
+                    if (File.Exists(Constants.OldDatabaseFile)) {
+                        File.Delete(Constants.OldDatabaseFile);
+                    }
+                    File.Move(Constants.DatabaseFile, Constants.OldDatabaseFile);
+                    File.Move(Constants.NewDatabaseFile, Constants.DatabaseFile);
+                    // new database file present, update the database
+                    conn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", Constants.DatabaseFile));
+                    conn.Open();
+                    SQLiteConnection oldConnection = new SQLiteConnection(String.Format("Data Source={0};Version=3;", Constants.OldDatabaseFile));
+                    oldConnection.Open();
+                    UpdateDatabase(oldConnection);
+                    oldConnection.Close();
+                } catch(Exception ex) {
+                    try {
+                        if (File.Exists(Constants.OldDatabaseFile)) {
+                            File.Move(Constants.OldDatabaseFile, Constants.DatabaseFile);
+                        }
+                        if (File.Exists(Constants.NewDatabaseFile)) {
+                            File.Delete(Constants.NewDatabaseFile);
+                        }
+                    } catch {
+
+                    }
+                    MainForm.mainForm.DisplayWarning("Failed to update database: " + ex.Message);
+                    conn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", Constants.DatabaseFile));
+                    conn.Open();
+                }
+            } else {
+                conn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", Constants.DatabaseFile));
+                conn.Open();
+            }
 
             SQLiteCommand command;
             SQLiteDataReader reader;
@@ -1277,6 +1309,9 @@ namespace Tibialyzer {
             LootDatabaseManager.UpdateLoot();
         }
 
+        /// <summary>
+        /// Update the current (new) database from an older database (by importing user-specified values such as item value and discard/convert flags)
+        /// </summary>
         public static void UpdateDatabase(SQLiteConnection databaseConnection) {
             SQLiteCommand comm = new SQLiteCommand("SELECT title, discard, convert_to_gold, actual_value FROM Items", databaseConnection);
             SQLiteDataReader reader = comm.ExecuteReader();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SQLite;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -45,8 +46,9 @@ namespace Tibialyzer {
             tooltip.SetToolTip(saveAllLootCheckbox, String.Format("Whenever you find loot, save the loot message to the file {0}.", Constants.BigLootFile));
             tooltip.SetToolTip(selectClientProgramButton, "Select the Tibia client to scan from. This should be either the C++ Client or the Flash Client, although you can select any program.");
             tooltip.SetToolTip(executeButton, "Execute a Tibialyzer command directly.");
-            tooltip.SetToolTip(downloadAddressButton, "Downloads new memory addresses from the Tibialyzer Github page. Use this after an update when Tibialyzer breaks (note that it only works after I have updated the addresses there).");
-            tooltip.SetToolTip(generateAddressButton, "Downloads a subset of the memory addresses from another Github page. This guy usually updates addresses faster than me, but he doesn't have all the addresses Tibialyzer requires. You can try using this if I haven't updated the addresses yet.");
+            tooltip.SetToolTip(downloadAddressButton, "Downloads new memory addresses from the Tibialyzer GitHub page. Use this after an update when Tibialyzer breaks (note that it only works after I have updated the addresses there).");
+            tooltip.SetToolTip(generateAddressButton, "Downloads a subset of the memory addresses from another GitHub page. This guy usually updates addresses faster than me, but he doesn't have all the addresses Tibialyzer requires. You can try using this if I haven't updated the addresses yet.");
+            tooltip.SetToolTip(updateDatabaseButton, "Downloads an updated copy of the database from the GitHub page. Use this if the database has been updated with new creatures/items from e.g. a new update or new information on tibia.wikia. Requires a restart of Tibialyzer.");
         }
 
         private void detectFlashClientButton_Click(object sender, EventArgs e) {
@@ -227,6 +229,17 @@ namespace Tibialyzer {
                     }
                 }
                 SaveMemoryAddresses(addresses);
+            }
+        }
+
+        private void updateDatabaseLabel_Click(object sender, EventArgs e) {
+            try {
+                using (WebClient client = new WebClient()) {
+                    client.DownloadFile("https://github.com/Mytherin/Tibialyzer/raw/master/Tibialyzer/Database/database.db", Constants.NewDatabaseFile);
+                    MessageBox.Show("Database downloaded, please restart Tibialyzer to update.");
+                }
+            } catch {
+                MessageBox.Show("Failed to download database.");
             }
         }
     }

@@ -46,6 +46,7 @@
             this.maxDamagePlayersBox = new Tibialyzer.PrettyDropDownList();
             this.downloadAddressButton = new System.Windows.Forms.Label();
             this.generateAddressButton = new System.Windows.Forms.Label();
+            this.updateDatabaseButton = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // detectFlashClientButton
@@ -53,7 +54,7 @@
             this.detectFlashClientButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.detectFlashClientButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.detectFlashClientButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.detectFlashClientButton.Location = new System.Drawing.Point(305, 87);
+            this.detectFlashClientButton.Location = new System.Drawing.Point(305, 74);
             this.detectFlashClientButton.Name = "detectFlashClientButton";
             this.detectFlashClientButton.Padding = new System.Windows.Forms.Padding(10);
             this.detectFlashClientButton.Size = new System.Drawing.Size(226, 38);
@@ -69,7 +70,7 @@
             this.expValueLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.expValueLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.expValueLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.expValueLabel.Location = new System.Drawing.Point(3, 277);
+            this.expValueLabel.Location = new System.Drawing.Point(3, 264);
             this.expValueLabel.Name = "expValueLabel";
             this.expValueLabel.Size = new System.Drawing.Size(99, 23);
             this.expValueLabel.TabIndex = 44;
@@ -81,7 +82,7 @@
             this.lootOptionsHeaderLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.lootOptionsHeaderLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lootOptionsHeaderLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.lootOptionsHeaderLabel.Location = new System.Drawing.Point(305, 128);
+            this.lootOptionsHeaderLabel.Location = new System.Drawing.Point(305, 115);
             this.lootOptionsHeaderLabel.Name = "lootOptionsHeaderLabel";
             this.lootOptionsHeaderLabel.Size = new System.Drawing.Size(226, 30);
             this.lootOptionsHeaderLabel.TabIndex = 37;
@@ -93,7 +94,7 @@
             this.label9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label9.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label9.Location = new System.Drawing.Point(3, 167);
+            this.label9.Location = new System.Drawing.Point(3, 154);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(296, 30);
             this.label9.TabIndex = 36;
@@ -105,7 +106,7 @@
             this.mainExecuteTibialyzerCommandLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.mainExecuteTibialyzerCommandLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mainExecuteTibialyzerCommandLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.mainExecuteTibialyzerCommandLabel.Location = new System.Drawing.Point(9, 419);
+            this.mainExecuteTibialyzerCommandLabel.Location = new System.Drawing.Point(9, 438);
             this.mainExecuteTibialyzerCommandLabel.Name = "mainExecuteTibialyzerCommandLabel";
             this.mainExecuteTibialyzerCommandLabel.Size = new System.Drawing.Size(523, 30);
             this.mainExecuteTibialyzerCommandLabel.TabIndex = 35;
@@ -117,7 +118,7 @@
             this.saveDamageImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.saveDamageImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveDamageImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.saveDamageImageButton.Location = new System.Drawing.Point(305, 194);
+            this.saveDamageImageButton.Location = new System.Drawing.Point(305, 181);
             this.saveDamageImageButton.Name = "saveDamageImageButton";
             this.saveDamageImageButton.Padding = new System.Windows.Forms.Padding(10);
             this.saveDamageImageButton.Size = new System.Drawing.Size(226, 39);
@@ -133,7 +134,7 @@
             this.saveLootImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.saveLootImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveLootImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.saveLootImageButton.Location = new System.Drawing.Point(305, 156);
+            this.saveLootImageButton.Location = new System.Drawing.Point(305, 143);
             this.saveLootImageButton.Name = "saveLootImageButton";
             this.saveLootImageButton.Padding = new System.Windows.Forms.Padding(10);
             this.saveLootImageButton.Size = new System.Drawing.Size(226, 38);
@@ -149,7 +150,7 @@
             this.selectClientProgramButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.selectClientProgramButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.selectClientProgramButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.selectClientProgramButton.Location = new System.Drawing.Point(305, 49);
+            this.selectClientProgramButton.Location = new System.Drawing.Point(305, 36);
             this.selectClientProgramButton.Name = "selectClientProgramButton";
             this.selectClientProgramButton.Padding = new System.Windows.Forms.Padding(10);
             this.selectClientProgramButton.Size = new System.Drawing.Size(226, 38);
@@ -165,7 +166,7 @@
             this.mainOptionsLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.mainOptionsLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mainOptionsLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.mainOptionsLabel.Location = new System.Drawing.Point(305, 19);
+            this.mainOptionsLabel.Location = new System.Drawing.Point(305, 6);
             this.mainOptionsLabel.Name = "mainOptionsLabel";
             this.mainOptionsLabel.Size = new System.Drawing.Size(226, 30);
             this.mainOptionsLabel.TabIndex = 28;
@@ -177,7 +178,7 @@
             this.executeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.executeButton.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.executeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.executeButton.Location = new System.Drawing.Point(381, 453);
+            this.executeButton.Location = new System.Drawing.Point(381, 468);
             this.executeButton.Name = "executeButton";
             this.executeButton.Size = new System.Drawing.Size(150, 23);
             this.executeButton.TabIndex = 27;
@@ -192,7 +193,7 @@
             this.mainGuidesLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.mainGuidesLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mainGuidesLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.mainGuidesLabel.Location = new System.Drawing.Point(9, 344);
+            this.mainGuidesLabel.Location = new System.Drawing.Point(9, 329);
             this.mainGuidesLabel.Name = "mainGuidesLabel";
             this.mainGuidesLabel.Size = new System.Drawing.Size(523, 30);
             this.mainGuidesLabel.TabIndex = 23;
@@ -204,7 +205,7 @@
             this.namesLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.namesLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.namesLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.namesLabel.Location = new System.Drawing.Point(3, 19);
+            this.namesLabel.Location = new System.Drawing.Point(3, 6);
             this.namesLabel.Name = "namesLabel";
             this.namesLabel.Size = new System.Drawing.Size(296, 30);
             this.namesLabel.TabIndex = 1;
@@ -216,7 +217,7 @@
             this.saveAllLootCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.saveAllLootCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveAllLootCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.saveAllLootCheckbox.Location = new System.Drawing.Point(3, 300);
+            this.saveAllLootCheckbox.Location = new System.Drawing.Point(3, 287);
             this.saveAllLootCheckbox.Name = "saveAllLootCheckbox";
             this.saveAllLootCheckbox.Padding = new System.Windows.Forms.Padding(10);
             this.saveAllLootCheckbox.Size = new System.Drawing.Size(296, 40);
@@ -232,7 +233,7 @@
             this.ignoreLowExperienceBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.ignoreLowExperienceBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ignoreLowExperienceBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
-            this.ignoreLowExperienceBox.Location = new System.Drawing.Point(101, 277);
+            this.ignoreLowExperienceBox.Location = new System.Drawing.Point(101, 264);
             this.ignoreLowExperienceBox.Name = "ignoreLowExperienceBox";
             this.ignoreLowExperienceBox.Size = new System.Drawing.Size(198, 23);
             this.ignoreLowExperienceBox.TabIndex = 43;
@@ -245,7 +246,7 @@
             this.ignoreLowExperienceButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.ignoreLowExperienceButton.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ignoreLowExperienceButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.ignoreLowExperienceButton.Location = new System.Drawing.Point(3, 237);
+            this.ignoreLowExperienceButton.Location = new System.Drawing.Point(3, 224);
             this.ignoreLowExperienceButton.Name = "ignoreLowExperienceButton";
             this.ignoreLowExperienceButton.Padding = new System.Windows.Forms.Padding(10);
             this.ignoreLowExperienceButton.Size = new System.Drawing.Size(296, 40);
@@ -261,7 +262,7 @@
             this.stackAllItemsCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.stackAllItemsCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.stackAllItemsCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.stackAllItemsCheckbox.Location = new System.Drawing.Point(3, 197);
+            this.stackAllItemsCheckbox.Location = new System.Drawing.Point(3, 184);
             this.stackAllItemsCheckbox.Name = "stackAllItemsCheckbox";
             this.stackAllItemsCheckbox.Padding = new System.Windows.Forms.Padding(10);
             this.stackAllItemsCheckbox.Size = new System.Drawing.Size(296, 40);
@@ -285,7 +286,7 @@
             "Mytherin",
             "Robin Razend",
             "Scheirke"});
-            this.nameListBox.Location = new System.Drawing.Point(3, 49);
+            this.nameListBox.Location = new System.Drawing.Point(3, 36);
             this.nameListBox.Name = "nameListBox";
             this.nameListBox.Size = new System.Drawing.Size(296, 115);
             this.nameListBox.TabIndex = 0;
@@ -295,7 +296,7 @@
             this.commandTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.commandTextBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.commandTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
-            this.commandTextBox.Location = new System.Drawing.Point(9, 453);
+            this.commandTextBox.Location = new System.Drawing.Point(9, 468);
             this.commandTextBox.Name = "commandTextBox";
             this.commandTextBox.Size = new System.Drawing.Size(372, 23);
             this.commandTextBox.TabIndex = 9;
@@ -308,7 +309,7 @@
             this.saveSummaryImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.saveSummaryImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveSummaryImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.saveSummaryImageButton.Location = new System.Drawing.Point(305, 233);
+            this.saveSummaryImageButton.Location = new System.Drawing.Point(305, 220);
             this.saveSummaryImageButton.Name = "saveSummaryImageButton";
             this.saveSummaryImageButton.Padding = new System.Windows.Forms.Padding(10);
             this.saveSummaryImageButton.Size = new System.Drawing.Size(226, 38);
@@ -324,7 +325,7 @@
             this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
             this.label1.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label1.Location = new System.Drawing.Point(305, 277);
+            this.label1.Location = new System.Drawing.Point(305, 264);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(226, 30);
             this.label1.TabIndex = 48;
@@ -355,7 +356,7 @@
             "13",
             "14",
             "15"});
-            this.maxDamagePlayersBox.Location = new System.Drawing.Point(305, 308);
+            this.maxDamagePlayersBox.Location = new System.Drawing.Point(305, 295);
             this.maxDamagePlayersBox.Name = "maxDamagePlayersBox";
             this.maxDamagePlayersBox.Size = new System.Drawing.Size(226, 24);
             this.maxDamagePlayersBox.TabIndex = 49;
@@ -368,7 +369,7 @@
             this.downloadAddressButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.downloadAddressButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.downloadAddressButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.downloadAddressButton.Location = new System.Drawing.Point(9, 374);
+            this.downloadAddressButton.Location = new System.Drawing.Point(9, 359);
             this.downloadAddressButton.Name = "downloadAddressButton";
             this.downloadAddressButton.Padding = new System.Windows.Forms.Padding(10);
             this.downloadAddressButton.Size = new System.Drawing.Size(226, 38);
@@ -384,7 +385,7 @@
             this.generateAddressButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.generateAddressButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.generateAddressButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.generateAddressButton.Location = new System.Drawing.Point(305, 374);
+            this.generateAddressButton.Location = new System.Drawing.Point(9, 397);
             this.generateAddressButton.Name = "generateAddressButton";
             this.generateAddressButton.Padding = new System.Windows.Forms.Padding(10);
             this.generateAddressButton.Size = new System.Drawing.Size(226, 38);
@@ -395,12 +396,29 @@
             this.generateAddressButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
             this.generateAddressButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             // 
+            // updateDatabaseButton
+            // 
+            this.updateDatabaseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.updateDatabaseButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.updateDatabaseButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.updateDatabaseButton.Location = new System.Drawing.Point(306, 359);
+            this.updateDatabaseButton.Name = "updateDatabaseButton";
+            this.updateDatabaseButton.Padding = new System.Windows.Forms.Padding(10);
+            this.updateDatabaseButton.Size = new System.Drawing.Size(226, 38);
+            this.updateDatabaseButton.TabIndex = 52;
+            this.updateDatabaseButton.Text = "Update Database";
+            this.updateDatabaseButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.updateDatabaseButton.Click += new System.EventHandler(this.updateDatabaseLabel_Click);
+            this.updateDatabaseButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
+            this.updateDatabaseButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            // 
             // MainTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(538, 514);
+            this.Controls.Add(this.updateDatabaseButton);
             this.Controls.Add(this.generateAddressButton);
             this.Controls.Add(this.downloadAddressButton);
             this.Controls.Add(this.maxDamagePlayersBox);
@@ -457,5 +475,6 @@
         private PrettyDropDownList maxDamagePlayersBox;
         private System.Windows.Forms.Label downloadAddressButton;
         private System.Windows.Forms.Label generateAddressButton;
+        private System.Windows.Forms.Label updateDatabaseButton;
     }
 }
