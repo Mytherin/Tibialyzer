@@ -434,7 +434,7 @@ namespace Tibialyzer {
                                 continue;
                             }
                             string player;
-                            if (logMessage.Substring(logMessage.Length - 12) == "your attack.") {
+                            if ((logMessage.Substring(logMessage.Length - 12) == "your attack.") || (logMessage.Substring(logMessage.Length - 21) == "your critical attack.")) {
                                 // X lost Y hitpoints because of your attack.
                                 // attacker is the player himself
                                 player = "You";
