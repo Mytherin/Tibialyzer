@@ -249,6 +249,7 @@ namespace Tibialyzer {
         }
 
         public static IEnumerable<string> UpdateCommands(Dictionary<string, List<Tuple<string, string>>> newCommands) {
+            string extraPlayer = SettingsManager.getSettingBool("AutomaticallyDetectCharacter") ? MemoryReader.PlayerName : null;
             lock (totalCommands) {
                 foreach (KeyValuePair<string, List<Tuple<string, string>>> kvp in newCommands) {
                     string t = kvp.Key;
@@ -262,7 +263,7 @@ namespace Tibialyzer {
                                 unseenCommands.Add(command);
                                 string player = command.Item1;
                                 string cmd = command.Item2;
-                                if (SettingsManager.getSetting("Names").Contains(player)) {
+                                if (SettingsManager.getSetting("Names").Contains(player) || (extraPlayer != null && player.Equals(extraPlayer, StringComparison.InvariantCultureIgnoreCase))) {
                                     yield return cmd;
                                 }
                             } else {

@@ -281,6 +281,7 @@ namespace Tibialyzer {
 
         public static string PlayerName {
             get {
+                MemoryReader.UpdateBattleList();
                 return GetPlayerName(PlayerId);
             }
         }
@@ -419,7 +420,7 @@ namespace Tibialyzer {
 
         public static string GetPlayerName(int id, int battlelistentry = -1) {
             lock (battleList) {
-                if (battleList[battlelistentry].id == id) {
+                if (battlelistentry > 0 && battleList[battlelistentry].id == id) {
                     return battleList[battlelistentry].name;
                 }
                 for (int i = 0; i < battleList.Length; i++) {
