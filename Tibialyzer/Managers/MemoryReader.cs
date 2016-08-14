@@ -119,6 +119,7 @@ namespace Tibialyzer {
         }
 
         private static Dictionary<string, UInt32> ParseAddresses() {
+            MemorySettings.Clear();
             Dictionary<string, UInt32> addresses = new Dictionary<string, UInt32>();
             using (StreamReader reader = new StreamReader(Constants.MemoryAddresses)) {
                 string line;
@@ -131,7 +132,9 @@ namespace Tibialyzer {
                         if (UInt32.TryParse(split[1].Replace("0x", ""), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out value)) {
                             addresses.Add(key, value);
                         } else {
-                            MemorySettings.Add(key, split[1]);
+                            if (!MemorySettings.ContainsKey(key)) {
+                                MemorySettings.Add(key, split[1]);
+                            }
                         }
                     }
                 }

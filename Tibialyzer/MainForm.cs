@@ -62,8 +62,6 @@ namespace Tibialyzer {
 
             SettingsManager.LoadSettings(Constants.SettingsFile);
 
-            ChangeLanguage(SettingsManager.getSettingString("TibialyzerLanguage"));
-
             LootDatabaseManager.LootChanged += NotificationManager.UpdateLootDisplay;
             LootDatabaseManager.LootChanged += UpdateLogDisplay;
             GlobalDataManager.ExperienceChanged += NotificationManager.UpdateExperienceDisplay;
@@ -99,6 +97,8 @@ namespace Tibialyzer {
             }
             prevent_settings_update = false;
 
+            ChangeLanguage(SettingsManager.getSettingString("TibialyzerLanguage"));
+
             this.InitializeTabs();
             switchTab(0);
             makeDraggable(this.Controls);
@@ -113,6 +113,10 @@ namespace Tibialyzer {
             MemoryReader.Initialize();
             HUDManager.Initialize();
             GlobalDataManager.Initialize();
+
+            if (SettingsManager.getSettingBool("AutomaticallyDownloadAddresses")) {
+                MainTab.DownloadNewAddresses();
+            }
 
             this.Load += MainForm_Load;
 

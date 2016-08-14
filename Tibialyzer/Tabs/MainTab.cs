@@ -108,7 +108,7 @@ namespace Tibialyzer {
             CommandManager.ExecuteCommand(commandTextBox.Text);
         }
         
-        private void SaveMemoryAddresses(string str) {
+        private static void SaveMemoryAddresses(string str) {
             try {
                 using (StreamWriter writer = new StreamWriter(Constants.MemoryAddresses, false)) {
                     writer.Write(str);
@@ -119,11 +119,19 @@ namespace Tibialyzer {
             }
         }
 
-        private void downloadAddressButton_Click(object sender, EventArgs e) {
-            using (WebClient client = new WebClient()) {
-                string html = client.DownloadString("https://raw.githubusercontent.com/Mytherin/Tibialyzer/master/Tibialyzer/Database/MemoryAddresses.txt");
-                SaveMemoryAddresses(html);
+        public static void DownloadNewAddresses() {
+            try {
+                using (WebClient client = new WebClient()) {
+                    string html = client.DownloadString("https://raw.githubusercontent.com/Mytherin/Tibialyzer/master/Tibialyzer/Database/MemoryAddresses.txt");
+                    SaveMemoryAddresses(html);
+                }
+            } catch (Exception ex) {
+                MainForm.mainForm.DisplayWarning(ex.Message);
             }
+        }
+
+        private void downloadAddressButton_Click(object sender, EventArgs e) {
+            DownloadNewAddresses();
         }
 
         private void generateAddressButton_Click(object sender, EventArgs e) {
