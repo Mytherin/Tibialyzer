@@ -186,6 +186,10 @@ namespace Tibialyzer {
                     MainForm.mainForm.Invoke((MethodInvoker)delegate {
                         PopupManager.ShowSimpleNotification(new SimpleLootNotification(parseResult.Item1, parseResult.Item2, message));
                     });
+                } else {
+                    MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                        PopupManager.ShowSimpleNotification(new SimpleTextNotification(null, "Conditions Not Matched", "This loot message did not generate a popup."));
+                    });
                 }
             } else {
                 MainForm.mainForm.DisplayWarning(String.Format("Could not parse loot message: {0}", popupTestLootBox.Text));
