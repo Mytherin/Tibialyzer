@@ -296,7 +296,7 @@ namespace Tibialyzer {
 
             int stamp = TimestampManager.getDayStamp();
             Dictionary<string, List<string>> itemDrops = addEverything ? new Dictionary<string, List<string>>() : globalMessages;
-            bool skipDuplicateLoot = (ProcessManager.IsFlashClient() || !SettingsManager.getSettingBool("ScanInternalTabStructure")) && SettingsManager.getSettingBool("SkipDuplicateLoot");
+            bool skipDuplicateLoot = (ReadMemoryManager.FlashClient || !SettingsManager.getSettingBool("ScanInternalTabStructure")) && SettingsManager.getSettingBool("SkipDuplicateLoot");
             // now the big one: parse the log messages and check the dropped items
             foreach (KeyValuePair<string, List<string>> kvp in newDrops) {
                 string t = kvp.Key;

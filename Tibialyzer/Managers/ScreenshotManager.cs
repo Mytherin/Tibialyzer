@@ -26,7 +26,7 @@ namespace Tibialyzer {
         public static Bitmap takeScreenshot() {
             try {
                 RECT Rect = new RECT();
-                if (ProcessManager.IsFlashClient()) {
+                if (ReadMemoryManager.FlashClient) {
                     Screen screen = Screen.FromControl(MainForm.mainForm);
 
                     Rect.left = screen.Bounds.Left;

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace Tibialyzer {
     class ProcessManager {
         public static string TibiaClientName = "Tibia";
-        public static int TibiaProcessId = -1;
+        public static string TibiaClientType = "Classic";
         private static SafeTimer detectTibiaActive = new SafeTimer(100, DetectIfTibiaActive);
         public static EventHandler<bool> TibiaVisibilityChanged;
         public static IntPtr TibialyzerProcessHandle;
@@ -26,20 +26,36 @@ namespace Tibialyzer {
         }
 
         public static Process[] GetTibiaProcesses() {
-            if (TibiaProcessId >= 0) {
-                Process[] ids = Process.GetProcesses();
-                for (int i = 0; i < ids.Length; ++i) {
-                    if (ids[i].Id == TibiaProcessId) {
-                        MemoryReader.SetProcess(ids[i]);
-                        return new Process[1] { ids[i] };
+            if (TibiaClientName == null) {
+                Dictionary<int, string> candidateProcess = new Dictionary<int, string>();
+                foreach (Process proc in Process.GetProcesses()) {
+                    string name = proc.ProcessName.ToLower();
+                    if (TibiaClientType == "Flash-Firefox") {
+                        if (proc.ProcessName.Contains("flashplayerplugin", StringComparison.InvariantCultureIgnoreCase)) {
+                            if (!candidateProcess.ContainsKey(3))
+                                candidateProcess.Add(3, proc.ProcessName);
+                        } else if (proc.ProcessName.Contains("flashplayer", StringComparison.InvariantCultureIgnoreCase)) {
+                            if (!candidateProcess.ContainsKey(2))
+                                candidateProcess.Add(2, proc.ProcessName);
+                        } else if (proc.ProcessName.Contains("flash", StringComparison.InvariantCultureIgnoreCase)) {
+                            if (!candidateProcess.ContainsKey(1))
+                                candidateProcess.Add(1, proc.ProcessName);
+                        }
+                    } else if (TibiaClientType == "Flash-Chrome") {
+                        if (proc.ProcessName.Contains("chrome", StringComparison.InvariantCultureIgnoreCase)) {
+                            if (!candidateProcess.ContainsKey(3))
+                                candidateProcess.Add(3, proc.ProcessName);
+                        }
                     }
                 }
-
-                TibiaProcessId = -1;
+                if (candidateProcess.Count == 0) {
+                    return null;
+                }
+                TibiaClientName = candidateProcess[candidateProcess.Keys.Max()];
             }
             Process[] p = Process.GetProcessesByName(TibiaClientName);
             if (p.Length > 0) {
-                if (IsFlashClient(TibiaClientName)) {
+                if (ReadMemoryManager.FlashClient) {
                     return p;
                 }
                 if (TibiaClientName.Contains("tibia", StringComparison.OrdinalIgnoreCase)) {
@@ -67,7 +83,7 @@ namespace Tibialyzer {
 
         private static bool isTibiaActive = false;
         public static bool IsTibiaActive() {
-            return isTibiaActive;   
+            return isTibiaActive;
         }
 
         private static void DetectIfTibiaActive() {
@@ -78,8 +94,7 @@ namespace Tibialyzer {
             Process p = Process.GetProcessById((int)pid);
             if (p.ProcessName.Contains("Tibialyzer", StringComparison.CurrentCultureIgnoreCase)) {
                 isTibiaActive = true;
-            }
-            else {
+            } else {
                 Process tibiaProcess = GetTibiaProcess();
                 isTibiaActive = (tibiaProcess != null && tibiaProcess.Id == p.Id);
             }
@@ -89,28 +104,9 @@ namespace Tibialyzer {
             }
         }
 
-        public static void DetectFlashClient() {
-            foreach (Process p in Process.GetProcesses()) {
-                if (IsFlashClient(p.ProcessName)) {
-                    TibiaClientName = p.ProcessName;
-                    TibiaProcessId = -1;
-                    break;
-                }
-            }
-        }
-
         public static void SelectProcess(Process process) {
             TibiaClientName = process.ProcessName;
-            TibiaProcessId = process.Id;
             SettingsManager.setSetting("TibiaClientName", TibiaClientName);
-        }
-
-        public static bool IsFlashClient(string name) {
-            return name.Contains("flash", StringComparison.OrdinalIgnoreCase) || name.Contains("chrome", StringComparison.OrdinalIgnoreCase);
-        }
-
-        public static bool IsFlashClient() {
-            return IsFlashClient(TibiaClientName);
         }
     }
 }

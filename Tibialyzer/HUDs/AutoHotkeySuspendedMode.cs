@@ -41,7 +41,7 @@ namespace Tibialyzer {
 
         private void ShowTimer() {
             if (alwaysShow) return;
-            if (ProcessManager.IsFlashClient()) {
+            if (ReadMemoryManager.FlashClient) {
                 return;
             }
             try {

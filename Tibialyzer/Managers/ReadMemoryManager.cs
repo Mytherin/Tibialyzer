@@ -105,7 +105,7 @@ namespace Tibialyzer {
     }
 
     public static class ReadMemoryManager {
-        private static bool flashClient = true;
+        public static bool FlashClient = true;
         public static int ignoreStamp = 0;
         public static byte[] missingChunksBuffer;
         public static byte[] memoryBuffer;
@@ -173,7 +173,6 @@ namespace Tibialyzer {
             if (processes == null || processes.Length == 0) {
                 return;
             }
-            flashClient = ProcessManager.IsFlashClient();
             var newWhitelistedAddresses = whiteListedAddresses.ToDictionary(x => x.Key, x => new HashSet<long>(x.Value));
 
             foreach (Process process in processes) {
@@ -208,7 +207,7 @@ namespace Tibialyzer {
                                 ReadProcessMemory((int)processHandle, mem_basic_info.BaseAddress, missingChunksBuffer, mem_basic_info.RegionSize, ref bytesRead);
                                 // scan the memory for strings that start with timestamps and end with the null terminator ('\0')
                                 IEnumerable<string> timestampLines;
-                                if (!flashClient) {
+                                if (!FlashClient) {
                                     timestampLines = Parser.FindTimestamps(missingChunksBuffer, bytesRead);
                                     // if there are any timestamps found, add the address to the list of whitelisted addresses
                                     if (timestampLines.Any(x => stamps.Contains(TimestampManager.getStamp(int.Parse(x.Substring(0, 2)), int.Parse(x.Substring(3, 2)))))) {
@@ -347,17 +346,16 @@ namespace Tibialyzer {
             }
 
             results = new ReadMemoryResults();
-            flashClient = ProcessManager.IsFlashClient();
-            skipDuplicateCommands = (flashClient || !SettingsManager.getSettingBool("ScanInternalTabStructure")) && SettingsManager.getSettingBool("SkipDuplicateCommands");
+            skipDuplicateCommands = (FlashClient || !SettingsManager.getSettingBool("ScanInternalTabStructure")) && SettingsManager.getSettingBool("SkipDuplicateCommands");
             Dictionary<int, HashSet<long>> newWhitelistedAddresses = null;
             Interlocked.Exchange(ref newWhitelistedAddresses, whiteListedAddresses);
 
             foreach (Process process in processes) {
-                if (!flashClient && SettingsManager.getSettingBool("ScanInternalTabStructure")) {
+                if (!FlashClient && SettingsManager.getSettingBool("ScanInternalTabStructure")) {
                     ReadMemoryInternal(process, results);
                     UseInternalScan = true;
                 } else {
-                    ReadMemoryWhiteList(process, newWhitelistedAddresses, flashClient, results);
+                    ReadMemoryWhiteList(process, newWhitelistedAddresses, FlashClient, results);
                     UseInternalScan = false;
                 }
                 process.Dispose();
@@ -388,7 +386,7 @@ namespace Tibialyzer {
                 int minute = int.Parse(logMessage.Substring(3, 2));
                 if (!stamps.Contains(TimestampManager.getStamp(hour, minute))) continue; // the log message is not recent, so we skip parsing it
 
-                if (flashClient) {
+                if (FlashClient) {
                     // there is some inconsistency with log messages, certain log messages use "12:00: Message.", others use "12:00 Message"
                     // if there is a : after the timestamp we remove it
                     if (logMessage[5] == ':') {

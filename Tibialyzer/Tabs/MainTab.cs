@@ -60,7 +60,6 @@ namespace Tibialyzer {
             automaticallyDetectCharacterCheckbox.Text = Tibialyzer.Translation.MainTab.automaticallyDetectCharacterCheckbox;
             executeCommandButton.Text = Tibialyzer.Translation.MainTab.executeCommandButton;
             tibiaClientSelectionHeader.Text = Tibialyzer.Translation.MainTab.tibiaClientSelectionHeader;
-            otherFlashClientButton.Text = Tibialyzer.Translation.MainTab.otherFlashClientButton;
             commonIssuesButton.Text = Tibialyzer.Translation.MainTab.commonIssuesButton;
             tibia11ClientButton.Text = Tibialyzer.Translation.MainTab.tibia11ClientButton;
             gettingStartedVideoButton.Text = Tibialyzer.Translation.MainTab.gettingStartedVideoButton;
@@ -212,18 +211,22 @@ namespace Tibialyzer {
             tibia11ClientButton.Enabled = true;
             firefoxFlashClientButton.Enabled = true;
             chromeFlashClientButton.Enabled = true;
-            otherFlashClientButton.Enabled = true;
 
+            ProcessManager.TibiaClientType = clientType;
+            ProcessManager.TibiaClientName = null;
+            ReadMemoryManager.FlashClient = false;
             if (clientType == "Classic") {
                 classicClientButton.Enabled = false;
+                ProcessManager.TibiaClientName = MemoryReader.MemorySettings.ContainsKey("classicclientname") ? MemoryReader.MemorySettings["classicclientname"] : "Tibia";
             } else if (clientType == "Tibia11") {
+                ProcessManager.TibiaClientName = MemoryReader.MemorySettings.ContainsKey("tibia11name") ? MemoryReader.MemorySettings["tibia11name"] : "client";
                 tibia11ClientButton.Enabled = false;
             } else if (clientType == "Flash-Firefox") {
+                ReadMemoryManager.FlashClient = true;
                 firefoxFlashClientButton.Enabled = false;
             } else if (clientType == "Flash-Chrome") {
+                ReadMemoryManager.FlashClient = true;
                 chromeFlashClientButton.Enabled = false;
-            } else if (clientType == "Flash-Other") {
-                otherFlashClientButton.Enabled = false;
             }
             if (writeSetting) {
                 SettingsManager.setSetting("TibiaClient", clientType);
@@ -245,11 +248,7 @@ namespace Tibialyzer {
         private void chromeFlashClientButton_Click(object sender, EventArgs e) {
             SwitchClients("Flash-Chrome");
         }
-
-        private void otherFlashClientButton_Click(object sender, EventArgs e) {
-            SwitchClients("Flash-Other");
-        }
-
+        
         private void automaticallyDetectCharacterCheckbox_CheckedChanged(object sender, EventArgs e) {
             if (MainForm.prevent_settings_update) return;
 

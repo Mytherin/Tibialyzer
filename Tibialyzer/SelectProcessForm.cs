@@ -130,12 +130,7 @@ namespace Tibialyzer {
                 removedControls.Add(box);
 
                 Button label = new Button();
-                if (p.Id == ProcessManager.TibiaProcessId) {
-                    label.Text = p.ProcessName + " (Current)";
-                    label.Enabled = false;
-                } else {
-                    label.Text = p.ProcessName;
-                }
+                label.Text = p.ProcessName;
                 label.Location = new Point(x + 32, y);
                 label.Size = new Size(200, 32);
                 label.TextAlign = ContentAlignment.MiddleCenter;

@@ -36,7 +36,7 @@ namespace Tibialyzer {
             using (StreamWriter writer = new StreamWriter(Constants.AutohotkeyFile)) {
                 writer.WriteLine("#SingleInstance force");
                 writer.WriteLine("SetTitleMatchMode 3");
-                if (ProcessManager.IsFlashClient()) {
+                if (ReadMemoryManager.FlashClient) {
                     Process p = ProcessManager.GetTibiaProcess();
                     writer.WriteLine(String.Format("#IfWinActive Tibia Flash Client", p == null ? 0 : p.Id));
                 } else {

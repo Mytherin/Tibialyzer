@@ -77,6 +77,8 @@ namespace Tibialyzer {
         private static SafeTimer manaTimer;
         private static SafeTimer expTimer;
 
+        public static Dictionary<string, string> MemorySettings = new Dictionary<string, string>();
+
         public static void InitializeMemoryAddresses() {
             Dictionary<string, UInt32> memoryAddresses = ParseAddresses();
             memoryAddresses.TryGetValue("xoraddress", out XORAddress);
@@ -128,6 +130,8 @@ namespace Tibialyzer {
                         UInt32 value = 0;
                         if (UInt32.TryParse(split[1].Replace("0x", ""), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out value)) {
                             addresses.Add(key, value);
+                        } else {
+                            MemorySettings.Add(key, split[1]);
                         }
                     }
                 }

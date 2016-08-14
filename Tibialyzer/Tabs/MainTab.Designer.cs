@@ -35,7 +35,6 @@
             this.tibia11ClientButton = new Tibialyzer.PrettyButton();
             this.firefoxFlashClientButton = new Tibialyzer.PrettyButton();
             this.chromeFlashClientButton = new Tibialyzer.PrettyButton();
-            this.otherFlashClientButton = new Tibialyzer.PrettyButton();
             this.resourcesHeader = new Tibialyzer.PrettyHeader();
             this.languageSelectionHeader = new Tibialyzer.PrettyHeader();
             this.languageImageBox = new System.Windows.Forms.PictureBox();
@@ -165,7 +164,7 @@
             this.classicClientButton.Location = new System.Drawing.Point(9, 39);
             this.classicClientButton.Name = "classicClientButton";
             this.classicClientButton.Padding = new System.Windows.Forms.Padding(10);
-            this.classicClientButton.Size = new System.Drawing.Size(124, 40);
+            this.classicClientButton.Size = new System.Drawing.Size(155, 40);
             this.classicClientButton.TabIndex = 54;
             this.classicClientButton.Text = "Classic";
             this.classicClientButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -179,10 +178,10 @@
             this.tibia11ClientButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
             this.tibia11ClientButton.Image = global::Tibialyzer.Properties.Resources.icon_tibia11;
             this.tibia11ClientButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.tibia11ClientButton.Location = new System.Drawing.Point(132, 39);
+            this.tibia11ClientButton.Location = new System.Drawing.Point(163, 39);
             this.tibia11ClientButton.Name = "tibia11ClientButton";
             this.tibia11ClientButton.Padding = new System.Windows.Forms.Padding(10);
-            this.tibia11ClientButton.Size = new System.Drawing.Size(124, 40);
+            this.tibia11ClientButton.Size = new System.Drawing.Size(155, 40);
             this.tibia11ClientButton.TabIndex = 55;
             this.tibia11ClientButton.Text = "Tibia 11";
             this.tibia11ClientButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -196,10 +195,10 @@
             this.firefoxFlashClientButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
             this.firefoxFlashClientButton.Image = global::Tibialyzer.Properties.Resources.icon_firefox;
             this.firefoxFlashClientButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.firefoxFlashClientButton.Location = new System.Drawing.Point(255, 39);
+            this.firefoxFlashClientButton.Location = new System.Drawing.Point(317, 39);
             this.firefoxFlashClientButton.Name = "firefoxFlashClientButton";
             this.firefoxFlashClientButton.Padding = new System.Windows.Forms.Padding(10);
-            this.firefoxFlashClientButton.Size = new System.Drawing.Size(124, 40);
+            this.firefoxFlashClientButton.Size = new System.Drawing.Size(155, 40);
             this.firefoxFlashClientButton.TabIndex = 56;
             this.firefoxFlashClientButton.Text = "Firefox";
             this.firefoxFlashClientButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -213,31 +212,14 @@
             this.chromeFlashClientButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
             this.chromeFlashClientButton.Image = global::Tibialyzer.Properties.Resources.icon_chrome;
             this.chromeFlashClientButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.chromeFlashClientButton.Location = new System.Drawing.Point(378, 39);
+            this.chromeFlashClientButton.Location = new System.Drawing.Point(471, 39);
             this.chromeFlashClientButton.Name = "chromeFlashClientButton";
             this.chromeFlashClientButton.Padding = new System.Windows.Forms.Padding(10);
-            this.chromeFlashClientButton.Size = new System.Drawing.Size(124, 40);
+            this.chromeFlashClientButton.Size = new System.Drawing.Size(155, 40);
             this.chromeFlashClientButton.TabIndex = 57;
             this.chromeFlashClientButton.Text = "Chrome";
             this.chromeFlashClientButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.chromeFlashClientButton.Click += new System.EventHandler(this.chromeFlashClientButton_Click);
-            // 
-            // otherFlashClientButton
-            // 
-            this.otherFlashClientButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.otherFlashClientButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.otherFlashClientButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.otherFlashClientButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.otherFlashClientButton.Image = global::Tibialyzer.Properties.Resources.icon_flash;
-            this.otherFlashClientButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.otherFlashClientButton.Location = new System.Drawing.Point(501, 39);
-            this.otherFlashClientButton.Name = "otherFlashClientButton";
-            this.otherFlashClientButton.Padding = new System.Windows.Forms.Padding(10);
-            this.otherFlashClientButton.Size = new System.Drawing.Size(125, 40);
-            this.otherFlashClientButton.TabIndex = 58;
-            this.otherFlashClientButton.Text = "Other";
-            this.otherFlashClientButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.otherFlashClientButton.Click += new System.EventHandler(this.otherFlashClientButton_Click);
             // 
             // resourcesHeader
             // 
@@ -414,7 +396,6 @@
             this.Controls.Add(this.languageSelectionHeader);
             this.Controls.Add(this.resourcesHeader);
             this.Controls.Add(this.automaticallyDetectCharacterCheckbox);
-            this.Controls.Add(this.otherFlashClientButton);
             this.Controls.Add(this.chromeFlashClientButton);
             this.Controls.Add(this.firefoxFlashClientButton);
             this.Controls.Add(this.tibia11ClientButton);
@@ -450,7 +431,6 @@
         private PrettyButton gettingStartedGuideButton;
         private PrettyHeader languageSelectionHeader;
         private PrettyHeader resourcesHeader;
-        private PrettyButton otherFlashClientButton;
         private PrettyButton chromeFlashClientButton;
         private PrettyButton firefoxFlashClientButton;
         private PrettyButton tibia11ClientButton;
