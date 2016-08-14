@@ -247,6 +247,7 @@
             this.itemSelectionBox.Name = "itemSelectionBox";
             this.itemSelectionBox.Size = new System.Drawing.Size(146, 23);
             this.itemSelectionBox.TabIndex = 129;
+            this.itemSelectionBox.TextChanged += new System.EventHandler(this.itemSelectionBox_TextChanged);
             // 
             // itemPropertiesHeader
             // 
@@ -283,6 +284,7 @@
             this.applyValueConvertButton.TabIndex = 120;
             this.applyValueConvertButton.Text = "Apply";
             this.applyValueConvertButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.applyValueConvertButton.Click += new System.EventHandler(this.applyValueConvertButton_Click);
             // 
             // customValueConvertBox
             // 
@@ -317,6 +319,7 @@
             this.applyValueDiscardButton.TabIndex = 117;
             this.applyValueDiscardButton.Text = "Apply";
             this.applyValueDiscardButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.applyValueDiscardButton.Click += new System.EventHandler(this.applyValueDiscardButton_Click);
             // 
             // customValueDiscardBox
             // 
@@ -351,6 +354,7 @@
             this.applyConvertRatioButton.TabIndex = 114;
             this.applyConvertRatioButton.Text = "Apply";
             this.applyConvertRatioButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.applyConvertRatioButton.Click += new System.EventHandler(this.applyConvertRatioButton_Click);
             // 
             // customDiscardRatioHeader
             // 
@@ -375,6 +379,7 @@
             this.applyDiscardRatioButton.TabIndex = 111;
             this.applyDiscardRatioButton.Text = "Apply";
             this.applyDiscardRatioButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.applyDiscardRatioButton.Click += new System.EventHandler(this.applyDiscardRatioButton_Click);
             // 
             // customConvertRatioBox
             // 

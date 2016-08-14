@@ -103,7 +103,7 @@ namespace Tibialyzer {
 
         public static string AutoHotkeyURL = "http://ahkscript.org/download/ahk-install.exe";
 
-        public static List<string> DisplayItemList = new List<string> { "Mace", "Plate Armor", "Halberd", "Steel Helmet", "Gold Coin", "Platinum Coin", "Dragon Hammer", "Knight Armor", "Spider Silk", "Giant Sword", "Crown Armor", "Golden Armor" };
+        public static List<string> DisplayItemList = new List<string> { "Ghoul Snack", "Plate Armor", "Halberd", "Steel Helmet", "Gold Coin", "Platinum Coin", "Dragon Hammer", "Knight Armor", "Spider Silk", "Giant Sword", "Crown Armor", "Golden Armor" };
         public static List<string> ConvertUnstackableItemList = new List<string> { "Mace", "Plate Armor", "Halberd", "Steel Helmet", "War Hammer", "Dragon Hammer", "Knight Armor", "Giant Sword", "Crown Armor", "Golden Armor" };
         public static List<string> ConvertStackableItemList = new List<string> { "Spear", "Burst Arrow", "Mana Potion", "Strong Mana Potion", "Great Mana Potion", "Great Fireball Rune", "Black Hood", "Strand of Medusa Hair", "Small Ruby", "Spider Silk" };
 

@@ -334,6 +334,16 @@ namespace Tibialyzer {
             return null;
         }
 
+        public static void ExecuteCommand(string query) {
+            SQLiteCommand command = new SQLiteCommand(query, conn);
+            command.ExecuteNonQuery();
+        }
+
+        public static SQLiteDataReader ExecuteCommandReader(string query) {
+            SQLiteCommand command = new SQLiteCommand(query, conn);
+            return command.ExecuteReader();
+        }
+
         private static Item registerItem(Item item) {
             if (item == null) return null;
             lock (ItemLock) {
@@ -1249,6 +1259,18 @@ namespace Tibialyzer {
             }
             foreach (int id in _itemIdMap.Keys.ToList()) {
                 _itemIdMap[id].convert_to_gold = !index.Contains(id);
+            }
+        }
+
+        public static void ReloadItems() {
+            SQLiteCommand command = new SQLiteCommand("SELECT id,convert_to_gold,discard FROM Items;", conn);
+            SQLiteDataReader reader = command.ExecuteReader();
+            while (reader.Read()) {
+                int ind = reader.GetInt32(0);
+                if (_itemIdMap.ContainsKey(ind)) {
+                    _itemIdMap[ind].convert_to_gold = reader.GetBoolean(1);
+                    _itemIdMap[ind].discard = reader.GetBoolean(2);
+                }
             }
         }
 

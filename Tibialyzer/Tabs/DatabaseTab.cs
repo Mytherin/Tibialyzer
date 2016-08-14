@@ -142,27 +142,49 @@ namespace Tibialyzer {
         }
 
         private void defaultSettingsButton_Click(object sender, EventArgs e) {
-
+            StorageManager.ExecuteCommand("UPDATE Items SET convert_to_gold=0, discard=0;");
+            StorageManager.ExecuteCommand("UPDATE Items SET convert_to_gold=1 WHERE stackable = 0 AND actual_value/capacity < 20");
+            StorageManager.ExecuteCommand("UPDATE Items SET discard=1 WHERE actual_value/capacity < 10 OR actual_value<50");
+            StorageManager.ReloadItems();
+            UpdateDisplay();
         }
 
         private void noGoldCoinButton_Click(object sender, EventArgs e) {
-
+            StorageManager.ExecuteCommand("UPDATE Items SET convert_to_gold=0, discard=0;");
+            StorageManager.ExecuteCommand("UPDATE Items SET convert_to_gold=1 WHERE stackable = 0 AND actual_value/capacity < 20");
+            StorageManager.ExecuteCommand("UPDATE Items SET discard=1 WHERE actual_value/capacity < 20 OR actual_value<50");
+            StorageManager.ReloadItems();
+            UpdateDisplay();
         }
         
         private void mageCreatureProductsButton_Click(object sender, EventArgs e) {
-
+            StorageManager.ExecuteCommand("UPDATE Items SET convert_to_gold=0, discard=0;");
+            StorageManager.ExecuteCommand("UPDATE Items SET convert_to_gold=1 WHERE stackable = 0 AND actual_value/capacity < 50");
+            StorageManager.ExecuteCommand("UPDATE Items SET discard=1 WHERE actual_value/capacity < 40 OR actual_value<50");
+            StorageManager.ReloadItems();
+            UpdateDisplay();
         }
 
         private void mageNoCreatureProductsButton_Click(object sender, EventArgs e) {
-
+            StorageManager.ExecuteCommand("UPDATE Items SET convert_to_gold=0, discard=0;");
+            StorageManager.ExecuteCommand("UPDATE Items SET convert_to_gold=1 WHERE stackable = 0 AND actual_value/capacity < 50");
+            StorageManager.ExecuteCommand("UPDATE Items SET discard=1 WHERE actual_value/capacity < 40 OR (category='Creature Products' AND actual_value < 2000) OR actual_value<50");
+            StorageManager.ReloadItems();
+            UpdateDisplay();
         }
 
         private void valuablesOnly1KButton_Click(object sender, EventArgs e) {
-
+            StorageManager.ExecuteCommand("UPDATE Items SET convert_to_gold=0, discard=0;");
+            StorageManager.ExecuteCommand("UPDATE Items SET discard=1 WHERE actual_value < 1000");
+            StorageManager.ReloadItems();
+            UpdateDisplay();
         }
 
         private void valuablesOnly5KButton_Click(object sender, EventArgs e) {
-
+            StorageManager.ExecuteCommand("UPDATE Items SET convert_to_gold=0, discard=0;");
+            StorageManager.ExecuteCommand("UPDATE Items SET discard=1 WHERE actual_value < 5000");
+            StorageManager.ReloadItems();
+            UpdateDisplay();
         }
     }
 }

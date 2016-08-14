@@ -282,7 +282,7 @@ namespace Tibialyzer {
         private void maxDamageDropDownList_SelectedIndexChanged(object sender, EventArgs e) {
             if (MainForm.prevent_settings_update) return;
 
-            SettingsManager.setSetting("MaxDamageChartPlayers", maxDamagePlayersBox.SelectedIndex);
+            SettingsManager.setSetting("MaxDamageChartPlayers", maxDamageDropDownList.SelectedIndex);
         }
     }
 }
