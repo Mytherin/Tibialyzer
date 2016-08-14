@@ -23,274 +23,260 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.popupSetGoldCapRatioButton = new System.Windows.Forms.Label();
+            this.setGoldCapRatioButton = new PrettyButton();
             this.popupGoldCapRatioBox = new Tibialyzer.EnterTextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.popupSetValueButton = new System.Windows.Forms.Label();
+            this.goldCapRatioPopupHeader = new PrettyHeader();
+            this.setItemValuePopupButton = new PrettyButton();
             this.popupValueBox = new Tibialyzer.EnterTextBox();
-            this.itemValueLabel = new System.Windows.Forms.Label();
-            this.popupTestButton = new System.Windows.Forms.Label();
-            this.label99 = new System.Windows.Forms.Label();
-            this.label70 = new System.Windows.Forms.Label();
-            this.label69 = new System.Windows.Forms.Label();
-            this.popupClearDisplayButton = new System.Windows.Forms.Label();
-            this.popupTestNotificationButton = new System.Windows.Forms.Label();
-            this.label66 = new System.Windows.Forms.Label();
+            this.itemValuePopupHeader = new PrettyHeader();
+            this.popupTestButton = new PrettyButton();
+            this.testPopupMessageHeader = new PrettyHeader();
+            this.popupConditionsHeader = new PrettyHeader();
+            this.popupItemsHeader = new PrettyHeader();
+            this.clearDisplayButton = new PrettyButton();
+            this.testDisplayButton = new PrettyButton();
+            this.testingHeader = new PrettyHeader();
             this.label56 = new System.Windows.Forms.Label();
             this.label61 = new System.Windows.Forms.Label();
-            this.label62 = new System.Windows.Forms.Label();
-            this.label63 = new System.Windows.Forms.Label();
+            this.positionOffsetHeader = new PrettyHeader();
+            this.anchorHeader = new PrettyHeader();
             this.popupTestLootBox = new Tibialyzer.EnterTextBox();
             this.popupConditionBox = new Tibialyzer.PrettyListBox();
             this.popupSpecificItemBox = new Tibialyzer.PrettyListBox();
             this.popupYOffsetBox = new Tibialyzer.EnterTextBox();
             this.popupXOffsetBox = new Tibialyzer.EnterTextBox();
-            this.popupAnchorBox = new Tibialyzer.PrettyDropDownList();
-            this.popupDurationHeader = new System.Windows.Forms.Label();
+            this.popupAnchorDropDownList = new Tibialyzer.PrettyDropDownList();
+            this.popupDurationHeader = new PrettyHeader();
             this.popupDurationSlider = new System.Windows.Forms.TrackBar();
-            this.label1 = new System.Windows.Forms.Label();
+            this.sizeWidthHeader = new PrettyHeader();
             this.notificationWidthBox = new Tibialyzer.EnterTextBox();
             this.showCopyButtonCheckbox = new Tibialyzer.PrettyCheckBox();
+            this.popupTypeHeader = new PrettyHeader();
+            this.popupTypeDropDownList = new Tibialyzer.PrettyDropDownList();
             ((System.ComponentModel.ISupportInitialize)(this.popupDurationSlider)).BeginInit();
             this.SuspendLayout();
-            //
-            // popupSetGoldCapRatioButton
-            //
-            this.popupSetGoldCapRatioButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.popupSetGoldCapRatioButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.popupSetGoldCapRatioButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.popupSetGoldCapRatioButton.Location = new System.Drawing.Point(141, 237);
-            this.popupSetGoldCapRatioButton.Name = "popupSetGoldCapRatioButton";
-            this.popupSetGoldCapRatioButton.Size = new System.Drawing.Size(138, 34);
-            this.popupSetGoldCapRatioButton.TabIndex = 66;
-            this.popupSetGoldCapRatioButton.Text = "Set Gold/Cap Ratio Popup";
-            this.popupSetGoldCapRatioButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.popupSetGoldCapRatioButton.Click += new System.EventHandler(this.popupSetGoldCapRatioButton_Click);
-            this.popupSetGoldCapRatioButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.popupSetGoldCapRatioButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            //
+            // 
+            // setGoldCapRatioButton
+            // 
+            this.setGoldCapRatioButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.setGoldCapRatioButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.setGoldCapRatioButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.setGoldCapRatioButton.Location = new System.Drawing.Point(147, 300);
+            this.setGoldCapRatioButton.Name = "setGoldCapRatioButton";
+            this.setGoldCapRatioButton.Size = new System.Drawing.Size(161, 34);
+            this.setGoldCapRatioButton.TabIndex = 66;
+            this.setGoldCapRatioButton.Text = "Set Gold/Cap Ratio Popup";
+            this.setGoldCapRatioButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.setGoldCapRatioButton.Click += new System.EventHandler(this.popupSetGoldCapRatioButton_Click);
+            // 
             // popupGoldCapRatioBox
-            //
+            // 
             this.popupGoldCapRatioBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupGoldCapRatioBox.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupGoldCapRatioBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
-            this.popupGoldCapRatioBox.Location = new System.Drawing.Point(2, 237);
+            this.popupGoldCapRatioBox.Location = new System.Drawing.Point(8, 300);
             this.popupGoldCapRatioBox.Name = "popupGoldCapRatioBox";
             this.popupGoldCapRatioBox.Size = new System.Drawing.Size(139, 33);
             this.popupGoldCapRatioBox.TabIndex = 65;
             this.popupGoldCapRatioBox.Text = "50";
-            this.popupGoldCapRatioBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.popupGoldCapRatioBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            //
-            // label3
-            //
-            this.label3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label3.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label3.Location = new System.Drawing.Point(3, 207);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(277, 30);
-            this.label3.TabIndex = 64;
-            this.label3.Text = "Gold/Cap Ratio Popup";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
-            // popupSetValueButton
-            //
-            this.popupSetValueButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.popupSetValueButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.popupSetValueButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.popupSetValueButton.Location = new System.Drawing.Point(142, 173);
-            this.popupSetValueButton.Name = "popupSetValueButton";
-            this.popupSetValueButton.Size = new System.Drawing.Size(138, 34);
-            this.popupSetValueButton.TabIndex = 63;
-            this.popupSetValueButton.Text = "Set Item Value Popup";
-            this.popupSetValueButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.popupSetValueButton.Click += new System.EventHandler(this.setValuePopupButton_Click);
-            this.popupSetValueButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.popupSetValueButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            //
+            // 
+            // goldCapRatioPopupHeader
+            // 
+            this.goldCapRatioPopupHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.goldCapRatioPopupHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.goldCapRatioPopupHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.goldCapRatioPopupHeader.Location = new System.Drawing.Point(9, 270);
+            this.goldCapRatioPopupHeader.Name = "goldCapRatioPopupHeader";
+            this.goldCapRatioPopupHeader.Size = new System.Drawing.Size(299, 30);
+            this.goldCapRatioPopupHeader.TabIndex = 64;
+            this.goldCapRatioPopupHeader.Text = "Gold/Cap Ratio Popup";
+            this.goldCapRatioPopupHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // setItemValuePopupButton
+            // 
+            this.setItemValuePopupButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.setItemValuePopupButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.setItemValuePopupButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.setItemValuePopupButton.Location = new System.Drawing.Point(148, 236);
+            this.setItemValuePopupButton.Name = "setItemValuePopupButton";
+            this.setItemValuePopupButton.Size = new System.Drawing.Size(160, 34);
+            this.setItemValuePopupButton.TabIndex = 63;
+            this.setItemValuePopupButton.Text = "Set Item Value Popup";
+            this.setItemValuePopupButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.setItemValuePopupButton.Click += new System.EventHandler(this.setValuePopupButton_Click);
+            // 
             // popupValueBox
-            //
+            // 
             this.popupValueBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupValueBox.Font = new System.Drawing.Font("Verdana", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupValueBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
-            this.popupValueBox.Location = new System.Drawing.Point(2, 173);
+            this.popupValueBox.Location = new System.Drawing.Point(8, 236);
             this.popupValueBox.Name = "popupValueBox";
             this.popupValueBox.Size = new System.Drawing.Size(139, 33);
             this.popupValueBox.TabIndex = 62;
             this.popupValueBox.Text = "2000";
-            this.popupValueBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.popupValueBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            //
-            // itemValueLabel
-            //
-            this.itemValueLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.itemValueLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.itemValueLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.itemValueLabel.Location = new System.Drawing.Point(3, 143);
-            this.itemValueLabel.Name = "itemValueLabel";
-            this.itemValueLabel.Size = new System.Drawing.Size(277, 30);
-            this.itemValueLabel.TabIndex = 61;
-            this.itemValueLabel.Text = "Item Value Popup";
-            this.itemValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
+            // 
+            // itemValuePopupHeader
+            // 
+            this.itemValuePopupHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.itemValuePopupHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.itemValuePopupHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.itemValuePopupHeader.Location = new System.Drawing.Point(9, 206);
+            this.itemValuePopupHeader.Name = "itemValuePopupHeader";
+            this.itemValuePopupHeader.Size = new System.Drawing.Size(299, 30);
+            this.itemValuePopupHeader.TabIndex = 61;
+            this.itemValuePopupHeader.Text = "Item Value Popup";
+            this.itemValuePopupHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // popupTestButton
-            //
+            // 
             this.popupTestButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupTestButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupTestButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.popupTestButton.Location = new System.Drawing.Point(434, 472);
+            this.popupTestButton.Location = new System.Drawing.Point(518, 516);
             this.popupTestButton.Name = "popupTestButton";
-            this.popupTestButton.Size = new System.Drawing.Size(102, 20);
+            this.popupTestButton.Size = new System.Drawing.Size(108, 20);
             this.popupTestButton.TabIndex = 60;
             this.popupTestButton.Text = "Popup Test";
             this.popupTestButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.popupTestButton.Click += new System.EventHandler(this.popupTestButton_Click);
-            this.popupTestButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.popupTestButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            //
-            // label99
-            //
-            this.label99.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label99.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label99.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label99.Location = new System.Drawing.Point(3, 441);
-            this.label99.Name = "label99";
-            this.label99.Size = new System.Drawing.Size(533, 30);
-            this.label99.TabIndex = 58;
-            this.label99.Text = "Test Popup Message";
-            this.label99.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
-            // label70
-            //
-            this.label70.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label70.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label70.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label70.Location = new System.Drawing.Point(3, 274);
-            this.label70.Name = "label70";
-            this.label70.Size = new System.Drawing.Size(277, 30);
-            this.label70.TabIndex = 55;
-            this.label70.Text = "Popup Conditions";
-            this.label70.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
-            // label69
-            //
-            this.label69.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label69.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label69.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label69.Location = new System.Drawing.Point(286, 274);
-            this.label69.Name = "label69";
-            this.label69.Size = new System.Drawing.Size(250, 30);
-            this.label69.TabIndex = 54;
-            this.label69.Text = "Popup Items";
-            this.label69.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
-            // popupClearDisplayButton
-            //
-            this.popupClearDisplayButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.popupClearDisplayButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.popupClearDisplayButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.popupClearDisplayButton.Location = new System.Drawing.Point(286, 237);
-            this.popupClearDisplayButton.Name = "popupClearDisplayButton";
-            this.popupClearDisplayButton.Size = new System.Drawing.Size(250, 34);
-            this.popupClearDisplayButton.TabIndex = 47;
-            this.popupClearDisplayButton.Text = "Clear Display";
-            this.popupClearDisplayButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.popupClearDisplayButton.Click += new System.EventHandler(this.clearNotifications_Click);
-            this.popupClearDisplayButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.popupClearDisplayButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            //
-            // popupTestNotificationButton
-            //
-            this.popupTestNotificationButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.popupTestNotificationButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.popupTestNotificationButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.popupTestNotificationButton.Location = new System.Drawing.Point(286, 203);
-            this.popupTestNotificationButton.Name = "popupTestNotificationButton";
-            this.popupTestNotificationButton.Size = new System.Drawing.Size(250, 34);
-            this.popupTestNotificationButton.TabIndex = 46;
-            this.popupTestNotificationButton.Text = "Test Display";
-            this.popupTestNotificationButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.popupTestNotificationButton.Click += new System.EventHandler(this.simpleTestDisplay_Click);
-            this.popupTestNotificationButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.popupTestNotificationButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            //
-            // label66
-            //
-            this.label66.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label66.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label66.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label66.Location = new System.Drawing.Point(286, 173);
-            this.label66.Name = "label66";
-            this.label66.Size = new System.Drawing.Size(250, 30);
-            this.label66.TabIndex = 45;
-            this.label66.Text = "Testing";
-            this.label66.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
+            // 
+            // testPopupMessageHeader
+            // 
+            this.testPopupMessageHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.testPopupMessageHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.testPopupMessageHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.testPopupMessageHeader.Location = new System.Drawing.Point(9, 486);
+            this.testPopupMessageHeader.Name = "testPopupMessageHeader";
+            this.testPopupMessageHeader.Size = new System.Drawing.Size(617, 30);
+            this.testPopupMessageHeader.TabIndex = 58;
+            this.testPopupMessageHeader.Text = "Test Popup Message";
+            this.testPopupMessageHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // popupConditionsHeader
+            // 
+            this.popupConditionsHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.popupConditionsHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.popupConditionsHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.popupConditionsHeader.Location = new System.Drawing.Point(9, 337);
+            this.popupConditionsHeader.Name = "popupConditionsHeader";
+            this.popupConditionsHeader.Size = new System.Drawing.Size(299, 30);
+            this.popupConditionsHeader.TabIndex = 55;
+            this.popupConditionsHeader.Text = "Popup Conditions";
+            this.popupConditionsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // popupItemsHeader
+            // 
+            this.popupItemsHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.popupItemsHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.popupItemsHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.popupItemsHeader.Location = new System.Drawing.Point(327, 281);
+            this.popupItemsHeader.Name = "popupItemsHeader";
+            this.popupItemsHeader.Size = new System.Drawing.Size(299, 30);
+            this.popupItemsHeader.TabIndex = 54;
+            this.popupItemsHeader.Text = "Popup Items";
+            this.popupItemsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // clearDisplayButton
+            // 
+            this.clearDisplayButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.clearDisplayButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.clearDisplayButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.clearDisplayButton.Location = new System.Drawing.Point(327, 244);
+            this.clearDisplayButton.Name = "clearDisplayButton";
+            this.clearDisplayButton.Size = new System.Drawing.Size(299, 34);
+            this.clearDisplayButton.TabIndex = 47;
+            this.clearDisplayButton.Text = "Clear Display";
+            this.clearDisplayButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.clearDisplayButton.Click += new System.EventHandler(this.clearNotifications_Click);
+            // 
+            // testDisplayButton
+            // 
+            this.testDisplayButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.testDisplayButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.testDisplayButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.testDisplayButton.Location = new System.Drawing.Point(327, 210);
+            this.testDisplayButton.Name = "testDisplayButton";
+            this.testDisplayButton.Size = new System.Drawing.Size(299, 34);
+            this.testDisplayButton.TabIndex = 46;
+            this.testDisplayButton.Text = "Test Display";
+            this.testDisplayButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.testDisplayButton.Click += new System.EventHandler(this.simpleTestDisplay_Click);
+            // 
+            // testingHeader
+            // 
+            this.testingHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.testingHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.testingHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.testingHeader.Location = new System.Drawing.Point(327, 180);
+            this.testingHeader.Name = "testingHeader";
+            this.testingHeader.Size = new System.Drawing.Size(299, 30);
+            this.testingHeader.TabIndex = 45;
+            this.testingHeader.Text = "Testing";
+            this.testingHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // label56
-            //
+            // 
             this.label56.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.label56.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label56.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.label56.Location = new System.Drawing.Point(286, 55);
+            this.label56.Location = new System.Drawing.Point(327, 62);
             this.label56.Name = "label56";
             this.label56.Size = new System.Drawing.Size(99, 23);
             this.label56.TabIndex = 44;
             this.label56.Text = "Y Offset";
             this.label56.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
+            // 
             // label61
-            //
+            // 
             this.label61.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.label61.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label61.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.label61.Location = new System.Drawing.Point(286, 32);
+            this.label61.Location = new System.Drawing.Point(327, 39);
             this.label61.Name = "label61";
             this.label61.Size = new System.Drawing.Size(99, 23);
             this.label61.TabIndex = 42;
             this.label61.Text = "X Offset";
             this.label61.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
-            // label62
-            //
-            this.label62.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label62.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label62.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label62.Location = new System.Drawing.Point(286, 2);
-            this.label62.Name = "label62";
-            this.label62.Size = new System.Drawing.Size(250, 30);
-            this.label62.TabIndex = 40;
-            this.label62.Text = "Position (Offset)";
-            this.label62.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
-            // label63
-            //
-            this.label63.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label63.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label63.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label63.Location = new System.Drawing.Point(3, 82);
-            this.label63.Name = "label63";
-            this.label63.Size = new System.Drawing.Size(276, 30);
-            this.label63.TabIndex = 39;
-            this.label63.Text = "Anchor";
-            this.label63.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
+            // 
+            // positionOffsetHeader
+            // 
+            this.positionOffsetHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.positionOffsetHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.positionOffsetHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.positionOffsetHeader.Location = new System.Drawing.Point(327, 9);
+            this.positionOffsetHeader.Name = "positionOffsetHeader";
+            this.positionOffsetHeader.Size = new System.Drawing.Size(299, 30);
+            this.positionOffsetHeader.TabIndex = 40;
+            this.positionOffsetHeader.Text = "Position (Offset)";
+            this.positionOffsetHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // anchorHeader
+            // 
+            this.anchorHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.anchorHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.anchorHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.anchorHeader.Location = new System.Drawing.Point(9, 145);
+            this.anchorHeader.Name = "anchorHeader";
+            this.anchorHeader.Size = new System.Drawing.Size(299, 30);
+            this.anchorHeader.TabIndex = 39;
+            this.anchorHeader.Text = "Anchor";
+            this.anchorHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // popupTestLootBox
-            //
+            // 
             this.popupTestLootBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupTestLootBox.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupTestLootBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
-            this.popupTestLootBox.Location = new System.Drawing.Point(3, 471);
+            this.popupTestLootBox.Location = new System.Drawing.Point(9, 516);
             this.popupTestLootBox.Name = "popupTestLootBox";
-            this.popupTestLootBox.Size = new System.Drawing.Size(432, 21);
+            this.popupTestLootBox.Size = new System.Drawing.Size(509, 21);
             this.popupTestLootBox.TabIndex = 59;
             this.popupTestLootBox.Text = "12:00 Loot of a necromancer: 34 gold coins, boots of haste";
             this.popupTestLootBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.popupTestLootBox_KeyPress);
-            this.popupTestLootBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.popupTestLootBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            //
+            // 
             // popupConditionBox
-            //
+            // 
             this.popupConditionBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupConditionBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.popupConditionBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
@@ -300,13 +286,13 @@
             this.popupConditionBox.ItemHeight = 30;
             this.popupConditionBox.Items.AddRange(new object[] {
             "item.value >= 2000"});
-            this.popupConditionBox.Location = new System.Drawing.Point(3, 304);
+            this.popupConditionBox.Location = new System.Drawing.Point(9, 367);
             this.popupConditionBox.Name = "popupConditionBox";
-            this.popupConditionBox.Size = new System.Drawing.Size(277, 136);
+            this.popupConditionBox.Size = new System.Drawing.Size(299, 115);
             this.popupConditionBox.TabIndex = 57;
-            //
+            // 
             // popupSpecificItemBox
-            //
+            // 
             this.popupSpecificItemBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupSpecificItemBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.popupSpecificItemBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
@@ -316,160 +302,178 @@
             this.popupSpecificItemBox.ItemHeight = 20;
             this.popupSpecificItemBox.Items.AddRange(new object[] {
             "Ape Fur"});
-            this.popupSpecificItemBox.Location = new System.Drawing.Point(286, 305);
+            this.popupSpecificItemBox.Location = new System.Drawing.Point(328, 311);
             this.popupSpecificItemBox.Name = "popupSpecificItemBox";
-            this.popupSpecificItemBox.Size = new System.Drawing.Size(250, 135);
+            this.popupSpecificItemBox.Size = new System.Drawing.Size(298, 170);
             this.popupSpecificItemBox.TabIndex = 56;
-            //
+            // 
             // popupYOffsetBox
-            //
+            // 
             this.popupYOffsetBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupYOffsetBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupYOffsetBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
-            this.popupYOffsetBox.Location = new System.Drawing.Point(384, 55);
+            this.popupYOffsetBox.Location = new System.Drawing.Point(425, 62);
             this.popupYOffsetBox.Name = "popupYOffsetBox";
-            this.popupYOffsetBox.Size = new System.Drawing.Size(152, 23);
+            this.popupYOffsetBox.Size = new System.Drawing.Size(201, 23);
             this.popupYOffsetBox.TabIndex = 43;
             this.popupYOffsetBox.TextChanged += new System.EventHandler(this.simpleYOffset_TextChanged);
-            this.popupYOffsetBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.popupYOffsetBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            //
+            // 
             // popupXOffsetBox
-            //
+            // 
             this.popupXOffsetBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupXOffsetBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.popupXOffsetBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
-            this.popupXOffsetBox.Location = new System.Drawing.Point(384, 32);
+            this.popupXOffsetBox.Location = new System.Drawing.Point(425, 39);
             this.popupXOffsetBox.Name = "popupXOffsetBox";
-            this.popupXOffsetBox.Size = new System.Drawing.Size(152, 23);
+            this.popupXOffsetBox.Size = new System.Drawing.Size(201, 23);
             this.popupXOffsetBox.TabIndex = 41;
             this.popupXOffsetBox.TextChanged += new System.EventHandler(this.simpleXOffset_TextChanged);
-            this.popupXOffsetBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.popupXOffsetBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            //
-            // popupAnchorBox
-            //
-            this.popupAnchorBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.popupAnchorBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.popupAnchorBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.popupAnchorBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.popupAnchorBox.FormattingEnabled = true;
-            this.popupAnchorBox.Items.AddRange(new object[] {
+            // 
+            // popupAnchorDropDownList
+            // 
+            this.popupAnchorDropDownList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.popupAnchorDropDownList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.popupAnchorDropDownList.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.popupAnchorDropDownList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.popupAnchorDropDownList.FormattingEnabled = true;
+            this.popupAnchorDropDownList.Items.AddRange(new object[] {
             "Top Left",
             "Top Right",
             "Bottom Left",
             "Bottom Right"});
-            this.popupAnchorBox.Location = new System.Drawing.Point(3, 112);
-            this.popupAnchorBox.Name = "popupAnchorBox";
-            this.popupAnchorBox.Size = new System.Drawing.Size(276, 24);
-            this.popupAnchorBox.TabIndex = 38;
-            this.popupAnchorBox.SelectedIndexChanged += new System.EventHandler(this.simpleAnchor_SelectedIndexChanged);
-            this.popupAnchorBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.popupAnchorBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            //
+            this.popupAnchorDropDownList.Location = new System.Drawing.Point(9, 175);
+            this.popupAnchorDropDownList.Name = "popupAnchorDropDownList";
+            this.popupAnchorDropDownList.Size = new System.Drawing.Size(299, 24);
+            this.popupAnchorDropDownList.TabIndex = 38;
+            this.popupAnchorDropDownList.SelectedIndexChanged += new System.EventHandler(this.simpleAnchor_SelectedIndexChanged);
+            // 
             // popupDurationHeader
-            //
-            this.popupDurationHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
+            // 
+            this.popupDurationHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.popupDurationHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.popupDurationHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.popupDurationHeader.Location = new System.Drawing.Point(4, 2);
+            this.popupDurationHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.popupDurationHeader.Location = new System.Drawing.Point(9, 9);
             this.popupDurationHeader.Name = "popupDurationHeader";
-            this.popupDurationHeader.Size = new System.Drawing.Size(276, 30);
+            this.popupDurationHeader.Size = new System.Drawing.Size(299, 30);
             this.popupDurationHeader.TabIndex = 67;
             this.popupDurationHeader.Text = "Popup Duration";
             this.popupDurationHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
+            // 
             // popupDurationSlider
-            //
+            // 
             this.popupDurationSlider.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.popupDurationSlider.LargeChange = 50;
-            this.popupDurationSlider.Location = new System.Drawing.Point(3, 32);
+            this.popupDurationSlider.Location = new System.Drawing.Point(9, 39);
             this.popupDurationSlider.Maximum = 30;
             this.popupDurationSlider.Minimum = 1;
             this.popupDurationSlider.Name = "popupDurationSlider";
-            this.popupDurationSlider.Size = new System.Drawing.Size(277, 45);
+            this.popupDurationSlider.Size = new System.Drawing.Size(299, 45);
             this.popupDurationSlider.SmallChange = 5;
             this.popupDurationSlider.TabIndex = 68;
             this.popupDurationSlider.Value = 5;
             this.popupDurationSlider.Scroll += new System.EventHandler(this.popupDurationSlider_Scroll);
-            this.popupDurationSlider.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.popupDurationSlider.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            //
-            // label1
-            //
-            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label1.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label1.Location = new System.Drawing.Point(286, 82);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(250, 30);
-            this.label1.TabIndex = 69;
-            this.label1.Text = "Size (Width)";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            //
+            // 
+            // sizeWidthHeader
+            // 
+            this.sizeWidthHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.sizeWidthHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sizeWidthHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.sizeWidthHeader.Location = new System.Drawing.Point(327, 89);
+            this.sizeWidthHeader.Name = "sizeWidthHeader";
+            this.sizeWidthHeader.Size = new System.Drawing.Size(299, 30);
+            this.sizeWidthHeader.TabIndex = 69;
+            this.sizeWidthHeader.Text = "Size (Width)";
+            this.sizeWidthHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // notificationWidthBox
-            //
+            // 
             this.notificationWidthBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.notificationWidthBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.notificationWidthBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
-            this.notificationWidthBox.Location = new System.Drawing.Point(285, 112);
+            this.notificationWidthBox.Location = new System.Drawing.Point(328, 119);
             this.notificationWidthBox.Name = "notificationWidthBox";
-            this.notificationWidthBox.Size = new System.Drawing.Size(251, 23);
+            this.notificationWidthBox.Size = new System.Drawing.Size(298, 23);
             this.notificationWidthBox.TabIndex = 70;
             this.notificationWidthBox.TextChanged += new System.EventHandler(this.notificationWidthBox_TextChanged);
-            this.notificationWidthBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.notificationWidthBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            //
+            // 
             // showCopyButtonCheckbox
-            //
+            // 
             this.showCopyButtonCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.showCopyButtonCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showCopyButtonCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.showCopyButtonCheckbox.Location = new System.Drawing.Point(286, 136);
+            this.showCopyButtonCheckbox.Location = new System.Drawing.Point(329, 142);
             this.showCopyButtonCheckbox.Name = "showCopyButtonCheckbox";
             this.showCopyButtonCheckbox.Padding = new System.Windows.Forms.Padding(10);
-            this.showCopyButtonCheckbox.Size = new System.Drawing.Size(250, 44);
+            this.showCopyButtonCheckbox.Size = new System.Drawing.Size(297, 44);
             this.showCopyButtonCheckbox.TabIndex = 71;
             this.showCopyButtonCheckbox.Text = "Show Copy Button";
             this.showCopyButtonCheckbox.UseVisualStyleBackColor = false;
             this.showCopyButtonCheckbox.CheckedChanged += new System.EventHandler(this.showCopyButtonCheckbox_CheckedChanged);
-            this.showCopyButtonCheckbox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.showCopyButtonCheckbox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            //
+            // 
+            // popupTypeHeader
+            // 
+            this.popupTypeHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.popupTypeHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.popupTypeHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.popupTypeHeader.Location = new System.Drawing.Point(9, 87);
+            this.popupTypeHeader.Name = "popupTypeHeader";
+            this.popupTypeHeader.Size = new System.Drawing.Size(299, 30);
+            this.popupTypeHeader.TabIndex = 72;
+            this.popupTypeHeader.Text = "Popup Type";
+            this.popupTypeHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // popupTypeDropDownList
+            // 
+            this.popupTypeDropDownList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.popupTypeDropDownList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.popupTypeDropDownList.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.popupTypeDropDownList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.popupTypeDropDownList.FormattingEnabled = true;
+            this.popupTypeDropDownList.Items.AddRange(new object[] {
+            "System Popup",
+            "Rich Popup"});
+            this.popupTypeDropDownList.Location = new System.Drawing.Point(9, 116);
+            this.popupTypeDropDownList.Name = "popupTypeDropDownList";
+            this.popupTypeDropDownList.Size = new System.Drawing.Size(299, 24);
+            this.popupTypeDropDownList.TabIndex = 73;
+            this.popupTypeDropDownList.SelectedIndexChanged += new System.EventHandler(this.notificationTypeBox_SelectedIndexChanged);
+            // 
             // PopupsTab
-            //
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
-            this.ClientSize = new System.Drawing.Size(538, 514);
-            this.Controls.Add(this.label66);
+            this.ClientSize = new System.Drawing.Size(638, 549);
+            this.Controls.Add(this.popupTypeHeader);
+            this.Controls.Add(this.popupTypeDropDownList);
+            this.Controls.Add(this.testingHeader);
             this.Controls.Add(this.showCopyButtonCheckbox);
             this.Controls.Add(this.notificationWidthBox);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.sizeWidthHeader);
             this.Controls.Add(this.popupDurationSlider);
             this.Controls.Add(this.popupDurationHeader);
-            this.Controls.Add(this.popupSetGoldCapRatioButton);
+            this.Controls.Add(this.setGoldCapRatioButton);
             this.Controls.Add(this.popupGoldCapRatioBox);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.popupSetValueButton);
+            this.Controls.Add(this.goldCapRatioPopupHeader);
+            this.Controls.Add(this.setItemValuePopupButton);
             this.Controls.Add(this.popupValueBox);
-            this.Controls.Add(this.itemValueLabel);
+            this.Controls.Add(this.itemValuePopupHeader);
             this.Controls.Add(this.popupTestButton);
-            this.Controls.Add(this.label99);
-            this.Controls.Add(this.label70);
-            this.Controls.Add(this.label69);
-            this.Controls.Add(this.popupClearDisplayButton);
-            this.Controls.Add(this.popupTestNotificationButton);
+            this.Controls.Add(this.testPopupMessageHeader);
+            this.Controls.Add(this.popupConditionsHeader);
+            this.Controls.Add(this.popupItemsHeader);
+            this.Controls.Add(this.clearDisplayButton);
+            this.Controls.Add(this.testDisplayButton);
             this.Controls.Add(this.label56);
             this.Controls.Add(this.label61);
-            this.Controls.Add(this.label62);
-            this.Controls.Add(this.label63);
+            this.Controls.Add(this.positionOffsetHeader);
+            this.Controls.Add(this.anchorHeader);
             this.Controls.Add(this.popupTestLootBox);
             this.Controls.Add(this.popupConditionBox);
             this.Controls.Add(this.popupSpecificItemBox);
             this.Controls.Add(this.popupYOffsetBox);
             this.Controls.Add(this.popupXOffsetBox);
-            this.Controls.Add(this.popupAnchorBox);
+            this.Controls.Add(this.popupAnchorDropDownList);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PopupsTab";
             this.Text = "TabBase";
@@ -479,35 +483,37 @@
 
         }
 
-        private System.Windows.Forms.Label popupSetGoldCapRatioButton;
+        private System.Windows.Forms.Label setGoldCapRatioButton;
         private EnterTextBox popupGoldCapRatioBox;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label popupSetValueButton;
+        private System.Windows.Forms.Label goldCapRatioPopupHeader;
+        private System.Windows.Forms.Label setItemValuePopupButton;
         private EnterTextBox popupValueBox;
-        private System.Windows.Forms.Label itemValueLabel;
+        private System.Windows.Forms.Label itemValuePopupHeader;
         private System.Windows.Forms.Label popupTestButton;
-        private System.Windows.Forms.Label label99;
-        private System.Windows.Forms.Label label70;
-        private System.Windows.Forms.Label label69;
-        private System.Windows.Forms.Label popupClearDisplayButton;
-        private System.Windows.Forms.Label popupTestNotificationButton;
-        private System.Windows.Forms.Label label66;
+        private System.Windows.Forms.Label testPopupMessageHeader;
+        private System.Windows.Forms.Label popupConditionsHeader;
+        private System.Windows.Forms.Label popupItemsHeader;
+        private System.Windows.Forms.Label clearDisplayButton;
+        private System.Windows.Forms.Label testDisplayButton;
+        private System.Windows.Forms.Label testingHeader;
         private System.Windows.Forms.Label label56;
         private System.Windows.Forms.Label label61;
-        private System.Windows.Forms.Label label62;
-        private System.Windows.Forms.Label label63;
+        private System.Windows.Forms.Label positionOffsetHeader;
+        private System.Windows.Forms.Label anchorHeader;
         private EnterTextBox popupTestLootBox;
         private PrettyListBox popupConditionBox;
         private PrettyListBox popupSpecificItemBox;
         private EnterTextBox popupYOffsetBox;
         private EnterTextBox popupXOffsetBox;
-        private PrettyDropDownList popupAnchorBox;
+        private PrettyDropDownList popupAnchorDropDownList;
         #endregion
 
         private System.Windows.Forms.Label popupDurationHeader;
         private System.Windows.Forms.TrackBar popupDurationSlider;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label sizeWidthHeader;
         private EnterTextBox notificationWidthBox;
         private PrettyCheckBox showCopyButtonCheckbox;
+        private System.Windows.Forms.Label popupTypeHeader;
+        private PrettyDropDownList popupTypeDropDownList;
     }
 }

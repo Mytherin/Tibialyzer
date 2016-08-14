@@ -10,10 +10,11 @@ using System.Windows.Forms;
 
 namespace Tibialyzer {
     public partial class HuntsTab : Form, TabInterface {
+        ToolTip tooltip = UIManager.CreateTooltip();
         public HuntsTab() {
             InitializeComponent();
             InitializeSettings();
-            InitializeTooltips();
+            ApplyLocalization();
         }
 
         public void InitializeSettings() {
@@ -22,14 +23,31 @@ namespace Tibialyzer {
         }
 
 
-        public void InitializeTooltips() {
-            ToolTip tooltip = UIManager.CreateTooltip();
-
-            tooltip.SetToolTip(setActiveHuntButton, "Sets the currently selected hunt as the active hunt. Any creatures killed will be added to the currently active hunt. ");
-            tooltip.SetToolTip(displayAllCreaturesBox, "In the loot@ command, only creatures specified in the box below are shown if this is selected.");
-            tooltip.SetToolTip(switchOnKillBox, "When a creature specified in the box below is killed, this hunt is made the currently active hunt.");
-            tooltip.SetToolTip(gatherTrackedKillsBox, "When a creature specified in the box below is killed, the loot of that creature is always added to this hunt (in addition to the active hunt).");
-            tooltip.SetToolTip(clearHuntOnStartupBox, "If this is checked, this hunt will be automatically cleared when Tibialyzer is restarted.");
+        public void ApplyLocalization() {
+            tooltip.RemoveAll();
+            trackedCreaturesHeader.Text = Tibialyzer.Translation.HuntsTab.trackedCreaturesHeader;
+            listOfHuntsHeader.Text = Tibialyzer.Translation.HuntsTab.listOfHuntsHeader;
+            expValueLabel.Text = Tibialyzer.Translation.HuntsTab.expValueLabel;
+            setAsActiveHuntButton.Text = Tibialyzer.Translation.HuntsTab.setAsActiveHuntButton;
+            creatureListHeader.Text = Tibialyzer.Translation.HuntsTab.creatureListHeader;
+            ignoreLowExperienceCheckbox.Text = Tibialyzer.Translation.HuntsTab.ignoreLowExperienceCheckbox;
+            displayAllCreaturesCheckbox.Text = Tibialyzer.Translation.HuntsTab.displayAllCreaturesCheckbox;
+            automaticallyWriteLootToFileCheckbox.Text = Tibialyzer.Translation.HuntsTab.automaticallyWriteLootToFileCheckbox;
+            clearHuntOnStartupCheckbox.Text = Tibialyzer.Translation.HuntsTab.clearHuntOnStartupCheckbox;
+            lootDisplayOptionsHeader.Text = Tibialyzer.Translation.HuntsTab.lootDisplayOptionsHeader;
+            switchOnKillCheckbox.Text = Tibialyzer.Translation.HuntsTab.switchOnKillCheckbox;
+            gatherTrackedKillsCheckbox.Text = Tibialyzer.Translation.HuntsTab.gatherTrackedKillsCheckbox;
+            lootDisplayHeader.Text = Tibialyzer.Translation.HuntsTab.lootDisplayHeader;
+            displayAllItemsAsStackableCheckbox.Text = Tibialyzer.Translation.HuntsTab.displayAllItemsAsStackableCheckbox;
+            huntOptionsHeader.Text = Tibialyzer.Translation.HuntsTab.huntOptionsHeader;
+            tooltip.SetToolTip(clearHuntOnStartupCheckbox, Tibialyzer.Translation.HuntsTab.clearHuntOnStartupCheckboxTooltip);
+            tooltip.SetToolTip(ignoreLowExperienceCheckbox, Tibialyzer.Translation.HuntsTab.ignoreLowExperienceCheckboxTooltip);
+            tooltip.SetToolTip(gatherTrackedKillsCheckbox, Tibialyzer.Translation.HuntsTab.gatherTrackedKillsCheckboxTooltip);
+            tooltip.SetToolTip(setAsActiveHuntButton, Tibialyzer.Translation.HuntsTab.setAsActiveHuntButtonTooltip);
+            tooltip.SetToolTip(displayAllItemsAsStackableCheckbox, Tibialyzer.Translation.HuntsTab.displayAllItemsAsStackableCheckboxTooltip);
+            tooltip.SetToolTip(switchOnKillCheckbox, Tibialyzer.Translation.HuntsTab.switchOnKillCheckboxTooltip);
+            tooltip.SetToolTip(displayAllCreaturesCheckbox, Tibialyzer.Translation.HuntsTab.displayAllCreaturesCheckboxTooltip);
+            tooltip.SetToolTip(automaticallyWriteLootToFileCheckbox, Tibialyzer.Translation.HuntsTab.automaticallyWriteLootToFileCheckboxTooltip);
         }
         public void InitializeHuntDisplay(int activeHuntIndex) {
             MainForm.mainForm.skip_hunt_refresh = true;
@@ -72,7 +90,7 @@ namespace Tibialyzer {
         }
 
         public Label GetHuntLabel() {
-            return huntListLabel;
+            return listOfHuntsHeader;
         }
 
         public void refreshHunts(bool refreshSelection = false) {
@@ -141,8 +159,8 @@ namespace Tibialyzer {
             if (MainForm.mainForm.switch_hunt) return;
             Hunt h = getSelectedHunt();
             HuntManager.SetActiveHunt(h);
-            setActiveHuntButton.Text = "Currently Active";
-            setActiveHuntButton.Enabled = false;
+            setAsActiveHuntButton.Text = "Currently Active";
+            setAsActiveHuntButton.Enabled = false;
             HuntManager.SaveHunts();
         }
 
@@ -195,35 +213,25 @@ namespace Tibialyzer {
             if (huntList.SelectedIndex < 0) return;
             MainForm.mainForm.switch_hunt = true;
             Hunt h = getSelectedHunt();
-            displayAllCreaturesBox.Checked = h.trackAllCreatures;
+            displayAllCreaturesCheckbox.Checked = h.trackAllCreatures;
             if (h == HuntManager.activeHunt) {
-                setActiveHuntButton.Text = "Currently Active";
-                setActiveHuntButton.Enabled = false;
+                setAsActiveHuntButton.Text = "Currently Active";
+                setAsActiveHuntButton.Enabled = false;
             } else {
-                setActiveHuntButton.Text = "Set As Active Hunt";
-                setActiveHuntButton.Enabled = true;
+                setAsActiveHuntButton.Text = "Set As Active Hunt";
+                setAsActiveHuntButton.Enabled = true;
             }
             string[] split = h.trackedCreatures.Split('\n');
             trackedCreatureList.Items.Clear();
             foreach (string str in split) {
                 trackedCreatureList.Items.Add(str);
             }
-            clearHuntOnStartupBox.Checked = h.clearOnStartup;
-            switchOnKillBox.Checked = h.sideHunt;
-            gatherTrackedKillsBox.Checked = h.aggregateHunt;
+            clearHuntOnStartupCheckbox.Checked = h.clearOnStartup;
+            switchOnKillCheckbox.Checked = h.sideHunt;
+            gatherTrackedKillsCheckbox.Checked = h.aggregateHunt;
             refreshHuntImages(h);
             MainForm.mainForm.refreshHuntLog(h);
             MainForm.mainForm.switch_hunt = false;
-        }
-
-        private void ControlMouseEnter(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormHoverColor;
-            (sender as Control).ForeColor = StyleManager.MainFormHoverForeColor;
-        }
-
-        private void ControlMouseLeave(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormButtonColor;
-            (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
         }
     }
 }

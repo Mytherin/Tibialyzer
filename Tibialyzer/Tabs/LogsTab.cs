@@ -11,10 +11,13 @@ using System.Windows.Forms;
 
 namespace Tibialyzer {
     public partial class LogsTab : Form, TabInterface {
+        ToolTip tooltip = UIManager.CreateTooltip();
+
+
         public LogsTab() {
             InitializeComponent();
             InitializeSettings();
-            InitializeTooltips();
+            ApplyLocalization();
         }
 
         public void InitializeSettings() {
@@ -23,12 +26,20 @@ namespace Tibialyzer {
             logMessageCollection.AttemptDeleteItem += LogMessageCollection_AttemptDeleteItem;
             logMessageCollection.DrawMode = DrawMode.OwnerDrawVariable;
         }
-        public void InitializeTooltips() {
-            ToolTip tooltip = UIManager.CreateTooltip();
+        public void ApplyLocalization() {
+            tooltip.RemoveAll();
 
-            tooltip.SetToolTip(clearLog, "WARNING: Clears the active hunt, removing all loot from it.");
-            tooltip.SetToolTip(saveLogToFileButton, "Saves all the log messages of the currently selected hunt to a file.");
-            tooltip.SetToolTip(loadLogFromFileButton, "Loads a set of log messages from a file into the currently selected hunt. ");
+            saveLogToFileButton.Text = Tibialyzer.Translation.LogsTab.saveLogToFileButton;
+            exportHeader.Text = Tibialyzer.Translation.LogsTab.exportHeader;
+            loadLogFromFileButton.Text = Tibialyzer.Translation.LogsTab.loadLogFromFileButton;
+            logMessagesHeader.Text = Tibialyzer.Translation.LogsTab.logMessagesHeader;
+            popupSelectedMessageButton.Text = Tibialyzer.Translation.LogsTab.popupSelectedMessageButton;
+            showAllLootButton.Text = Tibialyzer.Translation.LogsTab.showAllLootButton;
+            deleteHeader.Text = Tibialyzer.Translation.LogsTab.deleteHeader;
+            clearLogButton.Text = Tibialyzer.Translation.LogsTab.clearLogButton;
+            tooltip.SetToolTip(saveLogToFileButton, Tibialyzer.Translation.LogsTab.saveLogToFileButtonTooltip);
+            tooltip.SetToolTip(clearLogButton, Tibialyzer.Translation.LogsTab.clearLogButtonTooltip);
+            tooltip.SetToolTip(loadLogFromFileButton, Tibialyzer.Translation.LogsTab.loadLogFromFileButtonTooltip);
         }
 
 
@@ -72,17 +83,7 @@ namespace Tibialyzer {
                 CommandManager.ExecuteCommand("reset" + Constants.CommandSymbol + h.name);
             }
         }
-
-        private void ControlMouseEnter(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormHoverColor;
-            (sender as Control).ForeColor = StyleManager.MainFormHoverForeColor;
-        }
-
-        private void ControlMouseLeave(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormButtonColor;
-            (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
-        }
-
+        
         private void loadLogFromFileButton_Click(object sender, EventArgs e) {
             try {
                 OpenFileDialog dialog = new OpenFileDialog();

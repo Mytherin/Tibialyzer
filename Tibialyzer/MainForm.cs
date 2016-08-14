@@ -58,7 +58,11 @@ namespace Tibialyzer {
             mainForm = this;
             InitializeComponent();
 
+            Constants.InitializeConstants();
+
             SettingsManager.LoadSettings(Constants.SettingsFile);
+
+            ChangeLanguage(SettingsManager.getSettingString("TibialyzerLanguage"));
 
             LootDatabaseManager.LootChanged += NotificationManager.UpdateLootDisplay;
             LootDatabaseManager.LootChanged += UpdateLogDisplay;
@@ -102,6 +106,7 @@ namespace Tibialyzer {
             if (SettingsManager.getSettingBool("StartAutohotkeyAutomatically")) {
                 AutoHotkeyManager.StartAutohotkey();
             }
+
             ReadMemoryManager.Initialize();
             HuntManager.Initialize();
             UIManager.Initialize();
@@ -219,7 +224,7 @@ namespace Tibialyzer {
 
         void makeDraggable(Control.ControlCollection controls) {
             foreach (Control c in controls) {
-                if ((c is Label && !c.Name.Contains("button", StringComparison.OrdinalIgnoreCase)) || c is Panel) {
+                if ((c is Label && !(c is PrettyButton) && !(c is PrettyMenuTab) && !c.Name.ToLower().Contains("button")) || c is Panel) {
                     c.MouseDown += new System.Windows.Forms.MouseEventHandler(this.draggable_MouseDown);
                 }
                 if (c is Panel || c is TabPage || c is TabControl) {
@@ -301,19 +306,60 @@ namespace Tibialyzer {
         private List<Control> activeControls = new List<Control>();
         private List<List<Control>> tabControls = new List<List<Control>>();
         private void InitializeTabs() {
-            Tabs = new List<TabInterface> { new MainTab(), new SettingsTab(), new HuntsTab(), new LogsTab(), new NotificationsTab(), new PopupsTab(), new DatabaseTab(), new AutoHotkeyTab(), new ScreenshotTab(), new BrowseTab(), new HelpTab(), new SystemTab(), new SummaryTab(), new HUDTab(), new HealthListTab(), new PortraitTab() };
+            Tabs = new List<TabInterface> { new MainTab(), new SettingsTab(), new HuntsTab(), new LogsTab(), new NotificationsTab(), new PopupsTab(), new DatabaseTab(), new AutoHotkeyTab(), new ScreenshotTab(), new BrowseTab(), new HelpTab(), new SystemTab(), new SummaryTab(), new HUDTab(), new HealthListTab(), new PortraitTab(), new AdvancedTab(), new AboutTab() };
             foreach (TabInterface tab in Tabs) {
                 List<Control> controlList = new List<Control>();
                 foreach (Control c in (tab as Form).Controls) {
                     controlList.Add(c);
                     c.Location = new Point(c.Location.X + mainButton.Location.X + mainButton.Width + 4, c.Location.Y + 24);
+                    StyleManager.InitializeElement(c);
+                    StyleManager.StyleElement(c);
                 }
+                (tab as Form).Controls.Clear();
                 tabControls.Add(controlList);
+            }
+
+            foreach(Control c in this.Controls) {
+                StyleManager.InitializeElement(c);
+                StyleManager.StyleElement(c);
             }
 
             // Manually add controls that appear on multiple pages
             tabControls[3].Add((Tabs[2] as HuntsTab).GetHuntList());
             tabControls[3].Add((Tabs[2] as HuntsTab).GetHuntLabel());
+        }
+
+        public void ChangeLanguage(string language) {
+            if (language == null) {
+                return;
+            }
+
+            CultureInfo culture = CultureInfo.CreateSpecificCulture(language);
+            if (culture == null) {
+                DisplayWarning("Unknown language " + language);
+                return;
+            }
+
+            Tibialyzer.Translation.DatabaseTab.Culture = culture;
+            Tibialyzer.Translation.PopupsTab.Culture = culture;
+            Tibialyzer.Translation.HealthListTab.Culture = culture;
+            Tibialyzer.Translation.HUDTab.Culture = culture;
+            Tibialyzer.Translation.BrowseTab.Culture = culture;
+            Tibialyzer.Translation.AutoHotkeyTab.Culture = culture;
+            Tibialyzer.Translation.MainTab.Culture = culture;
+            Tibialyzer.Translation.AboutTab.Culture = culture;
+            Tibialyzer.Translation.SystemTab.Culture = culture;
+            Tibialyzer.Translation.HuntsTab.Culture = culture;
+            Tibialyzer.Translation.NotificationsTab.Culture = culture;
+            Tibialyzer.Translation.SummaryTab.Culture = culture;
+            Tibialyzer.Translation.AdvancedTab.Culture = culture;
+            Tibialyzer.Translation.SettingsTab.Culture = culture;
+            Tibialyzer.Translation.ScreenshotTab.Culture = culture;
+            Tibialyzer.Translation.LogsTab.Culture = culture;
+            Tibialyzer.Translation.HelpTab.Culture = culture;
+            Tibialyzer.Translation.PortraitTab.Culture = culture;
+
+            SettingsManager.setSetting("TibialyzerLanguage", language);
         }
 
         public void switchTab(int tab) {
@@ -340,6 +386,8 @@ namespace Tibialyzer {
             upgradeButton.Enabled = true;
             summaryButton.Enabled = true;
             hudButton.Enabled = true;
+            aboutButton.Enabled = true;
+            advancedButton.Enabled = true;
             switch (tab) {
                 case 0:
                     mainButton.Enabled = false; break;
@@ -369,6 +417,10 @@ namespace Tibialyzer {
                     summaryButton.Enabled = false; break;
                 case 13:
                     hudButton.Enabled = false; break;
+                case 16:
+                    advancedButton.Enabled = false; break;
+                case 17:
+                    aboutButton.Enabled = false; break;
             }
         }
 
@@ -428,6 +480,14 @@ namespace Tibialyzer {
         private void hudButton_Click(object sender, EventArgs e) {
             switchTab(13);
         }
+
+        private void advancedButton_Click(object sender, EventArgs e) {
+            switchTab(16);
+        }
+
+        private void aboutButton_Click(object sender, EventArgs e) {
+            switchTab(17);
+        }
         #endregion
 
         #region Main
@@ -485,17 +545,7 @@ namespace Tibialyzer {
             this.minimizeIcon.Visible = false;
             this.Show();
         }
-
-        private void mainButton_MouseEnter(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormHoverColor;
-            (sender as Control).ForeColor = StyleManager.MainFormHoverForeColor;
-        }
-
-        private void mainButton_MouseLeave(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormButtonColor;
-            (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
-        }
-
+        
         private void warningImageBox_MouseDown(object sender, MouseEventArgs e) {
             (sender as Control).Visible = false;
         }

@@ -23,242 +23,232 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.selectedWindowLabel = new System.Windows.Forms.Label();
-            this.notificationDurationLabel = new System.Windows.Forms.Label();
+            this.selectedWindowHeader = new Tibialyzer.PrettyHeader();
+            this.notificationLengthHeader = new Tibialyzer.PrettyHeader();
             this.notificationDurationBox = new System.Windows.Forms.TrackBar();
-            this.label47 = new System.Windows.Forms.Label();
-            this.label46 = new System.Windows.Forms.Label();
-            this.label45 = new System.Windows.Forms.Label();
-            this.applyNotificationSettingsToAllButton = new System.Windows.Forms.Label();
-            this.clearNotificationDisplayButton = new System.Windows.Forms.Label();
-            this.testNotificationDisplayButton = new System.Windows.Forms.Label();
-            this.label41 = new System.Windows.Forms.Label();
-            this.label40 = new System.Windows.Forms.Label();
-            this.label39 = new System.Windows.Forms.Label();
-            this.label37 = new System.Windows.Forms.Label();
-            this.label36 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.hideWhenTibiaMinimized = new Tibialyzer.PrettyCheckBox();
+            this.notificationTypeListHeader = new Tibialyzer.PrettyHeader();
+            this.displayGroupHeader = new Tibialyzer.PrettyHeader();
+            this.overwriteSettingsHeader = new Tibialyzer.PrettyHeader();
+            this.applyTheseSettingsToAllButton = new Tibialyzer.PrettyButton();
+            this.clearDisplayButton = new Tibialyzer.PrettyButton();
+            this.displayNotificationButton = new Tibialyzer.PrettyButton();
+            this.testingHeader = new Tibialyzer.PrettyHeader();
+            this.yOffsetLabel = new System.Windows.Forms.Label();
+            this.xOffsetLabel = new System.Windows.Forms.Label();
+            this.positionOffsetHeader = new Tibialyzer.PrettyHeader();
+            this.anchorHeader = new Tibialyzer.PrettyHeader();
+            this.monitorAnchorHeader = new Tibialyzer.PrettyHeader();
+            this.onlyShowWhenTibiaIsActiveCheckbox = new Tibialyzer.PrettyCheckBox();
             this.monitorAnchorDropdown = new Tibialyzer.PrettyDropDownList();
             this.notificationTypeList = new Tibialyzer.PrettyListBox();
-            this.notificationGroupBox = new Tibialyzer.PrettyDropDownList();
+            this.displayGroupDropDownList = new Tibialyzer.PrettyDropDownList();
             this.notificationYOffsetBox = new Tibialyzer.EnterTextBox();
             this.notificationXOffsetBox = new Tibialyzer.EnterTextBox();
-            this.notificationAnchorBox = new Tibialyzer.PrettyDropDownList();
+            this.notificationAnchorDropDownList = new Tibialyzer.PrettyDropDownList();
             ((System.ComponentModel.ISupportInitialize)(this.notificationDurationBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // selectedWindowLabel
+            // selectedWindowHeader
             // 
-            this.selectedWindowLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(128)))), ((int)(((byte)(176)))));
-            this.selectedWindowLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.selectedWindowLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.selectedWindowLabel.Location = new System.Drawing.Point(3, 21);
-            this.selectedWindowLabel.Name = "selectedWindowLabel";
-            this.selectedWindowLabel.Size = new System.Drawing.Size(275, 30);
-            this.selectedWindowLabel.TabIndex = 55;
-            this.selectedWindowLabel.Text = "Loot Window";
-            this.selectedWindowLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.selectedWindowHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(128)))), ((int)(((byte)(176)))));
+            this.selectedWindowHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.selectedWindowHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.selectedWindowHeader.Location = new System.Drawing.Point(9, 9);
+            this.selectedWindowHeader.Name = "selectedWindowHeader";
+            this.selectedWindowHeader.Size = new System.Drawing.Size(299, 30);
+            this.selectedWindowHeader.TabIndex = 55;
+            this.selectedWindowHeader.Text = "Loot Window";
+            this.selectedWindowHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // notificationDurationLabel
+            // notificationLengthHeader
             // 
-            this.notificationDurationLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.notificationDurationLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.notificationDurationLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.notificationDurationLabel.Location = new System.Drawing.Point(284, 213);
-            this.notificationDurationLabel.Name = "notificationDurationLabel";
-            this.notificationDurationLabel.Size = new System.Drawing.Size(250, 30);
-            this.notificationDurationLabel.TabIndex = 54;
-            this.notificationDurationLabel.Text = "Notification Length";
-            this.notificationDurationLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.notificationLengthHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.notificationLengthHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.notificationLengthHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.notificationLengthHeader.Location = new System.Drawing.Point(327, 203);
+            this.notificationLengthHeader.Name = "notificationLengthHeader";
+            this.notificationLengthHeader.Size = new System.Drawing.Size(299, 30);
+            this.notificationLengthHeader.TabIndex = 54;
+            this.notificationLengthHeader.Text = "Notification Length";
+            this.notificationLengthHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // notificationDurationBox
             // 
             this.notificationDurationBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.notificationDurationBox.LargeChange = 50;
-            this.notificationDurationBox.Location = new System.Drawing.Point(284, 243);
+            this.notificationDurationBox.Location = new System.Drawing.Point(327, 233);
             this.notificationDurationBox.Maximum = 300;
             this.notificationDurationBox.Minimum = 1;
             this.notificationDurationBox.Name = "notificationDurationBox";
-            this.notificationDurationBox.Size = new System.Drawing.Size(250, 45);
+            this.notificationDurationBox.Size = new System.Drawing.Size(299, 45);
             this.notificationDurationBox.SmallChange = 5;
             this.notificationDurationBox.TabIndex = 53;
             this.notificationDurationBox.Value = 5;
             this.notificationDurationBox.Scroll += new System.EventHandler(this.notificationDurationBox_Scroll);
-            this.notificationDurationBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.notificationDurationBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             // 
-            // label47
+            // notificationTypeListHeader
             // 
-            this.label47.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label47.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label47.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label47.Location = new System.Drawing.Point(3, 51);
-            this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(275, 30);
-            this.label47.TabIndex = 52;
-            this.label47.Text = "Notification Type List";
-            this.label47.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.notificationTypeListHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.notificationTypeListHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.notificationTypeListHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.notificationTypeListHeader.Location = new System.Drawing.Point(9, 39);
+            this.notificationTypeListHeader.Name = "notificationTypeListHeader";
+            this.notificationTypeListHeader.Size = new System.Drawing.Size(299, 30);
+            this.notificationTypeListHeader.TabIndex = 52;
+            this.notificationTypeListHeader.Text = "Notification Type List";
+            this.notificationTypeListHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label46
+            // displayGroupHeader
             // 
-            this.label46.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label46.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label46.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label46.Location = new System.Drawing.Point(284, 156);
-            this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(250, 30);
-            this.label46.TabIndex = 50;
-            this.label46.Text = "Display Group";
-            this.label46.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.displayGroupHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.displayGroupHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.displayGroupHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.displayGroupHeader.Location = new System.Drawing.Point(327, 146);
+            this.displayGroupHeader.Name = "displayGroupHeader";
+            this.displayGroupHeader.Size = new System.Drawing.Size(299, 30);
+            this.displayGroupHeader.TabIndex = 50;
+            this.displayGroupHeader.Text = "Display Group";
+            this.displayGroupHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label45
+            // overwriteSettingsHeader
             // 
-            this.label45.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(56)))), ((int)(((byte)(65)))));
-            this.label45.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label45.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label45.Location = new System.Drawing.Point(284, 401);
-            this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(250, 30);
-            this.label45.TabIndex = 48;
-            this.label45.Text = "Overwrite Settings";
-            this.label45.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.overwriteSettingsHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(156)))), ((int)(((byte)(56)))), ((int)(((byte)(65)))));
+            this.overwriteSettingsHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.overwriteSettingsHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.overwriteSettingsHeader.Location = new System.Drawing.Point(327, 391);
+            this.overwriteSettingsHeader.Name = "overwriteSettingsHeader";
+            this.overwriteSettingsHeader.Size = new System.Drawing.Size(299, 30);
+            this.overwriteSettingsHeader.TabIndex = 48;
+            this.overwriteSettingsHeader.Text = "Overwrite Settings";
+            this.overwriteSettingsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // applyNotificationSettingsToAllButton
+            // applyTheseSettingsToAllButton
             // 
-            this.applyNotificationSettingsToAllButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.applyNotificationSettingsToAllButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.applyNotificationSettingsToAllButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.applyNotificationSettingsToAllButton.Location = new System.Drawing.Point(284, 431);
-            this.applyNotificationSettingsToAllButton.Name = "applyNotificationSettingsToAllButton";
-            this.applyNotificationSettingsToAllButton.Padding = new System.Windows.Forms.Padding(10);
-            this.applyNotificationSettingsToAllButton.Size = new System.Drawing.Size(250, 45);
-            this.applyNotificationSettingsToAllButton.TabIndex = 41;
-            this.applyNotificationSettingsToAllButton.Text = "Apply These Settings To All";
-            this.applyNotificationSettingsToAllButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.applyNotificationSettingsToAllButton.Click += new System.EventHandler(this.applyNotificationSettingsToAllButton_Click);
-            this.applyNotificationSettingsToAllButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.applyNotificationSettingsToAllButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            this.applyTheseSettingsToAllButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.applyTheseSettingsToAllButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.applyTheseSettingsToAllButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.applyTheseSettingsToAllButton.Location = new System.Drawing.Point(327, 421);
+            this.applyTheseSettingsToAllButton.Name = "applyTheseSettingsToAllButton";
+            this.applyTheseSettingsToAllButton.Padding = new System.Windows.Forms.Padding(10);
+            this.applyTheseSettingsToAllButton.Size = new System.Drawing.Size(299, 45);
+            this.applyTheseSettingsToAllButton.TabIndex = 41;
+            this.applyTheseSettingsToAllButton.Text = "Apply These Settings To All";
+            this.applyTheseSettingsToAllButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.applyTheseSettingsToAllButton.Click += new System.EventHandler(this.applyNotificationSettingsToAllButton_Click);
             // 
-            // clearNotificationDisplayButton
+            // clearDisplayButton
             // 
-            this.clearNotificationDisplayButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.clearNotificationDisplayButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.clearNotificationDisplayButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.clearNotificationDisplayButton.Location = new System.Drawing.Point(284, 359);
-            this.clearNotificationDisplayButton.Name = "clearNotificationDisplayButton";
-            this.clearNotificationDisplayButton.Padding = new System.Windows.Forms.Padding(10);
-            this.clearNotificationDisplayButton.Size = new System.Drawing.Size(250, 38);
-            this.clearNotificationDisplayButton.TabIndex = 40;
-            this.clearNotificationDisplayButton.Text = "Clear Display";
-            this.clearNotificationDisplayButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.clearNotificationDisplayButton.Click += new System.EventHandler(this.clearNotificationDisplayButton_Click);
-            this.clearNotificationDisplayButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.clearNotificationDisplayButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            this.clearDisplayButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.clearDisplayButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.clearDisplayButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.clearDisplayButton.Location = new System.Drawing.Point(327, 349);
+            this.clearDisplayButton.Name = "clearDisplayButton";
+            this.clearDisplayButton.Padding = new System.Windows.Forms.Padding(10);
+            this.clearDisplayButton.Size = new System.Drawing.Size(299, 38);
+            this.clearDisplayButton.TabIndex = 40;
+            this.clearDisplayButton.Text = "Clear Display";
+            this.clearDisplayButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.clearDisplayButton.Click += new System.EventHandler(this.clearNotificationDisplayButton_Click);
             // 
-            // testNotificationDisplayButton
+            // displayNotificationButton
             // 
-            this.testNotificationDisplayButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.testNotificationDisplayButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.testNotificationDisplayButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.testNotificationDisplayButton.Location = new System.Drawing.Point(284, 321);
-            this.testNotificationDisplayButton.Name = "testNotificationDisplayButton";
-            this.testNotificationDisplayButton.Padding = new System.Windows.Forms.Padding(10);
-            this.testNotificationDisplayButton.Size = new System.Drawing.Size(250, 38);
-            this.testNotificationDisplayButton.TabIndex = 39;
-            this.testNotificationDisplayButton.Text = "Display Notification";
-            this.testNotificationDisplayButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.testNotificationDisplayButton.Click += new System.EventHandler(this.testNotificationDisplayButton_Click);
-            this.testNotificationDisplayButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.testNotificationDisplayButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            this.displayNotificationButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.displayNotificationButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.displayNotificationButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.displayNotificationButton.Location = new System.Drawing.Point(327, 311);
+            this.displayNotificationButton.Name = "displayNotificationButton";
+            this.displayNotificationButton.Padding = new System.Windows.Forms.Padding(10);
+            this.displayNotificationButton.Size = new System.Drawing.Size(299, 38);
+            this.displayNotificationButton.TabIndex = 39;
+            this.displayNotificationButton.Text = "Display Notification";
+            this.displayNotificationButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.displayNotificationButton.Click += new System.EventHandler(this.testNotificationDisplayButton_Click);
             // 
-            // label41
+            // testingHeader
             // 
-            this.label41.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label41.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label41.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label41.Location = new System.Drawing.Point(284, 291);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(250, 30);
-            this.label41.TabIndex = 38;
-            this.label41.Text = "Testing";
-            this.label41.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.testingHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.testingHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.testingHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.testingHeader.Location = new System.Drawing.Point(327, 281);
+            this.testingHeader.Name = "testingHeader";
+            this.testingHeader.Size = new System.Drawing.Size(299, 30);
+            this.testingHeader.TabIndex = 38;
+            this.testingHeader.Text = "Testing";
+            this.testingHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label40
+            // yOffsetLabel
             // 
-            this.label40.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label40.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label40.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.label40.Location = new System.Drawing.Point(284, 72);
-            this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(99, 23);
-            this.label40.TabIndex = 37;
-            this.label40.Text = "Y Offset";
-            this.label40.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.yOffsetLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.yOffsetLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.yOffsetLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.yOffsetLabel.Location = new System.Drawing.Point(327, 62);
+            this.yOffsetLabel.Name = "yOffsetLabel";
+            this.yOffsetLabel.Size = new System.Drawing.Size(99, 23);
+            this.yOffsetLabel.TabIndex = 37;
+            this.yOffsetLabel.Text = "Y Offset";
+            this.yOffsetLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label39
+            // xOffsetLabel
             // 
-            this.label39.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label39.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label39.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.label39.Location = new System.Drawing.Point(284, 49);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(99, 23);
-            this.label39.TabIndex = 35;
-            this.label39.Text = "X Offset";
-            this.label39.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.xOffsetLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.xOffsetLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.xOffsetLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.xOffsetLabel.Location = new System.Drawing.Point(327, 39);
+            this.xOffsetLabel.Name = "xOffsetLabel";
+            this.xOffsetLabel.Size = new System.Drawing.Size(99, 23);
+            this.xOffsetLabel.TabIndex = 35;
+            this.xOffsetLabel.Text = "X Offset";
+            this.xOffsetLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label37
+            // positionOffsetHeader
             // 
-            this.label37.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label37.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label37.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label37.Location = new System.Drawing.Point(284, 19);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(250, 30);
-            this.label37.TabIndex = 33;
-            this.label37.Text = "Position (Offset)";
-            this.label37.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.positionOffsetHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.positionOffsetHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.positionOffsetHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.positionOffsetHeader.Location = new System.Drawing.Point(327, 9);
+            this.positionOffsetHeader.Name = "positionOffsetHeader";
+            this.positionOffsetHeader.Size = new System.Drawing.Size(299, 30);
+            this.positionOffsetHeader.TabIndex = 33;
+            this.positionOffsetHeader.Text = "Position (Offset)";
+            this.positionOffsetHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label36
+            // anchorHeader
             // 
-            this.label36.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label36.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label36.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label36.Location = new System.Drawing.Point(284, 98);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(250, 30);
-            this.label36.TabIndex = 32;
-            this.label36.Text = "Anchor";
-            this.label36.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.anchorHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.anchorHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.anchorHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.anchorHeader.Location = new System.Drawing.Point(327, 88);
+            this.anchorHeader.Name = "anchorHeader";
+            this.anchorHeader.Size = new System.Drawing.Size(299, 30);
+            this.anchorHeader.TabIndex = 32;
+            this.anchorHeader.Text = "Anchor";
+            this.anchorHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label1
+            // monitorAnchorHeader
             // 
-            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label1.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label1.Location = new System.Drawing.Point(3, 401);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(275, 30);
-            this.label1.TabIndex = 57;
-            this.label1.Text = "Monitor Anchor";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.monitorAnchorHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.monitorAnchorHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.monitorAnchorHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.monitorAnchorHeader.Location = new System.Drawing.Point(9, 389);
+            this.monitorAnchorHeader.Name = "monitorAnchorHeader";
+            this.monitorAnchorHeader.Size = new System.Drawing.Size(299, 30);
+            this.monitorAnchorHeader.TabIndex = 57;
+            this.monitorAnchorHeader.Text = "Monitor Anchor";
+            this.monitorAnchorHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // hideWhenTibiaMinimized
+            // onlyShowWhenTibiaIsActiveCheckbox
             // 
-            this.hideWhenTibiaMinimized.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.hideWhenTibiaMinimized.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.hideWhenTibiaMinimized.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.hideWhenTibiaMinimized.Location = new System.Drawing.Point(3, 458);
-            this.hideWhenTibiaMinimized.Name = "hideWhenTibiaMinimized";
-            this.hideWhenTibiaMinimized.Padding = new System.Windows.Forms.Padding(10);
-            this.hideWhenTibiaMinimized.Size = new System.Drawing.Size(275, 40);
-            this.hideWhenTibiaMinimized.TabIndex = 58;
-            this.hideWhenTibiaMinimized.Text = "Only Show When Tibia is Active";
-            this.hideWhenTibiaMinimized.UseVisualStyleBackColor = false;
-            this.hideWhenTibiaMinimized.CheckedChanged += new System.EventHandler(this.hideWhenTibiaMinimized_CheckedChanged);
-            this.hideWhenTibiaMinimized.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.hideWhenTibiaMinimized.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            this.onlyShowWhenTibiaIsActiveCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.onlyShowWhenTibiaIsActiveCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.onlyShowWhenTibiaIsActiveCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.onlyShowWhenTibiaIsActiveCheckbox.Location = new System.Drawing.Point(9, 446);
+            this.onlyShowWhenTibiaIsActiveCheckbox.Name = "onlyShowWhenTibiaIsActiveCheckbox";
+            this.onlyShowWhenTibiaIsActiveCheckbox.Padding = new System.Windows.Forms.Padding(10);
+            this.onlyShowWhenTibiaIsActiveCheckbox.Size = new System.Drawing.Size(299, 40);
+            this.onlyShowWhenTibiaIsActiveCheckbox.TabIndex = 58;
+            this.onlyShowWhenTibiaIsActiveCheckbox.Text = "Only Show When Tibia is Active";
+            this.onlyShowWhenTibiaIsActiveCheckbox.UseVisualStyleBackColor = false;
+            this.onlyShowWhenTibiaIsActiveCheckbox.CheckedChanged += new System.EventHandler(this.hideWhenTibiaMinimized_CheckedChanged);
             // 
             // monitorAnchorDropdown
             // 
@@ -270,13 +260,11 @@
             this.monitorAnchorDropdown.Items.AddRange(new object[] {
             "Tibia Client Monitor",
             "Tibialyzer Monitor"});
-            this.monitorAnchorDropdown.Location = new System.Drawing.Point(3, 431);
+            this.monitorAnchorDropdown.Location = new System.Drawing.Point(9, 419);
             this.monitorAnchorDropdown.Name = "monitorAnchorDropdown";
-            this.monitorAnchorDropdown.Size = new System.Drawing.Size(275, 24);
+            this.monitorAnchorDropdown.Size = new System.Drawing.Size(299, 24);
             this.monitorAnchorDropdown.TabIndex = 56;
             this.monitorAnchorDropdown.SelectedIndexChanged += new System.EventHandler(this.monitorAnchorDropdown_SelectedIndexChanged);
-            this.monitorAnchorDropdown.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.monitorAnchorDropdown.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             // 
             // notificationTypeList
             // 
@@ -289,20 +277,20 @@
             this.notificationTypeList.ItemHeight = 20;
             this.notificationTypeList.Items.AddRange(new object[] {
             "Loot Window"});
-            this.notificationTypeList.Location = new System.Drawing.Point(3, 81);
+            this.notificationTypeList.Location = new System.Drawing.Point(9, 69);
             this.notificationTypeList.Name = "notificationTypeList";
-            this.notificationTypeList.Size = new System.Drawing.Size(275, 315);
+            this.notificationTypeList.Size = new System.Drawing.Size(299, 315);
             this.notificationTypeList.TabIndex = 51;
             this.notificationTypeList.SelectedIndexChanged += new System.EventHandler(this.notificationTypeList_SelectedIndexChanged);
             // 
-            // notificationGroupBox
+            // displayGroupDropDownList
             // 
-            this.notificationGroupBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.notificationGroupBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.notificationGroupBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.notificationGroupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.notificationGroupBox.FormattingEnabled = true;
-            this.notificationGroupBox.Items.AddRange(new object[] {
+            this.displayGroupDropDownList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.displayGroupDropDownList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.displayGroupDropDownList.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.displayGroupDropDownList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.displayGroupDropDownList.FormattingEnabled = true;
+            this.displayGroupDropDownList.Items.AddRange(new object[] {
             "Group 1",
             "Group 2",
             "Group 3",
@@ -313,88 +301,80 @@
             "Group 8",
             "Group 9",
             "Group 10"});
-            this.notificationGroupBox.Location = new System.Drawing.Point(284, 186);
-            this.notificationGroupBox.Name = "notificationGroupBox";
-            this.notificationGroupBox.Size = new System.Drawing.Size(250, 24);
-            this.notificationGroupBox.TabIndex = 49;
-            this.notificationGroupBox.SelectedIndexChanged += new System.EventHandler(this.groupSelectionList_SelectedIndexChanged);
-            this.notificationGroupBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.notificationGroupBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            this.displayGroupDropDownList.Location = new System.Drawing.Point(327, 176);
+            this.displayGroupDropDownList.Name = "displayGroupDropDownList";
+            this.displayGroupDropDownList.Size = new System.Drawing.Size(299, 24);
+            this.displayGroupDropDownList.TabIndex = 49;
+            this.displayGroupDropDownList.SelectedIndexChanged += new System.EventHandler(this.groupSelectionList_SelectedIndexChanged);
             // 
             // notificationYOffsetBox
             // 
             this.notificationYOffsetBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.notificationYOffsetBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.notificationYOffsetBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
-            this.notificationYOffsetBox.Location = new System.Drawing.Point(382, 72);
+            this.notificationYOffsetBox.Location = new System.Drawing.Point(425, 62);
             this.notificationYOffsetBox.Name = "notificationYOffsetBox";
-            this.notificationYOffsetBox.Size = new System.Drawing.Size(152, 23);
+            this.notificationYOffsetBox.Size = new System.Drawing.Size(201, 23);
             this.notificationYOffsetBox.TabIndex = 36;
             this.notificationYOffsetBox.TextChanged += new System.EventHandler(this.notificationYOffsetBox_TextChanged);
-            this.notificationYOffsetBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.notificationYOffsetBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             // 
             // notificationXOffsetBox
             // 
             this.notificationXOffsetBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.notificationXOffsetBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.notificationXOffsetBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
-            this.notificationXOffsetBox.Location = new System.Drawing.Point(382, 49);
+            this.notificationXOffsetBox.Location = new System.Drawing.Point(425, 39);
             this.notificationXOffsetBox.Name = "notificationXOffsetBox";
-            this.notificationXOffsetBox.Size = new System.Drawing.Size(152, 23);
+            this.notificationXOffsetBox.Size = new System.Drawing.Size(201, 23);
             this.notificationXOffsetBox.TabIndex = 34;
             this.notificationXOffsetBox.TextChanged += new System.EventHandler(this.notificationXOffsetBox_TextChanged);
-            this.notificationXOffsetBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.notificationXOffsetBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             // 
-            // notificationAnchorBox
+            // notificationAnchorDropDownList
             // 
-            this.notificationAnchorBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.notificationAnchorBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.notificationAnchorBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.notificationAnchorBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.notificationAnchorBox.FormattingEnabled = true;
-            this.notificationAnchorBox.Items.AddRange(new object[] {
+            this.notificationAnchorDropDownList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.notificationAnchorDropDownList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.notificationAnchorDropDownList.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.notificationAnchorDropDownList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.notificationAnchorDropDownList.FormattingEnabled = true;
+            this.notificationAnchorDropDownList.Items.AddRange(new object[] {
             "Top Left",
             "Top Right",
             "Bottom Left",
             "Bottom Right"});
-            this.notificationAnchorBox.Location = new System.Drawing.Point(284, 128);
-            this.notificationAnchorBox.Name = "notificationAnchorBox";
-            this.notificationAnchorBox.Size = new System.Drawing.Size(250, 24);
-            this.notificationAnchorBox.TabIndex = 31;
-            this.notificationAnchorBox.SelectedIndexChanged += new System.EventHandler(this.notificationAnchorBox_SelectedIndexChanged);
-            this.notificationAnchorBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.notificationAnchorBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            this.notificationAnchorDropDownList.Location = new System.Drawing.Point(327, 118);
+            this.notificationAnchorDropDownList.Name = "notificationAnchorDropDownList";
+            this.notificationAnchorDropDownList.Size = new System.Drawing.Size(299, 24);
+            this.notificationAnchorDropDownList.TabIndex = 31;
+            this.notificationAnchorDropDownList.SelectedIndexChanged += new System.EventHandler(this.notificationAnchorBox_SelectedIndexChanged);
             // 
             // NotificationsTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
-            this.ClientSize = new System.Drawing.Size(538, 514);
-            this.Controls.Add(this.hideWhenTibiaMinimized);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(638, 549);
+            this.Controls.Add(this.onlyShowWhenTibiaIsActiveCheckbox);
+            this.Controls.Add(this.monitorAnchorHeader);
             this.Controls.Add(this.monitorAnchorDropdown);
-            this.Controls.Add(this.selectedWindowLabel);
-            this.Controls.Add(this.notificationDurationLabel);
+            this.Controls.Add(this.selectedWindowHeader);
+            this.Controls.Add(this.notificationLengthHeader);
             this.Controls.Add(this.notificationDurationBox);
-            this.Controls.Add(this.label47);
-            this.Controls.Add(this.label46);
-            this.Controls.Add(this.label45);
-            this.Controls.Add(this.applyNotificationSettingsToAllButton);
-            this.Controls.Add(this.clearNotificationDisplayButton);
-            this.Controls.Add(this.testNotificationDisplayButton);
-            this.Controls.Add(this.label41);
-            this.Controls.Add(this.label40);
-            this.Controls.Add(this.label39);
-            this.Controls.Add(this.label37);
-            this.Controls.Add(this.label36);
+            this.Controls.Add(this.notificationTypeListHeader);
+            this.Controls.Add(this.displayGroupHeader);
+            this.Controls.Add(this.overwriteSettingsHeader);
+            this.Controls.Add(this.applyTheseSettingsToAllButton);
+            this.Controls.Add(this.clearDisplayButton);
+            this.Controls.Add(this.displayNotificationButton);
+            this.Controls.Add(this.testingHeader);
+            this.Controls.Add(this.yOffsetLabel);
+            this.Controls.Add(this.xOffsetLabel);
+            this.Controls.Add(this.positionOffsetHeader);
+            this.Controls.Add(this.anchorHeader);
             this.Controls.Add(this.notificationTypeList);
-            this.Controls.Add(this.notificationGroupBox);
+            this.Controls.Add(this.displayGroupDropDownList);
             this.Controls.Add(this.notificationYOffsetBox);
             this.Controls.Add(this.notificationXOffsetBox);
-            this.Controls.Add(this.notificationAnchorBox);
+            this.Controls.Add(this.notificationAnchorDropDownList);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "NotificationsTab";
             this.Text = "TabBase";
@@ -403,30 +383,28 @@
             this.PerformLayout();
 
         }
-
-        private System.Windows.Forms.Label selectedWindowLabel;
-        private System.Windows.Forms.Label notificationDurationLabel;
         private System.Windows.Forms.TrackBar notificationDurationBox;
-        private System.Windows.Forms.Label label47;
-        private System.Windows.Forms.Label label46;
-        private System.Windows.Forms.Label label45;
-        private System.Windows.Forms.Label applyNotificationSettingsToAllButton;
-        private System.Windows.Forms.Label clearNotificationDisplayButton;
-        private System.Windows.Forms.Label testNotificationDisplayButton;
-        private System.Windows.Forms.Label label41;
-        private System.Windows.Forms.Label label40;
-        private System.Windows.Forms.Label label39;
-        private System.Windows.Forms.Label label37;
-        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.Label yOffsetLabel;
+        private System.Windows.Forms.Label xOffsetLabel;
         private PrettyListBox notificationTypeList;
-        private PrettyDropDownList notificationGroupBox;
+        private PrettyDropDownList displayGroupDropDownList;
         private EnterTextBox notificationYOffsetBox;
         private EnterTextBox notificationXOffsetBox;
-        private PrettyDropDownList notificationAnchorBox;
+        private PrettyDropDownList notificationAnchorDropDownList;
         #endregion
-
-        private System.Windows.Forms.Label label1;
         private PrettyDropDownList monitorAnchorDropdown;
-        private PrettyCheckBox hideWhenTibiaMinimized;
+        private PrettyCheckBox onlyShowWhenTibiaIsActiveCheckbox;
+        private PrettyHeader monitorAnchorHeader;
+        private PrettyHeader anchorHeader;
+        private PrettyHeader positionOffsetHeader;
+        private PrettyHeader testingHeader;
+        private PrettyButton displayNotificationButton;
+        private PrettyButton clearDisplayButton;
+        private PrettyButton applyTheseSettingsToAllButton;
+        private PrettyHeader overwriteSettingsHeader;
+        private PrettyHeader displayGroupHeader;
+        private PrettyHeader notificationTypeListHeader;
+        private PrettyHeader notificationLengthHeader;
+        private PrettyHeader selectedWindowHeader;
     }
 }

@@ -84,6 +84,15 @@
     <Compile Include="Controls\CurveBar.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\PrettyMenuTab.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\PrettyHeader.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\PrettyButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\ProgressBarLabel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -217,6 +226,11 @@
     </Compile>
     <Compile Include="Popups\SimpleTimerNotification.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SafeTimer.cs" />
     <Compile Include="SelectProcessForm.cs">
@@ -411,6 +425,18 @@
     <Compile Include="Tabs\HUDs\PortraitTab.Designer.cs">
       <DependentUpon>PortraitTab.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\AdvancedTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\AdvancedTab.Designer.cs">
+      <DependentUpon>AdvancedTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\AboutTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\AboutTab.Designer.cs">
+      <DependentUpon>AboutTab.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\TabBase.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -419,6 +445,106 @@
     </Compile>
     <Compile Include="Tabs\TabInterface.cs" />
     <Compile Include="Managers\UIManager.cs" />
+    <Compile Include="Translation\AutoHotkeyTab.Designer.cs">
+      <DependentUpon>AutoHotkeyTab.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Translation\LogsTab.Designer.cs">
+      <DependentUpon>LogsTab.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Translation\HUDTab.Designer.cs">
+      <DependentUpon>HUDTab.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Translation\BrowseTab.Designer.cs">
+      <DependentUpon>BrowseTab.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Translation\MainTab.nl.Designer.cs">
+      <DependentUpon>MainTab.nl.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Translation\MainTab.Designer.cs">
+      <DependentUpon>MainTab.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Translation\AdvancedTab.Designer.cs">
+      <DependentUpon>AdvancedTab.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Translation\AboutTab.Designer.cs">
+      <DependentUpon>AboutTab.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Translation\PopupsTab.Designer.cs">
+      <DependentUpon>PopupsTab.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Translation\NotificationsTab.Designer.cs">
+      <DependentUpon>NotificationsTab.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Translation\PortraitTab.Designer.cs">
+      <DependentUpon>PortraitTab.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Translation\HealthListTab.Designer.cs">
+      <DependentUpon>HealthListTab.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Translation\HelpTab.Designer.cs">
+      <DependentUpon>HelpTab.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Translation\DatabaseTab.Designer.cs">
+      <DependentUpon>DatabaseTab.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Translation\HuntsTab.Designer.cs">
+      <DependentUpon>HuntsTab.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Translation\ScreenshotTab.Designer.cs">
+      <DependentUpon>ScreenshotTab.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Translation\SettingsTab.Designer.cs">
+      <DependentUpon>SettingsTab.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Translation\SystemTab.Designer.cs">
+      <DependentUpon>SystemTab.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Translation\SummaryTab.Designer.cs">
+      <DependentUpon>SummaryTab.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Translation\ResourcesBase.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResourcesBase.resx</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="HUDs\CurvedHUD.resx">
       <DependentUpon>CurvedHUD.cs</DependentUpon>
     </EmbeddedResource>
@@ -508,14 +634,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="Notifications\QuestForm.resx">
       <DependentUpon>QuestForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -588,8 +709,94 @@
     <EmbeddedResource Include="Tabs\HUDs\PortraitTab.resx">
       <DependentUpon>PortraitTab.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\AdvancedTab.resx">
+      <DependentUpon>AdvancedTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\AboutTab.resx">
+      <DependentUpon>AboutTab.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tabs\TabBase.resx">
       <DependentUpon>TabBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translation\AutoHotkeyTab.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AutoHotkeyTab.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translation\LogsTab.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LogsTab.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translation\HUDTab.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>HUDTab.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translation\BrowseTab.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>BrowseTab.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translation\MainTab.nl.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MainTab.nl.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translation\MainTab.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MainTab.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translation\AdvancedTab.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AdvancedTab.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translation\AboutTab.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AboutTab.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translation\PopupsTab.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PopupsTab.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translation\NotificationsTab.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>NotificationsTab.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translation\PortraitTab.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PortraitTab.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translation\HealthListTab.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>HealthListTab.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translation\HelpTab.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>HelpTab.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translation\DatabaseTab.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DatabaseTab.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translation\HuntsTab.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>HuntsTab.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translation\ScreenshotTab.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ScreenshotTab.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translation\SettingsTab.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SettingsTab.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translation\SystemTab.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SystemTab.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translation\SummaryTab.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SummaryTab.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translation\ResourcesBase.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResourcesBase.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="Database\Database.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -755,12 +962,45 @@
     <Content Include="Images\fire.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\flag-br.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\flag-nl.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\flag-pl.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\flag-usa.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\holy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\ice.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Images\icon-chrome.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Images\icon-firefox.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Images\icon-flash.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Images\icon-tibia.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Images\icon-tibia11.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Images\icon-github.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Images\icon-youtube.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Images\item_background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -803,6 +1043,9 @@
     <Content Include="Images\nextpage.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Images\noflash.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Images\nomapavailable.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -821,6 +1064,12 @@
     <Content Include="Images\orewagon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Images\outfit-noob.png" />
+    <None Include="Images\outfit-knight.png" />
+    <None Include="Images\outfit-sorcerer.png" />
+    <None Include="Images\outfit-druid.png" />
+    <None Include="Images\outfit-nobleman-poor.png" />
+    <None Include="Images\outfit-nobleman-fancy.png" />
     <Content Include="Images\Paladin.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

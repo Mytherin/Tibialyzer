@@ -45,8 +45,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreatureStatsForm));
             this.averageGoldLabel = new System.Windows.Forms.Label();
-            this.huntButton = new System.Windows.Forms.Label();
-            this.statsButton = new System.Windows.Forms.Label();
+            this.huntButton = new PrettyButton();
+            this.statsButton = new PrettyButton();
             this.abilitiesHeaderLabel = new System.Windows.Forms.Label();
             this.maxDamageLabel = new System.Windows.Forms.Label();
             this.abilitiesLabel = new System.Windows.Forms.Label();

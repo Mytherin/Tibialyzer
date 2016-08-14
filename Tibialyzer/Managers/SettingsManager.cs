@@ -299,6 +299,11 @@ C::NumpadPgDn
             setSettingIfNotSet("PortraitCenterYOffset", 0);
 
             setSettingIfNotSet("GatherExtraPlayerInformation", false);
+
+            setSettingIfNotSet("TibialyzerLanguage", "en-US");
+            setSettingIfNotSet("AutomaticallyDetectCharacter", true);
+            setSettingIfNotSet("AutomaticallyDownloadAddresses", true);
+            setSettingIfNotSet("TibiaClient", "Classic");
         }
 
         public static void ResetSettingsToDefault() {

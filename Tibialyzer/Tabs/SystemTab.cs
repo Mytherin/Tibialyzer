@@ -13,11 +13,12 @@ using System.Windows.Forms;
 namespace Tibialyzer {
     public partial class SystemTab : Form, TabInterface {
         public List<SystemCommand> customCommands = new List<SystemCommand>();
+        ToolTip tooltip = UIManager.CreateTooltip();
 
         public SystemTab() {
             InitializeComponent();
             InitializeSettings();
-            InitializeTooltips();
+            ApplyLocalization();
         }
 
         public void InitializeSettings() {
@@ -44,13 +45,51 @@ namespace Tibialyzer {
             CustomCommandList_ItemsChanged(null, null);
 
             Constants.OBSEnableWindowCapture = SettingsManager.getSettingBool("OBSEnableWindowCapture");
-            enableWindowCapture.Checked = Constants.OBSEnableWindowCapture;
+            enableWindowCaptureCheckbox.Checked = Constants.OBSEnableWindowCapture;
         }
 
-        public void InitializeTooltips() {
-            ToolTip tooltip = UIManager.CreateTooltip();
-
-            tooltip.SetToolTip(selectUpgradeTibialyzerButton, "Import settings from a previous Tibialyzer. Select the directory in which the previous Tibialyzer is located.");
+        public void ApplyLocalization() {
+            tooltip.RemoveAll();
+            customCommandsHeader.Text = Tibialyzer.Translation.SystemTab.customCommandsHeader;
+            showPopupWindowButton.Text = Tibialyzer.Translation.SystemTab.showPopupWindowButton;
+            selectUpgradeTibialyzerButton.Text = Tibialyzer.Translation.SystemTab.selectUpgradeTibialyzerButton;
+            importSettingsHeader.Text = Tibialyzer.Translation.SystemTab.importSettingsHeader;
+            saveImagesHeader.Text = Tibialyzer.Translation.SystemTab.saveImagesHeader;
+            enableWindowCaptureCheckbox.Text = Tibialyzer.Translation.SystemTab.enableWindowCaptureCheckbox;
+            obsSettingsHeader.Text = Tibialyzer.Translation.SystemTab.obsSettingsHeader;
+            createBackupButton.Text = Tibialyzer.Translation.SystemTab.createBackupButton;
+            restoreBackupButton.Text = Tibialyzer.Translation.SystemTab.restoreBackupButton;
+            backupSettingsHeader.Text = Tibialyzer.Translation.SystemTab.backupSettingsHeader;
+            saveLootImageButton.Text = Tibialyzer.Translation.SystemTab.saveLootImageButton;
+            saveDamageImageButton.Text = Tibialyzer.Translation.SystemTab.saveDamageImageButton;
+            automaticallyBackupSettingsCheckbox.Text = Tibialyzer.Translation.SystemTab.automaticallyBackupSettingsCheckbox;
+            maxDamagePlayersHeader.Text = Tibialyzer.Translation.SystemTab.maxDamagePlayersHeader;
+            parametersHeader.Text = Tibialyzer.Translation.SystemTab.parametersHeader;
+            saveSummaryImageButton.Text = Tibialyzer.Translation.SystemTab.saveSummaryImageButton;
+            systemCommandHeader.Text = Tibialyzer.Translation.SystemTab.systemCommandHeader;
+            tooltip.SetToolTip(selectUpgradeTibialyzerButton, Tibialyzer.Translation.SystemTab.selectUpgradeTibialyzerButtonTooltip);
+            tooltip.SetToolTip(saveDamageImageButton, Tibialyzer.Translation.SystemTab.saveDamageImageButtonTooltip);
+            tooltip.SetToolTip(saveLootImageButton, Tibialyzer.Translation.SystemTab.saveLootImageButtonTooltip);
+            tooltip.SetToolTip(saveSummaryImageButton, Tibialyzer.Translation.SystemTab.saveSummaryImageButtonTooltip);
+            int hudAnchorDropDownListSelectedIndex = hudAnchorDropDownList.SelectedIndex;
+            hudAnchorDropDownList.Items.Clear();
+            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_0);
+            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_1);
+            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_2);
+            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_3);
+            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_4);
+            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_5);
+            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_6);
+            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_7);
+            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_8);
+            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_9);
+            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_10);
+            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_11);
+            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_12);
+            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_13);
+            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_14);
+            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_15);
+            hudAnchorDropDownList.SelectedIndex = hudAnchorDropDownListSelectedIndex;
         }
 
         public IEnumerable<SystemCommand> GetCustomCommands() {
@@ -174,17 +213,7 @@ namespace Tibialyzer {
             customCommands[customCommandList.SelectedIndex].parameters = customCommandParameterBox.Text;
             SaveCommands();
         }
-
-        private void ControlMouseEnter(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormHoverColor;
-            (sender as Control).ForeColor = StyleManager.MainFormHoverForeColor;
-        }
-
-        private void ControlMouseLeave(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormButtonColor;
-            (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
-        }
-
+        
         private void showPopupWindow_Click(object sender, EventArgs e) {
             PopupManager.ShowPopupContainer();
         }
@@ -192,6 +221,60 @@ namespace Tibialyzer {
         private void enableWindowCapture_CheckedChanged(object sender, EventArgs e) {
             SettingsManager.setSetting("OBSEnableWindowCapture", (sender as CheckBox).Checked);
             Constants.OBSEnableWindowCapture = (sender as CheckBox).Checked;
+        }
+
+        private void saveLootImageButton_Click(object sender, EventArgs e) {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.AddExtension = true;
+            dialog.DefaultExt = "png";
+            dialog.Title = "Save Loot Image";
+            if (File.Exists("loot_screenshot.png")) {
+                int i = 1;
+                while (File.Exists("loot_screenshot (" + i.ToString() + ").png")) i++;
+                dialog.FileName = "loot_screenshot (" + i.ToString() + ").png";
+            } else {
+                dialog.FileName = "loot_screenshot.png";
+            }
+            DialogResult result = dialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK) {
+                CommandManager.ExecuteCommand("loot" + Constants.CommandSymbol + "screenshot" + Constants.CommandSymbol + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/"));
+            }
+
+        }
+        private void saveDamageImageButton_Click(object sender, EventArgs e) {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.AddExtension = true;
+            dialog.DefaultExt = "png";
+            dialog.Title = "Save Damage Image";
+            if (File.Exists("damage_screenshot.png")) {
+                int i = 1;
+                while (File.Exists("damage_screenshot (" + i.ToString() + ").png")) i++;
+                dialog.FileName = "damage_screenshot (" + i.ToString() + ").png";
+            } else {
+                dialog.FileName = "damage_screenshot.png";
+            }
+            DialogResult result = dialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK) {
+                CommandManager.ExecuteCommand("damage" + Constants.CommandSymbol + "screenshot" + Constants.CommandSymbol + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/"));
+            }
+        }
+
+        private void saveSummaryImageButton_Click(object sender, EventArgs e) {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.AddExtension = true;
+            dialog.DefaultExt = "png";
+            dialog.Title = "Save Damage Image";
+            if (File.Exists("summary_screenshot.png")) {
+                int i = 1;
+                while (File.Exists("summary_screenshot (" + i.ToString() + ").png")) i++;
+                dialog.FileName = "summary_screenshot (" + i.ToString() + ").png";
+            } else {
+                dialog.FileName = "summary_screenshot.png";
+            }
+            DialogResult result = dialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK) {
+                CommandManager.ExecuteCommand("summary" + Constants.CommandSymbol + "screenshot" + Constants.CommandSymbol + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/"));
+            }
         }
     }
 }

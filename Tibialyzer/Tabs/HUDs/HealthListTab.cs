@@ -13,12 +13,12 @@ namespace Tibialyzer {
         public HealthListTab() {
             InitializeComponent();
             InitializeSettings();
-            InitializeTooltips();
+            ApplyLocalization();
         }
 
         public void InitializeSettings() {
-            displayPlayerNameBox.Checked = SettingsManager.getSettingBool("HealthListDisplayNames");
-            displayPlayerImageBox.Checked = SettingsManager.getSettingBool("HealthListDisplayIcons");
+            displayPlayerNameCheckbox.Checked = SettingsManager.getSettingBool("HealthListDisplayNames");
+            displayPlayerImageCheckbox.Checked = SettingsManager.getSettingBool("HealthListDisplayIcons");
 
             nameListBox.Items.Clear();
             foreach (string str in SettingsManager.getSetting("HealthListPlayerNames")) {
@@ -28,8 +28,14 @@ namespace Tibialyzer {
             nameListBox.ItemsChanged += NameListBox_ItemsChanged; ;
         }
 
-        public void InitializeTooltips() {
-
+        public void ApplyLocalization() {
+            refreshButton.Text = Tibialyzer.Translation.HealthListTab.refreshButton;
+            healthListHeader.Text = Tibialyzer.Translation.HealthListTab.healthListHeader;
+            browseButton.Text = Tibialyzer.Translation.HealthListTab.browseButton;
+            displayPlayerImageCheckbox.Text = Tibialyzer.Translation.HealthListTab.displayPlayerImageCheckbox;
+            displayPlayerNameCheckbox.Text = Tibialyzer.Translation.HealthListTab.displayPlayerNameCheckbox;
+            playerImageHeader.Text = Tibialyzer.Translation.HealthListTab.playerImageHeader;
+            displayOptionsHeader.Text = Tibialyzer.Translation.HealthListTab.displayOptionsHeader;
         }
 
         private void NameListBox_ItemsChanged(object sender, EventArgs e) {
@@ -82,16 +88,6 @@ namespace Tibialyzer {
             if (MainForm.prevent_settings_update) return;
 
             SettingsManager.setSetting("HealthListDisplayIcons", (sender as CheckBox).Checked);
-        }
-
-        private void ControlMouseEnter(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormHoverColor;
-            (sender as Control).ForeColor = StyleManager.MainFormHoverForeColor;
-        }
-
-        private void ControlMouseLeave(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormButtonColor;
-            (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
         }
 
         private void refreshButton_Click(object sender, EventArgs e) {

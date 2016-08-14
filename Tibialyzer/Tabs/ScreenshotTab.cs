@@ -15,13 +15,13 @@ namespace Tibialyzer {
         public ScreenshotTab() {
             InitializeComponent();
             InitializeSettings();
-            InitializeTooltips();
+            ApplyLocalization();
         }
 
         public void InitializeSettings() {
-            this.screenshotAdvanceBox.Checked = SettingsManager.getSettingBool("AutoScreenshotAdvance");
-            this.screenshotRareBox.Checked = SettingsManager.getSettingBool("AutoScreenshotItemDrop");
-            this.screenshotDeathBox.Checked = SettingsManager.getSettingBool("AutoScreenshotDeath");
+            this.screenshotAdvanceCheckbox.Checked = SettingsManager.getSettingBool("AutoScreenshotAdvance");
+            this.screenshotOnRareItemCheckbox.Checked = SettingsManager.getSettingBool("AutoScreenshotItemDrop");
+            this.screenshotDeathCheckbox.Checked = SettingsManager.getSettingBool("AutoScreenshotDeath");
 
             this.enableScreenshotCheckbox.Checked = SettingsManager.getSettingBool("EnableScreenshots");
             if (SettingsManager.getSettingString("ScreenshotPath") == null || !Directory.Exists(SettingsManager.getSettingString("ScreenshotPath"))) {
@@ -39,8 +39,17 @@ namespace Tibialyzer {
             refreshScreenshots();
         }
 
-        public void InitializeTooltips() {
-
+        public void ApplyLocalization() {
+            enableScreenshotCheckbox.Text = Tibialyzer.Translation.ScreenshotTab.enableScreenshotCheckbox;
+            changeScreenshotDirectoryButton.Text = Tibialyzer.Translation.ScreenshotTab.changeScreenshotDirectoryButton;
+            screenshotValueLabel.Text = Tibialyzer.Translation.ScreenshotTab.screenshotValueLabel;
+            screenshotListHeader.Text = Tibialyzer.Translation.ScreenshotTab.screenshotListHeader;
+            screenshotAdvanceCheckbox.Text = Tibialyzer.Translation.ScreenshotTab.screenshotAdvanceCheckbox;
+            screenshotDeathCheckbox.Text = Tibialyzer.Translation.ScreenshotTab.screenshotDeathCheckbox;
+            screenshotDirectoryHeader.Text = Tibialyzer.Translation.ScreenshotTab.screenshotDirectoryHeader;
+            screenshotOptionsHeader.Text = Tibialyzer.Translation.ScreenshotTab.screenshotOptionsHeader;
+            openScreenshotDirectoryButton.Text = Tibialyzer.Translation.ScreenshotTab.openScreenshotDirectoryButton;
+            screenshotOnRareItemCheckbox.Text = Tibialyzer.Translation.ScreenshotTab.screenshotOnRareItemCheckbox;
         }
 
         public void refreshScreenshots() {
@@ -125,7 +134,7 @@ namespace Tibialyzer {
                             screenshotBox.Image.Dispose();
                         }
                         screenshotBox.Image = image;
-                        screenshotTitleLabel.Text = selectedImage;
+                        screenshotTitleHeader.Text = selectedImage;
                     }
                 } catch {
 
@@ -174,19 +183,9 @@ namespace Tibialyzer {
                 initialSize = (sender as Control).Size;
                 initialLocation = (sender as Control).Location;
                 imageStretched = true;
-                (sender as Control).Location = new Point(screenshotListLabel.Location.X, screenshotListLabel.Location.Y);
-                (sender as Control).Size = new Size(534, 497);
+                (sender as Control).Location = new Point(screenshotListHeader.Location.X - 9, screenshotListHeader.Location.Y);
+                (sender as Control).Size = new Size(650, 549);
             }
-        }
-
-        private void ControlMouseEnter(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormHoverColor;
-            (sender as Control).ForeColor = StyleManager.MainFormHoverForeColor;
-        }
-
-        private void ControlMouseLeave(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormButtonColor;
-            (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
         }
     }
 }

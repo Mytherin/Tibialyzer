@@ -23,255 +23,353 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.detectFlashClientButton = new System.Windows.Forms.Label();
-            this.expValueLabel = new System.Windows.Forms.Label();
-            this.lootOptionsHeaderLabel = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.mainExecuteTibialyzerCommandLabel = new System.Windows.Forms.Label();
-            this.saveDamageImageButton = new System.Windows.Forms.Label();
-            this.saveLootImageButton = new System.Windows.Forms.Label();
-            this.selectClientProgramButton = new System.Windows.Forms.Label();
-            this.mainOptionsLabel = new System.Windows.Forms.Label();
-            this.executeButton = new System.Windows.Forms.Label();
-            this.mainGuidesLabel = new System.Windows.Forms.Label();
-            this.namesLabel = new System.Windows.Forms.Label();
-            this.saveAllLootCheckbox = new Tibialyzer.PrettyCheckBox();
-            this.ignoreLowExperienceBox = new Tibialyzer.EnterTextBox();
-            this.ignoreLowExperienceButton = new Tibialyzer.PrettyCheckBox();
-            this.stackAllItemsCheckbox = new Tibialyzer.PrettyCheckBox();
+            this.executeTibialyzerCommandHeader = new Tibialyzer.PrettyHeader();
+            this.tibiaClientSelectionHeader = new Tibialyzer.PrettyHeader();
+            this.executeCommandButton = new Tibialyzer.PrettyButton();
+            this.updateMemoryAddressesHeader = new Tibialyzer.PrettyHeader();
+            this.characterNamesHeader = new Tibialyzer.PrettyHeader();
+            this.downloadNewAddressesButton = new Tibialyzer.PrettyButton();
+            this.generatePartialAddressesButton = new Tibialyzer.PrettyButton();
+            this.updateDatabaseButton = new Tibialyzer.PrettyButton();
+            this.classicClientButton = new Tibialyzer.PrettyButton();
+            this.tibia11ClientButton = new Tibialyzer.PrettyButton();
+            this.firefoxFlashClientButton = new Tibialyzer.PrettyButton();
+            this.chromeFlashClientButton = new Tibialyzer.PrettyButton();
+            this.otherFlashClientButton = new Tibialyzer.PrettyButton();
+            this.resourcesHeader = new Tibialyzer.PrettyHeader();
+            this.languageSelectionHeader = new Tibialyzer.PrettyHeader();
+            this.languageImageBox = new System.Windows.Forms.PictureBox();
+            this.gettingStartedGuideButton = new Tibialyzer.PrettyButton();
+            this.commonIssuesButton = new Tibialyzer.PrettyButton();
+            this.gettingStartedVideoButton = new Tibialyzer.PrettyButton();
+            this.languageDropDownList = new Tibialyzer.PrettyDropDownList();
+            this.automaticallyDetectCharacterCheckbox = new Tibialyzer.PrettyCheckBox();
+            this.automaticallyDownloadAddressesCheckbox = new Tibialyzer.PrettyCheckBox();
             this.nameListBox = new Tibialyzer.PrettyListBox();
             this.commandTextBox = new Tibialyzer.EnterTextBox();
-            this.saveSummaryImageButton = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.maxDamagePlayersBox = new Tibialyzer.PrettyDropDownList();
-            this.downloadAddressButton = new System.Windows.Forms.Label();
-            this.generateAddressButton = new System.Windows.Forms.Label();
-            this.updateDatabaseButton = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.languageImageBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // detectFlashClientButton
+            // executeTibialyzerCommandHeader
             // 
-            this.detectFlashClientButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.detectFlashClientButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.detectFlashClientButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.detectFlashClientButton.Location = new System.Drawing.Point(305, 74);
-            this.detectFlashClientButton.Name = "detectFlashClientButton";
-            this.detectFlashClientButton.Padding = new System.Windows.Forms.Padding(10);
-            this.detectFlashClientButton.Size = new System.Drawing.Size(226, 38);
-            this.detectFlashClientButton.TabIndex = 46;
-            this.detectFlashClientButton.Text = "Detect Flash Client";
-            this.detectFlashClientButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.detectFlashClientButton.Click += new System.EventHandler(this.detectFlashClientButton_Click);
-            this.detectFlashClientButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.detectFlashClientButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            this.executeTibialyzerCommandHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.executeTibialyzerCommandHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.executeTibialyzerCommandHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.executeTibialyzerCommandHeader.Location = new System.Drawing.Point(9, 486);
+            this.executeTibialyzerCommandHeader.Name = "executeTibialyzerCommandHeader";
+            this.executeTibialyzerCommandHeader.Size = new System.Drawing.Size(617, 30);
+            this.executeTibialyzerCommandHeader.TabIndex = 35;
+            this.executeTibialyzerCommandHeader.Text = "Execute Tibialyzer Command";
+            this.executeTibialyzerCommandHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // expValueLabel
+            // tibiaClientSelectionHeader
             // 
-            this.expValueLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.expValueLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.expValueLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.expValueLabel.Location = new System.Drawing.Point(3, 264);
-            this.expValueLabel.Name = "expValueLabel";
-            this.expValueLabel.Size = new System.Drawing.Size(99, 23);
-            this.expValueLabel.TabIndex = 44;
-            this.expValueLabel.Text = "Exp Value";
-            this.expValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.tibiaClientSelectionHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.tibiaClientSelectionHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tibiaClientSelectionHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.tibiaClientSelectionHeader.Location = new System.Drawing.Point(9, 9);
+            this.tibiaClientSelectionHeader.Name = "tibiaClientSelectionHeader";
+            this.tibiaClientSelectionHeader.Size = new System.Drawing.Size(617, 30);
+            this.tibiaClientSelectionHeader.TabIndex = 28;
+            this.tibiaClientSelectionHeader.Text = "Tibia Client Selection";
+            this.tibiaClientSelectionHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lootOptionsHeaderLabel
+            // executeCommandButton
             // 
-            this.lootOptionsHeaderLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.lootOptionsHeaderLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lootOptionsHeaderLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.lootOptionsHeaderLabel.Location = new System.Drawing.Point(305, 115);
-            this.lootOptionsHeaderLabel.Name = "lootOptionsHeaderLabel";
-            this.lootOptionsHeaderLabel.Size = new System.Drawing.Size(226, 30);
-            this.lootOptionsHeaderLabel.TabIndex = 37;
-            this.lootOptionsHeaderLabel.Text = "Loot Options";
-            this.lootOptionsHeaderLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.executeCommandButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.executeCommandButton.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.executeCommandButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.executeCommandButton.Location = new System.Drawing.Point(470, 516);
+            this.executeCommandButton.Name = "executeCommandButton";
+            this.executeCommandButton.Size = new System.Drawing.Size(156, 23);
+            this.executeCommandButton.TabIndex = 27;
+            this.executeCommandButton.Text = "Execute Command";
+            this.executeCommandButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.executeCommandButton.Click += new System.EventHandler(this.executeCommand_Click);
             // 
-            // label9
+            // updateMemoryAddressesHeader
             // 
-            this.label9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label9.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label9.Location = new System.Drawing.Point(3, 154);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(296, 30);
-            this.label9.TabIndex = 36;
-            this.label9.Text = "Loot Display Options";
-            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.updateMemoryAddressesHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.updateMemoryAddressesHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.updateMemoryAddressesHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.updateMemoryAddressesHeader.Location = new System.Drawing.Point(9, 329);
+            this.updateMemoryAddressesHeader.Name = "updateMemoryAddressesHeader";
+            this.updateMemoryAddressesHeader.Size = new System.Drawing.Size(617, 30);
+            this.updateMemoryAddressesHeader.TabIndex = 23;
+            this.updateMemoryAddressesHeader.Text = "Update Memory Addresses";
+            this.updateMemoryAddressesHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // mainExecuteTibialyzerCommandLabel
+            // characterNamesHeader
             // 
-            this.mainExecuteTibialyzerCommandLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.mainExecuteTibialyzerCommandLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mainExecuteTibialyzerCommandLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.mainExecuteTibialyzerCommandLabel.Location = new System.Drawing.Point(9, 438);
-            this.mainExecuteTibialyzerCommandLabel.Name = "mainExecuteTibialyzerCommandLabel";
-            this.mainExecuteTibialyzerCommandLabel.Size = new System.Drawing.Size(523, 30);
-            this.mainExecuteTibialyzerCommandLabel.TabIndex = 35;
-            this.mainExecuteTibialyzerCommandLabel.Text = "Execute Tibialyzer Command";
-            this.mainExecuteTibialyzerCommandLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.characterNamesHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.characterNamesHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.characterNamesHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.characterNamesHeader.Location = new System.Drawing.Point(9, 90);
+            this.characterNamesHeader.Name = "characterNamesHeader";
+            this.characterNamesHeader.Size = new System.Drawing.Size(299, 30);
+            this.characterNamesHeader.TabIndex = 1;
+            this.characterNamesHeader.Text = "Character Names";
+            this.characterNamesHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // saveDamageImageButton
+            // downloadNewAddressesButton
             // 
-            this.saveDamageImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.saveDamageImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saveDamageImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.saveDamageImageButton.Location = new System.Drawing.Point(305, 181);
-            this.saveDamageImageButton.Name = "saveDamageImageButton";
-            this.saveDamageImageButton.Padding = new System.Windows.Forms.Padding(10);
-            this.saveDamageImageButton.Size = new System.Drawing.Size(226, 39);
-            this.saveDamageImageButton.TabIndex = 31;
-            this.saveDamageImageButton.Text = "Save Damage Image";
-            this.saveDamageImageButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.saveDamageImageButton.Click += new System.EventHandler(this.damageButton_Click);
-            this.saveDamageImageButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.saveDamageImageButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            this.downloadNewAddressesButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.downloadNewAddressesButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.downloadNewAddressesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.downloadNewAddressesButton.Location = new System.Drawing.Point(9, 399);
+            this.downloadNewAddressesButton.Name = "downloadNewAddressesButton";
+            this.downloadNewAddressesButton.Padding = new System.Windows.Forms.Padding(10);
+            this.downloadNewAddressesButton.Size = new System.Drawing.Size(299, 40);
+            this.downloadNewAddressesButton.TabIndex = 50;
+            this.downloadNewAddressesButton.Text = "Download New Addresses";
+            this.downloadNewAddressesButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.downloadNewAddressesButton.Click += new System.EventHandler(this.downloadAddressButton_Click);
             // 
-            // saveLootImageButton
+            // generatePartialAddressesButton
             // 
-            this.saveLootImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.saveLootImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saveLootImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.saveLootImageButton.Location = new System.Drawing.Point(305, 143);
-            this.saveLootImageButton.Name = "saveLootImageButton";
-            this.saveLootImageButton.Padding = new System.Windows.Forms.Padding(10);
-            this.saveLootImageButton.Size = new System.Drawing.Size(226, 38);
-            this.saveLootImageButton.TabIndex = 30;
-            this.saveLootImageButton.Text = "Save Loot Image";
-            this.saveLootImageButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.saveLootImageButton.Click += new System.EventHandler(this.saveLootImage_Click);
-            this.saveLootImageButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.saveLootImageButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            this.generatePartialAddressesButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.generatePartialAddressesButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.generatePartialAddressesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.generatePartialAddressesButton.Location = new System.Drawing.Point(9, 439);
+            this.generatePartialAddressesButton.Name = "generatePartialAddressesButton";
+            this.generatePartialAddressesButton.Padding = new System.Windows.Forms.Padding(10);
+            this.generatePartialAddressesButton.Size = new System.Drawing.Size(299, 40);
+            this.generatePartialAddressesButton.TabIndex = 51;
+            this.generatePartialAddressesButton.Text = "Generate Partial Addresses";
+            this.generatePartialAddressesButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.generatePartialAddressesButton.Click += new System.EventHandler(this.generateAddressButton_Click);
             // 
-            // selectClientProgramButton
+            // updateDatabaseButton
             // 
-            this.selectClientProgramButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.selectClientProgramButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.selectClientProgramButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.selectClientProgramButton.Location = new System.Drawing.Point(305, 36);
-            this.selectClientProgramButton.Name = "selectClientProgramButton";
-            this.selectClientProgramButton.Padding = new System.Windows.Forms.Padding(10);
-            this.selectClientProgramButton.Size = new System.Drawing.Size(226, 38);
-            this.selectClientProgramButton.TabIndex = 29;
-            this.selectClientProgramButton.Text = "Select Tibia Client";
-            this.selectClientProgramButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.selectClientProgramButton.Click += new System.EventHandler(this.selectClientButton_Click);
-            this.selectClientProgramButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.selectClientProgramButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            this.updateDatabaseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.updateDatabaseButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.updateDatabaseButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.updateDatabaseButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.updateDatabaseButton.Location = new System.Drawing.Point(327, 359);
+            this.updateDatabaseButton.Name = "updateDatabaseButton";
+            this.updateDatabaseButton.Padding = new System.Windows.Forms.Padding(10);
+            this.updateDatabaseButton.Size = new System.Drawing.Size(299, 40);
+            this.updateDatabaseButton.TabIndex = 52;
+            this.updateDatabaseButton.Text = "Update Database";
+            this.updateDatabaseButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.updateDatabaseButton.Click += new System.EventHandler(this.updateDatabaseLabel_Click);
             // 
-            // mainOptionsLabel
+            // classicClientButton
             // 
-            this.mainOptionsLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.mainOptionsLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mainOptionsLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.mainOptionsLabel.Location = new System.Drawing.Point(305, 6);
-            this.mainOptionsLabel.Name = "mainOptionsLabel";
-            this.mainOptionsLabel.Size = new System.Drawing.Size(226, 30);
-            this.mainOptionsLabel.TabIndex = 28;
-            this.mainOptionsLabel.Text = "Global Settings";
-            this.mainOptionsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.classicClientButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.classicClientButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.classicClientButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.classicClientButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.classicClientButton.Image = global::Tibialyzer.Properties.Resources.icon_tibia;
+            this.classicClientButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.classicClientButton.Location = new System.Drawing.Point(9, 39);
+            this.classicClientButton.Name = "classicClientButton";
+            this.classicClientButton.Padding = new System.Windows.Forms.Padding(10);
+            this.classicClientButton.Size = new System.Drawing.Size(124, 40);
+            this.classicClientButton.TabIndex = 54;
+            this.classicClientButton.Text = "Classic";
+            this.classicClientButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.classicClientButton.Click += new System.EventHandler(this.classicClientButton_Click);
             // 
-            // executeButton
+            // tibia11ClientButton
             // 
-            this.executeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.executeButton.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.executeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.executeButton.Location = new System.Drawing.Point(381, 468);
-            this.executeButton.Name = "executeButton";
-            this.executeButton.Size = new System.Drawing.Size(150, 23);
-            this.executeButton.TabIndex = 27;
-            this.executeButton.Text = "Execute Command";
-            this.executeButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.executeButton.Click += new System.EventHandler(this.executeCommand_Click);
-            this.executeButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.executeButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            this.tibia11ClientButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.tibia11ClientButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tibia11ClientButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tibia11ClientButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.tibia11ClientButton.Image = global::Tibialyzer.Properties.Resources.icon_tibia11;
+            this.tibia11ClientButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.tibia11ClientButton.Location = new System.Drawing.Point(132, 39);
+            this.tibia11ClientButton.Name = "tibia11ClientButton";
+            this.tibia11ClientButton.Padding = new System.Windows.Forms.Padding(10);
+            this.tibia11ClientButton.Size = new System.Drawing.Size(124, 40);
+            this.tibia11ClientButton.TabIndex = 55;
+            this.tibia11ClientButton.Text = "Tibia 11";
+            this.tibia11ClientButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.tibia11ClientButton.Click += new System.EventHandler(this.tibia11ClientButton_Click);
             // 
-            // mainGuidesLabel
+            // firefoxFlashClientButton
             // 
-            this.mainGuidesLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.mainGuidesLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mainGuidesLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.mainGuidesLabel.Location = new System.Drawing.Point(9, 329);
-            this.mainGuidesLabel.Name = "mainGuidesLabel";
-            this.mainGuidesLabel.Size = new System.Drawing.Size(523, 30);
-            this.mainGuidesLabel.TabIndex = 23;
-            this.mainGuidesLabel.Text = "Update Memory Addresses";
-            this.mainGuidesLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.firefoxFlashClientButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.firefoxFlashClientButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.firefoxFlashClientButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.firefoxFlashClientButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.firefoxFlashClientButton.Image = global::Tibialyzer.Properties.Resources.icon_firefox;
+            this.firefoxFlashClientButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.firefoxFlashClientButton.Location = new System.Drawing.Point(255, 39);
+            this.firefoxFlashClientButton.Name = "firefoxFlashClientButton";
+            this.firefoxFlashClientButton.Padding = new System.Windows.Forms.Padding(10);
+            this.firefoxFlashClientButton.Size = new System.Drawing.Size(124, 40);
+            this.firefoxFlashClientButton.TabIndex = 56;
+            this.firefoxFlashClientButton.Text = "Firefox";
+            this.firefoxFlashClientButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.firefoxFlashClientButton.Click += new System.EventHandler(this.firefoxFlashClientButton_Click);
             // 
-            // namesLabel
+            // chromeFlashClientButton
             // 
-            this.namesLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.namesLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.namesLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.namesLabel.Location = new System.Drawing.Point(3, 6);
-            this.namesLabel.Name = "namesLabel";
-            this.namesLabel.Size = new System.Drawing.Size(296, 30);
-            this.namesLabel.TabIndex = 1;
-            this.namesLabel.Text = "Character Names";
-            this.namesLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chromeFlashClientButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.chromeFlashClientButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.chromeFlashClientButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chromeFlashClientButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.chromeFlashClientButton.Image = global::Tibialyzer.Properties.Resources.icon_chrome;
+            this.chromeFlashClientButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.chromeFlashClientButton.Location = new System.Drawing.Point(378, 39);
+            this.chromeFlashClientButton.Name = "chromeFlashClientButton";
+            this.chromeFlashClientButton.Padding = new System.Windows.Forms.Padding(10);
+            this.chromeFlashClientButton.Size = new System.Drawing.Size(124, 40);
+            this.chromeFlashClientButton.TabIndex = 57;
+            this.chromeFlashClientButton.Text = "Chrome";
+            this.chromeFlashClientButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chromeFlashClientButton.Click += new System.EventHandler(this.chromeFlashClientButton_Click);
             // 
-            // saveAllLootCheckbox
+            // otherFlashClientButton
             // 
-            this.saveAllLootCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.saveAllLootCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saveAllLootCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.saveAllLootCheckbox.Location = new System.Drawing.Point(3, 287);
-            this.saveAllLootCheckbox.Name = "saveAllLootCheckbox";
-            this.saveAllLootCheckbox.Padding = new System.Windows.Forms.Padding(10);
-            this.saveAllLootCheckbox.Size = new System.Drawing.Size(296, 40);
-            this.saveAllLootCheckbox.TabIndex = 45;
-            this.saveAllLootCheckbox.Text = "Automatically Write Loot To File";
-            this.saveAllLootCheckbox.UseVisualStyleBackColor = false;
-            this.saveAllLootCheckbox.CheckedChanged += new System.EventHandler(this.saveAllLootCheckbox_CheckedChanged);
-            this.saveAllLootCheckbox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.saveAllLootCheckbox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            this.otherFlashClientButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.otherFlashClientButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.otherFlashClientButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.otherFlashClientButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.otherFlashClientButton.Image = global::Tibialyzer.Properties.Resources.icon_flash;
+            this.otherFlashClientButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.otherFlashClientButton.Location = new System.Drawing.Point(501, 39);
+            this.otherFlashClientButton.Name = "otherFlashClientButton";
+            this.otherFlashClientButton.Padding = new System.Windows.Forms.Padding(10);
+            this.otherFlashClientButton.Size = new System.Drawing.Size(125, 40);
+            this.otherFlashClientButton.TabIndex = 58;
+            this.otherFlashClientButton.Text = "Other";
+            this.otherFlashClientButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.otherFlashClientButton.Click += new System.EventHandler(this.otherFlashClientButton_Click);
             // 
-            // ignoreLowExperienceBox
+            // resourcesHeader
             // 
-            this.ignoreLowExperienceBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.ignoreLowExperienceBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ignoreLowExperienceBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
-            this.ignoreLowExperienceBox.Location = new System.Drawing.Point(101, 264);
-            this.ignoreLowExperienceBox.Name = "ignoreLowExperienceBox";
-            this.ignoreLowExperienceBox.Size = new System.Drawing.Size(198, 23);
-            this.ignoreLowExperienceBox.TabIndex = 43;
-            this.ignoreLowExperienceBox.TextChanged += new System.EventHandler(this.ignoreLowExperienceBox_TextChanged);
-            this.ignoreLowExperienceBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.ignoreLowExperienceBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            this.resourcesHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.resourcesHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.resourcesHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.resourcesHeader.Location = new System.Drawing.Point(327, 166);
+            this.resourcesHeader.Name = "resourcesHeader";
+            this.resourcesHeader.Size = new System.Drawing.Size(299, 30);
+            this.resourcesHeader.TabIndex = 60;
+            this.resourcesHeader.Text = "Resources";
+            this.resourcesHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // ignoreLowExperienceButton
+            // languageSelectionHeader
             // 
-            this.ignoreLowExperienceButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.ignoreLowExperienceButton.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ignoreLowExperienceButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.ignoreLowExperienceButton.Location = new System.Drawing.Point(3, 224);
-            this.ignoreLowExperienceButton.Name = "ignoreLowExperienceButton";
-            this.ignoreLowExperienceButton.Padding = new System.Windows.Forms.Padding(10);
-            this.ignoreLowExperienceButton.Size = new System.Drawing.Size(296, 40);
-            this.ignoreLowExperienceButton.TabIndex = 39;
-            this.ignoreLowExperienceButton.Text = "Ignore Low Experience Creatures";
-            this.ignoreLowExperienceButton.UseVisualStyleBackColor = false;
-            this.ignoreLowExperienceButton.CheckedChanged += new System.EventHandler(this.ignoreLowExperienceButton_CheckedChanged);
-            this.ignoreLowExperienceButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.ignoreLowExperienceButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            this.languageSelectionHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.languageSelectionHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.languageSelectionHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.languageSelectionHeader.Location = new System.Drawing.Point(327, 90);
+            this.languageSelectionHeader.Name = "languageSelectionHeader";
+            this.languageSelectionHeader.Size = new System.Drawing.Size(299, 30);
+            this.languageSelectionHeader.TabIndex = 61;
+            this.languageSelectionHeader.Text = "Language";
+            this.languageSelectionHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // stackAllItemsCheckbox
+            // languageImageBox
             // 
-            this.stackAllItemsCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.stackAllItemsCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.stackAllItemsCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.stackAllItemsCheckbox.Location = new System.Drawing.Point(3, 184);
-            this.stackAllItemsCheckbox.Name = "stackAllItemsCheckbox";
-            this.stackAllItemsCheckbox.Padding = new System.Windows.Forms.Padding(10);
-            this.stackAllItemsCheckbox.Size = new System.Drawing.Size(296, 40);
-            this.stackAllItemsCheckbox.TabIndex = 38;
-            this.stackAllItemsCheckbox.Text = "Display All Items As Stackable";
-            this.stackAllItemsCheckbox.UseVisualStyleBackColor = false;
-            this.stackAllItemsCheckbox.CheckedChanged += new System.EventHandler(this.stackAllItemsCheckbox_CheckedChanged);
-            this.stackAllItemsCheckbox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.stackAllItemsCheckbox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
+            this.languageImageBox.BackColor = System.Drawing.Color.Transparent;
+            this.languageImageBox.Location = new System.Drawing.Point(330, 120);
+            this.languageImageBox.Name = "languageImageBox";
+            this.languageImageBox.Size = new System.Drawing.Size(36, 24);
+            this.languageImageBox.TabIndex = 63;
+            this.languageImageBox.TabStop = false;
+            // 
+            // gettingStartedGuideButton
+            // 
+            this.gettingStartedGuideButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.gettingStartedGuideButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.gettingStartedGuideButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gettingStartedGuideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.gettingStartedGuideButton.Image = global::Tibialyzer.Properties.Resources.icon_github;
+            this.gettingStartedGuideButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.gettingStartedGuideButton.Location = new System.Drawing.Point(327, 196);
+            this.gettingStartedGuideButton.Name = "gettingStartedGuideButton";
+            this.gettingStartedGuideButton.Padding = new System.Windows.Forms.Padding(10);
+            this.gettingStartedGuideButton.Size = new System.Drawing.Size(299, 40);
+            this.gettingStartedGuideButton.TabIndex = 64;
+            this.gettingStartedGuideButton.Text = "Getting Started Guide";
+            this.gettingStartedGuideButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.gettingStartedGuideButton.Click += new System.EventHandler(this.gettingStartedGuideButton_Click);
+            // 
+            // commonIssuesButton
+            // 
+            this.commonIssuesButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.commonIssuesButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.commonIssuesButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.commonIssuesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.commonIssuesButton.Image = global::Tibialyzer.Properties.Resources.icon_github;
+            this.commonIssuesButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.commonIssuesButton.Location = new System.Drawing.Point(327, 235);
+            this.commonIssuesButton.Name = "commonIssuesButton";
+            this.commonIssuesButton.Padding = new System.Windows.Forms.Padding(10);
+            this.commonIssuesButton.Size = new System.Drawing.Size(299, 40);
+            this.commonIssuesButton.TabIndex = 65;
+            this.commonIssuesButton.Text = "Common Issues";
+            this.commonIssuesButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.commonIssuesButton.Click += new System.EventHandler(this.commonIssuesButton_Click);
+            // 
+            // gettingStartedVideoButton
+            // 
+            this.gettingStartedVideoButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.gettingStartedVideoButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.gettingStartedVideoButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gettingStartedVideoButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.gettingStartedVideoButton.Image = global::Tibialyzer.Properties.Resources.icon_youtube;
+            this.gettingStartedVideoButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.gettingStartedVideoButton.Location = new System.Drawing.Point(327, 274);
+            this.gettingStartedVideoButton.Name = "gettingStartedVideoButton";
+            this.gettingStartedVideoButton.Padding = new System.Windows.Forms.Padding(10);
+            this.gettingStartedVideoButton.Size = new System.Drawing.Size(299, 40);
+            this.gettingStartedVideoButton.TabIndex = 66;
+            this.gettingStartedVideoButton.Text = "Getting Started Video";
+            this.gettingStartedVideoButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.gettingStartedVideoButton.Click += new System.EventHandler(this.gettingStartedVideoButton_Click);
+            // 
+            // languageDropDownList
+            // 
+            this.languageDropDownList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.languageDropDownList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.languageDropDownList.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.languageDropDownList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.languageDropDownList.FormattingEnabled = true;
+            this.languageDropDownList.Items.AddRange(new object[] {
+            "English",
+            "Nederlands",
+            "Polskie",
+            "Português"});
+            this.languageDropDownList.Location = new System.Drawing.Point(368, 120);
+            this.languageDropDownList.Name = "languageDropDownList";
+            this.languageDropDownList.Size = new System.Drawing.Size(258, 24);
+            this.languageDropDownList.TabIndex = 62;
+            this.languageDropDownList.SelectedIndexChanged += new System.EventHandler(this.languageBox_SelectedIndexChanged);
+            // 
+            // automaticallyDetectCharacterCheckbox
+            // 
+            this.automaticallyDetectCharacterCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.automaticallyDetectCharacterCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.automaticallyDetectCharacterCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.automaticallyDetectCharacterCheckbox.Image = global::Tibialyzer.Properties.Resources.noflash;
+            this.automaticallyDetectCharacterCheckbox.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.automaticallyDetectCharacterCheckbox.Location = new System.Drawing.Point(9, 283);
+            this.automaticallyDetectCharacterCheckbox.Name = "automaticallyDetectCharacterCheckbox";
+            this.automaticallyDetectCharacterCheckbox.Padding = new System.Windows.Forms.Padding(10);
+            this.automaticallyDetectCharacterCheckbox.Size = new System.Drawing.Size(299, 40);
+            this.automaticallyDetectCharacterCheckbox.TabIndex = 59;
+            this.automaticallyDetectCharacterCheckbox.Text = "Automatically Detect Character";
+            this.automaticallyDetectCharacterCheckbox.UseVisualStyleBackColor = false;
+            this.automaticallyDetectCharacterCheckbox.CheckedChanged += new System.EventHandler(this.automaticallyDetectCharacterCheckbox_CheckedChanged);
+            // 
+            // automaticallyDownloadAddressesCheckbox
+            // 
+            this.automaticallyDownloadAddressesCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.automaticallyDownloadAddressesCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.automaticallyDownloadAddressesCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.automaticallyDownloadAddressesCheckbox.Location = new System.Drawing.Point(9, 359);
+            this.automaticallyDownloadAddressesCheckbox.Name = "automaticallyDownloadAddressesCheckbox";
+            this.automaticallyDownloadAddressesCheckbox.Padding = new System.Windows.Forms.Padding(10);
+            this.automaticallyDownloadAddressesCheckbox.Size = new System.Drawing.Size(299, 40);
+            this.automaticallyDownloadAddressesCheckbox.TabIndex = 53;
+            this.automaticallyDownloadAddressesCheckbox.Text = "Automatically Download Addresses";
+            this.automaticallyDownloadAddressesCheckbox.UseVisualStyleBackColor = false;
+            this.automaticallyDownloadAddressesCheckbox.CheckedChanged += new System.EventHandler(this.automaticallyDownloadAddressesCheckbox_CheckedChanged);
             // 
             // nameListBox
             // 
@@ -286,9 +384,9 @@
             "Mytherin",
             "Robin Razend",
             "Scheirke"});
-            this.nameListBox.Location = new System.Drawing.Point(3, 36);
+            this.nameListBox.Location = new System.Drawing.Point(9, 120);
             this.nameListBox.Name = "nameListBox";
-            this.nameListBox.Size = new System.Drawing.Size(296, 115);
+            this.nameListBox.Size = new System.Drawing.Size(299, 155);
             this.nameListBox.TabIndex = 0;
             // 
             // commandTextBox
@@ -296,185 +394,74 @@
             this.commandTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.commandTextBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.commandTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
-            this.commandTextBox.Location = new System.Drawing.Point(9, 468);
+            this.commandTextBox.Location = new System.Drawing.Point(9, 516);
             this.commandTextBox.Name = "commandTextBox";
-            this.commandTextBox.Size = new System.Drawing.Size(372, 23);
+            this.commandTextBox.Size = new System.Drawing.Size(461, 23);
             this.commandTextBox.TabIndex = 9;
             this.commandTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.commandTextBox_KeyPress);
-            this.commandTextBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.commandTextBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
-            // saveSummaryImageButton
-            // 
-            this.saveSummaryImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.saveSummaryImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saveSummaryImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.saveSummaryImageButton.Location = new System.Drawing.Point(305, 220);
-            this.saveSummaryImageButton.Name = "saveSummaryImageButton";
-            this.saveSummaryImageButton.Padding = new System.Windows.Forms.Padding(10);
-            this.saveSummaryImageButton.Size = new System.Drawing.Size(226, 38);
-            this.saveSummaryImageButton.TabIndex = 47;
-            this.saveSummaryImageButton.Text = "Save Summary Image";
-            this.saveSummaryImageButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.saveSummaryImageButton.Click += new System.EventHandler(this.saveSummaryImageButton_Click);
-            this.saveSummaryImageButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.saveSummaryImageButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label1.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label1.Location = new System.Drawing.Point(305, 264);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(226, 30);
-            this.label1.TabIndex = 48;
-            this.label1.Text = "Max Damage@ Players";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // maxDamagePlayersBox
-            // 
-            this.maxDamagePlayersBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.maxDamagePlayersBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.maxDamagePlayersBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.maxDamagePlayersBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.maxDamagePlayersBox.FormattingEnabled = true;
-            this.maxDamagePlayersBox.Items.AddRange(new object[] {
-            "Any",
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15"});
-            this.maxDamagePlayersBox.Location = new System.Drawing.Point(305, 295);
-            this.maxDamagePlayersBox.Name = "maxDamagePlayersBox";
-            this.maxDamagePlayersBox.Size = new System.Drawing.Size(226, 24);
-            this.maxDamagePlayersBox.TabIndex = 49;
-            this.maxDamagePlayersBox.SelectedIndexChanged += new System.EventHandler(this.maxDamagePlayersBox_SelectedIndexChanged);
-            this.maxDamagePlayersBox.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.maxDamagePlayersBox.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
-            // downloadAddressButton
-            // 
-            this.downloadAddressButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.downloadAddressButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.downloadAddressButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.downloadAddressButton.Location = new System.Drawing.Point(9, 359);
-            this.downloadAddressButton.Name = "downloadAddressButton";
-            this.downloadAddressButton.Padding = new System.Windows.Forms.Padding(10);
-            this.downloadAddressButton.Size = new System.Drawing.Size(226, 38);
-            this.downloadAddressButton.TabIndex = 50;
-            this.downloadAddressButton.Text = "Download New Addresses";
-            this.downloadAddressButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.downloadAddressButton.Click += new System.EventHandler(this.downloadAddressButton_Click);
-            this.downloadAddressButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.downloadAddressButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
-            // generateAddressButton
-            // 
-            this.generateAddressButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.generateAddressButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.generateAddressButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.generateAddressButton.Location = new System.Drawing.Point(9, 397);
-            this.generateAddressButton.Name = "generateAddressButton";
-            this.generateAddressButton.Padding = new System.Windows.Forms.Padding(10);
-            this.generateAddressButton.Size = new System.Drawing.Size(226, 38);
-            this.generateAddressButton.TabIndex = 51;
-            this.generateAddressButton.Text = "Generate Partial Addresses";
-            this.generateAddressButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.generateAddressButton.Click += new System.EventHandler(this.generateAddressButton_Click);
-            this.generateAddressButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.generateAddressButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
-            // 
-            // updateDatabaseButton
-            // 
-            this.updateDatabaseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.updateDatabaseButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.updateDatabaseButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.updateDatabaseButton.Location = new System.Drawing.Point(306, 359);
-            this.updateDatabaseButton.Name = "updateDatabaseButton";
-            this.updateDatabaseButton.Padding = new System.Windows.Forms.Padding(10);
-            this.updateDatabaseButton.Size = new System.Drawing.Size(226, 38);
-            this.updateDatabaseButton.TabIndex = 52;
-            this.updateDatabaseButton.Text = "Update Database";
-            this.updateDatabaseButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.updateDatabaseButton.Click += new System.EventHandler(this.updateDatabaseLabel_Click);
-            this.updateDatabaseButton.MouseEnter += new System.EventHandler(this.ControlMouseEnter);
-            this.updateDatabaseButton.MouseLeave += new System.EventHandler(this.ControlMouseLeave);
             // 
             // MainTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
-            this.ClientSize = new System.Drawing.Size(538, 514);
+            this.ClientSize = new System.Drawing.Size(638, 549);
+            this.Controls.Add(this.gettingStartedVideoButton);
+            this.Controls.Add(this.commonIssuesButton);
+            this.Controls.Add(this.gettingStartedGuideButton);
+            this.Controls.Add(this.languageImageBox);
+            this.Controls.Add(this.languageDropDownList);
+            this.Controls.Add(this.languageSelectionHeader);
+            this.Controls.Add(this.resourcesHeader);
+            this.Controls.Add(this.automaticallyDetectCharacterCheckbox);
+            this.Controls.Add(this.otherFlashClientButton);
+            this.Controls.Add(this.chromeFlashClientButton);
+            this.Controls.Add(this.firefoxFlashClientButton);
+            this.Controls.Add(this.tibia11ClientButton);
+            this.Controls.Add(this.classicClientButton);
+            this.Controls.Add(this.automaticallyDownloadAddressesCheckbox);
             this.Controls.Add(this.updateDatabaseButton);
-            this.Controls.Add(this.generateAddressButton);
-            this.Controls.Add(this.downloadAddressButton);
-            this.Controls.Add(this.maxDamagePlayersBox);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.saveSummaryImageButton);
-            this.Controls.Add(this.detectFlashClientButton);
-            this.Controls.Add(this.saveAllLootCheckbox);
-            this.Controls.Add(this.expValueLabel);
-            this.Controls.Add(this.ignoreLowExperienceBox);
-            this.Controls.Add(this.ignoreLowExperienceButton);
-            this.Controls.Add(this.stackAllItemsCheckbox);
-            this.Controls.Add(this.lootOptionsHeaderLabel);
-            this.Controls.Add(this.label9);
-            this.Controls.Add(this.mainExecuteTibialyzerCommandLabel);
-            this.Controls.Add(this.saveDamageImageButton);
-            this.Controls.Add(this.saveLootImageButton);
-            this.Controls.Add(this.selectClientProgramButton);
-            this.Controls.Add(this.mainOptionsLabel);
-            this.Controls.Add(this.executeButton);
-            this.Controls.Add(this.mainGuidesLabel);
+            this.Controls.Add(this.generatePartialAddressesButton);
+            this.Controls.Add(this.downloadNewAddressesButton);
+            this.Controls.Add(this.executeTibialyzerCommandHeader);
+            this.Controls.Add(this.tibiaClientSelectionHeader);
+            this.Controls.Add(this.executeCommandButton);
+            this.Controls.Add(this.updateMemoryAddressesHeader);
             this.Controls.Add(this.nameListBox);
-            this.Controls.Add(this.namesLabel);
+            this.Controls.Add(this.characterNamesHeader);
             this.Controls.Add(this.commandTextBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MainTab";
             this.Text = "TabBase";
+            ((System.ComponentModel.ISupportInitialize)(this.languageImageBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
-
-        private System.Windows.Forms.Label detectFlashClientButton;
-        private PrettyCheckBox saveAllLootCheckbox;
-        private System.Windows.Forms.Label expValueLabel;
-        private EnterTextBox ignoreLowExperienceBox;
-        private PrettyCheckBox ignoreLowExperienceButton;
-        private PrettyCheckBox stackAllItemsCheckbox;
-        private System.Windows.Forms.Label lootOptionsHeaderLabel;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label mainExecuteTibialyzerCommandLabel;
-        private System.Windows.Forms.Label saveDamageImageButton;
-        private System.Windows.Forms.Label saveLootImageButton;
-        private System.Windows.Forms.Label selectClientProgramButton;
-        private System.Windows.Forms.Label mainOptionsLabel;
-        private System.Windows.Forms.Label executeButton;
-        private System.Windows.Forms.Label mainGuidesLabel;
         private PrettyListBox nameListBox;
-        private System.Windows.Forms.Label namesLabel;
         private EnterTextBox commandTextBox;
         #endregion
-
-        private System.Windows.Forms.Label saveSummaryImageButton;
-        private System.Windows.Forms.Label label1;
-        private PrettyDropDownList maxDamagePlayersBox;
-        private System.Windows.Forms.Label downloadAddressButton;
-        private System.Windows.Forms.Label generateAddressButton;
-        private System.Windows.Forms.Label updateDatabaseButton;
+        private PrettyCheckBox automaticallyDownloadAddressesCheckbox;
+        private PrettyCheckBox automaticallyDetectCharacterCheckbox;
+        private PrettyDropDownList languageDropDownList;
+        private System.Windows.Forms.PictureBox languageImageBox;
+        private PrettyButton gettingStartedVideoButton;
+        private PrettyButton commonIssuesButton;
+        private PrettyButton gettingStartedGuideButton;
+        private PrettyHeader languageSelectionHeader;
+        private PrettyHeader resourcesHeader;
+        private PrettyButton otherFlashClientButton;
+        private PrettyButton chromeFlashClientButton;
+        private PrettyButton firefoxFlashClientButton;
+        private PrettyButton tibia11ClientButton;
+        private PrettyButton classicClientButton;
+        private PrettyButton updateDatabaseButton;
+        private PrettyButton generatePartialAddressesButton;
+        private PrettyButton downloadNewAddressesButton;
+        private PrettyHeader characterNamesHeader;
+        private PrettyHeader updateMemoryAddressesHeader;
+        private PrettyButton executeCommandButton;
+        private PrettyHeader tibiaClientSelectionHeader;
+        private PrettyHeader executeTibialyzerCommandHeader;
     }
 }

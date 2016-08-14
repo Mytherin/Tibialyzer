@@ -88,7 +88,7 @@ namespace Tibialyzer {
         };
 
 
-        public static string[] ScanSpeedText = { "Fastest", "Fast", "Fast", "Fast", "Medium", "Medium", "Medium", "Slow", "Slow", "Slow", "Slowest" };
+        public static string[] ScanSpeedText;
 
         public static char CommandSymbol = '@';
 
@@ -103,7 +103,7 @@ namespace Tibialyzer {
 
         public static string AutoHotkeyURL = "http://ahkscript.org/download/ahk-install.exe";
 
-        public static List<string> DisplayItemList = new List<string> { "Mace", "Plate Armor", "Halberd", "Steel Helmet", "Gold Coin", "Dragon Hammer", "Knight Armor", "Giant Sword", "Crown Armor", "Golden Armor" };
+        public static List<string> DisplayItemList = new List<string> { "Mace", "Plate Armor", "Halberd", "Steel Helmet", "Gold Coin", "Platinum Coin", "Dragon Hammer", "Knight Armor", "Spider Silk", "Giant Sword", "Crown Armor", "Golden Armor" };
         public static List<string> ConvertUnstackableItemList = new List<string> { "Mace", "Plate Armor", "Halberd", "Steel Helmet", "War Hammer", "Dragon Hammer", "Knight Armor", "Giant Sword", "Crown Armor", "Golden Armor" };
         public static List<string> ConvertStackableItemList = new List<string> { "Spear", "Burst Arrow", "Mana Potion", "Strong Mana Potion", "Great Mana Potion", "Great Fireball Rune", "Black Hood", "Strand of Medusa Hair", "Small Ruby", "Spider Silk" };
 
@@ -115,5 +115,9 @@ namespace Tibialyzer {
 
         // Not a constant, but don't tell anyone!
         public static bool OBSEnableWindowCapture = false;
+
+        public static void InitializeConstants() {
+            ScanSpeedText = new string[]{ "Fastest", "Fast", "Fast", "Fast", "Medium", "Medium", "Medium", "Slow", "Slow", "Slow", "Slowest" };
+        }
     }
 }

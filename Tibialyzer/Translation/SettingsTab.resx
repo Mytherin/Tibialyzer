@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="copyAdvancesCheckbox" xml:space="preserve">
+    <value>Copy Advances To Clipboard</value>
+  </data>
+  <data name="copyAdvancesCheckboxTooltip" xml:space="preserve">
+    <value>When you advance in level or skill, the advancement text will be automatically copied for you, so you can easily paste it and notify your friends.</value>
+  </data>
+  <data name="defaultOutfitGenderDropDownList_0" xml:space="preserve">
+    <value>Male</value>
+  </data>
+  <data name="defaultOutfitGenderDropDownList_1" xml:space="preserve">
+    <value>Female</value>
+  </data>
+  <data name="defaultOutfitGenderHeader" xml:space="preserve">
+    <value>Default Outfit Gender</value>
+  </data>
+  <data name="defaultOutfitGenderHeaderTooltip" xml:space="preserve">
+    <value>Outfit gender displayed in outfit@ searches.</value>
+  </data>
+  <data name="enablePopupAnimationsCheckbox" xml:space="preserve">
+    <value>Enable Popup Animations</value>
+  </data>
+  <data name="enablePopupAnimationsCheckboxTooltip" xml:space="preserve">
+    <value>Whether or not popups should be animated or simply appear.</value>
+  </data>
+  <data name="experienceComputationDropDownListTooltip" xml:space="preserve">
+    <value>The algorithm used to compute experience per hour. Standard Tibia Style uses the same algorithm as the Tibia client; while weighted places more emphasis on recent experience gained.</value>
+  </data>
+  <data name="experienceComputationDropDownList_0" xml:space="preserve">
+    <value>Standard (Tibia Client Style)</value>
+  </data>
+  <data name="experienceComputationDropDownList_1" xml:space="preserve">
+    <value>Weighted</value>
+  </data>
+  <data name="experienceComputationHeader" xml:space="preserve">
+    <value>Experience Computation</value>
+  </data>
+  <data name="extraPlayerLookInformationCheckbox" xml:space="preserve">
+    <value>Extra Player Look Information</value>
+  </data>
+  <data name="extraPlayerLookInformationCheckboxTooltip" xml:space="preserve">
+    <value>When looking at a player, also navigate to the tibia.com page for that player and gather extra information (e.g. recent deaths, house, guild, marriage).</value>
+  </data>
+  <data name="memoryScanSettingsHeader" xml:space="preserve">
+    <value>Memory Scan Settings</value>
+  </data>
+  <data name="optionsHeader" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="popupOnEventCheckbox" xml:space="preserve">
+    <value>Popup on Event</value>
+  </data>
+  <data name="popupOnEventCheckboxTooltip" xml:space="preserve">
+    <value>When a raid message is send or an achievement is gained, a notification will appear informing you of the event.</value>
+  </data>
+  <data name="popupOptionsHeader" xml:space="preserve">
+    <value>Popup Options</value>
+  </data>
+  <data name="resetSettingsButton" xml:space="preserve">
+    <value>(Locked)</value>
+  </data>
+  <data name="resetSettingsToDefaultHeader" xml:space="preserve">
+    <value>Reset Settings To Default</value>
+  </data>
+  <data name="resetSettingsToDefaultHeaderTooltip" xml:space="preserve">
+    <value>Clears all settings and resets them back to the default settings, except for the hunt settings.</value>
+  </data>
+  <data name="scanInternalTabsCheckbox" xml:space="preserve">
+    <value>Scan Internal Tabs Structure</value>
+  </data>
+  <data name="scanInternalTabsCheckboxTooltip" xml:space="preserve">
+    <value>Scanning the internal tab structure is much faster and prevents duplicate issues (only available for C client).\nOnly select scanning the entire memory if for some reason this setting does not work (e.g. because of an update).</value>
+  </data>
+  <data name="scanningOptionsHeader" xml:space="preserve">
+    <value>Scanning Options</value>
+  </data>
+  <data name="scanningSpeedHeader" xml:space="preserve">
+    <value>Scanning Speed</value>
+  </data>
+  <data name="scanningSpeedTrackTooltip" xml:space="preserve">
+    <value>Set the memory scanning speed of Tibialyzer. Lower settings drastically reduce CPU usage, but increase response time for Tibialyzer to respond to events in-game (such as in-game commands, look events and loot parsing).</value>
+  </data>
+  <data name="skipDuplicateCommandsCheckbox" xml:space="preserve">
+    <value>Skip Duplicate Commands</value>
+  </data>
+  <data name="skipDuplicateLootCheckbox" xml:space="preserve">
+    <value>Skip Duplicate Loot</value>
+  </data>
+  <data name="unlockResetButton" xml:space="preserve">
+    <value>Unlock Reset Button</value>
+  </data>
+  <data name="unlockResetButtonHeader" xml:space="preserve">
+    <value>Unlock</value>
+  </data>
+  <data name="unrecognizedPopupCheckbox" xml:space="preserve">
+    <value>Popup on Unrecognized Command</value>
+  </data>
+  <data name="unrecognizedPopupCheckboxTooltip" xml:space="preserve">
+    <value>When you type in an unrecognized command in Tibia chat (unrecognized@), a notification will appear notifying you of this.</value>
+  </data>
+  <data name="viewLookedAtObjectsCheckbox" xml:space="preserve">
+    <value>View Looked At Objects</value>
+  </data>
+  <data name="viewLookedAtObjectsCheckboxTooltip" xml:space="preserve">
+    <value>When you look (shift+click) at an item, creature or npc in-game, Tibialyzer will automatically open a box displaying information about that object.</value>
+  </data>
+</root>

@@ -24,13 +24,13 @@
         /// </summary>
         private void InitializeComponent() {
             this.SuspendLayout();
-            //
+            // 
             // TabBase
-            //
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
-            this.ClientSize = new System.Drawing.Size(538, 514);
+            this.ClientSize = new System.Drawing.Size(638, 549);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "TabBase";
             this.Text = "TabBase";

@@ -12,16 +12,17 @@ using System.Windows.Forms;
 
 namespace Tibialyzer {
     public partial class AutoHotkeyTab : Form, TabInterface {
+        ToolTip tooltip = UIManager.CreateTooltip();
         public AutoHotkeyTab() {
             InitializeComponent();
             InitializeSettings();
-            InitializeTooltips();
+            ApplyLocalization();
         }
 
         public void InitializeSettings() {
             this.startScriptOnStartupBox.Checked = SettingsManager.getSettingBool("StartAutohotkeyAutomatically");
-            this.exitScriptOnShutdownBox.Checked = SettingsManager.getSettingBool("ShutdownAutohotkeyOnExit");
-            this.suspendedAnchorBox.SelectedIndex = Math.Min(Math.Max(SettingsManager.getSettingInt("SuspendedNotificationAnchor"), 0), 3);
+            this.exitScriptOnExitCheckbox.Checked = SettingsManager.getSettingBool("ShutdownAutohotkeyOnExit");
+            this.suspendedAnchorDropDownList.SelectedIndex = Math.Min(Math.Max(SettingsManager.getSettingInt("SuspendedNotificationAnchor"), 0), 3);
             this.suspendedXOffsetBox.Text = SettingsManager.getSettingInt("SuspendedNotificationXOffset").ToString();
             this.suspendedYOffsetBox.Text = SettingsManager.getSettingInt("SuspendedNotificationYOffset").ToString();
 
@@ -33,10 +34,33 @@ namespace Tibialyzer {
             (this.autoHotkeyGridSettings as RichTextBoxAutoHotkey).RefreshSyntax();
         }
 
-        public void InitializeTooltips() {
-            ToolTip tooltip = UIManager.CreateTooltip();
-
-            tooltip.SetToolTip(downloadAutoHotkeyButton, "Download AutoHotkey to the temporary directory and launches an installer. Complete the installer to install AutoHotkey.");
+        public void ApplyLocalization() {
+            tooltip.RemoveAll();
+            yOffsetLabel.Text = Tibialyzer.Translation.AutoHotkeyTab.yOffsetLabel;
+            positionOffsetHeader.Text = Tibialyzer.Translation.AutoHotkeyTab.positionOffsetHeader;
+            xOffsetLabel.Text = Tibialyzer.Translation.AutoHotkeyTab.xOffsetLabel;
+            anchorHeader.Text = Tibialyzer.Translation.AutoHotkeyTab.anchorHeader;
+            closeSuspendedWindowButton.Text = Tibialyzer.Translation.AutoHotkeyTab.closeSuspendedWindowButton;
+            autoHotkeyOptionsHeader.Text = Tibialyzer.Translation.AutoHotkeyTab.autoHotkeyOptionsHeader;
+            shutdownAutoHotkeyButton.Text = Tibialyzer.Translation.AutoHotkeyTab.shutdownAutoHotkeyButton;
+            autoHotkeyDownloadHeader.Text = Tibialyzer.Translation.AutoHotkeyTab.autoHotkeyDownloadHeader;
+            testingHeader.Text = Tibialyzer.Translation.AutoHotkeyTab.testingHeader;
+            suspendedTestButton.Text = Tibialyzer.Translation.AutoHotkeyTab.suspendedTestButton;
+            startScriptOnStartupBox.Text = Tibialyzer.Translation.AutoHotkeyTab.startScriptOnStartupBox;
+            startAutoHotkeyHeader.Text = Tibialyzer.Translation.AutoHotkeyTab.startAutoHotkeyHeader;
+            startAutoHotkeyButton.Text = Tibialyzer.Translation.AutoHotkeyTab.startAutoHotkeyButton;
+            exitScriptOnExitCheckbox.Text = Tibialyzer.Translation.AutoHotkeyTab.exitScriptOnExitCheckbox;
+            downloadAutoHotkeyButton.Text = Tibialyzer.Translation.AutoHotkeyTab.downloadAutoHotkeyButton;
+            autoHotkeyScriptHeader.Text = Tibialyzer.Translation.AutoHotkeyTab.autoHotkeyScriptHeader;
+            tooltip.SetToolTip(suspendedAnchorDropDownList, Tibialyzer.Translation.AutoHotkeyTab.suspendedAnchorDropDownListTooltip);
+            tooltip.SetToolTip(downloadAutoHotkeyButton, Tibialyzer.Translation.AutoHotkeyTab.downloadAutoHotkeyButtonTooltip);
+            int suspendedAnchorDropDownListSelectedIndex = suspendedAnchorDropDownList.SelectedIndex;
+            suspendedAnchorDropDownList.Items.Clear();
+            suspendedAnchorDropDownList.Items.Add(Tibialyzer.Translation.AutoHotkeyTab.suspendedAnchorDropDownList_0);
+            suspendedAnchorDropDownList.Items.Add(Tibialyzer.Translation.AutoHotkeyTab.suspendedAnchorDropDownList_1);
+            suspendedAnchorDropDownList.Items.Add(Tibialyzer.Translation.AutoHotkeyTab.suspendedAnchorDropDownList_2);
+            suspendedAnchorDropDownList.Items.Add(Tibialyzer.Translation.AutoHotkeyTab.suspendedAnchorDropDownList_3);
+            suspendedAnchorDropDownList.SelectedIndex = suspendedAnchorDropDownListSelectedIndex;
         }
 
         private void startAutohotkeyScript_CheckedChanged(object sender, EventArgs e) {
@@ -119,16 +143,6 @@ namespace Tibialyzer {
             if (int.TryParse((sender as TextBox).Text, out yOffset)) {
                 SettingsManager.setSetting("SuspendedNotificationYOffset", yOffset);
             }
-        }
-
-        private void ControlMouseEnter(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormHoverColor;
-            (sender as Control).ForeColor = StyleManager.MainFormHoverForeColor;
-        }
-
-        private void ControlMouseLeave(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormButtonColor;
-            (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
         }
     }
 }

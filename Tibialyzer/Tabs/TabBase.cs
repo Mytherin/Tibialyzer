@@ -13,14 +13,14 @@ namespace Tibialyzer {
         public TabBase() {
             InitializeComponent();
             InitializeSettings();
-            InitializeTooltips();
+            ApplyLocalization();
         }
 
         public void InitializeSettings() {
 
         }
 
-        public void InitializeTooltips() {
+        public void ApplyLocalization() {
 
         }
     }

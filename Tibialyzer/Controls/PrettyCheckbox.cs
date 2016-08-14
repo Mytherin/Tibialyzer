@@ -16,6 +16,7 @@ namespace Tibialyzer {
 
         protected override void OnPaint(PaintEventArgs e) {
             base.OnPaint(e);
+            e.Graphics.DrawRectangle(new Pen(StyleManager.BorderColor, 1), new Rectangle(0, 0, this.Width - 1, this.Height - 1));
             int paddingX = Padding.Left / 2;
             int paddingY = Padding.Top / 2;
             e.Graphics.FillRectangle(new SolidBrush(BackColor), new Rectangle(paddingX, 8, 16 + paddingX, 16 + paddingX));

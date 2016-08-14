@@ -10,18 +10,20 @@ using System.Windows.Forms;
 
 namespace Tibialyzer {
     public partial class PopupsTab : Form, TabInterface {
+        ToolTip tooltip = UIManager.CreateTooltip();
         public PopupsTab() {
             InitializeComponent();
             InitializeSettings();
-            InitializeTooltips();
+            ApplyLocalization();
         }
 
         public void InitializeSettings() {
-            this.popupAnchorBox.SelectedIndex = Math.Min(Math.Max(SettingsManager.getSettingInt("SimpleNotificationAnchor"), 0), 3);
+            this.popupAnchorDropDownList.SelectedIndex = Math.Min(Math.Max(SettingsManager.getSettingInt("SimpleNotificationAnchor"), 0), 3);
             this.popupXOffsetBox.Text = SettingsManager.getSettingInt("SimpleNotificationXOffset").ToString();
             this.popupYOffsetBox.Text = SettingsManager.getSettingInt("SimpleNotificationYOffset").ToString();
             this.notificationWidthBox.Text = SettingsManager.getSettingInt("SimpleNotificationWidth").ToString();
             this.showCopyButtonCheckbox.Checked = SettingsManager.getSettingBool("SimpleNotificationCopyButton");
+            this.popupTypeDropDownList.SelectedIndex = SettingsManager.getSettingBool("UseRichNotificationType") ? 1 : 0;
 
             popupSpecificItemBox.Items.Clear();
             foreach (string str in SettingsManager.getSetting("NotificationItems")) {
@@ -43,12 +45,42 @@ namespace Tibialyzer {
             popupDurationHeader.Text = String.Format("Popup Duration ({0}s)", popupDurationSlider.Value);
         }
 
-        public void InitializeTooltips() {
-            ToolTip tooltip = UIManager.CreateTooltip();
-
-            tooltip.SetToolTip(popupSetValueButton, "Set it so popups appear when an item drops that is worth more than {Item Value}");
-            tooltip.SetToolTip(popupSetGoldCapRatioButton, "Set it so popups appear when an item drops that has a gold/cap ratio higher than {Ratio}");
-            tooltip.SetToolTip(popupTestButton, "Test if the specified loot message produces a popup.");
+        public void ApplyLocalization() {
+            tooltip.RemoveAll();
+            sizeWidthHeader.Text = Tibialyzer.Translation.PopupsTab.sizeWidthHeader;
+            popupTestButton.Text = Tibialyzer.Translation.PopupsTab.popupTestButton;
+            positionOffsetHeader.Text = Tibialyzer.Translation.PopupsTab.positionOffsetHeader;
+            popupItemsHeader.Text = Tibialyzer.Translation.PopupsTab.popupItemsHeader;
+            goldCapRatioPopupHeader.Text = Tibialyzer.Translation.PopupsTab.goldCapRatioPopupHeader;
+            popupConditionsHeader.Text = Tibialyzer.Translation.PopupsTab.popupConditionsHeader;
+            showCopyButtonCheckbox.Text = Tibialyzer.Translation.PopupsTab.showCopyButtonCheckbox;
+            popupDurationHeader.Text = Tibialyzer.Translation.PopupsTab.popupDurationHeader;
+            setGoldCapRatioButton.Text = Tibialyzer.Translation.PopupsTab.setGoldCapRatioButton;
+            itemValuePopupHeader.Text = Tibialyzer.Translation.PopupsTab.itemValuePopupHeader;
+            anchorHeader.Text = Tibialyzer.Translation.PopupsTab.anchorHeader;
+            popupTypeHeader.Text = Tibialyzer.Translation.PopupsTab.popupTypeHeader;
+            testPopupMessageHeader.Text = Tibialyzer.Translation.PopupsTab.testPopupMessageHeader;
+            testDisplayButton.Text = Tibialyzer.Translation.PopupsTab.testDisplayButton;
+            clearDisplayButton.Text = Tibialyzer.Translation.PopupsTab.clearDisplayButton;
+            testingHeader.Text = Tibialyzer.Translation.PopupsTab.testingHeader;
+            setItemValuePopupButton.Text = Tibialyzer.Translation.PopupsTab.setItemValuePopupButton;
+            tooltip.SetToolTip(popupTypeDropDownList, Tibialyzer.Translation.PopupsTab.popupTypeDropDownListTooltip);
+            tooltip.SetToolTip(popupTestButton, Tibialyzer.Translation.PopupsTab.popupTestButtonTooltip);
+            tooltip.SetToolTip(setGoldCapRatioButton, Tibialyzer.Translation.PopupsTab.setGoldCapRatioButtonTooltip);
+            tooltip.SetToolTip(popupAnchorDropDownList, Tibialyzer.Translation.PopupsTab.popupAnchorDropDownListTooltip);
+            tooltip.SetToolTip(setItemValuePopupButton, Tibialyzer.Translation.PopupsTab.setItemValuePopupButtonTooltip);
+            int popupTypeDropDownListSelectedIndex = popupTypeDropDownList.SelectedIndex;
+            popupTypeDropDownList.Items.Clear();
+            popupTypeDropDownList.Items.Add(Tibialyzer.Translation.PopupsTab.popupTypeDropDownList_0);
+            popupTypeDropDownList.Items.Add(Tibialyzer.Translation.PopupsTab.popupTypeDropDownList_1);
+            popupTypeDropDownList.SelectedIndex = popupTypeDropDownListSelectedIndex;
+            int popupAnchorDropDownListSelectedIndex = popupAnchorDropDownList.SelectedIndex;
+            popupAnchorDropDownList.Items.Clear();
+            popupAnchorDropDownList.Items.Add(Tibialyzer.Translation.PopupsTab.popupAnchorDropDownList_0);
+            popupAnchorDropDownList.Items.Add(Tibialyzer.Translation.PopupsTab.popupAnchorDropDownList_1);
+            popupAnchorDropDownList.Items.Add(Tibialyzer.Translation.PopupsTab.popupAnchorDropDownList_2);
+            popupAnchorDropDownList.Items.Add(Tibialyzer.Translation.PopupsTab.popupAnchorDropDownList_3);
+            popupAnchorDropDownList.SelectedIndex = popupAnchorDropDownListSelectedIndex;
         }
 
         private void PopupConditionBox_ItemsChanged(object sender, EventArgs e) {
@@ -166,17 +198,7 @@ namespace Tibialyzer {
                 e.Handled = true;
             }
         }
-
-        private void ControlMouseEnter(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormHoverColor;
-            (sender as Control).ForeColor = StyleManager.MainFormHoverForeColor;
-        }
-
-        private void ControlMouseLeave(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormButtonColor;
-            (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
-        }
-
+        
         private void popupDurationSlider_Scroll(object sender, EventArgs e) {
             if (MainForm.prevent_settings_update) return;
 
@@ -197,6 +219,11 @@ namespace Tibialyzer {
             if (MainForm.prevent_settings_update) return;
 
             SettingsManager.setSetting("SimpleNotificationCopyButton", showCopyButtonCheckbox.Checked);
+        }
+        private void notificationTypeBox_SelectedIndexChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            SettingsManager.setSetting("UseRichNotificationType", ((sender as ComboBox).SelectedIndex == 1).ToString());
         }
     }
 }

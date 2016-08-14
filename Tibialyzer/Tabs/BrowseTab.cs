@@ -13,15 +13,23 @@ namespace Tibialyzer {
         public BrowseTab() {
             InitializeComponent();
             InitializeSettings();
-            InitializeTooltips();
+            ApplyLocalization();
         }
 
         public void InitializeSettings() {
-            browseTypeBox.SelectedIndex = 0;
+            browseTypeDropDownList.SelectedIndex = 0;
         }
 
-        public void InitializeTooltips() {
-
+        public void ApplyLocalization() {
+            searchDatabaseHeader.Text = Tibialyzer.Translation.BrowseTab.searchDatabaseHeader;
+            browseTypeDropDownList.Items.Clear();
+            browseTypeDropDownList.Items.Add(Tibialyzer.Translation.BrowseTab.browseTypeDropDownList_0);
+            browseTypeDropDownList.Items.Add(Tibialyzer.Translation.BrowseTab.browseTypeDropDownList_1);
+            browseTypeDropDownList.Items.Add(Tibialyzer.Translation.BrowseTab.browseTypeDropDownList_2);
+            browseTypeDropDownList.Items.Add(Tibialyzer.Translation.BrowseTab.browseTypeDropDownList_3);
+            browseTypeDropDownList.Items.Add(Tibialyzer.Translation.BrowseTab.browseTypeDropDownList_4);
+            browseTypeDropDownList.Items.Add(Tibialyzer.Translation.BrowseTab.browseTypeDropDownList_5);
+            browseTypeDropDownList.Items.Add(Tibialyzer.Translation.BrowseTab.browseTypeDropDownList_6);
         }
 
         private void browseSearch_TextChanged(object sender, EventArgs e) {
@@ -59,7 +67,7 @@ namespace Tibialyzer {
                 browseTimer = null;
                 MainForm.mainForm.Invoke((MethodInvoker)delegate {
                     string searchTerm = browseTextBox.Text;
-                    switch (browseTypeBox.SelectedIndex) {
+                    switch (browseTypeDropDownList.SelectedIndex) {
                         case 0:
                             browseObjects = StorageManager.searchCreature(searchTerm);
                             break;
@@ -109,16 +117,6 @@ namespace Tibialyzer {
             UIManager.DisplayCreatureAttributeList(controls, tibiaObjects, 0, 10, out maxWidth, null, null, 0, maxItems, null, null, null, eventHandler, sortedHeader, desc);
             NotificationForm.ResumeDrawing(suspend);
             this.ResumeLayout(false);
-        }
-
-        private void ControlMouseEnter(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormHoverColor;
-            (sender as Control).ForeColor = StyleManager.MainFormHoverForeColor;
-        }
-
-        private void ControlMouseLeave(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormButtonColor;
-            (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
         }
     }
 }

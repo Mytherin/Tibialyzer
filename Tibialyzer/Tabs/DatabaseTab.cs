@@ -11,24 +11,22 @@ using System.Windows.Forms;
 
 namespace Tibialyzer {
     public partial class DatabaseTab : Form, TabInterface {
+        ToolTip tooltip = UIManager.CreateTooltip();
         public DatabaseTab() {
             InitializeComponent();
             InitializeSettings();
-            InitializeTooltips();
+            ApplyLocalization();
         }
 
         public void InitializeSettings() {
-            CreateRatioDisplay(Constants.DisplayItemList, databaseItemsHeader.Location.X + 10, databaseItemsHeader.Location.Y + databaseItemsHeader.Size.Height + 8, discardLabels, convertLabels);
+            CreateRatioDisplay(Constants.DisplayItemList, databaseItemsHeader.Location.X, databaseItemsHeader.Location.Y + databaseItemsHeader.Size.Height + 8, discardLabels, convertLabels);
             UpdateDisplay();
-            int x = databaseItemsHeader.Location.X;
-            const int y = 145, width = 135;
+            int x = databaseItemsHeader.Location.X + 25;
+            int y = databaseItemsHeader.Location.Y + 145, width = 154;
             CreateLegendLabel(StyleManager.DatabaseDiscardColor, "Discard", x, y); x += width;
             CreateLegendLabel(StyleManager.DatabaseNoDiscardColor, "Pickup", x, y); x += width;
             CreateLegendLabel(StyleManager.ItemGoldColor, "Gold Convert", x, y); x += width;
             CreateLegendLabel(StyleManager.DatabaseNoConvertColor, "No Convert", x, y); x += width;
-
-            itemSelectionBox.Text = "Plate Armor";
-            itemSelectionBox_TextChanged(itemSelectionBox, null);
         }
 
         public void CreateLegendLabel(Color color, string text, int x, int y) {
@@ -49,28 +47,16 @@ namespace Tibialyzer {
             this.Controls.Add(label);
         }
 
-        public void InitializeTooltips() {
-            ToolTip tooltip = UIManager.CreateTooltip();
-
-            string discardRatioText = "Pickup all items with a gold/cap ratio higher than the value entered in the box; discard all items with a lower ratio.";
-            tooltip.SetToolTip(applyDiscardRatioButton, discardRatioText);
-            tooltip.SetToolTip(customDiscardRatioBox, discardRatioText);
-            string discardValueText = "Pickup all items with a gold value higher than the value entered in the box; discard all items with a lower value.";
-            tooltip.SetToolTip(applyValueDiscardButton, discardValueText);
-            tooltip.SetToolTip(customValueDiscardBox, discardValueText);
-            string discardQueryText = "Pickup all items that match the SQL condition; discard all items that don't.\nExample of a query: MAX(vendor_value, actual_value) >= 2000\nPick up all items with a value above 2000 gold, discard other items.";
-            tooltip.SetToolTip(applyQueryDiscardButton, discardQueryText);
-            tooltip.SetToolTip(customQueryDiscardBox, discardQueryText);
-            string convertRatioText = "Don't convert items with a gold/cap ratio higher than the value entered in the box to gold; convert items that with a lower ratio.";
-            tooltip.SetToolTip(applyConvertRatioButton, convertRatioText);
-            tooltip.SetToolTip(customConvertRatioBox, convertRatioText);
-            string convertValueText = "Don't convert items with a gold value higher than the value entered in the box to gold; convert items that with a lower gold value.";
-            tooltip.SetToolTip(applyValueConvertButton, convertValueText);
-            tooltip.SetToolTip(customValueConvertBox, convertValueText);
-            string convertQueryText = "Don't convert items that match the SQL condition to gold; convert items that don't.\nExample of a query: MAX(vendor_value, actual_value) >= 2000\nDon't convert items with a value above 2000 gold, convert other items.";
-            tooltip.SetToolTip(applyQueryConvertButton, convertQueryText);
-            tooltip.SetToolTip(customQueryConvertBox, convertQueryText);
-
+        public void ApplyLocalization() {
+            tooltip.RemoveAll();
+            mageCreatureProductsButton.Text = Tibialyzer.Translation.DatabaseTab.mageCreatureProductsButton;
+            conversionPresetsHeader.Text = Tibialyzer.Translation.DatabaseTab.conversionPresetsHeader;
+            noGoldCoinButton.Text = Tibialyzer.Translation.DatabaseTab.noGoldCoinButton;
+            valuablesOnly5KButton.Text = Tibialyzer.Translation.DatabaseTab.valuablesOnly5KButton;
+            mageNoCreatureProductsButton.Text = Tibialyzer.Translation.DatabaseTab.mageNoCreatureProductsButton;
+            valuablesOnly1KButton.Text = Tibialyzer.Translation.DatabaseTab.valuablesOnly1KButton;
+            defaultSettingsButton.Text = Tibialyzer.Translation.DatabaseTab.defaultSettingsButton;
+            databaseItemsHeader.Text = Tibialyzer.Translation.DatabaseTab.databaseItemsHeader;
         }
 
         private void CreateRatioDisplay(List<string> itemList, int baseX, int baseY, List<Control> discardControls, List<Control> convertControls) {
@@ -88,7 +74,7 @@ namespace Tibialyzer {
 
                 double goldRatio = item.GetMaxValue() / item.capacity;
                 Label label = new Label();
-                label.Text = String.Format(goldRatio < 100 ? "{0:0.#}" : "{0:0.}", goldRatio);
+                label.Text = goldRatio > 1000 ? StyleManager.GoldToText(goldRatio).ToString() : String.Format(goldRatio < 100 ? "{0:0.#}" : "{0:0.}", goldRatio);
                 label.Location = new Point(pictureBox.Location.X, pictureBox.Location.Y + pictureBox.Size.Height);
                 label.Font = new Font(FontFamily.GenericSansSerif, 10.0f, FontStyle.Bold);
                 label.Size = new Size(48, 24);
@@ -155,93 +141,28 @@ namespace Tibialyzer {
             }
         }
 
-        private void applyDiscardRatioButton_Click(object sender, EventArgs e) {
-            double ratio;
-            if (double.TryParse(customDiscardRatioBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out ratio)) {
-                StorageManager.UpdateDiscardQuery(String.Format("(MAX(vendor_value, actual_value) / capacity) >= {0}", ratio.ToString(CultureInfo.InvariantCulture)));
-                UpdateDisplay();
-            }
+        private void defaultSettingsButton_Click(object sender, EventArgs e) {
+
         }
 
-        private void customDiscardRatioBox_KeyPress(object sender, KeyPressEventArgs e) {
-            if (e.KeyChar == '\r') {
-                applyDiscardRatioButton_Click(null, null);
-                e.Handled = true;
-            }
+        private void noGoldCoinButton_Click(object sender, EventArgs e) {
+
+        }
+        
+        private void mageCreatureProductsButton_Click(object sender, EventArgs e) {
+
         }
 
-        private void applyConvertRatioButton_Click(object sender, EventArgs e) {
-            double ratio;
-            if (double.TryParse(customConvertRatioBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out ratio)) {
-                StorageManager.UpdateConvertQuery(String.Format("(MAX(vendor_value, actual_value) / capacity) >= {0}", ratio.ToString(CultureInfo.InvariantCulture)));
-                UpdateDisplay();
-            }
+        private void mageNoCreatureProductsButton_Click(object sender, EventArgs e) {
+
         }
 
-        private void customConvertRatioBox_KeyPress(object sender, KeyPressEventArgs e) {
-            if (e.KeyChar == '\r') {
-                applyConvertRatioButton_Click(null, null);
-                e.Handled = true;
-            }
+        private void valuablesOnly1KButton_Click(object sender, EventArgs e) {
+
         }
 
-        private void applyValueDiscardButton_Click(object sender, EventArgs e) {
-            double ratio;
-            if (double.TryParse(customValueDiscardBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out ratio)) {
-                StorageManager.UpdateDiscardQuery(String.Format("MAX(vendor_value, actual_value) >= {0}", ratio.ToString(CultureInfo.InvariantCulture)));
-                UpdateDisplay();
-            }
-        }
+        private void valuablesOnly5KButton_Click(object sender, EventArgs e) {
 
-        private void applyValueConvertButton_Click(object sender, EventArgs e) {
-            double ratio;
-            if (double.TryParse(customValueConvertBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out ratio)) {
-                StorageManager.UpdateConvertQuery(String.Format("MAX(vendor_value, actual_value) >= {0}", ratio.ToString(CultureInfo.InvariantCulture)));
-                UpdateDisplay();
-            }
         }
-
-        private void applyQueryDiscardButton_Click(object sender, EventArgs e) {
-            try {
-                StorageManager.UpdateDiscardQuery(customQueryDiscardBox.Text);
-                UpdateDisplay();
-            } catch(Exception ex) {
-                MainForm.mainForm.DisplayWarning(ex.Message);
-            }
-        }
-
-        private void applyQueryConvertButton_Click(object sender, EventArgs e) {
-            try {
-                StorageManager.UpdateConvertQuery(customQueryDiscardBox.Text);
-                UpdateDisplay();
-            } catch (Exception ex) {
-                MainForm.mainForm.DisplayWarning(ex.Message);
-            }
-        }
-
-        private void itemSelectionBox_TextChanged(object sender, EventArgs e) {
-            Item item = StorageManager.getItem(itemSelectionBox.Text);
-            if (item != null) {
-                itemPropertyItemBox.Image = item.image;
-                stackableValueLabel.Text = item.stackable ? "True" : "False";
-                vendorValueLabel.Text = StyleManager.GoldToText(item.vendor_value);
-                actualValueLabel.Text = StyleManager.GoldToText(item.actual_value);
-                capacityLabel.Text = String.Format("{0:0.00}", item.capacity);
-                discardValueLabel.Text = item.discard ? "True" : "False";
-                convertValueLabel.Text = item.convert_to_gold ? "True" : "False";
-                categoryValueLabel.Text = item.category;
-            }
-        }
-
-        private void ControlMouseEnter(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormHoverColor;
-            (sender as Control).ForeColor = StyleManager.MainFormHoverForeColor;
-        }
-
-        private void ControlMouseLeave(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormButtonColor;
-            (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
-        }
-
     }
 }

@@ -23,120 +23,126 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.lootDisplayHeader = new PrettyHeader();
+            this.showHuntLootButton = new PrettyButton();
+            this.creatureListHeader = new PrettyHeader();
+            this.creatureImagePanel = new System.Windows.Forms.Panel();
+            this.trackedCreaturesHeader = new PrettyHeader();
+            this.setAsActiveHuntButton = new PrettyButton();
+            this.huntOptionsHeader = new PrettyHeader();
+            this.listOfHuntsHeader = new PrettyHeader();
+            this.trackedCreatureList = new Tibialyzer.PrettyListBox();
+            this.gatherTrackedKillsCheckbox = new Tibialyzer.PrettyCheckBox();
+            this.switchOnKillCheckbox = new Tibialyzer.PrettyCheckBox();
+            this.displayAllCreaturesCheckbox = new Tibialyzer.PrettyCheckBox();
+            this.clearHuntOnStartupCheckbox = new Tibialyzer.PrettyCheckBox();
+            this.huntList = new Tibialyzer.PrettyListBox();
+            this.lootDisplayOptionsHeader = new PrettyHeader();
+            this.automaticallyWriteLootToFileCheckbox = new Tibialyzer.PrettyCheckBox();
+            this.ignoreLowExperienceCheckbox = new Tibialyzer.PrettyCheckBox();
+            this.displayAllItemsAsStackableCheckbox = new Tibialyzer.PrettyCheckBox();
+            this.expValueLabel = new System.Windows.Forms.Label();
+            this.screenshotValueBox = new Tibialyzer.EnterTextBox();
             this.SuspendLayout();
-
-            ///
-            /// lootDisplayHeader
-            ///
-            this.lootDisplayHeader = new System.Windows.Forms.Label();
-            this.lootDisplayHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
+            // 
+            // lootDisplayHeader
+            // 
+            this.lootDisplayHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.lootDisplayHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lootDisplayHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.lootDisplayHeader.Location = new System.Drawing.Point(300, 136);
+            this.lootDisplayHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.lootDisplayHeader.Location = new System.Drawing.Point(327, 126);
             this.lootDisplayHeader.Name = "lootDisplayHeader";
-            this.lootDisplayHeader.Size = new System.Drawing.Size(238, 30);
+            this.lootDisplayHeader.Size = new System.Drawing.Size(299, 30);
             this.lootDisplayHeader.TabIndex = 42;
             this.lootDisplayHeader.Text = "Loot Display";
             this.lootDisplayHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            ///
-            /// showHuntLootButton
-            ///
-            this.showHuntLootButton = new System.Windows.Forms.Label();
+            // 
+            // showHuntLootButton
+            // 
             this.showHuntLootButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.showHuntLootButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showHuntLootButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.showHuntLootButton.Location = new System.Drawing.Point(300, 166);
+            this.showHuntLootButton.Location = new System.Drawing.Point(327, 156);
             this.showHuntLootButton.Name = "showHuntLootButton";
             this.showHuntLootButton.Padding = new System.Windows.Forms.Padding(10);
-            this.showHuntLootButton.Size = new System.Drawing.Size(238, 38);
+            this.showHuntLootButton.Size = new System.Drawing.Size(299, 38);
             this.showHuntLootButton.TabIndex = 41;
             this.showHuntLootButton.Text = "Show Loot";
             this.showHuntLootButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.showHuntLootButton.Click += new System.EventHandler(this.showLootButton_Click);
-            this.showHuntLootButton.MouseEnter += new System.EventHandler(ControlMouseEnter);
-            this.showHuntLootButton.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            ///
-            /// label35
-            ///
-            this.label35 = new System.Windows.Forms.Label();
-            this.label35.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label35.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label35.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label35.Location = new System.Drawing.Point(299, 353);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(238, 30);
-            this.label35.TabIndex = 39;
-            this.label35.Text = "Creature List";
-            this.label35.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            ///
-            /// creatureImagePanel
-            ///
-            this.creatureImagePanel = new System.Windows.Forms.Panel();
+            // 
+            // creatureListHeader
+            // 
+            this.creatureListHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.creatureListHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.creatureListHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.creatureListHeader.Location = new System.Drawing.Point(327, 202);
+            this.creatureListHeader.Name = "creatureListHeader";
+            this.creatureListHeader.Size = new System.Drawing.Size(299, 30);
+            this.creatureListHeader.TabIndex = 39;
+            this.creatureListHeader.Text = "Creature List";
+            this.creatureListHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // creatureImagePanel
+            // 
             this.creatureImagePanel.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
-            this.creatureImagePanel.Location = new System.Drawing.Point(6, 384);
+            this.creatureImagePanel.Location = new System.Drawing.Point(327, 337);
             this.creatureImagePanel.Name = "creatureImagePanel";
-            this.creatureImagePanel.Size = new System.Drawing.Size(287, 94);
+            this.creatureImagePanel.Size = new System.Drawing.Size(299, 200);
             this.creatureImagePanel.TabIndex = 16;
-            ///
-            /// label34
-            ///
-            this.label34 = new System.Windows.Forms.Label();
-            this.label34.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label34.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label34.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label34.Location = new System.Drawing.Point(3, 228);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(290, 30);
-            this.label34.TabIndex = 35;
-            this.label34.Text = "Tracked Creatures";
-            this.label34.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            ///
-            /// setActiveHuntButton
-            ///
-            this.setActiveHuntButton = new System.Windows.Forms.Label();
-            this.setActiveHuntButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.setActiveHuntButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.setActiveHuntButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.setActiveHuntButton.Location = new System.Drawing.Point(299, 49);
-            this.setActiveHuntButton.Name = "setActiveHuntButton";
-            this.setActiveHuntButton.Padding = new System.Windows.Forms.Padding(10);
-            this.setActiveHuntButton.Size = new System.Drawing.Size(238, 38);
-            this.setActiveHuntButton.TabIndex = 34;
-            this.setActiveHuntButton.Text = "Set As Active Hunt";
-            this.setActiveHuntButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.setActiveHuntButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.activeHuntButton_Click);
-            this.setActiveHuntButton.MouseEnter += new System.EventHandler(ControlMouseEnter);
-            this.setActiveHuntButton.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            ///
-            /// label32
-            ///
-            this.label32 = new System.Windows.Forms.Label();
-            this.label32.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label32.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label32.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label32.Location = new System.Drawing.Point(299, 19);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(238, 30);
-            this.label32.TabIndex = 32;
-            this.label32.Text = "Options";
-            this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            ///
-            /// huntListLabel
-            ///
-            this.huntListLabel = new System.Windows.Forms.Label();
-            this.huntListLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.huntListLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.huntListLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.huntListLabel.Location = new System.Drawing.Point(3, 19);
-            this.huntListLabel.Name = "huntListLabel";
-            this.huntListLabel.Size = new System.Drawing.Size(290, 30);
-            this.huntListLabel.TabIndex = 3;
-            this.huntListLabel.Text = "List of Hunts";
-            this.huntListLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            ///
-            /// trackedCreatureList
-            ///
-            this.trackedCreatureList = new Tibialyzer.PrettyListBox();
+            // 
+            // trackedCreaturesHeader
+            // 
+            this.trackedCreaturesHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.trackedCreaturesHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.trackedCreaturesHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.trackedCreaturesHeader.Location = new System.Drawing.Point(9, 202);
+            this.trackedCreaturesHeader.Name = "trackedCreaturesHeader";
+            this.trackedCreaturesHeader.Size = new System.Drawing.Size(299, 30);
+            this.trackedCreaturesHeader.TabIndex = 35;
+            this.trackedCreaturesHeader.Text = "Tracked Creatures";
+            this.trackedCreaturesHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // setAsActiveHuntButton
+            // 
+            this.setAsActiveHuntButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.setAsActiveHuntButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.setAsActiveHuntButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.setAsActiveHuntButton.Location = new System.Drawing.Point(327, 39);
+            this.setAsActiveHuntButton.Name = "setAsActiveHuntButton";
+            this.setAsActiveHuntButton.Padding = new System.Windows.Forms.Padding(10);
+            this.setAsActiveHuntButton.Size = new System.Drawing.Size(299, 38);
+            this.setAsActiveHuntButton.TabIndex = 34;
+            this.setAsActiveHuntButton.Text = "Set As Active Hunt";
+            this.setAsActiveHuntButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.setAsActiveHuntButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.activeHuntButton_Click);
+            // 
+            // huntOptionsHeader
+            // 
+            this.huntOptionsHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.huntOptionsHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.huntOptionsHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.huntOptionsHeader.Location = new System.Drawing.Point(327, 9);
+            this.huntOptionsHeader.Name = "huntOptionsHeader";
+            this.huntOptionsHeader.Size = new System.Drawing.Size(299, 30);
+            this.huntOptionsHeader.TabIndex = 32;
+            this.huntOptionsHeader.Text = "Options";
+            this.huntOptionsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // listOfHuntsHeader
+            // 
+            this.listOfHuntsHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.listOfHuntsHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listOfHuntsHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.listOfHuntsHeader.Location = new System.Drawing.Point(9, 9);
+            this.listOfHuntsHeader.Name = "listOfHuntsHeader";
+            this.listOfHuntsHeader.Size = new System.Drawing.Size(299, 30);
+            this.listOfHuntsHeader.TabIndex = 3;
+            this.listOfHuntsHeader.Text = "List of Hunts";
+            this.listOfHuntsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // trackedCreatureList
+            // 
             this.trackedCreatureList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.trackedCreatureList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.trackedCreatureList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
@@ -146,82 +152,69 @@
             this.trackedCreatureList.ItemHeight = 20;
             this.trackedCreatureList.Items.AddRange(new object[] {
             ""});
-            this.trackedCreatureList.Location = new System.Drawing.Point(299, 383);
+            this.trackedCreatureList.Location = new System.Drawing.Point(327, 232);
             this.trackedCreatureList.Name = "trackedCreatureList";
-            this.trackedCreatureList.Size = new System.Drawing.Size(238, 95);
+            this.trackedCreatureList.Size = new System.Drawing.Size(299, 95);
             this.trackedCreatureList.TabIndex = 40;
-            ///
-            /// gatherTrackedKillsBox
-            ///
-            this.gatherTrackedKillsBox = new Tibialyzer.PrettyCheckBox();
-            this.gatherTrackedKillsBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.gatherTrackedKillsBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gatherTrackedKillsBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.gatherTrackedKillsBox.Location = new System.Drawing.Point(3, 338);
-            this.gatherTrackedKillsBox.Name = "gatherTrackedKillsBox";
-            this.gatherTrackedKillsBox.Padding = new System.Windows.Forms.Padding(10);
-            this.gatherTrackedKillsBox.Size = new System.Drawing.Size(290, 40);
-            this.gatherTrackedKillsBox.TabIndex = 38;
-            this.gatherTrackedKillsBox.Text = "Always add tracked creature to hunt";
-            this.gatherTrackedKillsBox.UseVisualStyleBackColor = false;
-            this.gatherTrackedKillsBox.CheckedChanged += new System.EventHandler(this.aggregateHuntBox_CheckedChanged);
-            this.gatherTrackedKillsBox.MouseEnter += new System.EventHandler(ControlMouseEnter);
-            this.gatherTrackedKillsBox.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            ///
-            /// switchOnKillBox
-            ///
-            this.switchOnKillBox = new Tibialyzer.PrettyCheckBox();
-            this.switchOnKillBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.switchOnKillBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.switchOnKillBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.switchOnKillBox.Location = new System.Drawing.Point(3, 298);
-            this.switchOnKillBox.Name = "switchOnKillBox";
-            this.switchOnKillBox.Padding = new System.Windows.Forms.Padding(10);
-            this.switchOnKillBox.Size = new System.Drawing.Size(290, 40);
-            this.switchOnKillBox.TabIndex = 37;
-            this.switchOnKillBox.Text = "Activate if tracked creature is killed";
-            this.switchOnKillBox.UseVisualStyleBackColor = false;
-            this.switchOnKillBox.CheckedChanged += new System.EventHandler(this.sideHuntBox_CheckedChanged);
-            this.switchOnKillBox.MouseEnter += new System.EventHandler(ControlMouseEnter);
-            this.switchOnKillBox.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            ///
-            /// displayAllCreaturesBox
-            ///
-            this.displayAllCreaturesBox = new Tibialyzer.PrettyCheckBox();
-            this.displayAllCreaturesBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.displayAllCreaturesBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.displayAllCreaturesBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.displayAllCreaturesBox.Location = new System.Drawing.Point(3, 258);
-            this.displayAllCreaturesBox.Name = "displayAllCreaturesBox";
-            this.displayAllCreaturesBox.Padding = new System.Windows.Forms.Padding(10);
-            this.displayAllCreaturesBox.Size = new System.Drawing.Size(290, 40);
-            this.displayAllCreaturesBox.TabIndex = 36;
-            this.displayAllCreaturesBox.Text = "Display All Creatures";
-            this.displayAllCreaturesBox.UseVisualStyleBackColor = false;
-            this.displayAllCreaturesBox.CheckedChanged += new System.EventHandler(this.trackCreaturesCheckbox_CheckedChanged);
-            this.displayAllCreaturesBox.MouseEnter += new System.EventHandler(ControlMouseEnter);
-            this.displayAllCreaturesBox.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            ///
-            /// clearHuntOnStartupBox
-            ///
-            this.clearHuntOnStartupBox = new Tibialyzer.PrettyCheckBox();
-            this.clearHuntOnStartupBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.clearHuntOnStartupBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.clearHuntOnStartupBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.clearHuntOnStartupBox.Location = new System.Drawing.Point(299, 87);
-            this.clearHuntOnStartupBox.Name = "clearHuntOnStartupBox";
-            this.clearHuntOnStartupBox.Padding = new System.Windows.Forms.Padding(10);
-            this.clearHuntOnStartupBox.Size = new System.Drawing.Size(238, 40);
-            this.clearHuntOnStartupBox.TabIndex = 31;
-            this.clearHuntOnStartupBox.Text = "Clear Hunt On Startup";
-            this.clearHuntOnStartupBox.UseVisualStyleBackColor = false;
-            this.clearHuntOnStartupBox.CheckedChanged += new System.EventHandler(this.startupHuntCheckbox_CheckedChanged);
-            this.clearHuntOnStartupBox.MouseEnter += new System.EventHandler(ControlMouseEnter);
-            this.clearHuntOnStartupBox.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            ///
-            /// huntList
-            ///
-            this.huntList = new Tibialyzer.PrettyListBox();
+            // 
+            // gatherTrackedKillsCheckbox
+            // 
+            this.gatherTrackedKillsCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.gatherTrackedKillsCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gatherTrackedKillsCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.gatherTrackedKillsCheckbox.Location = new System.Drawing.Point(9, 312);
+            this.gatherTrackedKillsCheckbox.Name = "gatherTrackedKillsCheckbox";
+            this.gatherTrackedKillsCheckbox.Padding = new System.Windows.Forms.Padding(10);
+            this.gatherTrackedKillsCheckbox.Size = new System.Drawing.Size(299, 40);
+            this.gatherTrackedKillsCheckbox.TabIndex = 38;
+            this.gatherTrackedKillsCheckbox.Text = "Always add tracked creature to hunt";
+            this.gatherTrackedKillsCheckbox.UseVisualStyleBackColor = false;
+            this.gatherTrackedKillsCheckbox.CheckedChanged += new System.EventHandler(this.aggregateHuntBox_CheckedChanged);
+            // 
+            // switchOnKillCheckbox
+            // 
+            this.switchOnKillCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.switchOnKillCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.switchOnKillCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.switchOnKillCheckbox.Location = new System.Drawing.Point(9, 272);
+            this.switchOnKillCheckbox.Name = "switchOnKillCheckbox";
+            this.switchOnKillCheckbox.Padding = new System.Windows.Forms.Padding(10);
+            this.switchOnKillCheckbox.Size = new System.Drawing.Size(299, 40);
+            this.switchOnKillCheckbox.TabIndex = 37;
+            this.switchOnKillCheckbox.Text = "Activate if tracked creature is killed";
+            this.switchOnKillCheckbox.UseVisualStyleBackColor = false;
+            this.switchOnKillCheckbox.CheckedChanged += new System.EventHandler(this.sideHuntBox_CheckedChanged);
+            // 
+            // displayAllCreaturesCheckbox
+            // 
+            this.displayAllCreaturesCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.displayAllCreaturesCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.displayAllCreaturesCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.displayAllCreaturesCheckbox.Location = new System.Drawing.Point(9, 232);
+            this.displayAllCreaturesCheckbox.Name = "displayAllCreaturesCheckbox";
+            this.displayAllCreaturesCheckbox.Padding = new System.Windows.Forms.Padding(10);
+            this.displayAllCreaturesCheckbox.Size = new System.Drawing.Size(299, 40);
+            this.displayAllCreaturesCheckbox.TabIndex = 36;
+            this.displayAllCreaturesCheckbox.Text = "Display All Creatures";
+            this.displayAllCreaturesCheckbox.UseVisualStyleBackColor = false;
+            this.displayAllCreaturesCheckbox.CheckedChanged += new System.EventHandler(this.trackCreaturesCheckbox_CheckedChanged);
+            // 
+            // clearHuntOnStartupCheckbox
+            // 
+            this.clearHuntOnStartupCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.clearHuntOnStartupCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.clearHuntOnStartupCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.clearHuntOnStartupCheckbox.Location = new System.Drawing.Point(327, 77);
+            this.clearHuntOnStartupCheckbox.Name = "clearHuntOnStartupCheckbox";
+            this.clearHuntOnStartupCheckbox.Padding = new System.Windows.Forms.Padding(10);
+            this.clearHuntOnStartupCheckbox.Size = new System.Drawing.Size(299, 40);
+            this.clearHuntOnStartupCheckbox.TabIndex = 31;
+            this.clearHuntOnStartupCheckbox.Text = "Clear Hunt On Startup";
+            this.clearHuntOnStartupCheckbox.UseVisualStyleBackColor = false;
+            this.clearHuntOnStartupCheckbox.CheckedChanged += new System.EventHandler(this.startupHuntCheckbox_CheckedChanged);
+            // 
+            // huntList
+            // 
             this.huntList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.huntList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.huntList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
@@ -231,54 +224,141 @@
             this.huntList.ItemHeight = 20;
             this.huntList.Items.AddRange(new object[] {
             "Main Hunt"});
-            this.huntList.Location = new System.Drawing.Point(3, 49);
+            this.huntList.Location = new System.Drawing.Point(9, 39);
             this.huntList.Name = "huntList";
-            this.huntList.Size = new System.Drawing.Size(290, 155);
+            this.huntList.Size = new System.Drawing.Size(299, 155);
             this.huntList.TabIndex = 2;
             this.huntList.SelectedIndexChanged += new System.EventHandler(this.huntBox_SelectedIndexChanged);
-            //
-            // TabBase
-            //
-            this.Controls.Add(lootDisplayHeader);
-            this.Controls.Add(showHuntLootButton);
-            this.Controls.Add(label35);
-            this.Controls.Add(creatureImagePanel);
-            this.Controls.Add(label34);
-            this.Controls.Add(setActiveHuntButton);
-            this.Controls.Add(label32);
-            this.Controls.Add(huntListLabel);
-            this.Controls.Add(trackedCreatureList);
-            this.Controls.Add(gatherTrackedKillsBox);
-            this.Controls.Add(switchOnKillBox);
-            this.Controls.Add(displayAllCreaturesBox);
-            this.Controls.Add(clearHuntOnStartupBox);
-            this.Controls.Add(huntList);
-
+            // 
+            // lootDisplayOptionsHeader
+            // 
+            this.lootDisplayOptionsHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.lootDisplayOptionsHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lootDisplayOptionsHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.lootDisplayOptionsHeader.Location = new System.Drawing.Point(9, 359);
+            this.lootDisplayOptionsHeader.Name = "lootDisplayOptionsHeader";
+            this.lootDisplayOptionsHeader.Size = new System.Drawing.Size(299, 30);
+            this.lootDisplayOptionsHeader.TabIndex = 43;
+            this.lootDisplayOptionsHeader.Text = "Loot Display Options";
+            this.lootDisplayOptionsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // automaticallyWriteLootToFileCheckbox
+            // 
+            this.automaticallyWriteLootToFileCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.automaticallyWriteLootToFileCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.automaticallyWriteLootToFileCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.automaticallyWriteLootToFileCheckbox.Location = new System.Drawing.Point(9, 488);
+            this.automaticallyWriteLootToFileCheckbox.Name = "automaticallyWriteLootToFileCheckbox";
+            this.automaticallyWriteLootToFileCheckbox.Padding = new System.Windows.Forms.Padding(10);
+            this.automaticallyWriteLootToFileCheckbox.Size = new System.Drawing.Size(299, 38);
+            this.automaticallyWriteLootToFileCheckbox.TabIndex = 46;
+            this.automaticallyWriteLootToFileCheckbox.Text = "Automatically Write Loot To File";
+            this.automaticallyWriteLootToFileCheckbox.UseVisualStyleBackColor = false;
+            // 
+            // ignoreLowExperienceCheckbox
+            // 
+            this.ignoreLowExperienceCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.ignoreLowExperienceCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ignoreLowExperienceCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.ignoreLowExperienceCheckbox.Location = new System.Drawing.Point(9, 427);
+            this.ignoreLowExperienceCheckbox.Name = "ignoreLowExperienceCheckbox";
+            this.ignoreLowExperienceCheckbox.Padding = new System.Windows.Forms.Padding(10);
+            this.ignoreLowExperienceCheckbox.Size = new System.Drawing.Size(299, 38);
+            this.ignoreLowExperienceCheckbox.TabIndex = 45;
+            this.ignoreLowExperienceCheckbox.Text = "Ignore Low Experience Creatures";
+            this.ignoreLowExperienceCheckbox.UseVisualStyleBackColor = false;
+            // 
+            // displayAllItemsAsStackableCheckbox
+            // 
+            this.displayAllItemsAsStackableCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.displayAllItemsAsStackableCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.displayAllItemsAsStackableCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.displayAllItemsAsStackableCheckbox.Location = new System.Drawing.Point(9, 389);
+            this.displayAllItemsAsStackableCheckbox.Name = "displayAllItemsAsStackableCheckbox";
+            this.displayAllItemsAsStackableCheckbox.Padding = new System.Windows.Forms.Padding(10);
+            this.displayAllItemsAsStackableCheckbox.Size = new System.Drawing.Size(299, 38);
+            this.displayAllItemsAsStackableCheckbox.TabIndex = 44;
+            this.displayAllItemsAsStackableCheckbox.Text = "Display All Items As Stackable";
+            this.displayAllItemsAsStackableCheckbox.UseVisualStyleBackColor = false;
+            // 
+            // expValueLabel
+            // 
+            this.expValueLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.expValueLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.expValueLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.expValueLabel.Location = new System.Drawing.Point(9, 465);
+            this.expValueLabel.Name = "expValueLabel";
+            this.expValueLabel.Size = new System.Drawing.Size(109, 23);
+            this.expValueLabel.TabIndex = 64;
+            this.expValueLabel.Text = "Exp Value";
+            this.expValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // screenshotValueBox
+            // 
+            this.screenshotValueBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.screenshotValueBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.screenshotValueBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
+            this.screenshotValueBox.Location = new System.Drawing.Point(117, 465);
+            this.screenshotValueBox.Name = "screenshotValueBox";
+            this.screenshotValueBox.Size = new System.Drawing.Size(191, 23);
+            this.screenshotValueBox.TabIndex = 63;
+            this.screenshotValueBox.Text = "50000";
+            // 
+            // HuntsTab
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
-            this.ClientSize = new System.Drawing.Size(538, 514);
+            this.ClientSize = new System.Drawing.Size(638, 549);
+            this.Controls.Add(this.expValueLabel);
+            this.Controls.Add(this.screenshotValueBox);
+            this.Controls.Add(this.automaticallyWriteLootToFileCheckbox);
+            this.Controls.Add(this.ignoreLowExperienceCheckbox);
+            this.Controls.Add(this.displayAllItemsAsStackableCheckbox);
+            this.Controls.Add(this.lootDisplayOptionsHeader);
+            this.Controls.Add(this.lootDisplayHeader);
+            this.Controls.Add(this.showHuntLootButton);
+            this.Controls.Add(this.creatureListHeader);
+            this.Controls.Add(this.creatureImagePanel);
+            this.Controls.Add(this.trackedCreaturesHeader);
+            this.Controls.Add(this.setAsActiveHuntButton);
+            this.Controls.Add(this.huntOptionsHeader);
+            this.Controls.Add(this.listOfHuntsHeader);
+            this.Controls.Add(this.trackedCreatureList);
+            this.Controls.Add(this.gatherTrackedKillsCheckbox);
+            this.Controls.Add(this.switchOnKillCheckbox);
+            this.Controls.Add(this.displayAllCreaturesCheckbox);
+            this.Controls.Add(this.clearHuntOnStartupCheckbox);
+            this.Controls.Add(this.huntList);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "TabBase";
+            this.Name = "HuntsTab";
             this.Text = "TabBase";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         private System.Windows.Forms.Label lootDisplayHeader;
         private System.Windows.Forms.Label showHuntLootButton;
-        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Label creatureListHeader;
         private System.Windows.Forms.Panel creatureImagePanel;
-        private System.Windows.Forms.Label label34;
-        private System.Windows.Forms.Label setActiveHuntButton;
-        private System.Windows.Forms.Label label32;
-        private System.Windows.Forms.Label huntListLabel;
+        private System.Windows.Forms.Label trackedCreaturesHeader;
+        private System.Windows.Forms.Label setAsActiveHuntButton;
+        private System.Windows.Forms.Label huntOptionsHeader;
+        private System.Windows.Forms.Label listOfHuntsHeader;
         private PrettyListBox trackedCreatureList;
-        private PrettyCheckBox gatherTrackedKillsBox;
-        private PrettyCheckBox switchOnKillBox;
-        private PrettyCheckBox displayAllCreaturesBox;
-        private PrettyCheckBox clearHuntOnStartupBox;
+        private PrettyCheckBox gatherTrackedKillsCheckbox;
+        private PrettyCheckBox switchOnKillCheckbox;
+        private PrettyCheckBox displayAllCreaturesCheckbox;
+        private PrettyCheckBox clearHuntOnStartupCheckbox;
         private PrettyListBox huntList;
         #endregion
+
+        private System.Windows.Forms.Label lootDisplayOptionsHeader;
+        private PrettyCheckBox automaticallyWriteLootToFileCheckbox;
+        private PrettyCheckBox ignoreLowExperienceCheckbox;
+        private PrettyCheckBox displayAllItemsAsStackableCheckbox;
+        private System.Windows.Forms.Label expValueLabel;
+        private EnterTextBox screenshotValueBox;
     }
 }

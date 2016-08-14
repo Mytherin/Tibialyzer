@@ -13,7 +13,7 @@ namespace Tibialyzer {
         public SummaryTab() {
             InitializeComponent();
             InitializeSettings();
-            InitializeTooltips();
+            ApplyLocalization();
         }
 
         public void InitializeSettings() {
@@ -32,13 +32,20 @@ namespace Tibialyzer {
             maxDamageEntryTrack_Scroll(maxDamageEntryTrack, null);
             maxUsedItemsTrack_Scroll(maxUsedItemsTrack, null);
 
-            lootImageSizeLabel.Text = String.Format("Image Size ({0})", lootImageSizeBar.Value);
-            recentDropsImageSizeLabel.Text = String.Format("Image Size ({0})", recentDropsImageSizeBar.Value);
-            wasteItemSizeLabel.Text = String.Format("Image Size ({0})", wasteImageSizeBar.Value);
+            itemDropsImageSizeHeader.Text = String.Format("Image Size ({0})", lootImageSizeBar.Value);
+            recentDropsImageSizeHeader.Text = String.Format("Image Size ({0})", recentDropsImageSizeBar.Value);
+            wasteImageSizeHeader.Text = String.Format("Image Size ({0})", wasteImageSizeBar.Value);
         }
 
-        public void InitializeTooltips() {
-
+        public void ApplyLocalization() {
+            recentDropsImageSizeHeader.Text = Tibialyzer.Translation.SummaryTab.recentDropsImageSizeHeader;
+            maxCreatureKillsHeader.Text = Tibialyzer.Translation.SummaryTab.maxCreatureKillsHeader;
+            itemDropsImageSizeHeader.Text = Tibialyzer.Translation.SummaryTab.itemDropsImageSizeHeader;
+            maxRecentDropsHeader.Text = Tibialyzer.Translation.SummaryTab.maxRecentDropsHeader;
+            wasteImageSizeHeader.Text = Tibialyzer.Translation.SummaryTab.wasteImageSizeHeader;
+            maxItemsDisplayedHeader.Text = Tibialyzer.Translation.SummaryTab.maxItemsDisplayedHeader;
+            maxUsedItemsHeader.Text = Tibialyzer.Translation.SummaryTab.maxUsedItemsHeader;
+            maxDamageEntryHeader.Text = Tibialyzer.Translation.SummaryTab.maxDamageEntryHeader;
         }
 
         private void maxItemsDisplayedTrack_Scroll(object sender, EventArgs e) {
@@ -69,19 +76,19 @@ namespace Tibialyzer {
         private void lootImageSizeBar_Scroll(object sender, EventArgs e) {
             if (MainForm.prevent_settings_update) return;
             SettingsManager.setSetting("SummaryLootItemSize", (sender as TrackBar).Value);
-            lootImageSizeLabel.Text = String.Format("Image Size ({0})", (sender as TrackBar).Value);
+            itemDropsImageSizeHeader.Text = String.Format("Image Size ({0})", (sender as TrackBar).Value);
         }
 
         private void recentDropsImageSizeBar_Scroll(object sender, EventArgs e) {
             if (MainForm.prevent_settings_update) return;
             SettingsManager.setSetting("SummaryRecentDropsItemSize", (sender as TrackBar).Value);
-            recentDropsImageSizeLabel.Text = String.Format("Image Size ({0})", (sender as TrackBar).Value);
+            recentDropsImageSizeHeader.Text = String.Format("Image Size ({0})", (sender as TrackBar).Value);
         }
 
         private void wasteImageSizeBar_Scroll(object sender, EventArgs e) {
             if (MainForm.prevent_settings_update) return;
             SettingsManager.setSetting("SummaryWasteItemSize", (sender as TrackBar).Value);
-            wasteItemSizeLabel.Text = String.Format("Image Size ({0})", (sender as TrackBar).Value);
+            wasteImageSizeHeader.Text = String.Format("Image Size ({0})", (sender as TrackBar).Value);
 
         }
     }

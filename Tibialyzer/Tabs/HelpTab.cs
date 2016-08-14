@@ -13,15 +13,15 @@ namespace Tibialyzer {
         public HelpTab() {
             InitializeComponent();
             InitializeSettings();
-            InitializeTooltips();
+            ApplyLocalization();
         }
 
         public void InitializeSettings() {
 
         }
 
-        public void InitializeTooltips() {
-
+        public void ApplyLocalization() {
+            searchCommandsHeader.Text = Tibialyzer.Translation.HelpTab.searchCommandsHeader;
         }
 
         public void LoadHelpTab() {

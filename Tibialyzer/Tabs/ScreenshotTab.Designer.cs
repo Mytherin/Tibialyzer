@@ -23,27 +23,41 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.SuspendLayout();
-            ///
-            /// screenshotBox
-            ///
             this.screenshotBox = new System.Windows.Forms.PictureBox();
+            this.changeScreenshotDirectoryButton = new PrettyButton();
+            this.openScreenshotDirectoryButton = new PrettyButton();
+            this.screenshotOptionsHeader = new PrettyHeader();
+            this.screenshotDirectoryHeader = new PrettyHeader();
+            this.screenshotTitleHeader = new PrettyHeader();
+            this.screenshotListHeader = new PrettyHeader();
+            this.screenshotOnRareItemCheckbox = new Tibialyzer.PrettyCheckBox();
+            this.screenshotDeathCheckbox = new Tibialyzer.PrettyCheckBox();
+            this.screenshotAdvanceCheckbox = new Tibialyzer.PrettyCheckBox();
+            this.enableScreenshotCheckbox = new Tibialyzer.PrettyCheckBox();
+            this.screenshotPathBox = new Tibialyzer.EnterTextBox();
+            this.screenshotDisplayList = new Tibialyzer.PrettyListBox();
+            this.screenshotValueLabel = new System.Windows.Forms.Label();
+            this.screenshotValueBox = new Tibialyzer.EnterTextBox();
+            ((System.ComponentModel.ISupportInitialize)(this.screenshotBox)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // screenshotBox
+            // 
             this.screenshotBox.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
-            this.screenshotBox.Location = new System.Drawing.Point(227, 49);
+            this.screenshotBox.Location = new System.Drawing.Point(327, 40);
             this.screenshotBox.Name = "screenshotBox";
-            this.screenshotBox.Size = new System.Drawing.Size(310, 184);
+            this.screenshotBox.Size = new System.Drawing.Size(299, 184);
             this.screenshotBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.screenshotBox.TabIndex = 0;
             this.screenshotBox.TabStop = false;
             this.screenshotBox.Click += new System.EventHandler(this.screenshotBox_Click);
-            ///
-            /// changeScreenshotDirectoryButton
-            ///
-            this.changeScreenshotDirectoryButton = new System.Windows.Forms.Label();
+            // 
+            // changeScreenshotDirectoryButton
+            // 
             this.changeScreenshotDirectoryButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.changeScreenshotDirectoryButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.changeScreenshotDirectoryButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.changeScreenshotDirectoryButton.Location = new System.Drawing.Point(422, 323);
+            this.changeScreenshotDirectoryButton.Location = new System.Drawing.Point(509, 320);
             this.changeScreenshotDirectoryButton.Name = "changeScreenshotDirectoryButton";
             this.changeScreenshotDirectoryButton.Padding = new System.Windows.Forms.Padding(10);
             this.changeScreenshotDirectoryButton.Size = new System.Drawing.Size(115, 38);
@@ -51,16 +65,13 @@
             this.changeScreenshotDirectoryButton.Text = "Browse";
             this.changeScreenshotDirectoryButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.changeScreenshotDirectoryButton.Click += new System.EventHandler(this.screenshotBrowse_Click);
-            this.changeScreenshotDirectoryButton.MouseEnter += new System.EventHandler(ControlMouseEnter);
-            this.changeScreenshotDirectoryButton.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            ///
-            /// openScreenshotDirectoryButton
-            ///
-            this.openScreenshotDirectoryButton = new System.Windows.Forms.Label();
+            // 
+            // openScreenshotDirectoryButton
+            // 
             this.openScreenshotDirectoryButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.openScreenshotDirectoryButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.openScreenshotDirectoryButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.openScreenshotDirectoryButton.Location = new System.Drawing.Point(226, 323);
+            this.openScreenshotDirectoryButton.Location = new System.Drawing.Point(326, 320);
             this.openScreenshotDirectoryButton.Name = "openScreenshotDirectoryButton";
             this.openScreenshotDirectoryButton.Padding = new System.Windows.Forms.Padding(10);
             this.openScreenshotDirectoryButton.Size = new System.Drawing.Size(155, 38);
@@ -68,144 +79,124 @@
             this.openScreenshotDirectoryButton.Text = "Open In Explorer";
             this.openScreenshotDirectoryButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.openScreenshotDirectoryButton.Click += new System.EventHandler(this.openInExplorer_Click);
-            this.openScreenshotDirectoryButton.MouseEnter += new System.EventHandler(ControlMouseEnter);
-            this.openScreenshotDirectoryButton.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            ///
-            /// label96
-            ///
-            this.label96 = new System.Windows.Forms.Label();
-            this.label96.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label96.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label96.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label96.Location = new System.Drawing.Point(226, 362);
-            this.label96.Name = "label96";
-            this.label96.Size = new System.Drawing.Size(311, 30);
-            this.label96.TabIndex = 48;
-            this.label96.Text = "Screenshot Options";
-            this.label96.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            ///
-            /// label95
-            ///
-            this.label95 = new System.Windows.Forms.Label();
-            this.label95.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.label95.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label95.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.label95.Location = new System.Drawing.Point(226, 270);
-            this.label95.Name = "label95";
-            this.label95.Size = new System.Drawing.Size(311, 30);
-            this.label95.TabIndex = 47;
-            this.label95.Text = "Screenshot Directory";
-            this.label95.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            ///
-            /// screenshotTitleLabel
-            ///
-            this.screenshotTitleLabel = new System.Windows.Forms.Label();
-            this.screenshotTitleLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(128)))), ((int)(((byte)(176)))));
-            this.screenshotTitleLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.screenshotTitleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.screenshotTitleLabel.Location = new System.Drawing.Point(226, 19);
-            this.screenshotTitleLabel.Name = "screenshotTitleLabel";
-            this.screenshotTitleLabel.Size = new System.Drawing.Size(311, 30);
-            this.screenshotTitleLabel.TabIndex = 46;
-            this.screenshotTitleLabel.Text = "Screenshot";
-            this.screenshotTitleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            ///
-            /// screenshotListLabel
-            ///
-            this.screenshotListLabel = new System.Windows.Forms.Label();
-            this.screenshotListLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(156)))), ((int)(((byte)(65)))));
-            this.screenshotListLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.screenshotListLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.screenshotListLabel.Location = new System.Drawing.Point(3, 19);
-            this.screenshotListLabel.Name = "screenshotListLabel";
-            this.screenshotListLabel.Size = new System.Drawing.Size(219, 30);
-            this.screenshotListLabel.TabIndex = 44;
-            this.screenshotListLabel.Text = "Screenshot List";
-            this.screenshotListLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            ///
-            /// screenshotRareBox
-            ///
-            this.screenshotRareBox = new Tibialyzer.PrettyCheckBox();
-            this.screenshotRareBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.screenshotRareBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.screenshotRareBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.screenshotRareBox.Location = new System.Drawing.Point(226, 460);
-            this.screenshotRareBox.Name = "screenshotRareBox";
-            this.screenshotRareBox.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.screenshotRareBox.Size = new System.Drawing.Size(311, 34);
-            this.screenshotRareBox.TabIndex = 60;
-            this.screenshotRareBox.Text = "Screenshot on Rare Item Drop";
-            this.screenshotRareBox.UseVisualStyleBackColor = false;
-            this.screenshotRareBox.CheckedChanged += new System.EventHandler(this.autoScreenshotDrop_CheckedChanged);
-            this.screenshotRareBox.MouseEnter += new System.EventHandler(ControlMouseEnter);
-            this.screenshotRareBox.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            ///
-            /// screenshotDeathBox
-            ///
-            this.screenshotDeathBox = new Tibialyzer.PrettyCheckBox();
-            this.screenshotDeathBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.screenshotDeathBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.screenshotDeathBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.screenshotDeathBox.Location = new System.Drawing.Point(226, 426);
-            this.screenshotDeathBox.Name = "screenshotDeathBox";
-            this.screenshotDeathBox.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.screenshotDeathBox.Size = new System.Drawing.Size(311, 34);
-            this.screenshotDeathBox.TabIndex = 59;
-            this.screenshotDeathBox.Text = "Screenshot on Death";
-            this.screenshotDeathBox.UseVisualStyleBackColor = false;
-            this.screenshotDeathBox.CheckedChanged += new System.EventHandler(this.autoScreenshotDeath_CheckedChanged);
-            this.screenshotDeathBox.MouseEnter += new System.EventHandler(ControlMouseEnter);
-            this.screenshotDeathBox.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            ///
-            /// screenshotAdvanceBox
-            ///
-            this.screenshotAdvanceBox = new Tibialyzer.PrettyCheckBox();
-            this.screenshotAdvanceBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.screenshotAdvanceBox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.screenshotAdvanceBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.screenshotAdvanceBox.Location = new System.Drawing.Point(226, 392);
-            this.screenshotAdvanceBox.Name = "screenshotAdvanceBox";
-            this.screenshotAdvanceBox.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.screenshotAdvanceBox.Size = new System.Drawing.Size(311, 34);
-            this.screenshotAdvanceBox.TabIndex = 58;
-            this.screenshotAdvanceBox.Text = "Screenshot on Skill/Level Advance";
-            this.screenshotAdvanceBox.UseVisualStyleBackColor = false;
-            this.screenshotAdvanceBox.CheckedChanged += new System.EventHandler(this.autoScreenshot_CheckedChanged);
-            this.screenshotAdvanceBox.MouseEnter += new System.EventHandler(ControlMouseEnter);
-            this.screenshotAdvanceBox.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            ///
-            /// enableScreenshotCheckbox
-            ///
-            this.enableScreenshotCheckbox = new Tibialyzer.PrettyCheckBox();
+            // 
+            // screenshotOptionsHeader
+            // 
+            this.screenshotOptionsHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.screenshotOptionsHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.screenshotOptionsHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.screenshotOptionsHeader.Location = new System.Drawing.Point(326, 359);
+            this.screenshotOptionsHeader.Name = "screenshotOptionsHeader";
+            this.screenshotOptionsHeader.Size = new System.Drawing.Size(299, 30);
+            this.screenshotOptionsHeader.TabIndex = 48;
+            this.screenshotOptionsHeader.Text = "Screenshot Options";
+            this.screenshotOptionsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // screenshotDirectoryHeader
+            // 
+            this.screenshotDirectoryHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.screenshotDirectoryHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.screenshotDirectoryHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.screenshotDirectoryHeader.Location = new System.Drawing.Point(326, 267);
+            this.screenshotDirectoryHeader.Name = "screenshotDirectoryHeader";
+            this.screenshotDirectoryHeader.Size = new System.Drawing.Size(299, 30);
+            this.screenshotDirectoryHeader.TabIndex = 47;
+            this.screenshotDirectoryHeader.Text = "Screenshot Directory";
+            this.screenshotDirectoryHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // screenshotTitleHeader
+            // 
+            this.screenshotTitleHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(128)))), ((int)(((byte)(176)))));
+            this.screenshotTitleHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold);
+            this.screenshotTitleHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.screenshotTitleHeader.Location = new System.Drawing.Point(327, 10);
+            this.screenshotTitleHeader.Name = "screenshotTitleHeader";
+            this.screenshotTitleHeader.Size = new System.Drawing.Size(299, 30);
+            this.screenshotTitleHeader.TabIndex = 46;
+            this.screenshotTitleHeader.Text = "Screenshot";
+            this.screenshotTitleHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // screenshotListHeader
+            // 
+            this.screenshotListHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.screenshotListHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.screenshotListHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.screenshotListHeader.Location = new System.Drawing.Point(9, 10);
+            this.screenshotListHeader.Name = "screenshotListHeader";
+            this.screenshotListHeader.Size = new System.Drawing.Size(299, 30);
+            this.screenshotListHeader.TabIndex = 44;
+            this.screenshotListHeader.Text = "Screenshot List";
+            this.screenshotListHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // screenshotOnRareItemCheckbox
+            // 
+            this.screenshotOnRareItemCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.screenshotOnRareItemCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.screenshotOnRareItemCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.screenshotOnRareItemCheckbox.Location = new System.Drawing.Point(326, 457);
+            this.screenshotOnRareItemCheckbox.Name = "screenshotOnRareItemCheckbox";
+            this.screenshotOnRareItemCheckbox.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.screenshotOnRareItemCheckbox.Size = new System.Drawing.Size(299, 34);
+            this.screenshotOnRareItemCheckbox.TabIndex = 60;
+            this.screenshotOnRareItemCheckbox.Text = "Screenshot on Rare Item Drop";
+            this.screenshotOnRareItemCheckbox.UseVisualStyleBackColor = false;
+            this.screenshotOnRareItemCheckbox.CheckedChanged += new System.EventHandler(this.autoScreenshotDrop_CheckedChanged);
+            // 
+            // screenshotDeathCheckbox
+            // 
+            this.screenshotDeathCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.screenshotDeathCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.screenshotDeathCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.screenshotDeathCheckbox.Location = new System.Drawing.Point(326, 423);
+            this.screenshotDeathCheckbox.Name = "screenshotDeathCheckbox";
+            this.screenshotDeathCheckbox.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.screenshotDeathCheckbox.Size = new System.Drawing.Size(299, 34);
+            this.screenshotDeathCheckbox.TabIndex = 59;
+            this.screenshotDeathCheckbox.Text = "Screenshot on Death";
+            this.screenshotDeathCheckbox.UseVisualStyleBackColor = false;
+            this.screenshotDeathCheckbox.CheckedChanged += new System.EventHandler(this.autoScreenshotDeath_CheckedChanged);
+            // 
+            // screenshotAdvanceCheckbox
+            // 
+            this.screenshotAdvanceCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.screenshotAdvanceCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.screenshotAdvanceCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.screenshotAdvanceCheckbox.Location = new System.Drawing.Point(326, 389);
+            this.screenshotAdvanceCheckbox.Name = "screenshotAdvanceCheckbox";
+            this.screenshotAdvanceCheckbox.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.screenshotAdvanceCheckbox.Size = new System.Drawing.Size(299, 34);
+            this.screenshotAdvanceCheckbox.TabIndex = 58;
+            this.screenshotAdvanceCheckbox.Text = "Screenshot on Skill/Level Advance";
+            this.screenshotAdvanceCheckbox.UseVisualStyleBackColor = false;
+            this.screenshotAdvanceCheckbox.CheckedChanged += new System.EventHandler(this.autoScreenshot_CheckedChanged);
+            // 
+            // enableScreenshotCheckbox
+            // 
             this.enableScreenshotCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.enableScreenshotCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.enableScreenshotCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.enableScreenshotCheckbox.Location = new System.Drawing.Point(226, 229);
+            this.enableScreenshotCheckbox.Location = new System.Drawing.Point(326, 226);
             this.enableScreenshotCheckbox.Name = "enableScreenshotCheckbox";
             this.enableScreenshotCheckbox.Padding = new System.Windows.Forms.Padding(10);
-            this.enableScreenshotCheckbox.Size = new System.Drawing.Size(312, 40);
+            this.enableScreenshotCheckbox.Size = new System.Drawing.Size(299, 40);
             this.enableScreenshotCheckbox.TabIndex = 52;
             this.enableScreenshotCheckbox.Text = "Enable Screenshots";
             this.enableScreenshotCheckbox.UseVisualStyleBackColor = false;
             this.enableScreenshotCheckbox.CheckedChanged += new System.EventHandler(this.enableScreenshotBox_CheckedChanged);
-            this.enableScreenshotCheckbox.MouseEnter += new System.EventHandler(ControlMouseEnter);
-            this.enableScreenshotCheckbox.MouseLeave += new System.EventHandler(ControlMouseLeave);
-            ///
-            /// screenshotPathBox
-            ///
-            this.screenshotPathBox = new Tibialyzer.EnterTextBox();
+            // 
+            // screenshotPathBox
+            // 
             this.screenshotPathBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.screenshotPathBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.screenshotPathBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
-            this.screenshotPathBox.Location = new System.Drawing.Point(226, 300);
+            this.screenshotPathBox.Location = new System.Drawing.Point(326, 297);
             this.screenshotPathBox.Name = "screenshotPathBox";
             this.screenshotPathBox.ReadOnly = true;
-            this.screenshotPathBox.Size = new System.Drawing.Size(311, 23);
+            this.screenshotPathBox.Size = new System.Drawing.Size(299, 23);
             this.screenshotPathBox.TabIndex = 49;
-            ///
-            /// screenshotDisplayList
-            ///
-            this.screenshotDisplayList = new Tibialyzer.PrettyListBox();
+            // 
+            // screenshotDisplayList
+            // 
             this.screenshotDisplayList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.screenshotDisplayList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.screenshotDisplayList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
@@ -215,51 +206,80 @@
             this.screenshotDisplayList.ItemHeight = 35;
             this.screenshotDisplayList.Items.AddRange(new object[] {
             "Main Hunt"});
-            this.screenshotDisplayList.Location = new System.Drawing.Point(3, 49);
+            this.screenshotDisplayList.Location = new System.Drawing.Point(9, 40);
             this.screenshotDisplayList.Name = "screenshotDisplayList";
-            this.screenshotDisplayList.Size = new System.Drawing.Size(219, 454);
+            this.screenshotDisplayList.Size = new System.Drawing.Size(299, 454);
             this.screenshotDisplayList.TabIndex = 45;
             this.screenshotDisplayList.SelectedIndexChanged += new System.EventHandler(this.screenshotList_SelectedIndexChanged);
-            //
-            // TabBase
-            //
-            this.Controls.Add(screenshotBox);
-            this.Controls.Add(changeScreenshotDirectoryButton);
-            this.Controls.Add(openScreenshotDirectoryButton);
-            this.Controls.Add(label96);
-            this.Controls.Add(label95);
-            this.Controls.Add(screenshotTitleLabel);
-            this.Controls.Add(screenshotListLabel);
-            this.Controls.Add(screenshotRareBox);
-            this.Controls.Add(screenshotDeathBox);
-            this.Controls.Add(screenshotAdvanceBox);
-            this.Controls.Add(enableScreenshotCheckbox);
-            this.Controls.Add(screenshotPathBox);
-            this.Controls.Add(screenshotDisplayList);
-
+            // 
+            // screenshotValueLabel
+            // 
+            this.screenshotValueLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.screenshotValueLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.screenshotValueLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.screenshotValueLabel.Location = new System.Drawing.Point(326, 491);
+            this.screenshotValueLabel.Name = "screenshotValueLabel";
+            this.screenshotValueLabel.Size = new System.Drawing.Size(175, 23);
+            this.screenshotValueLabel.TabIndex = 62;
+            this.screenshotValueLabel.Text = "Screenshot Value";
+            this.screenshotValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // screenshotValueBox
+            // 
+            this.screenshotValueBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.screenshotValueBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.screenshotValueBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
+            this.screenshotValueBox.Location = new System.Drawing.Point(501, 491);
+            this.screenshotValueBox.Name = "screenshotValueBox";
+            this.screenshotValueBox.Size = new System.Drawing.Size(125, 23);
+            this.screenshotValueBox.TabIndex = 61;
+            this.screenshotValueBox.Text = "50000";
+            // 
+            // ScreenshotTab
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
-            this.ClientSize = new System.Drawing.Size(538, 514);
+            this.ClientSize = new System.Drawing.Size(638, 549);
+            this.Controls.Add(this.screenshotValueLabel);
+            this.Controls.Add(this.screenshotValueBox);
+            this.Controls.Add(this.screenshotBox);
+            this.Controls.Add(this.changeScreenshotDirectoryButton);
+            this.Controls.Add(this.openScreenshotDirectoryButton);
+            this.Controls.Add(this.screenshotOptionsHeader);
+            this.Controls.Add(this.screenshotDirectoryHeader);
+            this.Controls.Add(this.screenshotTitleHeader);
+            this.Controls.Add(this.screenshotListHeader);
+            this.Controls.Add(this.screenshotOnRareItemCheckbox);
+            this.Controls.Add(this.screenshotDeathCheckbox);
+            this.Controls.Add(this.screenshotAdvanceCheckbox);
+            this.Controls.Add(this.enableScreenshotCheckbox);
+            this.Controls.Add(this.screenshotPathBox);
+            this.Controls.Add(this.screenshotDisplayList);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "TabBase";
+            this.Name = "ScreenshotTab";
             this.Text = "TabBase";
+            ((System.ComponentModel.ISupportInitialize)(this.screenshotBox)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
         private System.Windows.Forms.PictureBox screenshotBox;
         private System.Windows.Forms.Label changeScreenshotDirectoryButton;
         private System.Windows.Forms.Label openScreenshotDirectoryButton;
-        private System.Windows.Forms.Label label96;
-        private System.Windows.Forms.Label label95;
-        private System.Windows.Forms.Label screenshotTitleLabel;
-        private System.Windows.Forms.Label screenshotListLabel;
-        private PrettyCheckBox screenshotRareBox;
-        private PrettyCheckBox screenshotDeathBox;
-        private PrettyCheckBox screenshotAdvanceBox;
+        private System.Windows.Forms.Label screenshotOptionsHeader;
+        private System.Windows.Forms.Label screenshotDirectoryHeader;
+        private System.Windows.Forms.Label screenshotTitleHeader;
+        private System.Windows.Forms.Label screenshotListHeader;
+        private PrettyCheckBox screenshotOnRareItemCheckbox;
+        private PrettyCheckBox screenshotDeathCheckbox;
+        private PrettyCheckBox screenshotAdvanceCheckbox;
         private PrettyCheckBox enableScreenshotCheckbox;
         private EnterTextBox screenshotPathBox;
         private PrettyListBox screenshotDisplayList;
         #endregion
+
+        private System.Windows.Forms.Label screenshotValueLabel;
+        private EnterTextBox screenshotValueBox;
     }
 }

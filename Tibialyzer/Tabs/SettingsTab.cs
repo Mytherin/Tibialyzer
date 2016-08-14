@@ -10,44 +10,73 @@ using System.Windows.Forms;
 
 namespace Tibialyzer {
     public partial class SettingsTab : Form, TabInterface {
+        ToolTip tooltip = UIManager.CreateTooltip();
         public SettingsTab() {
             InitializeComponent();
             InitializeSettings();
-            InitializeTooltips();
+            ApplyLocalization();
         }
 
         public void InitializeSettings() {
-            this.popupAnimationBox.Checked = SettingsManager.getSettingBool("EnableSimpleNotificationAnimation");
-            this.eventPopupBox.Checked = SettingsManager.getSettingBool("EnableEventNotifications");
-            this.unrecognizedPopupBox.Checked = SettingsManager.getSettingBool("EnableUnrecognizedNotifications");
+            this.enablePopupAnimationsCheckbox.Checked = SettingsManager.getSettingBool("EnableSimpleNotificationAnimation");
+            this.popupOnEventCheckbox.Checked = SettingsManager.getSettingBool("EnableEventNotifications");
+            this.unrecognizedPopupCheckbox.Checked = SettingsManager.getSettingBool("EnableUnrecognizedNotifications");
             this.copyAdvancesCheckbox.Checked = SettingsManager.getSettingBool("CopyAdvances");
-            this.popupTypeBox.SelectedIndex = SettingsManager.getSettingBool("UseRichNotificationType") ? 1 : 0;
-            this.outfitGenderCheckbox.SelectedIndex = SettingsManager.getSettingBool("OutfitGenderMale") ? 0 : 1;
-            this.lookModeCheckbox.Checked = SettingsManager.getSettingBool("LookMode");
+            this.defaultOutfitGenderDropDownList.SelectedIndex = SettingsManager.getSettingBool("OutfitGenderMale") ? 0 : 1;
+            this.viewLookedAtObjectsCheckbox.Checked = SettingsManager.getSettingBool("LookMode");
             this.scanningSpeedTrack.Value = Math.Min(Math.Max(SettingsManager.getSettingInt("ScanSpeed"), scanningSpeedTrack.Minimum), scanningSpeedTrack.Maximum);
-            this.scanSpeedDisplayLabel.Text = Constants.ScanSpeedText[scanningSpeedTrack.Value / 10] + String.Format("({0})", scanningSpeedTrack.Value);
-            this.experienceComputationDropdown.SelectedIndex = SettingsManager.getSettingString("ExperiencePerHourCalculation") == "TibiaStyle" ? 0 : 1;
-            this.scanEntireMemoryDropdown.SelectedIndex = SettingsManager.getSettingBool("ScanInternalTabStructure") ? 0 : 1;
+            this.scanningSpeedDisplayHeader.Text = Constants.ScanSpeedText[scanningSpeedTrack.Value / 10] + String.Format("({0})", scanningSpeedTrack.Value);
+            this.experienceComputationDropDownList.SelectedIndex = SettingsManager.getSettingString("ExperiencePerHourCalculation") == "TibiaStyle" ? 0 : 1;
+            this.scanInternalTabsCheckbox.Checked = SettingsManager.getSettingBool("ScanInternalTabStructure");
             this.skipDuplicateLootCheckbox.Checked = SettingsManager.getSettingBool("SkipDuplicateLoot");
             this.skipDuplicateCommandsCheckbox.Checked = SettingsManager.getSettingBool("SkipDuplicateCommands");
-            this.gatherOnlineInformation.Checked = SettingsManager.getSettingBool("GatherExtraPlayerInformation");
+            this.extraPlayerLookInformationCheckbox.Checked = SettingsManager.getSettingBool("GatherExtraPlayerInformation");
         }
 
-        public void InitializeTooltips() {
-            ToolTip tooltip = UIManager.CreateTooltip();
+        public void ApplyLocalization() {
+            tooltip.RemoveAll();
 
-            tooltip.SetToolTip(lookModeCheckbox, "When you look (shift+click) at an item, creature or npc in-game, Tibialyzer will automatically open a box displaying information about that object.");
-            tooltip.SetToolTip(outfitGenderCheckbox, "Outfit gender displayed in outfit@ searches.");
-            tooltip.SetToolTip(copyAdvancesCheckbox, "When you advance in level or skill, the advancement text will be automatically copied for you, so you can easily paste it and notify your friends.");
-            tooltip.SetToolTip(eventPopupBox, "When a raid message is send, a notification will appear informing you of the raid.");
-            tooltip.SetToolTip(unrecognizedPopupBox, "When you type in an unrecognized command in Tibia chat (unrecognized@), a notification will appear notifying you of this.");
-            tooltip.SetToolTip(resetSettingsButton, "Clears all settings and resets them back to the default settings, except for the hunt settings. ");
-            tooltip.SetToolTip(popupTypeBox, "Rich notifications are Windows Forms notifications that look pretty. Simple notifications are default Windows bubble notifications. ");
-            tooltip.SetToolTip(scanningSpeedTrack, "Set the memory scanning speed of Tibialyzer. Lower settings drastically reduce CPU usage, but increase response time for Tibialyzer to respond to events in-game (such as in-game commands, look events and loot parsing).");
-            tooltip.SetToolTip(popupAnimationBox, "Whether or not popups should be animated or simply appear.");
-            tooltip.SetToolTip(experienceComputationDropdown, "The algorithm used to compute experience per hour. Standard Tibia Style uses the same algorithm as the Tibia client; while weighted places more emphasis on recent experience gained.");
-            tooltip.SetToolTip(scanEntireMemoryDropdown, "Scanning the internal tab structure is much faster and prevents duplicate issues (only available for C client).\nOnly select scanning the entire memory if for some reason this setting does not work (e.g. because of an update).");
-            tooltip.SetToolTip(gatherOnlineInformation, "When looking at a player, also navigate to the tibia.com page for that player and gather extra information (e.g. recent deaths, house, guild, marriage).");
+            skipDuplicateLootCheckbox.Text = Tibialyzer.Translation.SettingsTab.skipDuplicateLootCheckbox;
+            experienceComputationHeader.Text = Tibialyzer.Translation.SettingsTab.experienceComputationHeader;
+            popupOptionsHeader.Text = Tibialyzer.Translation.SettingsTab.popupOptionsHeader;
+            resetSettingsButton.Text = Tibialyzer.Translation.SettingsTab.resetSettingsButton;
+            defaultOutfitGenderHeader.Text = Tibialyzer.Translation.SettingsTab.defaultOutfitGenderHeader;
+            extraPlayerLookInformationCheckbox.Text = Tibialyzer.Translation.SettingsTab.extraPlayerLookInformationCheckbox;
+            copyAdvancesCheckbox.Text = Tibialyzer.Translation.SettingsTab.copyAdvancesCheckbox;
+            unrecognizedPopupCheckbox.Text = Tibialyzer.Translation.SettingsTab.unrecognizedPopupCheckbox;
+            optionsHeader.Text = Tibialyzer.Translation.SettingsTab.optionsHeader;
+            skipDuplicateCommandsCheckbox.Text = Tibialyzer.Translation.SettingsTab.skipDuplicateCommandsCheckbox;
+            unlockResetButtonHeader.Text = Tibialyzer.Translation.SettingsTab.unlockResetButtonHeader;
+            scanInternalTabsCheckbox.Text = Tibialyzer.Translation.SettingsTab.scanInternalTabsCheckbox;
+            resetSettingsToDefaultHeader.Text = Tibialyzer.Translation.SettingsTab.resetSettingsToDefaultHeader;
+            scanningSpeedHeader.Text = Tibialyzer.Translation.SettingsTab.scanningSpeedHeader;
+            popupOnEventCheckbox.Text = Tibialyzer.Translation.SettingsTab.popupOnEventCheckbox;
+            unlockResetButton.Text = Tibialyzer.Translation.SettingsTab.unlockResetButton;
+            enablePopupAnimationsCheckbox.Text = Tibialyzer.Translation.SettingsTab.enablePopupAnimationsCheckbox;
+            scanningOptionsHeader.Text = Tibialyzer.Translation.SettingsTab.scanningOptionsHeader;
+            memoryScanSettingsHeader.Text = Tibialyzer.Translation.SettingsTab.memoryScanSettingsHeader;
+            viewLookedAtObjectsCheckbox.Text = Tibialyzer.Translation.SettingsTab.viewLookedAtObjectsCheckbox;
+            tooltip.SetToolTip(scanInternalTabsCheckbox, Tibialyzer.Translation.SettingsTab.scanInternalTabsCheckboxTooltip);
+            tooltip.SetToolTip(resetSettingsToDefaultHeader, Tibialyzer.Translation.SettingsTab.resetSettingsToDefaultHeaderTooltip);
+            tooltip.SetToolTip(popupOnEventCheckbox, Tibialyzer.Translation.SettingsTab.popupOnEventCheckboxTooltip);
+            tooltip.SetToolTip(extraPlayerLookInformationCheckbox, Tibialyzer.Translation.SettingsTab.extraPlayerLookInformationCheckboxTooltip);
+            tooltip.SetToolTip(defaultOutfitGenderHeader, Tibialyzer.Translation.SettingsTab.defaultOutfitGenderHeaderTooltip);
+            tooltip.SetToolTip(scanningSpeedTrack, Tibialyzer.Translation.SettingsTab.scanningSpeedTrackTooltip);
+            tooltip.SetToolTip(copyAdvancesCheckbox, Tibialyzer.Translation.SettingsTab.copyAdvancesCheckboxTooltip);
+            tooltip.SetToolTip(unrecognizedPopupCheckbox, Tibialyzer.Translation.SettingsTab.unrecognizedPopupCheckboxTooltip);
+            tooltip.SetToolTip(enablePopupAnimationsCheckbox, Tibialyzer.Translation.SettingsTab.enablePopupAnimationsCheckboxTooltip);
+            tooltip.SetToolTip(experienceComputationDropDownList, Tibialyzer.Translation.SettingsTab.experienceComputationDropDownListTooltip);
+            tooltip.SetToolTip(viewLookedAtObjectsCheckbox, Tibialyzer.Translation.SettingsTab.viewLookedAtObjectsCheckboxTooltip);
+            int defaultOutfitGenderDropDownListSelectedIndex = defaultOutfitGenderDropDownList.SelectedIndex;
+            defaultOutfitGenderDropDownList.Items.Clear();
+            defaultOutfitGenderDropDownList.Items.Add(Tibialyzer.Translation.SettingsTab.defaultOutfitGenderDropDownList_0);
+            defaultOutfitGenderDropDownList.Items.Add(Tibialyzer.Translation.SettingsTab.defaultOutfitGenderDropDownList_1);
+            defaultOutfitGenderDropDownList.SelectedIndex = defaultOutfitGenderDropDownListSelectedIndex;
+            int experienceComputationDropDownListSelectedIndex = experienceComputationDropDownList.SelectedIndex;
+            experienceComputationDropDownList.Items.Clear();
+            experienceComputationDropDownList.Items.Add(Tibialyzer.Translation.SettingsTab.experienceComputationDropDownList_0);
+            experienceComputationDropDownList.Items.Add(Tibialyzer.Translation.SettingsTab.experienceComputationDropDownList_1);
+            experienceComputationDropDownList.SelectedIndex = experienceComputationDropDownListSelectedIndex;
         }
 
         private void unlockResetButton_Click(object sender, MouseEventArgs e) {
@@ -55,14 +84,14 @@ namespace Tibialyzer {
                 resetSettingsButton.Enabled = false;
                 resetSettingsButton.Text = "(Locked)";
                 (sender as Control).Text = "Unlock Reset Button";
-                unlockLabel.Text = "Unlock";
-                unlockLabel.BackColor = StyleManager.MainFormDangerColor;
+                unlockResetButtonHeader.Text = "Unlock";
+                unlockResetButtonHeader.BackColor = StyleManager.MainFormDangerColor;
             } else {
                 resetSettingsButton.Enabled = true;
                 resetSettingsButton.Text = "Reset Settings To Default";
                 (sender as Control).Text = "Lock Reset Button";
-                unlockLabel.Text = "Lock";
-                unlockLabel.BackColor = StyleManager.MainFormSafeColor;
+                unlockResetButtonHeader.Text = "Lock";
+                unlockResetButtonHeader.BackColor = StyleManager.MainFormSafeColor;
             }
         }
 
@@ -85,7 +114,7 @@ namespace Tibialyzer {
             if (MainForm.prevent_settings_update) return;
 
             SettingsManager.setSetting("ScanSpeed", scanningSpeedTrack.Value);
-            scanSpeedDisplayLabel.Text = Constants.ScanSpeedText[scanningSpeedTrack.Value / 10] + String.Format("({0})", scanningSpeedTrack.Value);
+            scanningSpeedDisplayHeader.Text = Constants.ScanSpeedText[scanningSpeedTrack.Value / 10] + String.Format("({0})", scanningSpeedTrack.Value);
         }
 
         private void lookCheckBox_CheckedChanged(object sender, EventArgs e) {
@@ -123,34 +152,13 @@ namespace Tibialyzer {
 
             SettingsManager.setSetting("CopyAdvances", (sender as CheckBox).Checked.ToString());
         }
-        private void notificationTypeBox_SelectedIndexChanged(object sender, EventArgs e) {
-            if (MainForm.prevent_settings_update) return;
-
-            SettingsManager.setSetting("UseRichNotificationType", ((sender as ComboBox).SelectedIndex == 1).ToString());
-        }
-
-        private void ControlMouseEnter(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormHoverColor;
-            (sender as Control).ForeColor = StyleManager.MainFormHoverForeColor;
-        }
-
-        private void ControlMouseLeave(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormButtonColor;
-            (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
-        }
 
         private void experienceComputationDropdown_SelectedIndexChanged(object sender, EventArgs e) {
             if (MainForm.prevent_settings_update) return;
 
             SettingsManager.setSetting("ExperiencePerHourCalculation", (sender as ComboBox).SelectedIndex == 0 ? "TibiaStyle" : "WeightedStyle" );
         }
-
-        private void scanEntireMemoryDropdown_SelectedIndexChanged(object sender, EventArgs e) {
-            if (MainForm.prevent_settings_update) return;
-
-            SettingsManager.setSetting("ScanInternalTabStructure", (sender as ComboBox).SelectedIndex == 0);
-        }
-
+        
         private void skipDuplicateLootCheckbox_CheckedChanged(object sender, EventArgs e) {
             if (MainForm.prevent_settings_update) return;
 
@@ -167,6 +175,12 @@ namespace Tibialyzer {
             if (MainForm.prevent_settings_update) return;
 
             SettingsManager.setSetting("GatherExtraPlayerInformation", (sender as CheckBox).Checked);
+        }
+
+        private void scanInternalTabsCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            SettingsManager.setSetting("ScanInternalTabStructure", (sender as CheckBox).Checked);
         }
     }
 }

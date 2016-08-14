@@ -15,12 +15,18 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Tibialyzer {
     class StyleManager {
         #region UI Colors
         public static Color NotificationBackgroundColor = Color.FromArgb(0, 51, 102);
         public static Color NotificationTextColor = Color.FromArgb(191, 191, 191);
+
+        public static Color NotificationHeaderBackgroundColor = Color.FromArgb(40, 40, 40);
+        public static Color NotificationHeaderColor = Color.FromArgb(255, 255, 255);
+
+        public static Color BorderColor = Color.FromArgb(100, 100, 100);
 
         public static Color AutoHotkeyKeywordColor = Color.FromArgb(25, 25, 112);
         public static Color AutoHotkeyModifierColor = Color.FromArgb(178, 34, 34);
@@ -88,6 +94,37 @@ namespace Tibialyzer {
         public static Font MainFormLabelFont = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
         public static Font MainFormLabelFontSmall = new System.Drawing.Font("Verdana", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
         #endregion
+
+        
+        public static void ControlMouseEnter(object sender, EventArgs e) {
+            (sender as Control).BackColor = StyleManager.MainFormHoverColor;
+            (sender as Control).ForeColor = StyleManager.MainFormHoverForeColor;
+        }
+
+        public static void ControlMouseLeave(object sender, EventArgs e) {
+            (sender as Control).BackColor = StyleManager.MainFormButtonColor;
+            (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
+        }
+
+        public static void InitializeElement(Control c) {
+            if (c is PrettyButton || c is PrettyListBox || c is PrettyCheckBox || c is PrettyDropDownList || c is PrettyMenuTab) {
+                c.MouseEnter += ControlMouseEnter;
+                c.MouseLeave += ControlMouseLeave;
+            }
+            if (c is PrettyButton) {
+                (c as PrettyButton).BorderStyle = BorderStyle.FixedSingle;
+            }
+        }
+
+        public static void StyleElement(Control c) {
+            if (c is PrettyButton || c is PrettyListBox || c is PrettyCheckBox || c is PrettyDropDownList || c is PrettyMenuTab) {
+                c.BackColor = StyleManager.MainFormButtonColor;
+                c.ForeColor = StyleManager.MainFormButtonForeColor;
+            } else if (c is PrettyHeader) {
+                c.BackColor = StyleManager.NotificationHeaderBackgroundColor;
+                c.ForeColor = StyleManager.NotificationHeaderColor;
+            }
+        }
 
         private static Dictionary<string, Image> images = new Dictionary<string, Image>();
         public static void InitializeStyle() {

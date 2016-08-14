@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 namespace Tibialyzer {
     interface TabInterface {
         void InitializeSettings();
-        void InitializeTooltips();
+        void ApplyLocalization();
     }
 }

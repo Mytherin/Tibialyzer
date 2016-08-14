@@ -13,7 +13,7 @@ namespace Tibialyzer {
         public PortraitTab() {
             InitializeComponent();
             InitializeSettings();
-            InitializeTooltips();
+            ApplyLocalization();
         }
 
         public void InitializeSettings() {
@@ -28,8 +28,18 @@ namespace Tibialyzer {
             yOffsetBoxCenter.Text = SettingsManager.getSettingInt("PortraitCenterYOffset").ToString();
         }
 
-        public void InitializeTooltips() {
-
+        public void ApplyLocalization() {
+            backgroundScaleHeader.Text = Tibialyzer.Translation.PortraitTab.backgroundScaleHeader;
+            scaleHeader.Text = Tibialyzer.Translation.PortraitTab.scaleHeader;
+            changeBackgroundImageButton.Text = Tibialyzer.Translation.PortraitTab.changeBackgroundImageButton;
+            centerImageHeader.Text = Tibialyzer.Translation.PortraitTab.centerImageHeader;
+            yOffsetLabel.Text = Tibialyzer.Translation.PortraitTab.yOffsetLabel;
+            xOffsetLabel.Text = Tibialyzer.Translation.PortraitTab.xOffsetLabel;
+            refreshButton.Text = Tibialyzer.Translation.PortraitTab.refreshButton;
+            yOffsetCenterLabel.Text = Tibialyzer.Translation.PortraitTab.yOffsetCenterLabel;
+            changeCenterImageButton.Text = Tibialyzer.Translation.PortraitTab.changeCenterImageButton;
+            xOffsetCenterLabel.Text = Tibialyzer.Translation.PortraitTab.xOffsetCenterLabel;
+            backgroundImageHeader.Text = Tibialyzer.Translation.PortraitTab.backgroundImageHeader;
         }
 
         private Image LoadImageFromPath(string path) {
@@ -91,15 +101,6 @@ namespace Tibialyzer {
             if (int.TryParse((sender as TextBox).Text, out offset)) {
                 SettingsManager.setSetting("PortraitBackgroundYOffset", offset);
             }
-        }
-        private void ControlMouseEnter(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormHoverColor;
-            (sender as Control).ForeColor = StyleManager.MainFormHoverForeColor;
-        }
-
-        private void ControlMouseLeave(object sender, EventArgs e) {
-            (sender as Control).BackColor = StyleManager.MainFormButtonColor;
-            (sender as Control).ForeColor = StyleManager.MainFormButtonForeColor;
         }
 
         private void xOffsetBoxCenter_TextChanged(object sender, EventArgs e) {
