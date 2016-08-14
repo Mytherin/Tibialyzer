@@ -23,26 +23,26 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.lootDisplayHeader = new PrettyHeader();
-            this.showHuntLootButton = new PrettyButton();
-            this.creatureListHeader = new PrettyHeader();
+            this.lootDisplayHeader = new Tibialyzer.PrettyHeader();
+            this.showHuntLootButton = new Tibialyzer.PrettyButton();
+            this.creatureListHeader = new Tibialyzer.PrettyHeader();
             this.creatureImagePanel = new System.Windows.Forms.Panel();
-            this.trackedCreaturesHeader = new PrettyHeader();
-            this.setAsActiveHuntButton = new PrettyButton();
-            this.huntOptionsHeader = new PrettyHeader();
-            this.listOfHuntsHeader = new PrettyHeader();
+            this.trackedCreaturesHeader = new Tibialyzer.PrettyHeader();
+            this.setAsActiveHuntButton = new Tibialyzer.PrettyButton();
+            this.huntOptionsHeader = new Tibialyzer.PrettyHeader();
+            this.listOfHuntsHeader = new Tibialyzer.PrettyHeader();
             this.trackedCreatureList = new Tibialyzer.PrettyListBox();
             this.gatherTrackedKillsCheckbox = new Tibialyzer.PrettyCheckBox();
             this.switchOnKillCheckbox = new Tibialyzer.PrettyCheckBox();
             this.displayAllCreaturesCheckbox = new Tibialyzer.PrettyCheckBox();
             this.clearHuntOnStartupCheckbox = new Tibialyzer.PrettyCheckBox();
             this.huntList = new Tibialyzer.PrettyListBox();
-            this.lootDisplayOptionsHeader = new PrettyHeader();
+            this.lootDisplayOptionsHeader = new Tibialyzer.PrettyHeader();
             this.automaticallyWriteLootToFileCheckbox = new Tibialyzer.PrettyCheckBox();
             this.ignoreLowExperienceCheckbox = new Tibialyzer.PrettyCheckBox();
             this.displayAllItemsAsStackableCheckbox = new Tibialyzer.PrettyCheckBox();
             this.expValueLabel = new System.Windows.Forms.Label();
-            this.screenshotValueBox = new Tibialyzer.EnterTextBox();
+            this.ignoreLowExperienceBox = new Tibialyzer.EnterTextBox();
             this.SuspendLayout();
             // 
             // lootDisplayHeader
@@ -254,6 +254,7 @@
             this.automaticallyWriteLootToFileCheckbox.TabIndex = 46;
             this.automaticallyWriteLootToFileCheckbox.Text = "Automatically Write Loot To File";
             this.automaticallyWriteLootToFileCheckbox.UseVisualStyleBackColor = false;
+            this.automaticallyWriteLootToFileCheckbox.CheckedChanged += new System.EventHandler(this.automaticallyWriteLootToFileCheckbox_CheckedChanged);
             // 
             // ignoreLowExperienceCheckbox
             // 
@@ -267,6 +268,7 @@
             this.ignoreLowExperienceCheckbox.TabIndex = 45;
             this.ignoreLowExperienceCheckbox.Text = "Ignore Low Experience Creatures";
             this.ignoreLowExperienceCheckbox.UseVisualStyleBackColor = false;
+            this.ignoreLowExperienceCheckbox.CheckedChanged += new System.EventHandler(this.ignoreLowExperienceCheckbox_CheckedChanged);
             // 
             // displayAllItemsAsStackableCheckbox
             // 
@@ -280,6 +282,7 @@
             this.displayAllItemsAsStackableCheckbox.TabIndex = 44;
             this.displayAllItemsAsStackableCheckbox.Text = "Display All Items As Stackable";
             this.displayAllItemsAsStackableCheckbox.UseVisualStyleBackColor = false;
+            this.displayAllItemsAsStackableCheckbox.CheckedChanged += new System.EventHandler(this.displayAllItemsAsStackableCheckbox_CheckedChanged);
             // 
             // expValueLabel
             // 
@@ -293,16 +296,17 @@
             this.expValueLabel.Text = "Exp Value";
             this.expValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // screenshotValueBox
+            // ignoreLowExperienceBox
             // 
-            this.screenshotValueBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.screenshotValueBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.screenshotValueBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
-            this.screenshotValueBox.Location = new System.Drawing.Point(117, 465);
-            this.screenshotValueBox.Name = "screenshotValueBox";
-            this.screenshotValueBox.Size = new System.Drawing.Size(191, 23);
-            this.screenshotValueBox.TabIndex = 63;
-            this.screenshotValueBox.Text = "50000";
+            this.ignoreLowExperienceBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.ignoreLowExperienceBox.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ignoreLowExperienceBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
+            this.ignoreLowExperienceBox.Location = new System.Drawing.Point(117, 465);
+            this.ignoreLowExperienceBox.Name = "ignoreLowExperienceBox";
+            this.ignoreLowExperienceBox.Size = new System.Drawing.Size(191, 23);
+            this.ignoreLowExperienceBox.TabIndex = 63;
+            this.ignoreLowExperienceBox.Text = "50000";
+            this.ignoreLowExperienceBox.TextChanged += new System.EventHandler(this.ignoreLowExperienceBox_TextChanged);
             // 
             // HuntsTab
             // 
@@ -311,7 +315,7 @@
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(638, 549);
             this.Controls.Add(this.expValueLabel);
-            this.Controls.Add(this.screenshotValueBox);
+            this.Controls.Add(this.ignoreLowExperienceBox);
             this.Controls.Add(this.automaticallyWriteLootToFileCheckbox);
             this.Controls.Add(this.ignoreLowExperienceCheckbox);
             this.Controls.Add(this.displayAllItemsAsStackableCheckbox);
@@ -337,15 +341,7 @@
             this.PerformLayout();
 
         }
-
-        private System.Windows.Forms.Label lootDisplayHeader;
-        private System.Windows.Forms.Label showHuntLootButton;
-        private System.Windows.Forms.Label creatureListHeader;
         private System.Windows.Forms.Panel creatureImagePanel;
-        private System.Windows.Forms.Label trackedCreaturesHeader;
-        private System.Windows.Forms.Label setAsActiveHuntButton;
-        private System.Windows.Forms.Label huntOptionsHeader;
-        private System.Windows.Forms.Label listOfHuntsHeader;
         private PrettyListBox trackedCreatureList;
         private PrettyCheckBox gatherTrackedKillsCheckbox;
         private PrettyCheckBox switchOnKillCheckbox;
@@ -353,12 +349,18 @@
         private PrettyCheckBox clearHuntOnStartupCheckbox;
         private PrettyListBox huntList;
         #endregion
-
-        private System.Windows.Forms.Label lootDisplayOptionsHeader;
         private PrettyCheckBox automaticallyWriteLootToFileCheckbox;
         private PrettyCheckBox ignoreLowExperienceCheckbox;
         private PrettyCheckBox displayAllItemsAsStackableCheckbox;
         private System.Windows.Forms.Label expValueLabel;
-        private EnterTextBox screenshotValueBox;
+        private EnterTextBox ignoreLowExperienceBox;
+        private PrettyHeader lootDisplayOptionsHeader;
+        private PrettyHeader listOfHuntsHeader;
+        private PrettyHeader huntOptionsHeader;
+        private PrettyButton setAsActiveHuntButton;
+        private PrettyHeader trackedCreaturesHeader;
+        private PrettyHeader creatureListHeader;
+        private PrettyButton showHuntLootButton;
+        private PrettyHeader lootDisplayHeader;
     }
 }

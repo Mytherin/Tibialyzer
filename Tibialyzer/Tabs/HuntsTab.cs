@@ -20,6 +20,12 @@ namespace Tibialyzer {
         public void InitializeSettings() {
             trackedCreatureList.ItemsChanged += TrackedCreatureList_ItemsChanged;
             trackedCreatureList.verifyItem = StorageManager.creatureExists;
+
+            this.displayAllItemsAsStackableCheckbox.Checked = SettingsManager.getSettingBool("StackAllItems");
+            this.ignoreLowExperienceCheckbox.Checked = SettingsManager.getSettingBool("IgnoreLowExperience");
+            this.ignoreLowExperienceBox.Enabled = this.ignoreLowExperienceCheckbox.Checked;
+            this.ignoreLowExperienceBox.Text = SettingsManager.getSettingInt("IgnoreLowExperienceValue").ToString();
+            this.automaticallyWriteLootToFileCheckbox.Checked = SettingsManager.getSettingBool("AutomaticallyWriteLootToFile");
         }
 
 
@@ -232,6 +238,34 @@ namespace Tibialyzer {
             refreshHuntImages(h);
             MainForm.mainForm.refreshHuntLog(h);
             MainForm.mainForm.switch_hunt = false;
+        }
+
+        private void displayAllItemsAsStackableCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            SettingsManager.setSetting("StackAllItems", (sender as CheckBox).Checked);
+        }
+
+        
+        private void automaticallyWriteLootToFileCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            SettingsManager.setSetting("AutomaticallyWriteLootToFile", (sender as CheckBox).Checked);
+        }
+
+        private void ignoreLowExperienceCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            SettingsManager.setSetting("IgnoreLowExperience", (sender as CheckBox).Checked);
+            ignoreLowExperienceBox.Enabled = (sender as CheckBox).Checked;
+        }
+
+        private void ignoreLowExperienceBox_TextChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+            int value;
+            if (int.TryParse(ignoreLowExperienceBox.Text, out value)) {
+                SettingsManager.setSetting("IgnoreLowExperienceValue", value);
+            }
         }
     }
 }

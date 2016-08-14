@@ -46,6 +46,8 @@ namespace Tibialyzer {
 
             Constants.OBSEnableWindowCapture = SettingsManager.getSettingBool("OBSEnableWindowCapture");
             enableWindowCaptureCheckbox.Checked = Constants.OBSEnableWindowCapture;
+
+            this.maxDamageDropDownList.SelectedIndex = Math.Min(Math.Max(SettingsManager.getSettingInt("MaxDamageChartPlayers"), 0), maxDamageDropDownList.Items.Count - 1);
         }
 
         public void ApplyLocalization() {
@@ -71,25 +73,25 @@ namespace Tibialyzer {
             tooltip.SetToolTip(saveDamageImageButton, Tibialyzer.Translation.SystemTab.saveDamageImageButtonTooltip);
             tooltip.SetToolTip(saveLootImageButton, Tibialyzer.Translation.SystemTab.saveLootImageButtonTooltip);
             tooltip.SetToolTip(saveSummaryImageButton, Tibialyzer.Translation.SystemTab.saveSummaryImageButtonTooltip);
-            int hudAnchorDropDownListSelectedIndex = hudAnchorDropDownList.SelectedIndex;
-            hudAnchorDropDownList.Items.Clear();
-            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_0);
-            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_1);
-            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_2);
-            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_3);
-            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_4);
-            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_5);
-            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_6);
-            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_7);
-            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_8);
-            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_9);
-            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_10);
-            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_11);
-            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_12);
-            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_13);
-            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_14);
-            hudAnchorDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_15);
-            hudAnchorDropDownList.SelectedIndex = hudAnchorDropDownListSelectedIndex;
+            int hudAnchorDropDownListSelectedIndex = maxDamageDropDownList.SelectedIndex;
+            maxDamageDropDownList.Items.Clear();
+            maxDamageDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_0);
+            maxDamageDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_1);
+            maxDamageDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_2);
+            maxDamageDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_3);
+            maxDamageDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_4);
+            maxDamageDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_5);
+            maxDamageDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_6);
+            maxDamageDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_7);
+            maxDamageDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_8);
+            maxDamageDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_9);
+            maxDamageDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_10);
+            maxDamageDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_11);
+            maxDamageDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_12);
+            maxDamageDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_13);
+            maxDamageDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_14);
+            maxDamageDropDownList.Items.Add(Tibialyzer.Translation.SystemTab.hudAnchorDropDownList_15);
+            maxDamageDropDownList.SelectedIndex = hudAnchorDropDownListSelectedIndex;
         }
 
         public IEnumerable<SystemCommand> GetCustomCommands() {
@@ -275,6 +277,12 @@ namespace Tibialyzer {
             if (result == System.Windows.Forms.DialogResult.OK) {
                 CommandManager.ExecuteCommand("summary" + Constants.CommandSymbol + "screenshot" + Constants.CommandSymbol + dialog.FileName.Replace("\\\\", "/").Replace("\\", "/"));
             }
+        }
+
+        private void maxDamageDropDownList_SelectedIndexChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            SettingsManager.setSetting("MaxDamageChartPlayers", maxDamagePlayersBox.SelectedIndex);
         }
     }
 }

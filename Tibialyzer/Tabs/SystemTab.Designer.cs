@@ -44,7 +44,7 @@
             this.saveDamageImageButton = new Tibialyzer.PrettyButton();
             this.saveSummaryImageButton = new Tibialyzer.PrettyButton();
             this.maxDamagePlayersHeader = new Tibialyzer.PrettyHeader();
-            this.hudAnchorDropDownList = new Tibialyzer.PrettyDropDownList();
+            this.maxDamageDropDownList = new Tibialyzer.PrettyDropDownList();
             this.SuspendLayout();
             // 
             // customCommandParameterBox
@@ -317,14 +317,14 @@
             this.maxDamagePlayersHeader.Text = "Max Damage@ Players";
             this.maxDamagePlayersHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // hudAnchorDropDownList
+            // maxDamageDropDownList
             // 
-            this.hudAnchorDropDownList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.hudAnchorDropDownList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.hudAnchorDropDownList.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.hudAnchorDropDownList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.hudAnchorDropDownList.FormattingEnabled = true;
-            this.hudAnchorDropDownList.Items.AddRange(new object[] {
+            this.maxDamageDropDownList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.maxDamageDropDownList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.maxDamageDropDownList.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.maxDamageDropDownList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.maxDamageDropDownList.FormattingEnabled = true;
+            this.maxDamageDropDownList.Items.AddRange(new object[] {
             "Any",
             "1",
             "2",
@@ -341,10 +341,11 @@
             "13",
             "14",
             "15"});
-            this.hudAnchorDropDownList.Location = new System.Drawing.Point(327, 440);
-            this.hudAnchorDropDownList.Name = "hudAnchorDropDownList";
-            this.hudAnchorDropDownList.Size = new System.Drawing.Size(299, 24);
-            this.hudAnchorDropDownList.TabIndex = 75;
+            this.maxDamageDropDownList.Location = new System.Drawing.Point(327, 440);
+            this.maxDamageDropDownList.Name = "maxDamageDropDownList";
+            this.maxDamageDropDownList.Size = new System.Drawing.Size(299, 24);
+            this.maxDamageDropDownList.TabIndex = 75;
+            this.maxDamageDropDownList.SelectedIndexChanged += new System.EventHandler(this.maxDamageDropDownList_SelectedIndexChanged);
             // 
             // SystemTab
             // 
@@ -353,7 +354,7 @@
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(638, 549);
             this.Controls.Add(this.maxDamagePlayersHeader);
-            this.Controls.Add(this.hudAnchorDropDownList);
+            this.Controls.Add(this.maxDamageDropDownList);
             this.Controls.Add(this.saveSummaryImageButton);
             this.Controls.Add(this.saveDamageImageButton);
             this.Controls.Add(this.saveLootImageButton);
@@ -389,7 +390,7 @@
         #endregion
         private PrettyCheckBox enableWindowCaptureCheckbox;
         private PrettyCheckBox automaticallyBackupSettingsCheckbox;
-        private PrettyDropDownList hudAnchorDropDownList;
+        private PrettyDropDownList maxDamageDropDownList;
         private PrettyHeader maxDamagePlayersHeader;
         private PrettyButton saveSummaryImageButton;
         private PrettyButton saveDamageImageButton;
