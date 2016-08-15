@@ -52,7 +52,9 @@ namespace Tibialyzer {
 
                 SQLiteDataReader reader = new SQLiteCommand("SELECT key,value FROM Settings;", settingsConn).ExecuteReader();
                 while(reader.Read()) {
-                    settings.Add(reader[0].ToString(), reader[1].ToString().Split('\n').ToList());
+                    if (!settings.ContainsKey(reader[0].ToString())) {
+                        settings.Add(reader[0].ToString(), reader[1].ToString().Split('\n').ToList());
+                    }
                 }
             }
         }
@@ -61,6 +63,13 @@ namespace Tibialyzer {
             string currentSetting = null;
             lock (lockObject) {
                 settings.Clear();
+                changedSettings.Clear();
+                newSettings.Clear();
+
+                SQLiteCommand comm = new SQLiteCommand("DROP TABLE IF EXISTS Settings;", settingsConn);
+                comm.ExecuteNonQuery();
+                comm = new SQLiteCommand("CREATE TABLE IF NOT EXISTS Settings(key STRING, value STRING);", settingsConn);
+                comm.ExecuteNonQuery();
 
                 if (!File.Exists(settingsFile)) {
                     ResetSettingsToDefault();
