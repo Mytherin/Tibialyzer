@@ -60,7 +60,14 @@ namespace Tibialyzer {
 
             Constants.InitializeConstants();
 
-            SettingsManager.LoadSettings(Constants.SettingsFile);
+            SettingsManager.Initialize(Constants.SettingsDatabaseFile);
+
+            if (File.Exists(Constants.SettingsFile)) {
+                SettingsManager.LoadSettingsFile(Constants.SettingsFile);
+                SettingsManager.SaveSettings();
+                File.Delete(Constants.SettingsFile);
+            }
+            SettingsManager.LoadSettings();
 
             LootDatabaseManager.LootChanged += NotificationManager.UpdateLootDisplay;
             LootDatabaseManager.LootChanged += UpdateLogDisplay;

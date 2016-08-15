@@ -160,7 +160,7 @@ namespace Tibialyzer {
                         return;
                     }
                 }
-                SettingsManager.LoadSettings(settings);
+                SettingsManager.LoadSettingsFile(settings);
                 MainForm.mainForm.initializeSettings();
 
                 string lootDatabase = System.IO.Path.Combine(tibialyzerPath, "loot.db");

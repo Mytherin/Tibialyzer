@@ -61,8 +61,10 @@ namespace Tibialyzer {
         public static string PluralMapFile = @"Database\pluralMap.txt";
         //! Location of where to put the generated autohotkey script; Tibialyzer generates an autohotkey script and launches it
         public static string AutohotkeyFile = @"Database\autohotkey.ahk";
-        //! Location of the settings file; this is where Tibialyzer stores all the settings of the player
+        //! Location of the old settings file; this is where Tibialyzer used to store all the settings of the player (obsolete)
         public static string SettingsFile = @"Database\settings.txt";
+        //! Location of the settings file; this is where Tibialyzer stores all the settings of the player
+        public static string SettingsDatabaseFile = @"Database\settings.db";
         //! Location of the big loot file; if enabled, all loot found is automatically written to this file
         public static string BigLootFile = @"Database\loot.txt";
 

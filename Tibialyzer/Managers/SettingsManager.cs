@@ -18,14 +18,44 @@ using System.IO;
 using System.Globalization;
 using System.Windows.Forms;
 using System.Text;
+using System.Data.SQLite;
 
 namespace Tibialyzer {
     public static class SettingsManager {
         private static object lockObject = new object();
+        public static List<string> changedSettings = new List<string>();
+        public static List<string> newSettings = new List<string>();
         public static Dictionary<string, List<string>> settings = new Dictionary<string, List<string>>();
-        public static void LoadSettings(string settingsFile) {
-            string currentSetting = null;
+        private static SQLiteConnection settingsConn;
+        private static System.Timers.Timer flushTimer;
+        public static void Initialize(string databaseFile) {
+            settingsConn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", databaseFile));
+            settingsConn.Open();
+
+            SQLiteCommand comm = new SQLiteCommand("CREATE TABLE IF NOT EXISTS Settings(key STRING, value STRING);", settingsConn);
+            comm.ExecuteNonQuery();
+            
+            flushTimer = new System.Timers.Timer(1000);
+            flushTimer.AutoReset = false;
+            flushTimer.Elapsed += (s, e) => {
+                ActuallySaveSettings();
+            };
+        }
+
+        public static void LoadSettings() {
             lock(lockObject) {
+                settings.Clear();
+
+                SQLiteDataReader reader = new SQLiteCommand("SELECT key,value FROM Settings;", settingsConn).ExecuteReader();
+                while(reader.Read()) {
+                    settings.Add(reader[0].ToString(), reader[1].ToString().Split('\n').ToList());
+                }
+            }
+        }
+
+        public static void LoadSettingsFile(string settingsFile) {
+            string currentSetting = null;
+            lock (lockObject) {
                 settings.Clear();
 
                 if (!File.Exists(settingsFile)) {
@@ -39,8 +69,7 @@ namespace Tibialyzer {
                             currentSetting = line.Substring(1, line.Length - 1);
                             if (!settings.ContainsKey(currentSetting))
                                 settings.Add(currentSetting, new List<string>());
-                        }
-                        else if (currentSetting != null) {
+                        } else if (currentSetting != null) {
                             settings[currentSetting].Add(line);
                         }
                     }
@@ -48,30 +77,54 @@ namespace Tibialyzer {
             }
         }
 
-        public static void SaveSettings() {
+        private static void ActuallySaveSettings() {
             try {
                 lock (lockObject) {
-                    var sb = new StringBuilder();
-                    foreach (KeyValuePair<string, List<string>> pair in settings) {
-                        sb.Append("@").Append(pair.Key).AppendLine();
-                        foreach (string str in pair.Value) {
-                            sb.AppendLine(str);
+                    SQLiteTransaction transaction = settingsConn.BeginTransaction();
+                    SQLiteCommand command;
+
+                    foreach (string change in changedSettings) {
+                        string key = change;
+                        if (settings.ContainsKey(change)) {
+                            string value = string.Join("\n", settings[change]).Replace("'", "''");
+                            // update
+                            command = new SQLiteCommand(String.Format("UPDATE Settings SET value='{0}' WHERE key='{1}'", value, key), settingsConn, transaction);
+                            command.ExecuteNonQuery();
+                        } else {
+                            // delete
+                            command = new SQLiteCommand(String.Format("DELETE FROM Settings WHERE key='{0}'", key), settingsConn, transaction);
+                            command.ExecuteNonQuery();
                         }
                     }
+                    foreach (string change in newSettings) {
+                        string key = change;
+                        string value = string.Join("\n", settings[change]).Replace("'", "''");
+                        // insert
+                        command = new SQLiteCommand(String.Format("INSERT INTO Settings (key,value) VALUES ('{0}', '{1}');", key, value), settingsConn, transaction);
+                        command.ExecuteNonQuery();
+                    }
 
-                    File.WriteAllText(Constants.SettingsFile, sb.ToString());
+                    changedSettings.Clear();
+                    newSettings.Clear();
+                    transaction.Commit();
                 }
-            } catch(Exception ex) {
+            } catch (Exception ex) {
                 MainForm.mainForm.Invoke((MethodInvoker)delegate {
                     MainForm.mainForm.DisplayWarning(String.Format("Failed to save settings: {0}", ex.Message));
                 });
             }
+        }
+        
+        public static void SaveSettings() {
+            flushTimer.Stop();
+            flushTimer.Start();
         }
 
         public static void removeSetting(string key) {
             lock(lockObject) {
                 if (settings.ContainsKey(key)) {
                     settings.Remove(key);
+                    changedSettings.Add(key);
                 }
             }
             SaveSettings();
@@ -117,8 +170,13 @@ namespace Tibialyzer {
 
         public static void setSetting(string key, List<string> value) {
             lock(lockObject) {
-                if (!settings.ContainsKey(key)) settings.Add(key, value);
-                else settings[key] = value;
+                if (!settings.ContainsKey(key)) {
+                    settings.Add(key, value);
+                    newSettings.Add(key);
+                } else {
+                    settings[key] = value;
+                    changedSettings.Add(key);
+                }
             }
             SaveSettings();
         }
