@@ -44,6 +44,7 @@ namespace Tibialyzer {
             customCommandList.RefreshControl();
             CustomCommandList_ItemsChanged(null, null);
 
+            automaticallyBackupSettingsCheckbox.Checked = SettingsManager.getSettingBool("AutomaticSettingsBackup");
             Constants.OBSEnableWindowCapture = SettingsManager.getSettingBool("OBSEnableWindowCapture");
             enableWindowCaptureCheckbox.Checked = Constants.OBSEnableWindowCapture;
 
@@ -283,6 +284,20 @@ namespace Tibialyzer {
             if (MainForm.prevent_settings_update) return;
 
             SettingsManager.setSetting("MaxDamageChartPlayers", maxDamageDropDownList.SelectedIndex);
+        }
+
+        private void createBackupButton_Click(object sender, EventArgs e) {
+            SettingsManager.CreateBackup();
+        }
+
+        private void restoreBackupButton_Click(object sender, EventArgs e) {
+            SettingsManager.RestoreBackup();
+        }
+
+        private void automaticallyBackupSettingsCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            SettingsManager.setSetting("AutomaticSettingsBackup", (sender as CheckBox).Checked);
         }
     }
 }

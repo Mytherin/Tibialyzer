@@ -212,6 +212,7 @@
             this.createBackupButton.TabIndex = 68;
             this.createBackupButton.Text = "Create Backup";
             this.createBackupButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.createBackupButton.Click += new System.EventHandler(this.createBackupButton_Click);
             // 
             // backupSettingsHeader
             // 
@@ -237,6 +238,7 @@
             this.restoreBackupButton.TabIndex = 69;
             this.restoreBackupButton.Text = "Restore Backup";
             this.restoreBackupButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.restoreBackupButton.Click += new System.EventHandler(this.restoreBackupButton_Click);
             // 
             // automaticallyBackupSettingsCheckbox
             // 
@@ -250,6 +252,7 @@
             this.automaticallyBackupSettingsCheckbox.TabIndex = 70;
             this.automaticallyBackupSettingsCheckbox.Text = "Automatically Backup Settings";
             this.automaticallyBackupSettingsCheckbox.UseVisualStyleBackColor = false;
+            this.automaticallyBackupSettingsCheckbox.CheckedChanged += new System.EventHandler(this.automaticallyBackupSettingsCheckbox_CheckedChanged);
             // 
             // saveImagesHeader
             // 

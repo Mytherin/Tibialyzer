@@ -65,6 +65,10 @@ namespace Tibialyzer {
         public static string SettingsFile = @"Database\settings.txt";
         //! Location of the settings file; this is where Tibialyzer stores all the settings of the player
         public static string SettingsDatabaseFile = @"Database\settings.db";
+        //! Location of the settings backup file
+        public static string SettingsBackupFile = @"Database\backup.db";
+        //! Location of the settings backup file
+        public static string SettingsTemporaryFile = @"Database\tempsettings.db";
         //! Location of the big loot file; if enabled, all loot found is automatically written to this file
         public static string BigLootFile = @"Database\loot.txt";
 

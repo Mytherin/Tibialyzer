@@ -29,18 +29,22 @@ namespace Tibialyzer {
         private static SQLiteConnection settingsConn;
         private static System.Timers.Timer flushTimer;
         public static void Initialize(string databaseFile) {
-            settingsConn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", databaseFile));
-            settingsConn.Open();
+            InitializeDatabaseConnection(databaseFile);
 
-            SQLiteCommand comm = new SQLiteCommand("CREATE TABLE IF NOT EXISTS Settings(key STRING, value STRING);", settingsConn);
-            comm.ExecuteNonQuery();
-            
             flushTimer = new System.Timers.Timer(1000);
             flushTimer.AutoReset = false;
             flushTimer.Elapsed += (s, e) => {
                 ActuallySaveSettings();
             };
         }
+        private static void InitializeDatabaseConnection(string databaseFile) {
+            settingsConn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", databaseFile));
+            settingsConn.Open();
+
+            SQLiteCommand comm = new SQLiteCommand("CREATE TABLE IF NOT EXISTS Settings(key STRING, value STRING);", settingsConn);
+            comm.ExecuteNonQuery();
+        }
+
 
         public static void LoadSettings() {
             lock(lockObject) {
@@ -108,10 +112,81 @@ namespace Tibialyzer {
                     newSettings.Clear();
                     transaction.Commit();
                 }
+                if (getSettingBool("AutomaticSettingsBackup")) {
+                    CreateBackup();
+                }
             } catch (Exception ex) {
                 MainForm.mainForm.Invoke((MethodInvoker)delegate {
                     MainForm.mainForm.DisplayWarning(String.Format("Failed to save settings: {0}", ex.Message));
                 });
+            }
+        }
+
+        public static void CreateBackup() {
+            lock(lockObject) {
+                try {
+                    File.Delete(Constants.SettingsTemporaryFile);
+                    File.Copy(Constants.SettingsDatabaseFile, Constants.SettingsTemporaryFile);
+                    File.Delete(Constants.SettingsBackupFile);
+                    File.Move(Constants.SettingsTemporaryFile, Constants.SettingsBackupFile);
+                } catch(Exception ex) {
+                    MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                        MainForm.mainForm.DisplayWarning(String.Format("Failed to create backup: {0}", ex.Message));
+                    });
+                }
+            }
+        }
+
+        public static void RestoreBackup() {
+            lock(lockObject) {
+                if (!File.Exists(Constants.SettingsBackupFile)) {
+                    MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                        MainForm.mainForm.DisplayWarning(String.Format("Failed to restore backup: no backup file found"));
+                    });
+                    return;
+                }
+                try { 
+                    SQLiteConnection conn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", Constants.SettingsBackupFile));
+                    conn.Open();
+                    conn.Close();
+                } catch(Exception ex) {
+                    // backup database not a valid settings file
+                    MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                        MainForm.mainForm.DisplayWarning(String.Format("Failed to restore backup: {0}", ex.Message));
+                    });
+                    return;
+                }
+                settingsConn.Close();
+                try {
+                    File.Delete(Constants.SettingsTemporaryFile);
+                    File.Copy(Constants.SettingsDatabaseFile, Constants.SettingsTemporaryFile);
+                } catch(Exception ex) {
+                    MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                        MainForm.mainForm.DisplayWarning(String.Format("Failed to create a copy of the current settings file: {0}", ex.Message));
+                    });
+                    return;
+                }
+                try {
+                    File.Delete(Constants.SettingsDatabaseFile);
+                    File.Copy(Constants.SettingsBackupFile, Constants.SettingsDatabaseFile);
+                    InitializeDatabaseConnection(Constants.SettingsDatabaseFile);
+                    LoadSettings();
+                    File.Delete(Constants.SettingsTemporaryFile);
+                } catch(Exception ex) {
+                    string message = ex.Message;
+                    try {
+                        // failed to restore backup, restore old settings file
+                        File.Move(Constants.SettingsTemporaryFile, Constants.SettingsDatabaseFile);
+                    } catch(Exception ex2) {
+                        Console.WriteLine(ex2.Message);
+                    }
+                    MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                        MainForm.mainForm.DisplayWarning(String.Format("Failed to restore backup: {0}", ex.Message));
+                    });
+                    return;
+                }
+                // restart after a successful backup
+                Application.Restart();
             }
         }
         
