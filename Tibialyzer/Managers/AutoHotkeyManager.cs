@@ -36,9 +36,9 @@ namespace Tibialyzer {
             using (StreamWriter writer = new StreamWriter(Constants.AutohotkeyFile)) {
                 writer.WriteLine("#SingleInstance force");
                 writer.WriteLine("SetTitleMatchMode 3");
-                if (ReadMemoryManager.FlashClient) {
+                if (ProcessManager.TibiaClientType != "Classic") {
                     Process p = ProcessManager.GetTibiaProcess();
-                    writer.WriteLine(String.Format("#IfWinActive Tibia Flash Client", p == null ? 0 : p.Id));
+                    writer.WriteLine(String.Format("#IfWinActive ahk_pid {0}", p == null ? 0 : p.Id));
                 } else {
                     writer.WriteLine("#IfWinActive ahk_class TibiaClient");
                 }
