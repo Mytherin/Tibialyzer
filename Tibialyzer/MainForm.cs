@@ -60,14 +60,25 @@ namespace Tibialyzer {
 
             Constants.InitializeConstants();
 
-            SettingsManager.Initialize(Constants.SettingsDatabaseFile);
+            SettingsManager.Initialize();
 
-            if (File.Exists(Constants.SettingsFile)) {
-                SettingsManager.LoadSettingsFile(Constants.SettingsFile);
-                SettingsManager.SaveSettings();
-                File.Delete(Constants.SettingsFile);
+            if (File.Exists(Constants.SettingsTemporaryBackup)) {
+                // a temporary backup file exists, this might indicate a problem occurred while writing a settings file (e.g. unexpected shutdown)
+                try {
+                    SettingsManager.LoadSettings(Constants.SettingsTemporaryBackup);
+                    if (SettingsManager.settings.Count == 0) {
+                        throw new Exception("Failed to read backup settings.");
+                    }
+                    if (File.Exists(Constants.SettingsFile)) {
+                        File.Delete(Constants.SettingsFile);
+                    }
+                    File.Copy(Constants.SettingsTemporaryBackup, Constants.SettingsFile);
+                    File.Delete(Constants.SettingsTemporaryBackup);
+                } catch(Exception ex) {
+                    DisplayWarning(String.Format("Backup settings file found, but could not read: {0}", ex.Message));
+                }
             }
-            SettingsManager.LoadSettings();
+            SettingsManager.LoadSettings(Constants.SettingsFile);
 
             LootDatabaseManager.LootChanged += NotificationManager.UpdateLootDisplay;
             LootDatabaseManager.LootChanged += UpdateLogDisplay;
@@ -344,9 +355,10 @@ namespace Tibialyzer {
             if (language == null) {
                 return;
             }
-
-            CultureInfo culture = CultureInfo.CreateSpecificCulture(language);
-            if (culture == null) {
+            CultureInfo culture = null;
+            try {
+                culture = CultureInfo.CreateSpecificCulture(language);
+            } catch {
                 DisplayWarning("Unknown language " + language);
                 return;
             }
@@ -506,6 +518,10 @@ namespace Tibialyzer {
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
             if (SettingsManager.getSettingBool("ShutdownAutohotkeyOnExit")) {
                 AutoHotkeyManager.ShutdownAutohotkey();
+            }
+            // create backup of settings on successful shutdown
+            if (SettingsManager.getSettingBool("AutomaticSettingsBackup")) {
+                SettingsManager.CreateBackup();
             }
             if (fileWriter != null) {
                 fileWriter.Close();

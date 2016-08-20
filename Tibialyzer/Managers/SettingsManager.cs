@@ -18,59 +18,27 @@ using System.IO;
 using System.Globalization;
 using System.Windows.Forms;
 using System.Text;
-using System.Data.SQLite;
 
 namespace Tibialyzer {
     public static class SettingsManager {
         private static object lockObject = new object();
-        public static List<string> changedSettings = new List<string>();
-        public static List<string> newSettings = new List<string>();
         public static Dictionary<string, List<string>> settings = new Dictionary<string, List<string>>();
-        private static SQLiteConnection settingsConn;
         private static System.Timers.Timer flushTimer;
-        public static void Initialize(string databaseFile) {
-            InitializeDatabaseConnection(databaseFile);
 
+        public static void Initialize() {
             flushTimer = new System.Timers.Timer(1000);
             flushTimer.AutoReset = false;
             flushTimer.Elapsed += (s, e) => {
                 ActuallySaveSettings();
             };
         }
-        private static void InitializeDatabaseConnection(string databaseFile) {
-            settingsConn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", databaseFile));
-            settingsConn.Open();
-
-            SQLiteCommand comm = new SQLiteCommand("CREATE TABLE IF NOT EXISTS Settings(key STRING, value STRING);", settingsConn);
-            comm.ExecuteNonQuery();
-        }
 
 
-        public static void LoadSettings() {
+        public static void LoadSettings(string settingsFile) {
+            string currentSetting = null;
             lock(lockObject) {
                 settings.Clear();
-
-                SQLiteDataReader reader = new SQLiteCommand("SELECT key,value FROM Settings;", settingsConn).ExecuteReader();
-                while(reader.Read()) {
-                    if (!settings.ContainsKey(reader[0].ToString())) {
-                        settings.Add(reader[0].ToString(), reader[1].ToString().Split('\n').ToList());
-                    }
-                }
-            }
-        }
-
-        public static void LoadSettingsFile(string settingsFile) {
-            string currentSetting = null;
-            lock (lockObject) {
-                settings.Clear();
-                changedSettings.Clear();
-                newSettings.Clear();
-
-                SQLiteCommand comm = new SQLiteCommand("DROP TABLE IF EXISTS Settings;", settingsConn);
-                comm.ExecuteNonQuery();
-                comm = new SQLiteCommand("CREATE TABLE IF NOT EXISTS Settings(key STRING, value STRING);", settingsConn);
-                comm.ExecuteNonQuery();
-
+               
                 if (!File.Exists(settingsFile)) {
                     ResetSettingsToDefault();
                     SaveSettings();
@@ -89,40 +57,74 @@ namespace Tibialyzer {
                 }
             }
         }
-
+        
         private static void ActuallySaveSettings() {
             try {
                 lock (lockObject) {
-                    SQLiteTransaction transaction = settingsConn.BeginTransaction();
-                    SQLiteCommand command;
-
-                    foreach (string change in changedSettings) {
-                        string key = change;
-                        if (settings.ContainsKey(change)) {
-                            string value = string.Join("\n", settings[change]).Replace("'", "''");
-                            // update
-                            command = new SQLiteCommand(String.Format("UPDATE Settings SET value='{0}' WHERE key='{1}'", value, key), settingsConn, transaction);
-                            command.ExecuteNonQuery();
-                        } else {
-                            // delete
-                            command = new SQLiteCommand(String.Format("DELETE FROM Settings WHERE key='{0}'", key), settingsConn, transaction);
-                            command.ExecuteNonQuery();
+                    // First check if a temporary file exists, if it does delete it
+                    try {
+                        if (File.Exists(Constants.SettingsTemporaryFile)) {
+                            File.Delete(Constants.SettingsTemporaryFile);
+                        }
+                    } catch(Exception ex) {
+                        // could not delete old temporary file
+                        MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                            MainForm.mainForm.DisplayWarning(String.Format("Failed to remove old temporary file: {0}", ex.Message));
+                        });
+                        return;
+                    }
+                    
+                    // We initially write the settings to the temporary file
+                    var sb = new StringBuilder();
+                    foreach (KeyValuePair<string, List<string>> pair in settings) {
+                        sb.Append("@").Append(pair.Key).AppendLine();
+                        foreach (string str in pair.Value) {
+                            sb.AppendLine(str);
                         }
                     }
-                    foreach (string change in newSettings) {
-                        string key = change;
-                        string value = string.Join("\n", settings[change]).Replace("'", "''");
-                        // insert
-                        command = new SQLiteCommand(String.Format("INSERT INTO Settings (key,value) VALUES ('{0}', '{1}');", key, value), settingsConn, transaction);
-                        command.ExecuteNonQuery();
+                    try {
+                        File.WriteAllText(Constants.SettingsTemporaryFile, sb.ToString());
+                    } catch(Exception ex) {
+                        // could not write settings, abort
+                        MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                            MainForm.mainForm.DisplayWarning(String.Format("Failed to write settings: {0}", ex.Message));
+                        });
+                        return;
                     }
-
-                    changedSettings.Clear();
-                    newSettings.Clear();
-                    transaction.Commit();
-                }
-                if (getSettingBool("AutomaticSettingsBackup")) {
-                    CreateBackup();
+                    // Now that the settings have been successfully written, move the temporary file to the temporary backup
+                    // "Temporary backup" indicates that it is filled with working settings
+                    try {
+                        if (File.Exists(Constants.SettingsTemporaryBackup)) {
+                            File.Delete(Constants.SettingsTemporaryBackup);
+                        }
+                        File.Move(Constants.SettingsTemporaryFile, Constants.SettingsTemporaryBackup);
+                    } catch(Exception ex) {
+                        // could not create temporary backup of settings, abort
+                        MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                            MainForm.mainForm.DisplayWarning(String.Format("Failed to create backup of settings: {0}", ex.Message));
+                        });
+                        return;
+                    }
+                    // Now replace the settings file with the temporary backup, first delete the old settings file
+                    try {
+                        File.Delete(Constants.SettingsFile);
+                    } catch(Exception ex) {
+                        // failed to delete old settings
+                        MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                            MainForm.mainForm.DisplayWarning(String.Format("Failed to delete old settings: {0}", ex.Message));
+                        });
+                        return;
+                    }
+                    // Then move the temporary backup to the settings file location
+                    try {
+                        File.Move(Constants.SettingsTemporaryBackup, Constants.SettingsFile);
+                    } catch(Exception ex) {
+                        // failed to move settings
+                        MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                            MainForm.mainForm.DisplayWarning(String.Format("Failed to move settings: {0}", ex.Message));
+                        });
+                        return;
+                    }
                 }
             } catch (Exception ex) {
                 MainForm.mainForm.Invoke((MethodInvoker)delegate {
@@ -134,9 +136,15 @@ namespace Tibialyzer {
         public static void CreateBackup() {
             lock(lockObject) {
                 try {
-                    File.Delete(Constants.SettingsTemporaryFile);
-                    File.Copy(Constants.SettingsDatabaseFile, Constants.SettingsTemporaryFile);
-                    File.Delete(Constants.SettingsBackupFile);
+                    // create a backup of the settings file, first copy the settings to a temporary file
+                    if (File.Exists(Constants.SettingsTemporaryFile)) {
+                        File.Delete(Constants.SettingsTemporaryFile);
+                    }
+                    File.Copy(Constants.SettingsFile, Constants.SettingsTemporaryFile);
+                    if (File.Exists(Constants.SettingsBackupFile)) {
+                        File.Delete(Constants.SettingsBackupFile);
+                    }
+                    // then if the copy was successful, move it to the backup file
                     File.Move(Constants.SettingsTemporaryFile, Constants.SettingsBackupFile);
                 } catch(Exception ex) {
                     MainForm.mainForm.Invoke((MethodInvoker)delegate {
@@ -148,44 +156,51 @@ namespace Tibialyzer {
 
         public static void RestoreBackup() {
             lock(lockObject) {
+                // restore from a backup, if one exists
                 if (!File.Exists(Constants.SettingsBackupFile)) {
                     MainForm.mainForm.Invoke((MethodInvoker)delegate {
                         MainForm.mainForm.DisplayWarning(String.Format("Failed to restore backup: no backup file found"));
                     });
                     return;
                 }
-                try { 
-                    SQLiteConnection conn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", Constants.SettingsBackupFile));
-                    conn.Open();
-                    conn.Close();
+                // first try to load from the backup; if that is not successful the backup is corrupted
+                var oldSettings = settings;
+                try {
+                    LoadSettings(Constants.SettingsBackupFile);
+                    if (settings.Count == 0) {
+                        throw new Exception("No settings found in file.");
+                    }
                 } catch(Exception ex) {
-                    // backup database not a valid settings file
+                    settings = oldSettings;
                     MainForm.mainForm.Invoke((MethodInvoker)delegate {
                         MainForm.mainForm.DisplayWarning(String.Format("Failed to restore backup: {0}", ex.Message));
                     });
                     return;
                 }
-                settingsConn.Close();
+                settings = oldSettings;
+                // for safety, first move the current settings to the Temporary Backup location
                 try {
-                    File.Delete(Constants.SettingsTemporaryFile);
-                    File.Copy(Constants.SettingsDatabaseFile, Constants.SettingsTemporaryFile);
+                    if (File.Exists(Constants.SettingsTemporaryBackup)) {
+                        File.Delete(Constants.SettingsTemporaryBackup);
+                    }
+                    File.Copy(Constants.SettingsFile, Constants.SettingsTemporaryBackup);
                 } catch(Exception ex) {
                     MainForm.mainForm.Invoke((MethodInvoker)delegate {
                         MainForm.mainForm.DisplayWarning(String.Format("Failed to create a copy of the current settings file: {0}", ex.Message));
                     });
                     return;
                 }
+                // now restore the backup, delete the current settings file and move the backup to the settings file location
                 try {
-                    File.Delete(Constants.SettingsDatabaseFile);
-                    File.Copy(Constants.SettingsBackupFile, Constants.SettingsDatabaseFile);
-                    InitializeDatabaseConnection(Constants.SettingsDatabaseFile);
-                    LoadSettings();
-                    File.Delete(Constants.SettingsTemporaryFile);
+                    File.Delete(Constants.SettingsFile);
+                    File.Copy(Constants.SettingsBackupFile, Constants.SettingsFile);
+                    LoadSettings(Constants.SettingsFile);
+                    File.Delete(Constants.SettingsTemporaryBackup);
                 } catch(Exception ex) {
                     string message = ex.Message;
                     try {
                         // failed to restore backup, restore old settings file
-                        File.Move(Constants.SettingsTemporaryFile, Constants.SettingsDatabaseFile);
+                        File.Move(Constants.SettingsTemporaryBackup, Constants.SettingsFile);
                     } catch(Exception ex2) {
                         Console.WriteLine(ex2.Message);
                     }
@@ -194,7 +209,7 @@ namespace Tibialyzer {
                     });
                     return;
                 }
-                // restart after a successful backup
+                // restart after a successful backup restore
                 Application.Restart();
             }
         }
@@ -208,7 +223,6 @@ namespace Tibialyzer {
             lock(lockObject) {
                 if (settings.ContainsKey(key)) {
                     settings.Remove(key);
-                    changedSettings.Add(key);
                 }
             }
             SaveSettings();
@@ -256,10 +270,8 @@ namespace Tibialyzer {
             lock(lockObject) {
                 if (!settings.ContainsKey(key)) {
                     settings.Add(key, value);
-                    newSettings.Add(key);
                 } else {
                     settings[key] = value;
-                    changedSettings.Add(key);
                 }
             }
             SaveSettings();
@@ -280,8 +292,10 @@ namespace Tibialyzer {
         }
 
         public static void setSettingIfNotSet(string key, List<string> value) {
-            lock (lockObject) { 
-                if (!settings.ContainsKey(key)) settings.Add(key, value);
+            lock (lockObject) {
+                if (!settings.ContainsKey(key)) {
+                    setSetting(key, value);
+                }
             }
         }
 
