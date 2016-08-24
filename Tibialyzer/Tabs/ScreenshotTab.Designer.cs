@@ -24,12 +24,12 @@
         /// </summary>
         private void InitializeComponent() {
             this.screenshotBox = new System.Windows.Forms.PictureBox();
-            this.changeScreenshotDirectoryButton = new PrettyButton();
-            this.openScreenshotDirectoryButton = new PrettyButton();
-            this.screenshotOptionsHeader = new PrettyHeader();
-            this.screenshotDirectoryHeader = new PrettyHeader();
-            this.screenshotTitleHeader = new PrettyHeader();
-            this.screenshotListHeader = new PrettyHeader();
+            this.changeScreenshotDirectoryButton = new Tibialyzer.PrettyButton();
+            this.openScreenshotDirectoryButton = new Tibialyzer.PrettyButton();
+            this.screenshotOptionsHeader = new Tibialyzer.PrettyHeader();
+            this.screenshotDirectoryHeader = new Tibialyzer.PrettyHeader();
+            this.screenshotTitleHeader = new Tibialyzer.PrettyHeader();
+            this.screenshotListHeader = new Tibialyzer.PrettyHeader();
             this.screenshotOnRareItemCheckbox = new Tibialyzer.PrettyCheckBox();
             this.screenshotDeathCheckbox = new Tibialyzer.PrettyCheckBox();
             this.screenshotAdvanceCheckbox = new Tibialyzer.PrettyCheckBox();
@@ -234,6 +234,7 @@
             this.screenshotValueBox.Size = new System.Drawing.Size(125, 23);
             this.screenshotValueBox.TabIndex = 61;
             this.screenshotValueBox.Text = "50000";
+            this.screenshotValueBox.TextChanged += new System.EventHandler(this.screenshotValueBox_TextChanged);
             // 
             // ScreenshotTab
             // 
@@ -265,12 +266,6 @@
 
         }
         private System.Windows.Forms.PictureBox screenshotBox;
-        private System.Windows.Forms.Label changeScreenshotDirectoryButton;
-        private System.Windows.Forms.Label openScreenshotDirectoryButton;
-        private System.Windows.Forms.Label screenshotOptionsHeader;
-        private System.Windows.Forms.Label screenshotDirectoryHeader;
-        private System.Windows.Forms.Label screenshotTitleHeader;
-        private System.Windows.Forms.Label screenshotListHeader;
         private PrettyCheckBox screenshotOnRareItemCheckbox;
         private PrettyCheckBox screenshotDeathCheckbox;
         private PrettyCheckBox screenshotAdvanceCheckbox;
@@ -281,5 +276,11 @@
 
         private System.Windows.Forms.Label screenshotValueLabel;
         private EnterTextBox screenshotValueBox;
+        private PrettyHeader screenshotListHeader;
+        private PrettyHeader screenshotTitleHeader;
+        private PrettyHeader screenshotDirectoryHeader;
+        private PrettyHeader screenshotOptionsHeader;
+        private PrettyButton openScreenshotDirectoryButton;
+        private PrettyButton changeScreenshotDirectoryButton;
     }
 }

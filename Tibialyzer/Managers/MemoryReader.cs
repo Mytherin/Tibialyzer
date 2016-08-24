@@ -38,6 +38,8 @@ namespace Tibialyzer {
         public static extern Int32 ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, [In, Out] byte[] buffer, UInt32 size, out IntPtr lpNumberOfBytesRead);
         [DllImport("kernel32.dll")]
         public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
+        [DllImport("kernel32.dll")]
+        static extern void CloseHandle(IntPtr handle);
 
         static int PROCESS_QUERY_INFORMATION = 0x0400;
         static int PROCESS_WM_READ = 0x0010;
@@ -145,8 +147,12 @@ namespace Tibialyzer {
         private static UInt32 baseAddress;
         private static IntPtr handle = new IntPtr(0);
         private static int processID = -1;
-        public static void SetProcess(Process process) {
-            if (processID == process.Id) return;
+        public static IntPtr OpenProcess(Process process) {
+            if (processID == process.Id) return MemoryReader.handle;
+
+            if (processID >= 0) {
+                CloseHandle(MemoryReader.handle);
+            }
 
             try {
                 MemoryReader.baseAddress = (UInt32)process.MainModule.BaseAddress.ToInt32();
@@ -155,6 +161,7 @@ namespace Tibialyzer {
             } catch {
 
             }
+            return MemoryReader.handle;
         }
 
         private static void UpdateHealth() {
@@ -226,6 +233,72 @@ namespace Tibialyzer {
             byte[] bytes = ReadBytes(address, length, handle);
             string str = ASCIIEncoding.Default.GetString(bytes);
             return str.Split('\0')[0];
+        }
+
+        public static string ReadUnicodeString(Int64 address, uint length = 32, int handle = -1) {
+            byte[] bytes = ReadBytes(address, length, handle);
+            string str = System.Text.UnicodeEncoding.Unicode.GetString(bytes);
+            return str.Split('\0')[0];
+        }
+
+        public static string ReadQString(Int32 address) {
+            byte[] qstringdata = ReadBytes(address, 16);
+            // message size
+            int size = BitConverter.ToInt32(qstringdata, 4);
+            int offset = BitConverter.ToInt32(qstringdata, 12);
+            if (size <= 0 || size * 2 > 1000) {
+                return null;
+            }
+            return ReadUnicodeString(address + offset, (uint)(size * 2));
+        }
+
+        public static bool UnixTimeStampToDateTime(long unixTimeStamp, out DateTime dtDateTime) {
+            dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Local);
+            try {
+                dtDateTime = dtDateTime.AddMilliseconds(unixTimeStamp).ToLocalTime();
+                return true;
+            } catch {
+                return false;
+            }
+        }
+
+        public static string ReadChatMessage(Int32 address) {
+            byte[] chat_message = ReadBytes(address, 40);
+            // system or written message?
+            int messageType = BitConverter.ToInt32(chat_message, 0);
+            int timeAddress = BitConverter.ToInt32(chat_message, 4);
+            // get the timestamp of the message
+            long utctimestamp = MemoryReader.ReadInt64(timeAddress + 8);
+            DateTime time;
+            if (!UnixTimeStampToDateTime(utctimestamp, out time)) {
+                return null;
+            }
+            string timestamp = String.Format("{0:00}:{1:00} ", time.Hour, time.Minute);
+            if (messageType == 0) {
+                // system message, no speaker
+                string qstring = ReadQString(BitConverter.ToInt32(chat_message, 8));
+                if (qstring != null && qstring.Length > 5) {
+                    return timestamp + qstring;
+                } else {
+                    return null;
+                }
+            } else {
+                // npc or player message
+                string message = ReadQString(BitConverter.ToInt32(chat_message, 8));
+                string speaker = ReadQString(BitConverter.ToInt32(chat_message, 16));
+                if (message == null || speaker == null) {
+                    return null;
+                }
+                if (messageType == 1) {
+                    // npc, no level
+                    return timestamp + String.Format("{0}: {1}", speaker, message);
+                } else if (messageType == 2) {
+                    // player, add level information
+                    short level = BitConverter.ToInt16(chat_message, 20);
+                    return timestamp + String.Format("{0} [{1}]: {2}", speaker, level, message);
+                }
+            }
+            return null;
         }
 
         private static int XOR {

@@ -145,19 +145,18 @@ namespace Tibialyzer {
         [DllImport("kernel32.dll")]
         static extern void GetSystemInfo(out SYSTEM_INFO lpSystemInfo);
         [DllImport("kernel32.dll")]
-        public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
-        [DllImport("kernel32.dll")]
         public static extern bool ReadProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
         [DllImport("kernel32.dll", SetLastError = true)]
         static extern int VirtualQueryEx(IntPtr hProcess, IntPtr lpAddress, out MEMORY_BASIC_INFORMATION lpBuffer, uint dwLength);
 
+
         private static Dictionary<int, HashSet<long>> whiteListedAddresses = new Dictionary<int, HashSet<long>>();
+        private static List<TabStructure> tabStructures = new List<TabStructure>();
 
         /// <summary>
         /// Scan the memory for any chunks that are missing from the whitelist table
         /// </summary>
         public static void ScanMissingChunks() {
-            if (UseInternalScan) return; // If we are scanning the internal tabs structure, we do not need to scan missing chunks
             SYSTEM_INFO sys_info;
             GetSystemInfo(out sys_info);
 
@@ -184,7 +183,7 @@ namespace Tibialyzer {
 
                 proc_min_address_l = sys_min_address_l;
 
-                IntPtr processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
+                IntPtr processHandle = MemoryReader.OpenProcess(process);
                 MEMORY_BASIC_INFORMATION mem_basic_info;
                 List<int> stamps = TimestampManager.getLatestStamps(3, ignoreStamp);
                 int bytesRead = 0;  // number of bytes read with ReadProcessMemory
@@ -232,13 +231,31 @@ namespace Tibialyzer {
             Interlocked.Exchange(ref whiteListedAddresses, newWhitelistedAddresses);
         }
 
+        public static void ScanTabStructures() {
+            Process p = ProcessManager.GetTibiaProcess();
+            if (p == null) {
+                return;
+            }
+            List<TabStructure> newStructures = TabStructureScanner.FindTabStructures(p);
+            Interlocked.Exchange(ref tabStructures, newStructures);
+        }
+
+        public static void ReadTibia11Tabs(ReadMemoryResults results) {
+            List<TabStructure> structures = new List<TabStructure>();
+            Interlocked.Exchange(ref structures, tabStructures);
+            foreach(TabStructure structure in structures) {
+                IEnumerable<string> tabMessages = structure.GetMessages();
+                SearchChunk(tabMessages, results);
+            }
+        }
+
         public static void ReadMemoryWhiteList(Process process, Dictionary<int, HashSet<long>> newWhitelistedAddresses, bool flashClient, ReadMemoryResults results) {
             HashSet<long> whitelist;
             if (!newWhitelistedAddresses.TryGetValue(process.Id, out whitelist)) {
                 return;
             }
-
-            IntPtr processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
+            
+            IntPtr processHandle = MemoryReader.OpenProcess(process);
 
             int bytesRead = 0;  // number of bytes read with ReadProcessMemory
             foreach (long addr in whitelist) {
@@ -294,7 +311,7 @@ namespace Tibialyzer {
         public static void ReadMemoryInternal(Process process, ReadMemoryResults results) {
             int currentAddress = process.MainModule.BaseAddress.ToInt32();
 
-            IntPtr ptr = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
+            IntPtr ptr = MemoryReader.OpenProcess(process);
             if (ptr == null) {
                 return;
             }
@@ -350,18 +367,64 @@ namespace Tibialyzer {
             Dictionary<int, HashSet<long>> newWhitelistedAddresses = null;
             Interlocked.Exchange(ref newWhitelistedAddresses, whiteListedAddresses);
 
-            foreach (Process process in processes) {
-                if (!FlashClient && SettingsManager.getSettingBool("ScanInternalTabStructure")) {
-                    ReadMemoryInternal(process, results);
-                    UseInternalScan = true;
-                } else {
-                    ReadMemoryWhiteList(process, newWhitelistedAddresses, FlashClient, results);
-                    UseInternalScan = false;
+            if (ProcessManager.TibiaClientType == "Tibia11") {
+                ReadTibia11Tabs(results);
+            } else {
+                foreach (Process process in processes) {
+                    if (!FlashClient && SettingsManager.getSettingBool("ScanInternalTabStructure")) {
+                        ReadMemoryInternal(process, results);
+                        UseInternalScan = true;
+                    } else {
+                        ReadMemoryWhiteList(process, newWhitelistedAddresses, FlashClient, results);
+                        UseInternalScan = false;
+                    }
+                    process.Dispose();
                 }
-                process.Dispose();
             }
             FinalCleanup(results);
             return results;
+        }
+
+        
+        public static IEnumerable<Tuple<MEMORY_BASIC_INFORMATION, byte[]>> ScanProcess(Process process) {
+            byte[] dataBuffer = null;
+            SYSTEM_INFO sys_info;
+            GetSystemInfo(out sys_info);
+            
+            IntPtr proc_min_address = sys_info.minimumApplicationAddress;
+            IntPtr proc_max_address = sys_info.maximumApplicationAddress;
+
+            long proc_min_address_l = (long)proc_min_address;
+            long proc_max_address_l = (long)proc_max_address;
+
+            long sys_min_address_l = (long)proc_min_address;
+
+            IntPtr processHandle = MemoryReader.OpenProcess(process);
+            MEMORY_BASIC_INFORMATION mem_basic_info;
+            int bytesRead = 0;  // number of bytes read with ReadProcessMemory
+            while (proc_min_address_l < proc_max_address_l) {
+                proc_min_address = new IntPtr(proc_min_address_l);
+                // 28 = sizeof(MEMORY_BASIC_INFORMATION)
+                VirtualQueryEx(processHandle, proc_min_address, out mem_basic_info, 28);
+
+                long addr = (long)proc_min_address;
+                // check if this memory chunk is accessible
+                if (mem_basic_info.Protect == PAGE_READWRITE && mem_basic_info.State == MEM_COMMIT) {
+                    if (dataBuffer == null || dataBuffer.Length < mem_basic_info.RegionSize) {
+                        dataBuffer = new byte[mem_basic_info.RegionSize];
+                    }
+
+                    // read everything in the buffer above
+                    ReadProcessMemory((int)processHandle, (int) mem_basic_info.BaseAddress, dataBuffer, mem_basic_info.RegionSize, ref bytesRead);
+
+                    yield return new Tuple<MEMORY_BASIC_INFORMATION, byte[]>(mem_basic_info, dataBuffer);
+
+                }
+                // move to the next memory chunk
+                proc_min_address_l += mem_basic_info.RegionSize;
+            }
+            //CloseHandle(processHandle);
+            yield break;
         }
 
         private static void FinalCleanup(ReadMemoryResults res) {

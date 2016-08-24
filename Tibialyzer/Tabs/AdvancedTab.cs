@@ -95,7 +95,7 @@ namespace Tibialyzer {
 
         private void applySQLQueryButton_Click(object sender, EventArgs e) {
             string query = sqlQueryTextbox.Text;
-
+            // FIXME: actually apply query
         }
     }
 }

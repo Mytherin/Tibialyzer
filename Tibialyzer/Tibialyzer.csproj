@@ -141,6 +141,7 @@
     <Compile Include="Managers\NotificationManager.cs" />
     <Compile Include="Managers\GlobalDataManager.cs" />
     <Compile Include="Managers\PopupManager.cs" />
+    <Compile Include="Managers\Tibia11\TabStructure.cs" />
     <Compile Include="Notifications\AchievementForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -187,5 +187,9 @@ namespace Tibialyzer {
                 (sender as Control).Size = new Size(650, 549);
             }
         }
+
+        private void screenshotValueBox_TextChanged(object sender, EventArgs e) {
+            // FIXME: use this value for rare item screenshots
+        }
     }
 }

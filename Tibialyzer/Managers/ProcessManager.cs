@@ -59,7 +59,7 @@ namespace Tibialyzer {
                     return p;
                 }
                 if (TibiaClientName.Contains("tibia", StringComparison.OrdinalIgnoreCase)) {
-                    MemoryReader.SetProcess(p[0]);
+                    MemoryReader.OpenProcess(p[0]);
                 }
                 return new Process[1] { p[0] };
             }

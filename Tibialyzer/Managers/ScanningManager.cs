@@ -43,7 +43,14 @@ namespace Tibialyzer {
         }
 
         private static void ScanMissingChunksTimer() {
-            ReadMemoryManager.ScanMissingChunks();
+            if (ProcessManager.TibiaClientType == "Tibia11") {
+                // scan for where the tab structures are in Tibia 11
+                ReadMemoryManager.ScanTabStructures();
+            } else if (ReadMemoryManager.UseInternalScan) {
+                // If we are scanning the internal tabs structure, we do not need to scan missing chunks)
+            } else {
+                ReadMemoryManager.ScanMissingChunks();
+            }
             int scanSpeed = SettingsManager.getSettingInt("ScanSpeed") * 15 + 1;
             if (scanSpeed != missingChunkScanTimer.Interval) {
                 missingChunkScanTimer.Interval = scanSpeed;
