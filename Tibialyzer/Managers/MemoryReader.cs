@@ -246,7 +246,7 @@ namespace Tibialyzer {
             // message size
             int size = BitConverter.ToInt32(qstringdata, 4);
             int offset = BitConverter.ToInt32(qstringdata, 12);
-            if (size <= 0 || size * 2 > 1000) {
+            if (size <= 0 || size > 1000) {
                 return null;
             }
             return ReadUnicodeString(address + offset, (uint)(size * 2));
