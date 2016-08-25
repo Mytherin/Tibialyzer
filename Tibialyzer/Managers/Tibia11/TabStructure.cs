@@ -18,7 +18,7 @@ namespace Tibialyzer {
         public IEnumerable<string> GetMessages() {
             int maxsize = MemoryReader.ReadInt32(address + 8);
             int size = MemoryReader.ReadInt32(address + 16);
-            if (size < 0 || size > maxsize) {
+            if (size < 0 || size > maxsize || maxsize > 1200) {
                 yield break;
             }
             for (int i = 0; i < maxsize; i++) {
