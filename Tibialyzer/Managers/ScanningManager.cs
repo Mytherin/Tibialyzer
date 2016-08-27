@@ -52,6 +52,9 @@ namespace Tibialyzer {
                 ReadMemoryManager.ScanMissingChunks();
             }
             int scanSpeed = SettingsManager.getSettingInt("ScanSpeed") * 15 + 1;
+            if (ProcessManager.TibiaClientType == "Tibia11") {
+                scanSpeed = scanSpeed * 10;
+            }
             if (scanSpeed != missingChunkScanTimer.Interval) {
                 missingChunkScanTimer.Interval = scanSpeed;
             }

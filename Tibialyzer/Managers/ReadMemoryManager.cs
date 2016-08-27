@@ -153,6 +153,10 @@ namespace Tibialyzer {
         private static Dictionary<int, HashSet<long>> whiteListedAddresses = new Dictionary<int, HashSet<long>>();
         private static List<TabStructure> tabStructures = new List<TabStructure>();
 
+        public static int TabStructureCount() {
+            return tabStructures.Count;
+        }
+
         /// <summary>
         /// Scan the memory for any chunks that are missing from the whitelist table
         /// </summary>

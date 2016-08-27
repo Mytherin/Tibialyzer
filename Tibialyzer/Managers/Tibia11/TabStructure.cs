@@ -43,6 +43,7 @@ namespace Tibialyzer {
         }
 
         public static List<TabStructure> FindTabStructures(Process p) {
+            bool firstScan = ReadMemoryManager.TabStructureCount() == 0;
             List<TabStructure> structs = new List<TabStructure>();
             foreach (var tpl in ReadMemoryManager.ScanProcess(p)) {
                 int length = tpl.Item1.RegionSize;
@@ -61,6 +62,9 @@ namespace Tibialyzer {
                             }
                         }
                     }
+                }
+                if (!firstScan) {
+                    System.Threading.Thread.Sleep(10);
                 }
             }
             return structs;

@@ -254,12 +254,11 @@ namespace Tibialyzer {
 
         public static bool UnixTimeStampToDateTime(long unixTimeStamp, out DateTime dtDateTime) {
             dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Local);
-            try {
-                dtDateTime = dtDateTime.AddMilliseconds(unixTimeStamp).ToLocalTime();
-                return true;
-            } catch {
+            if (unixTimeStamp < 0 || unixTimeStamp > 4123078141000) {
                 return false;
             }
+            dtDateTime = dtDateTime.AddMilliseconds(unixTimeStamp).ToLocalTime();
+            return true;
         }
 
         public static string ReadChatMessage(Int32 address) {
