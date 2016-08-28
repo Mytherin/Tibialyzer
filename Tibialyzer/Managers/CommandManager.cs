@@ -372,6 +372,10 @@ namespace Tibialyzer {
                     }
                 } else if (comp.StartsWith("hud" + Constants.CommandSymbol)) { //hud@
                     HUDManager.ShowHUD(comp.Split(Constants.CommandSymbol)[1]);
+                } else if (comp.StartsWith("outfiter" + Constants.CommandSymbol)) { //outfiter@
+                    OutfiterOutfit outfit = new OutfiterOutfit();
+                    outfit.FromString(comp.Split(Constants.CommandSymbol)[1]);
+                    NotificationManager.ShowOutfiterNotification(outfit, command);
                 } else if (comp.StartsWith("track" + Constants.CommandSymbol)) { //track@
                     Task task = StorageManager.getTask(comp.Split(Constants.CommandSymbol)[1]);
                     if (task != null) {

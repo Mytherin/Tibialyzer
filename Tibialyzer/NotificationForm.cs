@@ -92,7 +92,7 @@ namespace Tibialyzer {
             }
 
             foreach (Control c in this.Controls) {
-                if (c is TextBox || c is CheckBox || c is TransparentChart) continue;
+                if (c is TextBox || c is CheckBox || c is TransparentChart || c is PrettyButton) continue;
                 c.Click += c_Click;
             }
 

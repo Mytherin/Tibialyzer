@@ -203,6 +203,24 @@ namespace Tibialyzer {
             }
         }
 
+        public void SwitchOutfit(int offset) {
+            outfit += offset;
+            if (outfit < 0) {
+                outfit = OutfiterManager.outfiterOutfitNames.Count - 1;
+            } else if (outfit >= OutfiterManager.outfiterOutfitNames.Count) {
+                outfit = 0;
+            }
+        }
+
+        public void SwitchMount(int offset) {
+            mount += offset;
+            if (mount < 0) {
+                mount = OutfiterManager.outfiterMountNames.Count - 1;
+            } else if (mount >= OutfiterManager.outfiterMountNames.Count) {
+                mount = 0;
+            }
+        }
+
         public void Validate() {
             if (outfit < 0 || outfit >= OutfiterManager.outfiterOutfitNames.Count) outfit = 0;
             if (mount < 0 || mount >= OutfiterManager.outfiterMountNames.Count) mount = 0;

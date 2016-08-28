@@ -163,7 +163,7 @@
   <data name="outfit_sorcerer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\outfit-sorcerer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="icon-tibiawiki" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="icon_tibiawiki" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\icon-tibiawiki.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="icon_tibia" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -181,13 +181,13 @@
   <data name="rightarrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\rightarrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="icon-save" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="icon_save" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\icon-save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="leftarrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\leftarrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="icon-warning" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="icon_warning" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\icon-warning.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

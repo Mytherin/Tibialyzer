@@ -255,6 +255,13 @@ namespace Tibialyzer {
 
             ShowNotification(f, comm);
         }
+
+        public static void ShowOutfiterNotification(OutfiterOutfit outfit, string comm) {
+            OutfiterForm f = new OutfiterForm(outfit);
+
+            ShowNotification(f, comm);
+        }
+
         public static void ShowQuestNotification(Quest quest, string comm) {
             QuestForm f = new QuestForm(quest);
 

@@ -162,6 +162,9 @@
     <Compile Include="Notifications\MapForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Notifications\OutfiterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Notifications\PlayerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -592,6 +595,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Notifications\MapForm.resx">
       <DependentUpon>MapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Notifications\OutfiterForm.resx">
+      <DependentUpon>OutfiterForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Notifications\PlayerForm.resx">
       <DependentUpon>PlayerForm.cs</DependentUpon>
