@@ -39,11 +39,15 @@ namespace Tibialyzer {
         protected Label increaseWidthButton;
         public int notificationDuration = 1;
         protected bool hideWhenTibiaInactive = false;
+        protected bool requireDoubleClick = false;
+        protected bool clicked = false;
+        protected Stopwatch doubleClickWatch = new Stopwatch();
 
         public NotificationForm() {
             this.ShowInTaskbar = Constants.OBSEnableWindowCapture;
             this.Name = String.Format("Tibialyzer ({0})", FormName());
 
+            requireDoubleClick = SettingsManager.getSettingBool("NotificationDoubleClick");
             hideWhenTibiaInactive = SettingsManager.getSettingBool("NotificationShowTibiaActive");
         }
 
@@ -214,12 +218,26 @@ namespace Tibialyzer {
         }
 
         protected void c_Click(object sender, EventArgs e) {
-            close();
+            if (requireDoubleClick) {
+                if (!clicked) {
+                    clicked = true;
+                    doubleClickWatch.Reset();
+                    doubleClickWatch.Start();
+                } else if (doubleClickWatch.ElapsedMilliseconds < 1000) {
+                    close();
+                } else {
+                    doubleClickWatch.Stop();
+                    doubleClickWatch.Reset();
+                    doubleClickWatch.Restart();
+                }
+            } else {
+                close();
+            }
         }
 
         protected override void OnClick(EventArgs e) {
             base.OnClick(e);
-            close();
+            c_Click(this, e);
         }
 
         public void ReturnFocusToTibia() {

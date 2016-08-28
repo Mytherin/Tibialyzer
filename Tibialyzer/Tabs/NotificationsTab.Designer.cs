@@ -23,6 +23,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NotificationsTab));
             this.selectedWindowHeader = new Tibialyzer.PrettyHeader();
             this.notificationLengthHeader = new Tibialyzer.PrettyHeader();
             this.notificationDurationBox = new System.Windows.Forms.TrackBar();
@@ -45,6 +46,7 @@
             this.notificationYOffsetBox = new Tibialyzer.EnterTextBox();
             this.notificationXOffsetBox = new Tibialyzer.EnterTextBox();
             this.notificationAnchorDropDownList = new Tibialyzer.PrettyDropDownList();
+            this.requireDoubleClickCheckbox = new Tibialyzer.PrettyCheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.notificationDurationBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -127,7 +129,7 @@
             this.applyTheseSettingsToAllButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.applyTheseSettingsToAllButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.applyTheseSettingsToAllButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.applyTheseSettingsToAllButton.Image = global::Tibialyzer.Properties.Resources.icon_warning;
+            this.applyTheseSettingsToAllButton.Image = ((System.Drawing.Image)(resources.GetObject("applyTheseSettingsToAllButton.Image")));
             this.applyTheseSettingsToAllButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.applyTheseSettingsToAllButton.Location = new System.Drawing.Point(327, 421);
             this.applyTheseSettingsToAllButton.Name = "applyTheseSettingsToAllButton";
@@ -349,12 +351,27 @@
             this.notificationAnchorDropDownList.TabIndex = 31;
             this.notificationAnchorDropDownList.SelectedIndexChanged += new System.EventHandler(this.notificationAnchorBox_SelectedIndexChanged);
             // 
+            // requireDoubleClickCheckbox
+            // 
+            this.requireDoubleClickCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.requireDoubleClickCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.requireDoubleClickCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.requireDoubleClickCheckbox.Location = new System.Drawing.Point(9, 492);
+            this.requireDoubleClickCheckbox.Name = "requireDoubleClickCheckbox";
+            this.requireDoubleClickCheckbox.Padding = new System.Windows.Forms.Padding(10);
+            this.requireDoubleClickCheckbox.Size = new System.Drawing.Size(299, 40);
+            this.requireDoubleClickCheckbox.TabIndex = 59;
+            this.requireDoubleClickCheckbox.Text = "Require Double Click To Close Notification";
+            this.requireDoubleClickCheckbox.UseVisualStyleBackColor = false;
+            this.requireDoubleClickCheckbox.CheckedChanged += new System.EventHandler(this.requireDoubleClickCheckbox_CheckedChanged);
+            // 
             // NotificationsTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(638, 549);
+            this.Controls.Add(this.requireDoubleClickCheckbox);
             this.Controls.Add(this.onlyShowWhenTibiaIsActiveCheckbox);
             this.Controls.Add(this.monitorAnchorHeader);
             this.Controls.Add(this.monitorAnchorDropdown);
@@ -408,5 +425,6 @@
         private PrettyHeader notificationTypeListHeader;
         private PrettyHeader notificationLengthHeader;
         private PrettyHeader selectedWindowHeader;
+        private PrettyCheckBox requireDoubleClickCheckbox;
     }
 }

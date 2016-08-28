@@ -30,6 +30,7 @@ namespace Tibialyzer {
 
             monitorAnchorDropdown.SelectedIndex = SettingsManager.getSettingInt("MonitorAnchor");
             onlyShowWhenTibiaIsActiveCheckbox.Checked = SettingsManager.getSettingBool("NotificationShowTibiaActive");
+            requireDoubleClickCheckbox.Checked = SettingsManager.getSettingBool("NotificationDoubleClick");
         }
 
         public void ApplyLocalization() {
@@ -171,6 +172,12 @@ namespace Tibialyzer {
             if (MainForm.prevent_settings_update) return;
 
             SettingsManager.setSetting("NotificationShowTibiaActive", (sender as CheckBox).Checked);
+        }
+
+        private void requireDoubleClickCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            SettingsManager.setSetting("NotificationDoubleClick", (sender as CheckBox).Checked);
         }
     }
 }
