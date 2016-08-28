@@ -69,6 +69,11 @@ namespace Tibialyzer {
                 case "portrait":
                     hud = new Portrait();
                     break;
+                case "task":
+                case "tasks":
+                case "taskhud":
+                    hud = new TaskHUD();
+                    break;
             }
             if (hud == null) return;
             string hudName = hud.GetHUD();
@@ -122,7 +127,7 @@ namespace Tibialyzer {
                 hud.StartPosition = FormStartPosition.Manual;
                 hud.SetDesktopLocation(position_x, position_y);
                 hud.TopMost = true;
-                hud.Show();
+                hud.ShowHUD();
             }
         }
 

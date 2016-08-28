@@ -372,6 +372,27 @@ namespace Tibialyzer {
                     }
                 } else if (comp.StartsWith("hud" + Constants.CommandSymbol)) { //hud@
                     HUDManager.ShowHUD(comp.Split(Constants.CommandSymbol)[1]);
+                } else if (comp.StartsWith("track" + Constants.CommandSymbol)) { //track@
+                    Task task = StorageManager.getTask(comp.Split(Constants.CommandSymbol)[1]);
+                    if (task != null) {
+                        TaskManager.ChangeTracked(task.id, true);
+                    }
+                } else if (comp.StartsWith("untrack" + Constants.CommandSymbol)) { //untrack@
+                    Task task = StorageManager.getTask(comp.Split(Constants.CommandSymbol)[1]);
+                    if (task != null) {
+                        TaskManager.ChangeTracked(task.id, false);
+                    }
+                } else if (comp.StartsWith("taskcount" + Constants.CommandSymbol)) { //taskcount@
+                    string[] splits = comp.Split(Constants.CommandSymbol);
+                    int newKills = 0;
+                    if (splits.Length == 3) {
+                        if (int.TryParse(splits[2], out newKills)) {
+                            Task task = StorageManager.getTask(splits[1]);
+                            if (task != null) {
+                                TaskManager.ChangeKillCount(task.id, newKills);
+                            }
+                        }
+                    }
                 } else if (comp.StartsWith("closehud" + Constants.CommandSymbol)) { //closehud@
                     HUDManager.CloseHUD(comp.Split(Constants.CommandSymbol)[1]);
                 } else if (comp.StartsWith("map" + Constants.CommandSymbol)) { //map@

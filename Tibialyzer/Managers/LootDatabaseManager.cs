@@ -13,8 +13,7 @@ namespace Tibialyzer {
 
         public static void Initialize() {
             lock (lootLock) {
-                lootConn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", Constants.LootDatabaseFile));
-                lootConn.Open();
+                OpenConnection();
             }
             LootUpdated = false;
         }
@@ -45,16 +44,22 @@ namespace Tibialyzer {
                 File.Delete(Constants.LootDatabaseFile);
                 File.Copy(otherDatabase, Constants.LootDatabaseFile);
 
-                lootConn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", Constants.LootDatabaseFile));
-                lootConn.Open();
+                OpenConnection();
             }
+        }
+
+        private static void OpenConnection() {
+            lootConn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", Constants.LootDatabaseFile));
+            lootConn.Open();
+            SQLiteCommand command = new SQLiteCommand("CREATE TABLE IF NOT EXISTS TrackedTasks(taskid INTEGER PRIMARY KEY, tracked BOOLEAN, kills INTEGER);", lootConn);
+            command.ExecuteNonQuery();
         }
 
         public static void UpdateLoot() {
             LootUpdated = true;
         }
 
-        private static void ExecuteNonQuery(string query) {
+        public static void ExecuteNonQuery(string query) {
             lock(lootLock) {
                 if (lootConn == null) return;
                 SQLiteCommand command = new SQLiteCommand(query, lootConn);
@@ -62,7 +67,7 @@ namespace Tibialyzer {
             }
         }
 
-        private static SQLiteDataReader ExecuteReaderQuery(string query) {
+        public static SQLiteDataReader ExecuteReaderQuery(string query) {
             lock (lootLock) {
                 if (lootConn == null) return null;
                 SQLiteCommand command = new SQLiteCommand(query, lootConn);
@@ -76,7 +81,7 @@ namespace Tibialyzer {
                 return command.ExecuteScalar();
             }
         }
-
+        
         public static void CreateHuntTable(Hunt hunt) {
             ExecuteNonQuery(String.Format("CREATE TABLE IF NOT EXISTS \"{0}\"(day INTEGER, hour INTEGER, minute INTEGER, message STRING);", hunt.GetTableName()));
             ExecuteNonQuery(String.Format("CREATE TABLE IF NOT EXISTS \"{0}\"(itemid INTEGER, amount INTEGER);", hunt.GetWasteTableName()));

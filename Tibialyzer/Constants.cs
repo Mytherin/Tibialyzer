@@ -105,8 +105,8 @@ namespace Tibialyzer {
         public static List<string> NotificationTestCommands = new List<string> { "loot@", "damage@", "creature@quara", "city@venore", "creature@demon", "stats@dragon lord", "hunt@formorgar mines", "item@heroic axe", "npc@rashid", "outfit@brotherhood", "quest@killing in the name of", "spell@light healing", "guide@desert dungeon quest", "task@crystal spider", "experience@", "waste@", "summary@", "route@1500,500,7", "map@", "healing@", "damagetaken@", "achievement@peazzekeeper", "player@mytherin" };
         public static List<string> NotificationTypeObjects = new List<string>() { "LootDropForm", "DamageChart", "CreatureList", "CityDisplayForm", "CreatureDropsForm", "CreatureStatsForm", "HuntingPlaceForm", "ItemViewForm", "NPCForm", "OutfitForm", "QuestForm", "SpellForm", "QuestGuideForm", "TaskForm", "ExperienceChart", "WasteForm", "SummaryForm", "RouteForm", "MapForm", "HealingChart", "DamageTakenChart", "AchievementForm", "PlayerForm" };
 
-        public static List<string> HudTypes = new List<string> { "Health Bar", "Mana Bar", "Experience Bar", "Curved Bars", "Health List", "Portrait" };
-        public static List<string> HudTestCommands = new List<string> { "hud@healthbar", "hud@manabar", "hud@experiencebar", "hud@curvedbars", "hud@healthlist", "hud@portrait" };
+        public static List<string> HudTypes = new List<string> { "Health Bar", "Mana Bar", "Experience Bar", "Curved Bars", "Health List", "Portrait", "Task HUD" };
+        public static List<string> HudTestCommands = new List<string> { "hud@healthbar", "hud@manabar", "hud@experiencebar", "hud@curvedbars", "hud@healthlist", "hud@portrait", "hud@task" };
 
         public static List<string> ImageExtensions = new List<string> { ".jpg", ".bmp", ".gif", ".png" };
 

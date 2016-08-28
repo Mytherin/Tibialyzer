@@ -62,6 +62,8 @@
     <ApplicationIcon>TibialyzerIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite, Version=1.0.99.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
@@ -79,6 +81,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\CurveBar.cs">
@@ -133,6 +136,9 @@
     <Compile Include="HUDs\HealthBar.Designer.cs">
       <DependentUpon>HealthBar.cs</DependentUpon>
     </Compile>
+    <Compile Include="HUDs\TaskHUD.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Managers\AutoHotkeyManager.cs" />
     <Compile Include="Managers\CommandManager.cs" />
     <Compile Include="Managers\EquipmentManager.cs" />
@@ -141,6 +147,7 @@
     <Compile Include="Managers\NotificationManager.cs" />
     <Compile Include="Managers\GlobalDataManager.cs" />
     <Compile Include="Managers\PopupManager.cs" />
+    <Compile Include="Managers\TaskManager.cs" />
     <Compile Include="Managers\Tibia11\TabStructure.cs" />
     <Compile Include="Notifications\AchievementForm.cs">
       <SubType>Form</SubType>
@@ -330,6 +337,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Managers\TimestampManager.cs" />
+    <Compile Include="Tabs\TaskTab.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\TaskTab.Designer.cs">
+      <DependentUpon>TaskTab.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\MainTab.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -661,6 +674,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Notifications\TaskForm.resx">
       <DependentUpon>TaskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\TaskTab.resx">
+      <DependentUpon>TaskTab.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\MainTab.resx">
       <DependentUpon>MainTab.cs</DependentUpon>
@@ -1211,7 +1227,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

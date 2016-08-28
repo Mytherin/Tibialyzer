@@ -344,9 +344,13 @@ namespace Tibialyzer {
             LootDatabaseManager.UpdateLoot();
         }
 
+        public delegate void CreatureHandler(Creature creature);
+        public static event CreatureHandler NewCreatureKill;
+
         public static void AddKillToHunt(Hunt h, Tuple<Creature, List<Tuple<Item, int>>> resultList, string t, string message, int stamp = 0, int hour = 0, int minute = 0, SQLiteTransaction transaction = null) {
             h.AddKillToHunt(resultList, t, message);
             if (transaction != null) {
+                if (NewCreatureKill != null) NewCreatureKill(resultList.Item1);
                 LootDatabaseManager.InsertMessage(h, stamp, hour, minute, message);
             }
         }

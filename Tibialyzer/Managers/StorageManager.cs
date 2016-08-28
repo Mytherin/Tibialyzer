@@ -57,6 +57,7 @@ namespace Tibialyzer {
 
         public static Dictionary<string, List<Task>> taskList = new Dictionary<string, List<Task>>();
         public static Dictionary<int, string> taskGroups = new Dictionary<int, string>();
+        public static Dictionary<int, Task> taskIdMap = new Dictionary<int, Task>();
 
         public static Dictionary<int, City> cityIdMap = new Dictionary<int, City>();
         public static Dictionary<string, City> cityNameMap = new Dictionary<string, City>();
@@ -82,6 +83,7 @@ namespace Tibialyzer {
                     // new database file present, update the database
                     conn = new SQLiteConnection(String.Format("Data Source={0};Version=3;", Constants.DatabaseFile));
                     conn.Open();
+
                     SQLiteConnection oldConnection = new SQLiteConnection(String.Format("Data Source={0};Version=3;", Constants.OldDatabaseFile));
                     oldConnection.Open();
                     UpdateDatabase(oldConnection);
@@ -255,6 +257,8 @@ namespace Tibialyzer {
                 task.bossposition.y = reader.IsDBNull(6) ? task.bossposition.y : reader.GetInt32(6);
                 task.bossposition.z = reader.IsDBNull(7) ? task.bossposition.z : reader.GetInt32(7);
                 task.name = reader.GetString(8);
+
+                taskIdMap.Add(task.id, task);
 
                 // Task Creatures
                 SQLiteCommand command2 = new SQLiteCommand(String.Format("SELECT creatureid FROM TaskCreatures WHERE taskid={0}", task.id), conn);
@@ -1526,6 +1530,24 @@ namespace Tibialyzer {
                 return _itemIdMap.Values.Where(o => o.GetName().Contains(str, StringComparison.OrdinalIgnoreCase)).ToList<TibiaObject>();
             }
         }
+
+        public static Task getTask(int taskid) {
+            if (!taskIdMap.ContainsKey(taskid)) return null;
+            return taskIdMap[taskid];
+        }
+        public static Task getTask(string task) {
+            if (task == null || task.Length == 0) return null;
+            foreach(TibiaObject obj in searchCreature(task)) {
+                int id = obj.AsCreature().id;
+                foreach (Task t in taskIdMap.Values) {
+                    if (t.creatures.Contains(id)) {
+                        return t;
+                    }
+                }
+            }
+            return null;
+        }
+
         public static List<TibiaObject> searchCreature(string str) {
             str = str.ToLower();
             if (!creaturesLoaded) {
@@ -1666,6 +1688,5 @@ namespace Tibialyzer {
                 return _itemIdMap.Values.Where(o => o.category.Contains(str, StringComparison.OrdinalIgnoreCase)).ToList<TibiaObject>();
             }
         }
-
     }
 }

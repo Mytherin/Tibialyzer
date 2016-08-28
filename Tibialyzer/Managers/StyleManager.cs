@@ -84,6 +84,9 @@ namespace Tibialyzer {
 
         public static Color TransparencyKey = Color.FromArgb(251, 0, 255);
         public static Color BlendTransparencyKey = Color.FromArgb(17, 17, 17);
+
+        public static Color TaskTrackerForeColorCompleted = Color.FromArgb(60, 179, 60);
+        public static Color TaskTrackerForeColor = Color.FromArgb(191,191,191);
         #endregion
 
         #region UI Fonts

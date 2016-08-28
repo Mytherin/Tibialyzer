@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Tibialyzer {
-    public abstract class BaseHUD : Form {
+    public class BaseHUD : Form {
         public virtual string GetHUD() { return ""; }
         public virtual void LoadHUD() { }
+        public virtual void ShowHUD() { this.Show(); }
 
         protected bool alwaysShow = false;
 

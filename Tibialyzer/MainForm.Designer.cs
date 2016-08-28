@@ -56,6 +56,7 @@
             this.warningImageBox = new System.Windows.Forms.PictureBox();
             this.horizontalSeparator3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.taskButton = new Tibialyzer.PrettyMenuTab();
             this.aboutButton = new Tibialyzer.PrettyMenuTab();
             this.advancedButton = new Tibialyzer.PrettyMenuTab();
             this.hudButton = new Tibialyzer.PrettyMenuTab();
@@ -217,9 +218,9 @@
             // 
             this.warningImageBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.warningImageBox.Image = ((System.Drawing.Image)(resources.GetObject("warningImageBox.Image")));
-            this.warningImageBox.Location = new System.Drawing.Point(27, 520);
+            this.warningImageBox.Location = new System.Drawing.Point(0, 21);
             this.warningImageBox.Name = "warningImageBox";
-            this.warningImageBox.Size = new System.Drawing.Size(48, 48);
+            this.warningImageBox.Size = new System.Drawing.Size(102, 39);
             this.warningImageBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.warningImageBox.TabIndex = 24;
             this.warningImageBox.TabStop = false;
@@ -238,18 +239,31 @@
             // label1
             // 
             this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(47)))), ((int)(((byte)(51)))));
-            this.label1.Location = new System.Drawing.Point(-1, 462);
+            this.label1.Location = new System.Drawing.Point(-1, 487);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(102, 5);
             this.label1.TabIndex = 29;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // taskButton
+            // 
+            this.taskButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.taskButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.taskButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.taskButton.Location = new System.Drawing.Point(2, 402);
+            this.taskButton.Name = "taskButton";
+            this.taskButton.Size = new System.Drawing.Size(100, 25);
+            this.taskButton.TabIndex = 32;
+            this.taskButton.Text = "Task";
+            this.taskButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.taskButton.Click += new System.EventHandler(this.taskButton_Click);
             // 
             // aboutButton
             // 
             this.aboutButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.aboutButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.aboutButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.aboutButton.Location = new System.Drawing.Point(2, 494);
+            this.aboutButton.Location = new System.Drawing.Point(2, 519);
             this.aboutButton.Name = "aboutButton";
             this.aboutButton.Size = new System.Drawing.Size(100, 25);
             this.aboutButton.TabIndex = 31;
@@ -262,7 +276,7 @@
             this.advancedButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.advancedButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.advancedButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.advancedButton.Location = new System.Drawing.Point(2, 467);
+            this.advancedButton.Location = new System.Drawing.Point(2, 492);
             this.advancedButton.Name = "advancedButton";
             this.advancedButton.Size = new System.Drawing.Size(100, 25);
             this.advancedButton.TabIndex = 30;
@@ -275,9 +289,8 @@
             this.hudButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.hudButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.hudButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.hudButton.Image = global::Tibialyzer.Properties.Resources.noflash;
             this.hudButton.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.hudButton.Location = new System.Drawing.Point(2, 430);
+            this.hudButton.Location = new System.Drawing.Point(2, 455);
             this.hudButton.Name = "hudButton";
             this.hudButton.Size = new System.Drawing.Size(100, 32);
             this.hudButton.TabIndex = 28;
@@ -290,7 +303,7 @@
             this.summaryButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.summaryButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.summaryButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.summaryButton.Location = new System.Drawing.Point(2, 403);
+            this.summaryButton.Location = new System.Drawing.Point(2, 428);
             this.summaryButton.Name = "summaryButton";
             this.summaryButton.Size = new System.Drawing.Size(100, 25);
             this.summaryButton.TabIndex = 27;
@@ -462,6 +475,8 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(755, 575);
+            this.Controls.Add(this.warningImageBox);
+            this.Controls.Add(this.taskButton);
             this.Controls.Add(this.minimizeButton);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.aboutButton);
@@ -471,7 +486,6 @@
             this.Controls.Add(this.summaryButton);
             this.Controls.Add(this.upgradeButton);
             this.Controls.Add(this.horizontalSeparator3);
-            this.Controls.Add(this.warningImageBox);
             this.Controls.Add(this.logButton);
             this.Controls.Add(this.label30);
             this.Controls.Add(this.loadTimerImage);
@@ -540,6 +554,7 @@
         private PrettyMenuTab upgradeButton;
         private PrettyMenuTab hudButton;
         private PrettyMenuTab logButton;
+        private PrettyMenuTab taskButton;
     }
 }
 
