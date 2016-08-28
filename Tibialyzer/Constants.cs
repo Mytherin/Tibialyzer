@@ -53,6 +53,8 @@ namespace Tibialyzer {
         public static string NewDatabaseFile = @"Database\new_database.db";
         //! Location of temporary old database while being replaced
         public static string OldDatabaseFile = @"Database\old_database.db";
+        //! Location of outfiter database
+        public static string OutfiterDatabaseFile = @"Database\outfits.db";
         //! Location of file containing Tibia memory addresses
         public static string MemoryAddresses = @"Database\MemoryAddresses.txt";
         //! Location of the node database; this database contains information used by the pathfinder

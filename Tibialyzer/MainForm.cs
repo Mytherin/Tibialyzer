@@ -106,6 +106,11 @@ namespace Tibialyzer {
             } catch (Exception e) {
                 ExitWithError("Fatal Error", String.Format("Corrupted database {0}.\nMessage: {1}", Constants.DatabaseFile, e.Message));
             }
+            try {
+                OutfiterManager.Initialize();
+            } catch(Exception e) {
+                ExitWithError("Fatal Error", String.Format("Corrupted outfiter database {0}.\nMessage: {1}", Constants.OutfiterDatabaseFile, e.Message));
+            }
             ProcessManager.Initialize();
             this.initializeSettings();
             try {
@@ -329,7 +334,7 @@ namespace Tibialyzer {
         private List<Control> activeControls = new List<Control>();
         private List<List<Control>> tabControls = new List<List<Control>>();
         private void InitializeTabs() {
-            Tabs = new List<TabInterface> { new MainTab(), new SettingsTab(), new HuntsTab(), new LogsTab(), new NotificationsTab(), new PopupsTab(), new DatabaseTab(), new AutoHotkeyTab(), new ScreenshotTab(), new BrowseTab(), new HelpTab(), new SystemTab(), new SummaryTab(), new HUDTab(), new HealthListTab(), new PortraitTab(), new AdvancedTab(), new AboutTab(), new TaskTab() };
+            Tabs = new List<TabInterface> { new MainTab(), new SettingsTab(), new HuntsTab(), new LogsTab(), new NotificationsTab(), new PopupsTab(), new DatabaseTab(), new AutoHotkeyTab(), new ScreenshotTab(), new BrowseTab(), new HelpTab(), new SystemTab(), new SummaryTab(), new HUDTab(), new HealthListTab(), new PortraitTab(), new AdvancedTab(), new AboutTab(), new TaskTab(), new Outfiter() };
             foreach (TabInterface tab in Tabs) {
                 List<Control> controlList = new List<Control>();
                 foreach (Control c in (tab as Form).Controls) {
@@ -413,6 +418,7 @@ namespace Tibialyzer {
             aboutButton.Enabled = true;
             advancedButton.Enabled = true;
             taskButton.Enabled = true;
+            outfiterButton.Enabled = true;
             switch (tab) {
                 case 0:
                     mainButton.Enabled = false; break;
@@ -448,6 +454,8 @@ namespace Tibialyzer {
                     aboutButton.Enabled = false; break;
                 case 18:
                     taskButton.Enabled = false; break;
+                case 19:
+                    outfiterButton.Enabled = false; break;
             }
         }
 
@@ -518,6 +526,10 @@ namespace Tibialyzer {
 
         private void taskButton_Click(object sender, EventArgs e) {
             switchTab(18);
+        }
+
+        private void outfiterButton_Click(object sender, EventArgs e) {
+            switchTab(19);
         }
         #endregion
 

@@ -146,6 +146,7 @@
     <Compile Include="Managers\MemoryReader.cs" />
     <Compile Include="Managers\NotificationManager.cs" />
     <Compile Include="Managers\GlobalDataManager.cs" />
+    <Compile Include="Managers\OutfiterManager.cs" />
     <Compile Include="Managers\PopupManager.cs" />
     <Compile Include="Managers\TaskManager.cs" />
     <Compile Include="Managers\Tibia11\TabStructure.cs" />
@@ -337,6 +338,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Managers\TimestampManager.cs" />
+    <Compile Include="Tabs\Outfiter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tabs\Outfiter.Designer.cs">
+      <DependentUpon>Outfiter.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tabs\TaskTab.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -675,6 +682,9 @@
     <EmbeddedResource Include="Notifications\TaskForm.resx">
       <DependentUpon>TaskForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tabs\Outfiter.resx">
+      <DependentUpon>Outfiter.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tabs\TaskTab.resx">
       <DependentUpon>TaskTab.cs</DependentUpon>
     </EmbeddedResource>
@@ -821,6 +831,9 @@
     <None Include="Database\Nodes.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Database\outfits.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Libraries\System.Data.SQLite.dll.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -914,6 +927,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\checkmark-yes.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\color_bevel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\color_bevel_pressed.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\copyicon.png">
@@ -1018,10 +1037,16 @@
     <None Include="Images\icon-youtube.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Images\icon-tibiawiki.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\item_background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Knight.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\leftarrow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\load.gif">
@@ -1115,6 +1140,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\prevpage.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\rightarrow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\scanningbar-gray.gif">

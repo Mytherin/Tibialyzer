@@ -143,6 +143,16 @@ namespace Tibialyzer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icon_tibiawiki {
+            get {
+                object obj = ResourceManager.GetObject("icon-tibiawiki", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icon_youtube {
             get {
                 object obj = ResourceManager.GetObject("icon_youtube", resourceCulture);
@@ -156,6 +166,16 @@ namespace Tibialyzer.Properties {
         internal static System.Drawing.Bitmap item_background {
             get {
                 object obj = ResourceManager.GetObject("item_background", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap leftarrow {
+            get {
+                object obj = ResourceManager.GetObject("leftarrow", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -236,6 +256,16 @@ namespace Tibialyzer.Properties {
         internal static System.Drawing.Bitmap outfit_sorcerer {
             get {
                 object obj = ResourceManager.GetObject("outfit_sorcerer", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap rightarrow {
+            get {
+                object obj = ResourceManager.GetObject("rightarrow", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

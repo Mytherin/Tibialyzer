@@ -705,7 +705,7 @@ namespace Tibialyzer {
                 npc.pos.y = reader.GetInt32(4);
                 npc.pos.z = reader.GetInt32(5);
             }
-            npc.image = reader.IsDBNull(6) ? StyleManager.GetImage("placeholder-mount.png") : Image.FromStream(reader.GetStream(6));
+            npc.image = reader.IsDBNull(6) ? StyleManager.GetImage("placeholder-npc.png") : Image.FromStream(reader.GetStream(6));
             npc.job = reader.IsDBNull(7) ? "" : reader.GetString(7);
             if (npc.image.RawFormat.Guid == ImageFormat.Gif.Guid) {
                 int frames = npc.image.GetFrameCount(FrameDimension.Time);
