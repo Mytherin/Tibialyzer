@@ -23,14 +23,14 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.popupSelectedMessageButton = new PrettyButton();
-            this.showAllLootButton = new PrettyButton();
-            this.deleteHeader = new PrettyHeader();
-            this.logMessagesHeader = new PrettyHeader();
-            this.exportHeader = new PrettyHeader();
-            this.clearLogButton = new PrettyButton();
-            this.loadLogFromFileButton = new PrettyButton();
-            this.saveLogToFileButton = new PrettyButton();
+            this.popupSelectedMessageButton = new Tibialyzer.PrettyButton();
+            this.showAllLootButton = new Tibialyzer.PrettyButton();
+            this.deleteHeader = new Tibialyzer.PrettyHeader();
+            this.logMessagesHeader = new Tibialyzer.PrettyHeader();
+            this.exportHeader = new Tibialyzer.PrettyHeader();
+            this.clearLogButton = new Tibialyzer.PrettyButton();
+            this.loadLogFromFileButton = new Tibialyzer.PrettyButton();
+            this.saveLogToFileButton = new Tibialyzer.PrettyButton();
             this.logMessageCollection = new Tibialyzer.PrettyListBox();
             this.SuspendLayout();
             // 
@@ -103,6 +103,8 @@
             this.clearLogButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.clearLogButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.clearLogButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.clearLogButton.Image = global::Tibialyzer.Properties.Resources.icon_warning;
+            this.clearLogButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.clearLogButton.Location = new System.Drawing.Point(327, 153);
             this.clearLogButton.Name = "clearLogButton";
             this.clearLogButton.Padding = new System.Windows.Forms.Padding(10);
@@ -117,6 +119,8 @@
             this.loadLogFromFileButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.loadLogFromFileButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.loadLogFromFileButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.loadLogFromFileButton.Image = global::Tibialyzer.Properties.Resources.icon_warning;
+            this.loadLogFromFileButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.loadLogFromFileButton.Location = new System.Drawing.Point(327, 115);
             this.loadLogFromFileButton.Name = "loadLogFromFileButton";
             this.loadLogFromFileButton.Padding = new System.Windows.Forms.Padding(10);
@@ -177,17 +181,17 @@
             this.ResumeLayout(false);
 
         }
-
-        private System.Windows.Forms.Label popupSelectedMessageButton;
-        private System.Windows.Forms.Label showAllLootButton;
-        private System.Windows.Forms.Label deleteHeader;
-        private System.Windows.Forms.Label logMessagesHeader;
-        private System.Windows.Forms.Label exportHeader;
-        private System.Windows.Forms.Label clearLogButton;
-        private System.Windows.Forms.Label loadLogFromFileButton;
-        private System.Windows.Forms.Label saveLogToFileButton;
         private PrettyListBox logMessageCollection;
 
         #endregion
+
+        private PrettyButton saveLogToFileButton;
+        private PrettyButton loadLogFromFileButton;
+        private PrettyButton clearLogButton;
+        private PrettyHeader exportHeader;
+        private PrettyHeader logMessagesHeader;
+        private PrettyHeader deleteHeader;
+        private PrettyButton showAllLootButton;
+        private PrettyButton popupSelectedMessageButton;
     }
 }

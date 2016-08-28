@@ -136,23 +136,26 @@
   <data name="background_image_light" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\background_image_light.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="icon_tibia" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\icon-tibia.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="outfit_nobleman_fancy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\outfit-nobleman-fancy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="icon_chrome" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\icon-chrome.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="icon_firefox" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon-firefox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="noflash" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\noflash.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="outfit_nobleman_fancy" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\outfit-nobleman-fancy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="outfit_nobleman_poor" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\outfit-nobleman-poor.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="tibia" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\tibia.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_youtube" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon-youtube.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="icon_flash" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\icon-flash.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -163,8 +166,8 @@
   <data name="icon-tibiawiki" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\icon-tibiawiki.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="background_image" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\background_image.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="icon_tibia" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon-tibia.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="outfit_knight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\outfit-knight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -172,16 +175,19 @@
   <data name="icon_github" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\icon-github.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="icon_firefox" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\icon-firefox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="background_image" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\background_image.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="icon_youtube" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\icon-youtube.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="rightarrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\rightarrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon-save" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon-save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="leftarrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\leftarrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="rightarrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\rightarrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="icon-warning" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon-warning.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

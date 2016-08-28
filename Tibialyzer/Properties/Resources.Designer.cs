@@ -123,6 +123,16 @@ namespace Tibialyzer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icon_save {
+            get {
+                object obj = ResourceManager.GetObject("icon-save", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icon_tibia {
             get {
                 object obj = ResourceManager.GetObject("icon_tibia", resourceCulture);
@@ -146,6 +156,16 @@ namespace Tibialyzer.Properties {
         internal static System.Drawing.Bitmap icon_tibiawiki {
             get {
                 object obj = ResourceManager.GetObject("icon-tibiawiki", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_warning {
+            get {
+                object obj = ResourceManager.GetObject("icon-warning", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

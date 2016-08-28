@@ -271,6 +271,7 @@
             this.saveOutfitImageButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.saveOutfitImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveOutfitImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.saveOutfitImageButton.Image = global::Tibialyzer.Properties.Resources.icon_save;
             this.saveOutfitImageButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.saveOutfitImageButton.Location = new System.Drawing.Point(389, 253);
             this.saveOutfitImageButton.Name = "saveOutfitImageButton";

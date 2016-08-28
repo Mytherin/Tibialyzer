@@ -271,6 +271,8 @@
             this.saveLootImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.saveLootImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveLootImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.saveLootImageButton.Image = global::Tibialyzer.Properties.Resources.icon_save;
+            this.saveLootImageButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.saveLootImageButton.Location = new System.Drawing.Point(9, 402);
             this.saveLootImageButton.Name = "saveLootImageButton";
             this.saveLootImageButton.Padding = new System.Windows.Forms.Padding(10);
@@ -285,6 +287,8 @@
             this.saveDamageImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.saveDamageImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveDamageImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.saveDamageImageButton.Image = global::Tibialyzer.Properties.Resources.icon_save;
+            this.saveDamageImageButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.saveDamageImageButton.Location = new System.Drawing.Point(9, 440);
             this.saveDamageImageButton.Name = "saveDamageImageButton";
             this.saveDamageImageButton.Padding = new System.Windows.Forms.Padding(10);
@@ -299,6 +303,8 @@
             this.saveSummaryImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.saveSummaryImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.saveSummaryImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.saveSummaryImageButton.Image = global::Tibialyzer.Properties.Resources.icon_save;
+            this.saveSummaryImageButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.saveSummaryImageButton.Location = new System.Drawing.Point(9, 478);
             this.saveSummaryImageButton.Name = "saveSummaryImageButton";
             this.saveSummaryImageButton.Padding = new System.Windows.Forms.Padding(10);

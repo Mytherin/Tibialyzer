@@ -111,5 +111,29 @@ namespace Tibialyzer {
             bitmap.Dispose();
             return grayscale;
         }
+
+        public static Bitmap Clamp(this Bitmap original) {
+            int minx = original.Width, miny = original.Height, maxx = 0, maxy = 0;
+            for(int x = 0; x < original.Width; x++) {
+                for(int y = 0; y < original.Height; y++) {
+                    if (original.GetPixel(x, y).A > 0) {
+                        if (x < minx) minx = x;
+                        if (x > maxx) maxx = x;
+                        if (y < miny) miny = y;
+                        if (y > maxy) maxy = y;
+                    }
+                }
+            }
+            if (minx >= maxx || miny >= maxy) {
+                return new Bitmap(original);
+            } else {
+                Bitmap bitmap = new Bitmap(maxx - minx, maxy - miny);
+                using(Graphics gr = Graphics.FromImage(bitmap)) {
+                    gr.DrawImage(original, new Rectangle(0, 0, bitmap.Width, bitmap.Height), new Rectangle(minx, miny, bitmap.Width, bitmap.Height), GraphicsUnit.Pixel);
+                }
+                return bitmap;
+            }
+        }
+
     }
 }

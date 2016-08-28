@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -149,7 +150,26 @@ namespace Tibialyzer {
         }
 
         private void saveOutfitImageButton_Click(object sender, EventArgs e) {
-
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.AddExtension = true;
+            dialog.DefaultExt = "png";
+            dialog.Title = "Save Outfit Image";
+            string baseName = String.Format("outfit_{0}_{1}", OutfiterManager.outfiterOutfitNames[outfit.outfit], OutfiterManager.outfiterMountNames[outfit.mount]);
+            if (File.Exists(baseName + ".png")) {
+                int i = 1;
+                while (File.Exists(baseName + " (" + i.ToString() + ").png")) i++;
+                dialog.FileName = baseName + " (" + i.ToString() + ").png";
+            } else {
+                dialog.FileName = baseName + ".png";
+            }
+            DialogResult result = dialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK) {
+                using (Bitmap outfitImage = outfit.GetImage() as Bitmap) {
+                    using(Image clampedImage = outfitImage.Clamp()) {
+                        clampedImage.Save(dialog.FileName);
+                    }
+                }
+            }
         }
 
         private void applyButton_Click(object sender, EventArgs e) {

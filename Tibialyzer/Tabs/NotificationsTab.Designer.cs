@@ -127,6 +127,8 @@
             this.applyTheseSettingsToAllButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.applyTheseSettingsToAllButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.applyTheseSettingsToAllButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.applyTheseSettingsToAllButton.Image = global::Tibialyzer.Properties.Resources.icon_warning;
+            this.applyTheseSettingsToAllButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.applyTheseSettingsToAllButton.Location = new System.Drawing.Point(327, 421);
             this.applyTheseSettingsToAllButton.Name = "applyTheseSettingsToAllButton";
             this.applyTheseSettingsToAllButton.Padding = new System.Windows.Forms.Padding(10);

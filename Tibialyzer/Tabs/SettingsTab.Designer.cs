@@ -23,18 +23,18 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.unlockResetButtonHeader = new PrettyHeader();
-            this.unlockResetButton = new PrettyButton();
-            this.resetSettingsButton = new PrettyButton();
-            this.resetSettingsToDefaultHeader = new PrettyHeader();
-            this.defaultOutfitGenderHeader = new PrettyHeader();
-            this.popupOptionsHeader = new PrettyHeader();
-            this.optionsHeader = new PrettyHeader();
-            this.scanningSpeedDisplayHeader = new PrettyHeader();
-            this.scanningSpeedHeader = new PrettyHeader();
+            this.unlockResetButtonHeader = new Tibialyzer.PrettyHeader();
+            this.unlockResetButton = new Tibialyzer.PrettyButton();
+            this.resetSettingsButton = new Tibialyzer.PrettyButton();
+            this.resetSettingsToDefaultHeader = new Tibialyzer.PrettyHeader();
+            this.defaultOutfitGenderHeader = new Tibialyzer.PrettyHeader();
+            this.popupOptionsHeader = new Tibialyzer.PrettyHeader();
+            this.optionsHeader = new Tibialyzer.PrettyHeader();
+            this.scanningSpeedDisplayHeader = new Tibialyzer.PrettyHeader();
+            this.scanningSpeedHeader = new Tibialyzer.PrettyHeader();
             this.scanningSpeedTrack = new System.Windows.Forms.TrackBar();
-            this.experienceComputationHeader = new PrettyHeader();
-            this.scanningOptionsHeader = new PrettyHeader();
+            this.experienceComputationHeader = new Tibialyzer.PrettyHeader();
+            this.scanningOptionsHeader = new Tibialyzer.PrettyHeader();
             this.skipDuplicateLootCheckbox = new Tibialyzer.PrettyCheckBox();
             this.experienceComputationDropDownList = new Tibialyzer.PrettyDropDownList();
             this.viewLookedAtObjectsCheckbox = new Tibialyzer.PrettyCheckBox();
@@ -45,7 +45,7 @@
             this.unrecognizedPopupCheckbox = new Tibialyzer.PrettyCheckBox();
             this.skipDuplicateCommandsCheckbox = new Tibialyzer.PrettyCheckBox();
             this.extraPlayerLookInformationCheckbox = new Tibialyzer.PrettyCheckBox();
-            this.memoryScanSettingsHeader = new PrettyHeader();
+            this.memoryScanSettingsHeader = new Tibialyzer.PrettyHeader();
             this.scanInternalTabsCheckbox = new Tibialyzer.PrettyCheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.scanningSpeedTrack)).BeginInit();
             this.SuspendLayout();
@@ -67,6 +67,8 @@
             this.unlockResetButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.unlockResetButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.unlockResetButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.unlockResetButton.Image = global::Tibialyzer.Properties.Resources.icon_warning;
+            this.unlockResetButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.unlockResetButton.Location = new System.Drawing.Point(9, 476);
             this.unlockResetButton.Name = "unlockResetButton";
             this.unlockResetButton.Padding = new System.Windows.Forms.Padding(10);
@@ -407,16 +409,6 @@
             this.PerformLayout();
 
         }
-
-        private System.Windows.Forms.Label unlockResetButtonHeader;
-        private System.Windows.Forms.Label unlockResetButton;
-        private System.Windows.Forms.Label resetSettingsButton;
-        private System.Windows.Forms.Label resetSettingsToDefaultHeader;
-        private System.Windows.Forms.Label defaultOutfitGenderHeader;
-        private System.Windows.Forms.Label popupOptionsHeader;
-        private System.Windows.Forms.Label optionsHeader;
-        private System.Windows.Forms.Label scanningSpeedDisplayHeader;
-        private System.Windows.Forms.Label scanningSpeedHeader;
         private System.Windows.Forms.TrackBar scanningSpeedTrack;
         private PrettyCheckBox viewLookedAtObjectsCheckbox;
         private PrettyDropDownList defaultOutfitGenderDropDownList;
@@ -425,14 +417,22 @@
         private PrettyCheckBox popupOnEventCheckbox;
         private PrettyCheckBox unrecognizedPopupCheckbox;
         #endregion
-
-        private System.Windows.Forms.Label experienceComputationHeader;
         private PrettyDropDownList experienceComputationDropDownList;
-        private System.Windows.Forms.Label scanningOptionsHeader;
         private PrettyCheckBox skipDuplicateLootCheckbox;
         private PrettyCheckBox skipDuplicateCommandsCheckbox;
         private PrettyCheckBox extraPlayerLookInformationCheckbox;
-        private System.Windows.Forms.Label memoryScanSettingsHeader;
         private PrettyCheckBox scanInternalTabsCheckbox;
+        private PrettyHeader memoryScanSettingsHeader;
+        private PrettyHeader scanningOptionsHeader;
+        private PrettyHeader experienceComputationHeader;
+        private PrettyHeader scanningSpeedHeader;
+        private PrettyHeader scanningSpeedDisplayHeader;
+        private PrettyHeader optionsHeader;
+        private PrettyHeader popupOptionsHeader;
+        private PrettyHeader defaultOutfitGenderHeader;
+        private PrettyHeader resetSettingsToDefaultHeader;
+        private PrettyButton resetSettingsButton;
+        private PrettyButton unlockResetButton;
+        private PrettyHeader unlockResetButtonHeader;
     }
 }
