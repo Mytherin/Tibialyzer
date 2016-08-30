@@ -122,6 +122,7 @@ namespace Tibialyzer {
         public static void DownloadNewAddresses() {
             try {
                 using (WebClient client = new WebClient()) {
+                    client.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
                     string html = client.DownloadString("https://raw.githubusercontent.com/Mytherin/Tibialyzer/master/Tibialyzer/Database/MemoryAddresses.txt");
                     SaveMemoryAddresses(html);
                 }
