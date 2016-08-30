@@ -1093,6 +1093,13 @@ namespace Tibialyzer {
                 refreshHeaders();
                 base_y += 25;
                 refreshObjectList();
+                int max_y = 0;
+                foreach(Control c in this.Controls) {
+                    if (c.Location.Y + c.Size.Height > max_y) {
+                        max_y = c.Location.Y + c.Size.Height;
+                    }
+                }
+                this.Size = new Size(this.Size.Width, Math.Max(max_y + 5, this.Size.Height));
             } else {
                 lookText.Visible = true;
                 for (int i = valueLabels.Count - 1; i >= 0; i--) {
