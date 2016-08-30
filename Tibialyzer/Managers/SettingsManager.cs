@@ -61,6 +61,8 @@ namespace Tibialyzer {
         private static void ActuallySaveSettings() {
             try {
                 lock (lockObject) {
+                    flushTimer.Stop();
+                    flushTimer.Enabled = false;
                     // First check if a temporary file exists, if it does delete it
                     try {
                         if (File.Exists(Constants.SettingsTemporaryFile)) {
@@ -215,8 +217,11 @@ namespace Tibialyzer {
         }
         
         public static void SaveSettings() {
-            flushTimer.Stop();
-            flushTimer.Start();
+            lock(lockObject) {
+                if (!flushTimer.Enabled) {
+                    flushTimer.Start();
+                }
+            }
         }
 
         public static void removeSetting(string key) {
