@@ -24,6 +24,9 @@ namespace Tibialyzer {
             using (Brush brush = new SolidBrush(this.BackColor)) {
                 e.Graphics.FillRectangle(brush, new Rectangle(0, 0, (int)(this.Width * percentage), this.Height));
             }
+            using(Pen pen = new Pen(Color.Black, 2)) {
+                e.Graphics.DrawRectangle(pen, new Rectangle(0, 0, this.Width, this.Height));
+            }
         }
     }
 }
