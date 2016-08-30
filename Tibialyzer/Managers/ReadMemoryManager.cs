@@ -301,7 +301,7 @@ namespace Tibialyzer {
                 messageCount++;
                 int tabMessageAddress = MemoryReader.ReadInt32(tabMessageNodeAddress + 0x4C, processHandle);
                 //max message input is 255 characters, but the Advertising channel has 400+ character initial message
-                string tabMessage = MemoryReader.ReadString(tabMessageAddress, 255, processHandle);
+                string tabMessage = MemoryReader.ReadString(tabMessageAddress, 512, processHandle);
                 if (tabMessage != null && tabMessage.Length > 5 && tabMessage[0].isDigit() && tabMessage[1].isDigit() && tabMessage[2] == ':' && tabMessage[3].isDigit() && tabMessage[4].isDigit()) {
                     yield return tabMessage;
                 }
