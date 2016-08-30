@@ -75,7 +75,7 @@
             this.manaLabel.BackColor = System.Drawing.Color.Transparent;
             this.manaLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.manaLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.manaLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(51)))), ((int)(((byte)(167)))));
+            this.manaLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(255)))));
             this.manaLabel.Location = new System.Drawing.Point(95, 46);
             this.manaLabel.Name = "manaLabel";
             this.manaLabel.Padding = new System.Windows.Forms.Padding(0, 2, 0, 2);
