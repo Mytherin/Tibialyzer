@@ -73,12 +73,14 @@ namespace Tibialyzer {
         protected override void Dispose(bool disposing) {
             if (mapImage != null) {
                 mapImage.Dispose();
+                mapImage = null;
             }
             if (map != null) {
                 map.Dispose();
             }
             if (otherMap != null) {
                 otherMap.Dispose();
+                otherMap = null;
             }
             base.Dispose(disposing);
         }
@@ -159,10 +161,11 @@ namespace Tibialyzer {
                     beginWidth = sourceWidth;
                 }
                 if (beginCoordinate.x == Coordinate.MaxWidth / 2 && beginCoordinate.y == Coordinate.MaxHeight / 2 && beginCoordinate.z == 7) {
-                    if (this.Image != StyleManager.GetImage("nomapavailable.png") && this.Image != null) {
-                        this.Image.Dispose();
-                    }
+                    Image oldImage = this.Image;
                     this.Image = StyleManager.GetImage("nomapavailable.png");
+                    if (oldImage != StyleManager.GetImage("nomapavailable.png") && oldImage != null) {
+                        oldImage.Dispose();
+                    }
                     this.SizeMode = PictureBoxSizeMode.Zoom;
                     return;
                 }
@@ -276,12 +279,11 @@ namespace Tibialyzer {
                             }
                         }
                     }
-                    if (this.Image != null) {
-                        lock (this.Image) {
-                            this.Image.Dispose();
-                        }
-                    }
+                    Image oldImage = this.Image;
                     this.Image = bitmap;
+                    if (oldImage != null) {
+                        oldImage.Dispose();
+                    }
                 }
                 if (MapUpdated != null)
                     MapUpdated();

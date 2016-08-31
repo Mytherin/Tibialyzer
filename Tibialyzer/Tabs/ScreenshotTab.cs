@@ -130,10 +130,11 @@ namespace Tibialyzer {
                 try {
                     Image image = Image.FromFile(imagePath);
                     if (image != null) {
-                        if (screenshotBox.Image != null) {
-                            screenshotBox.Image.Dispose();
-                        }
+                        Image oldImage = screenshotBox.Image;
                         screenshotBox.Image = image;
+                        if (oldImage != null) {
+                            oldImage.Dispose();
+                        }
                         screenshotTitleHeader.Text = selectedImage;
                     }
                 } catch {
@@ -151,8 +152,11 @@ namespace Tibialyzer {
                 string imagePath = Path.Combine(path, fileName);
                 if (!File.Exists(imagePath)) return;
 
-                screenshotBox.Image.Dispose();
+                Image oldImage = screenshotBox.Image;
                 screenshotBox.Image = null;
+                if (oldImage != null) {
+                    oldImage.Dispose();
+                }
 
                 try {
                     File.Delete(imagePath);
