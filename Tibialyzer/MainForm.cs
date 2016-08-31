@@ -564,12 +564,7 @@ namespace Tibialyzer {
         }
 
         private void minimizeButton_Click(object sender, EventArgs e) {
-            this.Hide();
-            this.minimizeIcon.Visible = true;
-            if (minimize_notification) {
-                this.minimize_notification = false;
-                this.minimizeIcon.ShowBalloonTip(3000);
-            }
+            WindowState = FormWindowState.Minimized;
         }
 
         private void closeButton_MouseEnter(object sender, EventArgs e) {
