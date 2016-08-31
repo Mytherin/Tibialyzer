@@ -24,7 +24,6 @@ using System.Windows.Forms;
 namespace Tibialyzer {
     class AutoHotkeySuspendedMode : SimpleNotification {
         private System.Windows.Forms.Label typeModeLabel;
-        SafeTimer showTimer = null;
         private bool alwaysShow = false;
 
         public AutoHotkeySuspendedMode(bool alwaysShow) {
@@ -34,28 +33,22 @@ namespace Tibialyzer {
 
             this.alwaysShow = alwaysShow;
             this.InitializeSimpleNotification(false, false);
-
-            showTimer = new SafeTimer(100, ShowTimer);
-            showTimer.Start();
+            
+            ProcessManager.TibiaVisibilityChanged += (o, e) => UpdateHudVisibility(e);
         }
 
-        private void ShowTimer() {
-            if (alwaysShow) return;
-            if (ReadMemoryManager.FlashClient) {
-                return;
-            }
-            try {
-                if (showTimer == null || this.IsDisposed || this.Disposing) {
-                    return;
-                }
-                // only show the suspended window when tibia is active
-                bool visible = ProcessManager.IsTibiaActive();
-                this.BeginInvoke((MethodInvoker)delegate {
-                    this.Visible = alwaysShow ? true : visible;
-                });
-            } catch {
+        private void UpdateHudVisibility(bool visible) {
+            if (!alwaysShow || (alwaysShow && !this.Visible)) {
+                try {
+                    this.Invoke((MethodInvoker)delegate {
+                        this.Visible = alwaysShow || visible;
+                    });
 
+                } catch {
+                }
             }
+
+            this.Invalidate();
         }
         
         private void InitializeComponent() {

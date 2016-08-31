@@ -132,26 +132,20 @@ namespace Tibialyzer {
             }
 
             if (hideWhenTibiaInactive) {
-                checkTimer = new Timer();
-                checkTimer.Interval = 50;
-                checkTimer.Tick += CheckTimer_Tick;
-                checkTimer.Start();
+                ProcessManager.TibiaVisibilityChanged += (o, e) => UpdateHudVisibility(e);
             }
         }
 
-        private void CheckTimer_Tick(object sender, EventArgs e) {
+        private void UpdateHudVisibility(bool visible) {
             try {
-                bool tibiaActive = ProcessManager.IsTibiaActive();
-                if (tibiaActive && !this.Visible) {
-                    this.Invoke((MethodInvoker)delegate {
-                        this.Visible = true;
-                    });
-                } else if (!tibiaActive && this.Visible) {
-                    this.Invoke((MethodInvoker)delegate {
-                        this.Visible = false;
-                    });
-                }
-            } catch { }
+                this.Invoke((MethodInvoker)delegate {
+                    this.Visible = visible;
+                });
+
+            } catch {
+            }
+
+            this.Invalidate();
         }
         
         private void NotificationForm_SizeChanged(object sender, EventArgs e) {

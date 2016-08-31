@@ -9,7 +9,7 @@ namespace Tibialyzer {
     class ProcessManager {
         public static string TibiaClientName = "Tibia";
         public static string TibiaClientType = "Classic";
-        private static SafeTimer detectTibiaActive = new SafeTimer(100, DetectIfTibiaActive);
+        private static SafeTimer detectTibiaActive = new SafeTimer(250, DetectIfTibiaActive);
         public static EventHandler<bool> TibiaVisibilityChanged;
         public static IntPtr TibialyzerProcessHandle;
 
