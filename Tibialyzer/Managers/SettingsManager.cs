@@ -383,6 +383,12 @@ C::NumpadPgDn
             setSettingIfNotSet("SuspendedNotificationYOffset", 10);
             setSettingIfNotSet("SuspendedNotificationAnchor", 1);
             setSettingIfNotSet("TibiaClientName", "Tibia");
+            setSettingIfNotSet("RouteFormDuration", Constants.MaximumNotificationDuration);
+            setSettingIfNotSet("OutfiterFormDuration", Constants.MaximumNotificationDuration);
+            setSettingIfNotSet("LootDropFormDuration", Constants.MaximumNotificationDuration);
+            setSettingIfNotSet("LootDropFormGroup", 1);
+            setSettingIfNotSet("SummaryFormDuration", Constants.MaximumNotificationDuration);
+            setSettingIfNotSet("SummaryFormGroup", 1);
             foreach (string obj in Constants.NotificationTypes) {
                 string settingObject = obj.Replace(" ", "");
                 setSettingIfNotSet(settingObject + "Anchor", 0);
@@ -429,6 +435,8 @@ C::NumpadPgDn
             setSettingIfNotSet("PortraitWidth", 300);
             setSettingIfNotSet("PortraitHeight", 200);
 
+            setSettingIfNotSet("TaskHUDWidth", 120);
+            setSettingIfNotSet("TaskHUDHeight", 35);
             foreach (string obj in Constants.HudTypes) {
                 string settingObject = obj.Replace(" ", "");
                 setSettingIfNotSet(settingObject + "Anchor", 1);
@@ -465,6 +473,7 @@ C::NumpadPgDn
             setSettingIfNotSet("AutomaticallyDetectCharacter", true);
             setSettingIfNotSet("AutomaticallyDownloadAddresses", true);
             setSettingIfNotSet("TibiaClient", "Classic");
+            setSettingIfNotSet("NotificationDoubleClick", true);
         }
 
         public static void ResetSettingsToDefault() {

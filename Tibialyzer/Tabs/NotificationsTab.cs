@@ -26,7 +26,7 @@ namespace Tibialyzer {
             }
             notificationTypeList.SelectedIndex = 0;
 
-            Constants.MaximumNotificationDuration = notificationDurationBox.Maximum;
+            notificationDurationBox.Maximum = Constants.MaximumNotificationDuration;
 
             monitorAnchorDropdown.SelectedIndex = SettingsManager.getSettingInt("MonitorAnchor");
             onlyShowWhenTibiaIsActiveCheckbox.Checked = SettingsManager.getSettingBool("NotificationShowTibiaActive");
