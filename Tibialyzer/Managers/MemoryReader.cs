@@ -44,6 +44,7 @@ namespace Tibialyzer {
         static int PROCESS_QUERY_INFORMATION = 0x0400;
         static int PROCESS_WM_READ = 0x0010;
 
+        private static bool tibia11_addresses = false;
         private static UInt32 XORAddress;
         private static UInt32 HealthAddress;
         private static UInt32 MaxHealthAddress;
@@ -100,6 +101,7 @@ namespace Tibialyzer {
             memoryAddresses.TryGetValue("weapontypeaddress", out WeaponTypeAddress);
             memoryAddresses.TryGetValue("bootstypeaddress", out BootsTypeAddress);
             memoryAddresses.TryGetValue("ringtypeaddress", out RingTypeAddress);
+            tibia11_addresses = false;
         }
 
         public static void Initialize() {
@@ -131,9 +133,10 @@ namespace Tibialyzer {
 
                         string key = split[0].Trim().ToLower();
                         UInt32 value = 0;
-                        if (UInt32.TryParse(split[1].Replace("0x", ""), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out value)) {
+                        if (!key.Contains("noparse") && UInt32.TryParse(split[1].Replace("0x", ""), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out value)) {
                             addresses.Add(key, value);
                         } else {
+                            key = key.Replace("noparse", "");
                             if (!MemorySettings.ContainsKey(key)) {
                                 MemorySettings.Add(key, split[1]);
                             }
@@ -142,6 +145,14 @@ namespace Tibialyzer {
                 }
             }
             return addresses;
+        }
+
+        public static void SetStatsAddress(uint address) {
+            HealthAddress = address + 0x24;
+            MaxHealthAddress = address + 0x28;
+            ManaAddress = address + 0x2C;
+            MaxManaAddress = address + 0x30;
+            tibia11_addresses = true;
         }
 
         private static UInt32 baseAddress;
@@ -306,10 +317,17 @@ namespace Tibialyzer {
             }
         }
 
+        public static int ReadProperty(uint address) {
+            if (tibia11_addresses) {
+                return ReadInt32(address);
+            }
+            return ReadInt32(GetAddress(address)) ^ XOR;
+        }
+
         private static int health;
 
         private static bool ReadHealth() {
-            int currentHealth = ReadInt32(GetAddress(HealthAddress)) ^ XOR;
+            int currentHealth = ReadProperty(HealthAddress);
             bool healthChanged = currentHealth == health;
             health = currentHealth;
 
@@ -319,7 +337,7 @@ namespace Tibialyzer {
         private static int maxHealth;
 
         private static bool ReadMaxHealth() {
-            int currentMaxHealth = ReadInt32(GetAddress(MaxHealthAddress)) ^ XOR;
+            int currentMaxHealth = ReadProperty(MaxHealthAddress);
             bool maxHealthChanged = currentMaxHealth == maxHealth;
             maxHealth = currentMaxHealth;
 
@@ -329,7 +347,7 @@ namespace Tibialyzer {
         private static int mana;
 
         private static bool ReadMana() {
-            int currentMana = ReadInt32(GetAddress(ManaAddress)) ^ XOR;
+            int currentMana = ReadProperty(ManaAddress);
             bool manaChanged = currentMana == mana;
             mana = currentMana;
 
@@ -339,7 +357,7 @@ namespace Tibialyzer {
         private static int maxMana;
 
         private static bool ReadMaxMana() {
-            int currentMaxMana = ReadInt32(GetAddress(MaxManaAddress)) ^ XOR;
+            int currentMaxMana = ReadProperty(MaxManaAddress);
             bool maxManaChanged = currentMaxMana == maxMana;
             maxMana = currentMaxMana;
 
