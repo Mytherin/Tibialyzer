@@ -14,4 +14,5 @@ LevelAddress=0x53C790
 ExperienceAddress=0x53C780
 ClassicClientName=Tibia
 Tibia11Name=client
-Tibia11StatsValue=16264212
+Tibia11StatsValueNoParse=16264212
+Tibia11ExpValueNoParse=16327688

@@ -154,6 +154,10 @@ namespace Tibialyzer {
             MaxManaAddress = address + 0x30;
             tibia11_addresses = true;
         }
+        public static void SetExpAddress(uint address) {
+            ExperienceAddress = address + 0x18 - baseAddress;
+            tibia11_addresses = true;
+        }
 
         private static UInt32 baseAddress;
         private static IntPtr handle = new IntPtr(0);
@@ -205,9 +209,14 @@ namespace Tibialyzer {
 
         private static void UpdateExp() {
             bool attributesChanged = ReadExperience();
-            attributesChanged |= ReadLevel();
+            if (!tibia11_addresses) {
+                attributesChanged |= ReadLevel();
+            }
 
             if (attributesChanged && ExperienceChanged != null) {
+                if (tibia11_addresses) {
+                    level = GetLevelFromExperience(experience);
+                }
                 var playerExperience = new PlayerExperience {
                     Level = level,
                     Experience = experience
@@ -411,6 +420,20 @@ namespace Tibialyzer {
         }
 
         private static int level;
+        
+
+        public static int GetLevelFromExperience(long experience, int level = 150, int adjustment = 75, int iterations = 100) {
+            if (iterations <= 0) return -1;
+            if (experience < ExperienceBar.GetExperience(level)) {
+                return GetLevelFromExperience(experience, level - adjustment, adjustment / 2, iterations - 1);
+            } else {
+                if (experience < ExperienceBar.GetExperience(level + 1)) {
+                    return level + 1;
+                } else {
+                    return GetLevelFromExperience(experience, level + adjustment, adjustment, iterations - 1);
+                }
+            }
+        }
 
         private static bool ReadLevel() {
             int currentLevel = ReadInt32(GetAddress(LevelAddress));

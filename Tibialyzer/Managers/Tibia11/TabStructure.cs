@@ -45,9 +45,12 @@ namespace Tibialyzer {
         public static List<TabStructure> FindTabStructures(Process p) {
             bool firstScan = ReadMemoryManager.TabStructureCount() == 0;
             List<TabStructure> structs = new List<TabStructure>();
-            int statsValue = -1;
+            int statsValue = -1, expValue = -1;
             if (MemoryReader.MemorySettings.ContainsKey("tibia11statsvalue")) {
                 int.TryParse(MemoryReader.MemorySettings["tibia11statsvalue"], out statsValue);
+            }
+            if (MemoryReader.MemorySettings.ContainsKey("tibia11expvalue")) {
+                int.TryParse(MemoryReader.MemorySettings["tibia11expvalue"], out expValue);
             }
             foreach (var tpl in ReadMemoryManager.ScanProcess(p)) {
                 int length = tpl.Item1.RegionSize;
@@ -75,6 +78,14 @@ namespace Tibialyzer {
                             if (health <= maxhealth && mana <= maxmana && maxhealth < 30000 && maxmana < 60000 &&
                                 health >= 0 && maxhealth > 0 && mana >= 0 && maxmana > 0) {
                                 MemoryReader.SetStatsAddress((uint)(baseAddress + i));
+                            }
+                        }
+                    }
+                    if (expValue != -1) {
+                        if (value == expValue) {
+                            long exp = BitConverter.ToInt64(bytes, i + 0x18);
+                            if (exp >= 0 && exp < 28656339800) {
+                                MemoryReader.SetExpAddress((uint)(baseAddress + i));
                             }
                         }
                     }
