@@ -54,8 +54,7 @@ namespace Tibialyzer {
             return actual_value;
         }
 
-        public string GetMaxValueString() {
-            long val = GetMaxValue();
+        public static string ConvertGoldToString(long val) {
             double resval = val;
             string denom = "";
             if (val >= 1000) {
@@ -71,6 +70,11 @@ namespace Tibialyzer {
                 denom = "B";
             }
             return String.Format("{0:0.#}", resval) + denom;
+        }
+
+        public string GetMaxValueString() {
+            long val = GetMaxValue();
+            return ConvertGoldToString(val);
         }
 
         public override string GetName() { return title; }

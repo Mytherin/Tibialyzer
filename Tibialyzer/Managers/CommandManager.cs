@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Threading;
 
 namespace Tibialyzer {
     class CommandManager {
@@ -376,6 +377,39 @@ namespace Tibialyzer {
                     OutfiterOutfit outfit = new OutfiterOutfit();
                     outfit.FromString(comp.Split(Constants.CommandSymbol)[1]);
                     NotificationManager.ShowOutfiterNotification(outfit, command);
+                } else if (comp.StartsWith("house" + Constants.CommandSymbol) || comp.StartsWith("guildhall" + Constants.CommandSymbol)) { //house@ and guildhall@
+                    bool guildhall = comp.StartsWith("guildhall" + Constants.CommandSymbol);
+                    string[] splits = comp.Split(Constants.CommandSymbol);
+                    string parameter = splits[1].ToLower();
+                    if (splits.Length > 2 && Constants.cities.Contains(parameter)) {
+                        string world = splits[2].ToLower();
+                        if (Constants.worlds.Contains(world)) {
+                            House.GatherInformationOnline(world, parameter, guildhall);
+                        }
+                    }
+                    List<TibiaObject> houses;
+                    string header;
+                    if (Constants.worlds.Contains(parameter)) {
+                        foreach(string city in Constants.cities) {
+                            if (!House.GatherInformationOnline(parameter, city, guildhall)) {
+                                Thread.Sleep(1000);
+                                House.GatherInformationOnline(parameter, city, guildhall);
+                            }
+                        }
+                        header = String.Format("Free Houses on {0}", parameter.ToTitle());
+                        houses = (guildhall ? StorageManager.guildHallIdMap : StorageManager.houseIdMap).Values.Where(o => !o.occupied && o.world != null).OrderBy(o => -o.sqm).ToList<TibiaObject>();
+                    } else if (Constants.cities.Contains(parameter)) {
+                        houses = StorageManager.getHouseByCity(parameter, guildhall);
+                        header = String.Format("Houses In City \"{0}\"", parameter);
+                    } else {
+                        houses = StorageManager.searchHouse(parameter, guildhall);
+                        header = String.Format("Houses Containing \"{0}\"", parameter);
+                    }
+                    if (houses.Count == 1) {
+                        NotificationManager.ShowHouseForm(houses[0] as House, command);
+                    } else if (houses.Count > 1) {
+                        NotificationManager.ShowCreatureList(houses, header, command);
+                    }
                 } else if (comp.StartsWith("track" + Constants.CommandSymbol)) { //track@
                     Task task = StorageManager.getTask(comp.Split(Constants.CommandSymbol)[1]);
                     if (task != null) {

@@ -115,7 +115,7 @@ namespace Tibialyzer {
             if (vocation.Contains("elder") || vocation.Contains("royal") || vocation.Contains("elite") || vocation.Contains("master")) this.promoted = true;
         }
 
-        public string RemoveJunk(string junk) {
+        public static string RemoveJunk(string junk) {
             Regex regex = new Regex("<[^>]+>");
 
             Match m;

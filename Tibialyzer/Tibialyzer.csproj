@@ -162,6 +162,9 @@
     <Compile Include="Notifications\MapForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Notifications\HouseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Notifications\OutfiterForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -316,6 +319,7 @@
     <Compile Include="Structures\Coordinate.cs" />
     <Compile Include="Structures\Creature.cs" />
     <Compile Include="Structures\Event.cs" />
+    <Compile Include="Structures\House.cs" />
     <Compile Include="Structures\HuntingPlace.cs" />
     <Compile Include="Structures\Achievement.cs" />
     <Compile Include="Structures\Item.cs" />
@@ -595,6 +599,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Notifications\MapForm.resx">
       <DependentUpon>MapForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Notifications\HouseForm.resx">
+      <DependentUpon>HouseForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Notifications\OutfiterForm.resx">
       <DependentUpon>OutfiterForm.cs</DependentUpon>
@@ -920,6 +927,9 @@
     <Content Include="Images\bank.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\bighouse.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\boat.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1094,6 +1104,9 @@
     <Content Include="Images\mapup.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\mediumhouse.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\nextpage.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1164,6 +1177,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\scanningbar.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\smallhouse.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Sorcerer.png">

@@ -69,8 +69,10 @@ namespace Tibialyzer {
         private static int BL_X_OFFSET = 44;
         private static int BL_HP_OFFSET = 140;
 
-        private static int START_X = 124 * 256;
-        private static int START_Y = 121 * 256;
+        public static int START_X = 124 * 256;
+        public static int START_Y = 121 * 256;
+        public static int END_X = 132 * 256;
+        public static int END_Y = 129 * 256;
 
         public static event EventHandler<PlayerHealth> HealthChanged;
         public static event EventHandler<PlayerMana> ManaChanged;

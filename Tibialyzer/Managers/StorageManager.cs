@@ -59,6 +59,8 @@ namespace Tibialyzer {
         public static Dictionary<int, string> taskGroups = new Dictionary<int, string>();
         public static Dictionary<int, Task> taskIdMap = new Dictionary<int, Task>();
 
+        public static Dictionary<int, House> houseIdMap = new Dictionary<int, House>();
+        public static Dictionary<int, House> guildHallIdMap = new Dictionary<int, House>();
         public static Dictionary<int, City> cityIdMap = new Dictionary<int, City>();
         public static Dictionary<string, City> cityNameMap = new Dictionary<string, City>();
         public static Dictionary<int, Quest> questIdMap = new Dictionary<int, Quest>();
@@ -287,6 +289,28 @@ namespace Tibialyzer {
                 m.z = reader.GetInt32(0);
                 StorageManager.mapFiles.Add(m);
             }
+
+            // Houses
+            command = new SQLiteCommand("SELECT id,name,city,x,y,z,sqm,beds,guildhall FROM Houses", conn);
+            reader = command.ExecuteReader();
+            while (reader.Read()) {
+                House house = new House();
+                house.id = reader.GetInt32(0);
+                house.name = reader[1].ToString();
+                house.city = reader[2].ToString();
+                house.pos.x = reader.GetInt32(3);
+                house.pos.y = reader.GetInt32(4);
+                house.pos.z = reader.GetInt32(5);
+                house.sqm = reader.GetInt32(6);
+                house.beds = reader.GetInt32(7);
+                house.guildhall = reader.GetBoolean(8);
+                if (house.guildhall) {
+                    guildHallIdMap.Add(house.id, house);
+                } else {
+                    houseIdMap.Add(house.id, house);
+                }
+            }
+
         }
 
         public static int mapFilesCount { get { return mapFiles.Count; } }
@@ -1561,6 +1585,14 @@ namespace Tibialyzer {
             } else {
                 return _creatureIdMap.Values.Where(o => o.GetName().Contains(str, StringComparison.OrdinalIgnoreCase)).OrderBy(o => o.experience).ToList<TibiaObject>();
             }
+        }
+
+        public static List<TibiaObject> searchHouse(string str, bool guildhall) {
+            return (guildhall ? guildHallIdMap : houseIdMap).Values.Where(o => o.GetName().Contains(str, StringComparison.OrdinalIgnoreCase)).OrderBy(o => -o.sqm).ToList<TibiaObject>();
+        }
+
+        public static List<TibiaObject> getHouseByCity(string city, bool guildhall) {
+            return (guildhall ? guildHallIdMap : houseIdMap).Values.Where(o => o.city.Equals(city, StringComparison.OrdinalIgnoreCase)).OrderBy(o => -o.sqm).ToList<TibiaObject>();
         }
         public static List<TibiaObject> searchAchievement(string str) {
             str = str.ToLower();

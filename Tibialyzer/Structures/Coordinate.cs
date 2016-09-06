@@ -25,6 +25,7 @@ namespace Tibialyzer {
 
         public const int MaxWidth = 2048;
         public const int MaxHeight = 2048;
+        public const int MaxZ = 15;
 
         public Coordinate() {
             this.x = MaxWidth / 2;
@@ -42,6 +43,13 @@ namespace Tibialyzer {
             this.x = x;
             this.y = y;
             this.z = z;
+            ClampCoordinate();
+        }
+
+        public void ClampCoordinate() {
+            this.x = Math.Min(Math.Max(x, 0), MaxWidth);
+            this.y = Math.Min(Math.Max(y, 0), MaxHeight);
+            this.z = Math.Min(Math.Max(x, 0), MaxZ);
         }
     }
 

@@ -194,6 +194,13 @@ namespace Tibialyzer {
 
             ShowNotification(f, command);
         }
+        public static void ShowHouseForm(House h, string command) {
+            if (h == null) return;
+            HouseForm f = new HouseForm();
+            f.house = h;
+
+            ShowNotification(f, command);
+        }
 
         public static void ShowWasteForm(Hunt hunt, string command) {
             if (hunt == null) return;
