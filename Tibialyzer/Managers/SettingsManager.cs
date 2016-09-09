@@ -368,6 +368,7 @@ C::NumpadPgDn
             setSettingIfNotSet("AutoScreenshotAdvance", false);
             setSettingIfNotSet("AutoScreenshotItemDrop", false);
             setSettingIfNotSet("AutoScreenshotDeath", false);
+            setSettingIfNotSet("ScreenshotRareItemValue", 10000);
             setSettingIfNotSet("EnableScreenshots", false);
             setSettingIfNotSet("Names", "Mytherin");
             setSettingIfNotSet("ScanSpeed", "50");

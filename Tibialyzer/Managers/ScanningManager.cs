@@ -256,30 +256,37 @@ namespace Tibialyzer {
                                 PopupManager.ShowSimpleNotification(new SimpleLootNotification(cr, items, tpl.Item3));
                             });
                         }
-
-                        if (SettingsManager.getSettingBool("AutoScreenshotItemDrop")) {
-                            // Take a screenshot if Tibialyzer is set to take screenshots of valuable loot
-                            Bitmap screenshot = ScreenshotManager.takeScreenshot();
-                            if (screenshot == null) continue;
-                            // Add a notification to the screenshot
-                            SimpleLootNotification screenshotNotification = new SimpleLootNotification(cr, items, null);
-                            Bitmap notification = new Bitmap(screenshotNotification.Width, screenshotNotification.Height);
-                            screenshotNotification.DrawToBitmap(notification, new Rectangle(0, 0, screenshotNotification.Width, screenshotNotification.Height));
-                            foreach (Control c in screenshotNotification.Controls) {
-                                c.DrawToBitmap(notification, new Rectangle(c.Location, c.Size));
-                            }
-                            screenshotNotification.Dispose();
-                            int widthOffset = notification.Width + 10;
-                            int heightOffset = notification.Height + 10;
-                            if (screenshot.Width > widthOffset && screenshot.Height > heightOffset) {
-                                using (Graphics gr = Graphics.FromImage(screenshot)) {
-                                    gr.DrawImage(notification, new Point(screenshot.Width - widthOffset, screenshot.Height - heightOffset));
+                    }
+                    if (SettingsManager.getSettingBool("AutoScreenshotItemDrop")) {
+                        int screenshotValue = SettingsManager.getSettingInt("ScreenshotRareItemValue");
+                        if (screenshotValue > 0) {
+                            foreach (var itemTpl in items) {
+                                if (itemTpl.Item1.GetMaxValue() >= screenshotValue) {
+                                    // Take a screenshot if Tibialyzer is set to take screenshots of valuable loot
+                                    Bitmap screenshot = ScreenshotManager.takeScreenshot();
+                                    if (screenshot == null) continue;
+                                    // Add a notification to the screenshot
+                                    SimpleLootNotification screenshotNotification = new SimpleLootNotification(cr, items, null);
+                                    Bitmap notification = new Bitmap(screenshotNotification.Width, screenshotNotification.Height);
+                                    screenshotNotification.DrawToBitmap(notification, new Rectangle(0, 0, screenshotNotification.Width, screenshotNotification.Height));
+                                    foreach (Control c in screenshotNotification.Controls) {
+                                        c.DrawToBitmap(notification, new Rectangle(c.Location, c.Size));
+                                    }
+                                    screenshotNotification.Dispose();
+                                    int widthOffset = notification.Width + 10;
+                                    int heightOffset = notification.Height + 10;
+                                    if (screenshot.Width > widthOffset && screenshot.Height > heightOffset) {
+                                        using (Graphics gr = Graphics.FromImage(screenshot)) {
+                                            gr.DrawImage(notification, new Point(screenshot.Width - widthOffset, screenshot.Height - heightOffset));
+                                        }
+                                    }
+                                    notification.Dispose();
+                                    MainForm.mainForm.Invoke((MethodInvoker)delegate {
+                                        ScreenshotManager.saveScreenshot("Loot", screenshot);
+                                    });
+                                    break;
                                 }
                             }
-                            notification.Dispose();
-                            MainForm.mainForm.Invoke((MethodInvoker)delegate {
-                                ScreenshotManager.saveScreenshot("Loot", screenshot);
-                            });
                         }
                     }
                 }

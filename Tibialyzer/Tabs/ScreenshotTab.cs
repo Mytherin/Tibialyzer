@@ -22,6 +22,7 @@ namespace Tibialyzer {
             this.screenshotAdvanceCheckbox.Checked = SettingsManager.getSettingBool("AutoScreenshotAdvance");
             this.screenshotOnRareItemCheckbox.Checked = SettingsManager.getSettingBool("AutoScreenshotItemDrop");
             this.screenshotDeathCheckbox.Checked = SettingsManager.getSettingBool("AutoScreenshotDeath");
+            this.screenshotValueBox.Text = SettingsManager.getSettingString("ScreenshotRareItemValue");
 
             this.enableScreenshotCheckbox.Checked = SettingsManager.getSettingBool("EnableScreenshots");
             if (SettingsManager.getSettingString("ScreenshotPath") == null || !Directory.Exists(SettingsManager.getSettingString("ScreenshotPath"))) {
@@ -193,7 +194,12 @@ namespace Tibialyzer {
         }
 
         private void screenshotValueBox_TextChanged(object sender, EventArgs e) {
-            // FIXME: use this value for rare item screenshots
+            if (MainForm.prevent_settings_update) return;
+
+            int value = 0;
+            if (int.TryParse((sender as TextBox).Text, out value)) {
+                SettingsManager.setSetting("ScreenshotRareItemValue", value);
+            }
         }
     }
 }
