@@ -515,6 +515,14 @@ namespace Tibialyzer {
             }
         }
 
+        public static BattleListEntry GetPlayerEntry(int id) {
+            int location = GetPlayerPosition(id);
+            if (location >= 0) {
+                return battleList[location];
+            }
+            return new BattleListEntry { id = -1, x = -1, y = -1, z = -1, name = null, hp = -1 };
+        }
+
         public static int GetPlayerPosition(int id) {
             lock (battleList) {
                 for (int i = 0; i < battleList.Length; i++) {
@@ -525,6 +533,7 @@ namespace Tibialyzer {
                 return -1;
             }
         }
+
         public static int GetPlayerID(string name) {
             lock (battleList) {
                 for (int i = 0; i < battleList.Length; i++) {
@@ -550,17 +559,24 @@ namespace Tibialyzer {
             }
         }
 
+        public static bool PlayerInVision(BattleListEntry a, BattleListEntry b) {
+            if (a.z != b.z) {
+                return false;
+            }
+            return Math.Abs(a.x - b.x) <= 7 && Math.Abs(a.y - b.y) <= 5;
+        }
 
         public static int GetHealthPercentage(int id, ref int battlelistentry) {
             lock (battleList) {
+                if (playerAddress == -1) playerAddress = GetPlayerPosition(PlayerId);
                 if (battleList[battlelistentry].id == id) {
-                    return battleList[battlelistentry].hp;
+                    return PlayerInVision(battleList[playerAddress], battleList[battlelistentry]) ? battleList[battlelistentry].hp : -1;
                 }
 
                 for (int i = 0; i < battleList.Length; i++) {
                     if (battleList[i].id == id) {
                         battlelistentry = i;
-                        return battleList[i].hp;
+                        return PlayerInVision(battleList[playerAddress], battleList[battlelistentry]) ? battleList[battlelistentry].hp : -1;
                     }
                 }
                 return -1;
@@ -568,7 +584,7 @@ namespace Tibialyzer {
         }
     }
 
-    class BattleListEntry {
+    public class BattleListEntry {
         public int id;
         public string name;
         public int x;
