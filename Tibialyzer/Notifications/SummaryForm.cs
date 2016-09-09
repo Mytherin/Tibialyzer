@@ -130,6 +130,23 @@ namespace Tibialyzer {
             return bitmap;
         }
 
+        public Image SummaryBar(string header, string text, double percentage, Color textColor, Color barColor) {
+            percentage = Math.Min(Math.Max(percentage, 0), 1);
+            Bitmap bitmap = new Bitmap(BlockWidth, BlockHeight);
+            using (Graphics gr = Graphics.FromImage(bitmap)) {
+                using (SolidBrush brush = new SolidBrush(StyleManager.MainFormButtonColor)) {
+                    gr.FillRectangle(brush, new RectangleF(0, 0, BlockWidth, BlockHeight));
+                }
+                using(SolidBrush brush = new SolidBrush(barColor)) {
+                    gr.FillRectangle(brush, new RectangleF(0, 0, (float)(percentage * BlockWidth), BlockHeight));
+                }
+                gr.DrawRectangle(Pens.Black, new Rectangle(0, 0, bitmap.Width - 1, bitmap.Height - 1));
+                RenderText(gr, header, 0, Color.Empty, StyleManager.NotificationTextColor, Color.Black, BlockHeight);
+                RenderText(gr, text, -BlockWidth, Color.Empty, textColor, Color.Black, BlockHeight);
+            }
+            return bitmap;
+        }
+
         public Image RecentDropsBox(Creature creature, List<Tuple<Item, int>> items, int imageHeight, List<ItemRegion> regions) {
             Bitmap bitmap = new Bitmap(BlockWidth, imageHeight);
             using (Graphics gr = Graphics.FromImage(bitmap)) {
@@ -167,6 +184,19 @@ namespace Tibialyzer {
 
         private PictureBox CreateSummaryLabel(string title, string value, int x, ref int y, Color color, List<Control> controls) {
             Image image = SummaryBox(title, value, color);
+            PictureBox box = new PictureBox();
+            box.Size = image.Size;
+            box.BackColor = Color.Transparent;
+            box.Location = new Point(x, y);
+            box.Image = image;
+            this.Controls.Add(box);
+            controls.Add(box);
+            y += box.Height;
+            return box;
+        }
+
+        private PictureBox CreateSummaryBar(string title, string text, double percentage, int x, ref int y, Color color, Color barColor, List<Control> controls) {
+            Image image = SummaryBar(title, text, percentage, color, barColor);
             PictureBox box = new PictureBox();
             box.Size = image.Size;
             box.BackColor = Color.Transparent;
@@ -342,6 +372,14 @@ namespace Tibialyzer {
             if (ScanningManager.lastResults != null) {
                 CreateSummaryLabel("Exp/hour", ScanningManager.lastResults.expPerHour.ToString("N0"), x, ref y, StyleManager.NotificationTextColor, summaryControls);
             }
+            if (MemoryReader.experience >= 0) {
+                long baseExperience = ExperienceBar.GetExperience(MemoryReader.level - 1);
+                long exp = MemoryReader.experience - baseExperience;
+                long maxExp = ExperienceBar.GetExperience(MemoryReader.level) - baseExperience;
+                double percentage = ((double) exp) / ((double) maxExp);
+                CreateSummaryBar("Level", String.Format("{0:0.}%", percentage * 100), percentage, x, ref y, StyleManager.NotificationTextColor, StyleManager.SummaryExperienceColor, summaryControls);
+            }
+
         }
 
         public void UpdateLoot() {

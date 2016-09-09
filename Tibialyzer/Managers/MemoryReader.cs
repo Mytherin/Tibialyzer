@@ -415,7 +415,7 @@ namespace Tibialyzer {
             }
         }
 
-        private static long experience;
+        public static long experience;
 
         private static bool ReadExperience() {
             long currentExperience = ReadInt64(GetAddress(ExperienceAddress));
@@ -425,7 +425,7 @@ namespace Tibialyzer {
             return experienceChanged;
         }
 
-        private static int level;
+        public static int level;
         
 
         public static int GetLevelFromExperience(long experience, int level = 150, int adjustment = 75, int iterations = 100) {

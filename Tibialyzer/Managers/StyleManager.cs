@@ -79,6 +79,8 @@ namespace Tibialyzer {
         public static Color HealthCritical = Color.FromArgb(47, 0, 0);
         public static Color ManaColor = Color.FromArgb(54, 51, 167);
         public static Color ExperienceColor = Color.FromArgb(64, 64, 64);
+        public static Color SummaryExperienceColor = Color.FromArgb(34, 177, 76);
+
 
         public static Color WasteColor = Color.FromArgb(255, 64, 64);
 
