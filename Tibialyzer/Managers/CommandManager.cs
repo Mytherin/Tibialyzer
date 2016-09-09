@@ -21,16 +21,25 @@ namespace Tibialyzer {
                 }
                 string comp = command.Trim().ToLower();
                 Console.WriteLine(command);
-                if (comp.StartsWith("creature" + Constants.CommandSymbol)) { //creature@
+                if (comp.StartsWith("creature" + Constants.CommandSymbol) || comp.StartsWith("stats" + Constants.CommandSymbol)) { //creature@
+                    bool stats = comp.StartsWith("stats" + Constants.CommandSymbol);
                     string[] split = command.Split(Constants.CommandSymbol);
                     string parameter = split[1].Trim().ToLower();
                     Creature cr = StorageManager.getCreature(parameter);
                     if (cr != null) {
-                        NotificationManager.ShowCreatureDrops(cr, command);
+                        if (stats) {
+                            NotificationManager.ShowCreatureStats(cr, command);
+                        } else {
+                            NotificationManager.ShowCreatureDrops(cr, command);
+                        }
                     } else {
                         List<TibiaObject> creatures = StorageManager.searchCreature(parameter);
                         if (creatures.Count == 1) {
-                            NotificationManager.ShowCreatureDrops(creatures[0].AsCreature(), command);
+                            if (stats) {
+                                NotificationManager.ShowCreatureStats(cr, command);
+                            } else {
+                                NotificationManager.ShowCreatureDrops(creatures[0].AsCreature(), command);
+                            }
                         } else if (creatures.Count > 1) {
                             NotificationManager.ShowCreatureList(creatures, "Creature List", command);
                         }
@@ -86,12 +95,6 @@ namespace Tibialyzer {
                         } else if (items.Count > 1) {
                             NotificationManager.ShowCreatureList(items, "Looked At Items", command);
                         }
-                    }
-                } else if (comp.StartsWith("stats" + Constants.CommandSymbol)) { //stats@
-                    string name = command.Split(Constants.CommandSymbol)[1].Trim().ToLower();
-                    Creature cr = StorageManager.getCreature(name);
-                    if (cr != null) {
-                        NotificationManager.ShowCreatureStats(cr, command);
                     }
                 } else if (comp.StartsWith("close" + Constants.CommandSymbol)) { //close@
                                                                                  // close all notifications
