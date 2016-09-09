@@ -357,7 +357,7 @@ C::NumpadPgDn
 
         public static void ApplyDefaultSettings() {
             setSettingIfNotSet("EnableEventNotifications", true);
-            setSettingIfNotSet("EnableUnrecognizedNotifications", true);
+            setSettingIfNotSet("EnableUnrecognizedNotifications", false);
             setSettingIfNotSet("CopyAdvances", true);
             setSettingIfNotSet("UseRichNotificationType", true);
             setSettingIfNotSet("LookMode", true);
@@ -397,7 +397,7 @@ C::NumpadPgDn
                 setSettingIfNotSet(settingObject + "Duration", 30);
                 setSettingIfNotSet(settingObject + "Group", 0);
             }
-            setSettingIfNotSet("StackAllItems", false);
+            setSettingIfNotSet("StackAllItems", true);
             setSettingIfNotSet("IgnoreLowExperience", false);
             setSettingIfNotSet("IgnoreLowExperienceValue", 250);
             setSettingIfNotSet("AutomaticallyWriteLootToFile", true);
