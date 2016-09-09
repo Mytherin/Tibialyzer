@@ -22,6 +22,7 @@ namespace Tibialyzer {
         public static Process GetTibiaProcess() {
             Process[] p = GetTibiaProcesses();
             if (p == null || p.Length == 0) return null;
+            MemoryReader.playerName = p[0].MainWindowTitle.Contains("-") ? p[0].MainWindowTitle.Split('-')[1].Trim() : null;
             return p[0];
         }
 

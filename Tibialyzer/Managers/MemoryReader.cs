@@ -382,9 +382,13 @@ namespace Tibialyzer {
         }
 
         private static int playerAddress = -1;
+        public static string playerName = null;
 
         public static string PlayerName {
             get {
+                if (tibia11_addresses) {
+                    return playerName;
+                }
                 MemoryReader.UpdateBattleList();
                 return GetPlayerName(PlayerId);
             }
