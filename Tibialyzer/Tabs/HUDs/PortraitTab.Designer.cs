@@ -23,15 +23,12 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.changeBackgroundImageButton = new PrettyButton();
-            this.backgroundImageHeader = new PrettyHeader();
-            this.backgroundImageBox = new System.Windows.Forms.PictureBox();
-            this.changeCenterImageButton = new PrettyButton();
-            this.centerImageHeader = new PrettyHeader();
+            this.changeCenterImageButton = new Tibialyzer.PrettyButton();
+            this.centerImageHeader = new Tibialyzer.PrettyHeader();
             this.centerImageBox = new System.Windows.Forms.PictureBox();
-            this.backgroundScaleHeader = new PrettyHeader();
+            this.backgroundScaleHeader = new Tibialyzer.PrettyHeader();
             this.backgroundImageScale = new System.Windows.Forms.TrackBar();
-            this.scaleHeader = new PrettyHeader();
+            this.scaleHeader = new Tibialyzer.PrettyHeader();
             this.centerImageScale = new System.Windows.Forms.TrackBar();
             this.xOffsetLabel = new System.Windows.Forms.Label();
             this.xOffsetBox = new Tibialyzer.EnterTextBox();
@@ -41,55 +38,20 @@
             this.yOffsetBoxCenter = new Tibialyzer.EnterTextBox();
             this.xOffsetCenterLabel = new System.Windows.Forms.Label();
             this.xOffsetBoxCenter = new Tibialyzer.EnterTextBox();
-            this.refreshButton = new PrettyButton();
-            ((System.ComponentModel.ISupportInitialize)(this.backgroundImageBox)).BeginInit();
+            this.refreshButton = new Tibialyzer.PrettyButton();
+            this.outfiterButton = new Tibialyzer.PrettyButton();
+            this.outfiterCode = new Tibialyzer.EnterTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.centerImageBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.backgroundImageScale)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.centerImageScale)).BeginInit();
             this.SuspendLayout();
-            // 
-            // changeBackgroundImageButton
-            // 
-            this.changeBackgroundImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.changeBackgroundImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.changeBackgroundImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.changeBackgroundImageButton.Location = new System.Drawing.Point(129, 42);
-            this.changeBackgroundImageButton.Name = "changeBackgroundImageButton";
-            this.changeBackgroundImageButton.Padding = new System.Windows.Forms.Padding(10);
-            this.changeBackgroundImageButton.Size = new System.Drawing.Size(106, 38);
-            this.changeBackgroundImageButton.TabIndex = 55;
-            this.changeBackgroundImageButton.Text = "Browse";
-            this.changeBackgroundImageButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.changeBackgroundImageButton.Click += new System.EventHandler(this.changeBackgroundImageButton_Click);
-            // 
-            // backgroundImageHeader
-            // 
-            this.backgroundImageHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.backgroundImageHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.backgroundImageHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.backgroundImageHeader.Location = new System.Drawing.Point(9, 9);
-            this.backgroundImageHeader.Name = "backgroundImageHeader";
-            this.backgroundImageHeader.Size = new System.Drawing.Size(299, 30);
-            this.backgroundImageHeader.TabIndex = 54;
-            this.backgroundImageHeader.Text = "Background Image";
-            this.backgroundImageHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // backgroundImageBox
-            // 
-            this.backgroundImageBox.BackColor = System.Drawing.Color.Transparent;
-            this.backgroundImageBox.Location = new System.Drawing.Point(9, 42);
-            this.backgroundImageBox.Name = "backgroundImageBox";
-            this.backgroundImageBox.Size = new System.Drawing.Size(100, 100);
-            this.backgroundImageBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.backgroundImageBox.TabIndex = 53;
-            this.backgroundImageBox.TabStop = false;
             // 
             // changeCenterImageButton
             // 
             this.changeCenterImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.changeCenterImageButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.changeCenterImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.changeCenterImageButton.Location = new System.Drawing.Point(129, 207);
+            this.changeCenterImageButton.Location = new System.Drawing.Point(129, 42);
             this.changeCenterImageButton.Name = "changeCenterImageButton";
             this.changeCenterImageButton.Padding = new System.Windows.Forms.Padding(10);
             this.changeCenterImageButton.Size = new System.Drawing.Size(106, 38);
@@ -103,7 +65,7 @@
             this.centerImageHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.centerImageHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.centerImageHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
-            this.centerImageHeader.Location = new System.Drawing.Point(12, 174);
+            this.centerImageHeader.Location = new System.Drawing.Point(12, 9);
             this.centerImageHeader.Name = "centerImageHeader";
             this.centerImageHeader.Size = new System.Drawing.Size(299, 30);
             this.centerImageHeader.TabIndex = 57;
@@ -113,7 +75,7 @@
             // centerImageBox
             // 
             this.centerImageBox.BackColor = System.Drawing.Color.Transparent;
-            this.centerImageBox.Location = new System.Drawing.Point(9, 207);
+            this.centerImageBox.Location = new System.Drawing.Point(9, 42);
             this.centerImageBox.Name = "centerImageBox";
             this.centerImageBox.Size = new System.Drawing.Size(100, 100);
             this.centerImageBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -272,12 +234,38 @@
             this.refreshButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
             // 
+            // outfiterButton
+            // 
+            this.outfiterButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.outfiterButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.outfiterButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.outfiterButton.Location = new System.Drawing.Point(78, 174);
+            this.outfiterButton.Name = "outfiterButton";
+            this.outfiterButton.Padding = new System.Windows.Forms.Padding(10);
+            this.outfiterButton.Size = new System.Drawing.Size(172, 38);
+            this.outfiterButton.TabIndex = 85;
+            this.outfiterButton.Text = "Use Outfiter Image";
+            this.outfiterButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.outfiterButton.Click += new System.EventHandler(this.outfiterButton_Click);
+            // 
+            // outfiterCode
+            // 
+            this.outfiterCode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.outfiterCode.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.outfiterCode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
+            this.outfiterCode.Location = new System.Drawing.Point(15, 148);
+            this.outfiterCode.Name = "outfiterCode";
+            this.outfiterCode.Size = new System.Drawing.Size(296, 23);
+            this.outfiterCode.TabIndex = 84;
+            // 
             // PortraitTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(638, 549);
+            this.Controls.Add(this.outfiterButton);
+            this.Controls.Add(this.outfiterCode);
             this.Controls.Add(this.refreshButton);
             this.Controls.Add(this.yOffsetCenterLabel);
             this.Controls.Add(this.yOffsetBoxCenter);
@@ -294,13 +282,9 @@
             this.Controls.Add(this.changeCenterImageButton);
             this.Controls.Add(this.centerImageHeader);
             this.Controls.Add(this.centerImageBox);
-            this.Controls.Add(this.changeBackgroundImageButton);
-            this.Controls.Add(this.backgroundImageHeader);
-            this.Controls.Add(this.backgroundImageBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PortraitTab";
             this.Text = "TabBase";
-            ((System.ComponentModel.ISupportInitialize)(this.backgroundImageBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.centerImageBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.backgroundImageScale)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.centerImageScale)).EndInit();
@@ -310,16 +294,8 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label changeBackgroundImageButton;
-        private System.Windows.Forms.Label backgroundImageHeader;
-        private System.Windows.Forms.PictureBox backgroundImageBox;
-        private System.Windows.Forms.Label changeCenterImageButton;
-        private System.Windows.Forms.Label centerImageHeader;
         private System.Windows.Forms.PictureBox centerImageBox;
-        private System.Windows.Forms.Label backgroundScaleHeader;
         private System.Windows.Forms.TrackBar backgroundImageScale;
-        private System.Windows.Forms.Label scaleHeader;
         private System.Windows.Forms.TrackBar centerImageScale;
         private System.Windows.Forms.Label xOffsetLabel;
         private EnterTextBox xOffsetBox;
@@ -329,6 +305,12 @@
         private EnterTextBox yOffsetBoxCenter;
         private System.Windows.Forms.Label xOffsetCenterLabel;
         private EnterTextBox xOffsetBoxCenter;
-        private System.Windows.Forms.Label refreshButton;
+        private PrettyButton refreshButton;
+        private PrettyHeader scaleHeader;
+        private PrettyHeader backgroundScaleHeader;
+        private PrettyHeader centerImageHeader;
+        private PrettyButton changeCenterImageButton;
+        private PrettyButton outfiterButton;
+        private EnterTextBox outfiterCode;
     }
 }

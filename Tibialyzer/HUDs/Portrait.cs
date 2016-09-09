@@ -59,26 +59,21 @@ namespace Tibialyzer {
             pictureBox.Size = new Size(this.Width, this.Height);
             pictureBox.BackColor = StyleManager.TransparencyKey;
             this.Controls.Add(pictureBox);
-
-            try {
-                string backgroundLocation = SettingsManager.getSettingString("PortraitBackgroundImage");
-                if (backgroundLocation != null) {
-                    backgroundImage = Image.FromFile(backgroundLocation);
-                } else {
-                    backgroundImage = StyleManager.GetImage("defaultportrait-blue.png").Clone() as Image;
-                }
-            } catch {
-                backgroundImage = StyleManager.GetImage("defaultportrait-blue.png").Clone() as Image;
-            }
-
-            try {
-                string centerLocation = SettingsManager.getSettingString("PortraitCenterImage");
-                if (centerLocation != null) {
+                        
+            string centerLocation = SettingsManager.getSettingString("PortraitCenterImage");
+            if (centerLocation != null) {
+                try {
                     centerImage = Image.FromFile(centerLocation);
-                } else {
-                    centerImage = null;
+                } catch {
+                    OutfiterOutfit outfit = new OutfiterOutfit();
+                    outfit.FromString(centerLocation);
+                    using(Image image = outfit.GetImage()) {
+                        using(Bitmap bitmap = new Bitmap(image)) {
+                            centerImage = bitmap.Clamp();
+                        }
+                    }
                 }
-            } catch {
+            } else {
                 centerImage = null;
             }
 
@@ -138,20 +133,15 @@ namespace Tibialyzer {
                 int centerSize = (int)(height * centerScale / 100.0);
                 int centerBaseOffset = (height - centerSize) / 2;
 
-                SummaryForm.RenderImageResized(gr, backgroundImage, new Rectangle(backgroundBaseOffset + backgroundOffset.X, backgroundBaseOffset + backgroundOffset.Y, backgroundSize, backgroundSize));
-                SummaryForm.RenderImageResized(gr, centerImage, new Rectangle(centerBaseOffset + centerOffset.X, centerBaseOffset + centerOffset.Y, centerSize, centerSize));
+                using(Brush brush = new SolidBrush(this.TransparencyKey)) {
+                    gr.FillEllipse(brush, new Rectangle(backgroundBaseOffset + backgroundOffset.X, backgroundBaseOffset + backgroundOffset.Y, backgroundSize, backgroundSize));
+                }
+                using (Pen pen = new Pen(Color.Black, 5)) {
+                    gr.DrawEllipse(pen, new Rectangle(backgroundBaseOffset + backgroundOffset.X, backgroundBaseOffset + backgroundOffset.Y, backgroundSize, backgroundSize));
+                }
 
-                Rectangle levelRect = new Rectangle((int)(height * 0.7), (int)(height * 0.6), (int)(height * 0.35), (int)(height * 0.35));
-                using (Brush brush = new SolidBrush(StyleManager.MainFormButtonColor)) {
-                    gr.FillEllipse(brush, levelRect);
-                }
-                using (Pen pen = new Pen(StyleManager.MainFormButtonForeColor, 2)) {
-                    gr.DrawEllipse(pen, levelRect);
-                }
-                using (Brush brush = new SolidBrush(StyleManager.MainFormButtonForeColor)) {
-                    string levelString = level.ToString();
-                    gr.DrawString(levelString, StyleManager.MainFormLabelFont, brush, new PointF(height * (0.725f + (3 - levelString.Length) * 0.0375f), height * 0.7f));
-                }
+                //SummaryForm.RenderImageResized(gr, backgroundImage, new Rectangle(backgroundBaseOffset + backgroundOffset.X, backgroundBaseOffset + backgroundOffset.Y, backgroundSize, backgroundSize));
+                SummaryForm.RenderImageResized(gr, centerImage, new Rectangle(centerBaseOffset + centerOffset.X, centerBaseOffset + centerOffset.Y, centerSize, centerSize));
             }
             bitmap.MakeTransparent(StyleManager.TransparencyKey);
             Image oldImage = pictureBox.Image;

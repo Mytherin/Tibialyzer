@@ -432,11 +432,13 @@ C::NumpadPgDn
             setSettingIfNotSet("PortraitAnchor", 0);
             setSettingIfNotSet("PortraitXOffset", 300);
             setSettingIfNotSet("PortraitYOffset", 20);
-            setSettingIfNotSet("PortraitWidth", 300);
-            setSettingIfNotSet("PortraitHeight", 200);
+            setSettingIfNotSet("PortraitWidth", 270);
+            setSettingIfNotSet("PortraitHeight", 90);
+            setSettingIfNotSet("PortraitCenterImage", "http://tibia.wikia.com/wiki/Outfiter?o=41&a1&a2&fm&f=2&c1=114&c2=41&c3=116&c4=4&m=25");
 
             setSettingIfNotSet("TaskHUDWidth", 120);
             setSettingIfNotSet("TaskHUDHeight", 35);
+            
             foreach (string obj in Constants.HudTypes) {
                 string settingObject = obj.Replace(" ", "");
                 setSettingIfNotSet(settingObject + "Anchor", 1);

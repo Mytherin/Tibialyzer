@@ -59,7 +59,11 @@ namespace Tibialyzer {
                 if (imagePath != null) {
                     try {
                         image = Image.FromFile(imagePath);
-                    } catch { }
+                    } catch {
+                        OutfiterOutfit outfit = new OutfiterOutfit();
+                        outfit.FromString(imagePath);
+                        image = outfit.GetImage();
+                    }
                 }
                 this.players.Add(new PlayerEntry { name = name, playerImage = image });
                 index++;

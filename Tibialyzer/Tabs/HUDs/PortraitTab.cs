@@ -17,7 +17,6 @@ namespace Tibialyzer {
         }
 
         public void InitializeSettings() {
-            refreshBackgroundImage();
             refreshCenterImage();
 
             backgroundImageScale.Value = Math.Min(100, Math.Max(0, SettingsManager.getSettingInt("PortraitBackgroundScale")));
@@ -31,7 +30,6 @@ namespace Tibialyzer {
         public void ApplyLocalization() {
             backgroundScaleHeader.Text = Tibialyzer.Translation.PortraitTab.backgroundScaleHeader;
             scaleHeader.Text = Tibialyzer.Translation.PortraitTab.scaleHeader;
-            changeBackgroundImageButton.Text = Tibialyzer.Translation.PortraitTab.changeBackgroundImageButton;
             centerImageHeader.Text = Tibialyzer.Translation.PortraitTab.centerImageHeader;
             yOffsetLabel.Text = Tibialyzer.Translation.PortraitTab.yOffsetLabel;
             xOffsetLabel.Text = Tibialyzer.Translation.PortraitTab.xOffsetLabel;
@@ -39,7 +37,6 @@ namespace Tibialyzer {
             yOffsetCenterLabel.Text = Tibialyzer.Translation.PortraitTab.yOffsetCenterLabel;
             changeCenterImageButton.Text = Tibialyzer.Translation.PortraitTab.changeCenterImageButton;
             xOffsetCenterLabel.Text = Tibialyzer.Translation.PortraitTab.xOffsetCenterLabel;
-            backgroundImageHeader.Text = Tibialyzer.Translation.PortraitTab.backgroundImageHeader;
         }
 
         private Image LoadImageFromPath(string path) {
@@ -52,13 +49,17 @@ namespace Tibialyzer {
             }
             return null;
         }
-
-        private void refreshBackgroundImage() {
-            backgroundImageBox.Image = LoadImageFromPath(SettingsManager.getSettingString("PortraitBackgroundImage"));
-        }
-
+        
         private void refreshCenterImage() {
-            centerImageBox.Image = LoadImageFromPath(SettingsManager.getSettingString("PortraitCenterImage"));
+            string centerLocation = SettingsManager.getSettingString("PortraitCenterImage");
+            if (centerLocation == null) return;
+            centerImageBox.Image = LoadImageFromPath(centerLocation);
+            if (centerImageBox.Image == null) {
+                OutfiterOutfit outfit = new OutfiterOutfit();
+                outfit.FromString(centerLocation);
+                centerImageBox.Image = outfit.GetImage();
+                outfiterCode.Text = centerLocation;
+            }
         }
 
         private void openFileDialog(string setting) {
@@ -74,12 +75,7 @@ namespace Tibialyzer {
                 MainForm.mainForm.DisplayWarning(ex.Message);
             }
         }
-
-        private void changeBackgroundImageButton_Click(object sender, EventArgs e) {
-            openFileDialog("PortraitBackgroundImage");
-            refreshBackgroundImage();
-        }
-
+        
         private void changeCenterImageButton_Click(object sender, EventArgs e) {
             openFileDialog("PortraitCenterImage");
             refreshCenterImage();
@@ -123,6 +119,12 @@ namespace Tibialyzer {
 
         private void refreshButton_Click(object sender, EventArgs e) {
             CommandManager.ExecuteCommand("hud@portrait");
+        }
+
+        private void outfiterButton_Click(object sender, EventArgs e) {
+            string code = outfiterCode.Text;
+            SettingsManager.setSetting("PortraitCenterImage", code);
+            refreshCenterImage();
         }
     }
 }

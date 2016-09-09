@@ -58,7 +58,12 @@ namespace Tibialyzer {
             if (imagePath != null) {
                 try {
                     playerImageBox.Image = Image.FromFile(imagePath);
-                } catch { }
+                } catch {
+                    OutfiterOutfit outfit = new OutfiterOutfit();
+                    outfit.FromString(imagePath);
+                    playerImageBox.Image = outfit.GetImage();
+                    outfiterCode.Text = imagePath;
+                }
             }
         }
 
@@ -92,6 +97,15 @@ namespace Tibialyzer {
 
         private void refreshButton_Click(object sender, EventArgs e) {
             CommandManager.ExecuteCommand("hud@healthlist");
+        }
+
+        private void outfiterButton_Click(object sender, EventArgs e) {
+            int index = nameListBox.SelectedIndex;
+            string code = outfiterCode.Text;
+            SettingsManager.setSetting("HealthListImage" + index.ToString(), code);
+            OutfiterOutfit outfit = new OutfiterOutfit();
+            outfit.FromString(code);
+            playerImageBox.Image = outfit.GetImage();
         }
     }
 }

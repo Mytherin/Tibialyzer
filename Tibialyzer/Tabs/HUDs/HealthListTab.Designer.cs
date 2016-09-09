@@ -24,14 +24,16 @@
         /// </summary>
         private void InitializeComponent() {
             this.nameListBox = new Tibialyzer.PrettyListBox();
-            this.healthListHeader = new PrettyHeader();
+            this.healthListHeader = new Tibialyzer.PrettyHeader();
             this.playerImageBox = new System.Windows.Forms.PictureBox();
-            this.playerImageHeader = new PrettyHeader();
-            this.browseButton = new PrettyButton();
-            this.displayOptionsHeader = new PrettyHeader();
+            this.playerImageHeader = new Tibialyzer.PrettyHeader();
+            this.browseButton = new Tibialyzer.PrettyButton();
+            this.displayOptionsHeader = new Tibialyzer.PrettyHeader();
             this.displayPlayerNameCheckbox = new Tibialyzer.PrettyCheckBox();
             this.displayPlayerImageCheckbox = new Tibialyzer.PrettyCheckBox();
-            this.refreshButton = new PrettyButton();
+            this.refreshButton = new Tibialyzer.PrettyButton();
+            this.outfiterCode = new Tibialyzer.EnterTextBox();
+            this.outfiterButton = new Tibialyzer.PrettyButton();
             ((System.ComponentModel.ISupportInitialize)(this.playerImageBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -156,12 +158,38 @@
             this.refreshButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
             // 
+            // outfiterCode
+            // 
+            this.outfiterCode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.outfiterCode.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.outfiterCode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(217)))));
+            this.outfiterCode.Location = new System.Drawing.Point(330, 188);
+            this.outfiterCode.Name = "outfiterCode";
+            this.outfiterCode.Size = new System.Drawing.Size(296, 23);
+            this.outfiterCode.TabIndex = 82;
+            // 
+            // outfiterButton
+            // 
+            this.outfiterButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.outfiterButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.outfiterButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.outfiterButton.Location = new System.Drawing.Point(393, 214);
+            this.outfiterButton.Name = "outfiterButton";
+            this.outfiterButton.Padding = new System.Windows.Forms.Padding(10);
+            this.outfiterButton.Size = new System.Drawing.Size(172, 38);
+            this.outfiterButton.TabIndex = 83;
+            this.outfiterButton.Text = "Use Outfiter Image";
+            this.outfiterButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.outfiterButton.Click += new System.EventHandler(this.outfiterButton_Click);
+            // 
             // HealthListTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(638, 549);
+            this.Controls.Add(this.outfiterButton);
+            this.Controls.Add(this.outfiterCode);
             this.Controls.Add(this.refreshButton);
             this.Controls.Add(this.displayOptionsHeader);
             this.Controls.Add(this.displayPlayerNameCheckbox);
@@ -176,19 +204,22 @@
             this.Text = "TabBase";
             ((System.ComponentModel.ISupportInitialize)(this.playerImageBox)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private PrettyListBox nameListBox;
-        private System.Windows.Forms.Label healthListHeader;
         private System.Windows.Forms.PictureBox playerImageBox;
-        private System.Windows.Forms.Label playerImageHeader;
-        private System.Windows.Forms.Label browseButton;
-        private System.Windows.Forms.Label displayOptionsHeader;
         private PrettyCheckBox displayPlayerNameCheckbox;
         private PrettyCheckBox displayPlayerImageCheckbox;
-        private System.Windows.Forms.Label refreshButton;
+        private EnterTextBox outfiterCode;
+        private PrettyButton refreshButton;
+        private PrettyHeader displayOptionsHeader;
+        private PrettyButton browseButton;
+        private PrettyHeader playerImageHeader;
+        private PrettyHeader healthListHeader;
+        private PrettyButton outfiterButton;
     }
 }

@@ -235,6 +235,7 @@ namespace Tibialyzer {
         /// Modify the current outfit based on the specified string; this is either a tibia.wikia outfiter URL or just the GET parameters of one.
         /// </summary>
         public void FromString(string str) {
+            if (str == null) return;
             str = str.Replace("http://tibia.wikia.com/wiki/Outfiter?", "").ToLower();
             string[] splits = str.Split('&');
             gender = Gender.Male;
