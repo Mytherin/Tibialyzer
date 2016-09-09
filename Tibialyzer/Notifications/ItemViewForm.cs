@@ -774,10 +774,10 @@ namespace Tibialyzer {
             CultureInfo c = System.Threading.Thread.CurrentThread.CurrentCulture;
 
             for (int i = 0; i < decreaseBoxes.Count; i++) {
-                decreaseBoxes[i].Click -= c_Click;
+                UnregisterControl(decreaseBoxes[i]);
             }
             for (int i = 0; i < increaseBoxes.Count; i++) {
-                increaseBoxes[i].Click -= c_Click;
+                UnregisterControl(increaseBoxes[i]);
             }
 
             this.itemName.Text = c.TextInfo.ToTitleCase(item.displayname);

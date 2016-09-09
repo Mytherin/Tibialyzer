@@ -31,7 +31,6 @@ namespace Tibialyzer {
         object timerLock = new object();
         object closeLock = new object();
         System.Timers.Timer closeTimer = null;
-        Timer checkTimer = null;
         public static Bitmap background_image = null;
         public TibialyzerCommand command;
         protected PictureBox back_button;
@@ -40,8 +39,6 @@ namespace Tibialyzer {
         public int notificationDuration = 1;
         protected bool hideWhenTibiaInactive = false;
         protected bool requireDoubleClick = false;
-        protected bool clicked = false;
-        protected Stopwatch doubleClickWatch = new Stopwatch();
 
         public NotificationForm() {
             this.ShowInTaskbar = Constants.OBSEnableWindowCapture;
@@ -97,7 +94,11 @@ namespace Tibialyzer {
 
             foreach (Control c in this.Controls) {
                 if (c is TextBox || c is CheckBox || c is TransparentChart || c is PrettyButton) continue;
-                c.Click += c_Click;
+                if (requireDoubleClick) {
+                    c.DoubleClick += c_Click;
+                } else {
+                    c.Click += c_Click;
+                }
             }
 
             if (MinWidth() != MaxWidth()) {
@@ -168,10 +169,6 @@ namespace Tibialyzer {
             }
         }
 
-        protected void RegisterForClose(Control c) {
-            c.Click += c_Click;
-        }
-
         protected void NotificationFinalize() {
             if (NotificationManager.HasBack()) {
                 back_button = new PictureBox();
@@ -211,26 +208,27 @@ namespace Tibialyzer {
             }
         }
 
-        protected void c_Click(object sender, EventArgs e) {
-            if (requireDoubleClick) {
-                if (!clicked) {
-                    clicked = true;
-                    doubleClickWatch.Reset();
-                    doubleClickWatch.Start();
-                } else if (doubleClickWatch.ElapsedMilliseconds < 1000) {
-                    close();
-                } else {
-                    doubleClickWatch.Stop();
-                    doubleClickWatch.Reset();
-                    doubleClickWatch.Restart();
-                }
+        protected void UnregisterControl(Control c) {
+            if (!requireDoubleClick) {
+                c.Click -= c_Click;
             } else {
-                close();
+                c.DoubleClick -= c_Click;
             }
+        }
+
+        private void c_Click(object sender, EventArgs e) {
+            close();
         }
 
         protected override void OnClick(EventArgs e) {
             base.OnClick(e);
+            if (requireDoubleClick) return;
+            c_Click(this, e);
+        }
+
+        protected override void OnDoubleClick(EventArgs e) {
+            base.OnDoubleClick(e);
+            if (!requireDoubleClick) return;
             c_Click(this, e);
         }
 

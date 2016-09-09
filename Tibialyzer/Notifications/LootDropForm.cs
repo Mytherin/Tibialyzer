@@ -511,11 +511,11 @@ namespace Tibialyzer {
         public override void LoadForm() {
             this.NotificationInitialize();
 
-            lootSmaller.Click -= c_Click;
-            lootLarger.Click -= c_Click;
-            rawLootButton.Click -= c_Click;
-            allLootButton.Click -= c_Click;
-            lootButton.Click -= c_Click;
+            UnregisterControl(lootSmaller);
+            UnregisterControl(lootLarger);
+            UnregisterControl(rawLootButton);
+            UnregisterControl(allLootButton);
+            UnregisterControl(lootButton);
 
             UpdateLootInternal();
 

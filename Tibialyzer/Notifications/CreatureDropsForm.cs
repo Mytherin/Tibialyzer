@@ -152,8 +152,8 @@ namespace Tibialyzer {
         public override void LoadForm() {
             this.SuspendForm();
             base.NotificationInitialize();
-            statsButton.Click -= c_Click;
-            huntButton.Click -= c_Click;
+            UnregisterControl(statsButton);
+            UnregisterControl(huntButton);
             // load image from the creature
             this.mainImage.Image = this.creature.GetImage();
             this.statsButton.Name = this.creature.GetName().ToLower();

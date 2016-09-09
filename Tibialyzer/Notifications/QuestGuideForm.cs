@@ -544,11 +544,11 @@ namespace Tibialyzer {
             NotificationInitialize();
 
 
-            this.nextButton.Click -= c_Click;
-            this.prevButton.Click -= c_Click;
-            this.normalButton.Click -= c_Click;
-            this.largeButton.Click -= c_Click;
-            this.largestButton.Click -= c_Click;
+            this.UnregisterControl(nextButton);
+            this.UnregisterControl(prevButton);
+            this.UnregisterControl(normalButton);
+            this.UnregisterControl(largeButton);
+            this.UnregisterControl(largestButton);
 
             if (quest != null) {
                 this.questTitle.Text = quest.title;

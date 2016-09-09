@@ -250,13 +250,13 @@ namespace Tibialyzer {
             mapBox.zCoordinate = npc.pos.z;
             mapBox.UpdateMap();
 
-            mapBox.Click -= c_Click;
+            UnregisterControl(mapBox);
 
             this.mapUpLevel.Image = StyleManager.GetImage("mapup.png");
-            this.mapUpLevel.Click -= c_Click;
+            this.UnregisterControl(mapUpLevel);
             this.mapUpLevel.Click += mapUpLevel_Click;
             this.mapDownLevel.Image = StyleManager.GetImage("mapdown.png");
-            this.mapDownLevel.Click -= c_Click;
+            this.UnregisterControl(mapDownLevel);
             this.mapDownLevel.Click += mapDownLevel_Click;
 
             refresh();

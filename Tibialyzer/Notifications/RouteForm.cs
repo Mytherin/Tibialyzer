@@ -161,7 +161,7 @@ namespace Tibialyzer {
             this.SuspendForm();
             NotificationInitialize();
 
-            nextStepButton.Click -= c_Click;
+            UnregisterControl(nextStepButton);
             npcImage.Image = imageObject == null ? StyleManager.GetImage("cross.png") : imageObject.GetImage();
             lock(npcImage.Image) {
                 if (npcImage.Image.Width > npcImage.Width || npcImage.Image.Height > npcImage.Height) {
@@ -199,13 +199,13 @@ namespace Tibialyzer {
             mapBox.UpdateMap();
             mapBox.MapUpdated += MapBox_MapUpdated;
 
-            mapBox.Click -= c_Click;
+            UnregisterControl(mapBox);
 
             this.mapUpLevel.Image = StyleManager.GetImage("mapup.png");
-            this.mapUpLevel.Click -= c_Click;
+            this.UnregisterControl(mapUpLevel);
             this.mapUpLevel.Click += mapUpLevel_Click;
             this.mapDownLevel.Image = StyleManager.GetImage("mapdown.png");
-            this.mapDownLevel.Click -= c_Click;
+            this.UnregisterControl(mapDownLevel);
             this.mapDownLevel.Click += mapDownLevel_Click;
 
             base.NotificationFinalize();

@@ -266,12 +266,12 @@ namespace Tibialyzer {
         public override void LoadForm() {
             this.SuspendForm();
             this.NotificationInitialize();
-            huntLabel.Click -= c_Click;
-            creatureLabel.Click -= c_Click;
-            bossNameLabel.Click -= c_Click;
-            bossPictureBox.Click -= c_Click;
-            mapUpLevel.Click -= c_Click;
-            mapDownLevel.Click -= c_Click;
+            UnregisterControl(huntLabel);
+            UnregisterControl(creatureLabel);
+            UnregisterControl(bossNameLabel);
+            UnregisterControl(bossPictureBox);
+            UnregisterControl(mapUpLevel);
+            UnregisterControl(mapDownLevel);
             mapUpLevel.Image = StyleManager.GetImage("mapup.png");
             mapDownLevel.Image = StyleManager.GetImage("mapdown.png");
             mapBox.MapUpdated += MapBox_MapUpdated;
@@ -292,7 +292,7 @@ namespace Tibialyzer {
             mapBox.mapCoordinate = new Coordinate(task.bossposition);
             mapBox.map = StorageManager.getMap(task.bossposition.z);
             mapBox.sourceWidth = mapBox.Width;
-            mapBox.Click -= c_Click;
+            UnregisterControl(mapBox);
             mapBox.UpdateMap();
             taskGroupLabel.Text = task.groupname;
             baseWidth = this.Size.Width;

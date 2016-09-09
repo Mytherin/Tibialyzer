@@ -179,7 +179,7 @@ namespace Tibialyzer {
             this.SuspendForm();
 
             this.NotificationInitialize();
-            toggleButton.Click -= c_Click;
+            UnregisterControl(toggleButton);
 
             refresh();
 

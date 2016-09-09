@@ -219,16 +219,16 @@ namespace Tibialyzer {
             baseHeight = this.Size.Height;
             RefreshForm();
 
-            npcButton.Click -= c_Click;
-            utilityButton.Click -= c_Click;
-            huntButton.Click -= c_Click;
-            questButton.Click -= c_Click;
-            nextButton.Click -= c_Click;
-            previousButton.Click -= c_Click;
-            this.mapUpLevel.Image = StyleManager.GetImage("mapup.png");
-            this.mapUpLevel.Click -= c_Click;
-            this.mapDownLevel.Image = StyleManager.GetImage("mapdown.png");
-            this.mapDownLevel.Click -= c_Click;
+            UnregisterControl(npcButton);
+            UnregisterControl(utilityButton);
+            UnregisterControl(huntButton);
+            UnregisterControl(questButton);
+            UnregisterControl(nextButton);
+            UnregisterControl(previousButton);
+            mapUpLevel.Image = StyleManager.GetImage("mapup.png");
+            UnregisterControl(mapUpLevel);
+            mapDownLevel.Image = StyleManager.GetImage("mapdown.png");
+            UnregisterControl(mapDownLevel);
 
             this.NotificationFinalize();
             this.ResumeForm();

@@ -187,7 +187,7 @@ namespace Tibialyzer {
             this.SuspendLayout();
             NotificationInitialize();
 
-            wikiButton.Click -= c_Click;
+            UnregisterControl(wikiButton);
 
             this.questTitle.Text = quest.name;
             this.premiumBox.Image = quest.premium ? StyleManager.GetImage("checkmark-yes.png") : StyleManager.GetImage("checkmark-no.png");

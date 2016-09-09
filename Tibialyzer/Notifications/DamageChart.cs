@@ -329,8 +329,8 @@ namespace Tibialyzer {
         public override void LoadForm() {
             this.SuspendForm();
             NotificationInitialize();
-            detailsButton.Click -= c_Click;
-            targetBox.Click -= c_Click;
+            UnregisterControl(detailsButton);
+            UnregisterControl(targetBox);
             startX = this.Size.Width;
             startY = this.Size.Height;
 
