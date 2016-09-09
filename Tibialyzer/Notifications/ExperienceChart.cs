@@ -109,13 +109,18 @@ namespace Tibialyzer {
             stamps = TimestampManager.getLatestTimes(index);
             stamps.Reverse();
             int i = 0;
+            long average = 0;
             foreach (string stamp in stamps) {
                 if (i % interval == 0) {
                     this.mChart.ChartAreas[0].AxisX.CustomLabels.Add(i, i + interval, stamp);
                 }
                 int exp = experienceCopy.ContainsKey(stamp) ? experienceCopy[stamp] : 0;
                 this.mChart.Series[0].Points.AddXY(++i, exp * 60);
+                average += exp;
             }
+            stripLine.IntervalOffset = 60 * (average / i);
+            mChart.ChartAreas[0].AxisY.StripLines.Clear();
+            mChart.ChartAreas[0].AxisY.StripLines.Add(stripLine);
 
             refreshTimer();
         }
@@ -130,6 +135,7 @@ namespace Tibialyzer {
             }
         }
 
+        StripLine stripLine = new StripLine();
         public override void LoadForm() {
             this.SuspendForm();
             NotificationInitialize();
@@ -144,6 +150,11 @@ namespace Tibialyzer {
             mChart.ChartAreas[0].AxisX.MajorGrid.LineColor = StyleManager.NotificationTextColor;
             mChart.ChartAreas[0].AxisY.MajorGrid.LineColor = StyleManager.NotificationTextColor;
             mChart.Series[0].IsVisibleInLegend = false;
+            stripLine.Interval = 0;
+            stripLine.IntervalOffset = 100;
+            stripLine.StripWidth = 2;
+            stripLine.BackColor = StyleManager.SummaryExperienceColor;
+            mChart.ChartAreas[0].AxisY.StripLines.Add(stripLine);
 
             refreshExperienceChart();
             this.ResumeForm();
