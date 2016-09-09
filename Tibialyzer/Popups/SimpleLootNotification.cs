@@ -105,10 +105,14 @@ namespace Tibialyzer {
                     picture_box.TabIndex = 1;
                     picture_box.TabStop = false;
                     picture_box.Click += openItem_Click;
-                    if (item.stackable) {
-                        picture_box.Image = LootDropForm.DrawCountOnItem(item, mitems);
-                    } else {
-                        picture_box.Image = item.GetImage();
+                    try {
+                        if (item.stackable) {
+                            picture_box.Image = LootDropForm.DrawCountOnItem(item, mitems);
+                        } else {
+                            picture_box.Image = new Bitmap(item.GetImage());
+                        }
+                    } catch {
+                        picture_box.Image = null;
                     }
 
                     picture_box.SizeMode = PictureBoxSizeMode.Zoom;
@@ -120,14 +124,17 @@ namespace Tibialyzer {
                     x += item_size.Width + item_spacing;
                 }
             }
-
-            Image creatureImage = cr.GetImage();
-            if (creatureImage.Size.Width <= creatureBox.Width && creatureImage.Size.Height <= creatureBox.Height) {
-                creatureBox.SizeMode = PictureBoxSizeMode.CenterImage;
-            } else {
-                creatureBox.SizeMode = PictureBoxSizeMode.Zoom;
+            try {
+                Image creatureImage = new Bitmap(cr.GetImage());
+                if (creatureImage.Size.Width <= creatureBox.Width && creatureImage.Size.Height <= creatureBox.Height) {
+                    creatureBox.SizeMode = PictureBoxSizeMode.CenterImage;
+                } else {
+                    creatureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                }
+                this.creatureBox.Image = creatureImage;
+            } catch {
+                this.creatureBox.Image = null;
             }
-            this.creatureBox.Image = cr.GetImage();
             this.creatureDropLabel.Text = String.Format("Loot of {0}.", cr.displayname);
 
             if (showCopyButton) {
