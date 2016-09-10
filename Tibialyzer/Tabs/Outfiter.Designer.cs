@@ -42,6 +42,7 @@
             this.saveOutfitImageButton = new Tibialyzer.PrettyButton();
             this.rotateLeftButton = new Tibialyzer.PrettyButton();
             this.rotateRightButton = new Tibialyzer.PrettyButton();
+            this.randomizeButton = new Tibialyzer.PrettyButton();
             ((System.ComponentModel.ISupportInitialize)(this.outfiterImageBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -308,12 +309,27 @@
             this.rotateRightButton.TabIndex = 85;
             this.rotateRightButton.Click += new System.EventHandler(this.rotateRightButton_Click);
             // 
+            // randomizeButton
+            // 
+            this.randomizeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.randomizeButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.randomizeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.randomizeButton.Location = new System.Drawing.Point(519, 196);
+            this.randomizeButton.Name = "randomizeButton";
+            this.randomizeButton.Padding = new System.Windows.Forms.Padding(3);
+            this.randomizeButton.Size = new System.Drawing.Size(107, 25);
+            this.randomizeButton.TabIndex = 86;
+            this.randomizeButton.Text = "Randomize";
+            this.randomizeButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.randomizeButton.Click += new System.EventHandler(this.randomizeButton_Click);
+            // 
             // Outfiter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(638, 549);
+            this.Controls.Add(this.randomizeButton);
             this.Controls.Add(this.rotateRightButton);
             this.Controls.Add(this.rotateLeftButton);
             this.Controls.Add(this.saveOutfitImageButton);
@@ -362,5 +378,6 @@
         private PrettyButton saveOutfitImageButton;
         private PrettyButton rotateLeftButton;
         private PrettyButton rotateRightButton;
+        private PrettyButton randomizeButton;
     }
 }

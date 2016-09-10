@@ -103,12 +103,14 @@ namespace Tibialyzer {
         }
 
         private void outfitList_SelectedIndexChanged(object sender, EventArgs e) {
+            if (refreshing_controls) return;
             if ((sender as ListBox).SelectedIndex < 0) return;
             outfit.outfit = outfitMap[(sender as ListBox).Items[(sender as ListBox).SelectedIndex].ToString()];
             RefreshImage();
         }
 
         private void mountsList_SelectedIndexChanged(object sender, EventArgs e) {
+            if (refreshing_controls) return;
             if ((sender as ListBox).SelectedIndex < 0) return;
             outfit.mount = mountMap[(sender as ListBox).Items[(sender as ListBox).SelectedIndex].ToString()];
             RefreshImage();
@@ -131,16 +133,19 @@ namespace Tibialyzer {
         }
 
         private void femaleCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (refreshing_controls) return;
             outfit.gender = (sender as CheckBox).Checked ? Gender.Female : Gender.Male;
             RefreshImage();
         }
 
         private void addon1Checkbox_CheckedChanged(object sender, EventArgs e) {
+            if (refreshing_controls) return;
             outfit.addon1 = (sender as CheckBox).Checked;
             RefreshImage();
         }
 
         private void addon2Checkbox_CheckedChanged(object sender, EventArgs e) {
+            if (refreshing_controls) return;
             outfit.addon2 = (sender as CheckBox).Checked;
             RefreshImage();
         }
@@ -175,6 +180,7 @@ namespace Tibialyzer {
         private void applyButton_Click(object sender, EventArgs e) {
             outfit.FromString(outfiterCode.Text);
             RefreshImage();
+            RefreshOutfitControls();
         }
 
         private void rotateLeftButton_Click(object sender, EventArgs e) {
@@ -185,6 +191,33 @@ namespace Tibialyzer {
         private void rotateRightButton_Click(object sender, EventArgs e) {
             outfit.Rotate(1);
             RefreshImage();
+        }
+
+        private void randomizeButton_Click(object sender, EventArgs e) {
+            outfit.facing = Facing.Down;
+            outfit.colors[0] = Constants.Random.Next(OutfiterManager.outfitColors.Count);
+            outfit.colors[1] = Constants.Random.Next(OutfiterManager.outfitColors.Count);
+            outfit.colors[2] = Constants.Random.Next(OutfiterManager.outfitColors.Count);
+            outfit.colors[3] = Constants.Random.Next(OutfiterManager.outfitColors.Count);
+            outfit.outfit = Constants.Random.Next(OutfiterManager.outfiterOutfitNames.Count);
+            outfit.mount = Constants.Random.Next(OutfiterManager.outfiterMountNames.Count);
+            outfit.addon1 = Constants.Random.Next(10) > 5;
+            outfit.addon2 = Constants.Random.Next(10) > 5;
+            outfit.gender = Constants.Random.Next(10) > 5 ? Gender.Male : Gender.Female;
+            RefreshColorPicker(0);
+            RefreshImage();
+            RefreshOutfitControls();
+        }
+
+        private bool refreshing_controls = false;
+        private void RefreshOutfitControls() {
+            refreshing_controls = true;
+            outfitList.SelectedIndex = outfit.outfit;
+            mountsList.SelectedIndex = outfit.mount;
+            addon1Checkbox.Checked = outfit.addon1;
+            addon2Checkbox.Checked = outfit.addon2;
+            femaleCheckbox.Checked = outfit.gender == Gender.Female;
+            refreshing_controls = false;
         }
     }
 }
