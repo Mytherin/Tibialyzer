@@ -210,6 +210,7 @@ namespace Tibialyzer {
         }
 
         public static string GoldToText(double gold) {
+            if (gold < 0) gold = 0;
             if (gold < 1) {
                 return String.Format("{0:0.0}", gold);
             } else {

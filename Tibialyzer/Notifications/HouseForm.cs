@@ -318,7 +318,7 @@ namespace Tibialyzer {
             bedLabel.Text = house.beds.ToString();
             if (house.world != null) {
                 statusLabel.Text = house.occupied ? "rented" : (house.hoursleft <= 0 ? "free" : "auctioned");
-                if (house.occupied) {
+                if (house.occupied || house.hoursleft < 0) {
                     timeLeftLabel.Visible = false;
                     timeLeftHeader.Visible = false;
                 } else {
