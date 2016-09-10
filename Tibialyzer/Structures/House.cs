@@ -59,7 +59,7 @@ namespace Tibialyzer {
                 new StringAttribute(occupied || hoursleft < 0 ? "-" : (hoursleft < 24 ? String.Format("{0}h", hoursleft) : String.Format("{0}D", hoursleft/24)), 50) };
         }
         public override string GetCommand() {
-            return String.Format("{2}{0}{1}", Constants.CommandSymbol, name, guildhall ? "guildhall" : "house");
+            return String.Format("{2}{0}{1}", Constants.CommandSymbol, id, guildhall ? "guildhall" : "house");
         }
 
         public House() {

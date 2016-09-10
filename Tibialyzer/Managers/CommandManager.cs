@@ -384,6 +384,13 @@ namespace Tibialyzer {
                     bool guildhall = comp.StartsWith("guildhall" + Constants.CommandSymbol);
                     string[] splits = comp.Split(Constants.CommandSymbol);
                     string parameter = splits[1].ToLower();
+                    int id;
+                    if (int.TryParse(parameter, out id)) {
+                        House h = guildhall ? (StorageManager.guildHallIdMap.ContainsKey(id) ? StorageManager.guildHallIdMap[id] : null) : (StorageManager.houseIdMap.ContainsKey(id) ? StorageManager.houseIdMap[id] : null);
+                        if (h == null) return true;
+                        NotificationManager.ShowHouseForm(h, command);
+                        return true;
+                    }
                     if (splits.Length > 2 && Constants.cities.Contains(parameter)) {
                         string world = splits[2].ToLower();
                         if (Constants.worlds.Contains(world)) {
