@@ -38,6 +38,7 @@
             this.screenshotDisplayList = new Tibialyzer.PrettyListBox();
             this.screenshotValueLabel = new System.Windows.Forms.Label();
             this.screenshotValueBox = new Tibialyzer.EnterTextBox();
+            this.screenshotLowLifeCheckbox = new Tibialyzer.PrettyCheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.screenshotBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -236,12 +237,27 @@
             this.screenshotValueBox.Text = "50000";
             this.screenshotValueBox.TextChanged += new System.EventHandler(this.screenshotValueBox_TextChanged);
             // 
+            // screenshotLowLifeCheckbox
+            // 
+            this.screenshotLowLifeCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.screenshotLowLifeCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.screenshotLowLifeCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.screenshotLowLifeCheckbox.Location = new System.Drawing.Point(326, 514);
+            this.screenshotLowLifeCheckbox.Name = "screenshotLowLifeCheckbox";
+            this.screenshotLowLifeCheckbox.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.screenshotLowLifeCheckbox.Size = new System.Drawing.Size(299, 34);
+            this.screenshotLowLifeCheckbox.TabIndex = 63;
+            this.screenshotLowLifeCheckbox.Text = "Screenshot on Low Life";
+            this.screenshotLowLifeCheckbox.UseVisualStyleBackColor = false;
+            this.screenshotLowLifeCheckbox.CheckedChanged += new System.EventHandler(this.screenshotLowLifeCheckbox_CheckedChanged);
+            // 
             // ScreenshotTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(638, 549);
+            this.Controls.Add(this.screenshotLowLifeCheckbox);
             this.Controls.Add(this.screenshotValueLabel);
             this.Controls.Add(this.screenshotValueBox);
             this.Controls.Add(this.screenshotBox);
@@ -282,5 +298,6 @@
         private PrettyHeader screenshotOptionsHeader;
         private PrettyButton openScreenshotDirectoryButton;
         private PrettyButton changeScreenshotDirectoryButton;
+        private PrettyCheckBox screenshotLowLifeCheckbox;
     }
 }

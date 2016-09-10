@@ -102,19 +102,19 @@ namespace Tibialyzer {
         private void autoScreenshot_CheckedChanged(object sender, EventArgs e) {
             if (MainForm.prevent_settings_update) return;
 
-            SettingsManager.setSetting("AutoScreenshotAdvance", (sender as CheckBox).Checked.ToString());
+            SettingsManager.setSetting("AutoScreenshotAdvance", (sender as CheckBox).Checked);
         }
 
         private void autoScreenshotDrop_CheckedChanged(object sender, EventArgs e) {
             if (MainForm.prevent_settings_update) return;
 
-            SettingsManager.setSetting("AutoScreenshotItemDrop", (sender as CheckBox).Checked.ToString());
+            SettingsManager.setSetting("AutoScreenshotItemDrop", (sender as CheckBox).Checked);
         }
 
         private void autoScreenshotDeath_CheckedChanged(object sender, EventArgs e) {
             if (MainForm.prevent_settings_update) return;
 
-            SettingsManager.setSetting("AutoScreenshotDeath", (sender as CheckBox).Checked.ToString());
+            SettingsManager.setSetting("AutoScreenshotDeath", (sender as CheckBox).Checked);
         }
 
         bool refreshingScreenshots = false;
@@ -200,6 +200,12 @@ namespace Tibialyzer {
             if (int.TryParse((sender as TextBox).Text, out value)) {
                 SettingsManager.setSetting("ScreenshotRareItemValue", value);
             }
+        }
+
+        private void screenshotLowLifeCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            SettingsManager.setSetting("AutoScreenshotLowLife", (sender as CheckBox).Checked);
         }
     }
 }

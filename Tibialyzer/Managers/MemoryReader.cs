@@ -31,6 +31,7 @@ using System.Globalization;
 using System.Collections.Generic;
 using System.IO;
 using Tibialyzer.Structures;
+using System.Drawing;
 
 namespace Tibialyzer {
     public static class MemoryReader {
@@ -82,6 +83,10 @@ namespace Tibialyzer {
         private static SafeTimer manaTimer;
         private static SafeTimer expTimer;
 
+        private static bool screenshotTaken;
+        private static object screenshotLock = new object();
+        private static System.Timers.Timer screenshotTimer;
+
         public static Dictionary<string, string> MemorySettings = new Dictionary<string, string>();
 
         public static void InitializeMemoryAddresses() {
@@ -118,10 +123,23 @@ namespace Tibialyzer {
 
                 expTimer = new SafeTimer(10, UpdateExp);
                 expTimer.Start();
+
+                screenshotTaken = false;
+                screenshotTimer = new System.Timers.Timer(30000);
+                screenshotTimer.Elapsed += ResetScreenshotTaken;
+                screenshotTimer.AutoReset = false;
             } catch (Exception ex) {
                 MainForm.mainForm.DisplayWarning("Failed to read memory addresses file: " + ex.Message);
             }
             InitializeBattleList();
+        }
+
+        private static void ResetScreenshotTaken(object sender, System.Timers.ElapsedEventArgs e) {
+            lock (screenshotLock) {
+                screenshotTaken = false;
+                screenshotTimer.Stop();
+                screenshotTimer.Enabled = false;
+            }
         }
 
         private static Dictionary<string, UInt32> ParseAddresses() {
@@ -185,13 +203,27 @@ namespace Tibialyzer {
             bool attributesChanged = ReadHealth();
             attributesChanged |= ReadMaxHealth();
 
-            if (attributesChanged && HealthChanged != null) {
-                var playerHealth = new PlayerHealth {
-                    Health = health,
-                    MaxHealth = maxHealth
-                };
+            if (attributesChanged) {
 
-                HealthChanged(null, playerHealth);
+                if (SettingsManager.getSettingBool("AutoScreenshotLowLife")) {
+                    if (health < maxHealth / 10 && health > 0 && maxHealth > health) {
+                        lock (screenshotLock) {
+                            if (!screenshotTaken) {
+                                ScreenshotManager.saveScreenshot("LowLife", ScreenshotManager.takeScreenshot());
+                                screenshotTaken = true;
+                                screenshotTimer.Start();
+                            }
+                        }
+                    }
+                }
+
+                if (HealthChanged != null) {
+                    var playerHealth = new PlayerHealth {
+                        Health = health,
+                        MaxHealth = maxHealth
+                    };
+                    HealthChanged(null, playerHealth);
+                }
             }
         }
 
@@ -339,7 +371,7 @@ namespace Tibialyzer {
 
         private static bool ReadHealth() {
             int currentHealth = ReadProperty(HealthAddress);
-            bool healthChanged = currentHealth == health;
+            bool healthChanged = currentHealth != health;
             health = currentHealth;
 
             return healthChanged;
@@ -349,7 +381,7 @@ namespace Tibialyzer {
 
         private static bool ReadMaxHealth() {
             int currentMaxHealth = ReadProperty(MaxHealthAddress);
-            bool maxHealthChanged = currentMaxHealth == maxHealth;
+            bool maxHealthChanged = currentMaxHealth != maxHealth;
             maxHealth = currentMaxHealth;
 
             return maxHealthChanged;
@@ -359,7 +391,7 @@ namespace Tibialyzer {
 
         private static bool ReadMana() {
             int currentMana = ReadProperty(ManaAddress);
-            bool manaChanged = currentMana == mana;
+            bool manaChanged = currentMana != mana;
             mana = currentMana;
 
             return manaChanged;
@@ -369,7 +401,7 @@ namespace Tibialyzer {
 
         private static bool ReadMaxMana() {
             int currentMaxMana = ReadProperty(MaxManaAddress);
-            bool maxManaChanged = currentMaxMana == maxMana;
+            bool maxManaChanged = currentMaxMana != maxMana;
             maxMana = currentMaxMana;
 
             return maxManaChanged;
@@ -426,7 +458,7 @@ namespace Tibialyzer {
         }
 
         public static int level;
-        
+
 
         public static int GetLevelFromExperience(long experience, int level = 150, int adjustment = 75, int iterations = 100) {
             if (iterations <= 0) return -1;
