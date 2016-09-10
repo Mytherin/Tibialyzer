@@ -236,7 +236,11 @@ namespace Tibialyzer {
         /// </summary>
         public void FromString(string str) {
             if (str == null) return;
-            str = str.Replace("http://tibia.wikia.com/wiki/Outfiter?", "").ToLower();
+            if (str.Contains("?")) {
+                string[] parameterSplits = str.Split('?');
+                str = parameterSplits[parameterSplits.Length - 1];
+            }
+            str = str.ToLower();
             string[] splits = str.Split('&');
             gender = Gender.Male;
             addon1 = false;

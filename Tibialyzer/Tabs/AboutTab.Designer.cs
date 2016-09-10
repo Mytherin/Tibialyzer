@@ -77,7 +77,7 @@
             this.tibialyzerVersionHeader.Name = "tibialyzerVersionHeader";
             this.tibialyzerVersionHeader.Size = new System.Drawing.Size(617, 30);
             this.tibialyzerVersionHeader.TabIndex = 67;
-            this.tibialyzerVersionHeader.Text = "Tibialyzer 1.4.0";
+            this.tibialyzerVersionHeader.Text = "Tibialyzer 1.4.2";
             this.tibialyzerVersionHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tibialyzerAboutText

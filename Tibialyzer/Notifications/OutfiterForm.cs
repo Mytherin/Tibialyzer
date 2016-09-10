@@ -37,6 +37,9 @@ namespace Tibialyzer {
         private PrettyButton mountRightButton;
         private PrettyButton mountLeftButton;
         private PrettyButton copyTextButton;
+        private PrettyButton addon1Toggle;
+        private PrettyButton addon2Toggle;
+        private PrettyButton genderToggle;
         public OutfiterOutfit outfit;
         public OutfiterForm(OutfiterOutfit outfit) {
             this.outfit = outfit;
@@ -60,6 +63,9 @@ namespace Tibialyzer {
             this.mountRightButton = new Tibialyzer.PrettyButton();
             this.mountLeftButton = new Tibialyzer.PrettyButton();
             this.copyTextButton = new Tibialyzer.PrettyButton();
+            this.addon1Toggle = new Tibialyzer.PrettyButton();
+            this.addon2Toggle = new Tibialyzer.PrettyButton();
+            this.genderToggle = new Tibialyzer.PrettyButton();
             ((System.ComponentModel.ISupportInitialize)(this.outfiterImageBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -260,9 +266,54 @@ namespace Tibialyzer {
             this.copyTextButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.copyTextButton.Click += new System.EventHandler(this.copyTextButton_Click);
             // 
+            // addon1Toggle
+            // 
+            this.addon1Toggle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.addon1Toggle.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.addon1Toggle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.addon1Toggle.Location = new System.Drawing.Point(258, 217);
+            this.addon1Toggle.Name = "addon1Toggle";
+            this.addon1Toggle.Padding = new System.Windows.Forms.Padding(3);
+            this.addon1Toggle.Size = new System.Drawing.Size(40, 25);
+            this.addon1Toggle.TabIndex = 100;
+            this.addon1Toggle.Text = "A1";
+            this.addon1Toggle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.addon1Toggle.Click += new System.EventHandler(this.addon1Toggle_Click);
+            // 
+            // addon2Toggle
+            // 
+            this.addon2Toggle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.addon2Toggle.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.addon2Toggle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.addon2Toggle.Location = new System.Drawing.Point(304, 217);
+            this.addon2Toggle.Name = "addon2Toggle";
+            this.addon2Toggle.Padding = new System.Windows.Forms.Padding(3);
+            this.addon2Toggle.Size = new System.Drawing.Size(40, 25);
+            this.addon2Toggle.TabIndex = 101;
+            this.addon2Toggle.Text = "A2";
+            this.addon2Toggle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.addon2Toggle.Click += new System.EventHandler(this.addon2Toggle_Click);
+            // 
+            // genderToggle
+            // 
+            this.genderToggle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.genderToggle.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.genderToggle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.genderToggle.Location = new System.Drawing.Point(346, 217);
+            this.genderToggle.Name = "genderToggle";
+            this.genderToggle.Padding = new System.Windows.Forms.Padding(3);
+            this.genderToggle.Size = new System.Drawing.Size(40, 25);
+            this.genderToggle.TabIndex = 102;
+            this.genderToggle.Text = "F";
+            this.genderToggle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.genderToggle.Click += new System.EventHandler(this.genderToggle_Click);
+            // 
             // OutfiterForm
             // 
             this.ClientSize = new System.Drawing.Size(392, 279);
+            this.Controls.Add(this.genderToggle);
+            this.Controls.Add(this.addon2Toggle);
+            this.Controls.Add(this.addon1Toggle);
             this.Controls.Add(this.copyTextButton);
             this.Controls.Add(this.mountLabel);
             this.Controls.Add(this.mountRightButton);
@@ -301,6 +352,9 @@ namespace Tibialyzer {
             this.Controls.Add(colorPicker);
             RefreshColorPicker(0);
             this.RefreshImage();
+            ToggleActivation(addon1Toggle, outfit.addon1);
+            ToggleActivation(addon2Toggle, outfit.addon2);
+            ToggleActivation(genderToggle, outfit.gender == Gender.Female);
 
             base.NotificationFinalize();
             this.ResumeLayout(false);
@@ -394,6 +448,32 @@ namespace Tibialyzer {
             MainForm.mainForm.Invoke((MethodInvoker)delegate {
                 Clipboard.SetText(outfit.ToString());
             });
+        }
+
+        public void ToggleActivation(Control control, bool activated) {
+            if (!activated) {
+                control.ForeColor = StyleManager.HealthDanger;
+            } else {
+                control.ForeColor = StyleManager.HealthHealthy;
+            }
+        }
+
+        private void addon1Toggle_Click(object sender, EventArgs e) {
+            outfit.addon1 = !outfit.addon1;
+            ToggleActivation(sender as Control, outfit.addon1);
+            RefreshImage();
+        }
+
+        private void addon2Toggle_Click(object sender, EventArgs e) {
+            outfit.addon2 = !outfit.addon2;
+            ToggleActivation(sender as Control, outfit.addon2);
+            RefreshImage();
+        }
+
+        private void genderToggle_Click(object sender, EventArgs e) {
+            outfit.gender = outfit.gender == Gender.Male ? Gender.Female : Gender.Male;
+            ToggleActivation(sender as Control, outfit.gender == Gender.Female);
+            RefreshImage();
         }
     }
 }
