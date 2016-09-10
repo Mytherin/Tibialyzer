@@ -30,6 +30,7 @@ namespace Tibialyzer {
             foreach(string version in Constants.OldMemoryAddresses) {
                 oldAddressesDropDownList.Items.Add("Tibia " + version);
             }
+            oldAddressesDropDownList.SelectedIndex = oldAddressesDropDownList.Items.Count - 1;
         }
 
         public void ApplyLocalization() {

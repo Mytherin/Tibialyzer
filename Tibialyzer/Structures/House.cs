@@ -68,10 +68,25 @@ namespace Tibialyzer {
         }
         
         public static bool GatherInformationOnline(string world, string city, bool guildhall) {
+            bool found = false;
+            List<TibiaObject> houses = StorageManager.getHouseByCity(city, guildhall);
+            foreach(TibiaObject obj in houses) {
+                House h = obj as House;
+                if (h.world == null || !h.world.Equals(world, StringComparison.InvariantCultureIgnoreCase)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) return true;
             try {
                 using (WebClient client = new WebClient()) {
                     Dictionary<int, House> idMap = guildhall ? StorageManager.guildHallIdMap : StorageManager.houseIdMap;
                     string html = client.DownloadString(String.Format("https://secure.tibia.com/community/?subtopic=houses&world={0}&town={1}{2}", world.ToTitle(), city.ToTitle().Replace("'", "%27"), guildhall ? "&type=guildhalls" : ""));
+
+                    foreach (TibiaObject obj in houses) {
+                        House h = obj as House;
+                        h.world = world;
+                    }
 
                     int index = 0;
                     Regex baseRegex = new Regex("<TR BGCOLOR=#[A-Fa-f0-9]+>");
@@ -126,6 +141,7 @@ namespace Tibialyzer {
                             }
                         }
                     }
+
                     return true;
                 }
             } catch {

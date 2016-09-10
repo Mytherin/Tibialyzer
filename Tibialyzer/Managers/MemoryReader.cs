@@ -91,6 +91,7 @@ namespace Tibialyzer {
 
         public static void InitializeMemoryAddresses() {
             Dictionary<string, UInt32> memoryAddresses = ParseAddresses();
+            XORAddress = 0;
             memoryAddresses.TryGetValue("xoraddress", out XORAddress);
             memoryAddresses.TryGetValue("healthaddress", out HealthAddress);
             memoryAddresses.TryGetValue("maxhealthaddress", out MaxHealthAddress);
@@ -356,6 +357,7 @@ namespace Tibialyzer {
 
         private static int XOR {
             get {
+                if (XORAddress == 0) return 0;
                 return ReadInt32(GetAddress(XORAddress));
             }
         }
