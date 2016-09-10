@@ -1,0 +1,14 @@
+XORAddress=0x5376A0
+HealthAddress=0x6D5000
+MaxHealthAddress=0x6D502C
+ManaAddress=0x5376D0
+MaxManaAddress=0x5376A4
+LevelAddress=0x5376B8
+AmmunitionCountAddress=0x775774
+AmmunitionTypeAddress=0x775778
+WeaponCountAddress=0x7757F4
+WeaponTypeAddress=0x7757F8
+ExperienceAddress=0x5376A8
+PlayerIDAddress=0x6D5034
+BattleListAddress=0x72F6F0
+TabsBaseAddress=0x53796C

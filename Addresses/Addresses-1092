@@ -1,0 +1,17 @@
+﻿XORAddress=0x5356A0
+HealthAddress=0x6D3000
+MaxHealthAddress=0x6D302C
+ManaAddress=0x5356D0
+MaxManaAddress=0x5356A4
+LevelAddress=0x5356B8
+AmmunitionCountAddress=0x77529C
+AmmunitionTypeAddress=0x7752A0
+WeaponCountAddress=0x77531C
+WeaponTypeAddress=0x775320
+BootsTypeAddress=0x7752E0
+ExperienceAddress=0x5356A8
+MagicLevelAddress=0x5356C0
+PlayerIDAddress=0x5375E8
+BattleListAddress=0x72F210
+TabsBaseAddress=0x53596C
+RingTypeAddress=0x0

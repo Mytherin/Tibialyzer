@@ -1,0 +1,8 @@
+
+BattleListAddress=0x5A9708
+XORAddress=0x3BE1D0
+HealthAddress=0x553000
+MaxHealthAddress=0x55302C
+ManaAddress=0x3BE224
+MaxManaAddress=0x3BE1D4
+PlayerIDAddress=0x553034

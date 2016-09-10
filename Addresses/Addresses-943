@@ -1,0 +1,7 @@
+
+XORAddress=0x544008
+HealthAddress=0x544000
+MaxHealthAddress=0x57BE8C
+ManaAddress=0x57BE84
+MaxManaAddress=0x54400C
+PlayerIDAddress=0x3AC034

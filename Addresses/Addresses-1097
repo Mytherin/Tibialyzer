@@ -1,0 +1,16 @@
+XORAddress=0x53C778
+TabsBaseAddress=0x53CA60
+MaxHealthAddress=0x6DA048
+BattleListAddress=0x734A30
+HealthAddress=0x6DA000
+PlayerIDAddress=0x6DA050
+ManaAddress=0x53C7AC
+MaxManaAddress=0x53C77C
+AmmunitionCountAddress=0x77AAC4
+AmmunitionTypeAddress=0x77AAC8
+WeaponCountAddress=0x77AB44
+WeaponTypeAddress=0x77AB48
+LevelAddress=0x53C790
+ExperienceAddress=0x53C780
+ClassicClientName=Tibia
+Tibia11Name=client
