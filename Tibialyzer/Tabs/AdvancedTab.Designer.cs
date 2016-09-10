@@ -58,6 +58,7 @@
             this.prettyHeader1 = new Tibialyzer.PrettyHeader();
             this.oldAddressesDropDownList = new Tibialyzer.PrettyDropDownList();
             this.oldAddressesApplyButton = new Tibialyzer.PrettyButton();
+            this.sqlQueryResultCollection = new Tibialyzer.PrettyListBox();
             ((System.ComponentModel.ISupportInitialize)(this.itemPropertyItemBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -444,7 +445,7 @@
             this.prettyHeader1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.prettyHeader1.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.prettyHeader1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.prettyHeader1.Location = new System.Drawing.Point(9, 223);
+            this.prettyHeader1.Location = new System.Drawing.Point(9, 235);
             this.prettyHeader1.Name = "prettyHeader1";
             this.prettyHeader1.Size = new System.Drawing.Size(299, 30);
             this.prettyHeader1.TabIndex = 148;
@@ -463,7 +464,7 @@
             "Top Right",
             "Bottom Left",
             "Bottom Right"});
-            this.oldAddressesDropDownList.Location = new System.Drawing.Point(9, 254);
+            this.oldAddressesDropDownList.Location = new System.Drawing.Point(9, 266);
             this.oldAddressesDropDownList.Name = "oldAddressesDropDownList";
             this.oldAddressesDropDownList.Size = new System.Drawing.Size(196, 24);
             this.oldAddressesDropDownList.TabIndex = 149;
@@ -473,7 +474,7 @@
             this.oldAddressesApplyButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.oldAddressesApplyButton.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.oldAddressesApplyButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.oldAddressesApplyButton.Location = new System.Drawing.Point(207, 253);
+            this.oldAddressesApplyButton.Location = new System.Drawing.Point(207, 265);
             this.oldAddressesApplyButton.Name = "oldAddressesApplyButton";
             this.oldAddressesApplyButton.Size = new System.Drawing.Size(101, 23);
             this.oldAddressesApplyButton.TabIndex = 150;
@@ -481,12 +482,29 @@
             this.oldAddressesApplyButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.oldAddressesApplyButton.Click += new System.EventHandler(this.oldAddressesApplyButton_Click);
             // 
+            // sqlQueryResultCollection
+            // 
+            this.sqlQueryResultCollection.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.sqlQueryResultCollection.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.sqlQueryResultCollection.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.sqlQueryResultCollection.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sqlQueryResultCollection.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.sqlQueryResultCollection.FormattingEnabled = true;
+            this.sqlQueryResultCollection.ItemHeight = 28;
+            this.sqlQueryResultCollection.Items.AddRange(new object[] {
+            ""});
+            this.sqlQueryResultCollection.Location = new System.Drawing.Point(9, 65);
+            this.sqlQueryResultCollection.Name = "sqlQueryResultCollection";
+            this.sqlQueryResultCollection.Size = new System.Drawing.Size(617, 165);
+            this.sqlQueryResultCollection.TabIndex = 151;
+            // 
             // AdvancedTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(638, 549);
+            this.Controls.Add(this.sqlQueryResultCollection);
             this.Controls.Add(this.oldAddressesApplyButton);
             this.Controls.Add(this.oldAddressesDropDownList);
             this.Controls.Add(this.prettyHeader1);
@@ -568,5 +586,6 @@
         private PrettyHeader prettyHeader1;
         private PrettyDropDownList oldAddressesDropDownList;
         private PrettyButton oldAddressesApplyButton;
+        private PrettyListBox sqlQueryResultCollection;
     }
 }

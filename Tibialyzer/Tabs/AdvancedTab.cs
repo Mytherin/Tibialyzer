@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SQLite;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
@@ -21,6 +22,9 @@ namespace Tibialyzer {
         public void InitializeSettings() {
             itemSelectionBox.Text = "Plate Armor";
             itemSelectionBox_TextChanged(itemSelectionBox, null);
+            sqlQueryResultCollection.ReadOnly = true;
+            sqlQueryResultCollection.TextAlign = HorizontalAlignment.Left;
+            sqlQueryResultCollection.DrawMode = DrawMode.OwnerDrawVariable;
 
             oldAddressesDropDownList.Items.Clear();
             foreach(string version in Constants.OldMemoryAddresses) {
@@ -100,7 +104,31 @@ namespace Tibialyzer {
 
         private void applySQLQueryButton_Click(object sender, EventArgs e) {
             string query = sqlQueryTextbox.Text;
-            // FIXME: actually apply query
+            sqlQueryResultCollection.Items.Clear();
+            SQLiteDataReader reader;
+            try {
+                reader = StorageManager.ExecuteQuery(query);
+            } catch(Exception ex) {
+                sqlQueryResultCollection.Items.Add(ex.Message);
+                return;
+            }
+            if (reader == null) return;
+            string result = "[";
+            for (int i = 0; i < reader.FieldCount; i++) {
+                result += reader.GetOriginalName(i);
+                result += ", ";
+            }
+            sqlQueryResultCollection.Items.Add(result.Substring(0, result.Length - 2) + "]");
+
+            while (reader.Read()) {
+                result = "[";
+                for(int i = 0; i < reader.FieldCount; i++) {
+                    string res = reader[i].ToString();
+                    result += res == null ? "NULL" : res;
+                    result += ", ";
+                }
+                sqlQueryResultCollection.Items.Add(result.Substring(0, result.Length - 2) + "]");
+            }
         }
 
         private void oldAddressesApplyButton_Click(object sender, EventArgs e) {

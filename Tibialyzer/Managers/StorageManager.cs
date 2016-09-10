@@ -1720,5 +1720,10 @@ namespace Tibialyzer {
                 return _itemIdMap.Values.Where(o => o.category.Contains(str, StringComparison.OrdinalIgnoreCase)).ToList<TibiaObject>();
             }
         }
+
+        public static SQLiteDataReader ExecuteQuery(string query) {
+            SQLiteCommand command = new SQLiteCommand(query, conn);
+            return command.ExecuteReader();
+        }
     }
 }
