@@ -24,6 +24,16 @@ namespace Tibialyzer {
             this.alwaysShow = SettingsManager.getSettingBool("AlwaysShowHUD");
         }
 
+        protected void UpdateVisibility(bool visible) {
+            if (this.Visible == (alwaysShow || visible)) return;
+            try {
+                this.Invoke((MethodInvoker)delegate {
+                    this.Visible = alwaysShow || visible;
+                });
+            } catch {
+            }
+        }
+
         protected override CreateParams CreateParams {
             get {
                 CreateParams baseParams = base.CreateParams;

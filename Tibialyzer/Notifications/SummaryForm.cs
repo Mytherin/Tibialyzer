@@ -19,16 +19,42 @@ namespace Tibialyzer {
         }
         private int BlockWidth = 200;
         private int BlockHeight = 25;
-        private object updateLock = new object();
         private List<ItemRegion>[] lootRegions = new List<ItemRegion>[20];
         private List<ItemRegion>[] wasteRegions = new List<ItemRegion>[20];
         private List<ItemRegion>[] recentDropsRegions = new List<ItemRegion>[20];
         private ToolTip tooltip;
+        private object updateLock = new object();
+        private static System.Timers.Timer updateTimer;
+
+
 
         public SummaryForm() {
             InitializeComponent();
             tooltip = UIManager.CreateTooltip();
             this.Name = "Tibialyzer (Summary Form)";
+            updateTimer = new System.Timers.Timer(500);
+            updateTimer.AutoReset = false;
+            updateTimer.Elapsed += (s, e) => {
+                ActuallyRefreshForm();
+            };
+        }
+
+        private void ActuallyRefreshForm() {
+            lock(updateLock) {
+                if (this.IsDisposed) return;
+                try {
+                    updateTimer.Stop();
+                    updateTimer.Enabled = false;
+                    this.Invoke((MethodInvoker)delegate {
+                        this.SuspendForm();
+                        this.UpdateLootForm();
+                        this.UpdateSummaryForm();
+                        this.ResumeForm();
+                    });
+                } catch {
+
+                }
+            }
         }
 
         public static void RenderText(Graphics gr, string text, int x, Color fillColor, Color textColor, Color traceColor, int maxHeight = -1, int y = 4, Font font = null, bool center = false, InterpolationMode interpolationMode = InterpolationMode.High, SmoothingMode smoothingMode = SmoothingMode.HighQuality) {
@@ -382,58 +408,25 @@ namespace Tibialyzer {
 
         }
 
-        public void UpdateLoot() {
-            try {
-                lock (updateLock) {
-                    this.Invoke((MethodInvoker)delegate {
-                        this.SuspendForm();
-                        this.UpdateLootForm();
-                        this.UpdateSummaryForm();
-                        this.ResumeForm();
-                    });
+        private void StartUpdateTimer() {
+            if (this.IsDisposed) return;
+            lock (updateLock) {
+                if (!updateTimer.Enabled) {
+                    updateTimer.Start();
                 }
-            } catch {
-
             }
+        }
+
+        public void UpdateLoot() {
+            StartUpdateTimer();
         }
 
         public void UpdateDamage() {
-            try {
-                if (this.IsDisposed) return;
-                this.Invoke((MethodInvoker)delegate {
-                    try {
-                        lock (updateLock) {
-                            this.SuspendForm();
-                            this.UpdateDamageForm();
-                            this.ResumeForm();
-                        }
-                    } catch {
-
-                    }
-                });
-            } catch {
-
-            }
+            StartUpdateTimer();
         }
 
         public void UpdateWaste() {
-            try {
-                if (this.IsDisposed) return;
-                this.Invoke((MethodInvoker)delegate {
-                    try {
-                        lock (updateLock) {
-                            this.SuspendForm();
-                            this.UpdateWasteForm();
-                            this.UpdateSummaryForm();
-                            this.ResumeForm();
-                        }
-                    } catch {
-
-                    }
-                });
-            } catch {
-
-            }
+            StartUpdateTimer();
         }
 
         public void UpdateLootForm() {

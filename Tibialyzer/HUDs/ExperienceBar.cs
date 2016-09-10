@@ -73,19 +73,7 @@ namespace Tibialyzer {
             {
             }
         }
-
-        private void UpdateVisibility(bool visible) {
-            try
-            {
-                this.Invoke((MethodInvoker)delegate {
-                    this.Visible = alwaysShow || visible;
-                });
-            }
-            catch
-            {
-            }
-        }
-
+        
         public override string GetHUD() {
             return "ExperienceBar";
         }

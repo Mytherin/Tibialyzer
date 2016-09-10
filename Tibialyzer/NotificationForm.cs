@@ -138,6 +138,7 @@ namespace Tibialyzer {
         }
 
         private void UpdateHudVisibility(bool visible) {
+            if (this.Visible == visible) return;
             try {
                 this.Invoke((MethodInvoker)delegate {
                     this.Visible = visible;
@@ -145,7 +146,6 @@ namespace Tibialyzer {
 
             } catch {
             }
-
             this.Invalidate();
         }
         

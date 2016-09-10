@@ -42,6 +42,8 @@ namespace Tibialyzer {
         private string creatureName = "";
         public string rawName = "";
         private long averageGold = 0;
+        private object updateLock = new object();
+        private static System.Timers.Timer updateTimer;
 
         ToolTip value_tooltip = new ToolTip();
         public static Font loot_font = new Font(FontFamily.GenericSansSerif, 14, FontStyle.Bold);
@@ -64,6 +66,25 @@ namespace Tibialyzer {
             value_tooltip.ShowAlways = true;
             value_tooltip.UseFading = true;
             this.Name = "Tibialyzer (Loot Form)";
+            updateTimer = new System.Timers.Timer(500);
+            updateTimer.AutoReset = false;
+            updateTimer.Elapsed += (s, e) => {
+                ActuallyRefreshForm();
+            };
+        }
+        private void ActuallyRefreshForm() {
+            lock (updateLock) {
+                if (this.IsDisposed) return;
+                try {
+                    updateTimer.Stop();
+                    updateTimer.Enabled = false;
+                    this.Invoke((MethodInvoker)delegate {
+                        UpdateLootInternal();
+                    });
+                } catch {
+
+                }
+            }
         }
 
         public static Bitmap GetStackImage(Image image, int count, Item item) {
@@ -205,12 +226,10 @@ namespace Tibialyzer {
 
         public void UpdateLoot() {
             if (this.IsDisposed) return;
-            try {
-                this.Invoke((MethodInvoker)delegate {
-                    UpdateLootInternal();
-                });
-            } catch {
-
+            lock (updateLock) {
+                if (!updateTimer.Enabled) {
+                    updateTimer.Start();
+                }
             }
         }
 

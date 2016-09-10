@@ -46,9 +46,8 @@ namespace Tibialyzer {
 
                 } catch {
                 }
+                this.Invalidate();
             }
-
-            this.Invalidate();
         }
         
         private void InitializeComponent() {
