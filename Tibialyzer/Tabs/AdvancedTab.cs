@@ -21,6 +21,11 @@ namespace Tibialyzer {
         public void InitializeSettings() {
             itemSelectionBox.Text = "Plate Armor";
             itemSelectionBox_TextChanged(itemSelectionBox, null);
+
+            oldAddressesDropDownList.Items.Clear();
+            foreach(string version in Constants.OldMemoryAddresses) {
+                oldAddressesDropDownList.Items.Add("Tibia " + version);
+            }
         }
 
         public void ApplyLocalization() {
@@ -96,6 +101,16 @@ namespace Tibialyzer {
         private void applySQLQueryButton_Click(object sender, EventArgs e) {
             string query = sqlQueryTextbox.Text;
             // FIXME: actually apply query
+        }
+
+        private void oldAddressesApplyButton_Click(object sender, EventArgs e) {
+            int selection = oldAddressesDropDownList.SelectedIndex;
+            if (selection >= 0 && selection < Constants.OldMemoryAddresses.Length) {
+                MainTab.DownloadNewAddresses(String.Format("https://raw.githubusercontent.com/Mytherin/Tibialyzer/master/Addresses/Addresses-{0}", Constants.OldMemoryAddresses[selection].Replace(".", "")));
+                // automatic update always downloads the new addresses; if the user is manually downloading old addresses
+                // it would be confusing to replace the old addresses with new addresses on startup
+                SettingsManager.setSetting("AutomaticallyDownloadAddresses", false);
+            }
         }
     }
 }

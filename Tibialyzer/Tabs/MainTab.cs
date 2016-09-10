@@ -119,16 +119,21 @@ namespace Tibialyzer {
             }
         }
 
-        public static void DownloadNewAddresses() {
+        public static void DownloadNewAddresses(string address) {
+            Console.WriteLine(address);
             try {
                 using (WebClient client = new WebClient()) {
                     client.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
-                    string html = client.DownloadString("https://raw.githubusercontent.com/Mytherin/Tibialyzer/master/Tibialyzer/Database/MemoryAddresses.txt");
+                    string html = client.DownloadString(address);
                     SaveMemoryAddresses(html);
                 }
             } catch (Exception ex) {
                 MainForm.mainForm.DisplayWarning(ex.Message);
             }
+        }
+
+        public static void DownloadNewAddresses() {
+            DownloadNewAddresses("https://raw.githubusercontent.com/Mytherin/Tibialyzer/master/Tibialyzer/Database/MemoryAddresses.txt");
         }
 
         private void downloadAddressButton_Click(object sender, EventArgs e) {
