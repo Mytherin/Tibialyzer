@@ -33,9 +33,9 @@ namespace Tibialyzer {
 
             BackColor = StyleManager.BlendTransparencyKey;
             TransparencyKey = StyleManager.BlendTransparencyKey;
-            MemoryReader.HealthChanged += (o, e) => RefreshHealth(e);
-            MemoryReader.ManaChanged += (o, e) => RefreshMana(e);
-            MemoryReader.ExperienceChanged += (o, e) => RefreshExp(e);
+            MemoryReader.RegisterHealthChanged((o, e) => RefreshHealth(e));
+            MemoryReader.RegisterManaChanged((o, e) => RefreshMana(e));
+            MemoryReader.RegisterExperienceChanged((o, e) => RefreshExp(e));
             ProcessManager.TibiaVisibilityChanged += (o, e) => UpdateVisibility(e);
         }
 

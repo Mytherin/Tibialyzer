@@ -36,8 +36,8 @@ namespace Tibialyzer {
         private bool alwaysShow = false;
 
         public CurveBar() {
-            MemoryReader.HealthChanged += (o, e) => UpdateHealth(e);
-            MemoryReader.ManaChanged += (o, e) => UpdateMana(e);
+            MemoryReader.RegisterHealthChanged((o, e) => UpdateHealth(e));
+            MemoryReader.RegisterManaChanged((o, e) => UpdateMana(e));
             ProcessManager.TibiaVisibilityChanged += (o, e) => UpdateHudVisibility(e);
             this.DoubleBuffered = true;
             alwaysShow = SettingsManager.getSettingBool("AlwaysShowHUD");

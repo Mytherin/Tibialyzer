@@ -24,7 +24,7 @@ namespace Tibialyzer {
             opacity = Math.Min(1, Math.Max(0, opacity));
             this.Opacity = opacity;
 
-            MemoryReader.HealthChanged += (o, e) => RefreshHUD(e);
+            MemoryReader.RegisterHealthChanged((o, e) => RefreshHUD(e));
             ProcessManager.TibiaVisibilityChanged += (o, e) => UpdateVisibility(e);
         }
 

@@ -75,9 +75,9 @@ namespace Tibialyzer {
         public static int END_X = 132 * 256;
         public static int END_Y = 129 * 256;
 
-        public static event EventHandler<PlayerHealth> HealthChanged;
-        public static event EventHandler<PlayerMana> ManaChanged;
-        public static event EventHandler<PlayerExperience> ExperienceChanged;
+        private static event EventHandler<PlayerHealth> HealthChanged;
+        private static event EventHandler<PlayerMana> ManaChanged;
+        private static event EventHandler<PlayerExperience> ExperienceChanged;
 
         private static SafeTimer healthTimer;
         private static SafeTimer manaTimer;
@@ -110,6 +110,19 @@ namespace Tibialyzer {
             memoryAddresses.TryGetValue("bootstypeaddress", out BootsTypeAddress);
             memoryAddresses.TryGetValue("ringtypeaddress", out RingTypeAddress);
             tibia11_addresses = false;
+        }
+
+        public static void RegisterHealthChanged(EventHandler<PlayerHealth> method) {
+            HealthChanged += method;
+            health = -1;
+        }
+        public static void RegisterManaChanged(EventHandler<PlayerMana> method) {
+            ManaChanged += method;
+            mana = -1;
+        }
+        public static void RegisterExperienceChanged(EventHandler<PlayerExperience> method) {
+            ExperienceChanged += method;
+            experience = -1;
         }
 
         public static void Initialize() {
