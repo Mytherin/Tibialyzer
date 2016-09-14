@@ -18,6 +18,7 @@ namespace Tibialyzer {
         public static bool shownException = false;
         private const int MaxRecentDropsTracked = 20;
         public static List<Tuple<Creature, List<Tuple<Item, int>>, string>> RecentDrops = new List<Tuple<Creature, List<Tuple<Item, int>>, string>>();
+        public static Player player = null;
 
         public static void StartScanning() {
             scanTimer = new System.Timers.Timer(10000);
@@ -44,8 +45,19 @@ namespace Tibialyzer {
 
         private static void ScanMissingChunksTimer() {
             if (ProcessManager.TibiaClientType == "Tibia11") {
+                if (MemoryReader.playerName != null && (player == null || !MemoryReader.playerName.Equals(player.name, StringComparison.InvariantCultureIgnoreCase))) {
+                    player = new Player();
+                    player.name = MemoryReader.playerName;
+                    try {
+                        if (!player.GatherInformationOnline(true)) {
+                            player = null;
+                        }
+                    } catch {
+                        player = null;
+                    }
+                }
                 // scan for where the tab structures are in Tibia 11
-                ReadMemoryManager.ScanTabStructures();
+                ReadMemoryManager.ScanTabStructures(player);
             } else if (ReadMemoryManager.UseInternalScan) {
                 // If we are scanning the internal tabs structure, we do not need to scan missing chunks)
             } else {

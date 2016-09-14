@@ -31,7 +31,7 @@ namespace Tibialyzer {
                 case Vocation.Paladin:
                     return 5 * (2 * level + 21);
                 case Vocation.Knight:
-                    return 5 * (3 * level + 21);
+                    return 5 * (3 * level + 13);
                 default: // all other vocations (no vocation, druid, sorcerer) have the same max life
                     return 5 * (level + 29);
             }

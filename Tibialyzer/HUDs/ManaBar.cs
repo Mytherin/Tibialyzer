@@ -32,7 +32,7 @@ namespace Tibialyzer {
             double fontSize = SettingsManager.getSettingDouble(GetHUD() + "FontSize");
             fontSize = fontSize < 0 ? 20 : fontSize;
             this.manaBarLabel.Font = new System.Drawing.Font("Verdana", (float)fontSize, System.Drawing.FontStyle.Bold);
-            this.RefreshHUD(100, 100);
+            this.RefreshHUD(MemoryReader.mana, MemoryReader.maxMana);
         }
 
         private void RefreshHUD(long value, long max) {

@@ -235,12 +235,12 @@ namespace Tibialyzer {
             Interlocked.Exchange(ref whiteListedAddresses, newWhitelistedAddresses);
         }
 
-        public static void ScanTabStructures() {
+        public static void ScanTabStructures(Player player) {
             Process p = ProcessManager.GetTibiaProcess();
             if (p == null) {
                 return;
             }
-            List<TabStructure> newStructures = TabStructureScanner.FindTabStructures(p);
+            List<TabStructure> newStructures = TabStructureScanner.FindTabStructures(p, player);
             Interlocked.Exchange(ref tabStructures, newStructures);
         }
 

@@ -114,15 +114,15 @@ namespace Tibialyzer {
 
         public static void RegisterHealthChanged(EventHandler<PlayerHealth> method) {
             HealthChanged += method;
-            health = -1;
+            HealthChanged(null, new PlayerHealth { Health = health, MaxHealth = maxHealth });
         }
         public static void RegisterManaChanged(EventHandler<PlayerMana> method) {
             ManaChanged += method;
-            mana = -1;
+            ManaChanged(null, new PlayerMana { Mana = mana, MaxMana = maxMana});
         }
         public static void RegisterExperienceChanged(EventHandler<PlayerExperience> method) {
             ExperienceChanged += method;
-            experience = -1;
+            ExperienceChanged(null, new PlayerExperience { Experience = experience, Level = level });
         }
 
         public static void Initialize() {
@@ -382,7 +382,12 @@ namespace Tibialyzer {
             return ReadInt32(GetAddress(address)) ^ XOR;
         }
 
-        private static int health;
+        public static int health = -1;
+        public static int maxHealth = -1;
+        public static int mana = -1;
+        public static int maxMana = -1;
+        public static long experience;
+        public static int level;
 
         private static bool ReadHealth() {
             int currentHealth = ReadProperty(HealthAddress);
@@ -392,7 +397,6 @@ namespace Tibialyzer {
             return healthChanged;
         }
 
-        private static int maxHealth;
 
         private static bool ReadMaxHealth() {
             int currentMaxHealth = ReadProperty(MaxHealthAddress);
@@ -402,7 +406,6 @@ namespace Tibialyzer {
             return maxHealthChanged;
         }
 
-        private static int mana;
 
         private static bool ReadMana() {
             int currentMana = ReadProperty(ManaAddress);
@@ -412,7 +415,6 @@ namespace Tibialyzer {
             return manaChanged;
         }
 
-        private static int maxMana;
 
         private static bool ReadMaxMana() {
             int currentMaxMana = ReadProperty(MaxManaAddress);
@@ -461,9 +463,7 @@ namespace Tibialyzer {
                 return battleList[playerAddress].z;
             }
         }
-
-        public static long experience;
-
+        
         private static bool ReadExperience() {
             long currentExperience = ReadInt64(GetAddress(ExperienceAddress));
             bool experienceChanged = currentExperience == experience;
@@ -472,7 +472,6 @@ namespace Tibialyzer {
             return experienceChanged;
         }
 
-        public static int level;
 
 
         public static int GetLevelFromExperience(long experience, int level = 150, int adjustment = 75, int iterations = 100) {

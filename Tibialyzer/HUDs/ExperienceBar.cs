@@ -32,7 +32,7 @@ namespace Tibialyzer {
             double fontSize = SettingsManager.getSettingDouble(GetHUD() + "FontSize");
             fontSize = fontSize < 0 ? 20 : fontSize;
             this.experienceBarLabel.Font = new System.Drawing.Font("Verdana", (float)fontSize, System.Drawing.FontStyle.Bold);
-            this.RefreshHUD(100, 100, 1);
+            this.RefreshHUD(new PlayerExperience { Experience=MemoryReader.experience, Level=MemoryReader.level});
         }
 
         public static long GetExperience(long lvl) {

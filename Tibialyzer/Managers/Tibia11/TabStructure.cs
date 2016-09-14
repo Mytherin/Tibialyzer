@@ -42,15 +42,24 @@ namespace Tibialyzer {
             return (x & (x - 1)) == 0;
         }
 
-        public static List<TabStructure> FindTabStructures(Process p) {
+        public static List<TabStructure> FindTabStructures(Process p, Player player) {
             bool firstScan = ReadMemoryManager.TabStructureCount() == 0;
             List<TabStructure> structs = new List<TabStructure>();
-            int statsValue = -1, expValue = -1;
+            /*int statsValue = -1, expValue = -1;
             if (MemoryReader.MemorySettings.ContainsKey("tibia11statsvalue")) {
                 int.TryParse(MemoryReader.MemorySettings["tibia11statsvalue"], out statsValue);
             }
             if (MemoryReader.MemorySettings.ContainsKey("tibia11expvalue")) {
                 int.TryParse(MemoryReader.MemorySettings["tibia11expvalue"], out expValue);
+            }*/
+            int playerMaxLife = -1, playerMaxMana = -1, playerLevel = -1;
+            long playerMinExperience = -1, playerMaxExperience = -1;
+            if (player != null) {
+                playerMaxLife = player.MaxLife();
+                playerMaxMana = player.MaxMana();
+                playerMinExperience = ExperienceBar.GetExperience(player.level - 1);
+                playerMaxExperience = ExperienceBar.GetExperience(player.level);
+                playerLevel = player.level;
             }
             foreach (var tpl in ReadMemoryManager.ScanProcess(p)) {
                 int length = tpl.Item1.RegionSize;
@@ -69,25 +78,30 @@ namespace Tibialyzer {
                             }
                         }
                     }
-                    if (statsValue != -1) {
-                        if (value == statsValue) {
-                            int health = BitConverter.ToInt32(bytes, i + 0x24);
-                            int maxhealth = BitConverter.ToInt32(bytes, i + 0x28);
-                            int mana = BitConverter.ToInt32(bytes, i + 0x2C);
-                            int maxmana = BitConverter.ToInt32(bytes, i + 0x30);
-                            if (health <= maxhealth && mana <= maxmana && maxhealth < 30000 && maxmana < 60000 &&
-                                health >= 0 && maxhealth > 0 && mana >= 0 && maxmana > 0) {
-                                MemoryReader.SetStatsAddress((uint)(baseAddress + i));
+                    if (player != null) {
+                        int maxhealth = BitConverter.ToInt32(bytes, i + 0x4);
+                        int maxmana = BitConverter.ToInt32(bytes, i + 0xC);
+                        if (maxhealth == playerMaxLife && maxmana == playerMaxMana) {
+                            int health = BitConverter.ToInt32(bytes, i);
+                            int mana = BitConverter.ToInt32(bytes, i + 0x8);
+                            if (health <= maxhealth && health >= 0 && mana <= maxmana && mana >= 0) {
+                                MemoryReader.SetStatsAddress((uint)(baseAddress + i - 0x24));
+                            }
+                        } else {
+                            int bla = BitConverter.ToInt32(bytes, i);
+                            long experience = BitConverter.ToInt64(bytes, i + 0x4);
+                            if (bla == 0 && experience > playerMinExperience && experience < playerMaxExperience) {
+                                short level = BitConverter.ToInt16(bytes, i + 0xC);
+                                if (level == playerLevel) {
+                                    double percentage = BitConverter.ToInt32(bytes, i + 0xE) / 100.0;
+                                    long diff = playerMaxExperience - playerMinExperience;
+                                    if (percentage >= 0 && percentage <= 1 && experience > playerMinExperience + diff * (percentage - 1) && experience < playerMinExperience + diff * (percentage + 1)) {
+                                        MemoryReader.SetExpAddress((uint)(baseAddress + i - 0x14));
+                                    }
+                                }
                             }
                         }
-                    }
-                    if (expValue != -1) {
-                        if (value == expValue) {
-                            long exp = BitConverter.ToInt64(bytes, i + 0x18);
-                            if (exp >= 0 && exp < 28656339800) {
-                                MemoryReader.SetExpAddress((uint)(baseAddress + i));
-                            }
-                        }
+
                     }
                 }
                 if (!firstScan) {
