@@ -403,7 +403,10 @@ namespace Tibialyzer {
                 long exp = MemoryReader.experience - baseExperience;
                 long maxExp = ExperienceBar.GetExperience(MemoryReader.level) - baseExperience;
                 double percentage = ((double) exp) / ((double) maxExp);
-                CreateSummaryBar("Level", String.Format("{0:0.}%", percentage * 100), percentage, x, ref y, StyleManager.NotificationTextColor, StyleManager.SummaryExperienceColor, summaryControls);
+                if (percentage >= 0 && percentage <= 1) {
+                    var levelBar = CreateSummaryBar("Level", String.Format("{0:0.}%", percentage * 100), percentage, x, ref y, StyleManager.NotificationTextColor, StyleManager.SummaryExperienceColor, summaryControls);
+                    tooltip.SetToolTip(levelBar, String.Format("Experience to level up: {0}", (maxExp - exp).ToString("N0")));
+                }
             }
 
         }
