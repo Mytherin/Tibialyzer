@@ -4,17 +4,17 @@
 
 # Tibialyzer
 
-Tibialyzer is an extension made for the MMORPG Tibia. It scans the server log and messages from the Tibia client in real-time by reading its memory, and gathers various statistics, such as loot found from creatures and damage dealt by party members. 
+Tibialyzer is an extension made for the MMORPG Tibia. It scans the server log and messages from the Tibia client in real-time by reading its memory, and gathers various statistics, such as loot found from creatures and damage dealt by party members.
 
 See the [Wiki section](https://github.com/Mytherin/Tibialyzer/wiki) for an in-depth description of all features that Tibialyzer has.
 
 For information on downloading and installing Tibialyzer, see the [Installation Instructions Section](https://github.com/Mytherin/Tibialyzer/wiki/Installation-Instructions). For help getting started, visit the [Quick Start Section](https://github.com/Mytherin/Tibialyzer/wiki/Quick-Start-Guide).
 
-Tibialyzer supports both the Standalone Client and the Flash Client (on Firefox). It works on Windows Vista, Windows 7, Windows 8/8.1 and Windows 10.
+Tibialyzer supports both the Standalone Client and the Flash Client (on Firefox & Chrome). It works on Windows Vista, Windows 7, Windows 8/8.1 and Windows 10.
 
 # Why did you make Tibialyzer?
 
-It started a couple of months ago. I was hunting Apes in Banuta on a low-level sorcerer alt using avalanche runes. I wanted to power-level (gain a lot of experience fast). However, `Ape Fur` was worth a lot on my server (about `6000` gold each). I felt it was a waste to leave any ape fur behind in the corpses. My plan was to look at the server log and check if any ape fur dropped, and if any dropped I would pick it up. 
+It started a couple of months ago. I was hunting Apes in Banuta on a low-level sorcerer alt using avalanche runes. I wanted to power-level (gain a lot of experience fast). However, `Ape Fur` was worth a lot on my server (about `6000` gold each). I felt it was a waste to leave any ape fur behind in the corpses. My plan was to look at the server log and check if any ape fur dropped, and if any dropped I would pick it up.
 
 While doing this I thought, if these strings are in the server log, why can't I just make a program to read them instead of manually reading them? And thus the first `Tibialyzer` was born. This was a simple Python script that I hacked together in an hour. This script would simply scan for the words `Ape Fur` in Tibia's memory and would call `notify-send` if it found any. This was still on Linux. [Here is a screenshot of the initial version](http://i.imgur.com/p0UREDO.jpg).
 
@@ -24,19 +24,19 @@ It worked very well, and at that point I thought, why not keep track of more thi
 
 Tibialyzer is completely open source, you can look at the complete source code and verify that there is nothing shady going on in there for yourself. The code is reasonably well documented, and I will be happy to answer any questions you have about the code.
 
-Rest assured that if I wanted to make a program to hack people, I would not have made it open source. I would also not have spend this much time polishing it. Tibialyzer does not track any of the keys you type, and it does not send anything over the internet at all. It's completely safe. 
+Rest assured that if I wanted to make a program to hack people, I would not have made it open source. I would also not have spend this much time polishing it. Tibialyzer does not track any of the keys you type, and it does not send anything over the internet at all. It's completely safe.
 
 # Building Tibialyzer
 Tibialyzer is written using C#. For visualization it uses WinForms, which is part of the .NET framework. Tibialyzer requires the .NET framework 4.5 or higher to run. In addition, Tibialyzer uses SQLite. The necessary SQLite libraries are shipped with the Tibialyzer application.
 
-Tibialyzer is build using Visual Studio 2015. If you wish to build it yourself, open the Tibialyzer solution using Visual Studio and press F5. If you do not have Visual Studio installed, you can download the [Community Edition](https://www.visualstudio.com/products/visual-studio-community-vs) that is provided for free by Microsoft. 
+Tibialyzer is build using Visual Studio 2015. If you wish to build it yourself, open the Tibialyzer solution using Visual Studio and press F5. If you do not have Visual Studio installed, you can download the [Community Edition](https://www.visualstudio.com/products/visual-studio-community-vs) that is provided for free by Microsoft.
 
 For a high level overview of the Tibialyzer code base, check the [Tibialyzer Code Readme](https://github.com/Mytherin/Tibialyzer/tree/master/Tibialyzer#important-files). As Tibialyzer is performance intensive, I recommend compiling with optimization flags (i.e. Release Build) if you are compiling a version that you intend to use.
 
 # Is Tibialyzer allowed? Isn't this against the rules?
 Tibialyzer does not do anything that is against the rules. [The Tibia rules](https://secure.tibia.com/support/?subtopic=tibiarules&rule=3b) specify two rules with regard to external applications.
 
-> #### Manipulating the official client program. 
+> #### Manipulating the official client program.
 >Manipulating the client program to try gaining an advantage compared to other players is not only extremely unfair but may also cause serious errors in the game. In such cases you cannot expect any assistance from CipSoft concerning level, skill, item or character loss due to manipulating their software or the game protocol. Also, manipulating the client program may lead to a punishment.
 > #### Using additional software to play the game
 > Keep in mind that you are supposed to play the game yourself, not to have a tool or program play it for you. Doing so gives you an unfair advantage over players who invest time and effort to gain power. Using unofficial software such as a macro program or a so-called "tasker" or "bot" to automatically execute actions in Tibia for you may lead to a punishment. Thus, play fair.
