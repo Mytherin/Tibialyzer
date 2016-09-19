@@ -9,14 +9,19 @@ namespace Tibialyzer {
     class ProcessManager {
         public static string TibiaClientName = "Tibia";
         public static string TibiaClientType = "Classic";
-        private static SafeTimer detectTibiaActive = new SafeTimer(250, DetectIfTibiaActive);
         public static EventHandler<bool> TibiaVisibilityChanged;
         public static IntPtr TibialyzerProcessHandle;
+        private static WindowFocusWatcher tibiaFocusWatcher;
 
 
         public static void Initialize() {
             TibiaClientName = SettingsManager.settingExists("TibiaClientName") ? SettingsManager.getSettingString("TibiaClientName") : TibiaClientName;
-            detectTibiaActive.Start();
+            tibiaFocusWatcher = new WindowFocusWatcher(WindowFocusWatcherEvent);
+        }
+
+        public static void Stop()
+        {
+            tibiaFocusWatcher?.Dispose();
         }
 
         public static Process GetTibiaProcess() {
@@ -76,32 +81,24 @@ namespace Tibialyzer {
             }
         }
 
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetWindowThreadProcessId(IntPtr hWnd, out uint ProcessId);
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr GetForegroundWindow();
-
         private static bool isTibiaActive = false;
         public static bool IsTibiaActive() {
             return isTibiaActive;
         }
 
-        private static void DetectIfTibiaActive() {
+        private static void WindowFocusWatcherEvent(uint pid) {
             bool oldTibiaActiveValue = isTibiaActive;
-            IntPtr hwnd = GetForegroundWindow();
-            uint pid;
-            GetWindowThreadProcessId(hwnd, out pid);
-            Process p = Process.GetProcessById((int)pid);
-            if (p.ProcessName.Contains("Tibialyzer", StringComparison.CurrentCultureIgnoreCase)) {
+            Process tibialyzerProcess = Process.GetProcessById((int)pid);
+
+            if (tibialyzerProcess.ProcessName.Contains("Tibialyzer", StringComparison.CurrentCultureIgnoreCase)) {
                 isTibiaActive = true;
             } else {
                 Process tibiaProcess = GetTibiaProcess();
-                isTibiaActive = (tibiaProcess != null && tibiaProcess.Id == p.Id);
+                isTibiaActive = (tibiaProcess != null && tibiaProcess.Id == pid);
             }
 
-            if (oldTibiaActiveValue != isTibiaActive && TibiaVisibilityChanged != null) {
-                TibiaVisibilityChanged(null, isTibiaActive);
+            if (oldTibiaActiveValue != isTibiaActive) {
+                TibiaVisibilityChanged?.Invoke(null, isTibiaActive);
             }
         }
 

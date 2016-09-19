@@ -573,6 +573,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ResourcesBase.resx</DependentUpon>
     </Compile>
+    <Compile Include="WindowFocusWatcher.cs" />
     <EmbeddedResource Include="HUDs\CurvedHUD.resx">
       <DependentUpon>CurvedHUD.cs</DependentUpon>
     </EmbeddedResource>

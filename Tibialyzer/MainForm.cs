@@ -546,6 +546,7 @@ namespace Tibialyzer {
             if (fileWriter != null) {
                 fileWriter.Close();
             }
+            ProcessManager.Stop();
         }
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e) {
