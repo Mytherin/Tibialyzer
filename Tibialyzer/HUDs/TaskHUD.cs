@@ -12,7 +12,7 @@ namespace Tibialyzer {
         private ActualTaskHUD actualHUD = null;
         public TaskHUD() {
             this.TransparencyKey = StyleManager.TransparencyKey;
-            ProcessManager.TibiaVisibilityChanged += (o, e) => UpdateVisibility(e);
+            ProcessManager.RegisterTibiaVisibilityChanged(this, (o, e) => UpdateVisibility(e));
 
             this.ShowInTaskbar = false;
             this.FormBorderStyle = FormBorderStyle.None;

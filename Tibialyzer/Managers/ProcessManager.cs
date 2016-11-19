@@ -9,7 +9,7 @@ namespace Tibialyzer {
     class ProcessManager {
         public static string TibiaClientName = "Tibia";
         public static string TibiaClientType = "Classic";
-        public static EventHandler<bool> TibiaVisibilityChanged;
+        private static EventHandler<bool> TibiaVisibilityChanged;
         public static IntPtr TibialyzerProcessHandle;
         private static WindowFocusWatcher tibiaFocusWatcher;
 
@@ -101,7 +101,12 @@ namespace Tibialyzer {
                 TibiaVisibilityChanged?.Invoke(null, isTibiaActive);
             }
         }
+        public static void RegisterTibiaVisibilityChanged(System.Windows.Forms.Control control, EventHandler<bool> method) {
+            control.Disposed += (o, e) => TibiaVisibilityChanged -= method;
+            TibiaVisibilityChanged += method;
+        }
 
+        
         public static void SelectProcess(Process process) {
             TibiaClientName = process.ProcessName;
             SettingsManager.setSetting("TibiaClientName", TibiaClientName);

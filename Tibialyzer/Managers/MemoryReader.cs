@@ -112,16 +112,19 @@ namespace Tibialyzer {
             tibia11_addresses = false;
         }
 
-        public static void RegisterHealthChanged(EventHandler<PlayerHealth> method) {
+        public static void RegisterHealthChanged(System.Windows.Forms.Control control, EventHandler<PlayerHealth> method) {
             HealthChanged += method;
+            control.Disposed += (o, e) => HealthChanged -= method;
             HealthChanged(null, new PlayerHealth { Health = health, MaxHealth = maxHealth });
         }
-        public static void RegisterManaChanged(EventHandler<PlayerMana> method) {
+        public static void RegisterManaChanged(System.Windows.Forms.Control control, EventHandler<PlayerMana> method) {
             ManaChanged += method;
+            control.Disposed += (o, e) => ManaChanged -= method;
             ManaChanged(null, new PlayerMana { Mana = mana, MaxMana = maxMana});
         }
-        public static void RegisterExperienceChanged(EventHandler<PlayerExperience> method) {
+        public static void RegisterExperienceChanged(System.Windows.Forms.Control control, EventHandler<PlayerExperience> method) {
             ExperienceChanged += method;
+            control.Disposed += (o, e) => ExperienceChanged -= method;
             ExperienceChanged(null, new PlayerExperience { Experience = experience, Level = level });
         }
 

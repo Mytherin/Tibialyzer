@@ -34,7 +34,7 @@ namespace Tibialyzer {
             this.alwaysShow = alwaysShow;
             this.InitializeSimpleNotification(false, false);
             
-            ProcessManager.TibiaVisibilityChanged += (o, e) => UpdateHudVisibility(e);
+            ProcessManager.RegisterTibiaVisibilityChanged(this, (o, e) => UpdateHudVisibility(e));
         }
 
         private void UpdateHudVisibility(bool visible) {

@@ -33,10 +33,10 @@ namespace Tibialyzer {
 
             BackColor = StyleManager.BlendTransparencyKey;
             TransparencyKey = StyleManager.BlendTransparencyKey;
-            MemoryReader.RegisterHealthChanged((o, e) => RefreshHealth(e));
-            MemoryReader.RegisterManaChanged((o, e) => RefreshMana(e));
-            MemoryReader.RegisterExperienceChanged((o, e) => RefreshExp(e));
-            ProcessManager.TibiaVisibilityChanged += (o, e) => UpdateVisibility(e);
+            MemoryReader.RegisterHealthChanged(this, (o, e) => RefreshHealth(e));
+            MemoryReader.RegisterManaChanged(this, (o, e) => RefreshMana(e));
+            MemoryReader.RegisterExperienceChanged(this, (o, e) => RefreshExp(e));
+            ProcessManager.RegisterTibiaVisibilityChanged(this, (o, e) => UpdateVisibility(e));
         }
 
         ~Portrait() {

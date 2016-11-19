@@ -133,7 +133,7 @@ namespace Tibialyzer {
             }
 
             if (hideWhenTibiaInactive) {
-                ProcessManager.TibiaVisibilityChanged += (o, e) => UpdateHudVisibility(e);
+                ProcessManager.RegisterTibiaVisibilityChanged(this, (o, e) => UpdateHudVisibility(e));
             }
         }
 
