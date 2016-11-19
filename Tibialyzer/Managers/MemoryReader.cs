@@ -64,6 +64,46 @@ namespace Tibialyzer {
         private static UInt32 RingTypeAddress;
         public static UInt32 TabsBaseAddress;
 
+        private static MemoryLocation Tibia11XPos;
+        private static MemoryLocation Tibia11YPos;
+        private static MemoryLocation Tibia11ZPos;
+        private static MemoryLocation Tibia11MyHP;
+        private static MemoryLocation Tibia11MyMaxHP;
+        private static MemoryLocation Tibia11Experience;
+        private static MemoryLocation Tibia11Level;
+        private static MemoryLocation Tibia11MyMana;
+        private static MemoryLocation Tibia11MyMaxMana;
+        private static MemoryLocation Tibia11MySoul;
+        private static MemoryLocation Tibia11Speed_Current;
+        private static MemoryLocation Tibia11Speed_Base;
+        private static MemoryLocation Tibia11Stamina_InMinutes;
+        private static MemoryLocation Tibia11Food_InSeconds;
+        private static MemoryLocation Tibia11OfflineTraining_InMinutes;
+        private static MemoryLocation Tibia11SkillsAxeCurrent;
+        private static MemoryLocation Tibia11SkillsAxeBase;
+        private static MemoryLocation Tibia11SkillsAxeProgress;
+        private static MemoryLocation Tibia11SkillsClubCurrent;
+        private static MemoryLocation Tibia11SkillsClubBase;
+        private static MemoryLocation Tibia11SkillsClubProgress;
+        private static MemoryLocation Tibia11SkillsShieldingCurrent;
+        private static MemoryLocation Tibia11SkillsShieldingBase;
+        private static MemoryLocation Tibia11SkillsShieldingProgress;
+        private static MemoryLocation Tibia11SkillsMagicLevelCurrent;
+        private static MemoryLocation Tibia11SkillsMagicLevelBase;
+        private static MemoryLocation Tibia11SkillsMagicLevelProgress;
+        private static MemoryLocation Tibia11SkillsFishingCurrent;
+        private static MemoryLocation Tibia11SkillsFishingBase;
+        private static MemoryLocation Tibia11SkillsFishingProgress;
+        private static MemoryLocation Tibia11SkillsFistCurrent;
+        private static MemoryLocation Tibia11SkillsFistBase;
+        private static MemoryLocation Tibia11SkillsFistProgress;
+        private static MemoryLocation Tibia11SkillsSwordCurrent;
+        private static MemoryLocation Tibia11SkillsSwordBase;
+        private static MemoryLocation Tibia11SkillsSwordProgress;
+        private static MemoryLocation Tibia11SkillsDistanceCurrent;
+        private static MemoryLocation Tibia11SkillsDistanceBase;
+        private static MemoryLocation Tibia11SkillsDistanceProgress;
+
         private static uint BL_CREATURE_SIZE = 220;
         private static int BL_Z_OFFSET = 36;
         private static int BL_Y_OFFSET = 40;
@@ -90,7 +130,9 @@ namespace Tibialyzer {
         public static Dictionary<string, string> MemorySettings = new Dictionary<string, string>();
 
         public static void InitializeMemoryAddresses() {
-            Dictionary<string, UInt32> memoryAddresses = ParseAddresses();
+            Tuple<Dictionary<string, UInt32>, Dictionary<string, MemoryLocation>> parsedAddresses = ParseAddresses();
+            Dictionary<string, UInt32> memoryAddresses = parsedAddresses.Item1;
+            Dictionary<string, MemoryLocation> memoryPaths = parsedAddresses.Item2;
             XORAddress = 0;
             memoryAddresses.TryGetValue("xoraddress", out XORAddress);
             memoryAddresses.TryGetValue("healthaddress", out HealthAddress);
@@ -109,6 +151,45 @@ namespace Tibialyzer {
             memoryAddresses.TryGetValue("weapontypeaddress", out WeaponTypeAddress);
             memoryAddresses.TryGetValue("bootstypeaddress", out BootsTypeAddress);
             memoryAddresses.TryGetValue("ringtypeaddress", out RingTypeAddress);
+            memoryPaths.TryGetValue("tibia11xpos", out Tibia11XPos);
+            memoryPaths.TryGetValue("tibia11ypos", out Tibia11YPos);
+            memoryPaths.TryGetValue("tibia11zpos", out Tibia11ZPos);
+            memoryPaths.TryGetValue("tibia11myhp", out Tibia11MyHP);
+            memoryPaths.TryGetValue("tibia11mymaxhp", out Tibia11MyMaxHP);
+            memoryPaths.TryGetValue("tibia11experience", out Tibia11Experience);
+            memoryPaths.TryGetValue("tibia11level", out Tibia11Level);
+            memoryPaths.TryGetValue("tibia11mymana", out Tibia11MyMana);
+            memoryPaths.TryGetValue("tibia11mymaxmana", out Tibia11MyMaxMana);
+            memoryPaths.TryGetValue("tibia11mysoul", out Tibia11MySoul);
+            memoryPaths.TryGetValue("tibia11speed_current", out Tibia11Speed_Current);
+            memoryPaths.TryGetValue("tibia11speed_base", out Tibia11Speed_Base);
+            memoryPaths.TryGetValue("tibia11stamina_inminutes", out Tibia11Stamina_InMinutes);
+            memoryPaths.TryGetValue("tibia11food_inseconds", out Tibia11Food_InSeconds);
+            memoryPaths.TryGetValue("tibia11offlinetraining_inminutes", out Tibia11OfflineTraining_InMinutes);
+            memoryPaths.TryGetValue("tibia11skillsaxecurrent", out Tibia11SkillsAxeCurrent);
+            memoryPaths.TryGetValue("tibia11skillsaxebase", out Tibia11SkillsAxeBase);
+            memoryPaths.TryGetValue("tibia11skillsaxeprogress", out Tibia11SkillsAxeProgress);
+            memoryPaths.TryGetValue("tibia11skillsclubcurrent", out Tibia11SkillsClubCurrent);
+            memoryPaths.TryGetValue("tibia11skillsclubbase", out Tibia11SkillsClubBase);
+            memoryPaths.TryGetValue("tibia11skillsclubprogress", out Tibia11SkillsClubProgress);
+            memoryPaths.TryGetValue("tibia11skillsshieldingcurrent", out Tibia11SkillsShieldingCurrent);
+            memoryPaths.TryGetValue("tibia11skillsshieldingbase", out Tibia11SkillsShieldingBase);
+            memoryPaths.TryGetValue("tibia11skillsshieldingprogress", out Tibia11SkillsShieldingProgress);
+            memoryPaths.TryGetValue("tibia11skillsmagiclevelcurrent", out Tibia11SkillsMagicLevelCurrent);
+            memoryPaths.TryGetValue("tibia11skillsmagiclevelbase", out Tibia11SkillsMagicLevelBase);
+            memoryPaths.TryGetValue("tibia11skillsmagiclevelprogress", out Tibia11SkillsMagicLevelProgress);
+            memoryPaths.TryGetValue("tibia11skillsfishingcurrent", out Tibia11SkillsFishingCurrent);
+            memoryPaths.TryGetValue("tibia11skillsfishingbase", out Tibia11SkillsFishingBase);
+            memoryPaths.TryGetValue("tibia11skillsfishingprogress", out Tibia11SkillsFishingProgress);
+            memoryPaths.TryGetValue("tibia11skillsfistcurrent", out Tibia11SkillsFistCurrent);
+            memoryPaths.TryGetValue("tibia11skillsfistbase", out Tibia11SkillsFistBase);
+            memoryPaths.TryGetValue("tibia11skillsfistprogress", out Tibia11SkillsFistProgress);
+            memoryPaths.TryGetValue("tibia11skillsswordcurrent", out Tibia11SkillsSwordCurrent);
+            memoryPaths.TryGetValue("tibia11skillsswordbase", out Tibia11SkillsSwordBase);
+            memoryPaths.TryGetValue("tibia11skillsswordprogress", out Tibia11SkillsSwordProgress);
+            memoryPaths.TryGetValue("tibia11skillsdistancecurrent", out Tibia11SkillsDistanceCurrent);
+            memoryPaths.TryGetValue("tibia11skillsdistancebase", out Tibia11SkillsDistanceBase);
+            memoryPaths.TryGetValue("tibia11skillsdistanceprogress", out Tibia11SkillsDistanceProgress);
             tibia11_addresses = false;
         }
 
@@ -159,9 +240,13 @@ namespace Tibialyzer {
             }
         }
 
-        private static Dictionary<string, UInt32> ParseAddresses() {
+        private static Tuple<Dictionary<string, UInt32>, Dictionary<string, MemoryLocation>> ParseAddresses() {
+            var addresses = new Dictionary<string, UInt32>();
+            var paths = new Dictionary<string, MemoryLocation>();
+
+            var results = new Tuple<Dictionary<string, uint>, Dictionary<string, MemoryLocation>>(addresses, paths);
+
             MemorySettings.Clear();
-            Dictionary<string, UInt32> addresses = new Dictionary<string, UInt32>();
             using (StreamReader reader = new StreamReader(Constants.MemoryAddresses)) {
                 string line;
                 while ((line = reader.ReadLine()) != null) {
@@ -170,7 +255,10 @@ namespace Tibialyzer {
 
                         string key = split[0].Trim().ToLower();
                         UInt32 value = 0;
-                        if (!key.Contains("noparse") && UInt32.TryParse(split[1].Replace("0x", ""), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out value)) {
+                        MemoryLocation location = MemoryLocation.ParseMemoryLocation(split[1]);
+                        if (location != null) {
+                            paths.Add(key, location);
+                        } else if (!key.Contains("noparse") && UInt32.TryParse(split[1].Replace("0x", ""), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out value)) {
                             addresses.Add(key, value);
                         } else {
                             key = key.Replace("noparse", "");
@@ -181,21 +269,10 @@ namespace Tibialyzer {
                     }
                 }
             }
-            return addresses;
+            return results;
         }
-
-        public static void SetStatsAddress(uint address) {
-            HealthAddress = address + 0x24;
-            MaxHealthAddress = address + 0x28;
-            ManaAddress = address + 0x2C;
-            MaxManaAddress = address + 0x30;
-            tibia11_addresses = true;
-        }
-        public static void SetExpAddress(uint address) {
-            ExperienceAddress = address + 0x18 - baseAddress;
-            tibia11_addresses = true;
-        }
-
+        
+        public static Dictionary<string, long> ModuleAddresses = new Dictionary<string, long>();
         private static UInt32 baseAddress;
         private static IntPtr handle = new IntPtr(0);
         private static int processID = -1;
@@ -204,6 +281,16 @@ namespace Tibialyzer {
 
             if (processID >= 0) {
                 CloseHandle(MemoryReader.handle);
+            }
+
+            tibia11_addresses = false;
+            ModuleAddresses = new Dictionary<string, long>();
+            var handle = process.MainWindowHandle;
+            foreach (ProcessModule module in process.Modules) {
+                ModuleAddresses.Add(module.ModuleName.ToLower(), module.BaseAddress.ToInt64());
+                if (module.ModuleName.Contains("Qt5Core", StringComparison.InvariantCultureIgnoreCase)) {
+                    tibia11_addresses = true;
+                }
             }
 
             try {
@@ -260,14 +347,9 @@ namespace Tibialyzer {
 
         private static void UpdateExp() {
             bool attributesChanged = ReadExperience();
-            if (!tibia11_addresses) {
-                attributesChanged |= ReadLevel();
-            }
+            attributesChanged |= ReadLevel();
 
             if (attributesChanged && ExperienceChanged != null) {
-                if (tibia11_addresses) {
-                    level = GetLevelFromExperience(experience);
-                }
                 var playerExperience = new PlayerExperience {
                     Level = level,
                     Experience = experience
@@ -286,6 +368,14 @@ namespace Tibialyzer {
             byte[] buf = new byte[n];
             ReadProcessMemory(processHandle < 0 ? handle : new IntPtr(processHandle), new IntPtr(address), buf, n, out ptrBytesRead);
             return buf;
+        }
+
+        public static byte ReadInt8(Int64 address, int handle = -1) {
+            return ReadBytes(address, 1, handle)[0];
+        }
+
+        public static Int16 ReadInt16(Int64 address, int handle = -1) {
+            return BitConverter.ToInt16(ReadBytes(address, 2, handle), 0);
         }
 
         public static Int32 ReadInt32(Int64 address, int handle = -1) {
@@ -393,7 +483,7 @@ namespace Tibialyzer {
         public static int level;
 
         private static bool ReadHealth() {
-            int currentHealth = ReadProperty(HealthAddress);
+            int currentHealth = !tibia11_addresses ? ReadProperty(HealthAddress) : (int) Tibia11MyHP.GetValue();
             bool healthChanged = currentHealth != health;
             health = currentHealth;
 
@@ -402,7 +492,7 @@ namespace Tibialyzer {
 
 
         private static bool ReadMaxHealth() {
-            int currentMaxHealth = ReadProperty(MaxHealthAddress);
+            int currentMaxHealth = !tibia11_addresses ? ReadProperty(HealthAddress) : (int)Tibia11MyMaxHP.GetValue();
             bool maxHealthChanged = currentMaxHealth != maxHealth;
             maxHealth = currentMaxHealth;
 
@@ -411,7 +501,7 @@ namespace Tibialyzer {
 
 
         private static bool ReadMana() {
-            int currentMana = ReadProperty(ManaAddress);
+            int currentMana = !tibia11_addresses ? ReadProperty(HealthAddress) : (int)Tibia11MyMana.GetValue();
             bool manaChanged = currentMana != mana;
             mana = currentMana;
 
@@ -420,7 +510,7 @@ namespace Tibialyzer {
 
 
         private static bool ReadMaxMana() {
-            int currentMaxMana = ReadProperty(MaxManaAddress);
+            int currentMaxMana = !tibia11_addresses ? ReadProperty(HealthAddress) : (int)Tibia11MyMaxMana.GetValue();
             bool maxManaChanged = currentMaxMana != maxMana;
             maxMana = currentMaxMana;
 
@@ -448,6 +538,7 @@ namespace Tibialyzer {
 
         public static int X {
             get {
+                if (tibia11_addresses) return (int)(Tibia11XPos.GetValue() - START_X);
                 if (playerAddress == -1) playerAddress = GetPlayerPosition(PlayerId);
                 return battleList[playerAddress].x - START_X;
             }
@@ -455,6 +546,7 @@ namespace Tibialyzer {
 
         public static int Y {
             get {
+                if (tibia11_addresses) return (int)(Tibia11YPos.GetValue() - START_Y);
                 if (playerAddress == -1) playerAddress = GetPlayerPosition(PlayerId);
                 return battleList[playerAddress].y - START_Y;
             }
@@ -462,13 +554,14 @@ namespace Tibialyzer {
 
         public static int Z {
             get {
+                if (tibia11_addresses) return (int) Tibia11ZPos.GetValue();
                 if (playerAddress == -1) playerAddress = GetPlayerPosition(PlayerId);
                 return battleList[playerAddress].z;
             }
         }
         
         private static bool ReadExperience() {
-            long currentExperience = ReadInt64(GetAddress(ExperienceAddress));
+            long currentExperience = tibia11_addresses ? Tibia11Experience.GetValue() : ReadInt64(GetAddress(ExperienceAddress));
             bool experienceChanged = currentExperience == experience;
             experience = currentExperience;
 
@@ -491,7 +584,7 @@ namespace Tibialyzer {
         }
 
         private static bool ReadLevel() {
-            int currentLevel = ReadInt32(GetAddress(LevelAddress));
+            int currentLevel = tibia11_addresses ? (int) Tibia11Level.GetValue() : ReadInt32(GetAddress(LevelAddress));
             bool levelChanged = level == currentLevel;
             level = currentLevel;
 
@@ -501,7 +594,7 @@ namespace Tibialyzer {
         private static int magicLevel;
 
         private static bool ReadMagicLevel() {
-            int currentMagicLevel = ReadInt32(GetAddress(MagicLevelAddress));
+            int currentMagicLevel = tibia11_addresses ? (int)Tibia11SkillsMagicLevelCurrent.GetValue() : ReadInt32(GetAddress(MagicLevelAddress));
             bool magicLevelChanged = currentMagicLevel == magicLevel;
             magicLevel = currentMagicLevel;
 
@@ -636,6 +729,77 @@ namespace Tibialyzer {
             }
         }
     }
+
+    public class MemoryLocation {
+        public string moduleName;
+        public long moduleOffset;
+        public List<long> jumps = new List<long>();
+        public int bytes;
+
+        public static MemoryLocation ParseMemoryLocation(string str) {
+            int bytes = 4;
+            // remove whitespace and quotes
+            str = str.Replace(" ", "").Replace("\n", "").Replace("\t", "").Replace("\"", "").Replace("'", "");
+            // parse the amount of bytes for the memory location
+            if (str.Contains("[") && str.Contains("]")) {
+                int start = str.IndexOf('[');
+                int end = str.IndexOf(']');
+                string number = str.Substring(start + 1, end - start - 1);
+                if (!int.TryParse(number, out bytes)) {
+                    return null;
+                }
+                if (bytes != 1 && bytes != 2 && bytes != 4 && bytes != 8) return null;
+                str = str.Substring(end + 1);
+            }
+            string[] splits = str.Split('+');
+            if (splits.Length != 2) return null;
+            MemoryLocation location = new MemoryLocation();
+            location.moduleName = splits[0].ToLower();
+            string[] jump_splits = splits[1].Split('>');
+            if (!TryParseHexNumber(jump_splits[0], out location.moduleOffset)) {
+                return null;
+            }
+            // parse jumps
+            for (int i = 1; i < jump_splits.Length; i++) {
+                long jump_value;
+                if (!TryParseHexNumber(jump_splits[i], out jump_value)) {
+                    return null;
+                }
+                location.jumps.Add(jump_value);
+            }
+            location.bytes = bytes;
+            return location;
+        }
+
+        static bool TryParseHexNumber(string number, out long value) {
+            return long.TryParse(number.Replace("0x", ""), System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.InvariantCulture, out value);
+        }
+
+        public long GetAddress() {
+            if (!MemoryReader.ModuleAddresses.ContainsKey(moduleName))
+                return -1;
+            long currentAddress = MemoryReader.ModuleAddresses[moduleName] + moduleOffset;
+            foreach (long jump in jumps) {
+                currentAddress = MemoryReader.ReadInt32(currentAddress) + jump;
+            }
+            return currentAddress;
+        }
+
+        public long GetValue() {
+            switch (bytes) {
+                case 1:
+                    return MemoryReader.ReadInt8(GetAddress());
+                case 2:
+                    return MemoryReader.ReadInt16(GetAddress());
+                case 4:
+                    return MemoryReader.ReadInt32(GetAddress());
+                case 8:
+                    return MemoryReader.ReadInt64(GetAddress());
+            }
+            return -1;
+        }
+    }
+
 
     public class BattleListEntry {
         public int id;

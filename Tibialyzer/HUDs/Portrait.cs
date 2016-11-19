@@ -179,7 +179,6 @@ namespace Tibialyzer {
 
         private void RefreshExp(PlayerExperience playerExp) {
             level = playerExp.Level;
-
             try
             {
                 this.Invoke((MethodInvoker)delegate {
