@@ -46,6 +46,7 @@
             this.automaticallyDownloadAddressesCheckbox = new Tibialyzer.PrettyCheckBox();
             this.nameListBox = new Tibialyzer.PrettyListBox();
             this.commandTextBox = new Tibialyzer.EnterTextBox();
+            this.selectProcessButton = new Tibialyzer.PrettyButton();
             ((System.ComponentModel.ISupportInitialize)(this.languageImageBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -91,7 +92,7 @@
             this.updateMemoryAddressesHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.updateMemoryAddressesHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.updateMemoryAddressesHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.updateMemoryAddressesHeader.Location = new System.Drawing.Point(9, 329);
+            this.updateMemoryAddressesHeader.Location = new System.Drawing.Point(9, 370);
             this.updateMemoryAddressesHeader.Name = "updateMemoryAddressesHeader";
             this.updateMemoryAddressesHeader.Size = new System.Drawing.Size(617, 30);
             this.updateMemoryAddressesHeader.TabIndex = 23;
@@ -115,7 +116,7 @@
             this.downloadNewAddressesButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.downloadNewAddressesButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.downloadNewAddressesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.downloadNewAddressesButton.Location = new System.Drawing.Point(9, 399);
+            this.downloadNewAddressesButton.Location = new System.Drawing.Point(9, 440);
             this.downloadNewAddressesButton.Name = "downloadNewAddressesButton";
             this.downloadNewAddressesButton.Padding = new System.Windows.Forms.Padding(10);
             this.downloadNewAddressesButton.Size = new System.Drawing.Size(299, 40);
@@ -129,7 +130,7 @@
             this.generatePartialAddressesButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.generatePartialAddressesButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.generatePartialAddressesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.generatePartialAddressesButton.Location = new System.Drawing.Point(9, 439);
+            this.generatePartialAddressesButton.Location = new System.Drawing.Point(327, 440);
             this.generatePartialAddressesButton.Name = "generatePartialAddressesButton";
             this.generatePartialAddressesButton.Padding = new System.Windows.Forms.Padding(10);
             this.generatePartialAddressesButton.Size = new System.Drawing.Size(299, 40);
@@ -144,7 +145,7 @@
             this.updateDatabaseButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.updateDatabaseButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.updateDatabaseButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.updateDatabaseButton.Location = new System.Drawing.Point(327, 359);
+            this.updateDatabaseButton.Location = new System.Drawing.Point(327, 400);
             this.updateDatabaseButton.Name = "updateDatabaseButton";
             this.updateDatabaseButton.Padding = new System.Windows.Forms.Padding(10);
             this.updateDatabaseButton.Size = new System.Drawing.Size(299, 40);
@@ -226,7 +227,7 @@
             this.resourcesHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.resourcesHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.resourcesHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.resourcesHeader.Location = new System.Drawing.Point(327, 166);
+            this.resourcesHeader.Location = new System.Drawing.Point(327, 216);
             this.resourcesHeader.Name = "resourcesHeader";
             this.resourcesHeader.Size = new System.Drawing.Size(299, 30);
             this.resourcesHeader.TabIndex = 60;
@@ -238,7 +239,7 @@
             this.languageSelectionHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.languageSelectionHeader.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.languageSelectionHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.languageSelectionHeader.Location = new System.Drawing.Point(327, 90);
+            this.languageSelectionHeader.Location = new System.Drawing.Point(327, 154);
             this.languageSelectionHeader.Name = "languageSelectionHeader";
             this.languageSelectionHeader.Size = new System.Drawing.Size(299, 30);
             this.languageSelectionHeader.TabIndex = 61;
@@ -248,7 +249,7 @@
             // languageImageBox
             // 
             this.languageImageBox.BackColor = System.Drawing.Color.Transparent;
-            this.languageImageBox.Location = new System.Drawing.Point(330, 120);
+            this.languageImageBox.Location = new System.Drawing.Point(330, 184);
             this.languageImageBox.Name = "languageImageBox";
             this.languageImageBox.Size = new System.Drawing.Size(36, 24);
             this.languageImageBox.TabIndex = 63;
@@ -262,7 +263,7 @@
             this.gettingStartedGuideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
             this.gettingStartedGuideButton.Image = global::Tibialyzer.Properties.Resources.icon_github;
             this.gettingStartedGuideButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.gettingStartedGuideButton.Location = new System.Drawing.Point(327, 196);
+            this.gettingStartedGuideButton.Location = new System.Drawing.Point(327, 246);
             this.gettingStartedGuideButton.Name = "gettingStartedGuideButton";
             this.gettingStartedGuideButton.Padding = new System.Windows.Forms.Padding(10);
             this.gettingStartedGuideButton.Size = new System.Drawing.Size(299, 40);
@@ -279,7 +280,7 @@
             this.commonIssuesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
             this.commonIssuesButton.Image = global::Tibialyzer.Properties.Resources.icon_github;
             this.commonIssuesButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.commonIssuesButton.Location = new System.Drawing.Point(327, 235);
+            this.commonIssuesButton.Location = new System.Drawing.Point(327, 285);
             this.commonIssuesButton.Name = "commonIssuesButton";
             this.commonIssuesButton.Padding = new System.Windows.Forms.Padding(10);
             this.commonIssuesButton.Size = new System.Drawing.Size(299, 40);
@@ -296,7 +297,7 @@
             this.gettingStartedVideoButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
             this.gettingStartedVideoButton.Image = global::Tibialyzer.Properties.Resources.icon_youtube;
             this.gettingStartedVideoButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.gettingStartedVideoButton.Location = new System.Drawing.Point(327, 274);
+            this.gettingStartedVideoButton.Location = new System.Drawing.Point(327, 324);
             this.gettingStartedVideoButton.Name = "gettingStartedVideoButton";
             this.gettingStartedVideoButton.Padding = new System.Windows.Forms.Padding(10);
             this.gettingStartedVideoButton.Size = new System.Drawing.Size(299, 40);
@@ -317,7 +318,7 @@
             "Nederlands",
             "Polskie",
             "Português"});
-            this.languageDropDownList.Location = new System.Drawing.Point(368, 120);
+            this.languageDropDownList.Location = new System.Drawing.Point(368, 184);
             this.languageDropDownList.Name = "languageDropDownList";
             this.languageDropDownList.Size = new System.Drawing.Size(258, 24);
             this.languageDropDownList.TabIndex = 62;
@@ -344,7 +345,7 @@
             this.automaticallyDownloadAddressesCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.automaticallyDownloadAddressesCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.automaticallyDownloadAddressesCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.automaticallyDownloadAddressesCheckbox.Location = new System.Drawing.Point(9, 359);
+            this.automaticallyDownloadAddressesCheckbox.Location = new System.Drawing.Point(9, 400);
             this.automaticallyDownloadAddressesCheckbox.Name = "automaticallyDownloadAddressesCheckbox";
             this.automaticallyDownloadAddressesCheckbox.Padding = new System.Windows.Forms.Padding(10);
             this.automaticallyDownloadAddressesCheckbox.Size = new System.Drawing.Size(299, 40);
@@ -382,12 +383,30 @@
             this.commandTextBox.TabIndex = 9;
             this.commandTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.commandTextBox_KeyPress);
             // 
+            // selectProcessButton
+            // 
+            this.selectProcessButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
+            this.selectProcessButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.selectProcessButton.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.selectProcessButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
+            this.selectProcessButton.Image = global::Tibialyzer.Properties.Resources.executable;
+            this.selectProcessButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.selectProcessButton.Location = new System.Drawing.Point(330, 90);
+            this.selectProcessButton.Name = "selectProcessButton";
+            this.selectProcessButton.Padding = new System.Windows.Forms.Padding(10);
+            this.selectProcessButton.Size = new System.Drawing.Size(299, 40);
+            this.selectProcessButton.TabIndex = 67;
+            this.selectProcessButton.Text = "Select Tibia Process";
+            this.selectProcessButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.selectProcessButton.Click += new System.EventHandler(this.selectProcessButton_Click);
+            // 
             // MainTab
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
             this.ClientSize = new System.Drawing.Size(638, 549);
+            this.Controls.Add(this.selectProcessButton);
             this.Controls.Add(this.gettingStartedVideoButton);
             this.Controls.Add(this.commonIssuesButton);
             this.Controls.Add(this.gettingStartedGuideButton);
@@ -443,5 +462,6 @@
         private PrettyButton executeCommandButton;
         private PrettyHeader tibiaClientSelectionHeader;
         private PrettyHeader executeTibialyzerCommandHeader;
+        private PrettyButton selectProcessButton;
     }
 }

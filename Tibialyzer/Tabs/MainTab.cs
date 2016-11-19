@@ -274,5 +274,10 @@ namespace Tibialyzer {
 
             SettingsManager.setSetting("AutomaticallyDownloadAddresses", (sender as CheckBox).Checked);
         }
+
+        private void selectProcessButton_Click(object sender, EventArgs e) {
+            Form form = new SelectProcessForm();
+            form.Show();
+        }
     }
 }

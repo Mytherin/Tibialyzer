@@ -9,6 +9,7 @@ namespace Tibialyzer {
     class ProcessManager {
         public static string TibiaClientName = "Tibia";
         public static string TibiaClientType = "Classic";
+        public static int TibiaProcessID = -1;
         private static EventHandler<bool> TibiaVisibilityChanged;
         public static IntPtr TibialyzerProcessHandle;
         private static WindowFocusWatcher tibiaFocusWatcher;
@@ -32,6 +33,15 @@ namespace Tibialyzer {
         }
 
         public static Process[] GetTibiaProcesses() {
+            if (TibiaProcessID >= 0) {
+                Process process = Process.GetProcessById(TibiaProcessID);
+                if (process != null) {
+                    MemoryReader.OpenProcess(process);
+                    return new Process[] { process };
+                }
+                return null;
+            }
+
             if (TibiaClientName == null) {
                 Dictionary<int, string> candidateProcess = new Dictionary<int, string>();
                 foreach (Process proc in Process.GetProcesses()) {
@@ -108,8 +118,8 @@ namespace Tibialyzer {
 
         
         public static void SelectProcess(Process process) {
-            TibiaClientName = process.ProcessName;
-            SettingsManager.setSetting("TibiaClientName", TibiaClientName);
+            if (process == null) return;
+            TibiaProcessID = process.Id;
         }
     }
 }

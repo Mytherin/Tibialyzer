@@ -280,20 +280,23 @@ namespace Tibialyzer {
             if (processID == process.Id) return MemoryReader.handle;
 
             if (processID >= 0) {
-                CloseHandle(MemoryReader.handle);
-            }
+                try {
+                    CloseHandle(MemoryReader.handle);
+                } catch {
 
-            tibia11_addresses = false;
-            ModuleAddresses = new Dictionary<string, long>();
-            var handle = process.MainWindowHandle;
-            foreach (ProcessModule module in process.Modules) {
-                ModuleAddresses.Add(module.ModuleName.ToLower(), module.BaseAddress.ToInt64());
-                if (module.ModuleName.Contains("Qt5Core", StringComparison.InvariantCultureIgnoreCase)) {
-                    tibia11_addresses = true;
                 }
             }
 
             try {
+                tibia11_addresses = false;
+                ModuleAddresses = new Dictionary<string, long>();
+                var handle = process.MainWindowHandle;
+                foreach (ProcessModule module in process.Modules) {
+                    ModuleAddresses.Add(module.ModuleName.ToLower(), module.BaseAddress.ToInt64());
+                    if (module.ModuleName.Contains("Qt5Core", StringComparison.InvariantCultureIgnoreCase)) {
+                        tibia11_addresses = true;
+                    }
+                }
                 MemoryReader.baseAddress = (UInt32)process.MainModule.BaseAddress.ToInt32();
                 MemoryReader.handle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_WM_READ, false, process.Id);
                 MemoryReader.processID = process.Id;

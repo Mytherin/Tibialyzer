@@ -83,6 +83,16 @@ namespace Tibialyzer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap executable {
+            get {
+                object obj = ResourceManager.GetObject("executable", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icon_chrome {
             get {
                 object obj = ResourceManager.GetObject("icon_chrome", resourceCulture);
