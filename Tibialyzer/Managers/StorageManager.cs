@@ -867,7 +867,7 @@ namespace Tibialyzer {
                 if (npc != null) {
                     huntingPlace.image = npc.GetImage();
                 } else {
-                    throw new Exception("Unrecognized npc or creature image.");
+                    huntingPlace.image = StyleManager.GetImage("placeholder-npc.png");
                 }
             }
             huntingPlace.city = reader["city"].ToString();
