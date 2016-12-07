@@ -440,6 +440,39 @@
 		<Name>Special Tasks</Name>
 		<Tasks>
 			<Task>
+				<Name>Trolls</Name>
+				<Creature>Troll;Troll Champion</Creature>
+				<Count>100</Count>
+				<Hunts>
+					<Hunt>Edron Troll Cave</Hunt>
+				</Hunts>
+			</Task>
+			<Task>
+				<Name>Goblins</Name>
+				<Creature>Goblin;Goblin Assassin;Goblin Scavenger</Creature>
+				<Count>150</Count>
+				<Hunts>
+					<Hunt>Edron Goblin Cave</Hunt>
+				</Hunts>
+			</Task>
+			<Task>
+				<Name>Rotworms</Name>
+				<Creature>Rotworm;Carrion Worm</Creature>
+				<Count>300</Count>
+				<Hunts>
+					<Hunt>Darashia Rotworm Cave</Hunt>
+					<Hunt>Mistrock</Hunt>
+				</Hunts>
+			</Task>
+			<Task>
+				<Name>Cyclops</Name>
+				<Creature>Cyclops;Cyclops Smith;Cyclops Drone</Creature>
+				<Count>500</Count>
+				<Hunts>
+					<Hunt>Cyclopolis</Hunt>
+				</Hunts>
+			</Task>
+			<Task>
 				<Name>Pirate Task</Name>
 				<Creature>Pirate Marauder;Pirate Cutthroat;Pirate Buccaneer;Pirate Corsair</Creature>
 				<Count>3000</Count>
