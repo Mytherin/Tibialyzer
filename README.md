@@ -1,5 +1,5 @@
 
-![Warning](http://i.imgur.com/ur1QcGo.png)
+![Warning](http://i.imgur.com/IP4HsdK.png)
 
 <img align="right" src="https://raw.githubusercontent.com/Mytherin/Tibialyzer/master/Images/tibiagroup.png" alt="Me and my Friends in Tibia, Left To Right: Mytherin, Amel Cyrom, Martincc">
 
