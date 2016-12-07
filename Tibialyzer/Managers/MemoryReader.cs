@@ -1,4 +1,4 @@
-﻿/*
+/*
 The functions in this file are based on the work by Viktor Gustavsson (https://github.com/villor/TibiaReader), which has the following license.
 
 The MIT License (MIT)
@@ -495,7 +495,7 @@ namespace Tibialyzer {
 
 
         private static bool ReadMaxHealth() {
-            int currentMaxHealth = !tibia11_addresses ? ReadProperty(HealthAddress) : (int)Tibia11MyMaxHP.GetValue();
+            int currentMaxHealth = !tibia11_addresses ? ReadProperty(MaxHealthAddress) : (int)Tibia11MyMaxHP.GetValue();
             bool maxHealthChanged = currentMaxHealth != maxHealth;
             maxHealth = currentMaxHealth;
 
@@ -504,7 +504,7 @@ namespace Tibialyzer {
 
 
         private static bool ReadMana() {
-            int currentMana = !tibia11_addresses ? ReadProperty(HealthAddress) : (int)Tibia11MyMana.GetValue();
+            int currentMana = !tibia11_addresses ? ReadProperty(ManaAddress) : (int)Tibia11MyMana.GetValue();
             bool manaChanged = currentMana != mana;
             mana = currentMana;
 
@@ -513,7 +513,7 @@ namespace Tibialyzer {
 
 
         private static bool ReadMaxMana() {
-            int currentMaxMana = !tibia11_addresses ? ReadProperty(HealthAddress) : (int)Tibia11MyMaxMana.GetValue();
+            int currentMaxMana = !tibia11_addresses ? ReadProperty(MaxManaAddress) : (int)Tibia11MyMaxMana.GetValue();
             bool maxManaChanged = currentMaxMana != maxMana;
             maxMana = currentMaxMana;
 
