@@ -461,8 +461,7 @@ namespace Tibialyzer {
                     }
                 }
 
-                if (logMessage.EndsWith(" (active prey bonus)"))
-                    logMessage = logMessage.Replace(" (active prey bonus)", "");
+                logMessage = logMessage.Replace(" (active prey bonus)", "");
 
                 string message = logMessage.Substring(6); // message without timestamp
                 if (readLogMessages) {
