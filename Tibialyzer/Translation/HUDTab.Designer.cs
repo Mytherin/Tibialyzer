@@ -133,6 +133,15 @@ namespace Tibialyzer.Translation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Center HUD Text.
+        /// </summary>
+        internal static string centerHUDTextCheckbox {
+            get {
+                return ResourceManager.GetString("centerHUDTextCheckbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close All HUDs.
         /// </summary>
         internal static string closeAllHudsButton {
@@ -210,6 +219,15 @@ namespace Tibialyzer.Translation {
         internal static string positionOffsetHeader {
             get {
                 return ResourceManager.GetString("positionOffsetHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reverse Progress Bar.
+        /// </summary>
+        internal static string reverseProgressBarCheckbox {
+            get {
+                return ResourceManager.GetString("reverseProgressBarCheckbox", resourceCulture);
             }
         }
         

@@ -12,6 +12,8 @@ using Tibialyzer.Structures;
 namespace Tibialyzer {
     public partial class ManaBar : BaseHUD {
         private bool displayText;
+        private bool centerText;
+        private bool reverseBar;
 
         public ManaBar() {
             InitializeComponent();
@@ -20,6 +22,8 @@ namespace Tibialyzer {
             TransparencyKey = StyleManager.BlendTransparencyKey;
 
             displayText = SettingsManager.getSettingBool(GetHUD() + "DisplayText");
+            centerText = SettingsManager.getSettingBool(GetHUD() + "CenterText");
+            reverseBar = SettingsManager.getSettingBool(GetHUD() + "ReverseProgressBar");
             double opacity = SettingsManager.getSettingDouble(GetHUD() + "Opacity");
             opacity = Math.Min(1, Math.Max(0, opacity));
             this.Opacity = opacity;
@@ -32,6 +36,10 @@ namespace Tibialyzer {
             double fontSize = SettingsManager.getSettingDouble(GetHUD() + "FontSize");
             fontSize = fontSize < 0 ? 20 : fontSize;
             this.manaBarLabel.Font = new System.Drawing.Font("Verdana", (float)fontSize, System.Drawing.FontStyle.Bold);
+
+            this.manaBarLabel.reverse = reverseBar;
+            this.manaBarLabel.centerText = centerText;
+
             this.RefreshHUD(MemoryReader.mana, MemoryReader.maxMana);
         }
 

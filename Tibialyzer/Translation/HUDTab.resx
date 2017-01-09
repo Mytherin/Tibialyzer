@@ -150,6 +150,12 @@
   <data name="displayHUDTextCheckbox" xml:space="preserve">
     <value>Display HUD Text</value>
   </data>
+  <data name="centerHUDTextCheckbox" xml:space="preserve">
+    <value>Center HUD Text</value>
+  </data>
+  <data name="reverseProgressBarCheckbox" xml:space="preserve">
+    <value>Reverse Progress Bar</value>
+  </data>
   <data name="displayOptionsHeader" xml:space="preserve">
     <value>Display Options</value>
   </data>
