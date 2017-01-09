@@ -12,6 +12,8 @@ using Tibialyzer.Structures;
 namespace Tibialyzer {
     public partial class ExperienceBar : BaseHUD {
         private bool displayText;
+        private bool centerText;
+        private bool reverseBar;
 
         public ExperienceBar() {
             InitializeComponent();
@@ -20,6 +22,9 @@ namespace Tibialyzer {
             TransparencyKey = StyleManager.BlendTransparencyKey;
 
             displayText = SettingsManager.getSettingBool(GetHUD() + "DisplayText");
+            centerText = SettingsManager.getSettingBool(GetHUD() + "CenterText");
+            reverseBar = SettingsManager.getSettingBool(GetHUD() + "ReverseProgressBar");
+
             double opacity = SettingsManager.getSettingDouble(GetHUD() + "Opacity");
             opacity = Math.Min(1, Math.Max(0, opacity));
             this.Opacity = opacity;
@@ -32,6 +37,10 @@ namespace Tibialyzer {
             double fontSize = SettingsManager.getSettingDouble(GetHUD() + "FontSize");
             fontSize = fontSize < 0 ? 20 : fontSize;
             this.experienceBarLabel.Font = new System.Drawing.Font("Verdana", (float)fontSize, System.Drawing.FontStyle.Bold);
+
+            this.experienceBarLabel.reverse = reverseBar;
+            this.experienceBarLabel.centerText = centerText;
+
             this.RefreshHUD(new PlayerExperience { Experience=MemoryReader.experience, Level=MemoryReader.level});
         }
 

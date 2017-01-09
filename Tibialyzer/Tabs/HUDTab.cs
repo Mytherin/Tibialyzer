@@ -35,6 +35,8 @@ namespace Tibialyzer {
             closeAllHudsButton.Text = Tibialyzer.Translation.HUDTab.closeAllHudsButton;
             sizeHeader.Text = Tibialyzer.Translation.HUDTab.sizeHeader;
             displayHUDTextCheckbox.Text = Tibialyzer.Translation.HUDTab.displayHUDTextCheckbox;
+            centerHUDTextCheckbox.Text = Tibialyzer.Translation.HUDTab.centerHUDTextCheckbox;
+            reverseProgressBarCheckbox.Text = Tibialyzer.Translation.HUDTab.reverseProgressBarCheckbox;
             hudTypeListHeader.Text = Tibialyzer.Translation.HUDTab.hudTypeListHeader;
             yOffsetLabel.Text = Tibialyzer.Translation.HUDTab.yOffsetLabel;
             closeHudButton.Text = Tibialyzer.Translation.HUDTab.closeHudButton;
@@ -88,8 +90,12 @@ namespace Tibialyzer {
             fontSizeBox.Text = SettingsManager.getSettingString(hudName + "FontSize");
             hudOpacityBox.Text = SettingsManager.getSettingString(hudName + "Opacity");
             displayHUDTextCheckbox.Checked = SettingsManager.getSettingBool(hudName + "DisplayText");
+            centerHUDTextCheckbox.Checked = SettingsManager.getSettingBool(hudName + "CenterText");
+            reverseProgressBarCheckbox.Checked = SettingsManager.getSettingBool(hudName + "ReverseProgressBar");
             
             advancedOptionsButton.Visible = hudName == "HealthList" || hudName == "Portrait";
+            centerHUDTextCheckbox.Visible = hudName == "HealthBar" || hudName == "ManaBar" || hudName == "ExperienceBar";
+            reverseProgressBarCheckbox.Visible = hudName == "HealthBar" || hudName == "ManaBar" || hudName == "ExperienceBar";
 
             MainForm.prevent_settings_update = false;
         }
@@ -194,6 +200,18 @@ namespace Tibialyzer {
 
         private void alwaysShowHUD_CheckedChanged(object sender, EventArgs e) {
             SettingsManager.setSetting("AlwaysShowHUD", (sender as CheckBox).Checked);
+        }
+
+        private void centerHUDTextCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            SettingsManager.setSetting(getSelectedHudName() + "CenterText", (sender as CheckBox).Checked);
+        }
+
+        private void reverseProgressBarCheckbox_CheckedChanged(object sender, EventArgs e) {
+            if (MainForm.prevent_settings_update) return;
+
+            SettingsManager.setSetting(getSelectedHudName() + "ReverseProgressBar", (sender as CheckBox).Checked);
         }
     }
 }
