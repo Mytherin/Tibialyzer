@@ -49,7 +49,7 @@ namespace Tibialyzer {
         public void ClampCoordinate() {
             this.x = Math.Min(Math.Max(x, 0), MaxWidth);
             this.y = Math.Min(Math.Max(y, 0), MaxHeight);
-            this.z = Math.Min(Math.Max(x, 0), MaxZ);
+            this.z = Math.Min(Math.Max(z, 0), MaxZ);
         }
     }
 
