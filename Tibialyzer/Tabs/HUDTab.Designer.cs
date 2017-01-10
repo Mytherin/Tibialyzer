@@ -100,7 +100,7 @@
             this.yOffsetLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.yOffsetLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.yOffsetLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.yOffsetLabel.Location = new System.Drawing.Point(490, 95);
+            this.yOffsetLabel.Location = new System.Drawing.Point(491, 95);
             this.yOffsetLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.yOffsetLabel.Name = "yOffsetLabel";
             this.yOffsetLabel.Size = new System.Drawing.Size(148, 35);
@@ -155,7 +155,7 @@
             this.showHudButton.Location = new System.Drawing.Point(490, 568);
             this.showHudButton.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.showHudButton.Name = "showHudButton";
-            this.showHudButton.Padding = new System.Windows.Forms.Padding(15);
+            this.showHudButton.Padding = new System.Windows.Forms.Padding(15, 15, 15, 15);
             this.showHudButton.Size = new System.Drawing.Size(448, 58);
             this.showHudButton.TabIndex = 68;
             this.showHudButton.Text = "Show HUD";
@@ -172,7 +172,7 @@
             this.closeHudButton.Location = new System.Drawing.Point(490, 626);
             this.closeHudButton.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.closeHudButton.Name = "closeHudButton";
-            this.closeHudButton.Padding = new System.Windows.Forms.Padding(15);
+            this.closeHudButton.Padding = new System.Windows.Forms.Padding(15, 15, 15, 15);
             this.closeHudButton.Size = new System.Drawing.Size(448, 58);
             this.closeHudButton.TabIndex = 69;
             this.closeHudButton.Text = "Close HUD";
@@ -189,7 +189,7 @@
             this.closeAllHudsButton.Location = new System.Drawing.Point(490, 689);
             this.closeAllHudsButton.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.closeAllHudsButton.Name = "closeAllHudsButton";
-            this.closeAllHudsButton.Padding = new System.Windows.Forms.Padding(15);
+            this.closeAllHudsButton.Padding = new System.Windows.Forms.Padding(15, 15, 15, 15);
             this.closeAllHudsButton.Size = new System.Drawing.Size(448, 58);
             this.closeAllHudsButton.TabIndex = 70;
             this.closeAllHudsButton.Text = "Close All HUDs";
@@ -216,7 +216,7 @@
             this.heightLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.heightLabel.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.heightLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.heightLabel.Location = new System.Drawing.Point(490, 305);
+            this.heightLabel.Location = new System.Drawing.Point(491, 305);
             this.heightLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.heightLabel.Name = "heightLabel";
             this.heightLabel.Size = new System.Drawing.Size(148, 35);
@@ -449,7 +449,7 @@
             this.advancedOptionsButton.Location = new System.Drawing.Point(14, 665);
             this.advancedOptionsButton.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.advancedOptionsButton.Name = "advancedOptionsButton";
-            this.advancedOptionsButton.Padding = new System.Windows.Forms.Padding(15);
+            this.advancedOptionsButton.Padding = new System.Windows.Forms.Padding(15, 15, 15, 15);
             this.advancedOptionsButton.Size = new System.Drawing.Size(448, 83);
             this.advancedOptionsButton.TabIndex = 83;
             this.advancedOptionsButton.Text = "Advanced Options";
@@ -463,7 +463,7 @@
             this.alwaysShowHUDCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.alwaysShowHUDCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.alwaysShowHUDCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.alwaysShowHUDCheckbox.Location = new System.Drawing.Point(14, 608);
+            this.alwaysShowHUDCheckbox.Location = new System.Drawing.Point(14, 609);
             this.alwaysShowHUDCheckbox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.alwaysShowHUDCheckbox.Name = "alwaysShowHUDCheckbox";
             this.alwaysShowHUDCheckbox.Padding = new System.Windows.Forms.Padding(15, 0, 15, 0);
@@ -480,10 +480,10 @@
             this.reverseProgressBarCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.reverseProgressBarCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.reverseProgressBarCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.reverseProgressBarCheckbox.Location = new System.Drawing.Point(13, 716);
-            this.reverseProgressBarCheckbox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.reverseProgressBarCheckbox.Location = new System.Drawing.Point(14, 717);
+            this.reverseProgressBarCheckbox.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.reverseProgressBarCheckbox.Name = "reverseProgressBarCheckbox";
-            this.reverseProgressBarCheckbox.Padding = new System.Windows.Forms.Padding(15, 0, 15, 0);
+            this.reverseProgressBarCheckbox.Padding = new System.Windows.Forms.Padding(22, 0, 22, 0);
             this.reverseProgressBarCheckbox.Size = new System.Drawing.Size(448, 52);
             this.reverseProgressBarCheckbox.TabIndex = 85;
             this.reverseProgressBarCheckbox.Text = "Reverse Progress Bar";
@@ -495,10 +495,10 @@
             this.centerHUDTextCheckbox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(55)))), ((int)(((byte)(59)))));
             this.centerHUDTextCheckbox.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.centerHUDTextCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(124)))), ((int)(((byte)(133)))), ((int)(((byte)(142)))));
-            this.centerHUDTextCheckbox.Location = new System.Drawing.Point(14, 662);
-            this.centerHUDTextCheckbox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.centerHUDTextCheckbox.Location = new System.Drawing.Point(14, 663);
+            this.centerHUDTextCheckbox.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.centerHUDTextCheckbox.Name = "centerHUDTextCheckbox";
-            this.centerHUDTextCheckbox.Padding = new System.Windows.Forms.Padding(15, 0, 15, 0);
+            this.centerHUDTextCheckbox.Padding = new System.Windows.Forms.Padding(22, 0, 22, 0);
             this.centerHUDTextCheckbox.Size = new System.Drawing.Size(448, 52);
             this.centerHUDTextCheckbox.TabIndex = 86;
             this.centerHUDTextCheckbox.Text = "Center HUD Text";
@@ -507,10 +507,11 @@
             // 
             // HUDTab
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Tibialyzer.Properties.Resources.background_image;
-            this.ClientSize = new System.Drawing.Size(638, 549);
+            this.ClientSize = new System.Drawing.Size(957, 845);
+            this.Controls.Add(this.centerHUDTextCheckbox);
             this.Controls.Add(this.alwaysShowHUDCheckbox);
             this.Controls.Add(this.displayHUDTextCheckbox);
             this.Controls.Add(this.opacityLabel);
@@ -539,11 +540,10 @@
             this.Controls.Add(this.selectedHUDLabel);
             this.Controls.Add(this.hudTypeListHeader);
             this.Controls.Add(this.hudTypeList);
-            this.Controls.Add(this.centerHUDTextCheckbox);
             this.Controls.Add(this.reverseProgressBarCheckbox);
             this.Controls.Add(this.advancedOptionsButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.Name = "HUDTab";
             this.Text = "TabBase";
             this.ResumeLayout(false);
