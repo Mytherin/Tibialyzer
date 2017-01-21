@@ -184,6 +184,18 @@ def parseItem(title, attributes, c, buyitems, sellitems, currencymap, durationMa
     if 'vocrequired' in attributes and len(attributes['vocrequired'].strip()) > 1:
         attributes['vocrequired'] = attributes['vocrequired'].replace('knights', 'k').replace('druids', 'd').replace('sorcerers', 's').replace('paladins', 'p').replace(' and ','+')
         c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Voc', attributes['vocrequired'].strip()))
+    if 'resist' in attributes and len(attributes['resist'].strip()) > 1:
+        elemental = attributes["resist"].split(",")
+        for element in elemental:
+            element = element.strip()
+            m = re.search(r'([a-zA-Z0-9_ ]+) +(-?\+?\d+)%',element)
+            if m:
+                prop = m.group(1)+"%"
+                try:
+                    value = int(m.group(2))
+                except ValueError:
+                    value = 0
+                c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, prop, value))
     if 'plural' in attributes:
         plural = attributes['plural'].strip().lower()
         if len(plural) > 2:
@@ -257,6 +269,6 @@ def parseItem(title, attributes, c, buyitems, sellitems, currencymap, durationMa
             pass
     if 'atk_mod' in attributes and len(attributes['atk_mod'].strip()) > 0:
         c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Atk+', attributes['atk_mod'].strip()))
-    if 'hit_mod' in attributes and len(attributes['atk_mod'].strip()) > 0:
+    if 'hit_mod' in attributes and len(attributes['hit_mod'].strip()) > 0:
         c.execute('INSERT INTO ItemProperties(itemid, property, value) VALUES (?,?,?)', (itemid, 'Hit+', attributes['hit_mod'].strip()))
     return True

@@ -33,7 +33,10 @@ def getHuntID(name):
     name = name.strip().lower()
     c.execute('SELECT id FROM HuntingPlaces WHERE LOWER(name)=?', (name,))
     print(name)
-    return c.fetchall()[0][0]
+    try:
+        return c.fetchall()[0][0]
+    except IndexError:
+        return
 
 def getQuestID(name):
     global c
@@ -50,7 +53,10 @@ def getItemID(name):
     results = c.fetchall()
     if len(results) == 0:
         print(name)
-    return results[0][0]
+    try:
+        return results[0][0]
+    except IndexError:
+        return
 
 
 conn = sqlite3.connect(database_file)
