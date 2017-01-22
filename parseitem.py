@@ -114,7 +114,7 @@ def parseItem(title, attributes, c, buyitems, sellitems, currencymap, durationMa
         url = "http://tibia.wikia.com/wiki/File:%s.gif" % (title.replace(' ', '_'))
         image = getImage(url, getURL, imageRegex2, properly_crop_item)
         if image == None or image == False:
-            print('failed to get image for item', title)
+            print("Error on item {0}: Failed to get image".format(title))
     match = lookRegex.search(itemHTML)
     look_text = None
     if match != None:

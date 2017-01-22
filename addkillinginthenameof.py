@@ -16,8 +16,7 @@ import xml.etree.ElementTree
 import sqlite3
 
 database_file = 'database.db'
-#database_file = 'E:\\Github Projects\\Tibialyzer\\Tibialyzer\\Database\\database.db'
-cities_xmlfile = "Extra Information/killinginthenameof.xml"
+tasks_xmlfile = "Extra Information/killinginthenameof.xml"
 
 from coordinates import convert_x, convert_y
 
@@ -34,9 +33,11 @@ c.execute('CREATE TABLE TaskGroups(id INTEGER PRIMARY KEY AUTOINCREMENT, name ST
 c.execute('CREATE TABLE Tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, groupid INTEGER, count INTEGER, taskpoints INTEGER, bossid INTEGER, bossx INTEGER, bossy INTEGER, bossz INTEGER)')
 c.execute('CREATE TABLE TaskCreatures(taskid INTEGER, creatureid INTEGER)')
 c.execute('CREATE TABLE TaskHunts(taskid INTEGER, huntingplaceid INTEGER)')
-root = xml.etree.ElementTree.parse(cities_xmlfile).getroot()
+conn.commit()
+root = xml.etree.ElementTree.parse(tasks_xmlfile).getroot()
 for child in root.getchildren():
     taskbracketname = child.find('Name').text
+    print(taskbracketname)
     c.execute('INSERT INTO TaskGroups(name) VALUES (?)', (taskbracketname,))
     bracketid = c.lastrowid
     tasks = child.find('Tasks')
@@ -60,10 +61,11 @@ for child in root.getchildren():
             uloc[1] = convert_y(uloc[1])
             uloc[2] = int(uloc[2])
         c.execute('INSERT INTO Tasks(name,groupid, count, taskpoints, bossid, bossx, bossy, bossz) VALUES (?,?,?,?,?,?,?,?)', (name,bracketid, count, taskpoints, bossid, uloc[0], uloc[1], uloc[2]))
+        print("\t"+name)
+        conn.commit()
         taskid = c.lastrowid
         for creature in creatures.split(';'):
             creature = creature.strip().lower()
-            print(creature)
             c.execute('SELECT id FROM Creatures WHERE LOWER(name)=? OR LOWER(title)=?', (creature, creature))
             creatureid = c.fetchall()[0][0]
             c.execute('INSERT INTO TaskCreatures(taskid, creatureid) VALUES (?,?)', (taskid, creatureid))
@@ -74,8 +76,9 @@ for child in root.getchildren():
             results = c.fetchall()
             if len(results) <= 0:
                 print(huntname, "not found")
-                exit()
+                continue
             c.execute('INSERT INTO TaskHunts(taskid, huntingplaceid) VALUES (?,?)', (taskid, results[0][0]))
+            
 
 conn.commit()
 

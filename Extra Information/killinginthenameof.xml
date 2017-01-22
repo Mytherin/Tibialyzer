@@ -460,7 +460,7 @@
 				<Creature>Rotworm;Carrion Worm</Creature>
 				<Count>300</Count>
 				<Hunts>
-					<Hunt>Darashia Rotworm Cave</Hunt>
+					<Hunt>Darashia Rotworm Caves</Hunt>
 					<Hunt>Mistrock</Hunt>
 				</Hunts>
 			</Task>

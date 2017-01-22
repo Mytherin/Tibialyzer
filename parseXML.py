@@ -150,24 +150,30 @@ if not skipLoading:
         titleTag = child.find(getTag('title'))
         if titleTag == None: continue
         title = titleTag.text
-        if 'help:' in title.lower() or 'talk:' in title.lower() or 'template:' in title.lower() or 'updates/' in title.lower() or 'user:' in title.lower() or 'loot/' in title.lower() or 'tibiawiki:' in title.lower(): continue
+        if 'help:' in title.lower() or 'talk:' in title.lower() or 'template:' in title.lower() or 'updates/' in title.lower() or 'user:' in title.lower() or 'loot/' in title.lower() or 'tibiawiki:' in title.lower():
+            continue
         title = formatTitle(title)
         revisionTag = child.find(getTag('revision'))
-        if revisionTag == None: continue
+        if revisionTag == None:
+            continue
         textTag = revisionTag.find(getTag('text'))
-        if textTag == None: continue
+        if textTag == None:
+            continue
         content = textTag.text
-        if content == None: continue
+        if content == None: 
+            continue
         attributes = parseAttributes(content)
         lcontent = content.lower()
+        if "#redirect" in lcontent:
+            continue
         if '/Spoiler' in title:
             quest = title.replace('/Spoiler', '')
             questNPCs[quest] = re.findall('\[\[([^]|]+)(?:|[^]]+)?\]\]', lcontent)
-        elif wordCount(lcontent, 'infobox hunt|') == 1 or wordCount(lcontent, 'infobox_hunt|') == 1:
+        elif wordCount(lcontent, '{{infobox hunt') == 1 or wordCount(lcontent, '{{infobox hunt skills') >= 1:
             #print('Hunt', title)
             if not parseHunt(title, attributes, c, content, huntcreatures, getURL):
                 print('Hunt failed', title)
-        elif wordCount(lcontent, 'infobox quest') == 1 or wordCount(lcontent, 'infobox_quest') == 1:
+        elif wordCount(lcontent, '{{infobox quest') == 1:
             #print('Quest', title)
             if not parseQuest(title, attributes, c, rewardItems, questDangers, getURL):
                 print('Quest failed', title)
@@ -197,8 +203,7 @@ if not skipLoading:
                 print('Mount failed', title)
         elif wordCount(lcontent, 'infobox object') == 1 or wordCount(lcontent, 'infobox_object') == 1:
             #print('Object', title)
-            if not parseObject(title, attributes, c, getURL):
-                print('Object failed', title)
+            parseObject(title, attributes, c, getURL)
         elif wordCount(lcontent, '{{infobox key') == 1 or wordCount(lcontent, '{{infobox_key') == 1:
             #print('Key', title)
             if not parseKey(title, attributes, c, keyItems, buyitems, sellitems, getURL):
@@ -317,7 +322,7 @@ for itemname,tpl in iter(durationCostMap.items()):
     itemcost = tpl[1]
     itemcostcount = tpl[2]
     name = itemcost.strip().lower()
-    print(tpl)
+    #print(tpl)
     c.execute('SELECT id FROM Items WHERE LOWER(name)=? OR LOWER(title)=?', (name, name))
     results = c.fetchall()
     costid = results[0][0]
@@ -380,7 +385,7 @@ for npcid,spelllist in iter(spells.items()):
                 knight = npcTeachMap[name][3] and spellresults[4]
 
             if druid == False and paladin == False and sorcerer == False and knight == False:
-                print('Unknown NPC spell vocation', name)
+                print('Unknown NPC spell vocation', name, spell)
             c.execute('INSERT INTO SpellNPCs(spellid, npcid, druid, paladin, sorcerer, knight) VALUES (?,?,?,?,?,?)', (spellid, npcid, druid, paladin, sorcerer, knight))
         else:
             pass#print("Unrecognized spell", spell)
@@ -438,7 +443,8 @@ for questname, npcs in iter(questNPCs.items()):
                 if len(c.fetchall()) == 0:
                     c.execute('INSERT INTO QuestNPCs (questid, npcid) VALUES (?,?)', (questid, npcid))
     else:
-        print("Unrecognized Quest", questname)
+        pass
+        #print("Unrecognized Quest", questname)
 
 # fix typos in creatures
 creatureMap = {'bone beast':'bonebeast', 'crystal crusher':'crystalcrusher', 'carniphilia': 'carniphila', 
@@ -460,7 +466,8 @@ for huntingplaceid,creaturelist in iter(huntcreatures.items()):
             if len(c.fetchall()) == 0:
                 c.execute('INSERT INTO HuntingPlaceCreatures(huntingplaceid,creatureid) VALUES (?,?)', (huntingplaceid,creatureid))
         else:
-            pass#print("Unrecognized Creature", creature)
+            pass
+            #print("Unrecognized Creature", creature)
 
 
 # fix some typos/plurals/incorrect links in quest reward items
@@ -518,7 +525,8 @@ for questid,items in iter(rewardItems.items()):
                 if len(results) == 0:
                     c.execute('INSERT INTO QuestOutfits(questid, outfitid) VALUES (?,?)', (questid, outfitid))
             else:
-                print("Unrecognized item or outfit", itemname)
+                pass
+                #print("Unrecognized quest reward", itemname)
 
 
 # some quests contain 'plural' definitions of creatures, this map translates those plurals to a set of creatures
