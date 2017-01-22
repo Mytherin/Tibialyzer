@@ -48,3 +48,9 @@ This script adds creature skins, hunting directions, hunting requirements and qu
 ```bash
 	python addextrainformation.py
 ```
+
+#### House Information
+This script adds creature skins, hunting directions, hunting requirements and quest instructions from the corresponding .xml files in the "Extra Information" directory.
+```bash
+	python addhouses.py
+```

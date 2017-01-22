@@ -2,7 +2,6 @@ import json
 import sqlite3
 
 database_file = 'database.db'
-database_file = 'E:\\Github Projects\\Tibialyzer4\\Tibialyzer\\Database\\database.db'
 house_file = "houses.json"
 guildhalls_file = "guildhalls.json"
 
