@@ -50,7 +50,7 @@ This script adds creature skins, hunting directions, hunting requirements and qu
 ```
 
 #### House Information
-This script adds creature skins, hunting directions, hunting requirements and quest instructions from the corresponding .xml files in the "Extra Information" directory.
+This script adds houses and guildhalls from the corresponding houses.json and guildhalls.json files in this directory.
 ```bash
 	python addhouses.py
 ```
