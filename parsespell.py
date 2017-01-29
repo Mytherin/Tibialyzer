@@ -24,7 +24,12 @@ from imageoperations import crop_image, gif_is_animated, convert_to_png
 numberRegex = re.compile('([0-9]+[,.]?[0-9]*[,.]?[0-9]*[,.]?[0-9]*[,.]?[0-9]*)')
 imageRegex = re.compile('<a href="([^"]*)"[ \t\n]*class="image image-thumbnail"')
 
+exclude_spells = ["Ultimate Explosion", "Force Strike"]
+
 def parseSpell(title, attributes, c, getURL):
+    if title in exclude_spells:
+        print("Skipped excluded spell",title)
+        return True
     name = title
     if 'name' in attributes:
         name = attributes['name']
