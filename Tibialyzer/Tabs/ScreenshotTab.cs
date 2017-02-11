@@ -22,6 +22,7 @@ namespace Tibialyzer {
             this.screenshotAdvanceCheckbox.Checked = SettingsManager.getSettingBool("AutoScreenshotAdvance");
             this.screenshotOnRareItemCheckbox.Checked = SettingsManager.getSettingBool("AutoScreenshotItemDrop");
             this.screenshotDeathCheckbox.Checked = SettingsManager.getSettingBool("AutoScreenshotDeath");
+            this.screenshotLowLifeCheckbox.Checked = SettingsManager.getSettingBool("AutoScreenshotLowLife");
             this.screenshotValueBox.Text = SettingsManager.getSettingString("ScreenshotRareItemValue");
 
             this.enableScreenshotCheckbox.Checked = SettingsManager.getSettingBool("EnableScreenshots");
